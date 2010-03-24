@@ -13,8 +13,9 @@
 #include <TFile.h>
 
 #include "../interface/KMETProducer.h"
-/*
 #include "../interface/KLorentzProducer.h"
+#include "../interface/KTrackProducer.h"
+/*
 #include "../interface/KGenMetadataProducer.h"
 #include "../interface/KHepMCPartonProducer.h"
 #include "../interface/KPartonProducer.h"
@@ -87,12 +88,6 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			producers.push_back(new KCaloJetProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 
-		if (active[i] == "Jets")
-			producers.push_back(new KLorentzProducer(
-				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-		if (active[i] == "Tracks")
-			producers.push_back(new KTrackProducer(
-				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		if (active[i] == "Tower")
 			producers.push_back(new KTowerProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
@@ -101,6 +96,12 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			producers.push_back(new KPartonProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 */
+		if (active[i] == "Tracks")
+			producers.push_back(new KTrackProducer(
+				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
+		if (active[i] == "LV")
+			producers.push_back(new KLorentzProducer(
+				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		if (active[i] == "MET")
 			producers.push_back(new KMETProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));

@@ -24,7 +24,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		minPt = cms.double(-1),
 	),
 
-	Jets = cms.PSet(
+	LV = cms.PSet(
 		manual = cms.VInputTag(),
 		filter = cms.string("reco.*Jets_.*Jet"),
 		rename = cms.vstring(

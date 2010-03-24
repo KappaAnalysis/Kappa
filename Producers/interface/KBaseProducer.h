@@ -34,7 +34,7 @@ public:
 	KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree)
 	{
 		provenance = new KProvenance();
-		_lumi_tree->Bronch(("Provenance_" + Tout::provenance()).c_str(), "KProvenance", &provenance);
+		_lumi_tree->Bronch(("Provenance_" + Tout::producer()).c_str(), "KProvenance", &provenance);
 	}
 	void addProvenance(std::string oldName, std::string newName)
 	{

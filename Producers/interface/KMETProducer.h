@@ -11,7 +11,6 @@ struct KMETProducer_Product
 	typedef KDataMET type;
 	static const std::string id() { return "KDataMET"; };
 	static const std::string producer() { return "KMETProducer"; };
-	static const std::string provenance() { return "MET"; };
 };
 
 class KMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KMETProducer_Product>
