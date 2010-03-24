@@ -1,0 +1,11 @@
+<use name="root" />
+
+<flags GENREFLEX_ARGS="--" />
+<use name="rootrflx" />
+<use name="rootmath" />
+
+<export>
+	<lib name="MyAnalyzer/ATKDataFormat" />
+	<use name="rootrflx" />
+	<use name="rootmath" />
+</export>

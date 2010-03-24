@@ -1,0 +1,37 @@
+<lcgdict>
+
+	<class name="RMDataLV_Store"/>
+	<class name="RMDataLV"/>
+
+	<class name="RMLV_Store"/>
+	<class name="RMLV"/>
+
+
+
+	<class name="KDataLV"/>
+	<class name="KDataLVs"/>
+
+	<class name="KLV"/>
+	<class name="KLVs"/>
+
+	<class name="KDataMET"/>
+
+	<class name="KDataJet"/>
+	<class name="KDataJets"/>
+
+	<class name="KDataTrack"/>
+	<class name="KDataTracks"/>
+
+	<class name="KParton"/>
+	<class name="KPartons"/>
+
+
+	<class name="KProvenance"/>
+
+	<class name="KLumiMetadata"/>
+	<class name="KGenLumiMetadata"/>
+
+	<class name="KEventMetadata"/>
+	<class name="KGenEventMetadata"/>
+
+</lcgdict>

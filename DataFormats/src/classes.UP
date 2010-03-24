@@ -1,0 +1,28 @@
+#!/usr/bin/python
+import glob
+
+
+fp = open('classes')
+
+fp_h = open('classes.h', 'w')
+fp_h.write('#ifndef KDATAFORMAT_H\n#define KDATAFORMAT_H\n\n#define G__DICTIONARY\n')
+
+for header in glob.glob('../interface/*.h'):
+	fp_h.write('#include "%s"\n' % header)
+fp_h.write("\nnamespace\n{\n\tstruct dictionary\n\t{\n")
+
+fp_d = open('classes_def.xml', 'w')
+fp_d.write("<lcgdict>\n")
+
+for line in map(str.strip, fp):
+	if line != '':
+		if line[0] == '#':
+			continue
+		fp_h.write('\t\t%s kappa_%s;\n' % (line, line[1:].lower()))
+		fp_d.write('\t<class name="%s"/>\n' % line)
+	else:
+		fp_h.write("\n")
+		fp_d.write("\n")
+
+fp_d.write("</lcgdict>\n")
+fp_h.write("\t};\n}\n\n#endif\n")
