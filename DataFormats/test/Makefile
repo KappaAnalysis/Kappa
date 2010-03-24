@@ -5,21 +5,13 @@ LD       = g++
 LDFLAGS  = -O $(shell ${ROOTSYS}/bin/root-config --libs) $(SYSLIBS) \
 	-lGenVector -lReflex -lMathMore -lMathCore -lReflexDict
 
-#------------------------------------------------------------------------------
-PROGRAM = dict.so
-#write.bin read.bin read1.bin read2.bin
-#------------------------------------------------------------------------------
-
-all: $(PROGRAM)
+all: dict.so
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.so: %.o
 	$(LD) -shared $(LDFLAGS) -o $@ $^
-
-%.bin: %.o dict.o
-	$(LD) $(LDFLAGS) -o $@ $^
 
 dict.cpp: ../src/classes.h LinkDef.h
 	rootcint -f $@ -c $^
@@ -35,4 +27,4 @@ install: $(PROGRAM)
 		|| true
 
 clean:
-	@rm -f *.o *.so *.exe *.bin dict.*
+	@rm -f *.o *.so dict.*
