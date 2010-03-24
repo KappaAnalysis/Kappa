@@ -1,0 +1,42 @@
+<use name="DataFormats/EgammaCandidates"/>
+<use name="DataFormats/EgammaReco"/>
+<use name="DataFormats/HepMCCandidate"/>
+<use name="DataFormats/JetReco"/>
+<use name="DataFormats/METReco"/>
+<use name="DataFormats/L1GlobalTrigger"/>
+<use name="DataFormats/L1Trigger"/>
+<use name="DataFormats/MuonReco"/>
+<use name="DataFormats/TrackingRecHit"/>
+<use name="DataFormats/TrackReco"/>
+<use name="DataFormats/TrajectoryState"/>
+<use name="DataFormats/VertexReco"/>
+<use name="FWCore/Framework"/>
+<use name="FWCore/ParameterSet"/>
+<use name="FWCore/PluginManager"/>
+<use name="HLTrigger/HLTcore"/>
+<use name="SimDataFormats/GeneratorProducts" />
+<use name="PhysicsTools/UtilAlgos" />
+<use name="root"/>
+<use name="rootcore"/>
+
+<flags EDM_PLUGIN="1"/>
+<export>
+	<lib name="Kappa/Skimming"/>
+	<use name="DataFormats/EgammaCandidates"/>
+	<use name="DataFormats/EgammaReco"/>
+	<use name="DataFormats/HepMCCandidate"/>
+	<use name="DataFormats/JetReco"/>
+	<use name="DataFormats/METReco"/>
+	<use name="DataFormats/MuonReco"/>
+	<use name="DataFormats/TrackingRecHit"/>
+	<use name="DataFormats/TrackReco"/>
+	<use name="DataFormats/TrajectoryState"/>
+	<use name="DataFormats/VertexReco"/>
+	<use name="FWCore/Framework"/>
+	<use name="FWCore/ParameterSet"/>
+	<use name="FWCore/PluginManager"/>
+	<use name="boost"/>
+	<use name="root"/>
+	<use name="SimDataFormats/GeneratorProducts" />
+	<use name="PhysicsTools/UtilAlgos" />
+</export>
