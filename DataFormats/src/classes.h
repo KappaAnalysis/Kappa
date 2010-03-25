@@ -2,6 +2,7 @@
 #define KDATAFORMAT_H
 
 #define G__DICTIONARY
+#include "../interface/KTau.h"
 #include "../interface/KMetadata.h"
 #include "../interface/KLorentzVector.h"
 #include "../interface/KBasic.h"

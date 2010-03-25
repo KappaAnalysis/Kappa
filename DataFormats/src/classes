@@ -33,6 +33,15 @@ KPartons
 KDataMuon
 KDataMuons
 
+KDataTau
+KDataTaus
+
+KDataCaloTau
+KDataCaloTaus
+
+KDataPFTau
+KDataPFTaus
+
 #################################
 
 KProvenance
