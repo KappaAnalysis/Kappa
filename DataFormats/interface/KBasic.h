@@ -17,6 +17,7 @@ struct KDataTrack : public KDataLV
 	float chi2, nDOF;
 	float errPt, errEta, errPhi;
 	float refRho2, refZ;
+	int quality;
 };
 typedef std::vector<KDataTrack> KDataTracks;
 

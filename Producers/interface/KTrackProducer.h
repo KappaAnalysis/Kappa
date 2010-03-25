@@ -36,6 +36,7 @@ public:
 		out.charge = in.charge();
 		out.chi2 = in.chi2();
 		out.nDOF = in.ndof();
+		out.quality = in.qualityMask();
 	}
 };
 
