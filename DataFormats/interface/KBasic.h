@@ -3,6 +3,7 @@
 
 #include "KLorentzVector.h"
 #include <vector>
+#include "Math/SMatrix.h"
 
 struct KDataLV
 {
@@ -20,6 +21,19 @@ struct KDataTrack : public KDataLV
 	int quality;
 };
 typedef std::vector<KDataTrack> KDataTracks;
+
+struct KDataVertex
+{
+  RMPoint position;
+       bool valid;
+
+       unsigned int cntTracks;
+       float chi2, nDOF;
+       double chi2prob;
+
+       ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
+};
+typedef std::vector<KDataVertex> KDataVertices;
 
 struct KDataJet : public KDataLV
 {
