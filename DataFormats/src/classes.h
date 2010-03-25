@@ -5,6 +5,7 @@
 #include "../interface/KMetadata.h"
 #include "../interface/KLorentzVector.h"
 #include "../interface/KBasic.h"
+#include "../interface/KMuon.h"
 
 namespace
 {
@@ -38,6 +39,9 @@ namespace
 
 		KParton kappa_parton;
 		KPartons kappa_partons;
+
+		KDataMuon kappa_datamuon;
+		KDataMuons kappa_datamuons;
 
 
 		KProvenance kappa_provenance;

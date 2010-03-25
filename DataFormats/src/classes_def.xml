@@ -28,6 +28,9 @@
 	<class name="KParton"/>
 	<class name="KPartons"/>
 
+	<class name="KDataMuon"/>
+	<class name="KDataMuons"/>
+
 
 	<class name="KProvenance"/>
 

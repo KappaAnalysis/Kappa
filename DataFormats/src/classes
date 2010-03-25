@@ -30,6 +30,9 @@ KDataVertices
 KParton
 KPartons
 
+KDataMuon
+KDataMuons
+
 #################################
 
 KProvenance
