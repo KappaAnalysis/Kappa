@@ -3,8 +3,8 @@
 
 #define G__DICTIONARY
 #include "../interface/KMetadata.h"
-#include "../interface/KBasic.h"
 #include "../interface/KLorentzVector.h"
+#include "../interface/KBasic.h"
 
 namespace
 {
@@ -32,6 +32,9 @@ namespace
 
 		KDataTrack kappa_datatrack;
 		KDataTracks kappa_datatracks;
+
+		KDataVertex kappa_datavertex;
+		KDataVertices kappa_datavertices;
 
 		KParton kappa_parton;
 		KPartons kappa_partons;

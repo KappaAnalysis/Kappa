@@ -24,6 +24,9 @@ KDataJets
 KDataTrack
 KDataTracks
 
+KDataVertex
+KDataVertices
+
 KParton
 KPartons
 

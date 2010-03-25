@@ -22,6 +22,9 @@
 	<class name="KDataTrack"/>
 	<class name="KDataTracks"/>
 
+	<class name="KDataVertex"/>
+	<class name="KDataVertices"/>
+
 	<class name="KParton"/>
 	<class name="KPartons"/>
 
