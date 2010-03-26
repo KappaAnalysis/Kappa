@@ -21,6 +21,9 @@ KDataMET
 KDataJet
 KDataJets
 
+KDataPFJet
+KDataPFJets
+
 KDataTrack
 KDataTracks
 

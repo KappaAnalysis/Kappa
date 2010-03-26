@@ -48,6 +48,13 @@ struct KDataJet : public KDataLV
 };
 typedef std::vector<KDataJet> KDataJets;
 
+struct KDataPFJet : public KDataJet
+{
+	float neutralEmFraction, chargedEmFraction;
+	float neutralHadFraction, chargedHadFraction;
+};
+typedef std::vector<KDataPFJet> KDataPFJets;
+
 struct KLV
 {
 	typedef RMLV KInternalLV;

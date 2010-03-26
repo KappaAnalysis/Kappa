@@ -32,6 +32,9 @@ namespace
 		KDataJet kappa_datajet;
 		KDataJets kappa_datajets;
 
+		KDataPFJet kappa_datapfjet;
+		KDataPFJets kappa_datapfjets;
+
 		KDataTrack kappa_datatrack;
 		KDataTracks kappa_datatracks;
 
