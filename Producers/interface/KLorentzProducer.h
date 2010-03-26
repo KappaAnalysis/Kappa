@@ -21,7 +21,7 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		out.p4.SetCoordinates(in.pt(), in.eta(), in.phi(), in.mass());
+		copyP4(in, out.p4);
 	}
 };
 

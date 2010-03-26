@@ -46,4 +46,10 @@ protected:
 	KProvenance *provenance;
 };
 
+template<typename T1, typename T2>
+inline void copyP4(const T1 &in, T2 &out)
+{
+	out.SetCoordinates(in.pt(), in.eta(), in.phi(), in.mass());
+}
+
 #endif
