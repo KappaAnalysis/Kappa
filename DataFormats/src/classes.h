@@ -56,6 +56,9 @@ namespace
 		KDataPFTau kappa_datapftau;
 		KDataPFTaus kappa_datapftaus;
 
+		KDataGenTau kappa_datagentau;
+		KDataGenTaus kappa_datagentaus;
+
 
 		KProvenance kappa_provenance;
 

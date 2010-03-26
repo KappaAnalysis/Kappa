@@ -28,9 +28,25 @@ struct KDataPFTau : KDataTau
   int cntSignalTracks;
 };
 
+struct KDataGenTau : KDataLV
+{
+	RMDataLV p4_vis;		// momenta of visible particles
+	int status;
+	char decayMode;
+	//  0 - undefined
+	//	1 - electron
+	//	2 - muon
+	// >2 - hadronic
+	// most significant bit (1<<15):
+	//		0 = tau
+	//		1 = descendant of a tau
+	KDataVertex vertex;
+};
+
 typedef std::vector<KDataTau> KDataTaus;
 typedef std::vector<KDataCaloTau> KDataCaloTaus;
 typedef std::vector<KDataPFTau> KDataPFTaus;
+typedef std::vector<KDataGenTau> KDataGenTaus;
 
 #endif
 

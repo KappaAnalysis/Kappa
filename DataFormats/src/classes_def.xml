@@ -43,6 +43,9 @@
 	<class name="KDataPFTau"/>
 	<class name="KDataPFTaus"/>
 
+	<class name="KDataGenTau"/>
+	<class name="KDataGenTaus"/>
+
 
 	<class name="KProvenance"/>
 

@@ -45,6 +45,9 @@ KDataCaloTaus
 KDataPFTau
 KDataPFTaus
 
+KDataGenTau
+KDataGenTaus
+
 #################################
 
 KProvenance
