@@ -14,10 +14,10 @@ typedef std::vector<KDataLV> KDataLVs;
 
 struct KDataTrack : public KDataLV
 {
+	RMPoint ref;	// reference point ("vertex")
 	char charge;
 	float chi2, nDOF;
-	float errPt, errEta, errPhi;
-	float refRho2, refZ;
+	float errPt, errEta, errPhi, errDxy;
 	int quality;
 };
 typedef std::vector<KDataTrack> KDataTracks;

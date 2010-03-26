@@ -28,15 +28,14 @@ public:
 		out.errPhi = in.phiError();
 
 		// Reference point:
-		reco::Track::Point ref = in.referencePoint();
-		out.refRho2 = ref.perp2();
-		out.refZ = ref.z();		
+		out.ref = in.referencePoint();
 
 		// Charge, ...
 		out.charge = in.charge();
 		out.chi2 = in.chi2();
 		out.nDOF = in.ndof();
 		out.quality = in.qualityMask();
+		out.errDxy = in.dxyError();
 	}
 };
 
