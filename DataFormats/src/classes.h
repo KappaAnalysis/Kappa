@@ -44,6 +44,15 @@ namespace
 		KDataMuon kappa_datamuon;
 		KDataMuons kappa_datamuons;
 
+		KDataTau kappa_datatau;
+		KDataTaus kappa_datataus;
+
+		KDataCaloTau kappa_datacalotau;
+		KDataCaloTaus kappa_datacalotaus;
+
+		KDataPFTau kappa_datapftau;
+		KDataPFTaus kappa_datapftaus;
+
 
 		KProvenance kappa_provenance;
 

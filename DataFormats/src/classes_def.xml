@@ -31,6 +31,15 @@
 	<class name="KDataMuon"/>
 	<class name="KDataMuons"/>
 
+	<class name="KDataTau"/>
+	<class name="KDataTaus"/>
+
+	<class name="KDataCaloTau"/>
+	<class name="KDataCaloTaus"/>
+
+	<class name="KDataPFTau"/>
+	<class name="KDataPFTaus"/>
+
 
 	<class name="KProvenance"/>
 
