@@ -39,7 +39,7 @@ public:
 
 		onProdCommon(pset);
 		for (typename KBaseMultiProducer<Tin, Tout>::InputType::const_iterator lvit = input.begin(); lvit < input.end(); ++lvit)
-			if (lvit->pt() >= minPt && lvit->eta() <= maxEta)
+			if (lvit->pt() >= minPt && abs(lvit->eta()) <= maxEta)
 			{
 				output.push_back(typename KBaseMultiProducer<Tin, Tout>::OutputType::value_type());
 				fillSingle(*lvit, output.back());
@@ -97,7 +97,7 @@ public:
 		output.reserve(input.size());
 
 		for (typename KBaseMultiProducer<Tin, Tout>::InputType::const_iterator lvit = input.begin(); lvit < input.end(); ++lvit)
-			if (lvit->pt() >= minPt && lvit->eta() <= maxEta)
+			if (lvit->pt() >= minPt && abs(lvit->eta()) <= maxEta)
 			{
 				output.push_back(typename KBaseMultiProducer<Tin, Tout>::OutputType::value_type());
 				fillSingle(*lvit, output.back());
