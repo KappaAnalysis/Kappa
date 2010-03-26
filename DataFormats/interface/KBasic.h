@@ -29,7 +29,6 @@ struct KDataVertex
 
 	unsigned int cntTracks;
 	float chi2, nDOF;
-	double chi2prob;
 
 	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
 };
