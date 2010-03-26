@@ -21,7 +21,8 @@ public:
 	KManualMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KManualMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		nMaxJets(cfg.getParameter<int>("maxN")),
-		minPt(cfg.getParameter<double>("minPt")) {}
+		minPt(cfg.getParameter<double>("minPt")),
+		maxEta(cfg.getParameter<double>("maxEta")) {}
 	virtual ~KManualMultiLVProducer() {};
 
 	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) { output.clear(); }
@@ -38,7 +39,7 @@ public:
 
 		onProdCommon(pset);
 		for (typename KBaseMultiProducer<Tin, Tout>::InputType::const_iterator lvit = input.begin(); lvit < input.end(); ++lvit)
-			if (lvit->pt() >= minPt)
+			if (lvit->pt() >= minPt && lvit->eta() <= maxEta)
 			{
 				output.push_back(typename KBaseMultiProducer<Tin, Tout>::OutputType::value_type());
 				fillSingle(*lvit, output.back());
@@ -61,6 +62,7 @@ public:
 protected:
 	int nMaxJets;
 	double minPt;
+	double maxEta;
 
 	typedef typename KBaseMultiProducer<Tin, Tout>::InputType::value_type SingleInputType;
 	typedef typename KBaseMultiProducer<Tin, Tout>::OutputType::value_type SingleOutputType;
@@ -79,7 +81,8 @@ public:
 	KBaseMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		nMaxJets(cfg.getParameter<int>("maxN")),
-		minPt(cfg.getParameter<double>("minPt")) {}
+		minPt(cfg.getParameter<double>("minPt")),
+		maxEta(cfg.getParameter<double>("maxEta")) {}
 	virtual ~KBaseMultiLVProducer() {};
 
 	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) { output.clear(); }
@@ -94,7 +97,7 @@ public:
 		output.reserve(input.size());
 
 		for (typename KBaseMultiProducer<Tin, Tout>::InputType::const_iterator lvit = input.begin(); lvit < input.end(); ++lvit)
-			if (lvit->pt() >= minPt)
+			if (lvit->pt() >= minPt && lvit->eta() <= maxEta)
 			{
 				output.push_back(typename KBaseMultiProducer<Tin, Tout>::OutputType::value_type());
 				fillSingle(*lvit, output.back());
@@ -117,6 +120,7 @@ public:
 protected:
 	int nMaxJets;
 	double minPt;
+	double maxEta;
 
 	typedef typename KBaseMultiProducer<Tin, Tout>::InputType::value_type SingleInputType;
 	typedef typename KBaseMultiProducer<Tin, Tout>::OutputType::value_type SingleOutputType;
