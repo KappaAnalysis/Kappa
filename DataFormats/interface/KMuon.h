@@ -13,6 +13,12 @@ struct KDataMuon : KDataLV
 
   KDataVertex vertex;
 
+	// Bit 0 - trackerMuon
+	// Bit 1 - caloMuon
+	// Bit 2 - standaloneMuon
+	// Bit 3 - globalMuon
+	char type;
+
   bool isTrackerMuon;
   bool isCaloMuon;
   bool isStandAloneMuon;
@@ -30,7 +36,7 @@ struct KDataMuon : KDataLV
   float ecalIso06;
   float trackIso06;
 
-  unsigned int isGoodMuon;
+  unsigned int isGoodMuon;	// bitmask
 
   float caloComp, segComp;
 
