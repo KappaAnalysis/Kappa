@@ -16,6 +16,8 @@
 #include "../interface/KLorentzProducer.h"
 #include "../interface/KTrackProducer.h"
 #include "../interface/KTowerProducer.h"
+#include "../interface/KMuonProducer.h"
+
 /*
 #include "../interface/KGenMetadataProducer.h"
 #include "../interface/KHepMCPartonProducer.h"
@@ -93,6 +95,9 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 */
 		if (active[i] == "Tower")
 			producers.push_back(new KTowerProducer(
+				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
+		if (active[i] == "Muons")
+			producers.push_back(new KMuonProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		if (active[i] == "Tracks")
 			producers.push_back(new KTrackProducer(

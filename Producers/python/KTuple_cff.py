@@ -15,6 +15,16 @@ kappaTupleDefaultsBlock = cms.PSet(
 		srcPVs = cms.InputTag("offlinePrimaryVertices"),
 	),
 
+	Muons = cms.PSet(
+		manual = cms.VInputTag(),
+		filter = cms.string("recoMuons_muons"),
+		rename = cms.vstring(),
+		renameFilter = cms.string(""),
+		maxN = cms.int32(-1),
+		minPt = cms.double(-1),
+		maxEta = cms.double(100),
+	),
+
 	Tracks = cms.PSet(
 		manual = cms.VInputTag(),
 		filter = cms.string("recoTracks_generalTracks"),
