@@ -20,20 +20,19 @@ public:
 	typename Tout::type *allocateBronch(TTree *event_tree, const std::string bronchName)
 	{
 		// Static storage of ROOT bronch target - never changes, only accessed here:
-		typename Tout::type *target = new typename Tout::type();
-		targetNameMap[bronchName] = target;
-		event_tree->Bronch(bronchName.c_str(), Tout::id().c_str(), &(targetNameMap[bronchName]));
-		return targetNameMap[bronchName];
+		bronchStorage[bronchName] = new typename Tout::type();
+		event_tree->Bronch(bronchName.c_str(), Tout::id().c_str(), &(bronchStorage[bronchName]));
+		return bronchStorage[bronchName];
 	}
 
 	void printAcceptedProducts(int verbosity)
 	{
 		if (verbosity > 0)
-			std::cout << "Accepted number of products: " << targetNameMap.size() << std::endl;
+			std::cout << "Accepted number of products: " << bronchStorage.size() << std::endl;
 	}
 
 private:
-	std::map<std::string, typename Tout::type*> targetNameMap;
+	std::map<std::string, typename Tout::type*> bronchStorage;
 };
 
 // KManualMultiProducer - input is specified manually in the form of parameter sets,
