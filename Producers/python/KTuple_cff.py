@@ -22,7 +22,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		renameFilter = cms.string(""),
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
-		maxEta = cms.double(100),
+		maxEta = cms.double(-1),
 	),
 
 	Tracks = cms.PSet(
@@ -32,7 +32,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		renameFilter = cms.string(""),
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
-		maxEta = cms.double(100),
+		maxEta = cms.double(-1),
 	),
 
 	LV = cms.PSet(
@@ -46,7 +46,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		renameFilter = cms.string(""),
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
-		maxEta = cms.double(100),
+		maxEta = cms.double(-1),
 	),
 
 	Tower = cms.PSet(
@@ -57,7 +57,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		renameFilter = cms.string(""),
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
-		maxEta = cms.double(100),
+		maxEta = cms.double(-1),
 	),
 
 	MET = cms.PSet(
