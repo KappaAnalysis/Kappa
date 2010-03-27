@@ -24,22 +24,24 @@ public:
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		// Read HCAL noise tower map - done once per event
-		cEvent->getByLabel(tagNoiseHCAL, noiseHCALcoll);
-		if (!noiseHCALcoll.isValid()) 
-			throw edm::Exception(edm::errors::ProductNotFound) << " could not find noiseHCAL" << std::endl;
-		// Iterate over readout boxes
-		for (reco::HcalNoiseRBXCollection::const_iterator rit = noiseHCALcoll->begin(); rit != noiseHCALcoll->end(); ++rit)
+		if (tagNoiseHCAL.label() != "")
 		{
-			// Iterate over the hybrid photo diodes
-			const std::vector<reco::HcalNoiseHPD> vHPD = rit->HPDs();
-			for (std::vector<reco::HcalNoiseHPD>::const_iterator itHPD = vHPD.begin(); itHPD != vHPD.end(); ++itHPD)
+			hcalNoise.clear();
+			event.getByLabel(tagNoiseHCAL, noiseHCALcoll);
+			// Iterate over readout boxes
+			for (reco::HcalNoiseRBXCollection::const_iterator rit = noiseHCALcoll->begin(); rit != noiseHCALcoll->end(); ++rit)
 			{
-				// Iterator over the calo towers
-				const edm::RefVector<CaloTowerCollection> noiseTowers = itHPD->caloTowers();
-				for (edm::RefVector<CaloTowerCollection>::const_iterator itTower = noiseTowers.begin(); itTower != noiseTowers.end(); ++itTower)
+				// Iterate over the hybrid photo diodes
+				const std::vector<reco::HcalNoiseHPD> vHPD = rit->HPDs();
+				for (std::vector<reco::HcalNoiseHPD>::const_iterator itHPD = vHPD.begin(); itHPD != vHPD.end(); ++itHPD)
 				{
-					const edm::Ref<CaloTowerCollection> tower = *itTower;
-					hcalNoise.insert(std::pair<CaloTowerDetId, double>(tower->id(), tower->hadEnergy()));
+					// Iterator over the calo towers
+					const edm::RefVector<CaloTowerCollection> noiseTowers = itHPD->caloTowers();
+					for (edm::RefVector<CaloTowerCollection>::const_iterator itTower = noiseTowers.begin(); itTower != noiseTowers.end(); ++itTower)
+					{
+						const edm::Ref<CaloTowerCollection> tower = *itTower;
+						hcalNoise.insert(std::pair<CaloTowerDetId, double>(tower->id(), tower->hadEnergy()));
+					}
 				}
 			}
 		}
@@ -54,14 +56,11 @@ public:
 		// Retrieve additional input products
 		tagExtender = pset.getParameter<edm::InputTag>("srcExtender");
 		if (tagExtender.label() != "")
-			try
-			{
-				cEvent->getByLabel(tagExtender, hJetExtender);
-			}
-			catch (...) {}
+			cEvent->getByLabel(tagExtender, hJetExtender);
 
 		tagJetID = pset.getParameter<edm::InputTag>("srcJetID");
-		cEvent->getByLabel(tagJetID, hJetID);
+		if (tagJetID.label() != "")
+			cEvent->getByLabel(tagJetID, hJetID);
 
 		// Continue normally
 		KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::fillProduct(in, out, name, pset);
@@ -76,24 +75,28 @@ public:
 		out.n90 = in.n90();
 
 		// Jet ID variables
-		edm::RefToBase<reco::Jet> jetRef(edm::Ref<reco::CaloJetCollection>(handle, this->nCursor));
-		const reco::JetID &jetID = (*hJetID)[jetRef];
-		out.n90Hits = (int)(jetID.n90Hits);
-		// energy fraction from dominant hybrid photo diode
-		out.fHPD = jetID.fHPD;
-		// energy fraction from dominant readout box
-		out.fRBX = jetID.fRBX;
+		out.n90Hits = -1;
+		out.fHPD = -1;
+		out.fRBX = -1;
+		if (tagJetID.label() != "")
+		{
+			edm::RefToBase<reco::Jet> jetRef(edm::Ref<reco::CaloJetCollection>(handle, this->nCursor));
+			const reco::JetID &jetID = (*hJetID)[jetRef];
+			out.n90Hits = (int)(jetID.n90Hits);
+			// energy fraction from dominant hybrid photo diode
+			out.fHPD = jetID.fHPD;
+			// energy fraction from dominant readout box
+			out.fRBX = jetID.fRBX;
+		}
 
 		// Jet extender variables
 		out.nTracksAtCalo = -1;
 		out.nTracksAtVertex = -1;
 		if (tagExtender.label() != "")
-			try
-			{
-				out.nTracksAtCalo = reco::JetExtendedAssociation::tracksAtCaloNumber(*hJetExtender, in);
-				out.nTracksAtVertex = reco::JetExtendedAssociation::tracksAtVertexNumber(*hJetExtender, in);
-			}
-			catch (...) {}
+		{
+			out.nTracksAtCalo = reco::JetExtendedAssociation::tracksAtCaloNumber(*hJetExtender, in);
+			out.nTracksAtVertex = reco::JetExtendedAssociation::tracksAtVertexNumber(*hJetExtender, in);
+		}
 
 		// Get noise of constituents
 		out.noiseHCAL = 0;

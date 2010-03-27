@@ -14,7 +14,7 @@ typedef std::vector<KDataLV> KDataLVs;
 
 struct KDataVertex
 {
-  RMPoint position;
+	RMPoint position;
 	bool valid;
 
 	unsigned int cntTracks;
