@@ -75,6 +75,7 @@ public:
 //		out.trackIso06					= muonIsoDeposit.depositWithin(0.6, isoParams, false);
 
 		// Vertex
+		// FIXME: double != 0 vergleich ?!?
 		if (in.vertex().x()*in.vertex().x()+in.vertex().y()*in.vertex().y()+in.vertex().z()*in.vertex().z() != 0)
 		{
 			out.vertex.valid = true;
