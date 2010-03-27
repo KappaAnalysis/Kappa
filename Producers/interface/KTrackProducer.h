@@ -13,11 +13,11 @@ struct KTrackProducer_Product
 	static const std::string producer() { return "KTrackProducer"; };
 };
 
-class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KTrackProducer_Product>
+class KTrackProducer : public KRegexMultiLVProducer<edm::View<reco::Track>, KTrackProducer_Product>
 {
 public:
 	KTrackProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Track>, KTrackProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KRegexMultiLVProducer<edm::View<reco::Track>, KTrackProducer_Product>(cfg, _event_tree, _run_tree) {}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

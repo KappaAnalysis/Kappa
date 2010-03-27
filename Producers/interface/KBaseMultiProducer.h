@@ -113,22 +113,22 @@ protected:
 };
 
 
-// KBaseMultiProducer - input is specified as regular expressions, most things are automated
+// KRegexMultiProducer - input is specified as regular expressions, most things are automated
 // Subproducers have to override:
 //  * void fillProduct(const InputType &input, OutputType &output, edm::InputTag *tag)
 //  * void clearProduct(OutputType &output);
 template<typename Tin, typename Tout>
-class KBaseMultiProducer : public KBaseProducerWP<Tout>
+class KRegexMultiProducer : public KBaseProducerWP<Tout>
 {
 public:
-	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+	KRegexMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseProducerWP<Tout>(cfg, _event_tree, _run_tree),
 		viManual(cfg.getParameter<std::vector<edm::InputTag> >("manual")),
 		vsRename(cfg.getParameter<std::vector<std::string> >("rename")),
 		sFilter(cfg.getParameter<std::string>("filter")),
 		sPostFilter(cfg.getParameter<std::string>("renameFilter")),
 		event_tree(_event_tree) {}
-	virtual ~KBaseMultiProducer() {}
+	virtual ~KRegexMultiProducer() {}
 
 	bool tagMatch(const edm::Provenance *prov, const std::vector<edm::InputTag> &tags)
 	{

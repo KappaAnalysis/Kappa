@@ -16,11 +16,11 @@ struct KMuonProducer_Product
 	static const std::string producer() { return "KMuonProducer"; };
 };
 
-class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>
+class KMuonProducer : public KRegexMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>
 {
 public:
 	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KRegexMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree) {}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

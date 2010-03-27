@@ -13,11 +13,11 @@ struct KMETProducer_Product
 	static const std::string producer() { return "KMETProducer"; };
 };
 
-class KMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KMETProducer_Product>
+class KMETProducer : public KRegexMultiProducer<edm::View<reco::MET>, KMETProducer_Product>
 {
 public:
 	KMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree)
-		: KBaseMultiProducer<edm::View<reco::MET>, KMETProducer_Product>(cfg, _event_tree, _run_tree) {}
+		: KRegexMultiProducer<edm::View<reco::MET>, KMETProducer_Product>(cfg, _event_tree, _run_tree) {}
 	virtual ~KMETProducer() {};
 protected:
 	virtual void clearProduct(OutputType &output) { output.p4.SetCoordinates(0,0,0,0); output.sumEt = -1; }
