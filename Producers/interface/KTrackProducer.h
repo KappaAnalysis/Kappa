@@ -21,6 +21,12 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		KTrackProducer::fillTrack(in, out);
+	}
+
+	// Static method for filling Tracks in other producers
+	static void fillTrack(const SingleInputType &in, SingleOutputType &out)
+	{
 		// Momentum:
 		out.p4.SetCoordinates(in.pt(), in.eta(), in.phi(), 0);
 		out.errPt = in.ptError();
