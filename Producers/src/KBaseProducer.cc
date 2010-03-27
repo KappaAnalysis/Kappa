@@ -20,14 +20,14 @@ bool KBaseProducer::onFirstEvent(const edm::Event &event, const edm::EventSetup 
 
 bool KBaseProducer::regexMatch(const std::string &in, const std::string &filter)
 {
-	if (verbosity > 1)
+	if (verbosity > 2)
 		std::cout << in << " ";
 	try
 	{
 		boost::regex pattern(filter, boost::regex::icase | boost::regex::extended);
 		if ((filter != "") && boost::regex_search(in, pattern))
 		{
-			if (verbosity > 1)
+			if (verbosity > 2)
 				std::cout << "matched" << std::endl;
 			return true;
 		}
@@ -35,9 +35,42 @@ bool KBaseProducer::regexMatch(const std::string &in, const std::string &filter)
 	{
 		std::cout << "Error while matching \"" << in << "\" against regular expression \"" << filter << "\"" << std::endl;
 	}
-	if (verbosity > 1)
+	if (verbosity > 2)
 		std::cout << "not matched" << std::endl;
 	return false;
+}
+
+bool KBaseProducer::regexMatch(const std::string &in, const std::vector<std::string> &whitelist,
+	const std::vector<std::string> &blacklist)
+{
+	bool accept = false;
+	if (whitelist.size() == 0)
+		accept = true;
+	else
+	{
+		if (verbosity > 1)
+			std::cout << "Whitelist matching..." << std::endl;
+		for (size_t wIdx = 0; wIdx < whitelist.size(); ++wIdx)
+			if (regexMatch(in, whitelist[wIdx]))
+			{
+				accept = true;
+				break;
+			}
+	}
+	if (accept && (blacklist.size() > 0))
+	{
+		if (verbosity > 1)
+			std::cout << "Blacklist matching..." << std::endl;
+		for (size_t bIdx = 0; bIdx < blacklist.size(); ++bIdx)
+			if (regexMatch(in, blacklist[bIdx]))
+			{
+				accept = false;
+				break;
+			}
+	}
+	if (verbosity > 1)
+		std::cout << in << " was " << ((accept) ? "" : "not ") << "accepted!" << std::endl;
+	return accept;
 }
 
 std::string KBaseProducer::regexRename(std::string in, const std::vector<std::string> &patterns)
