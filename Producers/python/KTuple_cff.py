@@ -17,9 +17,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	Muons = cms.PSet(
 		manual = cms.VInputTag(),
-		filter = cms.string("recoMuons_muons"),
+
+		whitelist = cms.vstring("recoMuons_muons"),
+		blacklist = cms.vstring(),
+
 		rename = cms.vstring(),
-		renameFilter = cms.string(""),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
 		maxEta = cms.double(-1),
@@ -27,9 +32,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	Tracks = cms.PSet(
 		manual = cms.VInputTag(),
-		filter = cms.string("recoTracks_generalTracks"),
+
+		whitelist = cms.vstring("recoTracks_generalTracks"),
+		blacklist = cms.vstring(),
+
 		rename = cms.vstring(),
-		renameFilter = cms.string(""),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
 		maxEta = cms.double(-1),
@@ -37,13 +47,18 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	LV = cms.PSet(
 		manual = cms.VInputTag(),
-		filter = cms.string("reco.*Jets_.*Jet"),
+
+		whitelist = cms.vstring("reco.*Jets_.*Jet"),
+		blacklist = cms.vstring(),
+
 		rename = cms.vstring(
 			"JetPlusTrack(.*) => $1JPT",
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)$7",
 			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
 		),
-		renameFilter = cms.string(""),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
 		maxEta = cms.double(-1),
@@ -51,10 +66,16 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	Tower = cms.PSet(
 		manual = cms.VInputTag(),
-		filter = cms.string("towerMaker"),
-		srcPVs = cms.InputTag("offlinePrimaryVertices"),
+
+		whitelist = cms.vstring("towerMaker"),
+		blacklist = cms.vstring(),
+
 		rename = cms.vstring("towerMaker => towers"),
-		renameFilter = cms.string(""),
+		rename_whitelist = cms.vstring(),
+		rename_blacklist = cms.vstring(),
+
+		srcPVs = cms.InputTag("offlinePrimaryVertices"),
+
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
 		maxEta = cms.double(-1),
@@ -62,10 +83,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	MET = cms.PSet(
 		manual = cms.VInputTag(),
-		filter = cms.string("reco.*MET"),
+
+		whitelist = cms.vstring("reco.*MET"),
+		blacklist = cms.vstring(),
+
 		rename = cms.vstring(
 			"(gen)?(pf)?(ht)?met => (?1Gen:Calo)MET(?2PF)(?3HT)",
 		),
-		renameFilter = cms.string("^(Calo|Gen)MET"),
+		rename_whitelist = cms.vstring("^(Calo|Gen)MET"),
+		rename_blacklist = cms.vstring(),
 	),
 )

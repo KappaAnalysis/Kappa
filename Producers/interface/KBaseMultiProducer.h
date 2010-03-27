@@ -6,8 +6,6 @@
 #include <FWCore/Utilities/interface/InputTag.h>
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KMetadata.h"
-#include <boost/regex.hpp>
-#include <boost/algorithm/string/regex.hpp>
 
 template<typename Tin, typename Tout>
 class KBaseMultiProducer : public KBaseProducerWP<Tout>
@@ -146,9 +144,14 @@ public:
 	KRegexMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		viManual(cfg.getParameter<std::vector<edm::InputTag> >("manual")),
+
+		vsWhitelist(cfg.getParameter<std::vector<std::string> >("whitelist")),
+		vsBlacklist(cfg.getParameter<std::vector<std::string> >("blacklist")),
+
 		vsRename(cfg.getParameter<std::vector<std::string> >("rename")),
-		sFilter(cfg.getParameter<std::string>("filter")),
-		sPostFilter(cfg.getParameter<std::string>("renameFilter")),
+		vsRenameWhitelist(cfg.getParameter<std::vector<std::string> >("rename_whitelist")),
+		vsRenameBlacklist(cfg.getParameter<std::vector<std::string> >("rename_blacklist")),
+
 		event_tree(_event_tree) {}
 	virtual ~KRegexMultiProducer() {}
 
@@ -171,12 +174,15 @@ public:
 		{
 			if (this->verbosity > 1)
 				std::cout << "Product: ";
-			if (!(regexMatch((*piter)->branchName(), sFilter) || tagMatch(*piter, viManual)))
+
+			// Check if branch was selected
+			if (!(regexMatch((*piter)->branchName(), vsWhitelist, vsBlacklist)
+				|| tagMatch(*piter, viManual)))
 			{
 				continue;
 			}
 
-			// Rename branch as requested
+			// Rename branch if requested
 			if ((this->verbosity > 0) && (vsRename.size() > 0))
 			{
 				std::cout << " => " + Tout::producer() + " will use: ";
@@ -187,15 +193,11 @@ public:
 				std::cout << targetName << " as branch name." << std::endl;
 
 			// Filter on the new name
-			if (sPostFilter != "")
+			if (!this->regexMatch(targetName, vsRenameWhitelist, vsRenameBlacklist))
 			{
-				boost::regex pattern(sPostFilter, boost::regex::icase | boost::regex::extended);
-				if (!boost::regex_search(targetName, pattern))
-				{
-					if (this->verbosity > 0)
-						std::cout << " => Addition of branch was vetoed by renameFilter!" << std::endl;
-					continue;
-				}
+				if (this->verbosity > 0)
+					std::cout << " => Addition of branch was vetoed by post-rename Black/Whitelist!" << std::endl;
+				continue;
 			}
 
 			// Avoid name collisions: Ignore or Fail
@@ -261,14 +263,19 @@ public:
 	virtual void fillProduct(const InputType &input, OutputType &output, edm::InputTag *tag) = 0;
 
 protected:
-	typename edm::Handle<Tin> handle;
 	std::vector<edm::InputTag> viManual;
+
+	std::vector<std::string> vsWhitelist;
+	std::vector<std::string> vsBlacklist;
+
 	std::vector<std::string> vsRename;
-	std::string sFilter, sPostFilter;
+	std::vector<std::string> vsRenameWhitelist;
+	std::vector<std::string> vsRenameBlacklist;
 
 	TTree *event_tree;
 	const edm::Event *cEvent;
 	const edm::EventSetup *cSetup;
+	typename edm::Handle<Tin> handle;
 
 	std::map<edm::InputTag*, std::pair<std::string, std::string> > nameMap;
 	std::map<typename Tout::type*, edm::InputTag*> targetIDMap;
