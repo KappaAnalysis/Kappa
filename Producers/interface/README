@@ -1,10 +1,10 @@
-
-                     KManualMultiProducer ----- KManualMultiLVProducer -> KCaloJetProducer
-                    /                          /
+                                                                          /-- KCaloJetProducer
+                     KManualMultiProducer ----- KManualMultiLVProducer --*
+                    /                          /                          \-- KPartonProducer
 KBaseMultiProducer *          KCommonLVProducer
-        ^           \                          \
-        |            KRegexMultiProducer --*--- KRegexMultiLVProducer -> KTrackProducer
- KBaseProducerWP                           |
+        ^           \                          \                          /-- KTrackProducer
+        |            KRegexMultiProducer --*--- KRegexMultiLVProducer ---*
+ KBaseProducerWP                           |                              \-- KMuonProducer
         ^                                  |\-- KMETProducer
         |                                  |
   KBaseProducer                            \--- KTowerProducer
