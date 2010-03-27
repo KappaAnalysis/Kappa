@@ -69,14 +69,15 @@ public:
 
 		for (typename std::map<typename Tout::type*, const edm::ParameterSet*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
 		{
+			this->setup(*it->second);
+			const edm::ParameterSet *pset = it->second;
+			const edm::InputTag src = pset->getParameter<edm::InputTag>("src");
+
 			// Clear previous collection
 			typename Tout::type &ref = *it->first;
 			clearProduct(ref);
-			this->setup(*it->second);
 
 			// Try to get product via id
-			const edm::ParameterSet *pset = it->second;
-			const edm::InputTag src = pset->getParameter<edm::InputTag>("src");
 			try
 			{
 				event.getByLabel(src, handle);
@@ -98,12 +99,13 @@ public:
 	virtual void clearProduct(OutputType &output) = 0;
 	virtual void onEventCommon() {};
 	virtual void fillProduct(const InputType &input, OutputType &output, const std::string &name, const edm::ParameterSet &pset) = 0;
+
 protected:
 	typename edm::Handle<Tin> handle;
 	const edm::Event *cEvent;
 	const edm::EventSetup *cSetup;
-
 	TTree *event_tree;
+
 	std::map<typename Tout::type*, std::string> nameMap;
 	std::map<std::string, edm::ParameterSet> entries;
 	std::map<typename Tout::type*, const edm::ParameterSet*> targetIDMap;
@@ -111,7 +113,7 @@ protected:
 };
 
 
-// KBaseMultiProducer - input is specified as regular expressions, most is automated
+// KBaseMultiProducer - input is specified as regular expressions, most things are automated
 // Subproducers have to override:
 //  * void fillProduct(const InputType &input, OutputType &output, edm::InputTag *tag)
 //  * void clearProduct(OutputType &output);
@@ -222,7 +224,6 @@ public:
 			clearProduct(ref);
 
 			// Try to get product via id
-			typename edm::Handle<Tin> handle;
 			if (!event.getByLabel(*(it->second), handle))
 			{
 				std::cout << "Could not get product!" << nameMap[it->second].second << std::endl;
@@ -242,9 +243,11 @@ public:
 	virtual void fillProduct(const InputType &input, OutputType &output, edm::InputTag *tag) = 0;
 
 protected:
+	typename edm::Handle<Tin> handle;
 	std::vector<edm::InputTag> viManual;
 	std::vector<std::string> vsRename;
 	std::string sFilter, sPostFilter;
+
 	TTree *event_tree;
 	const edm::Event *cEvent;
 	const edm::EventSetup *cSetup;
