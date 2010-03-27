@@ -27,8 +27,6 @@ public:
 		minPt(cfg.getParameter<double>("minPt")),
 		maxEta(cfg.getParameter<double>("maxEta")) {}
 
-	virtual void clearProduct(typename KRegexMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
-
 	virtual void fillProduct(const Tin &in, typename Tout::type &out,
 		const std::string &name)
 	{
@@ -39,7 +37,7 @@ public:
 		// Cursor is necessary to get "Refs" later
 		nCursor = 0;
 		for (typename Tin::const_iterator lvit = in.begin(); lvit < in.end(); ++lvit)
-			if (lvit->pt() >= minPt && abs(lvit->eta()) <= maxEta)
+			if (lvit->pt() >= minPt && ((maxEta < 0) || (abs(lvit->eta()) <= maxEta)))
 			{
 				out.push_back(SingleOutputType());
 				fillSingle(*lvit, out.back());
@@ -82,10 +80,10 @@ public:
 		KCommonLVProducer<Tin, Tout>(cfg, KBaseProducer::verbosity) {}
 	virtual ~KManualMultiLVProducer() {};
 
-	virtual void clearProduct(typename KRegexMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
+	virtual void clearProduct(typename KManualMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
 	virtual void fillProduct(
-		const typename KRegexMultiProducer<Tin, Tout>::InputType &in,
-		typename KRegexMultiProducer<Tin, Tout>::OutputType &out,
+		const typename KManualMultiProducer<Tin, Tout>::InputType &in,
+		typename KManualMultiProducer<Tin, Tout>::OutputType &out,
 		const std::string &name, const edm::ParameterSet &pset)
 	{
 		KCommonLVProducer<Tin, Tout>::fillProduct(in, out, name);

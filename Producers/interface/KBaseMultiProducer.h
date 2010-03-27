@@ -9,6 +9,33 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/regex.hpp>
 
+template<typename Tin, typename Tout>
+class KCommonMultiProducer : public KBaseProducerWP<Tout>
+{
+public:
+	KCommonMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseProducerWP<Tout>(cfg, _event_tree, _run_tree) {}
+	virtual ~KCommonMultiProducer() {}
+
+	typename Tout::type *allocateBronch(TTree *event_tree, const std::string bronchName)
+	{
+		// Static storage of ROOT bronch target - never changes, only accessed here:
+		typename Tout::type *target = new typename Tout::type();
+		targetNameMap[bronchName] = target;
+		event_tree->Bronch(bronchName.c_str(), Tout::id().c_str(), &(targetNameMap[bronchName]));
+		return targetNameMap[bronchName];
+	}
+
+	void printAcceptedProducts(int verbosity)
+	{
+		if (verbosity > 0)
+			std::cout << "Accepted number of products: " << targetNameMap.size() << std::endl;
+	}
+
+private:
+	std::map<std::string, typename Tout::type*> targetNameMap;
+};
+
 // KManualMultiProducer - input is specified manually in the form of parameter sets,
 //   therefore it is possible to specify additional input objects
 //   The main input is selected via the inputtag src
@@ -17,11 +44,11 @@
 //  * void fillProduct(const InputType &input, OutputType &output, const std::string &name, const edm::ParameterSet &pset);
 //  * void clearProduct(OutputType &output);
 template<typename Tin, typename Tout>
-class KManualMultiProducer : public KBaseProducerWP<Tout>
+class KManualMultiProducer : public KCommonMultiProducer<Tin, Tout>
 {
 public:
 	KManualMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseProducerWP<Tout>(cfg, _event_tree, _run_tree),
+		KCommonMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		event_tree(_event_tree)
 	{
 		std::cout << "Requesting entries: ";
@@ -47,16 +74,13 @@ public:
 			this->addProvenance(it->second.getParameter<edm::InputTag>("src").encode(), it->first);
 
 			// Static storage of ROOT bronch target - never changes, only accessed here:
-			typename Tout::type *target = new typename Tout::type();
-			targetNameMap[it->first] = target;
-			targetIDMap[target] = &(it->second);
+			typename Tout::type *target = this->allocateBronch(event_tree, it->first);
 
 			// Mapping between target
+			targetIDMap[target] = &(it->second);
 			nameMap[target] = it->first;
-			event_tree->Bronch(it->first.c_str(), Tout::id().c_str(), &(targetNameMap[it->first]));
 		}
-		if (this->verbosity > 0)
-			std::cout << "Accepted number of products: " << entries.size() << std::endl;
+		printAcceptedProducts(this->verbosity);
 		return true;
 	}
 
@@ -109,7 +133,6 @@ protected:
 	std::map<typename Tout::type*, std::string> nameMap;
 	std::map<std::string, edm::ParameterSet> entries;
 	std::map<typename Tout::type*, const edm::ParameterSet*> targetIDMap;
-	std::map<std::string, typename Tout::type*> targetNameMap;
 };
 
 
@@ -118,11 +141,11 @@ protected:
 //  * void fillProduct(const InputType &input, OutputType &output, edm::InputTag *tag)
 //  * void clearProduct(OutputType &output);
 template<typename Tin, typename Tout>
-class KRegexMultiProducer : public KBaseProducerWP<Tout>
+class KRegexMultiProducer : public KCommonMultiProducer<Tin, Tout>
 {
 public:
 	KRegexMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseProducerWP<Tout>(cfg, _event_tree, _run_tree),
+		KCommonMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		viManual(cfg.getParameter<std::vector<edm::InputTag> >("manual")),
 		vsRename(cfg.getParameter<std::vector<std::string> >("rename")),
 		sFilter(cfg.getParameter<std::string>("filter")),
@@ -188,7 +211,8 @@ public:
 			if (this->verbosity > 0)
 				std::cout << " => Adding branch: " << targetName << " for product ID: " << (*piter)->productID() << std::endl;
 			this->addProvenance((*piter)->branchName(), targetName);
-			typename Tout::type *target = new typename Tout::type();
+
+			typename Tout::type *target = this->allocateBronch(event_tree, targetName);
 
 			// Crate selection tag
 			edm::InputTag *tag = new edm::InputTag((*piter)->moduleLabel(), (*piter)->productInstanceName(), (*piter)->processName());
@@ -200,13 +224,8 @@ public:
 
 			// Used for fast lookup of selector and lv collection
 			targetIDMap[target] = tag;
-
-			// Static storage of ROOT bronch target - never changes, only accessed here:
-			targetNameMap[targetName] = target;
-			event_tree->Bronch(targetName.c_str(), Tout::id().c_str(), &(targetNameMap[targetName]));
 		}
-		if (this->verbosity > 0)
-			std::cout << "Accepted number of products: " << targetIDMap.size() << std::endl;
+		printAcceptedProducts(this->verbosity);
 		return true;
 	}
 
@@ -254,7 +273,6 @@ protected:
 
 	std::map<edm::InputTag*, std::pair<std::string, std::string> > nameMap;
 	std::map<typename Tout::type*, edm::InputTag*> targetIDMap;
-	std::map<std::string, typename Tout::type*> targetNameMap;
 };
 
 #endif
