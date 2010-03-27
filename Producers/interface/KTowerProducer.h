@@ -4,11 +4,9 @@
 #include "KBaseMultiProducer.h"
 #include <FWCore/ParameterSet/interface/ParameterSet.h>
 #include <FWCore/Utilities/interface/InputTag.h>
-#include "../../DataFormats/interface/KBasic.h"
-#include "../../DataFormats/interface/KMetadata.h"
-#include "DataFormats/JetReco/interface/CaloJet.h"
-#include "DataFormats/VertexReco/interface/Vertex.h"
-#include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include <DataFormats/JetReco/interface/CaloJet.h>
+#include <DataFormats/VertexReco/interface/Vertex.h>
+#include <DataFormats/VertexReco/interface/VertexFwd.h>
 
 struct KTowerProducer_Product
 {

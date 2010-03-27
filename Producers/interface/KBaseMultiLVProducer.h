@@ -2,10 +2,6 @@
 #define KAPPA_MULTILVPRODUCER_H
 
 #include "KBaseMultiProducer.h"
-#include <FWCore/ParameterSet/interface/ParameterSet.h>
-#include <FWCore/Utilities/interface/InputTag.h>
-#include "../../DataFormats/interface/KBasic.h"
-#include "../../DataFormats/interface/KMetadata.h"
 
 template<typename T>
 struct KLVSorter

@@ -5,7 +5,6 @@
 #include <FWCore/ParameterSet/interface/ParameterSet.h>
 #include <FWCore/Utilities/interface/InputTag.h>
 #include "../../DataFormats/interface/KBasic.h"
-#include "../../DataFormats/interface/KMetadata.h"
 
 template<typename Tin, typename Tout>
 class KBaseMultiProducer : public KBaseProducerWP<Tout>

@@ -4,7 +4,7 @@
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
-#include "DataFormats/METReco/interface/MET.h"
+#include <DataFormats/METReco/interface/MET.h>
 
 struct KMETProducer_Product
 {
