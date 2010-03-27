@@ -58,7 +58,6 @@ public:
 		std::cout << std::endl;
 	}
 	virtual ~KManualMultiProducer() {}
-	virtual void setup(const edm::ParameterSet &cfg) {}
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
@@ -89,7 +88,6 @@ public:
 
 		for (typename std::map<typename Tout::type*, const edm::ParameterSet*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
 		{
-			this->setup(*it->second);
 			const edm::ParameterSet *pset = it->second;
 			const edm::InputTag src = pset->getParameter<edm::InputTag>("src");
 
