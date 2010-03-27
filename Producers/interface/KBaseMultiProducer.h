@@ -10,12 +10,12 @@
 #include <boost/algorithm/string/regex.hpp>
 
 template<typename Tin, typename Tout>
-class KCommonMultiProducer : public KBaseProducerWP<Tout>
+class KBaseMultiProducer : public KBaseProducerWP<Tout>
 {
 public:
-	KCommonMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseProducerWP<Tout>(cfg, _event_tree, _run_tree) {}
-	virtual ~KCommonMultiProducer() {}
+	virtual ~KBaseMultiProducer() {}
 
 	typename Tout::type *allocateBronch(TTree *event_tree, const std::string bronchName)
 	{
@@ -43,11 +43,11 @@ private:
 //  * void fillProduct(const InputType &input, OutputType &output, const std::string &name, const edm::ParameterSet &pset);
 //  * void clearProduct(OutputType &output);
 template<typename Tin, typename Tout>
-class KManualMultiProducer : public KCommonMultiProducer<Tin, Tout>
+class KManualMultiProducer : public KBaseMultiProducer<Tin, Tout>
 {
 public:
 	KManualMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KCommonMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		event_tree(_event_tree)
 	{
 		std::cout << "Requesting entries: ";
@@ -140,11 +140,11 @@ protected:
 //  * void fillProduct(const InputType &input, OutputType &output, edm::InputTag *tag)
 //  * void clearProduct(OutputType &output);
 template<typename Tin, typename Tout>
-class KRegexMultiProducer : public KCommonMultiProducer<Tin, Tout>
+class KRegexMultiProducer : public KBaseMultiProducer<Tin, Tout>
 {
 public:
 	KRegexMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KCommonMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		viManual(cfg.getParameter<std::vector<edm::InputTag> >("manual")),
 		vsRename(cfg.getParameter<std::vector<std::string> >("rename")),
 		sFilter(cfg.getParameter<std::string>("filter")),
