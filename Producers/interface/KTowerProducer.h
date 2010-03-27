@@ -40,6 +40,7 @@ protected:
 				<< nameMap[tag].first << " (" << nameMap[tag].second << ")" << std::endl;
 		output.reserve(input.size());
 
+		// Get information for vertex correction
 		reco::Jet::Point vertex;
 		edm::Handle<reco::VertexCollection> pvCollection;
 		cEvent->getByLabel(srcPVs, pvCollection);
@@ -51,8 +52,8 @@ protected:
 		for (InputType::const_iterator lvit = input.begin(); lvit < input.end(); ++lvit)
 			if (lvit->pt() >= minPt)
 			{
-				math::PtEtaPhiMLorentzVector ct(lvit->p4(vertex));
 				output.push_back(OutputType::value_type());
+				math::PtEtaPhiMLorentzVector ct(lvit->p4(vertex));
 				copyP4(ct, output.back().p4);
 			}
 		std::sort(output.begin(), output.end(), towersorter_pt);
