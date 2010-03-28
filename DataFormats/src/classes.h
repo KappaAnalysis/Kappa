@@ -28,6 +28,7 @@ namespace
 		KLVs kappa_lvs;
 
 		KDataMET kappa_datamet;
+		KDataPFMET kappa_datapfmet;
 
 		KDataJet kappa_datajet;
 		KDataJets kappa_datajets;

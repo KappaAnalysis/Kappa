@@ -108,6 +108,11 @@ struct KDataMET : public KDataLV
 	double sumEt;
 };
 
+struct KDataPFMET : public KDataMET
+{
+	double chargedEMFraction;
+};
+
 // pdgid = [charge:1][status:3][id:...]
 const unsigned int KPartonChargeMask = 31;
 const unsigned int KPartonStatusMask = 28;
