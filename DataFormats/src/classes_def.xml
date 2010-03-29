@@ -15,6 +15,7 @@
 	<class name="KLVs"/>
 
 	<class name="KDataMET"/>
+	<class name="KDataPFMET"/>
 
 	<class name="KDataJet"/>
 	<class name="KDataJets"/>
