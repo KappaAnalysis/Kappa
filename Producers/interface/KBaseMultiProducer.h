@@ -173,7 +173,7 @@ public:
 				std::cout << "Product: ";
 
 			// Check if branch was selected
-			if (!(regexMatch((*piter)->branchName(), vsWhitelist, vsBlacklist)
+			if (!(this->regexMatch((*piter)->branchName(), vsWhitelist, vsBlacklist)
 				|| tagMatch(*piter, viManual)))
 			{
 				continue;
