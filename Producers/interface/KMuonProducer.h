@@ -75,27 +75,20 @@ public:
 //		out.trackIso06					= muonIsoDeposit.depositWithin(0.6, isoParams, false);
 
 		// Vertex
-		// FIXME: double != 0 vergleich ?!?
-		if (in.vertex().x()*in.vertex().x()+in.vertex().y()*in.vertex().y()+in.vertex().z()*in.vertex().z() != 0)
-		{
-			out.vertex.valid = true;
-
-			out.vertex.position		=	in.vertex();
-			out.vertex.chi2				=	in.vertexChi2();
-			out.vertex.nDOF				=	in.vertexNdof();
-			out.vertex.cntTracks	= 1;
-
-			out.vertex.covariance = in.vertexCovariance();
-		}
-		else
-			out.vertex = KDataVertex();
+		out.vertex = KDataVertex();
+		out.vertex.valid = true;
+		out.vertex.position = in.vertex();
+		out.vertex.chi2 = in.vertexChi2();
+		out.vertex.nDOF = in.vertexNdof();
+		out.vertex.cntTracks = 1;
+		out.vertex.covariance = in.vertexCovariance();
 
 		// Time information
 		out.timeNDof =	in.time().nDof;
-		out.timeAtIpInOut =	in.time().timeAtIpInOut;
-		out.timeAtIpInOutErr =	in.time().timeAtIpInOutErr;
-		out.timeAtIpOutIn =	in.time().timeAtIpOutIn;
-		out.timeAtIpOutInErr =	in.time().timeAtIpOutInErr;
+		out.timeAtIpInOut = in.time().timeAtIpInOut;
+		out.timeAtIpInOutErr = in.time().timeAtIpInOutErr;
+		out.timeAtIpOutIn = in.time().timeAtIpOutIn;
+		out.timeAtIpOutInErr = in.time().timeAtIpOutInErr;
 		out.direction = getDirection(out.timeNDof, out.timeAtIpInOutErr, out.timeAtIpOutInErr);
 
 		// TODO: hltMatch (matching with HLT objects)
