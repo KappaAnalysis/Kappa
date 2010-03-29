@@ -185,7 +185,7 @@ public:
 				std::cout << " => " + Tout::producer() + " will use: ";
 				std::cout.flush();
 			}
-			const std::string targetName = regexRename((*piter)->moduleLabel(), vsRename);
+			const std::string targetName = this->regexRename((*piter)->moduleLabel(), vsRename);
 			if ((this->verbosity > 0) && (vsRename.size() > 0))
 				std::cout << targetName << " as branch name." << std::endl;
 
