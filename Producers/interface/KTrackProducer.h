@@ -42,6 +42,10 @@ public:
 		out.nDOF = in.ndof();
 		out.quality = in.qualityMask();
 		out.errDxy = in.dxyError();
+		out.errDz = in.dzError();
+		out.nPixelHits = in.hitPattern().pixelLayersWithMeasurement(); //dp
+		out.nStripHits = in.hitPattern().trackerLayersWithMeasurement(); //dp
+
 	}
 };
 
