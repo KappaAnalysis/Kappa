@@ -101,11 +101,11 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 		if (active[i] == "Tracks")
 			producers.push_back(new KTrackProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-		if (active[i] == "LV")
-			producers.push_back(new KLorentzProducer(
-				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		if (active[i] == "MET")
 			producers.push_back(new KMETProducer(
+				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
+		if (active[i] == "LV")
+			producers.push_back(new KLorentzProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 	}
 	first = true;
