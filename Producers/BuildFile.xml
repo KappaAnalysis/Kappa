@@ -21,7 +21,6 @@
 
 <flags EDM_PLUGIN="1"/>
 <export>
-	<lib name="Kappa/Skimming"/>
 	<use name="DataFormats/EgammaCandidates"/>
 	<use name="DataFormats/EgammaReco"/>
 	<use name="DataFormats/HepMCCandidate"/>
