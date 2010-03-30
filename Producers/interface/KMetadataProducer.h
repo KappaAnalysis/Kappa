@@ -55,8 +55,8 @@ public:
 		if (!hltConfig.init(tagHLTResults.process()))
 			return fail(std::cout << "Invalid HLT process selected: " << sHLTProcess << std::endl);
 		int counter = 1;
-		hltK2FWK.clear();
-		hltK2FWK.push_back(0);
+		hltKappa2FWK.clear();
+		hltKappa2FWK.push_back(0);
 		metaLumi->hltNames.push_back("fail");
 
 		for (unsigned int i = 0; i < hltConfig.size(); ++i)
@@ -69,13 +69,13 @@ public:
 				continue;
 			if (verbosity > 0)
 				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter << std::endl;
-			hltK2FWK.push_back(idx);
+			hltKappa2FWK.push_back(idx);
 			metaLumi->hltNames.push_back(name);
 			counter++;
 		}
 		if (verbosity > 0)
 			std::cout << "Accepted number of trigger streams: " << counter - 1 << std::endl;
-		if (hltK2FWK.size() > 64)
+		if (hltKappa2FWK.size() > 64)
 			std::cout << "Too many HLT bits selected!" << std::endl;
 
 		return true;
@@ -98,9 +98,9 @@ public:
 
 			bool hltOK = true;
 			std::bitset<64> tmpBits;
-			for (unsigned int i = 1; i < hltK2FWK.size(); ++i)
+			for (unsigned int i = 1; i < hltKappa2FWK.size(); ++i)
 			{
-				const int idx = hltK2FWK[i];
+				const int idx = hltKappa2FWK[i];
 				tmpBits[i] = hTriggerResults->accept(idx);
 				hltOK &= hTriggerResults->error(idx);
 			}
@@ -140,7 +140,7 @@ protected:
 	std::string sHLTProcess;
 	std::string sHLTFilter;
 	HLTConfigProvider hltConfig;
-	std::vector<int> hltK2FWK;
+	std::vector<int> hltKappa2FWK;
 
 	edm::InputTag tagNoiseHCAL;
 	edm::InputTag tagPVs;
