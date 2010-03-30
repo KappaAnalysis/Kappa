@@ -29,7 +29,8 @@ struct KDataTrack : public KDataLV
 	RMPoint ref;	// reference point ("vertex")
 	char charge;
 	float chi2, nDOF;
-	float errPt, errEta, errPhi, errDxy;
+	float errPt, errEta, errPhi, errDxy, errDz;
+	int nPixelHits,nStripHits; //dp
 	int quality;
 
 	double getDxy(KDataVertex * pv)
@@ -79,6 +80,7 @@ typedef std::vector<KDataTrack> KDataTracks;
 struct KDataJet : public KDataLV
 {
 	double emf;
+	double area; //DP
 	int n90, n90Hits;
 	double noiseHCAL;
 	double detectorEta;
@@ -86,6 +88,7 @@ struct KDataJet : public KDataLV
 	int nTracksAtCalo;
 	int nTracksAtVertex;
 	int nConst;
+
 };
 typedef std::vector<KDataJet> KDataJets;
 
