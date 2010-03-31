@@ -32,7 +32,8 @@ public:
 	KMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		tagL1Results(cfg.getParameter<edm::InputTag>("l1Source")),
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
-		sHLTFilter(cfg.getParameter<std::string>("hltFilter")),
+		svHLTWhitelist(cfg.getParameter<std::vector<std::string> >("hltWhitelist")),
+		svHLTBlacklist(cfg.getParameter<std::vector<std::string> >("hltBlacklist")),
 
 		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL"))
 	{
@@ -64,7 +65,7 @@ public:
 			const int idx = hltConfig.triggerIndex(name);
 			if (verbosity > 1)
 				std::cout << "Trigger: " << idx << " = ";
-			if (!regexMatch(name, sHLTFilter))
+			if (!regexMatch(name, svHLTWhitelist, svHLTBlacklist))
 				continue;
 			if (verbosity > 0)
 				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter << std::endl;
@@ -137,7 +138,7 @@ public:
 protected:
 	edm::InputTag tagL1Results, tagHLTResults;
 	std::string sHLTProcess;
-	std::string sHLTFilter;
+	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
 	HLTConfigProvider hltConfig;
 	std::vector<int> hltKappa2FWK;
 
