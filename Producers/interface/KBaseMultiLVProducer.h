@@ -11,69 +11,103 @@ struct KLVSorter
 
 
 // This producer is responsible for the common task of writing a vector of objects
-// into the destination vector Tout::type, which has a p4 property
+// into the destination vector Tout::type
 // The filling is implemented via:
+//  * virtual bool acceptSingle(const SingleInputType &in);
 //  * virtual void fillSingle(const SingleInputType &in, SingleOutputType &out);
+//  * virtual void sort(typename Tout::type &out);
 template<typename Tin, typename Tout>
-class KCommonLVProducer
+class KCommonVectorProducer
 {
 public:
-	KCommonLVProducer(const edm::ParameterSet &cfg, const int verbose) : verbosity(verbose),
-		maxN(cfg.getParameter<int>("maxN")),
-		minPt(cfg.getParameter<double>("minPt")),
-		maxEta(cfg.getParameter<double>("maxEta")) {}
+	KCommonVectorProducer(const edm::ParameterSet &cfg) :
+		maxN(cfg.getParameter<int>("maxN")) {}
 
 	virtual void fillProduct(const Tin &in, typename Tout::type &out,
 		const std::string &name)
 	{
-		if (verbosity > 0)
+		if (KBaseProducer::verbosity > 0)
 			std::cout << in.size() << " objects in collection " << name << std::endl;
 		out.reserve(in.size());
 
 		// Cursor is necessary to get "Refs" later
-		nCursor = 0;
-		for (typename Tin::const_iterator lvit = in.begin(); lvit < in.end(); ++lvit)
-			if (lvit->pt() >= minPt && ((maxEta < 0) || (abs(lvit->eta()) <= maxEta)))
+		typename Tin::const_iterator lvit;
+		for (lvit = in.begin(), nCursor = 0; lvit < in.end(); ++lvit, ++nCursor)
+			if (acceptSingle(*lvit))
 			{
 				out.push_back(SingleOutputType());
 				fillSingle(*lvit, out.back());
-				nCursor++;
 			}
-		std::sort(out.begin(), out.end(), lorentzsorter_pt);
 		if (maxN > 0)
 			out.erase(out.begin() + std::min(out.size(), (size_t)maxN), out.end());
 
-		if (verbosity > 1)
-		{
+		if (KBaseProducer::verbosity > 1)
 			std::cout << "\t" << "Number of accepted objects: " << out.size() << "\t";
-			if (out.size() > 0)
-				std::cout << "First: " << out[0].p4 << "\tLast: " << out[out.size() - 1].p4 << std::endl;
-		}
 	}
 
+	virtual void sort(typename Tout::type &out) {}
+
 protected:
-	const int verbosity;
 	int maxN, nCursor;
-	double minPt;
-	double maxEta;
 
 	typedef typename Tin::value_type SingleInputType;
 	typedef typename Tout::type::value_type SingleOutputType;
+
+	virtual bool acceptSingle(const SingleInputType &in) { return true; }
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out) = 0;
+};
+
+
+// This producer is responsible for the common task of writing a vector of objects
+// into the destination vector Tout::type, which has a p4 property
+// The filling is implemented via:
+//  * virtual void fillSingle(const SingleInputType &in, SingleOutputType &out);
+template<typename Tin, typename Tout>
+class KCommonLVProducer : public KCommonVectorProducer<Tin, Tout>
+{
+public:
+	KCommonLVProducer(const edm::ParameterSet &cfg) :
+		KCommonVectorProducer<Tin, Tout>(cfg),
+		minPt(cfg.getParameter<double>("minPt")),
+		maxEta(cfg.getParameter<double>("maxEta")) {}
+
+	virtual bool acceptSingle(const typename Tin::value_type &in)
+	{
+		return (in.pt() >= minPt && ((maxEta < 0) || (abs(in.eta()) <= maxEta)));
+	}
+
+	virtual void sort(typename Tout::type &out)
+	{
+		std::sort(out.begin(), out.end(), sorter);
+	}
+
+	virtual void fillProduct(const Tin &in, typename Tout::type &out,
+		const std::string &name)
+	{
+		KCommonVectorProducer<Tin, Tout>::fillProduct(in, out, name);
+		if ((KBaseProducer::verbosity > 1) && (out.size() > 0))
+			std::cout << "First: " << out[0].p4 << "\tLast: " << out[out.size() - 1].p4 << std::endl;
+	}
+
+protected:
+	double minPt;
+	double maxEta;
 
 private:
-	KLVSorter<SingleOutputType> lorentzsorter_pt;
+	KLVSorter<typename Tout::type::value_type> sorter;
 };
 
 
 // This is the pset variant of the LV producer
 template<typename Tin, typename Tout>
-class KManualMultiLVProducer : public KManualMultiProducer<Tin, Tout>, public KCommonLVProducer<Tin, Tout>
+class KManualMultiLVProducer :
+	public KManualMultiProducer<Tin, Tout>,
+	public KCommonLVProducer<Tin, Tout>
 {
 public:
 	KManualMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KManualMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
-		KCommonLVProducer<Tin, Tout>(cfg, KBaseProducer::verbosity) {}
+		KCommonLVProducer<Tin, Tout>(cfg) {}
 	virtual ~KManualMultiLVProducer() {};
 
 	virtual void clearProduct(typename KManualMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
@@ -89,12 +123,14 @@ public:
 
 // This is the regex variant of the LV producer
 template<typename Tin, typename Tout>
-class KRegexMultiLVProducer : public KRegexMultiProducer<Tin, Tout>, public KCommonLVProducer<Tin, Tout>
+class KRegexMultiLVProducer :
+	public KRegexMultiProducer<Tin, Tout>,
+	public KCommonLVProducer<Tin, Tout>
 {
 public:
 	KRegexMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KRegexMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
-		KCommonLVProducer<Tin, Tout>(cfg, KBaseProducer::verbosity) {}
+		KCommonLVProducer<Tin, Tout>(cfg) {}
 	virtual ~KRegexMultiLVProducer() {};
 
 	virtual void clearProduct(typename KRegexMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }

@@ -1,10 +1,19 @@
-                                                                          /-- KCaloJetProducer
-                     KManualMultiProducer ----- KManualMultiLVProducer --*
-                    /                          /                          \-- KPartonProducer
-KBaseMultiProducer *          KCommonLVProducer
-        ^           \                          \                          /-- KTrackProducer
-        |            KRegexMultiProducer --*--- KRegexMultiLVProducer ---*
- KBaseProducerWP                           |                             |\-- KMuonProducer
-        ^                                  |\-- KMETProducer             |
-        |                                  |                             \--- KLorentzProducer
-  KBaseProducer                            \--- KTowerProducer
+                                                                           /-- KCaloJetProducer
+                     KManualMultiProducer ------ KManualMultiLVProducer --*
+                    /       \                   /                          \-- KPartonProducer
+                   |         KVertexProducer   |
+                   |        /                  |
+KBaseMultiProducer *   KCommonVectorProducer   |
+        ^          |        \                  |
+        |          |         KCommonLVProducer *                           /-- KTrackProducer
+ KBaseProducerWP    \                           \                         |
+        ^            KRegexMultiProducer ---*--- KRegexMultiLVProducer ---*--- KLorentzProducer
+        |                                   |                             |
+  KBaseProducer                             |\-- KMETProducer              \-- KMuonProducer
+                                            |
+                                            \--- KTowerProducer
+
+TODO:
+Merge Manual and RegexProducer using PSet::augment to provide per output object configuration
+(Must use untracked parameters?)
+  => This will simplify the producer structure VERY much...
