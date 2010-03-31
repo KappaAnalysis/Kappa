@@ -80,7 +80,7 @@ typedef std::vector<KDataTrack> KDataTracks;
 struct KDataJet : public KDataLV
 {
 	double emf;
-	double area; //DP
+	double area;
 	int n90, n90Hits;
 	double noiseHCAL;
 	double detectorEta;
