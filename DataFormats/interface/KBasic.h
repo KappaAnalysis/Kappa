@@ -20,7 +20,8 @@ struct KDataVertex
 	unsigned int nTracks;
 	float chi2, nDOF;
 
-	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
+	double cov_00, cov_01, cov_02, cov_11, cov_12, cov_22;
+	//ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
 };
 typedef std::vector<KDataVertex> KDataVertices;
 
@@ -68,7 +69,7 @@ struct KDataTrack : public KDataLV
 				orthog[1] = -p4.x();
 				orthog[2] = 0;
 
-				float vtxErr2 = ROOT::Math::Similarity(pv->covariance, orthog) / p4.Perp2();
+				float vtxErr2 = 0; //ROOT::Math::Similarity(pv->covariance, orthog) / p4.Perp2();
 				return getDxy(pv) / sqrt(errDxy*errDxy + vtxErr2 );
 				break;
 		}
