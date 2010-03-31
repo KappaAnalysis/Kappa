@@ -67,7 +67,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("reco.*Jets_.*Jet"),
-		blacklist = cms.vstring(),
+		blacklist = cms.vstring("recoCastor.*"),
 
 		rename = cms.vstring(
 			"JetPlusTrack(.*) => $1JPT",
@@ -75,7 +75,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
 		),
 		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(),
+		rename_blacklist = cms.vstring(".*CaloJets"),
 
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
