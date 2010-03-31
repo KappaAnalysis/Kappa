@@ -4,7 +4,7 @@
 KBaseMultiProducer *          KCommonLVProducer
         ^           \                          \                          /-- KTrackProducer
         |            KRegexMultiProducer --*--- KRegexMultiLVProducer ---*
- KBaseProducerWP                           |                              \-- KMuonProducer
-        ^                                  |\-- KMETProducer
-        |                                  |
+ KBaseProducerWP                           |                             |\-- KMuonProducer
+        ^                                  |\-- KMETProducer             |
+        |                                  |                             \--- KLorentzProducer
   KBaseProducer                            \--- KTowerProducer

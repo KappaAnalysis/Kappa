@@ -81,7 +81,7 @@ public:
 		out.vertex.chi2 = in.vertexChi2();
 		out.vertex.nDOF = in.vertexNdof();
 		out.vertex.nTracks = 1;
-		out.vertex.covariance = in.vertexCovariance();
+		out.vertex.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >();
 
 		// Time information
 		out.timeNDof =	in.time().nDof;

@@ -69,6 +69,7 @@ public:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
+		out.area = in.jetArea();
 		out.detectorEta = in.detectorP4().eta();
 		out.emf = in.emEnergyFraction();
 		out.nConst = in.getJetConstituents().size();

@@ -7,7 +7,7 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 
 #include "FWCore/ServiceRegistry/interface/Service.h"
-#include "PhysicsTools/UtilAlgos/interface/TFileService.h"
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include <TFile.h>
@@ -18,9 +18,9 @@
 #include "../interface/KTowerProducer.h"
 #include "../interface/KMuonProducer.h"
 #include "../interface/KCaloJetProducer.h"
+#include "../interface/KMetadataProducer.h"
 
 /*
-#include "../interface/KGenMetadataProducer.h"
 #include "../interface/KHepMCPartonProducer.h"
 #include "../interface/KPartonProducer.h"
 */
@@ -82,13 +82,13 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 		if (active[i] == "GenMetadata")
 			producers.push_back(new KGenMetadataProducer<KGenMetadata_Product>(
 				psConfig.getParameter<edm::ParameterSet>("Metadata"), event_tree, lumi_tree));
-		if (active[i] == "Metadata")
-			producers.push_back(new KMetadataProducer<KMetadata_Product>(
-				psConfig.getParameter<edm::ParameterSet>("Metadata"), event_tree, lumi_tree));
 		if (active[i] == "Partons")
 			producers.push_back(new KPartonProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 */
+		if (active[i] == "Metadata")
+			producers.push_back(new KMetadataProducer<KMetadata_Product>(
+				psConfig.getParameter<edm::ParameterSet>("Metadata"), event_tree, lumi_tree));
 		if (active[i] == "CaloJets")
 			producers.push_back(new KCaloJetProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
@@ -101,11 +101,11 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 		if (active[i] == "Tracks")
 			producers.push_back(new KTrackProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-		if (active[i] == "LV")
-			producers.push_back(new KLorentzProducer(
-				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		if (active[i] == "MET")
 			producers.push_back(new KMETProducer(
+				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
+		if (active[i] == "LV")
+			producers.push_back(new KLorentzProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 	}
 	first = true;

@@ -20,6 +20,9 @@ public:
 	unsigned long nLumi;
 	unsigned long nRun;
 	std::vector<std::string> hltNames;
+	std::vector<std::string> hltNamesMuons;
+	std::vector<std::string> discrTau;
+	std::vector<std::string> discrTauPF;
 };
 
 struct KGenLumiMetadata : public KLumiMetadata
@@ -34,13 +37,17 @@ struct KEventMetadata
 {
 public:
 	unsigned long long bitsL1;
-	unsigned long bitsHLT;
+	unsigned long long bitsHLT;
 	unsigned long bitsUserFlags;
 	unsigned long nEvent;
 	unsigned long nLumi;
 	unsigned long nRun;
 	unsigned long nBX;
 };
+
+// List of user flags
+const unsigned long KFlagHCALLooseNoise = 1 << 0;
+const unsigned long KFlagHCALTightNoise = 1 << 1;
 
 struct KGenEventMetadata : public KEventMetadata
 {
