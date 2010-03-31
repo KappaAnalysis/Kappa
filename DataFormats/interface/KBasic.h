@@ -15,9 +15,9 @@ typedef std::vector<KDataLV> KDataLVs;
 struct KDataVertex
 {
 	RMPoint position;
-	bool valid;
+	bool fake;
 
-	unsigned int cntTracks;
+	unsigned int nTracks;
 	float chi2, nDOF;
 
 	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;

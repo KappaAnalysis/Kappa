@@ -76,11 +76,11 @@ public:
 
 		// Vertex
 		out.vertex = KDataVertex();
-		out.vertex.valid = true;
+		out.vertex.fake = false;
 		out.vertex.position = in.vertex();
 		out.vertex.chi2 = in.vertexChi2();
 		out.vertex.nDOF = in.vertexNdof();
-		out.vertex.cntTracks = 1;
+		out.vertex.nTracks = 1;
 		out.vertex.covariance = in.vertexCovariance();
 
 		// Time information
