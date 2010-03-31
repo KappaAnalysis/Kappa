@@ -24,6 +24,10 @@
 #pragma link C++ class ROOT::Math::DisplacementVector3D<ROOT::Math::Cartesian3D<float>, ROOT::Math::DefaultCoordinateSystemTag>+;
 #pragma link C++ typedef RMPoint;
 
+#pragma link C++ class ROOT::Math::MatRepSym<double,3>;
+//#pragma link C++ class ROOT::Math::SymMatrixOffsets<3>;
+#pragma link C++ class ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >+;
+
 /************************************************************/
 
 #pragma link C++ struct KDataLV+;
@@ -43,6 +47,14 @@
 #pragma link C++ struct KLV+;
 #pragma link C++ class std::vector<KLV>+;
 #pragma link C++ typedef KLVs;
+
+#pragma link C++ struct KDataMuon+;
+#pragma link C++ class std::vector<KDataMuon>+;
+#pragma link C++ typedef KDataMuons;
+
+#pragma link C++ struct KDataVertex+;
+#pragma link C++ class std::vector<KDataVertex>+;
+#pragma link C++ typedef KDataVertices;
 
 #pragma link C++ struct KParton+;
 #pragma link C++ class std::vector<KParton>+;

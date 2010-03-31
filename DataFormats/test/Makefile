@@ -5,7 +5,8 @@ LD       = g++
 LDFLAGS  = -O $(shell ${ROOTSYS}/bin/root-config --libs) $(SYSLIBS) \
 	-lGenVector -lReflex -lMathMore -lMathCore -lReflexDict
 
-all: dict.so
+PROGRAM = dict.so
+all: $(PROGRAM)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
