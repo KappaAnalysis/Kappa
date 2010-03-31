@@ -12,7 +12,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltFilter = cms.string("^HLT_(((L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?|MET)[0-9]*|Activity_.*|.*(Bias|BSC).*)$"),
 
 		noiseHCAL = cms.InputTag("hcalnoise"),
-		srcPVs = cms.InputTag("offlinePrimaryVertices"),
 	),
 
 	Muons = cms.PSet(

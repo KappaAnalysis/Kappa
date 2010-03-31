@@ -34,8 +34,7 @@ public:
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
 		sHLTFilter(cfg.getParameter<std::string>("hltFilter")),
 
-		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL")),
-		tagPVs(cfg.getParameter<edm::InputTag>("srcPVs"))
+		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL"))
 	{
 		metaLumi = new typename Tmeta::typeLumi();
 		_lumi_tree->Bronch("KLumiMetadata", Tmeta::idLumi().c_str(), &metaLumi);
@@ -143,7 +142,6 @@ protected:
 	std::vector<int> hltKappa2FWK;
 
 	edm::InputTag tagNoiseHCAL;
-	edm::InputTag tagPVs;
 
 	typename Tmeta::typeLumi *metaLumi;
 	typename Tmeta::typeEvent *metaEvent;
