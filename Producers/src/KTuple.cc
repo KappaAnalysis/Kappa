@@ -19,6 +19,7 @@
 #include "../interface/KMuonProducer.h"
 #include "../interface/KCaloJetProducer.h"
 #include "../interface/KMetadataProducer.h"
+#include "../interface/KVertexProducer.h"
 
 /*
 #include "../interface/KHepMCPartonProducer.h"
@@ -97,6 +98,9 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		if (active[i] == "Muons")
 			producers.push_back(new KMuonProducer(
+				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
+		if (active[i] == "Vertex")
+			producers.push_back(new KVertexProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		if (active[i] == "Tracks")
 			producers.push_back(new KTrackProducer(

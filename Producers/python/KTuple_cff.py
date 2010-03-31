@@ -45,6 +45,23 @@ kappaTupleDefaultsBlock = cms.PSet(
 		maxEta = cms.double(-1),
 	),
 
+	Vertex = cms.PSet(
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring(),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring(),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+
+		maxN = cms.int32(-1),
+		
+		PrimaryVertices = cms.PSet(
+			src = cms.InputTag("offlinePrimaryVertices")
+		)
+	),
+
 	LV = cms.PSet(
 		manual = cms.VInputTag(),
 
