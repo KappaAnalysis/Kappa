@@ -28,3 +28,7 @@ for line in map(str.strip, fp):
 
 fp_d.write("</lcgdict>\n")
 fp_h.write("\t};\n}\n\n#endif\n")
+
+print " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! "
+print " !!! DO NOT FORGET TO EDIT ../test/LinkDef.h !!! "
+print " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! "
