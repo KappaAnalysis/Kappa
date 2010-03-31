@@ -12,14 +12,15 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include <TFile.h>
 
-#include "../interface/KMETProducer.h"
+#include "../interface/KMetadataProducer.h"
+#include "../interface/KGenMetadataProducer.h"
 #include "../interface/KLorentzProducer.h"
+#include "../interface/KMETProducer.h"
 #include "../interface/KTrackProducer.h"
 #include "../interface/KTowerProducer.h"
+#include "../interface/KVertexProducer.h"
 #include "../interface/KMuonProducer.h"
 #include "../interface/KCaloJetProducer.h"
-#include "../interface/KMetadataProducer.h"
-#include "../interface/KVertexProducer.h"
 
 /*
 #include "../interface/KHepMCPartonProducer.h"
@@ -80,9 +81,6 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 	{
 		std::cout << "Init producer " << active[i] << std::endl;
 /*
-		if (active[i] == "GenMetadata")
-			producers.push_back(new KGenMetadataProducer<KGenMetadata_Product>(
-				psConfig.getParameter<edm::ParameterSet>("Metadata"), event_tree, lumi_tree));
 		if (active[i] == "Partons")
 			producers.push_back(new KPartonProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
@@ -90,27 +88,32 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 		if (active[i] == "Metadata")
 			producers.push_back(new KMetadataProducer<KMetadata_Product>(
 				psConfig.getParameter<edm::ParameterSet>("Metadata"), event_tree, lumi_tree));
-		if (active[i] == "CaloJets")
+		else if (active[i] == "GenMetadata")
+			producers.push_back(new KGenMetadataProducer<KGenMetadata_Product>(
+				psConfig.getParameter<edm::ParameterSet>("Metadata"), event_tree, lumi_tree));
+		else if (active[i] == "CaloJets")
 			producers.push_back(new KCaloJetProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-		if (active[i] == "Tower")
+		else if (active[i] == "Tower")
 			producers.push_back(new KTowerProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-		if (active[i] == "Muons")
+		else if (active[i] == "Muons")
 			producers.push_back(new KMuonProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-		if (active[i] == "Vertex")
+		else if (active[i] == "Vertex")
 			producers.push_back(new KVertexProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-		if (active[i] == "Tracks")
+		else if (active[i] == "Tracks")
 			producers.push_back(new KTrackProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-		if (active[i] == "MET")
+		else if (active[i] == "MET")
 			producers.push_back(new KMETProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-		if (active[i] == "LV")
+		else if (active[i] == "LV")
 			producers.push_back(new KLorentzProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
+		else
+			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;
 	}
 	first = true;
 }
