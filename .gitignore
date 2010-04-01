@@ -6,3 +6,5 @@
 *.root
 work.*
 .svn
+DataFormats/test/dict.h
+DataFormats/test/dict.cpp
