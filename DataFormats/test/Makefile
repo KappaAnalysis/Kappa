@@ -1,8 +1,8 @@
 CXX      = g++
-CXXFLAGS = -O2 -Wall -fPIC $(shell ${ROOTSYS}/bin/root-config --cflags)
+CXXFLAGS = -O2 -Wall -fPIC $(shell root-config --cflags)
 
 LD       = g++
-LDFLAGS  = -O $(shell ${ROOTSYS}/bin/root-config --libs) $(SYSLIBS) \
+LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
 	-lGenVector -lReflex -lMathMore -lMathCore -lReflexDict
 
 PROGRAM = dict.so

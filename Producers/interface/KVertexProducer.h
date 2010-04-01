@@ -47,7 +47,13 @@ protected:
 
 		out.chi2 = in.chi2();
 		out.nDOF = in.ndof();
-		out.covariance = in.covariance();
+		
+		out.cov_00 = in.covariance(0,0);
+		out.cov_01 = in.covariance(0,1);
+		out.cov_02 = in.covariance(0,2);
+		out.cov_11 = in.covariance(1,1);
+		out.cov_12 = in.covariance(1,2);
+		out.cov_22 = in.covariance(2,2);
 	}
 };
 
