@@ -88,7 +88,6 @@ struct KDataJet : public KDataLV
 	int nTracksAtCalo;
 	int nTracksAtVertex;
 	int nConst;
-
 };
 typedef std::vector<KDataJet> KDataJets;
 
