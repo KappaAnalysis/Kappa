@@ -24,9 +24,10 @@
 #pragma link C++ class ROOT::Math::DisplacementVector3D<ROOT::Math::Cartesian3D<float>, ROOT::Math::DefaultCoordinateSystemTag>+;
 #pragma link C++ typedef RMPoint;
 
-//#pragma link C++ class ROOT::Math::MatRepSym<double,3>;
-//#pragma link C++ class ROOT::Math::SymMatrixOffsets<3>;
-//#pragma link C++ class ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >+;
+#pragma link C++ class ROOT::Math::RowOffsets<3>+;
+#pragma link C++ class ROOT::Math::MatRepSym<double,3>+;
+#pragma link C++ class ROOT::Math::SymMatrixOffsets<3>+;
+#pragma link C++ class ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >+;
 
 /************************************************************/
 

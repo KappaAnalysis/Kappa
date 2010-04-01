@@ -7,7 +7,7 @@ fp = open('classes')
 fp_h = open('classes.h', 'w')
 fp_h.write('#ifndef KDATAFORMAT_H\n#define KDATAFORMAT_H\n\n#define G__DICTIONARY\n')
 
-for header in glob.glob('../interface/*.h'):
+for header in sorted(glob.glob('../interface/*.h')):
 	if header.endswith('KDebug.h'):
 		continue
 	fp_h.write('#include "%s"\n' % header)

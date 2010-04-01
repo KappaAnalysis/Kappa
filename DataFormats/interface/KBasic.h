@@ -20,8 +20,7 @@ struct KDataVertex
 	unsigned int nTracks;
 	float chi2, nDOF;
 
-	double cov_00, cov_01, cov_02, cov_11, cov_12, cov_22;
-	//ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
+	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
 };
 typedef std::vector<KDataVertex> KDataVertices;
 
