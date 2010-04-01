@@ -10,7 +10,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		l1Source = cms.InputTag("gtDigis"),
 		hltSource = cms.InputTag("TriggerResults::HLT"),
 		hltWhitelist = cms.vstring("^HLT_(L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?",
-			"^HLT_MET[0-9]*", "^HLT_Activity.*" ".*(Bias|BSC).*", "^HLT_PhysicsDeclared"),
+			"^HLT_MET[0-9]*", "^HLT_Activity.*", ".*(Bias|BSC).*", "^HLT_PhysicsDeclared"),
 		hltBlacklist = cms.vstring(),
 
 		noiseHCAL = cms.InputTag("hcalnoise"),
