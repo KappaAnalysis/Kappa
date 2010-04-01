@@ -58,9 +58,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		maxN = cms.int32(-1),
 		
-		PrimaryVertices = cms.PSet(
+		offlinePrimaryVertices = cms.PSet(
 			src = cms.InputTag("offlinePrimaryVertices")
-		)
+		),
+		offlinePrimaryVerticesWithBS = cms.PSet(
+			src = cms.InputTag("offlinePrimaryVerticesWithBS")
+		),
+		pixelVertices = cms.PSet(
+			src = cms.InputTag("pixelVertices")
+		),
 	),
 
 	LV = cms.PSet(
