@@ -110,6 +110,7 @@ public:
 
 		// Set L1 trigger bits
 		metaEvent->bitsL1 = 0;
+		bool bPhysicsDeclared = true;
 		if (tagL1Results.label() != "")
 		{
 			edm::Handle<L1GlobalTriggerReadoutRecord> hL1Result;
@@ -117,13 +118,18 @@ public:
 			for (size_t i = 0; i < hL1Result->technicalTriggerWord().size(); ++i)
 				if (hL1Result->technicalTriggerWord().at(i))
 					metaEvent->bitsL1 |= ((long long)1 << i);
+			bPhysicsDeclared = (hL1Result->gtFdlWord().physicsDeclared() == 1);
 		}
 
 		// User flags
-		//  * HCAL noise
 		metaEvent->bitsUserFlags = 0;
 		if (tagNoiseHCAL.label() != "")
 		{
+			// Physics declared
+			if (bPhysicsDeclared)
+				metaEvent->bitsUserFlags |= KFlagPhysicsDeclared;
+
+			// HCAL noise
 			edm::Handle<HcalNoiseSummary> noiseSummary;
 			event.getByLabel(tagNoiseHCAL, noiseSummary);
 			if (noiseSummary->passLooseNoiseFilter())

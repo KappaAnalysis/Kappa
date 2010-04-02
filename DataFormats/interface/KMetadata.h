@@ -46,8 +46,9 @@ public:
 };
 
 // List of user flags
-const unsigned long KFlagHCALLooseNoise = 1 << 0;
-const unsigned long KFlagHCALTightNoise = 1 << 1;
+const unsigned long KFlagPhysicsDeclared = 1 << 0;
+const unsigned long KFlagHCALLooseNoise = 1 << 1;
+const unsigned long KFlagHCALTightNoise = 1 << 2;
 
 struct KGenEventMetadata : public KEventMetadata
 {
