@@ -14,8 +14,6 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 
-#include <bitset>
-
 // real data
 struct KMetadata_Product
 {
@@ -69,14 +67,17 @@ public:
 				continue;
 			if (verbosity > 0)
 				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter << std::endl;
-			hltKappa2FWK.push_back(idx);
-			metaLumi->hltNames.push_back(name);
-			counter++;
+			if (hltKappa2FWK.size() < 64)
+			{
+				hltKappa2FWK.push_back(idx);
+				metaLumi->hltNames.push_back(name);
+				counter++;
+			}
+			else
+				std::cout << "Too many HLT bits selected! " << name << " discarded!" << std::endl;
 		}
 		if (verbosity > 0)
 			std::cout << "Accepted number of trigger streams: " << counter - 1 << std::endl;
-		if (hltKappa2FWK.size() > 64)
-			std::cout << "Too many HLT bits selected!" << std::endl;
 
 		return true;
 	}
@@ -96,16 +97,16 @@ public:
 			edm::Handle<edm::TriggerResults> hTriggerResults;
 			event.getByLabel(tagHLTResults, hTriggerResults);
 
-			bool hltOK = true;
-			std::bitset<64> tmpBits;
+			bool hltFAIL = false;
 			for (unsigned int i = 1; i < hltKappa2FWK.size(); ++i)
 			{
 				const int idx = hltKappa2FWK[i];
-				tmpBits[i] = hTriggerResults->accept(idx);
-				hltOK &= hTriggerResults->error(idx);
+				if (hTriggerResults->accept(idx))
+					metaEvent->bitsHLT |= ((long long)1 << idx);
+				hltFAIL = hltFAIL || hTriggerResults->error(idx);
 			}
-			tmpBits[0] = !hltOK;
-			metaEvent->bitsHLT = tmpBits.to_ulong();
+			if (hltFAIL)
+				metaEvent->bitsHLT |= 1;
 		}
 
 		// Set L1 trigger bits
