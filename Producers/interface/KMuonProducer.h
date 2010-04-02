@@ -81,13 +81,7 @@ public:
 		out.vertex.chi2 = in.vertexChi2();
 		out.vertex.nDOF = in.vertexNdof();
 		out.vertex.nTracks = 1;
-    out.vertex.cov_00 = 0;
-		out.vertex.cov_01 = 0;
-		out.vertex.cov_02 = 0;
-		out.vertex.cov_11 = 0;
-		out.vertex.cov_12 = 0;
-		out.vertex.cov_22 = 0;
-		//out.vertex.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >();
+		out.vertex.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >();
 
 		// Time information
 		out.timeNDof =	in.time().nDof;
