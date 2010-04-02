@@ -16,6 +16,7 @@ typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > RMLV;
 
 typedef ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float> > RMPoint;
 
+#ifdef KAPPA_STANDALONE_DICT
 namespace ROOT
 {
 	namespace Math
@@ -27,5 +28,6 @@ namespace ROOT
 		};
 	};
 };
+#endif
 
 #endif

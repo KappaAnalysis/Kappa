@@ -1,3 +1,4 @@
+#define KAPPA_STANDALONE_DICT
 #include "../src/classes.h"
 
 #ifdef __CINT__
