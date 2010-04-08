@@ -1,0 +1,2 @@
+#define KAPPA_STANDALONE_DICT
+

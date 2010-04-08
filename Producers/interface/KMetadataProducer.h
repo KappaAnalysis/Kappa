@@ -57,7 +57,7 @@ public:
 		hltKappa2FWK.push_back(0);
 		metaLumi->hltNames.push_back("fail");
 
-		for (unsigned int i = 0; i < hltConfig.size(); ++i)
+		for (size_t i = 0; i < hltConfig.size(); ++i)
 		{
 			const std::string &name = hltConfig.triggerName(i);
 			const int idx = hltConfig.triggerIndex(name);
@@ -98,11 +98,11 @@ public:
 			event.getByLabel(tagHLTResults, hTriggerResults);
 
 			bool hltFAIL = false;
-			for (unsigned int i = 1; i < hltKappa2FWK.size(); ++i)
+			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
 			{
-				const int idx = hltKappa2FWK[i];
+				const size_t idx = hltKappa2FWK[i];
 				if (hTriggerResults->accept(idx))
-					metaEvent->bitsHLT |= ((long long)1 << idx);
+					metaEvent->bitsHLT |= ((unsigned long long)1 << idx);
 				hltFAIL = hltFAIL || hTriggerResults->error(idx);
 			}
 			if (hltFAIL)
@@ -118,7 +118,7 @@ public:
 			event.getByLabel(tagL1Results, hL1Result);
 			for (size_t i = 0; i < hL1Result->technicalTriggerWord().size(); ++i)
 				if (hL1Result->technicalTriggerWord().at(i))
-					metaEvent->bitsL1 |= ((long long)1 << i);
+					metaEvent->bitsL1 |= ((unsigned long long)1 << i);
 			bPhysicsDeclared = (hL1Result->gtFdlWord().physicsDeclared() == 1);
 		}
 
@@ -147,7 +147,7 @@ protected:
 	std::string sHLTProcess;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
 	HLTConfigProvider hltConfig;
-	std::vector<int> hltKappa2FWK;
+	std::vector<size_t> hltKappa2FWK;
 
 	edm::InputTag tagNoiseHCAL;
 

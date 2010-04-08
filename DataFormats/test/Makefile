@@ -14,7 +14,7 @@ all: $(PROGRAM)
 %.so: %.o
 	$(LD) -shared $(LDFLAGS) -o $@ $^
 
-dict.cpp: ../src/classes.h LinkDef.h
+dict.cpp: standalone.h ../src/classes.h LinkDef.h
 	rootcint -f $@ -c $^
 
 install: $(PROGRAM)

@@ -19,6 +19,8 @@ struct KLumiMetadata
 public:
 	unsigned long nLumi;
 	unsigned long nRun;
+	std::vector<int> L1Prescales;
+	std::vector<int> hltPrescales;
 	std::vector<std::string> hltNames;
 	std::vector<std::string> hltNamesMuons;
 	std::vector<std::string> discrTau;
