@@ -68,7 +68,7 @@ struct KDataTrack : public KDataLV
 				orthog[1] = -p4.x();
 				orthog[2] = 0;
 
-				float vtxErr2 = 0; //ROOT::Math::Similarity(pv->covariance, orthog) / p4.Perp2();
+				float vtxErr2 = ROOT::Math::Similarity(pv->covariance, orthog) / p4.Perp2();
 				return getDxy(pv) / sqrt(errDxy*errDxy + vtxErr2 );
 				break;
 		}
