@@ -9,7 +9,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		l1Source = cms.InputTag("gtDigis"),
 		hltSource = cms.InputTag("TriggerResults::HLT"),
-		hltWhitelist = cms.vstring("^HLT_(L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?",
+		hltWhitelist = cms.vstring("^HLT_(L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?", ".*Jet.*",
 			"^HLT_MET[0-9]*", "^HLT_Activity.*", ".*(Bias|BSC).*", "^HLT_PhysicsDeclared"),
 		hltBlacklist = cms.vstring(),
 
@@ -57,7 +57,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 
 		maxN = cms.int32(-1),
-		
+
 		offlinePrimaryVertices = cms.PSet(
 			src = cms.InputTag("offlinePrimaryVertices")
 		),
