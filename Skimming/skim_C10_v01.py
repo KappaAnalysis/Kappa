@@ -62,7 +62,7 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 		),
 	)
 )
-process.kappatuple.verbose = cms.int32(1)
+process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
 	'Metadata', 'Muons', 'Tracks', 'LV', 'MET', 'CaloJets', 'Vertex'
 )
@@ -98,7 +98,7 @@ def customise_for_gc(process):
 		except:
 			pass
 		try:
-			lumirange = __LUMI_RANGE__
+			lumirange = [__LUMI_RANGE__]
 			process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange(lumirange)
 		except:
 			pass
