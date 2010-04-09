@@ -14,11 +14,11 @@ namespace
 	struct dictionary
 	{
 
-		RMDataLV_Store kappa_mdatalv_store;
-		RMDataLV kappa_mdatalv;
+		RMDataLV_Store kappa_rmdatalv_store;
+		RMDataLV kappa_rmdatalv;
 
-		RMLV_Store kappa_mlv_store;
-		RMLV kappa_mlv;
+		RMLV_Store kappa_rmlv_store;
+		RMLV kappa_rmlv;
 
 
 
