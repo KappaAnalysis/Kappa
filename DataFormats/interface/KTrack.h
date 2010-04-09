@@ -3,6 +3,11 @@
 
 #include "KBasic.h"
 
+enum KTrackQuality
+{
+	TQ_Loose = 0, TQ_Tight = 1, TQ_HighPurity = 2, TQ_Confirmed = 3, TQ_GoodIterative = 4
+};
+
 struct KDataTrack : public KDataLV
 {
 	RMPoint ref;	// reference point ("vertex")
@@ -55,9 +60,5 @@ struct KDataTrack : public KDataLV
 	}
 };
 typedef std::vector<KDataTrack> KDataTracks;
-enum KTrackQuality
-{
-	TQ_Loose = 0, TQ_Tight = 1, TQ_HighPurity = 2, TQ_Confirmed = 3, TQ_GoodIterative = 4
-};
 
 #endif

@@ -8,7 +8,6 @@
 /* RUN METADATA */
 struct KProvenance
 {
-public:
 	std::vector<std::string> names;
 	std::vector<std::string> branches;
 };
@@ -16,7 +15,6 @@ public:
 /* RUN + LUMI METADATA */
 struct KLumiMetadata
 {
-public:
 	unsigned long nLumi;
 	unsigned long nRun;
 	std::vector<int> L1Prescales;
@@ -29,7 +27,6 @@ public:
 
 struct KGenLumiMetadata : public KLumiMetadata
 {
-public:
 	double xSectionExt;
 	double xSectionInt;
 };
@@ -37,7 +34,6 @@ public:
 /* EVENT METADATA */
 struct KEventMetadata
 {
-public:
 	unsigned long long bitsL1;
 	unsigned long long bitsHLT;
 	unsigned long bitsUserFlags;
@@ -54,7 +50,6 @@ const unsigned long KFlagHCALTightNoise = 1 << 2;
 
 struct KGenEventMetadata : public KEventMetadata
 {
-public:
 	double weight;
 	double binValue;
 	double alphaQCD;

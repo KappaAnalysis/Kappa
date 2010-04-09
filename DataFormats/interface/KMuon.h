@@ -7,11 +7,11 @@ struct KDataMuon : KDataLV
 {
 	char charge;
 
-  KDataTrack track;
-  KDataTrack globalTrack;
-  KDataTrack innerTrack;
+	KDataTrack track;
+	KDataTrack globalTrack;
+	KDataTrack innerTrack;
 
-  KDataVertex vertex;
+	KDataVertex vertex;
 
 	// Bit 0 - trackerMuon
 	// Bit 1 - caloMuon
@@ -19,41 +19,39 @@ struct KDataMuon : KDataLV
 	// Bit 3 - globalMuon
 	char type;
 
-  bool isTrackerMuon;
-  bool isCaloMuon;
-  bool isStandAloneMuon;
-  bool isGlobalMuon;
+	bool isTrackerMuon;
+	bool isCaloMuon;
+	bool isStandAloneMuon;
+	bool isGlobalMuon;
 
-  float hcalIso03;
-  float ecalIso03;
-  float trackIso03;
+	float hcalIso03;
+	float ecalIso03;
+	float trackIso03;
 
-  float hcalIso05;
-  float ecalIso05;
-  float trackIso05;
+	float hcalIso05;
+	float ecalIso05;
+	float trackIso05;
 
-  float hcalIso06;
-  float ecalIso06;
-  float trackIso06;
+	float hcalIso06;
+	float ecalIso06;
+	float trackIso06;
 
-  unsigned int isGoodMuon;	// bitmask
+	unsigned int isGoodMuon;	// bitmask
 
-  float caloComp, segComp;
+	float caloComp, segComp;
 
-  int numberOfChambers;
-  int trackHits;
+	int numberOfChambers;
+	int trackHits;
 
-  int timeNDof;
-  float timeAtIpInOut;
-  float timeAtIpInOutErr;
-  float timeAtIpOutIn;
-  float timeAtIpOutInErr;
-  int direction;
+	int timeNDof;
+	float timeAtIpInOut;
+	float timeAtIpInOutErr;
+	float timeAtIpOutIn;
+	float timeAtIpOutInErr;
+	int direction;
 
-  unsigned long hltMatch;
+	unsigned long hltMatch;
 };
-
 typedef std::vector<KDataMuon> KDataMuons;
 
 #endif
-
