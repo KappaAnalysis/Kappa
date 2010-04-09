@@ -7,6 +7,7 @@
 #include "../interface/KMetadata.h"
 #include "../interface/KMuon.h"
 #include "../interface/KTau.h"
+#include "../interface/KTrack.h"
 
 namespace
 {
