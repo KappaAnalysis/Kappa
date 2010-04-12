@@ -111,7 +111,7 @@ public:
 
 		// Set L1 trigger bits
 		metaEvent->bitsL1 = 0;
-		bool bPhysicsDeclared = false;
+		bool bPhysicsDeclared = true;
 		if (tagL1Results.label() != "")
 		{
 			edm::Handle<L1GlobalTriggerReadoutRecord> hL1Result;
