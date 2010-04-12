@@ -3,8 +3,13 @@ import glob
 
 
 fp = open('classes')
-
 fp_h = open('classes.h', 'w')
+
+debug = []
+for line in open('../interface/KDebug.h', 'r').readlines():
+	if line.startswith("std::ostream"):
+		debug.append(line.split("const")[1].split("&")[0].strip())
+
 fp_h.write('#ifndef KDATAFORMAT_H\n#define KDATAFORMAT_H\n\n#define G__DICTIONARY\n')
 
 for header in sorted(glob.glob('../interface/*.h')):
@@ -20,7 +25,15 @@ for line in map(str.strip, fp):
 	if line != '':
 		if line[0] == '#':
 			continue
-		fp_h.write('\t\t%s kappa_%s;\n' % (line, line[1:].lower()))
+		if line.startswith("K"):
+			fp_h.write('\t\t%s kappa_%s;\n' % (line, line[1:].lower()))
+			if line.endswith("s") and line[:-1] in debug:
+				pass
+			else:
+				if line not in debug:
+					print line, "has no debug output!"
+		else:
+			fp_h.write('\t\t%s kappa_%s;\n' % (line, line.lower()))
 		fp_d.write('\t<class name="%s"/>\n' % line)
 	else:
 		fp_h.write("\n")

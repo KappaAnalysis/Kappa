@@ -7,26 +7,29 @@ struct KDataTau : KDataLV
 {
 	char charge;
 };
+typedef std::vector<KDataTau> KDataTaus;
 
 struct KDataCaloTau : KDataTau
 {
 };
+typedef std::vector<KDataCaloTau> KDataCaloTaus;
 
 struct KDataPFTau : KDataTau
-{  
-  unsigned long discr;
-  
-  float emFraction;
-  
-  int cntSignalChargedHadrCands, cntSignalGammaCands, cntSignalNeutrHadrCands, cntSignalCands;
-  
-  RMDataLV leadTrack;
-  RMDataLV leadChargedHadrTrack;
-  RMDataLV leadNeutralTrack;
-  
-  //bool longLived
-  int cntSignalTracks;
+{
+	unsigned long discr;
+
+	float emFraction;
+
+	int cntSignalChargedHadrCands, cntSignalGammaCands, cntSignalNeutrHadrCands, cntSignalCands;
+
+	RMDataLV leadTrack;
+	RMDataLV leadChargedHadrTrack;
+	RMDataLV leadNeutralTrack;
+
+	//bool longLived
+	int cntSignalTracks;
 };
+typedef std::vector<KDataPFTau> KDataPFTaus;
 
 struct KDataGenTau : KDataLV
 {
@@ -42,11 +45,6 @@ struct KDataGenTau : KDataLV
 	//		1 = descendant of a tau
 	KDataVertex vertex;
 };
-
-typedef std::vector<KDataTau> KDataTaus;
-typedef std::vector<KDataCaloTau> KDataCaloTaus;
-typedef std::vector<KDataPFTau> KDataPFTaus;
 typedef std::vector<KDataGenTau> KDataGenTaus;
 
 #endif
-

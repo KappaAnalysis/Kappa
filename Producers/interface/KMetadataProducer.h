@@ -111,7 +111,7 @@ public:
 
 		// Set L1 trigger bits
 		metaEvent->bitsL1 = 0;
-		bool bPhysicsDeclared = true;
+		bool bPhysicsDeclared = false;
 		if (tagL1Results.label() != "")
 		{
 			edm::Handle<L1GlobalTriggerReadoutRecord> hL1Result;
@@ -124,12 +124,13 @@ public:
 
 		// User flags
 		metaEvent->bitsUserFlags = 0;
+
+		// Physics declared
+		if (bPhysicsDeclared)
+			metaEvent->bitsUserFlags |= KFlagPhysicsDeclared;
+
 		if (tagNoiseHCAL.label() != "")
 		{
-			// Physics declared
-			if (bPhysicsDeclared)
-				metaEvent->bitsUserFlags |= KFlagPhysicsDeclared;
-
 			// HCAL noise
 			edm::Handle<HcalNoiseSummary> noiseSummary;
 			event.getByLabel(tagNoiseHCAL, noiseSummary);

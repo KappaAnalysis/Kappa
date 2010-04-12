@@ -8,6 +8,9 @@ process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring(
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 #-------------------------------------------------------------------------------
 
+process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
+process.GlobalTag.globaltag = 'GR10_P_V2::All' # latest tag for PromptReco
+
 # Includes ---------------------------------------------------------------------
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration/StandardSequences/Services_cff')

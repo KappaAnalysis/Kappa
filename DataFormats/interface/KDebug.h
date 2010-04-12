@@ -4,11 +4,35 @@
 #include <iostream>
 #include "../src/classes.h"
 
-using namespace std;
+template<typename T>
+void printvec(std::ostream &os, const T &v)
+{
+	os << "Size: " << v.size() << std::endl;
+	for (typename T::const_iterator it = v.begin(); it != v.end(); ++it)
+		os << " " << *it;
+	os << std::endl;
+}
 
-std::ostream &operator<<(std::ostream &os, const KLV &v)     { return os << v.p4; }
+// Need thin wrapper class for ostream operator overloading
+// - overkill here, but simplifies vector output later
+template<typename T> struct KLVWrap { KLVWrap(const T &_p4) : p4(_p4) {}; const T &p4; };
 
-std::ostream &operator<<(std::ostream &os, const KDataLV &v) { return os << v.p4; }
+template<typename T>
+std::ostream &operator<<(std::ostream &os, const KLVWrap<T> &lv)
+{
+	return os << "(pt=" << lv.p4.pt() << ", eta=" << lv.p4.eta() << ", phi="
+		<< lv.p4.phi() << ", E=" << lv.p4.E()  << ", m=" << lv.p4.M() << ")";
+}
+
+std::ostream &operator<<(std::ostream &os, const KLV &lv)
+{
+	return os << KLVWrap<KLV::KInternalLV>(lv.p4);
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataLV &lv)
+{
+	return os << KLVWrap<KDataLV::KInternalLV>(lv.p4);
+}
 
 std::ostream &operator<<(std::ostream &os, const KParton &v)
 {
@@ -18,28 +42,50 @@ std::ostream &operator<<(std::ostream &os, const KParton &v)
 	return os << status << "|" << id << "|" << v.p4;
 }
 
-std::ostream &operator<<(std::ostream &os, const KGenLumiMetadata &v)
+std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
 {
-	os << v.nRun << " " << v.xSectionExt << " " << v.xSectionInt;
-	for (size_t i = 0; i < v.hltNames.size(); ++i)
-		cout << "(" << i << " = " << v.hltNames[i] << ") ";
+	os << (KDataLV)jet << std::endl;
+	os << "emf: " << jet.emf << " area: " << jet.area << " detEta: " << jet.detectorEta << std::endl;
+	os << "Const: " << jet.nConst << " n90: " << jet.n90 << " n90Hits: " << jet.n90Hits << std::endl;
+	os << "fHPD: " << jet.fHPD << " fRBX: " << jet.fRBX << " HCAL noise: " << jet.noiseHCAL << std::endl;
+	os << "nTrack_Calo: " << jet.nTracksAtCalo << " nTrack_Vertex: " << jet.nTracksAtVertex;
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &v)
+////////////////////////////////////////////////////////////
+// KMetadata.h
+////////////////////////////////////////////////////////////
+std::ostream &operator<<(std::ostream &os, const KProvenance &p)
 {
-	os << v.bitsHLT << " " << v.nEvent << " " << v.nRun << " "
-		<< v.binValue << " " << v.alphaQCD << endl;
+	if (p.names.size() != p.branches.size())
+		return os << "Provenance corrupted!" << std::endl;
+	for (size_t i = 0; i < p.names.size(); ++i)
+		os << p.names[i] << " = " << p.branches[i] << std::endl;
 	return os;
 }
 
-template<typename T>
-void printvec(const T *v)
+std::ostream &operator<<(std::ostream &os, const KLumiMetadata &m)
 {
-	cout << "Size: " << v->size() << endl;
-	for (typename T::const_iterator it = v->begin(); it != v->end(); ++it)
-		cout << " " << *it;
-	cout << endl;
+	os << "Run: " << m.nRun << " " << m.nLumi << std::endl;
+	os << "HLT names "; printvec(os, m.hltNames);
+	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const KGenLumiMetadata &m)
+{
+	os << (KLumiMetadata)m << std::endl;
+	return os << "ext. xSec: " << m.xSectionExt << " int. xSec: " << m.xSectionInt << std::endl;
+}
+
+std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
+{
+	return os << "Event ID = " << m.nRun << ":" << m.nLumi << ":" << m.nBX << ":" << m.nEvent;
+}
+
+std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
+{
+	os << (KEventMetadata)m << std::endl;
+	return os << "Weight: " << m.weight;
 }
 
 #endif

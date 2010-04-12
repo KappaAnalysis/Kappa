@@ -16,6 +16,7 @@
 <use name="HLTrigger/HLTcore"/>
 <use name="SimDataFormats/GeneratorProducts" />
 <use name="PhysicsTools/UtilAlgos" />
+<use name="PhysicsTools/IsolationAlgos" />
 <use name="root"/>
 <use name="rootcore"/>
 
