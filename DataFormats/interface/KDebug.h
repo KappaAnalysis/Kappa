@@ -62,7 +62,7 @@ std::ostream &operator<<(std::ostream &os, const KProvenance &p)
 	for (size_t i = 0; i < p.names.size(); ++i)
 		os << p.names[i] << " = " << p.branches[i] << std::endl;
 	return os;
-};
+}
 
 std::ostream &operator<<(std::ostream &os, const KLumiMetadata &m)
 {
