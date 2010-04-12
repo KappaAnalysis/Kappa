@@ -7,6 +7,8 @@
 #include <DataFormats/MuonReco/interface/MuonFwd.h>
 #include <DataFormats/MuonReco/src/MuonSelectors.cc>
 #include <bitset>
+#include "PhysicsTools/IsolationAlgos/interface/IsoDepositVetoFactory.h"
+#include <DataFormats/Common/interface/ValueMap.h>
 
 struct KMuonProducer_Product
 {
@@ -15,12 +17,34 @@ struct KMuonProducer_Product
 	static const std::string producer() { return "KMuonProducer"; };
 };
 
-class KMuonProducer : public KRegexMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>
+class KMuonProducer : public KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>
 {
 public:
 	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KRegexMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree)
+		{}
 
+	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
+	{
+		if (tagMuonIsolation.label() != "")
+		  event.getByLabel(tagMuonIsolation,isoDeps);
+
+		return KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onEvent(event, setup);
+	}
+	virtual void fillProduct(const InputType &in, OutputType &out,
+		const std::string &name, const edm::ParameterSet &pset)
+	{
+		// Retrieve additional input products
+		tagMuonIsolation = pset.getParameter<edm::InputTag>("srcMuonIsolation");
+
+		isoVetos = pset.getParameter<std::vector<std::string> >("isoVetos");
+		isoParams.clear();
+		for ( std::vector<std::string>::const_iterator veto = isoVetos.begin(); veto != isoVetos.end(); ++veto )
+			isoParams.push_back(IsoDepositVetoFactory::make(veto->data()));
+
+		// Continue normally
+		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, pset);
+	}
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		// Momentum:
@@ -58,21 +82,20 @@ public:
 		out.isGoodMuon = (unsigned int)tmpBits.to_ulong();
 
 		// Isolation
-		// FIXME: isodeposit header
 		edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
-//		reco::IsoDeposit muonIsoDeposit = (*isoDeps)[muonref];
+		reco::IsoDeposit muonIsoDeposit = (*isoDeps)[muonref];
 
 		out.ecalIso03					= in.isolationR03().emEt;
 		out.hcalIso03					= in.isolationR03().hadEt;
-//		out.trackIso03					= muonIsoDeposit.depositWithin(0.3, isoParams, false);
+		out.trackIso03					= muonIsoDeposit.depositWithin(0.3, isoParams, false);
 
 		out.ecalIso05					= in.isolationR05().emEt;
 		out.hcalIso05					= in.isolationR05().hadEt;
-//		out.trackIso05					= muonIsoDeposit.depositWithin(0.5, isoParams, false);
+		out.trackIso05					= muonIsoDeposit.depositWithin(0.5, isoParams, false);
 
 		//out.hcalIso06;
 		//out.ecalIso06;
-//		out.trackIso06					= muonIsoDeposit.depositWithin(0.6, isoParams, false);
+		out.trackIso06					= muonIsoDeposit.depositWithin(0.6, isoParams, false);
 
 		// Vertex
 		out.vertex = KDataVertex();
@@ -103,6 +126,11 @@ public:
 		return 1;				// InsideOut
 	}
 
+	private:
+		edm::InputTag tagMuonIsolation;
+		edm::Handle< edm::ValueMap<reco::IsoDeposit> > isoDeps;
+		std::vector<std::string> isoVetos;
+		std::vector<reco::isodeposit::AbsVeto *> isoParams;
 };
 
 #endif

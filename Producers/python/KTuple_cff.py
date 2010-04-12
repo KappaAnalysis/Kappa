@@ -17,18 +17,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 	),
 
 	Muons = cms.PSet(
-		manual = cms.VInputTag(),
-
-		whitelist = cms.vstring("recoMuons_muons"),
-		blacklist = cms.vstring(),
-
-		rename = cms.vstring(),
-		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(),
-
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
 		maxEta = cms.double(-1),
+		muons = cms.PSet(
+			src = cms.InputTag("muons"),
+			srcMuonIsolation=cms.InputTag("muIsoDepositTk"),
+			isoVetos=cms.vstring("0.01"),
+		),
 	),
 
 	Tracks = cms.PSet(
