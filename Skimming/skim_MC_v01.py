@@ -8,11 +8,13 @@ process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring(
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 #-------------------------------------------------------------------------------
 
-# Includes ---------------------------------------------------------------------
+# Includes + Global Tag --------------------------------------------------------
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration/StandardSequences/Services_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('RecoJets.Configuration.RecoJetAssociations_cff')
+process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
+process.GlobalTag.globaltag = 'START3X_V26A::All' # latest tag for MC
 #-------------------------------------------------------------------------------
 
 # Configure tuple generation ---------------------------------------------------
@@ -62,9 +64,9 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 		),
 	)
 )
-process.kappatuple.verbose = cms.int32(1)
+process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
-	'GenMetadata', 'Muons', 'Tracks', 'LV', 'MET', 'CaloJets', 'Vertex'
+	'Muons', 'Tracks', 'LV', 'MET', 'CaloJets', 'Vertex', 'GenMetadata'
 )
 #-------------------------------------------------------------------------------
 
