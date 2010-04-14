@@ -24,18 +24,14 @@ public:
 		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree)
 		{}
 
-	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
-	{
-		if (tagMuonIsolation.label() != "")
-		  event.getByLabel(tagMuonIsolation,isoDeps);
-
-		return KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onEvent(event, setup);
-	}
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::ParameterSet &pset)
 	{
 		// Retrieve additional input products
 		tagMuonIsolation = pset.getParameter<edm::InputTag>("srcMuonIsolation");
+
+		if (tagMuonIsolation.label() != "")
+		  cEvent->getByLabel(tagMuonIsolation,isoDeps);
 
 		isoVetos = pset.getParameter<std::vector<std::string> >("isoVetos");
 		isoParams.clear();
