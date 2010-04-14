@@ -53,6 +53,8 @@ public:
 			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack);
 		if (in.innerTrack().isNonnull())
 			KTrackProducer::fillTrack(*in.innerTrack(), out.innerTrack);
+		if (in.outerTrack().isNonnull())
+			KTrackProducer::fillTrack(*in.outerTrack(), out.outerTrack);
 
 		// Charge, ...
 		out.charge = in.charge();

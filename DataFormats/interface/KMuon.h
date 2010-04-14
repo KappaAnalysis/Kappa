@@ -10,6 +10,7 @@ struct KDataMuon : KDataLV
 	KDataTrack track;
 	KDataTrack globalTrack;
 	KDataTrack innerTrack;
+	KDataTrack outerTrack;
 
 	KDataVertex vertex;
 
