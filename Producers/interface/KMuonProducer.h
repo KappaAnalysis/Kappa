@@ -83,14 +83,17 @@ public:
 		edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
 		reco::IsoDeposit muonIsoDeposit = (*isoDeps)[muonref];
 
+		out.sumPtIso03				= in.isolationR03().sumPt;
 		out.ecalIso03					= in.isolationR03().emEt;
 		out.hcalIso03					= in.isolationR03().hadEt;
 		out.trackIso03					= muonIsoDeposit.depositWithin(0.3, isoParams, false);
 
+		out.sumPtIso05				= in.isolationR05().sumPt;
 		out.ecalIso05					= in.isolationR05().emEt;
 		out.hcalIso05					= in.isolationR05().hadEt;
 		out.trackIso05					= muonIsoDeposit.depositWithin(0.5, isoParams, false);
 
+		//out.sumPtIso06;
 		//out.hcalIso06;
 		//out.ecalIso06;
 		out.trackIso06					= muonIsoDeposit.depositWithin(0.6, isoParams, false);
