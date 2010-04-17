@@ -84,8 +84,6 @@ public:
 		cEvent = &event;
 		cSetup = &setup;
 
-		onEventCommon();
-
 		for (typename std::map<typename Tout::type*, const edm::ParameterSet*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
 		{
 			const edm::ParameterSet *pset = it->second;
@@ -115,7 +113,6 @@ public:
 	typedef Tin InputType;
 
 	virtual void clearProduct(OutputType &output) = 0;
-	virtual void onEventCommon() {};
 	virtual void fillProduct(const InputType &input, OutputType &output, const std::string &name, const edm::ParameterSet &pset) = 0;
 
 protected:
@@ -232,8 +229,6 @@ public:
 		cEvent = &event;
 		cSetup = &setup;
 
-		onEventCommon();
-
 		for (typename std::map<typename Tout::type*, edm::InputTag*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
 		{
 			// Clear previous collection
@@ -256,7 +251,6 @@ public:
 	typedef Tin InputType;
 
 	virtual void clearProduct(OutputType &output) = 0;
-	virtual void onEventCommon() {};
 	virtual void fillProduct(const InputType &input, OutputType &output, edm::InputTag *tag) = 0;
 
 protected:
