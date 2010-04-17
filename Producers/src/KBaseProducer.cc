@@ -18,6 +18,16 @@ bool KBaseProducer::onFirstEvent(const edm::Event &event, const edm::EventSetup 
 	return true;
 }
 
+bool KBaseProducer::tagMatch(const edm::Provenance *prov, const std::vector<edm::InputTag> &tags)
+{
+	for (std::vector<edm::InputTag>::const_iterator titer = tags.begin(); titer < tags.end(); ++titer)
+		if ((titer->label() == prov->moduleLabel()) &&
+			(titer->instance() == prov->productInstanceName()) &&
+			(titer->process() == prov->processName()))
+			return true;
+	return false;
+}
+
 bool KBaseProducer::regexMatch(const std::string &in, const std::string &filter)
 {
 	if (verbosity > 2)

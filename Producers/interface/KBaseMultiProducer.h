@@ -149,16 +149,6 @@ public:
 		event_tree(_event_tree) {}
 	virtual ~KRegexMultiProducer() {}
 
-	bool tagMatch(const edm::Provenance *prov, const std::vector<edm::InputTag> &tags)
-	{
-		for (std::vector<edm::InputTag>::const_iterator titer = tags.begin(); titer < tags.end(); ++titer)
-			if ((titer->label() == prov->moduleLabel()) &&
-				(titer->instance() == prov->productInstanceName()) &&
-				(titer->process() == prov->processName()))
-				return true;
-		return false;
-	}
-
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		std::vector<edm::Provenance const*> plist;
@@ -171,7 +161,7 @@ public:
 
 			// Check if branch was selected
 			if (!(this->regexMatch((*piter)->branchName(), vsWhitelist, vsBlacklist)
-				|| tagMatch(*piter, viManual)))
+				|| this->tagMatch(*piter, viManual)))
 			{
 				continue;
 			}
