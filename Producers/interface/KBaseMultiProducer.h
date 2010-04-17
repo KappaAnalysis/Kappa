@@ -7,11 +7,11 @@
 #include "../../DataFormats/interface/KBasic.h"
 
 template<typename Tin, typename Tout>
-class KBaseMultiProducer : public KBaseProducerWP<Tout>
+class KBaseMultiProducer : public KBaseProducerWP
 {
 public:
 	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseProducerWP<Tout>(cfg, _event_tree, _run_tree) {}
+		KBaseProducerWP(cfg, _event_tree, _run_tree, Tout::producer()) {}
 	virtual ~KBaseMultiProducer() {}
 
 	typename Tout::type *allocateBronch(TTree *event_tree, const std::string bronchName)

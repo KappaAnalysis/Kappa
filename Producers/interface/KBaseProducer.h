@@ -30,20 +30,11 @@ public:
 
 // Producer with provenance
 //  - producer can rename collections => save mapping between new and old name
-template<typename Tout>
 class KBaseProducerWP : public KBaseProducer
 {
 public:
-	KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree)
-	{
-		provenance = new KProvenance();
-		_lumi_tree->Bronch(("Provenance_" + Tout::producer()).c_str(), "KProvenance", &provenance);
-	}
-	void addProvenance(std::string oldName, std::string newName)
-	{
-		provenance->names.push_back(newName);
-		provenance->branches.push_back(oldName);
-	}
+	KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string producerName);
+	void addProvenance(std::string oldName, std::string newName);
 
 protected:
 	KProvenance *provenance;

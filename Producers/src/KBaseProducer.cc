@@ -118,3 +118,16 @@ bool KBaseProducer::fail(const std::ostream &s)
 {
 	return false;
 }
+
+KBaseProducerWP::KBaseProducerWP(const edm::ParameterSet &cfg,
+	TTree *_event_tree, TTree *_lumi_tree, const std::string producerName)
+{
+	provenance = new KProvenance();
+	_lumi_tree->Bronch(("Provenance_" + producerName).c_str(), "KProvenance", &provenance);
+}
+
+void KBaseProducerWP::addProvenance(std::string oldName, std::string newName)
+{
+	provenance->names.push_back(newName);
+	provenance->branches.push_back(oldName);
+}
