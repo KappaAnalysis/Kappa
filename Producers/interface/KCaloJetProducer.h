@@ -51,7 +51,7 @@ public:
 	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
-		const std::string &name, const edm::ParameterSet &pset)
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Retrieve additional input products
 		tagExtender = pset.getParameter<edm::InputTag>("srcExtender");
@@ -63,7 +63,7 @@ public:
 			cEvent->getByLabel(tagJetID, hJetID);
 
 		// Continue normally
-		KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::fillProduct(in, out, name, pset);
+		KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

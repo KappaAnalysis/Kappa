@@ -25,7 +25,7 @@ public:
 		{}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
-		const std::string &name, const edm::ParameterSet &pset)
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Retrieve additional input products
 		tagMuonIsolation = pset.getParameter<edm::InputTag>("srcMuonIsolation");
@@ -39,7 +39,7 @@ public:
 			isoParams.push_back(IsoDepositVetoFactory::make(veto->data()));
 
 		// Continue normally
-		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, pset);
+		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
