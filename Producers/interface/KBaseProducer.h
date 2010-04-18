@@ -37,6 +37,7 @@ public:
 	void addProvenance(std::string oldName, std::string newName);
 
 protected:
+	const edm::ParameterSet &psBase;
 	KProvenance *provenance;
 };
 

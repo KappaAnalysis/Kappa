@@ -119,7 +119,7 @@ public:
 				continue;
 			}
 
-			fillProduct(*(this->handle), ref, nameMap[it->first], &src, *it->second);
+			fillProduct(*(this->handle), ref, nameMap[it->first], &src, *pset);
 		}
 		return true;
 	}
@@ -239,7 +239,7 @@ public:
 			}
 
 			const std::string name = this->nameMap[it->second].first + " (" + this->nameMap[it->second].second + ")";
-			fillProduct(*(this->handle), ref, name, it->second);
+			fillProduct(*(this->handle), ref, name, it->second, this->psBase);
 		}
 		return true;
 	}
@@ -247,7 +247,7 @@ public:
 	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
 	virtual void fillProduct(const typename KBaseMultiProducer<Tin, Tout>::InputType &input,
 		typename KBaseMultiProducer<Tin, Tout>::OutputType &output,
-		const std::string &name, const edm::InputTag *tag) = 0;
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset) = 0;
 
 protected:
 	std::vector<edm::InputTag> viManual;
