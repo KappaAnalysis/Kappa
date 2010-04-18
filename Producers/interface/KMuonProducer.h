@@ -24,18 +24,14 @@ public:
 		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree)
 		{}
 
-	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
-	{
-		if (tagMuonIsolation.label() != "")
-		  event.getByLabel(tagMuonIsolation,isoDeps);
-
-		return KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onEvent(event, setup);
-	}
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::ParameterSet &pset)
 	{
 		// Retrieve additional input products
 		tagMuonIsolation = pset.getParameter<edm::InputTag>("srcMuonIsolation");
+
+		if (tagMuonIsolation.label() != "")
+		  cEvent->getByLabel(tagMuonIsolation,isoDeps);
 
 		isoVetos = pset.getParameter<std::vector<std::string> >("isoVetos");
 		isoParams.clear();
@@ -57,6 +53,8 @@ public:
 			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack);
 		if (in.innerTrack().isNonnull())
 			KTrackProducer::fillTrack(*in.innerTrack(), out.innerTrack);
+		if (in.outerTrack().isNonnull())
+			KTrackProducer::fillTrack(*in.outerTrack(), out.outerTrack);
 
 		// Charge, ...
 		out.charge = in.charge();
@@ -85,14 +83,17 @@ public:
 		edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
 		reco::IsoDeposit muonIsoDeposit = (*isoDeps)[muonref];
 
+		out.sumPtIso03				= in.isolationR03().sumPt;
 		out.ecalIso03					= in.isolationR03().emEt;
 		out.hcalIso03					= in.isolationR03().hadEt;
 		out.trackIso03					= muonIsoDeposit.depositWithin(0.3, isoParams, false);
 
+		out.sumPtIso05				= in.isolationR05().sumPt;
 		out.ecalIso05					= in.isolationR05().emEt;
 		out.hcalIso05					= in.isolationR05().hadEt;
 		out.trackIso05					= muonIsoDeposit.depositWithin(0.5, isoParams, false);
 
+		//out.sumPtIso06;
 		//out.hcalIso06;
 		//out.ecalIso06;
 		out.trackIso06					= muonIsoDeposit.depositWithin(0.6, isoParams, false);

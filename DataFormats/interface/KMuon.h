@@ -10,6 +10,7 @@ struct KDataMuon : KDataLV
 	KDataTrack track;
 	KDataTrack globalTrack;
 	KDataTrack innerTrack;
+	KDataTrack outerTrack;
 
 	KDataVertex vertex;
 
@@ -24,14 +25,17 @@ struct KDataMuon : KDataLV
 	bool isStandAloneMuon;
 	bool isGlobalMuon;
 
+	float sumPtIso03;
 	float hcalIso03;
 	float ecalIso03;
 	float trackIso03;
 
+	float sumPtIso05;
 	float hcalIso05;
 	float ecalIso05;
 	float trackIso05;
 
+	float sumPtIso06;
 	float hcalIso06;
 	float ecalIso06;
 	float trackIso06;
