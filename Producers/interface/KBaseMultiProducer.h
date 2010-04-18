@@ -42,6 +42,9 @@ protected:
 	const edm::Event *cEvent;
 	const edm::EventSetup *cSetup;
 
+	typedef typename Tout::type OutputType;
+	typedef Tin InputType;
+
 private:
 	std::map<std::string, typename Tout::type*> bronchStorage;
 };
@@ -120,11 +123,8 @@ public:
 		return true;
 	}
 
-	typedef typename Tout::type OutputType;
-	typedef Tin InputType;
-
-	virtual void clearProduct(OutputType &output) = 0;
-	virtual void fillProduct(const InputType &input, OutputType &output, const std::string &name, const edm::ParameterSet &pset) = 0;
+	virtual void clearProduct(KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
+	virtual void fillProduct(const KBaseMultiProducer<Tin, Tout>::InputType &input, KBaseMultiProducer<Tin, Tout>::OutputType &output, const std::string &name, const edm::ParameterSet &pset) = 0;
 
 protected:
 	std::map<typename Tout::type*, std::string> nameMap;
@@ -240,11 +240,8 @@ public:
 		return true;
 	}
 
-	typedef typename Tout::type OutputType;
-	typedef Tin InputType;
-
-	virtual void clearProduct(OutputType &output) = 0;
-	virtual void fillProduct(const InputType &input, OutputType &output, edm::InputTag *tag) = 0;
+	virtual void clearProduct(KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
+	virtual void fillProduct(const KBaseMultiProducer<Tin, Tout>::InputType &input, KBaseMultiProducer<Tin, Tout>::OutputType &output, edm::InputTag *tag) = 0;
 
 protected:
 	std::vector<edm::InputTag> viManual;

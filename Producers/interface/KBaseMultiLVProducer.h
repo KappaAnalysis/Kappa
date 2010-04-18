@@ -110,10 +110,10 @@ public:
 		KCommonLVProducer<Tin, Tout>(cfg) {}
 	virtual ~KManualMultiLVProducer() {};
 
-	virtual void clearProduct(typename KManualMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
+	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
 	virtual void fillProduct(
-		const typename KManualMultiProducer<Tin, Tout>::InputType &in,
-		typename KManualMultiProducer<Tin, Tout>::OutputType &out,
+		const typename KBaseMultiProducer<Tin, Tout>::InputType &in,
+		typename KBaseMultiProducer<Tin, Tout>::OutputType &out,
 		const std::string &name, const edm::ParameterSet &pset)
 	{
 		KCommonLVProducer<Tin, Tout>::fillProduct(in, out, name);
@@ -133,10 +133,10 @@ public:
 		KCommonLVProducer<Tin, Tout>(cfg) {}
 	virtual ~KRegexMultiLVProducer() {};
 
-	virtual void clearProduct(typename KRegexMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
+	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
 	virtual void fillProduct(
-		const typename KRegexMultiProducer<Tin, Tout>::InputType &in,
-		typename KRegexMultiProducer<Tin, Tout>::OutputType &out, edm::InputTag *tag)
+		const typename KBaseMultiProducer<Tin, Tout>::InputType &in,
+		typename KBaseMultiProducer<Tin, Tout>::OutputType &out, edm::InputTag *tag)
 	{
 		const std::string name = this->nameMap[tag].first + " (" + this->nameMap[tag].second + ")";
 		KCommonLVProducer<Tin, Tout>::fillProduct(in, out, name);
