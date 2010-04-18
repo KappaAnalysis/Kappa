@@ -137,7 +137,7 @@ public:
 	virtual void fillProduct(
 		const typename KBaseMultiProducer<Tin, Tout>::InputType &in,
 		typename KBaseMultiProducer<Tin, Tout>::OutputType &out,
-		const std::string &name, edm::InputTag *tag)
+		const std::string &name, const edm::InputTag *tag)
 	{
 		KCommonLVProducer<Tin, Tout>::fillProduct(in, out, name);
 	}

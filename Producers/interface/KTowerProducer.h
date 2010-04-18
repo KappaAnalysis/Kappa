@@ -31,7 +31,7 @@ protected:
 	double minPt;
 
 	virtual void clearProduct(OutputType &output) { output.clear(); }
-	virtual void fillProduct(const InputType &input, OutputType &output, const std::string &name, edm::InputTag *tag)
+	virtual void fillProduct(const InputType &input, OutputType &output, const std::string &name, const edm::InputTag *tag)
 	{
 		if (verbosity > 0)
 			std::cout << input.size() << " objects in collection "

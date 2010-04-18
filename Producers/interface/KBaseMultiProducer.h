@@ -125,8 +125,8 @@ public:
 	}
 
 	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
-	virtual void fillProduct(const KBaseMultiProducer<Tin, Tout>::InputType &input,
-		KBaseMultiProducer<Tin, Tout>::OutputType &output, const std::string &name,
+	virtual void fillProduct(const typename KBaseMultiProducer<Tin, Tout>::InputType &input,
+		typename KBaseMultiProducer<Tin, Tout>::OutputType &output, const std::string &name,
 		const edm::ParameterSet &pset) = 0;
 
 protected:
@@ -225,7 +225,7 @@ public:
 	{
 		KBaseMultiProducer<Tin, Tout>::onEvent(event, setup);
 
-		for (typename std::map<typename Tout::type*, edm::InputTag*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
+		for (typename std::map<typename Tout::type*, const edm::InputTag*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
 		{
 			// Clear previous collection
 			typename Tout::type &ref = *it->first;
@@ -245,9 +245,9 @@ public:
 	}
 
 	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
-	virtual void fillProduct(const KBaseMultiProducer<Tin, Tout>::InputType &input,
-		KBaseMultiProducer<Tin, Tout>::OutputType &output, const std::string &name,
-		edm::InputTag *tag) = 0;
+	virtual void fillProduct(const typename KBaseMultiProducer<Tin, Tout>::InputType &input,
+		typename KBaseMultiProducer<Tin, Tout>::OutputType &output, const std::string &name,
+		const edm::InputTag *tag) = 0;
 
 protected:
 	std::vector<edm::InputTag> viManual;
@@ -259,8 +259,8 @@ protected:
 	std::vector<std::string> vsRenameWhitelist;
 	std::vector<std::string> vsRenameBlacklist;
 
-	std::map<edm::InputTag*, std::pair<std::string, std::string> > nameMap;
-	std::map<typename Tout::type*, edm::InputTag*> targetIDMap;
+	std::map<const edm::InputTag*, std::pair<std::string, std::string> > nameMap;
+	std::map<typename Tout::type*, const edm::InputTag*> targetIDMap;
 };
 
 #endif
