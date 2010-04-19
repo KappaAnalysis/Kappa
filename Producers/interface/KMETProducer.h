@@ -21,7 +21,7 @@ public:
 	virtual ~KMETProducer() {};
 protected:
 	virtual void clearProduct(OutputType &output) { output.p4.SetCoordinates(0,0,0,0); output.sumEt = -1; }
-	virtual void fillProduct(const InputType &in, OutputType &out, edm::InputTag *tag)
+	virtual void fillProduct(const InputType &in, OutputType &out, const std::string &name, edm::InputTag *tag)
 	{
 		if (in.size() == 1)
 		{

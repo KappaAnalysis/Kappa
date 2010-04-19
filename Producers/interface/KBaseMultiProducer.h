@@ -124,7 +124,9 @@ public:
 	}
 
 	virtual void clearProduct(KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
-	virtual void fillProduct(const KBaseMultiProducer<Tin, Tout>::InputType &input, KBaseMultiProducer<Tin, Tout>::OutputType &output, const std::string &name, const edm::ParameterSet &pset) = 0;
+	virtual void fillProduct(const KBaseMultiProducer<Tin, Tout>::InputType &input,
+		KBaseMultiProducer<Tin, Tout>::OutputType &output, const std::string &name,
+		const edm::ParameterSet &pset) = 0;
 
 protected:
 	std::map<typename Tout::type*, std::string> nameMap;
@@ -235,13 +237,16 @@ public:
 				continue;
 			}
 
-			fillProduct(*(this->handle), ref, it->second);
+			const std::string name = this->nameMap[it->second].first + " (" + this->nameMap[it->second].second + ")";
+			fillProduct(*(this->handle), ref, name, it->second);
 		}
 		return true;
 	}
 
 	virtual void clearProduct(KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
-	virtual void fillProduct(const KBaseMultiProducer<Tin, Tout>::InputType &input, KBaseMultiProducer<Tin, Tout>::OutputType &output, edm::InputTag *tag) = 0;
+	virtual void fillProduct(const KBaseMultiProducer<Tin, Tout>::InputType &input,
+		KBaseMultiProducer<Tin, Tout>::OutputType &output, const std::string &name,
+		edm::InputTag *tag) = 0;
 
 protected:
 	std::vector<edm::InputTag> viManual;
