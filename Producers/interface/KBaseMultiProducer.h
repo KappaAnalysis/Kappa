@@ -27,6 +27,7 @@ public:
 	{
 		this->cEvent = &event;
 		this->cSetup = &setup;
+		return true;
 	}
 
 	void printAcceptedProducts(int verbosity)
@@ -35,15 +36,15 @@ public:
 			std::cout << "Accepted number of products: " << bronchStorage.size() << std::endl;
 	}
 
+	typedef typename Tout::type OutputType;
+	typedef Tin InputType;
+
 protected:
 	typename edm::Handle<Tin> handle;
 
 	TTree *event_tree;
 	const edm::Event *cEvent;
 	const edm::EventSetup *cSetup;
-
-	typedef typename Tout::type OutputType;
-	typedef Tin InputType;
 
 private:
 	std::map<std::string, typename Tout::type*> bronchStorage;
@@ -123,7 +124,7 @@ public:
 		return true;
 	}
 
-	virtual void clearProduct(KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
+	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
 	virtual void fillProduct(const KBaseMultiProducer<Tin, Tout>::InputType &input,
 		KBaseMultiProducer<Tin, Tout>::OutputType &output, const std::string &name,
 		const edm::ParameterSet &pset) = 0;
@@ -243,7 +244,7 @@ public:
 		return true;
 	}
 
-	virtual void clearProduct(KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
+	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
 	virtual void fillProduct(const KBaseMultiProducer<Tin, Tout>::InputType &input,
 		KBaseMultiProducer<Tin, Tout>::OutputType &output, const std::string &name,
 		edm::InputTag *tag) = 0;
