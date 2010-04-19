@@ -13,6 +13,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"^HLT_MET[0-9]*", "^HLT_Activity.*", ".*(Bias|BSC).*", "^HLT_PhysicsDeclared"),
 		hltBlacklist = cms.vstring(),
 
+		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
+		muonTriggerObjects = cms.vstring("hlt.*Mu.*"),
 		noiseHCAL = cms.InputTag("hcalnoise"),
 	),
 
@@ -25,6 +27,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 			srcMuonIsolation=cms.InputTag("muIsoDepositTk"),
 			isoVetos=cms.vstring("0.01"),
 		),
+		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
+		hltMaxdR = cms.double(0.05),
 	),
 
 	Tracks = cms.PSet(
