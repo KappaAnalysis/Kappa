@@ -54,7 +54,7 @@ struct KDataMuon : KDataLV
 	float timeAtIpOutInErr;
 	int direction;
 
-	unsigned long hltMatch;
+	unsigned long long hltMatch;
 };
 typedef std::vector<KDataMuon> KDataMuons;
 
