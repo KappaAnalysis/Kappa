@@ -50,11 +50,11 @@ public:
 		metaLumi->nLumi = lumiBlock.luminosityBlock();
 
 		// Read trigger infos
+		hltKappa2FWK.clear();
+		hltKappa2FWK.push_back(0);
 		if (!hltConfig.init(tagHLTResults.process()))
 			return fail(std::cout << "Invalid HLT process selected: " << sHLTProcess << std::endl);
 		int counter = 1;
-		hltKappa2FWK.clear();
-		hltKappa2FWK.push_back(0);
 		metaLumi->hltNames.push_back("fail");
 
 		for (size_t i = 0; i < hltConfig.size(); ++i)
