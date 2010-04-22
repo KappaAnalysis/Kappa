@@ -14,7 +14,19 @@ KBaseMultiProducer *   KCommonVectorProducer   |
                                             \--- KTowerProducer
 
 TODO:
+Redo verbose limits ...
 Merge Manual and RegexProducer using PSet::augment to provide per output object configuration
 (Must use untracked parameters?)
   => This will simplify the producer structure VERY much...
-Redo verbose limits ...
+
+
+GOAL:
+                                                  /-> KPartonProducer
+                                                 |
+KBaseMultiProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
+        ^            |                           |
+        |            |\-> KMETProducer           |\-> KTrackProducer
+ KBaseProducerWP     |                           |
+        ^            |\-> KVertexProducer        |\-> KMuonProducer
+        |            |                           |
+  KBaseProducer      \--> KTowerProducer         \--> KCaloJetProducer
