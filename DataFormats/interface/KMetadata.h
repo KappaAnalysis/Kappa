@@ -41,6 +41,12 @@ struct KEventMetadata
 	int nBX;
 };
 
+// Nice names for types
+typedef unsigned int event_id;
+typedef unsigned int lumi_id;
+typedef unsigned int run_id;
+typedef int bx_id;
+
 // List of user flags
 const unsigned long KFlagPhysicsDeclared = 1 << 0;
 const unsigned long KFlagHCALLooseNoise = 1 << 1;
