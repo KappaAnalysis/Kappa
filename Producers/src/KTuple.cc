@@ -80,11 +80,6 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 	for (size_t i = 0; i < active.size(); ++i)
 	{
 		std::cout << "Init producer " << active[i] << std::endl;
-/*
-		if (active[i] == "Partons")
-			producers.push_back(new KPartonProducer(
-				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-*/
 		if (active[i] == "Metadata")
 			producers.push_back(new KMetadataProducer<KMetadata_Product>(
 				psConfig.getParameter<edm::ParameterSet>("Metadata"), event_tree, lumi_tree));
@@ -111,6 +106,9 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		else if (active[i] == "LV")
 			producers.push_back(new KLorentzProducer(
+				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
+		else if (active[i] == "Partons")
+			producers.push_back(new KPartonProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		else
 			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;
