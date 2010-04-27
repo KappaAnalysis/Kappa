@@ -10,6 +10,9 @@
 #include "PhysicsTools/IsolationAlgos/interface/IsoDepositVetoFactory.h"
 #include <DataFormats/Common/interface/ValueMap.h>
 
+#include "DataFormats/HLTReco/interface/TriggerEvent.h"
+#include "Math/GenVector/VectorUtil.h"
+
 struct KMuonProducer_Product
 {
 	typedef std::vector<KDataMuon> type;
@@ -21,21 +24,22 @@ class KMuonProducer : public KManualMultiLVProducer<edm::View<reco::Muon>, KMuon
 {
 public:
 	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree)
+		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree),
+		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
+		hltMaxdR(cfg.getParameter<double>("hltMaxdR"))
 		{}
 
-	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
-	{
-		if (tagMuonIsolation.label() != "")
-		  event.getByLabel(tagMuonIsolation,isoDeps);
-
-		return KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onEvent(event, setup);
-	}
 	virtual void fillProduct(const InputType &in, OutputType &out,
-		const std::string &name, const edm::ParameterSet &pset)
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Retrieve additional input products
 		tagMuonIsolation = pset.getParameter<edm::InputTag>("srcMuonIsolation");
+
+		if (tagMuonIsolation.label() != "")
+		  cEvent->getByLabel(tagMuonIsolation,isoDeps);
+
+		if (tagHLTrigger.label() != "")
+			cEvent->getByLabel(tagHLTrigger, triggerEventHandle);
 
 		isoVetos = pset.getParameter<std::vector<std::string> >("isoVetos");
 		isoParams.clear();
@@ -43,7 +47,7 @@ public:
 			isoParams.push_back(IsoDepositVetoFactory::make(veto->data()));
 
 		// Continue normally
-		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, pset);
+		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
@@ -57,6 +61,8 @@ public:
 			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack);
 		if (in.innerTrack().isNonnull())
 			KTrackProducer::fillTrack(*in.innerTrack(), out.innerTrack);
+		if (in.outerTrack().isNonnull())
+			KTrackProducer::fillTrack(*in.outerTrack(), out.outerTrack);
 
 		// Charge, ...
 		out.charge = in.charge();
@@ -85,14 +91,17 @@ public:
 		edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
 		reco::IsoDeposit muonIsoDeposit = (*isoDeps)[muonref];
 
+		out.sumPtIso03				= in.isolationR03().sumPt;
 		out.ecalIso03					= in.isolationR03().emEt;
 		out.hcalIso03					= in.isolationR03().hadEt;
 		out.trackIso03					= muonIsoDeposit.depositWithin(0.3, isoParams, false);
 
+		out.sumPtIso05				= in.isolationR05().sumPt;
 		out.ecalIso05					= in.isolationR05().emEt;
 		out.hcalIso05					= in.isolationR05().hadEt;
 		out.trackIso05					= muonIsoDeposit.depositWithin(0.5, isoParams, false);
 
+		//out.sumPtIso06;
 		//out.hcalIso06;
 		//out.ecalIso06;
 		out.trackIso06					= muonIsoDeposit.depositWithin(0.6, isoParams, false);
@@ -114,7 +123,7 @@ public:
 		out.timeAtIpOutInErr = in.time().timeAtIpOutInErr;
 		out.direction = getDirection(out.timeNDof, out.timeAtIpInOutErr, out.timeAtIpOutInErr);
 
-		// TODO: hltMatch (matching with HLT objects)
+		out.hltMatch = getHLTInfo(out.p4);
 	}
 
 	int getDirection(int timeNDof, float timeAtIpInOutErr, float timeAtIpOutInErr)
@@ -127,10 +136,48 @@ public:
 	}
 
 	private:
-		edm::InputTag tagMuonIsolation;
+		edm::InputTag tagMuonIsolation, tagHLTrigger;
+		double hltMaxdR;
 		edm::Handle< edm::ValueMap<reco::IsoDeposit> > isoDeps;
 		std::vector<std::string> isoVetos;
 		std::vector<reco::isodeposit::AbsVeto *> isoParams;
+
+		edm::Handle< trigger::TriggerEvent > triggerEventHandle;
+
+		unsigned long getHLTInfo(const RMDataLV p4)
+		{
+			if (!triggerEventHandle.isValid())
+				return 0;
+
+			unsigned long ret = 0;
+
+			//KMetadataProducer<KMetadata_Product>::metaLumi->hltNamesMuons
+			const unsigned sizeFilters = triggerEventHandle->sizeFilters();
+
+			int idx=0;
+			for(unsigned int iF = 0; iF<sizeFilters; iF++)
+			{
+				const std::string nameFilter(triggerEventHandle->filterTag(iF).label());
+				const trigger::Keys & keys = triggerEventHandle->filterKeys(iF);
+
+				if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(nameFilter)==KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
+					continue;
+
+				idx++;
+
+				for(unsigned int iK = 0; iK<keys.size(); iK++)
+				{
+					trigger::TriggerObject triggerObject( triggerEventHandle->getObjects().at( keys[iK] ) );
+					RMDataLV tmpP4(triggerObject.pt(), triggerObject.eta(), triggerObject.phi(), triggerObject.mass());
+
+					if (ROOT::Math::VectorUtil::DeltaR(p4, tmpP4) < hltMaxdR)
+					{
+						ret |= ((unsigned long long)1 << KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[nameFilter]);
+					}
+				}
+			}
+			return ret;
+		}
 };
 
 #endif

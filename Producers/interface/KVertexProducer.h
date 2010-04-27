@@ -28,7 +28,7 @@ protected:
 	virtual void fillProduct(
 		const KManualMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>::InputType &in,
 		KManualMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>::OutputType &out,
-		const std::string &name, const edm::ParameterSet &pset)
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		KCommonVectorProducer<edm::View<reco::Vertex>, KVertexProducer_Product>::fillProduct(in, out, name);
 	}

@@ -21,11 +21,9 @@
 #include "../interface/KVertexProducer.h"
 #include "../interface/KMuonProducer.h"
 #include "../interface/KCaloJetProducer.h"
-
-/*
-#include "../interface/KHepMCPartonProducer.h"
 #include "../interface/KPartonProducer.h"
-*/
+// #include "../interface/KHepMCPartonProducer.h"
+
 int KBaseProducer::verbosity = 0;
 
 class KTuple : public edm::EDAnalyzer
@@ -75,17 +73,32 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 
 	KBaseProducer::verbosity = std::max(KBaseProducer::verbosity, psConfig.getParameter<int>("verbose"));
 
-	// Create all active producers
+	// Create metadata producer
 	std::vector<std::string> active = psConfig.getParameter<std::vector<std::string> >("active");
 	for (size_t i = 0; i < active.size(); ++i)
 	{
 		std::cout << "Init producer " << active[i] << std::endl;
 		if (active[i] == "Metadata")
+		{
 			producers.push_back(new KMetadataProducer<KMetadata_Product>(
 				psConfig.getParameter<edm::ParameterSet>("Metadata"), event_tree, lumi_tree));
+			break;
+		}
 		else if (active[i] == "GenMetadata")
+		{
 			producers.push_back(new KGenMetadataProducer<KGenMetadata_Product>(
 				psConfig.getParameter<edm::ParameterSet>("Metadata"), event_tree, lumi_tree));
+			break;
+		}
+
+	// Create all active producers
+	for (size_t i = 0; i < active.size(); ++i)
+	{
+		std::cout << "Init producer " << active[i] << std::endl;
+		if (active[i] == "Metadata")
+			continue;
+		else if (active[i] == "GenMetadata")
+			continue;
 		else if (active[i] == "CaloJets")
 			producers.push_back(new KCaloJetProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
@@ -111,7 +124,10 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			producers.push_back(new KPartonProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		else
+		{
 			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;
+			exit(1);
+		}
 	}
 	first = true;
 }

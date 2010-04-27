@@ -18,6 +18,16 @@ bool KBaseProducer::onFirstEvent(const edm::Event &event, const edm::EventSetup 
 	return true;
 }
 
+bool KBaseProducer::tagMatch(const edm::Provenance *prov, const std::vector<edm::InputTag> &tags)
+{
+	for (std::vector<edm::InputTag>::const_iterator titer = tags.begin(); titer < tags.end(); ++titer)
+		if ((titer->label() == prov->moduleLabel()) &&
+			(titer->instance() == prov->productInstanceName()) &&
+			(titer->process() == prov->processName()))
+			return true;
+	return false;
+}
+
 bool KBaseProducer::regexMatch(const std::string &in, const std::string &filter)
 {
 	if (verbosity > 2)
@@ -107,4 +117,17 @@ std::string KBaseProducer::regexRename(std::string in, const std::vector<std::st
 bool KBaseProducer::fail(const std::ostream &s)
 {
 	return false;
+}
+
+KBaseProducerWP::KBaseProducerWP(const edm::ParameterSet &cfg,
+	TTree *_event_tree, TTree *_lumi_tree, const std::string producerName) : psBase(cfg)
+{
+	provenance = new KProvenance();
+	_lumi_tree->Bronch(("Provenance_" + producerName).c_str(), "KProvenance", &provenance);
+}
+
+void KBaseProducerWP::addProvenance(std::string oldName, std::string newName)
+{
+	provenance->names.push_back(newName);
+	provenance->branches.push_back(oldName);
 }

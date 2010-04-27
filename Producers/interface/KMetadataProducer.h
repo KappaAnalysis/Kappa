@@ -14,6 +14,8 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 
+#include "DataFormats/HLTReco/interface/TriggerEvent.h"
+
 // real data
 struct KMetadata_Product
 {
@@ -32,8 +34,9 @@ public:
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
 		svHLTWhitelist(cfg.getParameter<std::vector<std::string> >("hltWhitelist")),
 		svHLTBlacklist(cfg.getParameter<std::vector<std::string> >("hltBlacklist")),
-
-		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL"))
+		svMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
+		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL")),
+		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger"))
 	{
 		metaLumi = new typename Tmeta::typeLumi();
 		_lumi_tree->Bronch("KLumiMetadata", Tmeta::idLumi().c_str(), &metaLumi);
@@ -50,11 +53,11 @@ public:
 		metaLumi->nLumi = lumiBlock.luminosityBlock();
 
 		// Read trigger infos
+		hltKappa2FWK.clear();
+		hltKappa2FWK.push_back(0);
 		if (!hltConfig.init(tagHLTResults.process()))
 			return fail(std::cout << "Invalid HLT process selected: " << sHLTProcess << std::endl);
 		int counter = 1;
-		hltKappa2FWK.clear();
-		hltKappa2FWK.push_back(0);
 		metaLumi->hltNames.push_back("fail");
 
 		for (size_t i = 0; i < hltConfig.size(); ++i)
@@ -79,11 +82,41 @@ public:
 		if (verbosity > 0)
 			std::cout << "Accepted number of trigger streams: " << counter - 1 << std::endl;
 
+		firstEventInLumi = true;
 		return true;
 	}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
+		if (firstEventInLumi)
+		{
+			firstEventInLumi = false;
+			edm::Handle< trigger::TriggerEvent > triggerEventHandle;
+			if (!event.getByLabel(tagHLTrigger, triggerEventHandle))
+				; //	return printErrorObjectNotFound< trigger::TriggerEvent >(tagHLTrigger, event);
+
+			const unsigned sizeFilters = triggerEventHandle->sizeFilters();
+
+			int idx=0;
+			for(unsigned int iF = 0; iF<sizeFilters; iF++)
+			{
+				const std::string filterName(triggerEventHandle->filterTag(iF).label());
+
+				bool matched=false;
+				for (std::vector<std::string>::iterator it=svMuonTriggerObjects.begin(); it!=svMuonTriggerObjects.end(); it++)
+					if (regexMatch(filterName, *it))
+						matched=true;
+				if (matched)
+				{
+					metaLumi->hltNamesMuons.push_back(filterName);
+					muonTriggerObjectBitMap[filterName]=idx;
+					std::cout << idx << "\t" << filterName << "\n";
+					idx++;
+				}
+				//std::cout << (matched ? "+ ": "- ") << filterName << "\n";
+			}
+		}
+
 		// Set basic event infos
 		metaEvent->nRun = event.id().run();
 		metaEvent->nEvent = event.id().event();
@@ -143,19 +176,26 @@ public:
 		return true;
 	}
 
+	static std::map<std::string, int> muonTriggerObjectBitMap;
+
 protected:
+	bool firstEventInLumi;
 	edm::InputTag tagL1Results, tagHLTResults;
 	std::string sHLTProcess;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
+	std::vector<std::string> svMuonTriggerObjects;
 	HLTConfigProvider hltConfig;
 	std::vector<size_t> hltKappa2FWK;
 
-	edm::InputTag tagNoiseHCAL;
+	edm::InputTag tagNoiseHCAL, tagHLTrigger;
 
 	typename Tmeta::typeLumi *metaLumi;
 	typename Tmeta::typeEvent *metaEvent;
 
 	std::map<std::pair<unsigned int, unsigned int>, typename Tmeta::typeLumi> metaLumiMap;
 };
+
+template<typename Tmeta>
+std::map<std::string, int> KMetadataProducer<Tmeta>::muonTriggerObjectBitMap;
 
 #endif

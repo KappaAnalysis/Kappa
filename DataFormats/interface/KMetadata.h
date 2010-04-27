@@ -15,8 +15,8 @@ struct KProvenance
 /* RUN + LUMI METADATA */
 struct KLumiMetadata
 {
-	unsigned long nLumi;
-	unsigned long nRun;
+	unsigned int nLumi;
+	unsigned int nRun;
 	std::vector<std::string> hltNames;
 	std::vector<std::string> hltNamesMuons;
 	std::vector<std::string> discrTau;
@@ -35,11 +35,17 @@ struct KEventMetadata
 	unsigned long long bitsL1;
 	unsigned long long bitsHLT;
 	unsigned long bitsUserFlags;
-	unsigned long nEvent;
-	unsigned long nLumi;
-	unsigned long nRun;
-	unsigned long nBX;
+	unsigned int nEvent;
+	unsigned int nLumi;
+	unsigned int nRun;
+	int nBX;
 };
+
+// Nice names for types
+typedef unsigned int event_id;
+typedef unsigned int lumi_id;
+typedef unsigned int run_id;
+typedef int bx_id;
 
 // List of user flags
 const unsigned long KFlagPhysicsDeclared = 1 << 0;

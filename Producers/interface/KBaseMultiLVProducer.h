@@ -73,7 +73,7 @@ public:
 
 	virtual bool acceptSingle(const typename Tin::value_type &in)
 	{
-		return (in.pt() >= minPt && ((maxEta < 0) || (abs(in.eta()) <= maxEta)));
+		return (in.pt() >= minPt && ((maxEta < 0) || (std::abs(in.eta()) <= maxEta)));
 	}
 
 	virtual void sort(typename Tout::type &out)
@@ -110,11 +110,11 @@ public:
 		KCommonLVProducer<Tin, Tout>(cfg) {}
 	virtual ~KManualMultiLVProducer() {};
 
-	virtual void clearProduct(typename KManualMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
+	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
 	virtual void fillProduct(
-		const typename KManualMultiProducer<Tin, Tout>::InputType &in,
-		typename KManualMultiProducer<Tin, Tout>::OutputType &out,
-		const std::string &name, const edm::ParameterSet &pset)
+		const typename KBaseMultiProducer<Tin, Tout>::InputType &in,
+		typename KBaseMultiProducer<Tin, Tout>::OutputType &out,
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		KCommonLVProducer<Tin, Tout>::fillProduct(in, out, name);
 	}
@@ -133,12 +133,12 @@ public:
 		KCommonLVProducer<Tin, Tout>(cfg) {}
 	virtual ~KRegexMultiLVProducer() {};
 
-	virtual void clearProduct(typename KRegexMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
+	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
 	virtual void fillProduct(
-		const typename KRegexMultiProducer<Tin, Tout>::InputType &in,
-		typename KRegexMultiProducer<Tin, Tout>::OutputType &out, edm::InputTag *tag)
+		const typename KBaseMultiProducer<Tin, Tout>::InputType &in,
+		typename KBaseMultiProducer<Tin, Tout>::OutputType &out,
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		const std::string name = this->nameMap[tag].first + " (" + this->nameMap[tag].second + ")";
 		KCommonLVProducer<Tin, Tout>::fillProduct(in, out, name);
 	}
 };

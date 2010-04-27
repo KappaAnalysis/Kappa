@@ -7,11 +7,12 @@
 #include "../../DataFormats/interface/KBasic.h"
 
 template<typename Tin, typename Tout>
-class KBaseMultiProducer : public KBaseProducerWP<Tout>
+class KBaseMultiProducer : public KBaseProducerWP
 {
 public:
 	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseProducerWP<Tout>(cfg, _event_tree, _run_tree) {}
+		KBaseProducerWP(cfg, _event_tree, _run_tree, Tout::producer()),
+		event_tree(_event_tree) {}
 	virtual ~KBaseMultiProducer() {}
 
 	typename Tout::type *allocateBronch(TTree *event_tree, const std::string bronchName)
@@ -22,11 +23,28 @@ public:
 		return bronchStorage[bronchName];
 	}
 
+	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
+	{
+		this->cEvent = &event;
+		this->cSetup = &setup;
+		return true;
+	}
+
 	void printAcceptedProducts(int verbosity)
 	{
 		if (verbosity > 0)
 			std::cout << "Accepted number of products: " << bronchStorage.size() << std::endl;
 	}
+
+	typedef typename Tout::type OutputType;
+	typedef Tin InputType;
+
+protected:
+	typename edm::Handle<Tin> handle;
+
+	TTree *event_tree;
+	const edm::Event *cEvent;
+	const edm::EventSetup *cSetup;
 
 private:
 	std::map<std::string, typename Tout::type*> bronchStorage;
@@ -44,8 +62,7 @@ class KManualMultiProducer : public KBaseMultiProducer<Tin, Tout>
 {
 public:
 	KManualMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
-		event_tree(_event_tree)
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree)
 	{
 		std::cout << "Requesting entries: ";
 		std::vector<std::string> names = cfg.getParameterNamesForType<edm::ParameterSet>();
@@ -69,7 +86,7 @@ public:
 			this->addProvenance(it->second.getParameter<edm::InputTag>("src").encode(), it->first);
 
 			// Static storage of ROOT bronch target - never changes, only accessed here:
-			typename Tout::type *target = this->allocateBronch(event_tree, it->first);
+			typename Tout::type *target = this->allocateBronch(this->event_tree, it->first);
 
 			// Mapping between target
 			targetIDMap[target] = &(it->second);
@@ -81,11 +98,7 @@ public:
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		cEvent = &event;
-		cSetup = &setup;
-
-		onEventCommon();
-
+		KBaseMultiProducer<Tin, Tout>::onEvent(event, setup);
 		for (typename std::map<typename Tout::type*, const edm::ParameterSet*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
 		{
 			const edm::ParameterSet *pset = it->second;
@@ -98,7 +111,7 @@ public:
 			// Try to get product via id
 			try
 			{
-				event.getByLabel(src, handle);
+				event.getByLabel(src, this->handle);
 			}
 			catch (...)
 			{
@@ -106,24 +119,17 @@ public:
 				continue;
 			}
 
-			fillProduct(*handle, ref, nameMap[it->first], *it->second);
+			fillProduct(*(this->handle), ref, nameMap[it->first], &src, *pset);
 		}
 		return true;
 	}
 
-	typedef typename Tout::type OutputType;
-	typedef Tin InputType;
-
-	virtual void clearProduct(OutputType &output) = 0;
-	virtual void onEventCommon() {};
-	virtual void fillProduct(const InputType &input, OutputType &output, const std::string &name, const edm::ParameterSet &pset) = 0;
+	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
+	virtual void fillProduct(const typename KBaseMultiProducer<Tin, Tout>::InputType &input,
+		typename KBaseMultiProducer<Tin, Tout>::OutputType &output,
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset) = 0;
 
 protected:
-	typename edm::Handle<Tin> handle;
-	const edm::Event *cEvent;
-	const edm::EventSetup *cSetup;
-	TTree *event_tree;
-
 	std::map<typename Tout::type*, std::string> nameMap;
 	std::map<std::string, edm::ParameterSet> entries;
 	std::map<typename Tout::type*, const edm::ParameterSet*> targetIDMap;
@@ -147,20 +153,8 @@ public:
 
 		vsRename(cfg.getParameter<std::vector<std::string> >("rename")),
 		vsRenameWhitelist(cfg.getParameter<std::vector<std::string> >("rename_whitelist")),
-		vsRenameBlacklist(cfg.getParameter<std::vector<std::string> >("rename_blacklist")),
-
-		event_tree(_event_tree) {}
+		vsRenameBlacklist(cfg.getParameter<std::vector<std::string> >("rename_blacklist")) {}
 	virtual ~KRegexMultiProducer() {}
-
-	bool tagMatch(const edm::Provenance *prov, const std::vector<edm::InputTag> &tags)
-	{
-		for (std::vector<edm::InputTag>::const_iterator titer = tags.begin(); titer < tags.end(); ++titer)
-			if ((titer->label() == prov->moduleLabel()) &&
-				(titer->instance() == prov->productInstanceName()) &&
-				(titer->process() == prov->processName()))
-				return true;
-		return false;
-	}
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
@@ -174,7 +168,7 @@ public:
 
 			// Check if branch was selected
 			if (!(this->regexMatch((*piter)->branchName(), vsWhitelist, vsBlacklist)
-				|| tagMatch(*piter, viManual)))
+				|| this->tagMatch(*piter, viManual)))
 			{
 				continue;
 			}
@@ -198,7 +192,7 @@ public:
 			}
 
 			// Avoid name collisions: Ignore or Fail
-			if (event_tree->FindBranch(targetName.c_str()))
+			if (this->event_tree->FindBranch(targetName.c_str()))
 			{
 				if (this->verbosity > 0)
 					std::cout << " => Branch with this name was already added!" << std::endl;
@@ -210,7 +204,7 @@ public:
 				std::cout << " => Adding branch: " << targetName << " for product ID: " << (*piter)->productID() << std::endl;
 			this->addProvenance((*piter)->branchName(), targetName);
 
-			typename Tout::type *target = this->allocateBronch(event_tree, targetName);
+			typename Tout::type *target = this->allocateBronch(this->event_tree, targetName);
 
 			// Crate selection tag
 			edm::InputTag *tag = new edm::InputTag((*piter)->moduleLabel(), (*piter)->productInstanceName(), (*piter)->processName());
@@ -229,35 +223,31 @@ public:
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		cEvent = &event;
-		cSetup = &setup;
+		KBaseMultiProducer<Tin, Tout>::onEvent(event, setup);
 
-		onEventCommon();
-
-		for (typename std::map<typename Tout::type*, edm::InputTag*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
+		for (typename std::map<typename Tout::type*, const edm::InputTag*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
 		{
 			// Clear previous collection
 			typename Tout::type &ref = *it->first;
 			clearProduct(ref);
 
 			// Try to get product via id
-			if (!event.getByLabel(*(it->second), handle))
+			if (!event.getByLabel(*(it->second), this->handle))
 			{
 				std::cout << "Could not get product!" << nameMap[it->second].second << std::endl;
 				continue;
 			}
 
-			fillProduct(*handle, ref, it->second);
+			const std::string name = this->nameMap[it->second].first + " (" + this->nameMap[it->second].second + ")";
+			fillProduct(*(this->handle), ref, name, it->second, this->psBase);
 		}
 		return true;
 	}
 
-	typedef typename Tout::type OutputType;
-	typedef Tin InputType;
-
-	virtual void clearProduct(OutputType &output) = 0;
-	virtual void onEventCommon() {};
-	virtual void fillProduct(const InputType &input, OutputType &output, edm::InputTag *tag) = 0;
+	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
+	virtual void fillProduct(const typename KBaseMultiProducer<Tin, Tout>::InputType &input,
+		typename KBaseMultiProducer<Tin, Tout>::OutputType &output,
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset) = 0;
 
 protected:
 	std::vector<edm::InputTag> viManual;
@@ -269,13 +259,8 @@ protected:
 	std::vector<std::string> vsRenameWhitelist;
 	std::vector<std::string> vsRenameBlacklist;
 
-	TTree *event_tree;
-	const edm::Event *cEvent;
-	const edm::EventSetup *cSetup;
-	typename edm::Handle<Tin> handle;
-
-	std::map<edm::InputTag*, std::pair<std::string, std::string> > nameMap;
-	std::map<typename Tout::type*, edm::InputTag*> targetIDMap;
+	std::map<const edm::InputTag*, std::pair<std::string, std::string> > nameMap;
+	std::map<typename Tout::type*, const edm::InputTag*> targetIDMap;
 };
 
 #endif
