@@ -92,28 +92,28 @@ public:
 		{
 			firstEventInLumi = false;
 			edm::Handle< trigger::TriggerEvent > triggerEventHandle;
-			if (!event.getByLabel(tagHLTrigger, triggerEventHandle))
-				; //	return printErrorObjectNotFound< trigger::TriggerEvent >(tagHLTrigger, event);
-
-			const unsigned sizeFilters = triggerEventHandle->sizeFilters();
-
-			int idx=0;
-			for(unsigned int iF = 0; iF<sizeFilters; iF++)
+			if (tagHLTrigger.label()!="" && event.getByLabel(tagHLTrigger, triggerEventHandle))
 			{
-				const std::string filterName(triggerEventHandle->filterTag(iF).label());
-
-				bool matched=false;
-				for (std::vector<std::string>::iterator it=svMuonTriggerObjects.begin(); it!=svMuonTriggerObjects.end(); it++)
-					if (regexMatch(filterName, *it))
-						matched=true;
-				if (matched)
+				const unsigned sizeFilters = triggerEventHandle->sizeFilters();
+				int idx=0;
+				for(unsigned int iF = 0; iF<sizeFilters; iF++)
 				{
-					metaLumi->hltNamesMuons.push_back(filterName);
-					muonTriggerObjectBitMap[filterName]=idx;
-					std::cout << idx << "\t" << filterName << "\n";
-					idx++;
+					const std::string filterName(triggerEventHandle->filterTag(iF).label());
+
+					bool matched=false;
+					for (std::vector<std::string>::iterator it=svMuonTriggerObjects.begin(); it!=svMuonTriggerObjects.end(); it++)
+					{
+						if (regexMatch(filterName, *it))
+							matched=true;
+					}
+					if (matched)
+					{
+						metaLumi->hltNamesMuons.push_back(filterName);
+						KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName]=idx;
+						std::cout << "muon trigger object: " << idx << " = " << filterName << "\n";
+						idx++;
+					}
 				}
-				//std::cout << (matched ? "+ ": "- ") << filterName << "\n";
 			}
 		}
 
