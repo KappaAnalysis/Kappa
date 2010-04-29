@@ -21,11 +21,9 @@
 #include "../interface/KVertexProducer.h"
 #include "../interface/KMuonProducer.h"
 #include "../interface/KCaloJetProducer.h"
-
-/*
-#include "../interface/KHepMCPartonProducer.h"
 #include "../interface/KPartonProducer.h"
-*/
+// #include "../interface/KHepMCPartonProducer.h"
+
 int KBaseProducer::verbosity = 0;
 
 class KTuple : public edm::EDAnalyzer
@@ -78,6 +76,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 	// Create metadata producer
 	std::vector<std::string> active = psConfig.getParameter<std::vector<std::string> >("active");
 	for (size_t i = 0; i < active.size(); ++i)
+	{
+		std::cout << "Init producer " << active[i] << std::endl;
 		if (active[i] == "Metadata")
 		{
 			producers.push_back(new KMetadataProducer<KMetadata_Product>(
@@ -120,11 +120,9 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 		else if (active[i] == "LV")
 			producers.push_back(new KLorentzProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-/*
 		else if (active[i] == "Partons")
 			producers.push_back(new KPartonProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
-*/
 		else
 		{
 			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;
