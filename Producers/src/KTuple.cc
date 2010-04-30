@@ -90,6 +90,7 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 				psConfig.getParameter<edm::ParameterSet>("Metadata"), event_tree, lumi_tree));
 			break;
 		}
+	}
 
 	// Create all active producers
 	for (size_t i = 0; i < active.size(); ++i)
