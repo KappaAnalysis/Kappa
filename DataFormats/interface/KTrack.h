@@ -15,7 +15,10 @@ struct KDataTrack : public KDataLV
 	char charge;
 	float chi2, nDOF;
 	float errPt, errEta, errPhi, errDxy, errDz;
-	int nPixelHits,nStripHits; //dp
+	unsigned short nPixelLayers, nStripLayers;
+	unsigned short nValidPixelHits,nValidStripHits;
+	unsigned short nValidMuonHits, nLostMuonHits, nBadMuonHits;
+	unsigned short nValidHits, nLostHits;
 	int quality;
 
 	double getTrackIsolation(std::vector<KDataTrack> * tracks, double isoCone = 0.3, double vetoCone = 0.01, double minPt = 1.5)
