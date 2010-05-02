@@ -2,6 +2,7 @@
 #define KAPPA_TRACK_H
 
 #include "KBasic.h"
+#include "Math/GenVector/VectorUtil.h"
 
 enum KTrackQuality
 {
@@ -16,6 +17,15 @@ struct KDataTrack : public KDataLV
 	float errPt, errEta, errPhi, errDxy, errDz;
 	int nPixelHits,nStripHits; //dp
 	int quality;
+
+	double getTrackIsolation(std::vector<KDataTrack> * tracks, double isoCone = 0.3, double vetoCone = 0.01, double minPt = 1.5)
+	{
+		double sum = 0.;
+		for (std::vector<KDataTrack>::iterator it = tracks->begin(); it != tracks->end(); it++)
+			if ( it->p4.pt() > minPt && ROOT::Math::VectorUtil::DeltaR(it->p4, p4) > vetoCone && ROOT::Math::VectorUtil::DeltaR(it->p4, p4) < isoCone )
+				sum+=it->p4.pt();
+		return sum;
+	}
 
 	double getDxy(KDataVertex * pv)
 	{
