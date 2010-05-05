@@ -12,6 +12,7 @@
 class KBaseProducer
 {
 public:
+	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup);
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup);
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup);

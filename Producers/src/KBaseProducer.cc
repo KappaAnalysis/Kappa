@@ -3,6 +3,11 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/regex.hpp>
 
+bool KBaseProducer::onRun(edm::Run const &run, edm::EventSetup const &setup)
+{
+	return true;
+}
+
 bool KBaseProducer::onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 {
 	return true;

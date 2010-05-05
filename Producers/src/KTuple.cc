@@ -32,6 +32,7 @@ public:
 	explicit KTuple(const edm::ParameterSet&);
 	~KTuple();
 
+	virtual void beginRun(edm::Run  const &, edm::EventSetup  const &);
 	virtual void beginLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
 	virtual void endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
@@ -145,6 +146,13 @@ KTuple::~KTuple()
 		event_tree->Write();
 		file->Close();
 	}
+}
+
+void KTuple::beginRun(edm::Run const &run, edm::EventSetup const &setup)
+{
+	ROOTContextSentinel ctx;
+	for (unsigned int i = 0; i < producers.size(); ++i)
+		producers[i]->onRun(run, setup);
 }
 
 void KTuple::beginLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)

@@ -12,6 +12,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltWhitelist = cms.vstring("^HLT_(L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?", ".*Jet.*",
 			"^HLT_MET[0-9]*", "^HLT_Activity.*", ".*(Bias|BSC).*", "^HLT_PhysicsDeclared", ".*Mu.*"),
 		hltBlacklist = cms.vstring(),
+		printHltList = cms.bool(True),
 
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
 		muonTriggerObjects = cms.vstring("hlt.*Mu.*"),
