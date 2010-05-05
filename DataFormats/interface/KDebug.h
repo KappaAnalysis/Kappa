@@ -44,7 +44,7 @@ std::ostream &operator<<(std::ostream &os, const KParton &v)
 
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
 {
-	os << (KDataLV)jet << std::endl;
+	os << static_cast<KDataLV>(jet) << std::endl;
 	os << "emf: " << jet.emf << " area: " << jet.area << " detEta: " << jet.detectorEta << std::endl;
 	os << "Const: " << jet.nConst << " n90: " << jet.n90 << " n90Hits: " << jet.n90Hits << std::endl;
 	os << "fHPD: " << jet.fHPD << " fRBX: " << jet.fRBX << " HCAL noise: " << jet.noiseHCAL << std::endl;
@@ -73,7 +73,7 @@ std::ostream &operator<<(std::ostream &os, const KLumiMetadata &m)
 
 std::ostream &operator<<(std::ostream &os, const KGenLumiMetadata &m)
 {
-	os << (KLumiMetadata)m << std::endl;
+	os << static_cast<KLumiMetadata>(m) << std::endl;
 	return os << "ext. xSec: " << m.xSectionExt << " int. xSec: " << m.xSectionInt << std::endl;
 }
 
@@ -84,7 +84,7 @@ std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
 
 std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 {
-	os << (KEventMetadata)m << std::endl;
+	os << static_cast<KEventMetadata>(m) << std::endl;
 	return os << "Weight: " << m.weight;
 }
 
