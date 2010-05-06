@@ -14,7 +14,7 @@ process.load('Configuration/StandardSequences/Services_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('RecoJets.Configuration.RecoJetAssociations_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = 'GR_R_35X_V7A::All' # latest tag for rereco
+process.GlobalTag.globaltag = 'GR10_P_V5' # latest tag for rereco
 #-------------------------------------------------------------------------------
 
 # Configure tuple generation ---------------------------------------------------
