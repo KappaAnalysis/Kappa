@@ -147,7 +147,7 @@ public:
 			{
 				const size_t idx = hltKappa2FWK[i];
 				if (hTriggerResults->accept(idx))
-					metaEvent->bitsHLT |= ((unsigned long long)1 << idx);
+					metaEvent->bitsHLT |= ((unsigned long long)1 << i);
 				hltFAIL = hltFAIL || hTriggerResults->error(idx);
 			}
 			if (hltFAIL)
