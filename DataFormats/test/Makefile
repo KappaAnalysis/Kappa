@@ -22,10 +22,6 @@ install: $(PROGRAM)
 	[ -n "$(filter %.a %.so, $(PROGRAM))" ] && \
 		cp $(filter %.a %.so, $(PROGRAM)) "$(MYPREFIX)/lib" \
 		|| true
-	test -d "$(MYPREFIX)/bin"
-	[ -n "$(filter %.exe %.bin, $(PROGRAM))" ] && \
-		cp -S=V $(filter %.exe %.bin, $(PROGRAM)) "$(MYPREFIX)/bin" \
-		|| true
 
 clean:
 	@rm -f *.o *.so dict.*

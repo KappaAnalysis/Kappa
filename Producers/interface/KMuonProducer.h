@@ -74,11 +74,7 @@ public:
 		else
 			out.trackHits = in.track()->recHitsSize();
 
-		out.type = 8*in.isGlobalMuon()+4*in.isStandAloneMuon()+2*in.isCaloMuon()+in.isTrackerMuon();
-		out.isTrackerMuon			= in.isTrackerMuon();
-		out.isCaloMuon				= in.isCaloMuon();
-		out.isStandAloneMuon	= in.isStandAloneMuon();
-		out.isGlobalMuon			= in.isGlobalMuon();
+		out.type = in.type();
 
  		// muon ID selection, described in AN-2008/098
 		// http://cms-service-sdtweb.web.cern.ch/cms-service-sdtweb/doxygen/CMSSW_3_3_6/doc/html/dd/de0/MuonSelectors_8cc-source.html#l00005

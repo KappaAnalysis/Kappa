@@ -50,6 +50,8 @@ public:
 	{
 		hltKappa2FWK.clear();
 		hltKappa2FWK.push_back(0);
+		hltNames.clear();
+		hltPrescales.clear();
 
 		bool hltSetupChanged = false;
 		if (!hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
@@ -60,6 +62,7 @@ public:
 
 		int counter = 1;
 		hltNames.push_back("fail");
+		hltPrescales.push_back(42);
 
 		for (size_t i = 0; i < hltConfig.size(); ++i)
 		{
@@ -70,7 +73,9 @@ public:
 			if (!regexMatch(name, svHLTWhitelist, svHLTBlacklist))
 				continue;
 			if (verbosity > 0 || printHltList)
-				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter << std::endl;
+				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter << " with prescale " << hltConfig.prescaleValue(idx, name) << std::endl;
+			hltPrescales.push_back(hltConfig.prescaleValue(idx, name));
+
 			if (hltKappa2FWK.size() < 64)
 			{
 				hltKappa2FWK.push_back(idx);
@@ -95,6 +100,7 @@ public:
 		firstEventInLumi = true;
 
 		metaLumi->hltNames=hltNames;
+		metaLumi->hltPrescales=hltPrescales;
 		return true;
 	}
 
@@ -202,6 +208,7 @@ protected:
 	bool printHltList;
 
 	std::vector<std::string> hltNames;
+	std::vector<unsigned int> hltPrescales;
 
 	typename Tmeta::typeLumi *metaLumi;
 	typename Tmeta::typeEvent *metaEvent;
