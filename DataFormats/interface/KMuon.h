@@ -18,12 +18,12 @@ struct KDataMuon : KDataLV
 	// Bit 1 - caloMuon
 	// Bit 2 - standaloneMuon
 	// Bit 3 - globalMuon
-	char type;
+	unsigned char type;
 
-	bool isTrackerMuon;
-	bool isCaloMuon;
-	bool isStandAloneMuon;
-	bool isGlobalMuon;
+	bool isTrackerMuon()    { return (type & (1 << 0 )); };
+	bool isCaloMuon()       { return (type & (1 << 1 )); };
+	bool isStandAloneMuon() { return (type & (1 << 2 )); };
+	bool isGlobalMuon()     { return (type & (1 << 3 )); };
 
 	float sumPtIso03;
 	float hcalIso03;
