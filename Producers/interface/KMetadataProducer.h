@@ -36,7 +36,8 @@ public:
 		svHLTBlacklist(cfg.getParameter<std::vector<std::string> >("hltBlacklist")),
 		svMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
 		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL")),
-		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger"))
+		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
+		printHltList(cfg.getParameter<bool>("printHltList"))
 	{
 		metaLumi = new typename Tmeta::typeLumi();
 		_lumi_tree->Bronch("KLumiMetadata", Tmeta::idLumi().c_str(), &metaLumi);
@@ -45,20 +46,20 @@ public:
 	}
 	virtual ~KMetadataProducer() {};
 
-	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
+	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		metaLumi = &(metaLumiMap[std::pair<unsigned int, unsigned int>(
-			(unsigned int)lumiBlock.run(), (unsigned int)lumiBlock.luminosityBlock())]);
-		metaLumi->nRun = lumiBlock.run();
-		metaLumi->nLumi = lumiBlock.luminosityBlock();
-
-		// Read trigger infos
 		hltKappa2FWK.clear();
 		hltKappa2FWK.push_back(0);
-		if (!hltConfig.init(tagHLTResults.process()))
-			return fail(std::cout << "Invalid HLT process selected: " << sHLTProcess << std::endl);
+
+		bool hltSetupChanged = false;
+		if (!hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
+			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
+
+		if (hltSetupChanged)
+			std::cout << "HLT setup has changed...";
+
 		int counter = 1;
-		metaLumi->hltNames.push_back("fail");
+		hltNames.push_back("fail");
 
 		for (size_t i = 0; i < hltConfig.size(); ++i)
 		{
@@ -68,12 +69,12 @@ public:
 				std::cout << "Trigger: " << idx << " = ";
 			if (!regexMatch(name, svHLTWhitelist, svHLTBlacklist))
 				continue;
-			if (verbosity > 0)
+			if (verbosity > 0 || printHltList)
 				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter << std::endl;
 			if (hltKappa2FWK.size() < 64)
 			{
 				hltKappa2FWK.push_back(idx);
-				metaLumi->hltNames.push_back(name);
+				hltNames.push_back(name);
 				counter++;
 			}
 			else
@@ -81,8 +82,19 @@ public:
 		}
 		if (verbosity > 0)
 			std::cout << "Accepted number of trigger streams: " << counter - 1 << std::endl;
+		return true;
+	}
+
+	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
+	{
+		metaLumi = &(metaLumiMap[std::pair<unsigned int, unsigned int>(
+			(unsigned int)lumiBlock.run(), (unsigned int)lumiBlock.luminosityBlock())]);
+		metaLumi->nRun = lumiBlock.run();
+		metaLumi->nLumi = lumiBlock.luminosityBlock();
 
 		firstEventInLumi = true;
+
+		metaLumi->hltNames=hltNames;
 		return true;
 	}
 
@@ -135,7 +147,7 @@ public:
 			{
 				const size_t idx = hltKappa2FWK[i];
 				if (hTriggerResults->accept(idx))
-					metaEvent->bitsHLT |= ((unsigned long long)1 << idx);
+					metaEvent->bitsHLT |= ((unsigned long long)1 << i);
 				hltFAIL = hltFAIL || hTriggerResults->error(idx);
 			}
 			if (hltFAIL)
@@ -181,13 +193,15 @@ public:
 protected:
 	bool firstEventInLumi;
 	edm::InputTag tagL1Results, tagHLTResults;
-	std::string sHLTProcess;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
 	std::vector<std::string> svMuonTriggerObjects;
 	HLTConfigProvider hltConfig;
 	std::vector<size_t> hltKappa2FWK;
 
 	edm::InputTag tagNoiseHCAL, tagHLTrigger;
+	bool printHltList;
+
+	std::vector<std::string> hltNames;
 
 	typename Tmeta::typeLumi *metaLumi;
 	typename Tmeta::typeEvent *metaEvent;

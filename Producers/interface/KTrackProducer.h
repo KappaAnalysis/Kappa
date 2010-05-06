@@ -43,9 +43,16 @@ public:
 		out.quality = in.qualityMask();
 		out.errDxy = in.dxyError();
 		out.errDz = in.dzError();
-		out.nPixelHits = in.hitPattern().pixelLayersWithMeasurement(); //dp
-		out.nStripHits = in.hitPattern().trackerLayersWithMeasurement(); //dp
 
+		out.nValidPixelHits = in.hitPattern().numberOfValidPixelHits();
+		out.nValidStripHits = in.hitPattern().numberOfValidStripHits();
+		out.nValidMuonHits = in.hitPattern().numberOfValidMuonHits();
+		out.nLostMuonHits = in.hitPattern().numberOfLostMuonHits();
+		out.nBadMuonHits = in.hitPattern().numberOfBadMuonHits();
+		out.nValidHits = in.hitPattern().numberOfValidHits();
+		out.nLostHits = in.hitPattern().numberOfLostHits();
+		out.nPixelLayers = in.hitPattern().pixelLayersWithMeasurement();
+		out.nStripLayers = in.hitPattern().trackerLayersWithMeasurement();
 	}
 };
 
