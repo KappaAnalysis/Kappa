@@ -46,7 +46,22 @@ kappaTupleDefaultsBlock = cms.PSet(
 		minPt = cms.double(-1),
 		maxEta = cms.double(-1),
 	),
+	PFJets = cms.PSet(
+		manual = cms.VInputTag(),
 
+		whitelist = cms.vstring("recoPFJets_.*Jet"),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring(
+			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)$7"
+		),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+
+		maxN = cms.int32(-1),
+		minPt = cms.double(-1),
+		maxEta = cms.double(-1),
+	),
 	Vertex = cms.PSet(
 		manual = cms.VInputTag(),
 

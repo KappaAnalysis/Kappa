@@ -21,6 +21,7 @@
 #include "../interface/KVertexProducer.h"
 #include "../interface/KMuonProducer.h"
 #include "../interface/KCaloJetProducer.h"
+#include "../interface/KPFJetProducer.h"
 #include "../interface/KPartonProducer.h"
 // #include "../interface/KHepMCPartonProducer.h"
 
@@ -103,6 +104,9 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			continue;
 		else if (active[i] == "CaloJets")
 			producers.push_back(new KCaloJetProducer(
+				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
+		else if (active[i] == "PFJets")
+			producers.push_back(new KPFJetProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		else if (active[i] == "Tower")
 			producers.push_back(new KTowerProducer(
