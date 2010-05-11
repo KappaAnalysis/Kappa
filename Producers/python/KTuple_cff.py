@@ -97,7 +97,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
 		),
 		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(".*CaloJets"),
+		rename_blacklist = cms.vstring(".*CaloJets",".*PFJets"),
 
 		maxN = cms.int32(-1),
 		minPt = cms.double(-1),
