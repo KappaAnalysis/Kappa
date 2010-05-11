@@ -53,6 +53,9 @@ public:
 		hltNames.clear();
 		hltPrescales.clear();
 
+		if (tagHLTResults.label() == "")
+			return true;
+
 		bool hltSetupChanged = false;
 		if (!hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
