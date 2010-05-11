@@ -46,12 +46,19 @@ public:
 	}
 	virtual ~KMetadataProducer() {};
 
+	inline void addHLT(const int idx, const std::string name, const int prescale)
+	{
+		hltKappa2FWK.push_back(idx);
+		hltNames.push_back(name);
+		hltPrescales.push_back(prescale);
+	}
+
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
 		hltKappa2FWK.clear();
-		hltKappa2FWK.push_back(0);
 		hltNames.clear();
 		hltPrescales.clear();
+		addHLT(0, "fail", 42);
 
 		if (tagHLTResults.label() == "")
 			return true;
@@ -64,9 +71,6 @@ public:
 			std::cout << "HLT setup has changed...";
 
 		int counter = 1;
-		hltNames.push_back("fail");
-		hltPrescales.push_back(42);
-
 		for (size_t i = 0; i < hltConfig.size(); ++i)
 		{
 			const std::string &name = hltConfig.triggerName(i);
@@ -78,12 +82,9 @@ public:
 			if (verbosity > 0 || printHltList)
 				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter
 					<< " with prescale " << hltConfig.prescaleValue(idx, name) << std::endl;
-			hltPrescales.push_back(hltConfig.prescaleValue(idx, name));
-
 			if (hltKappa2FWK.size() < 64)
 			{
-				hltKappa2FWK.push_back(idx);
-				hltNames.push_back(name);
+				addHLT(idx, name, hltConfig.prescaleValue(idx, name));
 				counter++;
 			}
 			else
