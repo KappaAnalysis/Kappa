@@ -73,7 +73,8 @@ public:
 			if (!regexMatch(name, svHLTWhitelist, svHLTBlacklist))
 				continue;
 			if (verbosity > 0 || printHltList)
-				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter << " with prescale " << hltConfig.prescaleValue(idx, name) << std::endl;
+				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter
+					<< " with prescale " << hltConfig.prescaleValue(idx, name) << std::endl;
 			hltPrescales.push_back(hltConfig.prescaleValue(idx, name));
 
 			if (hltKappa2FWK.size() < 64)
@@ -98,9 +99,8 @@ public:
 		metaLumi->nLumi = lumiBlock.luminosityBlock();
 
 		firstEventInLumi = true;
-
-		metaLumi->hltNames=hltNames;
-		metaLumi->hltPrescales=hltPrescales;
+		metaLumi->hltNames = hltNames;
+		metaLumi->hltPrescales = hltPrescales;
 		return true;
 	}
 
@@ -109,8 +109,8 @@ public:
 		if (firstEventInLumi)
 		{
 			firstEventInLumi = false;
-			edm::Handle< trigger::TriggerEvent > triggerEventHandle;
-			if (tagHLTrigger.label()!="" && event.getByLabel(tagHLTrigger, triggerEventHandle))
+			edm::Handle<trigger::TriggerEvent> triggerEventHandle;
+			if ((tagHLTrigger.label() != "") && event.getByLabel(tagHLTrigger, triggerEventHandle))
 			{
 				const unsigned sizeFilters = triggerEventHandle->sizeFilters();
 				int idx=0;
