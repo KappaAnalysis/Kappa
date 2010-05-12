@@ -1,5 +1,17 @@
 import FWCore.ParameterSet.Config as cms
 
+kappaNoCut = cms.PSet(
+	maxN = cms.int32(-1),
+	minPt = cms.double(-1),
+	maxEta = cms.double(-1),
+)
+
+kappaNoRename = cms.PSet(
+	rename = cms.vstring(),
+	rename_whitelist= cms.vstring(),
+	rename_blacklist = cms.vstring(),
+)
+
 kappaTupleDefaultsBlock = cms.PSet(
 	verbose = cms.int32(0),
 	active = cms.vstring("Metadata"),
@@ -19,10 +31,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		noiseHCAL = cms.InputTag("hcalnoise"),
 	),
 
-	Muons = cms.PSet(
-		maxN = cms.int32(-1),
-		minPt = cms.double(-1),
-		maxEta = cms.double(-1),
+	Muons = cms.PSet(kappaNoCut,
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
 			srcMuonIsolation=cms.InputTag("muIsoDepositTk"),
@@ -32,21 +41,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltMaxdR = cms.double(0.05),
 	),
 
-	Tracks = cms.PSet(
+	Tracks = cms.PSet(kappaNoCut, kappaNoRename,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoTracks_generalTracks"),
 		blacklist = cms.vstring(),
-
-		rename = cms.vstring(),
-		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(),
-
-		maxN = cms.int32(-1),
-		minPt = cms.double(-1),
-		maxEta = cms.double(-1),
 	),
-	PFJets = cms.PSet(
+
+	PFJets = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_.*Jet"),
@@ -57,20 +59,13 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
-
-		maxN = cms.int32(-1),
-		minPt = cms.double(-1),
-		maxEta = cms.double(-1),
 	),
-	Vertex = cms.PSet(
+
+	Vertex = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring(),
 		blacklist = cms.vstring(),
-
-		rename = cms.vstring(),
-		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(),
 
 		maxN = cms.int32(-1),
 
@@ -85,7 +80,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
-	LV = cms.PSet(
+	LV = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("reco.*Jets_.*Jet"),
@@ -97,14 +92,10 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
 		),
 		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(".*CaloJets"),
-
-		maxN = cms.int32(-1),
-		minPt = cms.double(-1),
-		maxEta = cms.double(-1),
+		rename_blacklist = cms.vstring(".*CaloJets",".*PFJets"),
 	),
 
-	Tower = cms.PSet(
+	Tower = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("towerMaker"),
@@ -115,10 +106,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 
 		srcPVs = cms.InputTag("offlinePrimaryVertices"),
-
-		maxN = cms.int32(-1),
-		minPt = cms.double(-1),
-		maxEta = cms.double(-1),
 	),
 
 	MET = cms.PSet(
