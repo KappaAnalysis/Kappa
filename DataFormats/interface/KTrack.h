@@ -6,7 +6,7 @@
 
 enum KTrackQuality
 {
-	TQ_Loose = 0, TQ_Tight = 1, TQ_HighPurity = 2, TQ_Confirmed = 3, TQ_GoodIterative = 4
+	TQ_Loose = 1 << 0, TQ_Tight = 1 << 1, TQ_HighPurity = 1 << 2, TQ_Confirmed = 1 << 3, TQ_GoodIterative = 1 << 4
 };
 
 struct KDataTrack : public KDataLV

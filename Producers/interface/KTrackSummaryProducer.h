@@ -24,7 +24,7 @@ public:
 		out.nTracks = in.size();
 		typename InputType::const_iterator lvit;
 		for (lvit = in.begin(); lvit < in.end(); ++lvit)
-			if (lvit->qualityMask() & (1 << TQ_HighPurity))
+			if (lvit->qualityMask() & TQ_HighPurity)
 				++out.nTracksHQ;
 	}
 };
