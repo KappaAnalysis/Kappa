@@ -14,7 +14,7 @@ struct KTrackSummaryProducer_Product
 class KTrackSummaryProducer : public KRegexMultiProducer<edm::View<reco::Track>, KTrackSummaryProducer_Product>
 {
 public:
-	KTrackProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+	KTrackSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KRegexMultiProducer<edm::View<reco::Track>, KTrackSummaryProducer_Product>(cfg, _event_tree, _run_tree) {}
 
 	virtual void clearProduct(OutputType &output) { output.nTracks = 0; output.nTracksHQ = 0; }
@@ -22,7 +22,7 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		out.nTracks = in.size();
-		typename InputType::const_iterator lvit;
+		InputType::const_iterator lvit;
 		for (lvit = in.begin(); lvit < in.end(); ++lvit)
 			if (lvit->qualityMask() & TQ_HighPurity)
 				++out.nTracksHQ;
