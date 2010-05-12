@@ -46,6 +46,20 @@ kappaTupleDefaultsBlock = cms.PSet(
 		minPt = cms.double(-1),
 		maxEta = cms.double(-1),
 	),
+	TrackSummary = cms.PSet(
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("recoTracks_generalTracks"),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring(),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+
+		maxN = cms.int32(-1),
+		minPt = cms.double(-1),
+		maxEta = cms.double(-1),
+	),
 	PFJets = cms.PSet(
 		manual = cms.VInputTag(),
 

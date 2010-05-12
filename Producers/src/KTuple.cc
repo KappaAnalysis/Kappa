@@ -23,6 +23,7 @@
 #include "../interface/KCaloJetProducer.h"
 #include "../interface/KPFJetProducer.h"
 #include "../interface/KPartonProducer.h"
+#include "../interface/KTrackSummaryProducer.h"
 // #include "../interface/KHepMCPartonProducer.h"
 
 int KBaseProducer::verbosity = 0;
@@ -119,6 +120,9 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		else if (active[i] == "Tracks")
 			producers.push_back(new KTrackProducer(
+				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
+		else if (active[i] == "TrackSummary")
+			producers.push_back(new KTrackSummaryProducer(
 				psConfig.getParameter<edm::ParameterSet>(active[i]), event_tree, lumi_tree));
 		else if (active[i] == "MET")
 			producers.push_back(new KMETProducer(

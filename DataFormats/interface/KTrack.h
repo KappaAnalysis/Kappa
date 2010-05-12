@@ -74,4 +74,10 @@ struct KDataTrack : public KDataLV
 };
 typedef std::vector<KDataTrack> KDataTracks;
 
+struct KTrackSummary
+{
+	unsigned int nTracks;
+	unsigned int nTracksHQ;
+};
+
 #endif

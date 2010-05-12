@@ -1,0 +1,32 @@
+#ifndef KAPPA_TRACKSUMMARYPRODUCER_H
+#define KAPPA_TRACKSUMMARYPRODUCER_H
+
+#include "KBaseMultiProducer.h"
+#include <DataFormats/TrackReco/interface/Track.h>
+
+struct KTrackSummaryProducer_Product
+{
+	typedef KTrackSummary type;
+	static const std::string id() { return "KTrackSummary"; };
+	static const std::string producer() { return "KTrackSummaryProducer"; };
+};
+
+class KTrackSummaryProducer : public KRegexMultiProducer<edm::View<reco::Track>, KTrackSummaryProducer_Product>
+{
+public:
+	KTrackProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KRegexMultiProducer<edm::View<reco::Track>, KTrackSummaryProducer_Product>(cfg, _event_tree, _run_tree) {}
+
+	virtual void clearProduct(OutputType &output) { output.nTracks = 0; output.nTracksHQ = 0; }
+	virtual void fillProduct(const InputType &in, OutputType &out,
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
+	{
+		out.nTracks = in.size();
+		typename InputType::const_iterator lvit;
+		for (lvit = in.begin(); lvit < in.end(); ++lvit)
+			if (lvit->qualityMask() & (1 << TQ_HighPurity))
+				++out.nTracksHQ;
+	}
+};
+
+#endif
