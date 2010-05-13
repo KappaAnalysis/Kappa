@@ -20,6 +20,8 @@ struct KDataTrack : public KDataLV
 	unsigned short nValidMuonHits, nLostMuonHits, nBadMuonHits;
 	unsigned short nValidHits, nLostHits;
 	int quality;
+	float sumPtIso03;
+	float trackIso03;
 
 	double getTrackIsolation(std::vector<KDataTrack> * tracks, double isoCone = 0.3, double vetoCone = 0.01, double minPt = 1.5)
 	{
