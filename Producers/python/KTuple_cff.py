@@ -22,11 +22,12 @@ kappaTupleDefaultsBlock = cms.PSet(
 		l1Source = cms.InputTag("gtDigis"),
 		hltSource = cms.InputTag("TriggerResults::HLT"),
 		hltWhitelist = cms.vstring(
-			"^HLT_(L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?", ".*Jet.*",
+			".*Jet.*",
 			"^HLT_MET[0-9]*",
 			"^HLT_Activity.*", ".*(Bias|BSC).*",
 			"HLT_L2Mu0", "HLT_L2Mu3", "HLT_L1Mu20", "HLT_L2Mu9", "HLT_L2Mu11", "HLT_L1Mu14_L1SingleJet6U",
 			"HLT_DoubleMu0", "HLT_DoubleMu3", "HLT_Mu3", "HLT_Mu5", "HLT_Mu9", "HLT_IsoMu3"
+			# "^HLT_(L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?",
 			# "HLT_L2DoubleMu0", "HLT_L1DoubleMuOpen", "HLT_L1Mu14_L1SingleEG10",
 			# "HLT_L1Mu14_L1ETM30", "HLT_Mu0_L1MuOpen", "HLT_Mu0_Track0_Jpsi",
 			# "HLT_Mu3_L1MuOpen", "HLT_Mu3_Track0_Jpsi", "HLT_Mu5_L1MuOpen",
