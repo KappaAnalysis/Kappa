@@ -48,7 +48,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	PFJets = cms.PSet(kappaNoCut,
+	TrackSummary = cms.PSet(kappaNoCut, kappaNoRename,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("recoTracks_generalTracks"),
+		blacklist = cms.vstring(),
+	),
+
+	PFJets = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_.*Jet"),

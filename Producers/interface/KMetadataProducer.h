@@ -16,6 +16,8 @@
 
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 
+#define NEWHLT
+
 // real data
 struct KMetadata_Product
 {
@@ -64,8 +66,13 @@ public:
 			return true;
 
 		bool hltSetupChanged = false;
+#ifdef NEWHLT
 		if (!hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
+#else
+		if (!hltConfig.init(tagHLTResults.process()))
+			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
+#endif
 
 		if (hltSetupChanged)
 			std::cout << "HLT setup has changed...";
@@ -75,16 +82,21 @@ public:
 		{
 			const std::string &name = hltConfig.triggerName(i);
 			const int idx = hltConfig.triggerIndex(name);
+#ifdef NEWHLT
+			const unsigned int prescale = hltConfig.prescaleValue(idx, name);
+#else
+			const unsigned int prescale = 1;
+#endif
 			if (verbosity > 1)
 				std::cout << "Trigger: " << idx << " = ";
 			if (!regexMatch(name, svHLTWhitelist, svHLTBlacklist))
 				continue;
 			if (verbosity > 0 || printHltList)
 				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter
-					<< " with prescale " << hltConfig.prescaleValue(idx, name) << std::endl;
+					<< " with prescale " << prescale << std::endl;
 			if (hltKappa2FWK.size() < 64)
 			{
-				addHLT(idx, name, hltConfig.prescaleValue(idx, name));
+				addHLT(idx, name, prescale);
 				counter++;
 			}
 			else
