@@ -40,6 +40,8 @@ namespace
 		KDataTrack kappa_datatrack;
 		KDataTracks kappa_datatracks;
 
+		KTrackSummary kappa_tracksummary;
+
 		KDataVertex kappa_datavertex;
 		KDataVertices kappa_datavertices;
 
