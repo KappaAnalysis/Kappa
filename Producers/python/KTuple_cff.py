@@ -55,7 +55,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	PFJets = cms.PSet(
+	PFJets = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_.*Jet"),
