@@ -21,13 +21,31 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		l1Source = cms.InputTag("gtDigis"),
 		hltSource = cms.InputTag("TriggerResults::HLT"),
-		hltWhitelist = cms.vstring("^HLT_(L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?", ".*Jet.*",
-			"^HLT_MET[0-9]*", "^HLT_Activity.*", ".*(Bias|BSC).*", "^HLT_PhysicsDeclared", ".*Mu.*"),
+		hltWhitelist = cms.vstring(
+			"^HLT_(L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?", ".*Jet.*",
+			"^HLT_MET[0-9]*",
+			"^HLT_Activity.*", ".*(Bias|BSC).*",
+			"HLT_L2Mu0", "HLT_L2Mu3", "HLT_L1Mu20", "HLT_L2Mu9", "HLT_L2Mu11", "HLT_L1Mu14_L1SingleJet6U",
+			"HLT_DoubleMu0", "HLT_DoubleMu3", "HLT_Mu3", "HLT_Mu5", "HLT_Mu9", "HLT_IsoMu3"
+			# "HLT_L2DoubleMu0", "HLT_L1DoubleMuOpen", "HLT_L1Mu14_L1SingleEG10",
+			# "HLT_L1Mu14_L1ETM30", "HLT_Mu0_L1MuOpen", "HLT_Mu0_Track0_Jpsi",
+			# "HLT_Mu3_L1MuOpen", "HLT_Mu3_Track0_Jpsi", "HLT_Mu5_L1MuOpen",
+			# "HLT_Mu5_Track0_Jpsi", "HLT_Mu0_L2Mu0", "HLT_Mu3_L2Mu0", "HLT_Mu5_L2Mu0"
+		),
 		hltBlacklist = cms.vstring(),
 		printHltList = cms.bool(True),
 
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
-		muonTriggerObjects = cms.vstring("hlt.*Mu.*"),
+		muonTriggerObjects = cms.vstring(
+			"hltSingleMu[0-9]*L[123]Filtered[0-9]*","hltL2Mu0L2Filtered0",
+			"hlt.*SingleMu.*",
+			"hlt.*DiMuon.*",
+			"hltSingleMu.*",
+			"hltMu.*",
+			"hltL2Mu9L2Filtered9",
+			"hltL2Mu11L2Filtered11",
+			"hltPreL1Mu14L1SingleJet6U"
+		),
 		noiseHCAL = cms.InputTag("hcalnoise"),
 	),
 
