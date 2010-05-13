@@ -26,6 +26,8 @@
 	<class name="KDataTrack"/>
 	<class name="KDataTracks"/>
 
+	<class name="KTrackSummary"/>
+
 	<class name="KDataVertex"/>
 	<class name="KDataVertices"/>
 
