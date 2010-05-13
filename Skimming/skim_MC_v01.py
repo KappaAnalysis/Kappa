@@ -3,9 +3,11 @@ import FWCore.ParameterSet.Config as cms
 # Basic process setup ----------------------------------------------------------
 process = cms.Process("kappaSkim")
 process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring(
-	'file:///home/piparo/testFiles/Spring10_MinBias_GENSIMRECO_MC_3XY_V25_S09_preproduction-v2.root',
+	#'file:///home/piparo/testFiles/Spring10_MinBias_GENSIMRECO_MC_3XY_V25_S09_preproduction-v2.root',
+	#'file:///storage/6/zeise/temp/zmumu_64558436-6045-DF11-BAB9-0030487E305A.root',
+	'file:///storage/6/zeise/temp/zmumu_spring10_409E7FC6-4645-DF11-82E3-001EC9D8B181.root',
 ))
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 #-------------------------------------------------------------------------------
 
 # Includes + Global Tag --------------------------------------------------------
@@ -65,6 +67,7 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	)
 )
 process.kappatuple.verbose = cms.int32(0)
+process.kappatuple.hltSource = cms.InputTag("TriggerResults::REDIGI")
 process.kappatuple.active = cms.vstring(
 	'Muons', 'Tracks', 'LV', 'MET', 'CaloJets', 'PFJets', 'Vertex', 'GenMetadata'
 )
