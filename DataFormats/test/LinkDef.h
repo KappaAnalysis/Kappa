@@ -41,7 +41,7 @@
 #pragma link C++ class std::vector<KDataTrack>+;
 #pragma link C++ typedef KDataTracks;
 
-#pragma link C++ struct KTrackSummary
+#pragma link C++ struct KTrackSummary;
 
 #pragma link C++ struct KDataJet+;
 #pragma link C++ class std::vector<KDataJet>+;
