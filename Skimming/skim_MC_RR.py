@@ -14,7 +14,7 @@ process.load('Configuration/StandardSequences/Services_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('RecoJets.Configuration.RecoJetAssociations_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = 'GR_R_35X_V7A::All' # latest tag for rereco
+process.GlobalTag.globaltag = 'START3X_V26A::All' # latest tag for MC
 #-------------------------------------------------------------------------------
 
 # Configure tuple generation ---------------------------------------------------
@@ -65,8 +65,9 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	)
 )
 process.kappatuple.verbose = cms.int32(0)
+process.kappatuple.hltSource = cms.InputTag("TriggerResults::REDIGI")
 process.kappatuple.active = cms.vstring(
-	'Muons', 'TrackSummary', 'LV', 'MET', 'CaloJets', 'PFJets', 'Vertex', 'Metadata'
+	'Muons', 'TrackSummary', 'LV', 'MET', 'CaloJets', 'PFJets', 'Vertex', 'GenMetadata'
 )
 #-------------------------------------------------------------------------------
 
