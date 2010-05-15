@@ -14,9 +14,11 @@ struct TypeName;
 #define REGISTER_NAME_OF_TYPE(X)  \
 	template<> struct TypeName<X> \
 	{                             \
-		static const char *name;  \
-	};                            \
-	const char *TypeName<X>::name = #X
+		static const char *name() \
+		{                         \
+			return (#X);          \
+		}                         \
+	}                             \
 
 REGISTER_NAME_OF_TYPE(KDataLV);
 REGISTER_NAME_OF_TYPE(KDataLVs);
