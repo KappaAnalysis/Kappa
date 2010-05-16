@@ -60,7 +60,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltMaxdR = cms.double(0.05),
 	),
 
-	Tracks = cms.PSet(kappaNoCut, kappaNoRename,
+	Tracks = cms.PSet(kappaNoRename,
+		maxN = cms.int32(-1),
+		minPt = cms.double(10.),
+		maxEta = cms.double(2.5),
+
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoTracks_generalTracks"),
