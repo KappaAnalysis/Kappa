@@ -68,7 +68,7 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 )
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
-	'Muons', 'TrackSummary', 'Tracks', 'LV', 'MET', 'CaloJets', 'PFJets', 'Vertex', 'GenMetadata'
+	'Muons', 'Partons', 'TrackSummary', 'Tracks', 'LV', 'MET', 'CaloJets', 'PFJets', 'Vertex', 'GenMetadata'
 )
 #-------------------------------------------------------------------------------
 

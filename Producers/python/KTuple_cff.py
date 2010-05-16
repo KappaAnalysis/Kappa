@@ -71,6 +71,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
+	Partons = cms.PSet(kappaNoCut,
+		genParticles = cms.PSet(
+			src = cms.InputTag("genParticles"),
+			selectedStatus = cms.int32(8),      # select, if (1<<status & selectedStatus) or selectedStatus==0
+			selectedParticles = cms.vint32(),   # empty = all pdgIds possible
+		),
+	),
+
 	TrackSummary = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
