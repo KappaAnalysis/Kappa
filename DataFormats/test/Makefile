@@ -3,13 +3,16 @@ CXXFLAGS = -O2 -Wall -fPIC $(shell root-config --cflags)
 
 LD       = g++
 LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
-	-lGenVector -lReflex -lMathMore -lMathCore -lReflexDict
+	-lGenVector -lReflex -lMathCore -lReflexDict
 
-PROGRAM = libKappa.so libKappa.o
+PROGRAM = libKappa.so libKappa.a libKappa.o
 all: $(PROGRAM)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+%.a: $(LIBFILES_ALL)
+	ar rcs $@ $^
 
 %.so: %.o
 	$(LD) -shared $(LDFLAGS) -o $@ $^
