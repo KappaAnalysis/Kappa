@@ -6,5 +6,5 @@
 *.root
 work.*
 .svn
-DataFormats/test/dict.h
-DataFormats/test/dict.cpp
+DataFormats/test/libKappa.h
+DataFormats/test/libKappa.cpp
