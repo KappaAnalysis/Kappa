@@ -5,7 +5,7 @@ LD       = g++
 LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
 	-lGenVector -lReflex -lMathMore -lMathCore -lReflexDict
 
-PROGRAM = dict.so
+PROGRAM = libKappa.so
 all: $(PROGRAM)
 
 %.o: %.cpp
@@ -14,7 +14,7 @@ all: $(PROGRAM)
 %.so: %.o
 	$(LD) -shared $(LDFLAGS) -o $@ $^
 
-dict.cpp: standalone.h ../src/classes.h LinkDef.h
+libKappa.cpp: standalone.h ../src/classes.h LinkDef.h
 	rootcint -f $@ -c $^
 
 install: $(PROGRAM)
@@ -24,4 +24,4 @@ install: $(PROGRAM)
 		|| true
 
 clean:
-	@rm -f *.o *.so dict.*
+	@rm -f *.o *.so libKappa.*
