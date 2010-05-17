@@ -5,7 +5,7 @@ LD       = g++
 LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
 	-lGenVector -lReflex -lMathMore -lMathCore -lReflexDict
 
-PROGRAM = libKappa.so
+PROGRAM = libKappa.so libKappa.o
 all: $(PROGRAM)
 
 %.o: %.cpp
