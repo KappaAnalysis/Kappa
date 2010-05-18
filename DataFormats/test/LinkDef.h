@@ -47,6 +47,10 @@
 #pragma link C++ class std::vector<KDataJet>+;
 #pragma link C++ typedef KDataJets;
 
+#pragma link C++ struct KDataPFJet+;
+#pragma link C++ class std::vector<KDataPFJet>+;
+#pragma link C++ typedef KDataPFJets;
+
 #pragma link C++ struct KLV+;
 #pragma link C++ class std::vector<KLV>+;
 #pragma link C++ typedef KLVs;
