@@ -11,7 +11,7 @@ all: $(PROGRAM)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.a: $(LIBFILES_ALL)
+%.a: %.o
 	ar rcs $@ $^
 
 %.so: %.o
@@ -27,4 +27,4 @@ install: $(PROGRAM)
 		|| true
 
 clean:
-	@rm -f *.o *.so libKappa.*
+	@rm -f libKappa.*
