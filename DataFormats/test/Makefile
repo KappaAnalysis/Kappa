@@ -1,8 +1,9 @@
+PROGRAM  = libKappa.so libKappa.a libKappa.o
+
 CXXFLAGS = -O2 -Wall -fPIC $(shell root-config --cflags)
 LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
 	-lGenVector -lReflex -lMathCore -lReflexDict
 
-PROGRAM = libKappa.so libKappa.a libKappa.o
 all: $(PROGRAM)
 
 %.o: %.cpp
