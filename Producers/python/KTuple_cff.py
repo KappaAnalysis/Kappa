@@ -48,6 +48,10 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltPreL1Mu14L1SingleJet6U"
 		),
 		noiseHCAL = cms.InputTag("hcalnoise"),
+
+		errorsAndWarnings = cms.InputTag("logErrorHarvester"),
+		errorsAndWarningsAvoidCategories = cms.vstring(),
+		printErrorsAndWarnings = cms.bool(False),
 	),
 
 	Muons = cms.PSet(kappaNoCut,

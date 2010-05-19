@@ -52,6 +52,8 @@ typedef int bx_id;
 const unsigned long KFlagPhysicsDeclared = 1 << 0;
 const unsigned long KFlagHCALLooseNoise = 1 << 1;
 const unsigned long KFlagHCALTightNoise = 1 << 2;
+const unsigned long KFlagRecoErrors = 1 << 3;
+const unsigned long KFlagRecoWarnings = 1 << 4;
 
 struct KGenEventMetadata : public KEventMetadata
 {
