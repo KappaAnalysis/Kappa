@@ -81,6 +81,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 			selectedStatus = cms.int32(8),      # select, if (1<<status & selectedStatus) or selectedStatus==0
 			selectedParticles = cms.vint32(),   # empty = all pdgIds possible
 		),
+		genStableMuons = cms.PSet(
+			src = cms.InputTag("genParticles"),
+			selectedStatus = cms.int32(2),      # select, if (1<<status & selectedStatus) or selectedStatus==0
+			selectedParticles = cms.vint32(13,-13),   # empty = all pdgIds possible
+		),
 	),
 
 	TrackSummary = cms.PSet(kappaNoCut,
