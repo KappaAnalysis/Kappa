@@ -29,16 +29,14 @@ public:
 		out.detectorEta = in.detectorP4(in.vertex(),in).eta();
 		out.fHPD = -1.;
 		out.fRBX = -1.;
-		out.nTracksAtCalo=-1;
-		out.nTracksAtVertex=-1;
+		out.nTracksAtCalo = -1;
+		out.nTracksAtVertex = -1;
 		out.nConst = in.nConstituents();
 		out.neutralEmFraction = in.neutralEmEnergyFraction();
 		out.chargedEmFraction = in.chargedEmEnergyFraction();
 		out.neutralHadFraction = in.neutralHadronEnergyFraction();
 		out.chargedHadFraction = in.chargedHadronEnergyFraction();
 	}
-
-private:
 };
 
 #endif
