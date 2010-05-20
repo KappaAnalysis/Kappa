@@ -16,6 +16,9 @@
 
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 
+#include "FWCore/MessageLogger/interface/ELseverityLevel.h"
+#include "FWCore/MessageLogger/interface/ErrorSummaryEntry.h"
+
 #define NEWHLT
 
 // real data
@@ -39,6 +42,9 @@ public:
 		svMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
 		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL")),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
+		tagErrorsAndWarnings(cfg.getParameter<edm::InputTag>("errorsAndWarnings")),
+		avoidEaWCategories(cfg.getParameter<std::vector<std::string> >("errorsAndWarningsAvoidCategories")),
+		printErrorsAndWarnings(cfg.getParameter<bool>("printErrorsAndWarnings")),
 		printHltList(cfg.getParameter<bool>("printHltList"))
 	{
 		metaLumi = new typename Tmeta::typeLumi();
@@ -207,6 +213,34 @@ public:
 				metaEvent->bitsUserFlags |= KFlagHCALTightNoise;
 		}
 
+		edm::Handle<std::vector<edm::ErrorSummaryEntry> > errorsAndWarnings;
+
+		if (tagErrorsAndWarnings.label()!="" && event.getByLabel(tagErrorsAndWarnings,errorsAndWarnings))
+		{
+			if (errorsAndWarnings.failedToGet())
+			{
+				metaEvent->bitsUserFlags |= KFlagRecoErrors;
+				metaEvent->bitsUserFlags |= KFlagRecoWarnings;
+			}
+			else
+			{
+				for (std::vector<edm::ErrorSummaryEntry>::const_iterator it = errorsAndWarnings->begin(); it != errorsAndWarnings->end(); it++)
+				{
+					if (avoidEaWCategories.size() != 0 && std::find(avoidEaWCategories.begin(),avoidEaWCategories.end(), it->category) != avoidEaWCategories.end())
+						continue;
+					if (it->severity.getLevel() == edm::ELseverityLevel::ELsev_error || it->severity.getLevel() == edm::ELseverityLevel::ELsev_error2)
+						metaEvent->bitsUserFlags |= KFlagRecoErrors;
+					if (it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning || it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning2)
+						metaEvent->bitsUserFlags |= KFlagRecoWarnings;
+
+					if (printErrorsAndWarnings && (it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning || it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning2))
+						std::cout << "warning: " << it->category << ", " << it->module << ", " << it->count << "\n";
+					if (printErrorsAndWarnings && (it->severity.getLevel() == edm::ELseverityLevel::ELsev_error || it->severity.getLevel() == edm::ELseverityLevel::ELsev_error2))
+						std::cout << "error: " << it->category << ", " << it->module << ", " << it->count << "\n";
+				}
+			}
+		}
+
 		return true;
 	}
 
@@ -221,6 +255,9 @@ protected:
 	std::vector<size_t> hltKappa2FWK;
 
 	edm::InputTag tagNoiseHCAL, tagHLTrigger;
+	edm::InputTag tagErrorsAndWarnings;
+	std::vector<std::string> avoidEaWCategories;
+	bool printErrorsAndWarnings;
 	bool printHltList;
 
 	std::vector<std::string> hltNames;

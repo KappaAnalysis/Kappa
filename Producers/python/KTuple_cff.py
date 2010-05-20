@@ -48,6 +48,10 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltPreL1Mu14L1SingleJet6U"
 		),
 		noiseHCAL = cms.InputTag("hcalnoise"),
+
+		errorsAndWarnings = cms.InputTag("logErrorHarvester"),
+		errorsAndWarningsAvoidCategories = cms.vstring(),
+		printErrorsAndWarnings = cms.bool(False),
 	),
 
 	Muons = cms.PSet(kappaNoCut,
@@ -60,11 +64,28 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltMaxdR = cms.double(0.05),
 	),
 
-	Tracks = cms.PSet(kappaNoCut, kappaNoRename,
+	Tracks = cms.PSet(kappaNoRename,
+		maxN = cms.int32(-1),
+		minPt = cms.double(10.),
+		maxEta = cms.double(2.5),
+
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoTracks_generalTracks"),
 		blacklist = cms.vstring(),
+	),
+
+	Partons = cms.PSet(kappaNoCut,
+		genParticles = cms.PSet(
+			src = cms.InputTag("genParticles"),
+			selectedStatus = cms.int32(8),      # select, if (1<<status & selectedStatus) or selectedStatus==0
+			selectedParticles = cms.vint32(),   # empty = all pdgIds possible
+		),
+		genStableMuons = cms.PSet(
+			src = cms.InputTag("genParticles"),
+			selectedStatus = cms.int32(2),      # select, if (1<<status & selectedStatus) or selectedStatus==0
+			selectedParticles = cms.vint32(13,-13),   # empty = all pdgIds possible
+		),
 	),
 
 	TrackSummary = cms.PSet(kappaNoCut,

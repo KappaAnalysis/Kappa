@@ -1,5 +1,5 @@
-#ifndef KDATAFORMAT_H
-#define KDATAFORMAT_H
+#ifndef KDATAFORMAT_CLASSES_H
+#define KDATAFORMAT_CLASSES_H
 
 #define G__DICTIONARY
 #include "../interface/KBasic.h"

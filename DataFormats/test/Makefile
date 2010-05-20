@@ -1,20 +1,22 @@
+PROGRAM  = libKappa.so libKappa.a libKappa.o
+
 CXX      = g++
 CXXFLAGS = -O2 -Wall -fPIC $(shell root-config --cflags)
-
-LD       = g++
 LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
-	-lGenVector -lReflex -lMathMore -lMathCore -lReflexDict
+	-lGenVector -lReflex -lMathCore -lReflexDict
 
-PROGRAM = dict.so
 all: $(PROGRAM)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.so: %.o
-	$(LD) -shared $(LDFLAGS) -o $@ $^
+%.a: %.o
+	ar rcs $@ $^
 
-dict.cpp: standalone.h ../src/classes.h LinkDef.h
+%.so: %.o
+	$(CXX) $(LDFLAGS) -shared -o $@ $^
+
+libKappa.cpp: standalone.h ../src/classes.h LinkDef.h
 	rootcint -f $@ -c $^
 
 install: $(PROGRAM)
@@ -24,4 +26,4 @@ install: $(PROGRAM)
 		|| true
 
 clean:
-	@rm -f *.o *.so dict.*
+	@rm -f libKappa.*

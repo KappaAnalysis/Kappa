@@ -27,8 +27,16 @@ struct KDataTrack : public KDataLV
 	{
 		double sum = 0.;
 		for (std::vector<KDataTrack>::iterator it = tracks->begin(); it != tracks->end(); it++)
+		{
 			if ( it->p4.pt() > minPt && ROOT::Math::VectorUtil::DeltaR(it->p4, p4) > vetoCone && ROOT::Math::VectorUtil::DeltaR(it->p4, p4) < isoCone )
+			{
+				// "real" track isolation takes only tracks near the studied track into account
+				// (but there is even more magic why one needs isodeposits)
+				//if ( std::abs(it->ref.z() - ref.z()) > 0.2 || sqrt( (it->ref.x() - ref.x() )*(it->ref.x() - ref.x() ) + (it->ref.y() - ref.y())*(it->ref.y() - ref.y()) + (it->ref.z() - ref.z())*(it->ref.z() - ref.z()) ) > 0.1 )
+				//	continue;
 				sum+=it->p4.pt();
+			}
+		}
 		return sum;
 	}
 

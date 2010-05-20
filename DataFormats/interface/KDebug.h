@@ -34,6 +34,21 @@ std::ostream &operator<<(std::ostream &os, const KDataLV &lv)
 	return os << KLVWrap<KDataLV::KInternalLV>(lv.p4);
 }
 
+std::ostream &operator<<(std::ostream &os, const KDataMET &met)
+{
+	return os << KLVWrap<KDataLV::KInternalLV>(met.p4) << " sumEt=" << met.sumEt;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataPFMET &met)
+{
+	return os << static_cast<KDataMET>(met) << " cEMF=" << met.chargedEMFraction;
+}
+
+std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
+{
+	return os << "#Tracks=" << s.nTracks << ", #HQ Tracks=" << s.nTracksHQ;
+}
+
 std::ostream &operator<<(std::ostream &os, const KParton &v)
 {
 	bool neg = (v.pdgid & (1 << KPartonChargeMask)) != 0;
