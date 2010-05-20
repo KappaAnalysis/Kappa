@@ -3,7 +3,9 @@ import FWCore.ParameterSet.Config as cms
 # Basic process setup ----------------------------------------------------------
 process = cms.Process("kappaSkim")
 process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring(
-	'file:///home/piparo/testFiles/Spring10_MinBias_GENSIMRECO_MC_3XY_V25_S09_preproduction-v2.root',
+	#'file:///home/piparo/testFiles/Spring10_MinBias_GENSIMRECO_MC_3XY_V25_S09_preproduction-v2.root',
+	'file://EWKMuSkim_L1TG04041_AllMuAtLeastThreeTracks135149_Z.root',
+	#'file:///storage/6/zeise/temp/minbias_pr_v9_FE9B4520-7D5B-DF11-B4DA-0019DB2F3F9A.root'
 ))
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 #-------------------------------------------------------------------------------
@@ -14,7 +16,7 @@ process.load('Configuration/StandardSequences/Services_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('RecoJets.Configuration.RecoJetAssociations_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = 'START3X_V26A::All' # latest tag for MC
+process.GlobalTag.globaltag = '@GLOBALTAG@'
 #-------------------------------------------------------------------------------
 
 # Configure tuple generation ---------------------------------------------------
@@ -65,9 +67,8 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	)
 )
 process.kappatuple.verbose = cms.int32(0)
-process.kappatuple.hltSource = cms.InputTag("TriggerResults::REDIGI")
 process.kappatuple.active = cms.vstring(
-	'Muons', 'Partons', 'TrackSummary', 'LV', 'MET', 'CaloJets', 'PFJets', 'Vertex', 'GenMetadata'
+	'Muons', 'TrackSummary', 'LV', 'MET', 'CaloJets', 'PFJets', 'Vertex', 'Metadata', @ACTIVE@
 )
 #-------------------------------------------------------------------------------
 
@@ -75,57 +76,3 @@ process.kappatuple.active = cms.vstring(
 process.pathDAT = cms.Path(process.recoJetAssociations+process.kappatuple)
 process.schedule = cms.Schedule(process.pathDAT)
 #-------------------------------------------------------------------------------
-
-import FWCore.ParameterSet.Config as cms
-from IOMC.RandomEngine.RandomServiceHelper import RandomNumberServiceHelper
-
-def customise_for_gc(process):
-	try:
-		maxevents = __MAX_EVENTS__
-		process.maxEvents = cms.untracked.PSet(
-			input = cms.untracked.int32(maxevents)
-		)
-	except:
-		pass
-
-	# Dataset related setup
-	try:
-		tmp = __SKIP_EVENTS__
-		process.source = cms.Source("PoolSource",
-			skipEvents = cms.untracked.uint32(__SKIP_EVENTS__),
-			fileNames = cms.untracked.vstring(__FILE_NAMES__)
-		)
-		try:
-			secondary = __FILE_NAMES2__
-			process.source.secondaryFileNames = cms.untracked.vstring(secondary)
-		except:
-			pass
-		try:
-			lumirange = [__LUMI_RANGE__]
-			process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange(lumirange)
-		except:
-			pass
-	except:
-		pass
-
-	# Generator related setup
-	try:
-		if hasattr(process, "generator"):
-			process.source.firstLuminosityBlock = cms.untracked.uint32(1+__MY_JOBID__)
-	except:
-		pass
-
-	if hasattr(process, "RandomNumberGeneratorService"):
-		randSvc = RandomNumberServiceHelper(process.RandomNumberGeneratorService)
-		randSvc.populate()
-
-	process.AdaptorConfig = cms.Service("AdaptorConfig",
-		enable=cms.untracked.bool(True),
-		stats = cms.untracked.bool(True),
-	)
-
-	return (process)
-
-process = customise_for_gc(process)
-
-# grid-control: https://ekptrac.physik.uni-karlsruhe.de/trac/grid-control
