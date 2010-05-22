@@ -63,14 +63,26 @@ struct KDataPFMET : public KDataMET
 };
 
 // pdgid = [charge:1][status:3][id:...]
-const unsigned int KPartonChargeMask = 31;
-const unsigned int KPartonStatusMask = 28;
+const unsigned int KPartonPdgIdMask = ((unsigned int)1 << 28) - (unsigned int)1;
+const unsigned int KPartonChargeMask = (unsigned int)1 << 31;
+const unsigned int KPartonStatusMask = (unsigned int)3 << 28;
+const unsigned int KPartonChargePosition = 31;
+const unsigned int KPartonStatusPosition = 28;
 struct KParton
 {
 	typedef RMLV KInternalLV;
 	RMLV p4;
 	unsigned int pdgid;
 	unsigned int children;
+
+	int status()
+	{
+		return (pdgid & KPartonStatusMask) >> KPartonStatusPosition;
+	}
+	int pdgId()
+	{
+		return (pdgid & KPartonChargeMask ? -1 : 1) * (pdgid & KPartonPdgIdMask);
+	}
 };
 typedef std::vector<KParton> KPartons;
 

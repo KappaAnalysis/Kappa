@@ -30,9 +30,9 @@ protected:
 	{
 		copyP4(in, out.p4);
 		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
-		out.pdgid = id | ((in.status() % 4) << KPartonStatusMask);
+		out.pdgid = id | ((in.status() % 4) << KPartonStatusPosition);
 		if (in.pdgId() < 0)
-			out.pdgid |= (1 << KPartonChargeMask);
+			out.pdgid |= (1 << KPartonChargePosition);
 		out.children = 0;
 	}
 	virtual bool acceptSingle(const SingleInputType &in)
