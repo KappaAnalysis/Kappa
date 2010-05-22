@@ -25,8 +25,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 			".*Jet.*",
 			"^HLT_MET[0-9]*",
 			"^HLT_Activity.*", ".*(Bias|BSC).*",
-			"HLT_L2Mu0", "HLT_L2Mu3", "HLT_L1Mu20", "HLT_L2Mu9", "HLT_L2Mu11", "HLT_L1Mu14_L1SingleJet6U",
-			"HLT_DoubleMu0", "HLT_DoubleMu3", "HLT_Mu3", "HLT_Mu5", "HLT_Mu9", "HLT_IsoMu3"
+			"HLT_L1Mu20", "HLT_L1Mu14_L1SingleJet6U",
+			"^HLT_L1MuOpen$","^HLT_L1Mu$",
+			"^HLT_L2Mu0$", "^HLT_L2Mu3$", "^HLT_L2Mu5$", "^HLT_L2Mu9$", "^HLT_L2Mu11$",
+			"^HLT_Mu3", "^HLT_IsoMu3$", "^HLT_Mu5$", "^HLT_Mu9", "^HLT_Mu11",
+			"^HLT_DoubleMu0$", "^HLT_DoubleMu3$"
 			# "^HLT_(L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?",
 			# "HLT_L2DoubleMu0", "HLT_L1DoubleMuOpen", "HLT_L1Mu14_L1SingleEG10",
 			# "HLT_L1Mu14_L1ETM30", "HLT_Mu0_L1MuOpen", "HLT_Mu0_Track0_Jpsi",
