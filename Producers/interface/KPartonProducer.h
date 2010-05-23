@@ -32,7 +32,7 @@ protected:
 		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
 		out.pdgid = id | ((in.status() % 4) << KPartonStatusPosition);
 		if (in.pdgId() < 0)
-			out.pdgid |= (1 << KPartonChargePosition);
+			out.pdgid |= KPartonChargeMask;
 		out.children = 0;
 	}
 	virtual bool acceptSingle(const SingleInputType &in)
@@ -40,15 +40,15 @@ protected:
 		bool acceptStatus = false;
 		bool acceptPdgId = false;
 
-		if (selectedStatus==0)
+		if (selectedStatus == 0)
 			acceptStatus = true;
 		else
-			acceptStatus = ( (1 << in.status()) & selectedStatus);
+			acceptStatus = ((1 << in.status()) & selectedStatus);
 
-		if (selectedParticles.size()==0)
+		if (selectedParticles.size() == 0)
 			acceptPdgId = true;
 		else
-			acceptPdgId = (find(selectedParticles.begin(),selectedParticles.end(),std::abs(in.pdgId())) != selectedParticles.end());
+			acceptPdgId = (find(selectedParticles.begin(), selectedParticles.end(), std::abs(in.pdgId())) != selectedParticles.end());
 
 		return (acceptStatus && acceptPdgId);
 	}
