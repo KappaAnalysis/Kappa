@@ -2,6 +2,7 @@
 #define KDATAFORMAT_H
 
 #include "KBasic.h"
+#include "KJetMET.h"
 #include "KLorentzVector.h"
 #include "KMetadata.h"
 #include "KMuon.h"

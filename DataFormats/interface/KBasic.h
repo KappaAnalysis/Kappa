@@ -5,6 +5,13 @@
 #include <vector>
 #include "Math/SMatrix.h"
 
+struct KLV
+{
+	typedef RMLV KInternalLV;
+	RMLV p4;
+};
+typedef std::vector<KLV> KLVs;
+
 struct KDataLV
 {
 	typedef RMDataLV KInternalLV;
@@ -24,50 +31,12 @@ struct KDataVertex
 };
 typedef std::vector<KDataVertex> KDataVertices;
 
-struct KDataJet : public KDataLV
-{
-	double emf;
-	double area;
-	int n90, n90Hits;
-	double noiseHCAL;
-	double detectorEta;
-	double fHPD, fRBX;
-	int nTracksAtCalo;
-	int nTracksAtVertex;
-	int nConst;
-};
-typedef std::vector<KDataJet> KDataJets;
-
-struct KDataPFJet : public KDataJet
-{
-	float neutralEmFraction, chargedEmFraction;
-	float neutralHadFraction, chargedHadFraction;
-};
-typedef std::vector<KDataPFJet> KDataPFJets;
-
-struct KLV
-{
-	typedef RMLV KInternalLV;
-	RMLV p4;
-};
-typedef std::vector<KLV> KLVs;
-
-struct KDataMET : public KDataLV
-{
-	double sumEt;
-};
-
-struct KDataPFMET : public KDataMET
-{
-	double chargedEMFraction;
-};
-
 // pdgid = [charge:1][status:3][id:...]
-const unsigned int KPartonPdgIdMask = ((unsigned int)1 << 28) - (unsigned int)1;
-const unsigned int KPartonChargeMask = (unsigned int)1 << 31;
-const unsigned int KPartonStatusMask = (unsigned int)3 << 28;
-const unsigned int KPartonChargePosition = 31;
 const unsigned int KPartonStatusPosition = 28;
+const unsigned int KPartonChargePosition = 31;
+const unsigned int KPartonChargeMask = (unsigned int)1 << KPartonChargePosition;
+const unsigned int KPartonStatusMask = (unsigned int)3 << KPartonStatusPosition;
+const unsigned int KPartonPdgIdMask = ((unsigned int)1 << KPartonStatusPosition) - (unsigned int)1;
 struct KParton
 {
 	typedef RMLV KInternalLV;
