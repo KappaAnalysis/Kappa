@@ -36,7 +36,7 @@ std::ostream &operator<<(std::ostream &os, const KDataLV &lv)
 
 std::ostream &operator<<(std::ostream &os, const KDataMET &met)
 {
-	return os << KLVWrap<KDataLV::KInternalLV>(met.p4) << " sumEt=" << met.sumEt;
+	return os << static_cast<KDataLV>(met) << " sumEt=" << met.sumEt;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataPFMET &met)
@@ -49,12 +49,9 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 	return os << "#Tracks=" << s.nTracks << ", #HQ Tracks=" << s.nTracksHQ;
 }
 
-std::ostream &operator<<(std::ostream &os, const KParton &v)
+std::ostream &operator<<(std::ostream &os, const KParton &p)
 {
-	bool neg = (v.pdgid & (1 << KPartonChargeMask)) != 0;
-	unsigned status = (v.pdgid >> KPartonStatusMask) % 8;
-	int id = (v.pdgid % (1 << KPartonStatusMask)) * (neg ? -1 : 1);
-	return os << status << "|" << id << "|" << v.p4;
+	return os << p.status() << "|" << p.pdgId() << "|" << KLVWrap<KParton::KInternalLV>(p.p4);
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
