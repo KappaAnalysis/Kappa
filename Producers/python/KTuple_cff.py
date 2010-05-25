@@ -134,17 +134,12 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
+
 	BeamSpot = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring(),
-		blacklist = cms.vstring(),
-
-		maxN = cms.int32(-1),
-
-		offlineBeamSpot = cms.PSet(
-			src = cms.InputTag("offlineBeamSpot")
-		),
+		whitelist = cms.vstring("recoBeamSpot.*"),
+		blacklist = cms.vstring(""),
 	),
 
 	LV = cms.PSet(kappaNoCut,
