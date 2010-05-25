@@ -16,6 +16,7 @@
 #include "../interface/KGenMetadataProducer.h"
 #include "../interface/KLorentzProducer.h"
 #include "../interface/KMETProducer.h"
+#include "../interface/KPFMETProducer.h"
 #include "../interface/KTrackProducer.h"
 #include "../interface/KTowerProducer.h"
 #include "../interface/KVertexProducer.h"
@@ -123,6 +124,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KTrackSummaryProducer>(psConfig, active[i]);
 		else if (active[i] == "MET")
 			addProducer<KMETProducer>(psConfig, active[i]);
+		else if (active[i] == "PFMET")
+			addProducer<KPFMETProducer>(psConfig, active[i]);
 		else if (active[i] == "LV")
 			addProducer<KLorentzProducer>(psConfig, active[i]);
 		else if (active[i] == "Partons")

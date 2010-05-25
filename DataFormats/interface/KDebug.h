@@ -41,7 +41,7 @@ std::ostream &operator<<(std::ostream &os, const KDataMET &met)
 
 std::ostream &operator<<(std::ostream &os, const KDataPFMET &met)
 {
-	return os << static_cast<KDataMET>(met) << " cEMF=" << met.chargedEMFraction;
+	return os << static_cast<KDataMET>(met) << " cEMF=" << met.chargedEMEtFraction << " cHADF=" << met.chargedHadEtFraction << " nEMF=" << met.neutralEMEtFraction << " nHADF=" << met.neutralHadEtFraction << " MuonF=" << met.muonEtFraction << " type6F=" << met.type6EtFraction << " type7F=" << met.type7EtFraction;
 }
 
 std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)

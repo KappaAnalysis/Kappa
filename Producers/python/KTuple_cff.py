@@ -166,12 +166,19 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("reco.*MET"),
-		blacklist = cms.vstring(),
+		blacklist = cms.vstring("recoPFMET"),
 
 		rename = cms.vstring(
-			"(gen)?(pf)?(ht)?met => (?1Gen:Calo)MET(?2PF)(?3HT)",
+			"(gen)?(ht)?met => (?1Gen:Calo)MET(?2HT)",
 		),
 		rename_whitelist = cms.vstring("^(Calo|Gen)MET"),
 		rename_blacklist = cms.vstring(),
+	),
+
+	PFMET = cms.PSet(kappaNoRename,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("recoPFMET"),
+		blacklist = cms.vstring(),
 	),
 )
