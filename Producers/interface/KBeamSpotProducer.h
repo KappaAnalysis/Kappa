@@ -24,25 +24,22 @@ protected:
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		{
-			out.position = in.position();
+		out.position = in.position();
 
-			out.type = in.type();
+		out.type = in.type();
 
-			out.betaStar = in.betaStar();
+		out.betaStar = in.betaStar();
 
-			out.beamWidthX = in.BeamWidthX();
-			out.beamWidthY = in.BeamWidthY();
-			out.emittanceX = in.emittanceX();
-			out.emittanceY = in.emittanceY();
+		out.beamWidthX = in.BeamWidthX();
+		out.beamWidthY = in.BeamWidthY();
+		out.emittanceX = in.emittanceX();
+		out.emittanceY = in.emittanceY();
 
-			out.dxdz	 = in.dxdz();
-			out.dydz	 = in.dydz();
-			out.sigmaZ = in.sigmaZ();
+		out.dxdz	 = in.dxdz();
+		out.dydz	 = in.dydz();
+		out.sigmaZ = in.sigmaZ();
 
-			out.covariance = in.covariance();
-		}
-
+		out.covariance = in.covariance();
 	}
 };
 
