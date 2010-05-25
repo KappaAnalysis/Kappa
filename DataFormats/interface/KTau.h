@@ -31,7 +31,7 @@ struct KDataPFTau : KDataTau
 };
 typedef std::vector<KDataPFTau> KDataPFTaus;
 
-struct KDataGenTau : KDataLV
+struct KDataGenTau : KDataTau
 {
 	RMDataLV p4_vis;		// momenta of visible particles
 	int status;

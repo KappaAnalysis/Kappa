@@ -100,4 +100,25 @@ std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 	return os << "Weight: " << m.weight;
 }
 
+std::ostream &operator<<(std::ostream &os, const KDataVertex &vertex)
+{
+	return os << vertex.position << " nTracks=" << vertex.nTracks << " fake=" << vertex.fake << " chi2=" << vertex.chi2 << " nDOF=" << vertex.nDOF;
+}
+
+
+std::ostream &operator<<(std::ostream &os, const KDataTau &tau)
+{
+	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau)
+{
+	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau)
+{
+	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge << " p4_vis=" << static_cast<RMLV>(tau.p4_vis) << " status=" << tau.status << " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
+}
+
 #endif

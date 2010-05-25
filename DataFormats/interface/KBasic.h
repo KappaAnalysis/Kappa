@@ -44,11 +44,11 @@ struct KParton
 	unsigned int pdgid;
 	unsigned int children;
 
-	int status()
+	int status() const
 	{
 		return (pdgid & KPartonStatusMask) >> KPartonStatusPosition;
 	}
-	int pdgId()
+	int pdgId() const
 	{
 		return (pdgid & KPartonChargeMask ? -1 : 1) * (pdgid & KPartonPdgIdMask);
 	}
