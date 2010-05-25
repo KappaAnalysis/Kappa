@@ -31,6 +31,21 @@ struct KDataVertex
 };
 typedef std::vector<KDataVertex> KDataVertices;
 
+struct KDataBeamSpot
+{
+	RMPoint position;
+	char type;
+
+	double betaStar;
+
+	double beamWidthX, beamWidthY, emittanceX, emittanceY;
+
+	double dxdz, dydz, sigmaZ;
+
+	ROOT::Math::SMatrix<double, 7, 7, ROOT::Math::MatRepSym<double, 7> > covariance;
+};
+typedef std::vector<KDataBeamSpot> KDataBeamSpots;
+
 // pdgid = [charge:1][status:3][id:...]
 const unsigned int KPartonStatusPosition = 28;
 const unsigned int KPartonChargePosition = 31;

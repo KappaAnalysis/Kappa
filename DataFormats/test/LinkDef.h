@@ -63,6 +63,10 @@
 #pragma link C++ class std::vector<KDataVertex>+;
 #pragma link C++ typedef KDataVertices;
 
+#pragma link C++ struct KDataBeamSpot+;
+#pragma link C++ class std::vector<KDataBeamSpot>+;
+#pragma link C++ typedef KDataBeamSpots;
+
 #pragma link C++ struct KParton+;
 #pragma link C++ class std::vector<KParton>+;
 #pragma link C++ typedef KPartons;
