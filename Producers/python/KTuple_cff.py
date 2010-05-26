@@ -64,7 +64,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 			isoVetos=cms.vstring("0.01"),
 		),
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
-		hltMaxdR = cms.double(0.05),
+		hltMaxdR = cms.double(0.3),
+		hltMaxdPt_Pt = cms.double(1.),
 	),
 
 	Tracks = cms.PSet(kappaNoRename,
