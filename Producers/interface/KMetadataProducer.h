@@ -1,6 +1,9 @@
 #ifndef KAPPA_METADATAPRODUCER_H
 #define KAPPA_METADATAPRODUCER_H
 
+#include <vector>
+#include <algorithm>
+
 #include "KBaseProducer.h"
 #include <FWCore/ParameterSet/interface/ParameterSet.h>
 #include <FWCore/Utilities/interface/InputTag.h>
@@ -128,31 +131,25 @@ public:
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		if (firstEventInLumi)
+		edm::Handle<trigger::TriggerEvent> triggerEventHandle;
+		if ((tagHLTrigger.label() != "") && event.getByLabel(tagHLTrigger, triggerEventHandle))
 		{
-			firstEventInLumi = false;
-			edm::Handle<trigger::TriggerEvent> triggerEventHandle;
-			if ((tagHLTrigger.label() != "") && event.getByLabel(tagHLTrigger, triggerEventHandle))
+			const unsigned sizeFilters = triggerEventHandle->sizeFilters();
+			for(unsigned int iF = 0; iF<sizeFilters; iF++)
 			{
-				const unsigned sizeFilters = triggerEventHandle->sizeFilters();
-				int idx=0;
-				for(unsigned int iF = 0; iF<sizeFilters; iF++)
-				{
-					const std::string filterName(triggerEventHandle->filterTag(iF).label());
+				const std::string filterName(triggerEventHandle->filterTag(iF).label());
 
-					bool matched=false;
-					for (std::vector<std::string>::iterator it=svMuonTriggerObjects.begin(); it!=svMuonTriggerObjects.end(); it++)
-					{
-						if (regexMatch(filterName, *it))
-							matched=true;
-					}
-					if (matched)
-					{
-						metaLumi->hltNamesMuons.push_back(filterName);
-						KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName]=idx;
-						std::cout << "muon trigger object: " << idx << " = " << filterName << "\n";
-						idx++;
-					}
+				bool matched=false;
+				for (std::vector<std::string>::iterator it=svMuonTriggerObjects.begin(); it!=svMuonTriggerObjects.end(); it++)
+				{
+					if (regexMatch(filterName, *it))
+						matched=true;
+				}
+				if (matched && find(metaLumi->hltNamesMuons.begin(), metaLumi->hltNamesMuons.end(), filterName) == metaLumi->hltNamesMuons.end())
+				{
+					metaLumi->hltNamesMuons.push_back(filterName);
+					KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName]=metaLumi->hltNamesMuons.size()-1;
+					std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size()-1) << " = " << filterName << "\n";
 				}
 			}
 		}
