@@ -26,7 +26,8 @@ public:
 	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
-		hltMaxdR(cfg.getParameter<double>("hltMaxdR"))
+		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
+		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt"))
 		{}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
@@ -133,7 +134,7 @@ public:
 
 	private:
 		edm::InputTag tagMuonIsolation, tagHLTrigger;
-		double hltMaxdR;
+		double hltMaxdR, hltMaxdPt_Pt;
 		edm::Handle< edm::ValueMap<reco::IsoDeposit> > isoDeps;
 		std::vector<std::string> isoVetos;
 		std::vector<reco::isodeposit::AbsVeto *> isoParams;
@@ -166,7 +167,7 @@ public:
 					trigger::TriggerObject triggerObject( triggerEventHandle->getObjects().at( keys[iK] ) );
 					RMDataLV tmpP4(triggerObject.pt(), triggerObject.eta(), triggerObject.phi(), triggerObject.mass());
 
-					if (ROOT::Math::VectorUtil::DeltaR(p4, tmpP4) < hltMaxdR)
+					if (ROOT::Math::VectorUtil::DeltaR(p4, tmpP4) < hltMaxdR && std::abs(p4.pt()-tmpP4.pt())/tmpP4.pt() < hltMaxdPt_Pt)
 					{
 						ret |= ((unsigned long long)1 << KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[nameFilter]);
 					}

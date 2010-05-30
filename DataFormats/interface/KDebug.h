@@ -41,7 +41,7 @@ std::ostream &operator<<(std::ostream &os, const KDataMET &met)
 
 std::ostream &operator<<(std::ostream &os, const KDataPFMET &met)
 {
-	return os << static_cast<KDataMET>(met) << " cEMF=" << met.chargedEMFraction;
+	return os << static_cast<KDataMET>(met) << " cEMF=" << met.chargedEMEtFraction << " cHADF=" << met.chargedHadEtFraction << " nEMF=" << met.neutralEMEtFraction << " nHADF=" << met.neutralHadEtFraction << " MuonF=" << met.muonEtFraction << " type6F=" << met.type6EtFraction << " type7F=" << met.type7EtFraction;
 }
 
 std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
@@ -98,6 +98,27 @@ std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 {
 	os << static_cast<KEventMetadata>(m) << std::endl;
 	return os << "Weight: " << m.weight;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataVertex &vertex)
+{
+	return os << vertex.position << " nTracks=" << vertex.nTracks << " fake=" << vertex.fake << " chi2=" << vertex.chi2 << " nDOF=" << vertex.nDOF;
+}
+
+
+std::ostream &operator<<(std::ostream &os, const KDataTau &tau)
+{
+	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau)
+{
+	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau)
+{
+	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge << " p4_vis=" << static_cast<RMLV>(tau.p4_vis) << " status=" << tau.status << " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
 }
 
 #endif

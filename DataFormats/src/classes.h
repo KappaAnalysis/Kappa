@@ -46,6 +46,9 @@ namespace
 		KDataVertex kappa_datavertex;
 		KDataVertices kappa_datavertices;
 
+		KDataBeamSpot kappa_databeamspot;
+		KDataBeamSpots kappa_databeamspots;
+
 		KParton kappa_parton;
 		KPartons kappa_partons;
 

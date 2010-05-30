@@ -17,6 +17,14 @@ process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = '@GLOBALTAG@'
 #-------------------------------------------------------------------------------
 
+# Produce jets -----------------------------------------------------------------
+process.load('Configuration/StandardSequences/Generator_cff')
+process.load('Configuration/StandardSequences/GeometryPilot2_cff')
+process.load('RecoJets.JetProducers.ak5GenJets_cfi')
+process.ak7GenJets = process.ak5GenJets.clone( rParam = 0.7 )
+process.MoreJets = cms.Path(process.genParticlesForJets * process.ak5GenJets * process.ak7GenJets)
+#-------------------------------------------------------------------------------
+
 # Configure tuple generation ---------------------------------------------------
 process.load("Kappa.Producers.KTuple_cff")
 process.kappatuple = cms.EDAnalyzer('KTuple',
@@ -67,11 +75,11 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.hltSource = cms.InputTag("TriggerResults::REDIGI")
 process.kappatuple.active = cms.vstring(
-	'Muons', 'Partons', 'TrackSummary', 'LV', 'MET', 'CaloJets', 'PFJets', 'Vertex', 'GenMetadata', @ACTIVE@
+	'Muons', 'Partons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'GenMetadata', 'BeamSpot', @ACTIVE@
 )
 #-------------------------------------------------------------------------------
 
 # Process schedule -------------------------------------------------------------
 process.pathDAT = cms.Path(process.recoJetAssociations+process.kappatuple)
-process.schedule = cms.Schedule(process.pathDAT)
+process.schedule = cms.Schedule(process.MoreJets, process.pathDAT)
 #-------------------------------------------------------------------------------

@@ -31,6 +31,9 @@
 	<class name="KDataVertex"/>
 	<class name="KDataVertices"/>
 
+	<class name="KDataBeamSpot"/>
+	<class name="KDataBeamSpots"/>
+
 	<class name="KParton"/>
 	<class name="KPartons"/>
 

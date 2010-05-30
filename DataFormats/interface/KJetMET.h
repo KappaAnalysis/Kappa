@@ -31,7 +31,10 @@ struct KDataMET : public KDataLV
 
 struct KDataPFMET : public KDataMET
 {
-	double chargedEMFraction;
+	double chargedEMEtFraction, chargedHadEtFraction;
+	double neutralEMEtFraction, neutralHadEtFraction;
+	double muonEtFraction;
+	double type6EtFraction, type7EtFraction;
 };
 
 #endif
