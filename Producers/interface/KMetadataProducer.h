@@ -113,6 +113,7 @@ public:
 		}
 		if (verbosity > 0)
 			std::cout << "Accepted number of trigger streams: " << counter - 1 << std::endl;
+
 		return true;
 	}
 
@@ -126,34 +127,20 @@ public:
 		firstEventInLumi = true;
 		metaLumi->hltNames = hltNames;
 		metaLumi->hltPrescales = hltPrescales;
+
+		for (std::vector<std::string>::iterator it=svMuonTriggerObjects.begin(); it!=svMuonTriggerObjects.end(); it++)
+		{
+			std::string filterName = *it;
+			std::cout << filterName << "\n";
+			metaLumi->hltNamesMuons.push_back(filterName);
+			KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName]=metaLumi->hltNamesMuons.size()-1;
+			std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size()-1) << " = " << filterName << "\n";
+		}
 		return true;
 	}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		edm::Handle<trigger::TriggerEvent> triggerEventHandle;
-		if ((tagHLTrigger.label() != "") && event.getByLabel(tagHLTrigger, triggerEventHandle))
-		{
-			const unsigned sizeFilters = triggerEventHandle->sizeFilters();
-			for(unsigned int iF = 0; iF<sizeFilters; iF++)
-			{
-				const std::string filterName(triggerEventHandle->filterTag(iF).label());
-
-				bool matched=false;
-				for (std::vector<std::string>::iterator it=svMuonTriggerObjects.begin(); it!=svMuonTriggerObjects.end(); it++)
-				{
-					if (regexMatch(filterName, *it))
-						matched=true;
-				}
-				if (matched && find(metaLumi->hltNamesMuons.begin(), metaLumi->hltNamesMuons.end(), filterName) == metaLumi->hltNamesMuons.end())
-				{
-					metaLumi->hltNamesMuons.push_back(filterName);
-					KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName]=metaLumi->hltNamesMuons.size()-1;
-					std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size()-1) << " = " << filterName << "\n";
-				}
-			}
-		}
-
 		// Set basic event infos
 		metaEvent->nRun = event.id().run();
 		metaEvent->nEvent = event.id().event();
