@@ -20,6 +20,7 @@ class KGenMetadataProducer : public KMetadataProducer<Tmeta>
 public:
 	KGenMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KMetadataProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+		forceLumi(cfg.getParameter<int>("forceLumi")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")) {}
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
@@ -45,6 +46,8 @@ public:
 		// Fill data related infos
 		if (!KMetadataProducer<Tmeta>::onEvent(event, setup))
 			return false;
+		if (forceLumi > 0)
+			this->metaEvent->nLumi = forceLumi;
 
 		// Get generator event info:
 		edm::Handle<GenEventInfoProduct> hEventInfo;
@@ -61,6 +64,7 @@ public:
 	}
 
 protected:
+	int forceLumi;
 	edm::InputTag tagSource;
 };
 

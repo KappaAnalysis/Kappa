@@ -38,7 +38,6 @@ class KMetadataProducer : public KBaseProducer
 {
 public:
 	KMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		forceLumi(cfg.getParameter<int>("forceLumi")),
 		tagL1Results(cfg.getParameter<edm::InputTag>("l1Source")),
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
 		svHLTWhitelist(cfg.getParameter<std::vector<std::string> >("hltWhitelist")),
@@ -145,10 +144,7 @@ public:
 		// Set basic event infos
 		metaEvent->nRun = event.id().run();
 		metaEvent->nEvent = event.id().event();
-		if (forceLumi < 0)
-			metaEvent->nLumi = event.luminosityBlock();
-		else
-			metaEvent->nLumi = forceLumi;
+		metaEvent->nLumi = event.luminosityBlock();
 		metaEvent->nBX = event.bunchCrossing();
 
 		// Set HLT trigger bits
@@ -236,7 +232,6 @@ public:
 
 protected:
 	bool firstEventInLumi;
-	int forceLumi;
 	edm::InputTag tagL1Results, tagHLTResults;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
 	std::vector<std::string> svMuonTriggerObjects;
