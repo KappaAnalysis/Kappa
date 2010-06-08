@@ -22,7 +22,7 @@
 #include "FWCore/MessageLogger/interface/ELseverityLevel.h"
 #include "FWCore/MessageLogger/interface/ErrorSummaryEntry.h"
 
-//#define NEWHLT
+#define NEWHLT
 
 // real data
 struct KMetadata_Product
