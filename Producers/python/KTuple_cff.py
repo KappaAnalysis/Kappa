@@ -17,6 +17,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 	active = cms.vstring("Metadata"),
 
 	Metadata = cms.PSet(
+		forceLumi = cms.int32(-1),
 		genSource = cms.InputTag("generator"),
 
 		l1Source = cms.InputTag("gtDigis"),
