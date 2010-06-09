@@ -79,8 +79,9 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Muons = cms.PSet(kappaNoCut,
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
-			srcMuonIsolation=cms.InputTag("muIsoDepositTk"),
-			isoVetos=cms.vstring("0.01"),
+			srcMuonIsolation = cms.InputTag("muIsoDepositTk"),
+			isoVetoCone = cms.double(0.015),
+			isoVetoMinPt = cms.double(1.5),
 		),
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
 		hltMaxdR = cms.double(0.3),

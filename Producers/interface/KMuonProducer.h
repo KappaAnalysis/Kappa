@@ -6,6 +6,7 @@
 #include <DataFormats/MuonReco/interface/Muon.h>
 #include <DataFormats/MuonReco/interface/MuonFwd.h>
 #include <DataFormats/MuonReco/src/MuonSelectors.cc>
+#include <DataFormats/RecoCandidate/interface/IsoDepositVetos.h>
 #include <bitset>
 #include "PhysicsTools/IsolationAlgos/interface/IsoDepositVetoFactory.h"
 #include <DataFormats/Common/interface/ValueMap.h>
@@ -42,10 +43,8 @@ public:
 		if (tagHLTrigger.label() != "")
 			cEvent->getByLabel(tagHLTrigger, triggerEventHandle);
 
-		isoVetos = pset.getParameter<std::vector<std::string> >("isoVetos");
-		isoParams.clear();
-		for ( std::vector<std::string>::const_iterator veto = isoVetos.begin(); veto != isoVetos.end(); ++veto )
-			isoParams.push_back(IsoDepositVetoFactory::make(veto->data()));
+		isoVetoCone = pset.getParameter<double>("isoVetoCone");
+		isoVetoMinPt = pset.getParameter<double>("isoVetoMinPt");
 
 		// Continue normally
 		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, tag, pset);
@@ -88,21 +87,25 @@ public:
 		// Isolation
 		edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
 		reco::IsoDeposit muonIsoDeposit = (*isoDeps)[muonref];
+		reco::isodeposit::Direction dir = reco::isodeposit::Direction(in.eta(), in.phi());
+		std::vector<reco::isodeposit::AbsVeto*>  vetosTrk;
+		vetosTrk.push_back(new reco::isodeposit::ConeVeto( dir, isoVetoCone ));
+		vetosTrk.push_back(new reco::isodeposit::ThresholdVeto( isoVetoMinPt ));
 
 		out.sumPtIso03				= in.isolationR03().sumPt;
 		out.ecalIso03					= in.isolationR03().emEt;
 		out.hcalIso03					= in.isolationR03().hadEt;
-		out.trackIso03					= muonIsoDeposit.depositWithin(0.3, isoParams, false);
+		out.trackIso03				= muonIsoDeposit.sumWithin(0.3, vetosTrk);
 
 		out.sumPtIso05				= in.isolationR05().sumPt;
 		out.ecalIso05					= in.isolationR05().emEt;
 		out.hcalIso05					= in.isolationR05().hadEt;
-		out.trackIso05					= muonIsoDeposit.depositWithin(0.5, isoParams, false);
+		out.trackIso05				= muonIsoDeposit.sumWithin(0.5, vetosTrk);
 
 		//out.sumPtIso06;
 		//out.hcalIso06;
 		//out.ecalIso06;
-		out.trackIso06					= muonIsoDeposit.depositWithin(0.6, isoParams, false);
+		out.trackIso06				= muonIsoDeposit.sumWithin(0.6, vetosTrk, false);
 
 		// Vertex
 		out.vertex = KDataVertex();
@@ -135,10 +138,8 @@ public:
 
 	private:
 		edm::InputTag tagMuonIsolation, tagHLTrigger;
-		double hltMaxdR, hltMaxdPt_Pt;
+		double hltMaxdR, hltMaxdPt_Pt, isoVetoCone, isoVetoMinPt;
 		edm::Handle< edm::ValueMap<reco::IsoDeposit> > isoDeps;
-		std::vector<std::string> isoVetos;
-		std::vector<reco::isodeposit::AbsVeto *> isoParams;
 
 		edm::Handle< trigger::TriggerEvent > triggerEventHandle;
 
