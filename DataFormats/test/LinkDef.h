@@ -36,6 +36,7 @@
 #pragma link C++ typedef KDataLVs;
 
 #pragma link C++ struct KDataMET+;
+#pragma link C++ struct KDataPFMET+;
 
 #pragma link C++ struct KDataTrack+;
 #pragma link C++ class std::vector<KDataTrack>+;
