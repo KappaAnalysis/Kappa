@@ -27,10 +27,11 @@
 #pragma link C++ class ROOT::Math::RowOffsets<3>+;
 #pragma link C++ class ROOT::Math::MatRepSym<double,3>+;
 #pragma link C++ class ROOT::Math::SymMatrixOffsets<3>+;
+#pragma link C++ class ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >+;
+
 #pragma link C++ class ROOT::Math::RowOffsets<7>+;
 #pragma link C++ class ROOT::Math::MatRepSym<double,7>+;
 #pragma link C++ class ROOT::Math::SymMatrixOffsets<7>+;
-#pragma link C++ class ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >+;
 #pragma link C++ class ROOT::Math::SMatrix<double,7,7,ROOT::Math::MatRepSym<double,7> >+;
 
 /************************************************************/
