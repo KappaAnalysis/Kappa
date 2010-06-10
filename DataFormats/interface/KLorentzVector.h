@@ -24,7 +24,7 @@ namespace ROOT
 		template <unsigned int D> struct SymMatrixOffsets
 		{
 		protected:
-			static RowOffsets<3> offsets;
+			static RowOffsets<D> offsets;
 		};
 	};
 };
