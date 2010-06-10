@@ -45,6 +45,7 @@ struct KDataMuon : KDataLV
 	float caloComp, segComp;
 
 	int numberOfChambers;
+	int numberOfMatches;
 	int trackHits;
 
 	int timeNDof;

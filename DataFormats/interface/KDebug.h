@@ -34,6 +34,11 @@ std::ostream &operator<<(std::ostream &os, const KDataLV &lv)
 	return os << KLVWrap<KDataLV::KInternalLV>(lv.p4);
 }
 
+std::ostream &operator<<(std::ostream &os, const KDataBeamSpot &bs)
+{
+	return os << bs.position << " betaStar=" << bs.betaStar;
+}
+
 std::ostream &operator<<(std::ostream &os, const KDataMET &met)
 {
 	return os << static_cast<KDataLV>(met) << " sumEt=" << met.sumEt;
