@@ -73,7 +73,7 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	)
 )
 process.kappatuple.verbose = cms.int32(0)
-process.kappatuple.Metadata.hltSource = cms.InputTag("TriggerResults::REDIGI")
+process.kappatuple.Metadata.hltSource = cms.InputTag("TriggerResults::@HLTPROD@")
 process.kappatuple.active = cms.vstring(
 	'Muons', 'Partons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'GenMetadata', 'BeamSpot', @ACTIVE@
 )
