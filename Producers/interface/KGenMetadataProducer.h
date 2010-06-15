@@ -28,6 +28,8 @@ public:
 		// Fill data related infos
 		if (!KMetadataProducer<Tmeta>::onLumi(lumiBlock, setup))
 			return false;
+		if (forceLumi > 0)
+			this->metaLumi->nLumi = forceLumi;
 
 		// Read generator infos
 		edm::Handle<GenRunInfoProduct> hGenInfo;
