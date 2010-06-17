@@ -167,14 +167,17 @@ public:
 		{
 			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
 			{
-				const std::string &name = hltNames[i];
+				const std::string &name = metaLumi->hltNames[i];
+				int prescale = 0, prescaleSet = -1;
 #ifdef NEWHLT
-				int prescale = hltConfig.prescaleValue(event, setup, name);
-#else
-				int prescale = 1;
+				prescaleSet = hltConfig.prescaleSet(event, setup);
+				if (prescaleSet != -1)
+					prescale = hltConfig.prescaleValue(event, setup, name);
 #endif
 				if (verbosity > 0 || printHltList)
-					std::cout << " => Adding prescale for trigger: " << name << " with value: " << prescale << std::endl;
+					std::cout << " => Adding prescale for trigger: '" << name
+						<< "' from prescale set: " << prescaleSet
+						<< " with value: " << prescale << std::endl;
 				metaLumi->hltPrescales[i] = prescale;
 			}
 			firstEventInLumi = false;
