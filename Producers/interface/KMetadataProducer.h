@@ -91,21 +91,16 @@ public:
 		{
 			const std::string &name = hltConfig.triggerName(i);
 			const int idx = hltConfig.triggerIndex(name);
-#ifdef NEWHLT
-			const unsigned int prescale = hltConfig.prescaleValue(idx, name);
-#else
-			const unsigned int prescale = 1;
-#endif
 			if (verbosity > 1)
 				std::cout << "Trigger: " << idx << " = ";
 			if (!regexMatch(name, svHLTWhitelist, svHLTBlacklist))
 				continue;
 			if (verbosity > 0 || printHltList)
 				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter
-					<< " with prescale " << prescale << std::endl;
+					<< " with placeholder prescale 1" << std::endl;
 			if (hltKappa2FWK.size() < 64)
 			{
-				addHLT(idx, name, prescale);
+				addHLT(idx, name, 1);
 				counter++;
 			}
 			else
@@ -119,12 +114,13 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
+		firstEventInLumi = true;
+
 		metaLumi = &(metaLumiMap[std::pair<unsigned int, unsigned int>(
 			(unsigned int)lumiBlock.run(), (unsigned int)lumiBlock.luminosityBlock())]);
 		metaLumi->nRun = lumiBlock.run();
 		metaLumi->nLumi = lumiBlock.luminosityBlock();
 
-		firstEventInLumi = true;
 		metaLumi->hltNames = hltNames;
 		metaLumi->hltPrescales = hltPrescales;
 
@@ -164,6 +160,24 @@ public:
 			}
 			if (hltFAIL)
 				metaEvent->bitsHLT |= 1;
+		}
+
+		// Set HLT prescales
+		if ((firstEventInLumi) && (tagHLTResults.label() != ""))
+		{
+			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
+			{
+				const std::string &name = hltNames[i];
+#ifdef NEWHLT
+				int prescale = hltConfig.prescaleValue(event, setup, name);
+#else
+				int prescale = 1;
+#endif
+				if (verbosity > 0 || printHltList)
+					std::cout << " => Adding prescale for trigger: " << name << " with value: " << prescale << std::endl;
+				metaLumi->hltPrescales[i] = prescale;
+			}
+			firstEventInLumi = false;
 		}
 
 		// Set L1 trigger bits
