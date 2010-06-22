@@ -50,6 +50,16 @@ struct KDataTrack : public KDataLV
 			) / sqrt(p4.Perp2());
 	}
 
+	double getDxy(KDataBeamSpot * bs)
+	{
+		if (!bs)
+			return -1.;
+		return (
+				- (ref.x()-bs->position.x()) * p4.y()
+				+ (ref.y()-bs->position.y()) * p4.x()
+			) / sqrt(p4.Perp2());
+	}
+
 	/*
 		mode:
 			0 - dxy
@@ -77,6 +87,39 @@ struct KDataTrack : public KDataLV
 
 				float vtxErr2 = ROOT::Math::Similarity(pv->covariance, orthog) / p4.Perp2();
 				return getDxy(pv) / sqrt(errDxy*errDxy + vtxErr2 );
+				break;
+		}
+		return -10000.;
+	}
+
+	/*
+		mode:
+			0 - dxy
+			1 - dxy/error(track)
+			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
+	*/
+	double getIP(KDataBeamSpot * bs, unsigned int mode = 0)
+	{
+		if (!bs)
+			return -10000.;
+
+		switch(mode)
+		{
+			case 0:
+				return getDxy(bs);
+				break;
+			case 1:
+				return getDxy(bs) / errDxy;
+				break;
+			case 2:
+				ROOT::Math::SVector<double,7> orthog;
+				orthog[0] = p4.y();
+				orthog[1] = -p4.x();
+				for (int i=2; i<7; i++)
+					orthog[i] = 0;
+
+				float vtxErr2 = ROOT::Math::Similarity(bs->covariance, orthog) / p4.Perp2();
+				return getDxy(bs) / sqrt(errDxy*errDxy + vtxErr2 );
 				break;
 		}
 		return -10000.;
