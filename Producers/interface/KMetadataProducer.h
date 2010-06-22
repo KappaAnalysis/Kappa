@@ -124,6 +124,7 @@ public:
 		metaLumi->hltNames = hltNames;
 		metaLumi->hltPrescales = hltPrescales;
 
+		metaLumi->hltNamesMuons.clear();
 		for (std::vector<std::string>::iterator it=svMuonTriggerObjects.begin(); it!=svMuonTriggerObjects.end(); it++)
 		{
 			std::string filterName = *it;
