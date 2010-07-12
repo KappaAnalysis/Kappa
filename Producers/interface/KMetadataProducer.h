@@ -100,7 +100,8 @@ public:
 			std::cout << "\n\n\tselected:" << tagHLTResults << "\n";
 			this->addProvenance(tagHLTResults.process(), "");
 			std::cout << "\n\n";
-			return true;
+			if (tagHLTResults.process() == "")
+				return true;
 		}
 		bool hltSetupChanged = false;
 #ifdef NEWHLT
