@@ -25,20 +25,20 @@ struct KDataMuon : KDataLV
 	bool isStandAloneMuon() { return (type & (1 << 3 )); };
 	bool isGlobalMuon()     { return (type & (1 << 1 )); };
 
-	float sumPtIso03;
-	float hcalIso03;
-	float ecalIso03;
-	float trackIso03;
+	float sumPtIso03;		// tracker isolation as given by muon.isolationR03().sumPt
+	float hcalIso03;		// hcal isolation as given by muon.isolationR03().emEt
+	float ecalIso03;		// ecal isolation as given by muon.isolationR03().hadEt
+	float trackIso03;		// user-defined tracker isolation
 
 	float sumPtIso05;
 	float hcalIso05;
 	float ecalIso05;
 	float trackIso05;
 
-	float sumPtIso06;
-	float hcalIso06;
-	float ecalIso06;
-	float trackIso06;
+	float sumPtIso06;		// deprecated
+	float hcalIso06;		// deprecated
+	float ecalIso06;		// deprecated
+	float trackIso06;		// deprecated
 
 	unsigned int isGoodMuon;	// bitmask
 
