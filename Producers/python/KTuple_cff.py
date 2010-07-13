@@ -69,6 +69,12 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltDiMuonL3PreFiltered",
 			"hltMu3TrackJpsiTrackMassFiltered",
 			"hltMu5TrackJpsiTrackMassFiltered",
+			"hltSingleMu3L2Filtered3",
+			"hltSingleMu5L2Filtered4",
+			"hltSingleMu9L2Filtered7",
+			"hltL1SingleMu0L1Filtered0",
+			"hltL1SingleMu3L1Filtered0",
+			"hltL1SingleMu7L1Filtered0",
 		),
 		noiseHCAL = cms.InputTag("hcalnoise"),
 
