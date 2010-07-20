@@ -21,7 +21,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		genSource = cms.InputTag("generator"),
 
 		l1Source = cms.InputTag("gtDigis"),
-		hltSource = cms.InputTag("TriggerResults::HLT"),
+		hltSource = cms.InputTag("TriggerResults"),
 		hltWhitelist = cms.vstring(
 			".*Jet.*",
 			"^HLT_MET[0-9]*",

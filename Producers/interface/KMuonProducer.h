@@ -143,12 +143,12 @@ public:
 
 		edm::Handle< trigger::TriggerEvent > triggerEventHandle;
 
-		unsigned long getHLTInfo(const RMDataLV p4)
+		unsigned long long getHLTInfo(const RMDataLV p4)
 		{
 			if (!triggerEventHandle.isValid())
 				return 0;
 
-			unsigned long ret = 0;
+			unsigned long long ret = 0;
 
 			//KMetadataProducer<KMetadata_Product>::metaLumi->hltNamesMuons
 			const unsigned sizeFilters = triggerEventHandle->sizeFilters();
