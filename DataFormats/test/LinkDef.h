@@ -77,6 +77,10 @@
 #pragma link C++ class std::vector<KParton>+;
 #pragma link C++ typedef KPartons;
 
+#pragma link C++ struct KDataHit+;
+#pragma link C++ class std::vector<KDataHit>+;
+#pragma link C++ typedef KDataHits;
+
 /************************************************************/
 
 #pragma link C++ struct KProvenance+;

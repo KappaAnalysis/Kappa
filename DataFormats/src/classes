@@ -54,6 +54,8 @@ KDataPFTaus
 KDataGenTau
 KDataGenTaus
 
+KDataHit
+
 #################################
 
 KProvenance
