@@ -27,6 +27,7 @@
 #include "../interface/KTrackSummaryProducer.h"
 #include "../interface/KBeamSpotProducer.h"
 #include "../interface/KHitProducer.h"
+#include "../interface/KTriggerObjectProducer.h"
 // #include "../interface/KHepMCPartonProducer.h"
 
 int KBaseProducer::verbosity = 0;
@@ -136,6 +137,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KPartonProducer>(psConfig, active[i]);
 		else if (active[i] == "Hits")
 			addProducer<KHitProducer>(psConfig, active[i]);
+		else if (active[i] == "TriggerObjects")
+			addProducer<KTriggerObjectProducer>(psConfig, active[i]);
 		else
 		{
 			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;

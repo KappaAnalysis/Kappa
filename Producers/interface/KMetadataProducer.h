@@ -34,10 +34,11 @@ struct KMetadata_Product
 };
 
 template<typename Tmeta>
-class KMetadataProducer : public KBaseProducer
+class KMetadataProducer : public KBaseProducerWP
 {
 public:
 	KMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KBaseProducerWP(cfg, _event_tree, _lumi_tree, "KMetadata"),
 		tagL1Results(cfg.getParameter<edm::InputTag>("l1Source")),
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
 		svHLTWhitelist(cfg.getParameter<std::vector<std::string> >("hltWhitelist")),
@@ -71,9 +72,37 @@ public:
 		hltPrescales.clear();
 		addHLT(0, "fail", 42);
 
-		if (tagHLTResults.label() == "")
-			return true;
+		if (tagHLTResults.process() == "")
+		{
+			std::cout << "\n\n";
+			std::cout << "tagHLTResults is empty -> trying to determine the process name automatically:\n";
+			edm::Handle<trigger::TriggerEvent> tmpTriggerEventHLT;
 
+			std::cout << "\n\n";
+
+			const edm::ProcessHistory& processHistory(run.processHistory());
+
+			for (edm::ProcessHistory::const_iterator it=processHistory.begin(); it!=processHistory.end(); ++it)
+			{
+				// if (processPSet_.exists("HLTConfigVersion"))
+				std::cout << "---\t" << it->processName() << "\n";
+				edm::ProcessConfiguration processConfiguration;
+				if (processHistory.getConfigurationForProcess(it->processName(),processConfiguration))
+				{
+					edm::ParameterSet processPSet;
+					if (edm::pset::Registry::instance()->getMapped(processConfiguration.parameterSetID(),processPSet))
+					{
+						if (processPSet.exists("hltTriggerSummaryAOD"))
+							tagHLTResults = edm::InputTag("TriggerResults","", it->processName());
+					}
+				}
+			}
+			std::cout << "\n\n\tselected:" << tagHLTResults << "\n";
+			this->addProvenance(tagHLTResults.process(), "");
+			std::cout << "\n\n";
+			if (tagHLTResults.process() == "")
+				return true;
+		}
 		bool hltSetupChanged = false;
 #ifdef NEWHLT
 		if (!hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
@@ -124,6 +153,7 @@ public:
 		metaLumi->hltNames = hltNames;
 		metaLumi->hltPrescales = hltPrescales;
 
+		metaLumi->hltNamesMuons.clear();
 		for (std::vector<std::string>::iterator it=svMuonTriggerObjects.begin(); it!=svMuonTriggerObjects.end(); it++)
 		{
 			std::string filterName = *it;

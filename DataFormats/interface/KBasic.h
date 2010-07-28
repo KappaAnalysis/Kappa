@@ -67,6 +67,10 @@ struct KParton
 	{
 		return (pdgid & KPartonChargeMask ? -1 : 1) * (pdgid & KPartonPdgIdMask);
 	}
+	int charge() const
+	{
+		return (pdgid & KPartonChargeMask ? -1 : 1);
+	}
 };
 typedef std::vector<KParton> KPartons;
 
