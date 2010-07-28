@@ -70,4 +70,10 @@ struct KParton
 };
 typedef std::vector<KParton> KPartons;
 
+struct KDataHit
+{
+	double theta, phi, pAbs, energyLoss;
+};
+typedef std::vector<KDataHit> KDataHits;
+
 #endif

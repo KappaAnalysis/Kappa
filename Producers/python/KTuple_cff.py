@@ -156,6 +156,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
+	Hits = cms.PSet(kappaNoRename,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("PSimHits_g4SimHits_.*"),
+		blacklist = cms.vstring(),
+
+		maxN = cms.int32(-1),
+	),
 
 	BeamSpot = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),
