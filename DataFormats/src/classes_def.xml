@@ -52,6 +52,8 @@
 	<class name="KDataGenTau"/>
 	<class name="KDataGenTaus"/>
 
+	<class name="KDataHit"/>
+
 
 	<class name="KProvenance"/>
 
