@@ -9,8 +9,8 @@
 
 struct KTriggerObjectProducer_Product
 {
-	typedef std::vector<RMDataLV> type;
-	static const std::string id() { return "std::vector<RMDataLV>"; };
+	typedef std::vector<KDataLV> type;
+	static const std::string id() { return "std::vector<KDataLV>"; };
 	static const std::string producer() { return "KTriggerObjectProducer"; };
 };
 
@@ -28,7 +28,7 @@ public:
 	{
 		for (std::vector<std::string>::iterator it = triggerObjects.begin(); it != triggerObjects.end(); it++)
 		{
-			std::vector<RMDataLV> * target = this->allocateBronch(this->event_tree, "TriggerObject_"+(*it));
+			std::vector<KDataLV> * target = this->allocateBronch(this->event_tree, "TriggerObject_"+(*it));
 			targetIDMap[*it] = target;
 		}
 		return true;
@@ -36,7 +36,7 @@ public:
 
 protected:
 	std::vector<std::string> triggerObjects;
-	std::map<std::string, std::vector<RMDataLV> * > targetIDMap;
+	std::map<std::string, std::vector<KDataLV> * > targetIDMap;
 	edm::InputTag tagHLTrigger;
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
@@ -61,7 +61,8 @@ protected:
 			for(unsigned int iK = 0; iK<keys.size(); iK++)
 			{
 				trigger::TriggerObject triggerObject( triggerEventHandle->getObjects().at( keys[iK] ) );
-				RMDataLV tmpP4(triggerObject.pt(), triggerObject.eta(), triggerObject.phi(), triggerObject.mass());
+				KDataLV tmpP4;
+				tmpP4.p4 = RMDataLV(triggerObject.pt(), triggerObject.eta(), triggerObject.phi(), triggerObject.mass());
 				targetIDMap[nameFilter]->push_back(tmpP4);
 			}
 		}
