@@ -73,7 +73,7 @@ public:
 		addHLT(0, "fail", 42);
 
 		// For running over GEN step only:
-		if (tagHLTResults.moduleLabel() == "")
+		if (tagHLTResults.label() == "")
 			return true;
 
 		if (tagHLTResults.process() == "")
@@ -92,7 +92,7 @@ public:
 					if (edm::pset::Registry::instance()->getMapped(processConfiguration.parameterSetID(), processPSet))
 					{
 						if (processPSet.exists("hltTriggerSummaryAOD"))
-							tagHLTResults = edm::InputTag(tagHLTResults.moduleLabel(), "", it->processName());
+							tagHLTResults = edm::InputTag(tagHLTResults.label(), "", it->processName());
 					}
 				}
 			}
