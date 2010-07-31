@@ -79,12 +79,13 @@ public:
 		if (tagHLTResults.process() == "")
 		{
 			std::cout << "tagHLTResults is empty -> trying to determine the process name automatically:" << std::endl;
+
 			edm::Handle<trigger::TriggerEvent> tmpTriggerEventHLT;
 
 			const edm::ProcessHistory& processHistory(run.processHistory());
 			for (edm::ProcessHistory::const_iterator it = processHistory.begin(); it != processHistory.end(); ++it)
 			{
-				std::cout << "\t" << it->processName() << std::endl;
+				std::cout << "\t" << it->processName();
 				edm::ProcessConfiguration processConfiguration;
 				if (processHistory.getConfigurationForProcess(it->processName(),processConfiguration))
 				{
@@ -92,10 +93,22 @@ public:
 					if (edm::pset::Registry::instance()->getMapped(processConfiguration.parameterSetID(), processPSet))
 					{
 						if (processPSet.exists("hltTriggerSummaryAOD"))
+						{
 							tagHLTResults = edm::InputTag(tagHLTResults.label(), "", it->processName());
+							std::cout << "*";
+						}
 					}
 				}
+				std::cout << std::endl;
 			}
+			std::cout << "* process with hltTriggerSummaryAOD"<< std::endl;
+			if (run.run() != 1)
+			{
+				std::cout << metaLumi->nRun << "\n";
+				std::cout << "this run seems to be data and the trigger should always be 'HLT' in data -> forcing 'HLT'" << std::endl;
+				tagHLTResults = edm::InputTag(tagHLTResults.label(), "", "HLT");
+			}
+
 			std::cout << "selected:" << tagHLTResults << std::endl;
 			this->addProvenance(tagHLTResults.process(), "");
 			if (tagHLTResults.process() == "")
