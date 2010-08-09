@@ -62,7 +62,7 @@ protected:
 			{
 				trigger::TriggerObject triggerObject( triggerEventHandle->getObjects().at( keys[iK] ) );
 				KDataLV tmpP4;
-				tmpP4.p4 = RMDataLV(triggerObject.pt(), triggerObject.eta(), triggerObject.phi(), triggerObject.mass());
+				copyP4(triggerObject, tmpP4.p4);
 				targetIDMap[nameFilter]->push_back(tmpP4);
 			}
 		}
