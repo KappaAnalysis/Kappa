@@ -68,6 +68,7 @@ namespace
 		KDataGenTaus kappa_datagentaus;
 
 		KDataHit kappa_datahit;
+		KDataHits kappa_datahits;
 
 
 		KProvenance kappa_provenance;
