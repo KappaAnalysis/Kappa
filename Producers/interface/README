@@ -1,17 +1,19 @@
-                                                                           /-- KCaloJetProducer
-                     KManualMultiProducer ------ KManualMultiLVProducer --*
-                    /       \                   /                          \-- KPartonProducer
-                   |         KVertexProducer   |
-                   |        /                  |
-KBaseMultiProducer *   KCommonVectorProducer   |
-        ^          |        \                  |
-        |          |         KCommonLVProducer *                           /-- KTrackProducer
- KBaseProducerWP    \                           \                         |
-        ^            KRegexMultiProducer ---*--- KRegexMultiLVProducer ---*--- KLorentzProducer
-        |                                   |                             |
-  KBaseProducer                             |\-- KMETProducer              \-- KMuonProducer
-                                            |
-                                            \--- KTowerProducer
+                                                                             /-- KCaloJetProducer
+                     KManualMultiProducer -------- KManualMultiLVProducer --*
+                    /       \                     /                          \-- KPartonProducer
+                   |         KVertexProducer     |
+                   |        /                    |
+KBaseMultiProducer *   KCommonVectorProducer     |
+        ^          |        |                    |
+        |          |        |\-KCommonLVProducer *
+        |          |        \                    |
+        |          |         KHitProducer        |                           /-- KTrackProducer
+ KBaseProducerWP    \       /                     \                         |
+        ^            KRegexMultiProducer ----*---- KRegexMultiLVProducer ---*--- KLorentzProducer
+        |                                    |                              |
+  KBaseProducer                              |\--- KMETProducer              \-- KMuonProducer
+                                             |
+                                             \---- KTowerProducer
 
 TODO:
 Redo verbose limits ...
