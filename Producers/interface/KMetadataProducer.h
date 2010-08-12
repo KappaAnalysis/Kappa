@@ -87,7 +87,7 @@ public:
 			{
 				std::cout << "\t" << it->processName();
 				edm::ProcessConfiguration processConfiguration;
-				if (processHistory.getConfigurationForProcess(it->processName(),processConfiguration))
+				if (processHistory.getConfigurationForProcess(it->processName(), processConfiguration))
 				{
 					edm::ParameterSet processPSet;
 					if (edm::pset::Registry::instance()->getMapped(processConfiguration.parameterSetID(), processPSet))
@@ -101,7 +101,7 @@ public:
 				}
 				std::cout << std::endl;
 			}
-			std::cout << "* process with hltTriggerSummaryAOD"<< std::endl;
+			std::cout << "* process with hltTriggerSummaryAOD" << std::endl;
 			if (run.run() != 1)
 			{
 				std::cout << metaLumi->nRun << "\n";
@@ -170,7 +170,7 @@ public:
 			std::cout << filterName << "\n";
 			metaLumi->hltNamesMuons.push_back(filterName);
 			KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName] = metaLumi->hltNamesMuons.size() - 1;
-			std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size()-1) << " = " << filterName << "\n";
+			std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size() - 1) << " = " << filterName << "\n";
 		}
 		return true;
 	}

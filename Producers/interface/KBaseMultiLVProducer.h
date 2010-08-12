@@ -6,7 +6,7 @@
 template<typename T>
 struct KLVSorter
 {
-	bool operator() (const T &a, const T &b) { return (a.p4.pt() > b.p4.pt()); };
+	bool operator()(const T &a, const T &b) { return (a.p4.pt() > b.p4.pt()); };
 };
 
 

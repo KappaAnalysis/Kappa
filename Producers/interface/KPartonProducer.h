@@ -14,8 +14,8 @@ struct KPartonProducer_Product
 class KPartonProducer : public KManualMultiLVProducer<edm::View<reco::Candidate>, KPartonProducer_Product>
 {
 public:
-	KPartonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree)
-		: KManualMultiLVProducer<edm::View<reco::Candidate>, KPartonProducer_Product>(cfg, _event_tree, _run_tree) {}
+	KPartonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KManualMultiLVProducer<edm::View<reco::Candidate>, KPartonProducer_Product>(cfg, _event_tree, _run_tree) {}
 	virtual ~KPartonProducer() {};
 protected:
 	virtual void fillProduct(const InputType &in, OutputType &out,

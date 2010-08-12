@@ -47,7 +47,7 @@ protected:
 
 		out.chi2 = in.chi2();
 		out.nDOF = in.ndof();
-		
+
 		out.covariance = in.covariance();
 	}
 };
