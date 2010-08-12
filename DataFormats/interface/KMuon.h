@@ -35,11 +35,6 @@ struct KDataMuon : KDataLV
 	float ecalIso05;
 	float trackIso05;
 
-	float sumPtIso06;		// deprecated
-	float hcalIso06;		// deprecated
-	float ecalIso06;		// deprecated
-	float trackIso06;		// deprecated
-
 	unsigned int isGoodMuon;	// bitmask
 
 	float caloComp, segComp;
