@@ -11,13 +11,12 @@ typedef std::vector<KDataTau> KDataTaus;
 
 struct KDataCaloTau : KDataTau
 {
+	unsigned long long discr;
 };
 typedef std::vector<KDataCaloTau> KDataCaloTaus;
 
 struct KDataPFTau : KDataTau
 {
-	unsigned long discr;
-
 	float emFraction;
 
 	int cntSignalChargedHadrCands, cntSignalGammaCands, cntSignalNeutrHadrCands, cntSignalCands;
