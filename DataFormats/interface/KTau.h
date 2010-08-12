@@ -11,13 +11,12 @@ typedef std::vector<KDataTau> KDataTaus;
 
 struct KDataCaloTau : KDataTau
 {
+	unsigned long long discr;
 };
 typedef std::vector<KDataCaloTau> KDataCaloTaus;
 
 struct KDataPFTau : KDataTau
 {
-	unsigned long discr;
-
 	float emFraction;
 
 	int cntSignalChargedHadrCands, cntSignalGammaCands, cntSignalNeutrHadrCands, cntSignalCands;
@@ -28,6 +27,12 @@ struct KDataPFTau : KDataTau
 
 	//bool longLived
 	int cntSignalTracks;
+
+	bool hasID(std::string name, KLumiMetadata * lumimetadata)
+	{
+		// to be filled...
+		return false;
+	}
 };
 typedef std::vector<KDataPFTau> KDataPFTaus;
 

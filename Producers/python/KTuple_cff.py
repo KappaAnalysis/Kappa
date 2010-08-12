@@ -201,7 +201,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
-
 	BeamSpot = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),
 

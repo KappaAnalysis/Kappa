@@ -72,34 +72,45 @@ public:
 		hltPrescales.clear();
 		addHLT(0, "fail", 42);
 
+		// For running over GEN step only:
+		if (tagHLTResults.label() == "")
+			return true;
+
 		if (tagHLTResults.process() == "")
 		{
-			std::cout << "\n\n";
-			std::cout << "tagHLTResults is empty -> trying to determine the process name automatically:\n";
+			std::cout << "tagHLTResults is empty -> trying to determine the process name automatically:" << std::endl;
+
 			edm::Handle<trigger::TriggerEvent> tmpTriggerEventHLT;
 
-			std::cout << "\n\n";
-
 			const edm::ProcessHistory& processHistory(run.processHistory());
-
-			for (edm::ProcessHistory::const_iterator it=processHistory.begin(); it!=processHistory.end(); ++it)
+			for (edm::ProcessHistory::const_iterator it = processHistory.begin(); it != processHistory.end(); ++it)
 			{
-				// if (processPSet_.exists("HLTConfigVersion"))
-				std::cout << "---\t" << it->processName() << "\n";
+				std::cout << "\t" << it->processName();
 				edm::ProcessConfiguration processConfiguration;
 				if (processHistory.getConfigurationForProcess(it->processName(),processConfiguration))
 				{
 					edm::ParameterSet processPSet;
-					if (edm::pset::Registry::instance()->getMapped(processConfiguration.parameterSetID(),processPSet))
+					if (edm::pset::Registry::instance()->getMapped(processConfiguration.parameterSetID(), processPSet))
 					{
 						if (processPSet.exists("hltTriggerSummaryAOD"))
-							tagHLTResults = edm::InputTag("TriggerResults","", it->processName());
+						{
+							tagHLTResults = edm::InputTag(tagHLTResults.label(), "", it->processName());
+							std::cout << "*";
+						}
 					}
 				}
+				std::cout << std::endl;
 			}
-			std::cout << "\n\n\tselected:" << tagHLTResults << "\n";
+			std::cout << "* process with hltTriggerSummaryAOD"<< std::endl;
+			if (run.run() != 1)
+			{
+				std::cout << metaLumi->nRun << "\n";
+				std::cout << "this run seems to be data and the trigger should always be 'HLT' in data -> forcing 'HLT'" << std::endl;
+				tagHLTResults = edm::InputTag(tagHLTResults.label(), "", "HLT");
+			}
+
+			std::cout << "selected:" << tagHLTResults << std::endl;
 			this->addProvenance(tagHLTResults.process(), "");
-			std::cout << "\n\n";
 			if (tagHLTResults.process() == "")
 				return true;
 		}
@@ -145,8 +156,7 @@ public:
 	{
 		firstEventInLumi = true;
 
-		metaLumi = &(metaLumiMap[std::pair<unsigned int, unsigned int>(
-			(unsigned int)lumiBlock.run(), (unsigned int)lumiBlock.luminosityBlock())]);
+		metaLumi = &(metaLumiMap[std::pair<run_id, lumi_id>(lumiBlock.run(), lumiBlock.luminosityBlock())]);
 		metaLumi->nRun = lumiBlock.run();
 		metaLumi->nLumi = lumiBlock.luminosityBlock();
 
@@ -154,12 +164,12 @@ public:
 		metaLumi->hltPrescales = hltPrescales;
 
 		metaLumi->hltNamesMuons.clear();
-		for (std::vector<std::string>::iterator it=svMuonTriggerObjects.begin(); it!=svMuonTriggerObjects.end(); it++)
+		for (std::vector<std::string>::iterator it = svMuonTriggerObjects.begin(); it != svMuonTriggerObjects.end(); it++)
 		{
 			std::string filterName = *it;
 			std::cout << filterName << "\n";
 			metaLumi->hltNamesMuons.push_back(filterName);
-			KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName]=metaLumi->hltNamesMuons.size()-1;
+			KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName] = metaLumi->hltNamesMuons.size() - 1;
 			std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size()-1) << " = " << filterName << "\n";
 		}
 		return true;
@@ -246,7 +256,7 @@ public:
 
 		edm::Handle<std::vector<edm::ErrorSummaryEntry> > errorsAndWarnings;
 
-		if (tagErrorsAndWarnings.label()!="" && event.getByLabel(tagErrorsAndWarnings,errorsAndWarnings))
+		if (tagErrorsAndWarnings.label() != "" && event.getByLabel(tagErrorsAndWarnings, errorsAndWarnings))
 		{
 			if (errorsAndWarnings.failedToGet())
 			{
@@ -257,7 +267,7 @@ public:
 			{
 				for (std::vector<edm::ErrorSummaryEntry>::const_iterator it = errorsAndWarnings->begin(); it != errorsAndWarnings->end(); it++)
 				{
-					if (avoidEaWCategories.size() != 0 && std::find(avoidEaWCategories.begin(),avoidEaWCategories.end(), it->category) != avoidEaWCategories.end())
+					if (avoidEaWCategories.size() != 0 && std::find(avoidEaWCategories.begin(), avoidEaWCategories.end(), it->category) != avoidEaWCategories.end())
 						continue;
 					if (it->severity.getLevel() == edm::ELseverityLevel::ELsev_error || it->severity.getLevel() == edm::ELseverityLevel::ELsev_error2)
 						metaEvent->bitsUserFlags |= KFlagRecoErrors;
@@ -297,7 +307,7 @@ protected:
 	typename Tmeta::typeLumi *metaLumi;
 	typename Tmeta::typeEvent *metaEvent;
 
-	std::map<std::pair<unsigned int, unsigned int>, typename Tmeta::typeLumi> metaLumiMap;
+	std::map<std::pair<run_id, lumi_id>, typename Tmeta::typeLumi> metaLumiMap;
 };
 
 template<typename Tmeta>

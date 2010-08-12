@@ -81,7 +81,7 @@ public:
 		// http://cms-service-sdtweb.web.cern.ch/cms-service-sdtweb/doxygen/CMSSW_3_3_6/doc/html/dd/de0/MuonSelectors_8cc-source.html#l00005
 		std::bitset<32> tmpBits;
 		for (size_t i = 0; i < 16; ++i)
-			tmpBits.set(i, muon::isGoodMuon( in, (muon::SelectionType) i ) );
+			tmpBits.set(i, muon::isGoodMuon(in, (muon::SelectionType)i));
 		out.isGoodMuon = (unsigned int)tmpBits.to_ulong();
 
 		// Isolation
@@ -147,29 +147,28 @@ public:
 		{
 			if (!triggerEventHandle.isValid())
 				return 0;
-
 			unsigned long long ret = 0;
 
-			//KMetadataProducer<KMetadata_Product>::metaLumi->hltNamesMuons
-			const unsigned sizeFilters = triggerEventHandle->sizeFilters();
+			// KMetadataProducer<KMetadata_Product>::metaLumi->hltNamesMuons
+			const size_t sizeFilters = triggerEventHandle->sizeFilters();
 
-			int idx=0;
-			for(unsigned int iF = 0; iF<sizeFilters; iF++)
+			int idx = 0;
+			for (size_t iF = 0; iF < sizeFilters; ++iF)
 			{
 				const std::string nameFilter(triggerEventHandle->filterTag(iF).label());
 				const trigger::Keys & keys = triggerEventHandle->filterKeys(iF);
 
-				if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(nameFilter)==KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
+				if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(nameFilter) == KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
 					continue;
 
-				idx++;
+				++idx;
 
-				for(unsigned int iK = 0; iK<keys.size(); iK++)
+				for (size_t iK = 0; iK < keys.size(); ++iK)
 				{
-					trigger::TriggerObject triggerObject( triggerEventHandle->getObjects().at( keys[iK] ) );
+					trigger::TriggerObject triggerObject(triggerEventHandle->getObjects().at(keys[iK]));
 					RMDataLV tmpP4(triggerObject.pt(), triggerObject.eta(), triggerObject.phi(), triggerObject.mass());
 
-					if (ROOT::Math::VectorUtil::DeltaR(p4, tmpP4) < hltMaxdR && std::abs(p4.pt()-tmpP4.pt())/tmpP4.pt() < hltMaxdPt_Pt)
+					if ((ROOT::Math::VectorUtil::DeltaR(p4, tmpP4) < hltMaxdR) && (std::abs(p4.pt() - tmpP4.pt()) / tmpP4.pt() < hltMaxdPt_Pt))
 					{
 						ret |= ((unsigned long long)1 << KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[nameFilter]);
 					}
