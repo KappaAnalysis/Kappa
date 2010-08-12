@@ -102,11 +102,6 @@ public:
 		out.hcalIso05					= in.isolationR05().hadEt;
 		out.trackIso05				= muonIsoDeposit.sumWithin(0.5, vetosTrk);
 
-		//out.sumPtIso06;
-		//out.hcalIso06;
-		//out.ecalIso06;
-		out.trackIso06				= muonIsoDeposit.sumWithin(0.6, vetosTrk, false);
-
 		// Vertex
 		out.vertex = KDataVertex();
 		out.vertex.fake = false;

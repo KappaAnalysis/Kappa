@@ -2,6 +2,7 @@
 #define KAPPA_TAU_H
 
 #include "KBasic.h"
+#include "KMetadata.h"
 
 struct KDataTau : KDataLV
 {
