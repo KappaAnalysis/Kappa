@@ -63,17 +63,15 @@ protected:
 		{
 			std::cout << "\t" << "Number of accepted objects: " << output.size() << "\t";
 			if (output.size() > 0)
-				std::cout
-					<< "First: " << output[0].p4 << "\t"
-					<< "Last: " << output[output.size() - 1].p4;
-				std::cout << std::endl;
+				std::cout << "First: " << output[0].p4 << "\t" << "Last: " << output[output.size() - 1].p4;
+			std::cout << std::endl;
 		}
 	}
 
 private:
 	struct KTowerSorter_PT
 	{
-		bool operator() (const KDataLV &a, const KDataLV &b) { return (a.p4.pt() > b.p4.pt()); };
+		bool operator()(const KDataLV &a, const KDataLV &b) { return (a.p4.pt() > b.p4.pt()); };
 	} towersorter_pt;
 };
 

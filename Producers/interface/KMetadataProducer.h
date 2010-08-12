@@ -73,29 +73,42 @@ public:
 		addHLT(0, "fail", 42);
 
 		// For running over GEN step only:
-		if (tagHLTResults.moduleLabel() == "")
+		if (tagHLTResults.label() == "")
 			return true;
 
 		if (tagHLTResults.process() == "")
 		{
 			std::cout << "tagHLTResults is empty -> trying to determine the process name automatically:" << std::endl;
+
 			edm::Handle<trigger::TriggerEvent> tmpTriggerEventHLT;
 
 			const edm::ProcessHistory& processHistory(run.processHistory());
 			for (edm::ProcessHistory::const_iterator it = processHistory.begin(); it != processHistory.end(); ++it)
 			{
-				std::cout << "\t" << it->processName() << std::endl;
+				std::cout << "\t" << it->processName();
 				edm::ProcessConfiguration processConfiguration;
-				if (processHistory.getConfigurationForProcess(it->processName(),processConfiguration))
+				if (processHistory.getConfigurationForProcess(it->processName(), processConfiguration))
 				{
 					edm::ParameterSet processPSet;
 					if (edm::pset::Registry::instance()->getMapped(processConfiguration.parameterSetID(), processPSet))
 					{
 						if (processPSet.exists("hltTriggerSummaryAOD"))
-							tagHLTResults = edm::InputTag(tagHLTResults.moduleLabel(), "", it->processName());
+						{
+							tagHLTResults = edm::InputTag(tagHLTResults.label(), "", it->processName());
+							std::cout << "*";
+						}
 					}
 				}
+				std::cout << std::endl;
 			}
+			std::cout << "* process with hltTriggerSummaryAOD" << std::endl;
+			if (run.run() != 1)
+			{
+				std::cout << metaLumi->nRun << "\n";
+				std::cout << "this run seems to be data and the trigger should always be 'HLT' in data -> forcing 'HLT'" << std::endl;
+				tagHLTResults = edm::InputTag(tagHLTResults.label(), "", "HLT");
+			}
+
 			std::cout << "selected:" << tagHLTResults << std::endl;
 			this->addProvenance(tagHLTResults.process(), "");
 			if (tagHLTResults.process() == "")
@@ -157,7 +170,7 @@ public:
 			std::cout << filterName << "\n";
 			metaLumi->hltNamesMuons.push_back(filterName);
 			KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName] = metaLumi->hltNamesMuons.size() - 1;
-			std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size()-1) << " = " << filterName << "\n";
+			std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size() - 1) << " = " << filterName << "\n";
 		}
 		return true;
 	}

@@ -6,7 +6,7 @@
 template<typename T>
 struct KLVSorter
 {
-	bool operator() (const T &a, const T &b) { return (a.p4.pt() > b.p4.pt()); };
+	bool operator()(const T &a, const T &b) { return (a.p4.pt() > b.p4.pt()); };
 };
 
 
@@ -73,7 +73,7 @@ public:
 
 	virtual bool acceptSingle(const typename Tin::value_type &in)
 	{
-		return (in.pt() >= minPt && ((maxEta < 0) || (std::abs(in.eta()) <= maxEta)));
+		return ((in.pt() >= minPt) && ((maxEta < 0) || (std::abs(in.eta()) <= maxEta)));
 	}
 
 	virtual void sort(typename Tout::type &out)
