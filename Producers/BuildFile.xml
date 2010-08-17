@@ -6,6 +6,7 @@
 <use name="DataFormats/L1GlobalTrigger"/>
 <use name="DataFormats/L1Trigger"/>
 <use name="DataFormats/MuonReco"/>
+<use name="DataFormats/TauReco"/>
 <use name="DataFormats/TrackingRecHit"/>
 <use name="DataFormats/TrackReco"/>
 <use name="DataFormats/TrajectoryState"/>

@@ -16,11 +16,14 @@
 #include <DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h>
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/TauReco/interface/CaloTauDiscriminator.h"
+#include "DataFormats/TauReco/interface/PFTauDiscriminator.h"
 
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 
 #include "FWCore/MessageLogger/interface/ELseverityLevel.h"
 #include "FWCore/MessageLogger/interface/ErrorSummaryEntry.h"
+
 
 #define NEWHLT
 
@@ -172,6 +175,12 @@ public:
 			KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName] = metaLumi->hltNamesMuons.size() - 1;
 			std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size() - 1) << " = " << filterName << "\n";
 		}
+
+		// Clear tau discriminator maps, they will be refilled by
+		// first event in lumi, see onEvent() below.
+		KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap.clear();
+		KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap.clear();
+
 		return true;
 	}
 
@@ -202,24 +211,51 @@ public:
 				metaEvent->bitsHLT |= 1;
 		}
 
-		// Set HLT prescales
-		if ((firstEventInLumi) && (tagHLTResults.label() != ""))
+		if ((firstEventInLumi))
 		{
-			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
+			// Set HLT prescales
+			if (tagHLTResults.label() != "")
 			{
-				const std::string &name = metaLumi->hltNames[i];
-				int prescale = 0, prescaleSet = -1;
+				for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
+				{
+					const std::string &name = metaLumi->hltNames[i];
+					int prescale = 0, prescaleSet = -1;
 #ifdef NEWHLT
-				prescaleSet = hltConfig.prescaleSet(event, setup);
-				if (prescaleSet != -1)
-					prescale = hltConfig.prescaleValue(event, setup, name);
+					prescaleSet = hltConfig.prescaleSet(event, setup);
+					if (prescaleSet != -1)
+						prescale = hltConfig.prescaleValue(event, setup, name);
 #endif
-				if (verbosity > 0 || printHltList)
-					std::cout << " => Adding prescale for trigger: '" << name
-						<< "' from prescale set: " << prescaleSet
-						<< " with value: " << prescale << std::endl;
-				metaLumi->hltPrescales[i] = prescale;
+					if (verbosity > 0 || printHltList)
+						std::cout << " => Adding prescale for trigger: '" << name
+							<< "' from prescale set: " << prescaleSet
+							<< " with value: " << prescale << std::endl;
+					metaLumi->hltPrescales[i] = prescale;
+				}
 			}
+
+			// Build tau discriminator maps
+			std::vector<edm::Handle<reco::CaloTauDiscriminator> > caloTauDiscriminators;
+			event.getManyByType(caloTauDiscriminators);
+			assert(metaLumi->discrTau.empty());
+			for(unsigned int i = 0; i < caloTauDiscriminators.size(); ++i)
+			{
+				const std::string& name = caloTauDiscriminators[i].provenance()->moduleLabel();
+				metaLumi->discrTau.push_back(name);
+				KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap[name] = metaLumi->discrTau.size() - 1;
+				std::cout << "CaloTau discriminator " << i << ": " << name << std::endl;
+			}
+
+			std::vector<edm::Handle<reco::PFTauDiscriminator> > pfTauDiscriminators;
+			event.getManyByType(pfTauDiscriminators);
+			assert(metaLumi->discrTauPF.empty());
+			for(unsigned int i = 0; i < pfTauDiscriminators.size(); ++i)
+			{
+				const std::string& name = pfTauDiscriminators[i].provenance()->moduleLabel();
+				metaLumi->discrTauPF.push_back(name);
+				KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size();
+				std::cout << "PFTau discriminator " << i << ": " << name << std::endl;
+			}
+
 			firstEventInLumi = false;
 		}
 
@@ -287,6 +323,10 @@ public:
 
 	static std::map<std::string, int> muonTriggerObjectBitMap;
 
+	typedef std::map<std::string, unsigned int> TauDiscriminatorMap;
+	static TauDiscriminatorMap caloTauDiscriminatorBitMap;
+	static TauDiscriminatorMap pfTauDiscriminatorBitMap;
+
 protected:
 	bool firstEventInLumi;
 	edm::InputTag tagL1Results, tagHLTResults;
@@ -312,5 +352,10 @@ protected:
 
 template<typename Tmeta>
 std::map<std::string, int> KMetadataProducer<Tmeta>::muonTriggerObjectBitMap;
+
+template<typename Tmeta>
+typename KMetadataProducer<Tmeta>::TauDiscriminatorMap KMetadataProducer<Tmeta>::caloTauDiscriminatorBitMap;
+template<typename Tmeta>
+typename KMetadataProducer<Tmeta>::TauDiscriminatorMap KMetadataProducer<Tmeta>::pfTauDiscriminatorBitMap;
 
 #endif
