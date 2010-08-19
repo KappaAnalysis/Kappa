@@ -179,6 +179,8 @@ public:
 
 		// Clear tau discriminator maps, they will be refilled by
 		// first event in lumi, see onEvent() below.
+		metaLumi->discrTau.clear();
+		metaLumi->discrTauPF.clear();
 		KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap.clear();
 		KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap.clear();
 
