@@ -167,6 +167,7 @@ public:
 		metaLumi->hltPrescales = hltPrescales;
 
 		metaLumi->hltNamesMuons.clear();
+		KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.clear();
 		for (std::vector<std::string>::iterator it = svMuonTriggerObjects.begin(); it != svMuonTriggerObjects.end(); it++)
 		{
 			std::string filterName = *it;
