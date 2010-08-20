@@ -19,7 +19,7 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		out.p4.SetCoordinates(in.pt(), in.eta(), in.phi(), 0);
+		copyP4(in, out.p4);
 
 		out.emf = in.neutralEmEnergyFraction() + in.chargedEmEnergyFraction();
 		out.area = in.jetArea();;

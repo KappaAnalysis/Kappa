@@ -38,7 +38,7 @@ public:
 		typename KManualMultiLVProducer<std::vector<TTau>, TProduct>::SingleOutputType &out)
 	{
 		// Momentum:
-		out.p4.SetCoordinates(in.pt(), in.eta(), in.phi(), 0);
+		copyP4(in, out.p4);
 
 		// Charge:
 		out.charge = in.charge();

@@ -52,7 +52,7 @@ public:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		// Momentum:
-		out.p4.SetCoordinates(in.pt(), in.eta(), in.phi(), 0);
+		copyP4(in, out.p4);
 
 		// Tracks
 		if (in.track().isNonnull())
