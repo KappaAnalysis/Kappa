@@ -20,6 +20,7 @@ class KGenMetadataProducer : public KMetadataProducer<Tmeta>
 public:
 	KGenMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KMetadataProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+		ignoreExtXSec(cfg.getParameter<bool>("ignoreExtXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")) {}
 
@@ -38,6 +39,8 @@ public:
 		const bool invalidGenInfo = !hGenInfo.isValid();
 		this->metaLumi->xSectionInt = invalidGenInfo ? -1 : hGenInfo->internalXSec().value();
 		this->metaLumi->xSectionExt = invalidGenInfo ? -1 : hGenInfo->externalXSecLO().value();
+		if (ignoreExtXSec)
+			this->metaLumi->xSectionExt = -1;
 		if (invalidGenInfo)
 			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
 		return true;
@@ -66,6 +69,7 @@ public:
 	}
 
 protected:
+	bool ignoreExtXSec;
 	int forceLumi;
 	edm::InputTag tagSource;
 };
