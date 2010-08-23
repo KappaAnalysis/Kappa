@@ -91,7 +91,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			isoVetoMinPt = cms.double(1.5),
 		),
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
-		hltMaxdR = cms.double(0.3),
+		hltMaxdR = cms.double(0.2),
 		hltMaxdPt_Pt = cms.double(1.),
 	),
 
