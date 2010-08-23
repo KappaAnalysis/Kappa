@@ -110,7 +110,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			src = cms.InputTag("fixedConePFTauProducer"),
 			discr = cms.vstring("fixedConePFTau*")
 		),
-		hpsTaus = cms.PSet(
+		hpsPFTaus = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
 			discr = cms.vstring("hpsPFTau*")
 		)
