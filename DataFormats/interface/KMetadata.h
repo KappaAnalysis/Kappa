@@ -26,6 +26,7 @@ struct KLumiMetadata
 
 struct KGenLumiMetadata : public KLumiMetadata
 {
+	double filterEff;
 	double xSectionExt;
 	double xSectionInt;
 };
