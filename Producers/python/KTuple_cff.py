@@ -91,8 +91,29 @@ kappaTupleDefaultsBlock = cms.PSet(
 			isoVetoMinPt = cms.double(1.5),
 		),
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
-		hltMaxdR = cms.double(0.3),
+		hltMaxdR = cms.double(0.2),
 		hltMaxdPt_Pt = cms.double(1.),
+	),
+
+	CaloTaus = cms.PSet(kappaNoCut,
+		caloRecoTaus = cms.PSet(
+			src = cms.InputTag("caloRecoTauProducer"),
+			discr = cms.vstring("caloRecoTau*")
+		)
+	),
+	PFTaus = cms.PSet(kappaNoCut,
+		shrinkingConePFTaus = cms.PSet(
+			src = cms.InputTag("shrinkingConePFTauProducer"),
+			discr = cms.vstring("shrinkingConePFTau*")
+		),
+		fixedConePFTaus = cms.PSet(
+			src = cms.InputTag("fixedConePFTauProducer"),
+			discr = cms.vstring("fixedConePFTau*")
+		),
+		hpsPFTaus = cms.PSet(
+			src = cms.InputTag("hpsPFTauProducer"),
+			discr = cms.vstring("hpsPFTau*")
+		)
 	),
 
 	TriggerObjects = cms.PSet(

@@ -2,22 +2,30 @@
 #define KAPPA_TAU_H
 
 #include "KBasic.h"
+#include "KMetadata.h"
 
 struct KDataTau : KDataLV
 {
+	unsigned long long discr;
+
 	char charge;
 };
 typedef std::vector<KDataTau> KDataTaus;
 
 struct KDataCaloTau : KDataTau
 {
+	bool hasID(const std::string& name, const KLumiMetadata * lumimetadata) const
+	{
+		for(size_t i = 0; i < lumimetadata->discrTau.size(); ++i)
+			if(lumimetadata->discrTau[i] == name)
+				return (discr & (1ull << i)) != 0;
+		return false; // Named discriminator does not exist
+	}
 };
 typedef std::vector<KDataCaloTau> KDataCaloTaus;
 
 struct KDataPFTau : KDataTau
 {
-	unsigned long discr;
-
 	float emFraction;
 
 	int cntSignalChargedHadrCands, cntSignalGammaCands, cntSignalNeutrHadrCands, cntSignalCands;
@@ -29,10 +37,12 @@ struct KDataPFTau : KDataTau
 	//bool longLived
 	int cntSignalTracks;
 
-	bool hasID(std::string name, KLumiMetadata * lumimetadata)
+	bool hasID(const std::string& name, const KLumiMetadata * lumimetadata) const
 	{
-		// to be filled...
-		return false;
+		for(size_t i = 0; i < lumimetadata->discrTauPF.size(); ++i)
+			if(lumimetadata->discrTauPF[i] == name)
+				return (discr & (1ull << i)) != 0;
+		return false; // Named discriminator does not exist
 	}
 };
 typedef std::vector<KDataPFTau> KDataPFTaus;
