@@ -97,6 +97,10 @@
 #pragma link C++ class std::vector<KDataHit>+;
 #pragma link C++ typedef KDataHits;
 
+#pragma link C++ struct KL1Muon+;
+#pragma link C++ class std::vector<KL1Muon>+;
+#pragma link C++ typedef KL1Muons;
+
 /************************************************************/
 
 #pragma link C++ struct KProvenance+;

@@ -70,6 +70,9 @@ namespace
 		KDataHit kappa_datahit;
 		KDataHits kappa_datahits;
 
+		KL1Muon kappa_l1muon;
+		KL1Muons kappa_l1muons;
+
 
 		KProvenance kappa_provenance;
 
