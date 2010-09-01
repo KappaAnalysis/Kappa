@@ -43,13 +43,6 @@ struct KDataMuon : KDataLV
 	int numberOfMatches;
 	int trackHits;
 
-	int timeNDof;
-	float timeAtIpInOut;
-	float timeAtIpInOutErr;
-	float timeAtIpOutIn;
-	float timeAtIpOutInErr;
-	int direction;
-
 	unsigned long long hltMatch;
 };
 typedef std::vector<KDataMuon> KDataMuons;

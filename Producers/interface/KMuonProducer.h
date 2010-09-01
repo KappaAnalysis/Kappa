@@ -111,24 +111,7 @@ public:
 		out.vertex.nTracks = 1;
 		out.vertex.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >();
 
-		// Time information
-		out.timeNDof =	in.time().nDof;
-		out.timeAtIpInOut = in.time().timeAtIpInOut;
-		out.timeAtIpInOutErr = in.time().timeAtIpInOutErr;
-		out.timeAtIpOutIn = in.time().timeAtIpOutIn;
-		out.timeAtIpOutInErr = in.time().timeAtIpOutInErr;
-		out.direction = getDirection(out.timeNDof, out.timeAtIpInOutErr, out.timeAtIpOutInErr);
-
 		out.hltMatch = getHLTInfo(out.p4);
-	}
-
-	int getDirection(int timeNDof, float timeAtIpInOutErr, float timeAtIpOutInErr)
-	{
-		if (timeNDof < 2)
-			return 0;						// undefined
-		if (timeAtIpInOutErr > timeAtIpOutInErr)
-			return -1;		// OutsideIn
-		return 1;				// InsideOut
 	}
 
 private:
