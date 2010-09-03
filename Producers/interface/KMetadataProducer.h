@@ -255,7 +255,7 @@ public:
 			{
 				const std::string& name = pfTauDiscriminators[i].provenance()->moduleLabel();
 				metaLumi->discrTauPF.push_back(name);
-				KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size();
+				KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size() - 1;
 				std::cout << "PFTau discriminator " << i << ": " << name << std::endl;
 			}
 
