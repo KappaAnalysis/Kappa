@@ -30,6 +30,7 @@
 #include "../interface/KTriggerObjectProducer.h"
 #include "../interface/KCaloTauProducer.h"
 #include "../interface/KPFTauProducer.h"
+#include "../interface/KGenTauProducer.h"
 // #include "../interface/KHepMCPartonProducer.h"
 
 int KBaseProducer::verbosity = 0;
@@ -145,6 +146,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KCaloTauProducer>(psConfig, active[i]);
 		else if (active[i] == "PFTaus")
 			addProducer<KPFTauProducer>(psConfig, active[i]);
+		else if (active[i] == "GenTaus")
+			addProducer<KGenTauProducer>(psConfig, active[i]);
 		else
 		{
 			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;

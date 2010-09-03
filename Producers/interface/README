@@ -1,9 +1,10 @@
                                                                              /-- KCaloJetProducer
-                     KManualMultiProducer -------- KManualMultiLVProducer --*
-                    /       \                     /                          \-- KPartonProducer
-                   |         KVertexProducer     |
-                   |        /                    |
-KBaseMultiProducer *   KCommonVectorProducer     |
+                                                                            |
+                     KManualMultiProducer -------- KManualMultiLVProducer --*--- KPartonProducer -- KGenTauProducer
+                    /       \                     /                         |
+                   |         KVertexProducer     |                          |                    /-- KCaloTauProducer
+                   |        /                    |                           \-- KTauProducer --*
+KBaseMultiProducer *   KCommonVectorProducer     |                                               \-- KPFTauProducer
         ^          |        |                    |
         |          |        |\-KCommonLVProducer *
         |          |        \                    |
@@ -23,7 +24,7 @@ Merge Manual and RegexProducer using PSet::augment to provide per output object 
 
 
 GOAL:
-                                                  /-> KPartonProducer
+                                                  /-> KPartonProducer -> KGenTauProducer
                                                  |
 KBaseMultiProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
         ^            |                           |
@@ -31,4 +32,8 @@ KBaseMultiProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
  KBaseProducerWP     |                           |
         ^            |\-> KVertexProducer        |\-> KMuonProducer
         |            |                           |
-  KBaseProducer      \--> KTowerProducer         \--> KCaloJetProducer
+  KBaseProducer      \--> KTowerProducer         |\-> KCaloJetProducer
+                                                 |
+						 |                    /-> KCaloTauProducer
+                                                 \--> KTauProducer --*
+						                      \-> KPFTauProducer

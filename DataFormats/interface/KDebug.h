@@ -123,7 +123,7 @@ std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau)
 
 std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau)
 {
-	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge << " p4_vis=" << static_cast<RMLV>(tau.p4_vis) << " status=" << tau.status << " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
+	return os << static_cast<const KParton&>(tau) << " p4_vis=" << static_cast<RMLV>(tau.p4_vis) << " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
 }
 
 #endif

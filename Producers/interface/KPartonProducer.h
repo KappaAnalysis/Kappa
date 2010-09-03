@@ -11,22 +11,15 @@ struct KPartonProducer_Product
 	static const std::string producer() { return "KPartonProducer"; };
 };
 
-class KPartonProducer : public KManualMultiLVProducer<edm::View<reco::Candidate>, KPartonProducer_Product>
+template<typename TProduct>
+class KBasicPartonProducer : public KManualMultiLVProducer<edm::View<reco::Candidate>, TProduct>
 {
 public:
-	KPartonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KManualMultiLVProducer<edm::View<reco::Candidate>, KPartonProducer_Product>(cfg, _event_tree, _run_tree) {}
-	virtual ~KPartonProducer() {};
+	KBasicPartonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KManualMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _run_tree) {}
+	virtual ~KBasicPartonProducer() {};
 protected:
-	virtual void fillProduct(const InputType &in, OutputType &out,
-		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
-	{
-		// Retrieve additional input products
-		selectedStatus = pset.getParameter<int>("selectedStatus");
-		selectedParticles = pset.getParameter<std::vector<int> >("selectedParticles");
-		KManualMultiLVProducer<edm::View<reco::Candidate>, KPartonProducer_Product>::fillProduct(in, out, name, tag, pset);
-	}
-	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
+	virtual void fillSingle(const typename KManualMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in, typename KManualMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
 		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
@@ -35,7 +28,7 @@ protected:
 			out.pdgid |= KPartonChargeMask;
 		out.children = 0;
 	}
-	virtual bool acceptSingle(const SingleInputType &in)
+	virtual bool acceptSingle(const typename KManualMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in)
 	{
 		bool acceptStatus = false;
 		bool acceptPdgId = false;
@@ -52,9 +45,42 @@ protected:
 
 		return (acceptStatus && acceptPdgId);
 	}
+
+	void selectStatus(int status)
+	{
+		selectedStatus = status;
+	}
+
+	template<typename InputIterator>
+	void selectParticles(InputIterator begin, InputIterator end)
+	{
+		selectedParticles.assign(begin, end);
+	}
 private:
 	int selectedStatus; // bit map
 	std::vector<int> selectedParticles;
+};
+
+class KPartonProducer: public KBasicPartonProducer<KPartonProducer_Product>
+{
+public:
+	KPartonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBasicPartonProducer<KPartonProducer_Product>(cfg, _event_tree, _run_tree) {}
+	virtual ~KPartonProducer() {};
+
+protected:
+	virtual void fillProduct(const InputType &in, OutputType &out,
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
+	{
+		// Retrieve additional input products
+		int status = pset.getParameter<int>("selectedStatus");
+		std::vector<int> particles = pset.getParameter<std::vector<int> >("selectedParticles");
+
+		selectStatus(status);
+		selectParticles(particles.begin(), particles.end());
+
+		KBasicPartonProducer<KPartonProducer_Product>::fillProduct(in, out, name, tag, pset);
+	}
 };
 
 #endif

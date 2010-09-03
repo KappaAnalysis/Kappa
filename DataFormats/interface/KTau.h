@@ -47,19 +47,30 @@ struct KDataPFTau : KDataTau
 };
 typedef std::vector<KDataPFTau> KDataPFTaus;
 
-struct KDataGenTau : KDataTau
+struct KDataGenTau : KParton
 {
 	RMDataLV p4_vis;		// momenta of visible particles
-	int status;
-	char decayMode;
+	unsigned char decayMode;
 	//  0 - undefined
 	//	1 - electron
 	//	2 - muon
 	// >2 - hadronic
-	// most significant bit (1<<15):
+	//      3 - 1prong
+	//      4 - 3prong
+	//      5 - >3prong
+	// most significant bit (1<<7):
 	//		0 = tau
 	//		1 = descendant of a tau
-	KDataVertex vertex;
+	RMPoint vertex;
+
+	static const int DescendantPosition = 7;
+	static const int DescendantMask = 1 << DescendantPosition;
+
+	bool isElectronicDecay() const { return (decayMode & ~DescendantMask) == 1; }
+	bool isMuonicDecay() const { return (decayMode & ~DescendantMask) == 2; }
+	bool isHadronicDecay() const { return (decayMode & ~DescendantMask) > 2; }
+
+	bool isDescendant() const { return (decayMode & DescendantMask) != 0; }
 };
 typedef std::vector<KDataGenTau> KDataGenTaus;
 

@@ -179,6 +179,13 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
+	GenTaus = cms.PSet(kappaNoCut,
+		genTaus = cms.PSet(
+			src = cms.InputTag("genParticles"),
+			selectedStatus = cms.int32(0)      # select, if (1<<status & selectedStatus) or selectedStatus==0
+		)
+	),
+
 	TrackSummary = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
