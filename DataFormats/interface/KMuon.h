@@ -26,9 +26,11 @@ struct KDataMuon : KDataLV
 	bool isGlobalMuon()     { return (type & (1 << 1)); };
 
 	float sumPtIso03;		// tracker isolation as given by muon.isolationR03().sumPt
-	float hcalIso03;		// hcal isolation as given by muon.isolationR03().emEt
-	float ecalIso03;		// ecal isolation as given by muon.isolationR03().hadEt
+	float hcalIso03;		// hcal isolation as given by muon.isolationR03().hadEt
+	float ecalIso03;		// ecal isolation as given by muon.isolationR03().emEt
 	float trackIso03;		// user-defined tracker isolation
+
+	float pfIso04;			// PF isolation
 
 	float sumPtIso05;
 	float hcalIso05;

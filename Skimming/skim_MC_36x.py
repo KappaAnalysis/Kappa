@@ -25,6 +25,12 @@ process.ak7GenJets = process.ak5GenJets.clone( rParam = 0.7 )
 process.MoreJets = cms.Path(process.genParticlesForJets * process.ak5GenJets * process.ak7GenJets)
 #-------------------------------------------------------------------------------
 
+# Produce PF muon isolation ----------------------------------------------------
+from PhysicsTools.PFCandProducer.Isolation.tools_cfi import *
+process.pfmuIsoDepositPFCandidates = isoDepositReplace("muons", "particleFlow")
+process.pfMuonIsolCandidates = cms.Path(process.pfmuIsoDepositPFCandidates)
+#-------------------------------------------------------------------------------
+
 # Configure tuple generation ---------------------------------------------------
 process.load("Kappa.Producers.KTuple_cff")
 process.kappatuple = cms.EDAnalyzer('KTuple',
@@ -64,12 +70,12 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 )
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
-	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'BeamSpot', 'GenMetadata', 'Partons', @ACTIVE@
+	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'BeamSpot', 'GenMetadata', 'Partons', 'CaloTaus', 'PFTaus', 'GenTaus', @ACTIVE@
 )
 #-------------------------------------------------------------------------------
 
 # Process schedule -------------------------------------------------------------
 #process.pathDAT = cms.Path(process.recoJetAssociations+process.kappatuple)
 process.pathDAT = cms.Path(process.kappatuple)
-process.schedule = cms.Schedule(process.MoreJets, process.pathDAT)
+process.schedule = cms.Schedule(process.MoreJets, process.pfMuonIsolCandidates, process.pathDAT)
 #-------------------------------------------------------------------------------

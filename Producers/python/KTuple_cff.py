@@ -87,9 +87,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Muons = cms.PSet(kappaNoCut,
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
-			srcMuonIsolation = cms.InputTag("muIsoDepositTk"),
-			isoVetoCone = cms.double(0.015),
-			isoVetoMinPt = cms.double(1.5),
+			# track/ecal/hcal iso are directly taken from reco instead...
+			#srcMuonIsolationTrack = cms.InputTag("muIsoDepositTk"),
+			#srcMuonIsolationEcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","ecal"),
+			#srcMuonIsolationHcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","hcal"),
+			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
+			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
+			# Cuts for PF isolation
+			pfIsoVetoCone = cms.double(0.01),
+			pfIsoVetoMinPt = cms.double(0.5),
 		),
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
 		hltMaxdR = cms.double(0.2),
