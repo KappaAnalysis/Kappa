@@ -1,17 +1,20 @@
-                                                                           /-- KCaloJetProducer
-                     KManualMultiProducer ------ KManualMultiLVProducer --*
-                    /       \                   /                          \-- KPartonProducer
-                   |         KVertexProducer   |
-                   |        /                  |
-KBaseMultiProducer *   KCommonVectorProducer   |
-        ^          |        \                  |
-        |          |         KCommonLVProducer *                           /-- KTrackProducer
- KBaseProducerWP    \                           \                         |
-        ^            KRegexMultiProducer ---*--- KRegexMultiLVProducer ---*--- KLorentzProducer
-        |                                   |                             |
-  KBaseProducer                             |\-- KMETProducer              \-- KMuonProducer
-                                            |
-                                            \--- KTowerProducer
+                                                                             /-- KCaloJetProducer
+                                                                            |
+                     KManualMultiProducer -------- KManualMultiLVProducer --*--- KPartonProducer -- KGenTauProducer
+                    /       \                     /                         |
+                   |         KVertexProducer     |                          |                    /-- KCaloTauProducer
+                   |        /                    |                           \-- KTauProducer --*
+KBaseMultiProducer *   KCommonVectorProducer     |                                               \-- KPFTauProducer
+        ^          |        |                    |
+        |          |        |\-KCommonLVProducer *
+        |          |        \                    |
+        |          |         KHitProducer        |                           /-- KTrackProducer
+ KBaseProducerWP    \       /                     \                         |
+        ^            KRegexMultiProducer ----*---- KRegexMultiLVProducer ---*--- KLorentzProducer
+        |                                    |                              |
+  KBaseProducer                              |\--- KMETProducer              \-- KMuonProducer
+                                             |
+                                             \---- KTowerProducer
 
 TODO:
 Redo verbose limits ...
@@ -21,7 +24,7 @@ Merge Manual and RegexProducer using PSet::augment to provide per output object 
 
 
 GOAL:
-                                                  /-> KPartonProducer
+                                                  /-> KPartonProducer -> KGenTauProducer
                                                  |
 KBaseMultiProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
         ^            |                           |
@@ -29,4 +32,8 @@ KBaseMultiProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
  KBaseProducerWP     |                           |
         ^            |\-> KVertexProducer        |\-> KMuonProducer
         |            |                           |
-  KBaseProducer      \--> KTowerProducer         \--> KCaloJetProducer
+  KBaseProducer      \--> KTowerProducer         |\-> KCaloJetProducer
+                                                 |
+						 |                    /-> KCaloTauProducer
+                                                 \--> KTauProducer --*
+						                      \-> KPFTauProducer

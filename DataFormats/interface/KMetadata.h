@@ -26,6 +26,7 @@ struct KLumiMetadata
 
 struct KGenLumiMetadata : public KLumiMetadata
 {
+	double filterEff;
 	double xSectionExt;
 	double xSectionInt;
 };
@@ -35,7 +36,7 @@ struct KEventMetadata
 {
 	unsigned long long bitsL1;
 	unsigned long long bitsHLT;
-	unsigned long bitsUserFlags;
+	unsigned int bitsUserFlags;
 	unsigned int nEvent;
 	unsigned int nLumi;
 	unsigned int nRun;
@@ -49,11 +50,11 @@ typedef unsigned int run_id;
 typedef int bx_id;
 
 // List of user flags
-const unsigned long KFlagPhysicsDeclared = 1 << 0;
-const unsigned long KFlagHCALLooseNoise = 1 << 1;
-const unsigned long KFlagHCALTightNoise = 1 << 2;
-const unsigned long KFlagRecoErrors = 1 << 3;
-const unsigned long KFlagRecoWarnings = 1 << 4;
+const unsigned int KFlagPhysicsDeclared = 1 << 0;
+const unsigned int KFlagHCALLooseNoise = 1 << 1;
+const unsigned int KFlagHCALTightNoise = 1 << 2;
+const unsigned int KFlagRecoErrors = 1 << 3;
+const unsigned int KFlagRecoWarnings = 1 << 4;
 
 struct KGenEventMetadata : public KEventMetadata
 {

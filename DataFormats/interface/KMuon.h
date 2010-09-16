@@ -20,25 +20,20 @@ struct KDataMuon : KDataLV
 	// Bit 3 - globalMuon
 	unsigned char type;
 
-	bool isTrackerMuon()    { return (type & (1 << 2 )); };
-	bool isCaloMuon()       { return (type & (1 << 4 )); };
-	bool isStandAloneMuon() { return (type & (1 << 3 )); };
-	bool isGlobalMuon()     { return (type & (1 << 1 )); };
+	bool isTrackerMuon()    { return (type & (1 << 2)); };
+	bool isCaloMuon()       { return (type & (1 << 4)); };
+	bool isStandAloneMuon() { return (type & (1 << 3)); };
+	bool isGlobalMuon()     { return (type & (1 << 1)); };
 
-	float sumPtIso03;
-	float hcalIso03;
-	float ecalIso03;
-	float trackIso03;
+	float sumPtIso03;		// tracker isolation as given by muon.isolationR03().sumPt
+	float hcalIso03;		// hcal isolation as given by muon.isolationR03().emEt
+	float ecalIso03;		// ecal isolation as given by muon.isolationR03().hadEt
+	float trackIso03;		// user-defined tracker isolation
 
 	float sumPtIso05;
 	float hcalIso05;
 	float ecalIso05;
 	float trackIso05;
-
-	float sumPtIso06;
-	float hcalIso06;
-	float ecalIso06;
-	float trackIso06;
 
 	unsigned int isGoodMuon;	// bitmask
 
@@ -48,14 +43,14 @@ struct KDataMuon : KDataLV
 	int numberOfMatches;
 	int trackHits;
 
-	int timeNDof;
-	float timeAtIpInOut;
-	float timeAtIpInOutErr;
-	float timeAtIpOutIn;
-	float timeAtIpOutInErr;
-	int direction;
-
 	unsigned long long hltMatch;
+
+	// eta and phi after the propagation to the muon system, this quantity
+	// is necessary for the matching to L1 trigger objects
+	// both barrel and endcap values are necessary since CSC and DT
+	// require different values in the transition region
+	float eta_propag_barrel, phi_propag_barrel;
+	float eta_propag_endcap, phi_propag_endcap;
 };
 typedef std::vector<KDataMuon> KDataMuons;
 

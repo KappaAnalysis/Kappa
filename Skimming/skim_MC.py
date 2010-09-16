@@ -9,10 +9,10 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 #-------------------------------------------------------------------------------
 
 # Includes + Global Tag --------------------------------------------------------
-process.load("FWCore.MessageService.MessageLogger_cfi")
+process.load("FWCore/MessageService/MessageLogger_cfi")
 process.load('Configuration/StandardSequences/Services_cff')
-process.load('Configuration.StandardSequences.MagneticField_38T_cff')
-process.load('RecoJets.Configuration.RecoJetAssociations_cff')
+process.load('Configuration/StandardSequences/MagneticField_38T_cff')
+process.load('RecoJets/Configuration/RecoJetAssociations_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = '@GLOBALTAG@'
 #-------------------------------------------------------------------------------
@@ -73,9 +73,9 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	)
 )
 process.kappatuple.verbose = cms.int32(0)
-process.kappatuple.hltSource = cms.InputTag("TriggerResults::REDIGI")
+process.kappatuple.Metadata.hltSource = cms.InputTag("TriggerResults::@HLTPROD@")
 process.kappatuple.active = cms.vstring(
-	'Muons', 'Partons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'GenMetadata', 'BeamSpot', @ACTIVE@
+	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'BeamSpot', 'GenMetadata', 'Partons', @ACTIVE@
 )
 #-------------------------------------------------------------------------------
 

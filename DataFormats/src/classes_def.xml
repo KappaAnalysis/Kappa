@@ -52,6 +52,12 @@
 	<class name="KDataGenTau"/>
 	<class name="KDataGenTaus"/>
 
+	<class name="KDataHit"/>
+	<class name="KDataHits"/>
+
+	<class name="KL1Muon"/>
+	<class name="KL1Muons"/>
+
 
 	<class name="KProvenance"/>
 

@@ -37,6 +37,7 @@ public:
 		lumiBlock.getRun().getByLabel(tagSource, hGenInfo);
 
 		const bool invalidGenInfo = !hGenInfo.isValid();
+		this->metaLumi->filterEff = invalidGenInfo ? -1 : hGenInfo->filterEfficiency();
 		this->metaLumi->xSectionInt = invalidGenInfo ? -1 : hGenInfo->internalXSec().value();
 		this->metaLumi->xSectionExt = invalidGenInfo ? -1 : hGenInfo->externalXSecLO().value();
 		if (ignoreExtXSec)

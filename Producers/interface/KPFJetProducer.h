@@ -19,14 +19,14 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		out.p4.SetCoordinates(in.pt(), in.eta(), in.phi(), 0);
+		copyP4(in, out.p4);
 
-		out.emf = in.neutralEmEnergyFraction()+in.chargedEmEnergyFraction();
+		out.emf = in.neutralEmEnergyFraction() + in.chargedEmEnergyFraction();
 		out.area = in.jetArea();;
 		out.n90 = in.nCarrying(0.9);
 		out.n90Hits = -1;
 		out.noiseHCAL = -1;
-		out.detectorEta = in.detectorP4(in.vertex(),in).eta();
+		out.detectorEta = in.detectorP4(in.vertex(), in).eta();
 		out.fHPD = -1.;
 		out.fRBX = -1.;
 		out.nTracksAtCalo = -1;

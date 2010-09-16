@@ -65,6 +65,22 @@
 #pragma link C++ class std::vector<KDataMuon>+;
 #pragma link C++ typedef KDataMuons;
 
+#pragma link C++ struct KDataTau+;
+#pragma link C++ class std::vector<KDataTau>+;
+#pragma link C++ typedef KDataTaus;
+
+#pragma link C++ struct KDataCaloTau+;
+#pragma link C++ class std::vector<KDataCaloTau>+;
+#pragma link C++ typedef KDataCaloTaus;
+
+#pragma link C++ struct KDataPFTau+;
+#pragma link C++ class std::vector<KDataPFTau>+;
+#pragma link C++ typedef KDataPFTaus;
+
+#pragma link C++ struct KDataGenTau+;
+#pragma link C++ class std::vector<KDataGenTau>+;
+#pragma link C++ typedef KDataGenTaus;
+
 #pragma link C++ struct KDataVertex+;
 #pragma link C++ class std::vector<KDataVertex>+;
 #pragma link C++ typedef KDataVertices;
@@ -76,6 +92,14 @@
 #pragma link C++ struct KParton+;
 #pragma link C++ class std::vector<KParton>+;
 #pragma link C++ typedef KPartons;
+
+#pragma link C++ struct KDataHit+;
+#pragma link C++ class std::vector<KDataHit>+;
+#pragma link C++ typedef KDataHits;
+
+#pragma link C++ struct KL1Muon+;
+#pragma link C++ class std::vector<KL1Muon>+;
+#pragma link C++ typedef KL1Muons;
 
 /************************************************************/
 

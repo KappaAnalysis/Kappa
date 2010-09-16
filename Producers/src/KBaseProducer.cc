@@ -46,7 +46,8 @@ bool KBaseProducer::regexMatch(const std::string &in, const std::string &filter)
 				std::cout << "matched" << std::endl;
 			return true;
 		}
-	} catch (...)
+	}
+	catch (...)
 	{
 		std::cout << "Error while matching \"" << in << "\" against regular expression \"" << filter << "\"" << std::endl;
 	}
