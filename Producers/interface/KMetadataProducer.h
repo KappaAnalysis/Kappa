@@ -105,13 +105,6 @@ public:
 				std::cout << std::endl;
 			}
 			std::cout << "* process with hltTriggerSummaryAOD" << std::endl;
-			if (run.run() != 1)
-			{
-				std::cout << metaLumi->nRun << "\n";
-				std::cout << "this run seems to be data and the trigger should always be 'HLT' in data -> forcing 'HLT'" << std::endl;
-				tagHLTResults = edm::InputTag(tagHLTResults.label(), "", "HLT");
-			}
-
 			std::cout << "selected:" << tagHLTResults << std::endl;
 			this->addProvenance(tagHLTResults.process(), "");
 			if (tagHLTResults.process() == "")
@@ -194,6 +187,10 @@ public:
 		metaEvent->nEvent = event.id().event();
 		metaEvent->nLumi = event.luminosityBlock();
 		metaEvent->nBX = event.bunchCrossing();
+
+		// If we are running on real data then the trigger should
+		// always be HLT.
+		assert(!event.isRealData() || tagHLTResults.label() == "HLT");
 
 		// Set HLT trigger bits
 		metaEvent->bitsHLT = 0;
