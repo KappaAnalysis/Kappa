@@ -64,16 +64,13 @@ public:
 		if (in.outerTrack().isNonnull())
 			KTrackProducer::fillTrack(*in.outerTrack(), out.outerTrack);
 
+
 		// Charge, ...
 		out.charge = in.charge();
 		out.numberOfChambers = in.numberOfChambers();
 		out.numberOfMatches = in.numberOfMatches();
 		out.caloComp = in.caloCompatibility();
 		out.segComp = muon::segmentCompatibility(in);
-		if (!in.track())
-			out.trackHits = -1;
-		else
-			out.trackHits = in.track()->recHitsSize();
 
 		out.type = in.type();
 

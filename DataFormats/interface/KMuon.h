@@ -43,7 +43,6 @@ struct KDataMuon : KDataLV
 
 	int numberOfChambers;
 	int numberOfMatches;
-	int trackHits;
 
 	unsigned long long hltMatch;
 
