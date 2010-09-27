@@ -231,9 +231,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		offlinePrimaryVerticesWithBS = cms.PSet(
 			src = cms.InputTag("offlinePrimaryVerticesWithBS")
 		),
-		pixelVertices = cms.PSet(
-			src = cms.InputTag("pixelVertices")
-		),
 	),
 
 	BeamSpot = cms.PSet(kappaNoRename,
