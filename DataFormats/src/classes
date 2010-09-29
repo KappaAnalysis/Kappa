@@ -59,6 +59,9 @@ KDataHits
 
 KL1Muon
 KL1Muons
+
+KPFCandidate
+KPFCandidates
 #################################
 
 KProvenance

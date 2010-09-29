@@ -287,4 +287,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 		whitelist = cms.vstring("recoPFMET"),
 		blacklist = cms.vstring(),
 	),
+
+	PFCandidates = cms.PSet(kappaNoRename,kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("recoPFCandidates_particleFlow"),
+		blacklist = cms.vstring(),
+	),
 )
