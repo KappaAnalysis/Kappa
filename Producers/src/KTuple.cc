@@ -31,6 +31,7 @@
 #include "../interface/KCaloTauProducer.h"
 #include "../interface/KPFTauProducer.h"
 #include "../interface/KGenTauProducer.h"
+#include "../interface/KPFCandidateProducer.h"
 // #include "../interface/KHepMCPartonProducer.h"
 
 int KBaseProducer::verbosity = 0;
@@ -89,8 +90,25 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 
 	KBaseProducer::verbosity = std::max(KBaseProducer::verbosity, psConfig.getParameter<int>("verbose"));
 
-	// Create metadata producer
 	std::vector<std::string> active = psConfig.getParameter<std::vector<std::string> >("active");
+
+	// Make sure there are no duplicates
+	bool have_duplicates = false;
+	for(size_t i = 0; i < active.size(); ++i)
+	{
+		for(size_t j = i+1; j < active.size(); ++j)
+		{
+			if(active[i] == active[j])
+			{
+				std::cout << "Duplicate producer found: " << active[i] << std::endl;
+				have_duplicates = true;
+			}
+		}
+	}
+
+	if(have_duplicates) exit(1);
+
+	// Create metadata producer
 	for (size_t i = 0; i < active.size(); ++i)
 	{
 		std::cout << "Init producer " << active[i] << std::endl;
@@ -148,6 +166,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KPFTauProducer>(psConfig, active[i]);
 		else if (active[i] == "GenTaus")
 			addProducer<KGenTauProducer>(psConfig, active[i]);
+		else if (active[i] == "PFCandidates")
+			addProducer<KPFCandidateProducer>(psConfig, active[i]);
 		else
 		{
 			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;
