@@ -2,6 +2,7 @@
 #define KAPPA_MUON_H
 
 #include "KTrack.h"
+#include "KMetadata.h"
 
 struct KDataMuon : KDataLV
 {
