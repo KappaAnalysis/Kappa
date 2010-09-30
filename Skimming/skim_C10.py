@@ -19,6 +19,12 @@ process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
 process.GlobalTag.globaltag = '@GLOBALTAG@'
 #-------------------------------------------------------------------------------
 
+# Produce PF muon isolation ----------------------------------------------------
+from PhysicsTools.PFCandProducer.Isolation.tools_cfi import *
+process.pfmuIsoDepositPFCandidates = isoDepositReplace("muons", "particleFlow")
+process.pfMuonIsolCandidates = cms.Path(process.pfmuIsoDepositPFCandidates)
+#-------------------------------------------------------------------------------
+
 # Configure tuple generation ---------------------------------------------------
 process.load("Kappa.Producers.KTuple_cff")
 process.kappatuple = cms.EDAnalyzer('KTuple',
@@ -68,11 +74,11 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 )
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
-	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'Metadata', 'BeamSpot', @ACTIVE@
+	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'Metadata', 'BeamSpot', 'CaloTaus', 'PFTaus', 'GenTaus', @ACTIVE@
 )
 #-------------------------------------------------------------------------------
 
 # Process schedule -------------------------------------------------------------
 process.pathDAT = cms.Path(process.recoJetAssociations+process.kappatuple)
-process.schedule = cms.Schedule(process.pathDAT)
+process.schedule = cms.Schedule(process.pfMuonIsolCandidates, process.pathDAT)
 #-------------------------------------------------------------------------------
