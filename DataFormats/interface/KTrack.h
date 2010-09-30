@@ -23,7 +23,7 @@ struct KDataTrack : public KDataLV
 	float sumPtIso03;
 	float trackIso03;
 
-	double getTrackIsolation(std::vector<KDataTrack> * tracks, double isoCone = 0.3, double vetoCone = 0.01, double minPt = 1.5)
+	double getTrackIsolation(std::vector<KDataTrack> *tracks, double isoCone = 0.3, double vetoCone = 0.01, double minPt = 1.5)
 	{
 		double sum = 0.;
 		for (std::vector<KDataTrack>::iterator it = tracks->begin(); it != tracks->end(); it++)
@@ -50,7 +50,7 @@ struct KDataTrack : public KDataLV
 		) / sqrt(p4.Perp2());
 	}
 
-	double getDxy(KDataBeamSpot * bs)
+	double getDxy(KDataBeamSpot *bs)
 	{
 		if (!bs)
 			return -1.;
@@ -66,7 +66,7 @@ struct KDataTrack : public KDataLV
 			1 - dxy/error(track)
 			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
 	*/
-	double getIP(KDataVertex * pv, unsigned int mode = 0)
+	double getIP(KDataVertex *pv, unsigned int mode = 0)
 	{
 		if (!pv)
 			return -10000.;
@@ -98,7 +98,7 @@ struct KDataTrack : public KDataLV
 			1 - dxy/error(track)
 			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
 	*/
-	double getIP(KDataBeamSpot * bs, unsigned int mode = 0)
+	double getIP(KDataBeamSpot *bs, unsigned int mode = 0)
 	{
 		if (!bs)
 			return -10000.;
