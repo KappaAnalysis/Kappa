@@ -7,6 +7,8 @@
 #pragma link off all functions;
 
 /************************************************************/
+/* BASIC BUILDING BLOCKS                                    */
+/************************************************************/
 
 #pragma link C++ class ROOT::Math::PtEtaPhiM4D<float>+;
 #pragma link C++ class ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> >+;
@@ -34,6 +36,8 @@
 #pragma link C++ class ROOT::Math::SymMatrixOffsets<7>+;
 #pragma link C++ class ROOT::Math::SMatrix<double,7,7,ROOT::Math::MatRepSym<double,7> >+;
 
+/************************************************************/
+/* DATATYPES                                                */
 /************************************************************/
 
 #pragma link C++ struct KDataLV+;
@@ -105,6 +109,8 @@
 #pragma link C++ class std::vector<KPFCandidate>+;
 #pragma link C++ typedef KPFCandidates;
 
+/************************************************************/
+/* METADATA                                                 */
 /************************************************************/
 
 #pragma link C++ struct KProvenance+;

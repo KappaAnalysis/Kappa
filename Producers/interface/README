@@ -1,3 +1,6 @@
+CURRENT:
+========
+
                                                                              /-- KCaloJetProducer
                                                                             |
                      KManualMultiProducer -------- KManualMultiLVProducer --*--- KPartonProducer -- KGenTauProducer
@@ -17,15 +20,15 @@ KBaseMultiProducer *   KCommonVectorProducer     |                              
                                              \---- KTowerProducer
 
 TODO:
-Redo verbose limits ...
-Merge Manual and RegexProducer using PSet::augment to provide per output object configuration
-(Must use untracked parameters?)
-  => This will simplify the producer structure VERY much...
-
+========
+ * Redo verbose limits ...
+ * Merge Manual and RegexProducer using PSet::augment to provide
+   per output object configuration (Must use untracked parameters?)
+   => This will simplify the producer structure VERY much...
 
 GOAL:
-                                                  /-> KPartonProducer -> KGenTauProducer
-                                                 |
+========
+
 KBaseMultiProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
         ^            |                           |
         |            |\-> KMETProducer           |\-> KTrackProducer
@@ -34,6 +37,8 @@ KBaseMultiProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
         |            |                           |
   KBaseProducer      \--> KTowerProducer         |\-> KCaloJetProducer
                                                  |
-						 |                    /-> KCaloTauProducer
+                                                 |\-> KPartonProducer --> KGenTauProducer
+                                                 |
+                                                 |                    /-> KCaloTauProducer
                                                  \--> KTauProducer --*
-						                      \-> KPFTauProducer
+                                                                      \-> KPFTauProducer
