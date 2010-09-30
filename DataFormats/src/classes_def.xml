@@ -58,6 +58,8 @@
 	<class name="KL1Muon"/>
 	<class name="KL1Muons"/>
 
+	<class name="KPFCandidate"/>
+	<class name="KPFCandidates"/>
 
 	<class name="KProvenance"/>
 

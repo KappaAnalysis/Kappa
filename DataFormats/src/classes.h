@@ -73,6 +73,8 @@ namespace
 		KL1Muon kappa_l1muon;
 		KL1Muons kappa_l1muons;
 
+		KPFCandidate kappa_pfcandidate;
+		KPFCandidates kappa_pfcandidates;
 
 		KProvenance kappa_provenance;
 

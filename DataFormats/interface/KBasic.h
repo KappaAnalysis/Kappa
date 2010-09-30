@@ -80,6 +80,23 @@ struct KDataHit
 };
 typedef std::vector<KDataHit> KDataHits;
 
+struct KPFCandidate : KDataLV
+{
+	unsigned int pdgid;
+	double deltaP;
+	double ecalEnergy, hcalEnergy;
+
+	int pdgId() const
+	{
+		return (pdgid & KPartonChargeMask ? -1 : 1) * (pdgid & KPartonPdgIdMask);
+	}
+	int charge() const
+	{
+		return (pdgid & KPartonChargeMask ? -1 : 1);
+	}
+};
+typedef std::vector<KPFCandidate> KPFCandidates;
+
 struct KL1Muon : KDataLV
 {
   // bit    meaning
