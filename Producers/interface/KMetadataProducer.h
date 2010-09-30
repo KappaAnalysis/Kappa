@@ -190,7 +190,7 @@ public:
 
 		// If we are running on real data then the trigger should
 		// always be HLT.
-		assert(!event.isRealData() || tagHLTResults.label() == "HLT");
+		assert(!event.isRealData() || tagHLTResults.process() == "HLT");
 
 		// Set HLT trigger bits
 		metaEvent->bitsHLT = 0;
