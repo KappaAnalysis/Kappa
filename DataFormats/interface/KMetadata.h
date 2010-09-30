@@ -41,6 +41,13 @@ struct KEventMetadata
 	unsigned int nLumi;
 	unsigned int nRun;
 	int nBX;
+	bool hltFired(const std::string& name, const KLumiMetadata * lumimetadata) const
+	{
+		for(size_t i = 0; i < lumimetadata->hltNames.size(); ++i)
+			if(lumimetadata->hltNames[i] == name)
+				return (bitsHLT & (1ull << i)) != 0;
+		return false; // Named HLT does not exist
+	}
 };
 
 // Nice names for types

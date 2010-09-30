@@ -52,6 +52,14 @@ struct KDataMuon : KDataLV
 	// require different values in the transition region
 	float eta_propag_barrel, phi_propag_barrel;
 	float eta_propag_endcap, phi_propag_endcap;
+
+	bool hltFired(const std::string& name, const KLumiMetadata * lumimetadata) const
+	{
+		for(size_t i = 0; i < lumimetadata->hltNamesMuons.size(); ++i)
+			if(lumimetadata->hltNamesMuons[i] == name)
+				return (hltMatch & (1ull << i)) != 0;
+		return false; // Named HLT does not exist
+	}
 };
 typedef std::vector<KDataMuon> KDataMuons;
 
