@@ -16,6 +16,7 @@ process.load('Configuration/StandardSequences/Services_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('RecoJets.Configuration.RecoJetAssociations_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
+process.load('Configuration/StandardSequences/GeometryPilot2_cff')
 process.GlobalTag.globaltag = '@GLOBALTAG@'
 #-------------------------------------------------------------------------------
 
@@ -73,8 +74,18 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	)
 )
 process.kappatuple.verbose = cms.int32(0)
+process.kappatuple.PFTaus = cms.PSet(process.kappaNoCut,
+    shrinkingConePFTaus = cms.PSet(
+            src = cms.InputTag("shrinkingConePFTauProducer"),
+            discr = cms.vstring("shrinkingConePFTau*")
+    ),
+    fixedConePFTaus = cms.PSet(
+            src = cms.InputTag("fixedConePFTauProducer"),
+            discr = cms.vstring("fixedConePFTau*")
+    ),
+)
 process.kappatuple.active = cms.vstring(
-	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'Metadata', 'BeamSpot', 'CaloTaus', 'PFTaus', 'GenTaus', @ACTIVE@
+	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'Metadata', 'BeamSpot', 'CaloTaus', 'PFTaus', @ACTIVE@
 )
 #-------------------------------------------------------------------------------
 
