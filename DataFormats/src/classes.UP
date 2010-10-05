@@ -4,7 +4,7 @@ import glob, os
 fp = open('classes')
 fp_ClassesH = open('classes.h', 'w')
 fp_KappaHeader = open('../interface/Kappa.h', 'w')
-fp_DebugHeader = open('../test/KDebug.h', 'w')
+fp_DebugHeader = open('../interface/KDebug.h', 'w')
 fp_DebugHeader.write('#ifndef KAPPA_DEBUG_H\n#define KAPPA_DEBUG_H\n\n')
 fp_DebugHeader.write('#include <iostream>\n#include "../src/classes.h"\n\n')
 

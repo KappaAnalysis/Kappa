@@ -1,4 +1,4 @@
-#include "KDebug.h"
+#include "../interface/KDebug.h"
 
 template<typename T>
 void printvec(std::ostream &os, const T &v)

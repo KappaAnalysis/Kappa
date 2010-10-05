@@ -7,13 +7,13 @@ LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
 
 all: $(PROGRAM)
 
-%.o: %.cpp
+%.o: %.cpp KDebug.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.a: %.o
+%.a: %.o KDebug.o
 	ar rcs $@ $^
 
-%.so: %.o
+%.so: %.o KDebug.o
 	$(CXX) $(LDFLAGS) -shared -o $@ $^
 
 libKappa.cpp: standalone.h ../src/classes.h LinkDef.h
