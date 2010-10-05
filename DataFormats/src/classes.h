@@ -3,7 +3,6 @@
 
 #define G__DICTIONARY
 #include "../interface/KBasic.h"
-#include "../interface/KDebug.h"
 #include "../interface/KJetMET.h"
 #include "../interface/KLorentzVector.h"
 #include "../interface/KMetadata.h"

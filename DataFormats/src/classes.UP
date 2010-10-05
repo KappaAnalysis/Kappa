@@ -20,7 +20,7 @@ fp_KappaHeader.write('#ifndef KDATAFORMAT_H\n#define KDATAFORMAT_H\n\n')
 fp_DebugHeader.write('\n#endif\n')
 
 for header in sorted(glob.glob('../interface/*.h')):
-	if header.endswith('Kappa.h'):
+	if header.endswith('KDebug.h') or header.endswith('Kappa.h'):
 		continue
 	fp_KappaHeader.write('#include "%s"\n' % os.path.basename(header))
 	fp_ClassesH.write('#include "%s"\n' % header)
