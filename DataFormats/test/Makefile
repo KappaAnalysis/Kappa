@@ -7,7 +7,7 @@ LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
 
 all: $(PROGRAM)
 
-%.o: %.cpp KDebug.cpp
+%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.a: %.o KDebug.o
