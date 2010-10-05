@@ -1,8 +1,4 @@
-#ifndef KAPPA_DEBUG_H
-#define KAPPA_DEBUG_H
-
-#include <iostream>
-#include "../src/classes.h"
+#include "KDebug.h"
 
 template<typename T>
 void printvec(std::ostream &os, const T &v)
@@ -69,6 +65,26 @@ std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const KDataTau &tau)
+{
+	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau)
+{
+	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau)
+{
+	return os << static_cast<const KParton&>(tau) << " p4_vis=" << static_cast<RMLV>(tau.p4_vis) << " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataVertex &vertex)
+{
+	return os << vertex.position << " nTracks=" << vertex.nTracks << " fake=" << vertex.fake << " chi2=" << vertex.chi2 << " nDOF=" << vertex.nDOF;
+}
+
 ////////////////////////////////////////////////////////////
 // KMetadata.h
 ////////////////////////////////////////////////////////////
@@ -104,26 +120,3 @@ std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 	os << static_cast<KEventMetadata>(m) << std::endl;
 	return os << "Weight: " << m.weight;
 }
-
-std::ostream &operator<<(std::ostream &os, const KDataVertex &vertex)
-{
-	return os << vertex.position << " nTracks=" << vertex.nTracks << " fake=" << vertex.fake << " chi2=" << vertex.chi2 << " nDOF=" << vertex.nDOF;
-}
-
-
-std::ostream &operator<<(std::ostream &os, const KDataTau &tau)
-{
-	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge;
-}
-
-std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau)
-{
-	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge;
-}
-
-std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau)
-{
-	return os << static_cast<const KParton&>(tau) << " p4_vis=" << static_cast<RMLV>(tau.p4_vis) << " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
-}
-
-#endif

@@ -2,59 +2,65 @@
 import glob, os
 
 fp = open('classes')
-fp_h = open('classes.h', 'w')
-fp_k = open('../interface/Kappa.h', 'w')
+fp_ClassesH = open('classes.h', 'w')
+fp_KappaHeader = open('../interface/Kappa.h', 'w')
+fp_DebugHeader = open('../test/KDebug.h', 'w')
+fp_DebugHeader.write('#ifndef KAPPA_DEBUG_H\n#define KAPPA_DEBUG_H\n\n')
+fp_DebugHeader.write('#include <iostream>\n#include "../src/classes.h"\n\n')
 
 debug = []
-for line in open('../interface/KDebug.h', 'r').readlines():
+for line in open('../test/KDebug.cpp', 'r').readlines():
 	if line.startswith('std::ostream'):
 		debug.append(line.split('const')[1].split('&')[0].strip())
+		if '>' not in line:
+			fp_DebugHeader.write(line.replace('\n', ';\n'))
 
-fp_h.write('#ifndef KDATAFORMAT_CLASSES_H\n#define KDATAFORMAT_CLASSES_H\n\n#define G__DICTIONARY\n')
-fp_k.write('#ifndef KDATAFORMAT_H\n#define KDATAFORMAT_H\n\n')
+fp_ClassesH.write('#ifndef KDATAFORMAT_CLASSES_H\n#define KDATAFORMAT_CLASSES_H\n\n#define G__DICTIONARY\n')
+fp_KappaHeader.write('#ifndef KDATAFORMAT_H\n#define KDATAFORMAT_H\n\n')
+fp_DebugHeader.write('\n#endif\n')
 
 for header in sorted(glob.glob('../interface/*.h')):
-	if header.endswith('KDebug.h') or header.endswith('Kappa.h'):
+	if header.endswith('Kappa.h'):
 		continue
-	fp_k.write('#include "%s"\n' % os.path.basename(header))
-	fp_h.write('#include "%s"\n' % header)
-fp_h.write('\nnamespace\n{\n\tstruct dictionary\n\t{\n')
+	fp_KappaHeader.write('#include "%s"\n' % os.path.basename(header))
+	fp_ClassesH.write('#include "%s"\n' % header)
+fp_ClassesH.write('\nnamespace\n{\n\tstruct dictionary\n\t{\n')
 
-fp_k.write('\ntemplate<typename T>\nstruct TypeName;\n\n')
-fp_k.write('#define REGISTER_NAME_OF_TYPE(X)  \\\n')
-fp_k.write('	template<> struct TypeName<X> \\\n')
-fp_k.write('	{                             \\\n')
-fp_k.write('		static const char *name() \\\n')
-fp_k.write('		{                         \\\n')
-fp_k.write('			return (#X);          \\\n')
-fp_k.write('		}                         \\\n')
-fp_k.write('	}                             \\\n\n')
+fp_KappaHeader.write('\ntemplate<typename T>\nstruct TypeName;\n\n')
+fp_KappaHeader.write('#define REGISTER_NAME_OF_TYPE(X)  \\\n')
+fp_KappaHeader.write('	template<> struct TypeName<X> \\\n')
+fp_KappaHeader.write('	{                             \\\n')
+fp_KappaHeader.write('		static const char *name() \\\n')
+fp_KappaHeader.write('		{                         \\\n')
+fp_KappaHeader.write('			return (#X);          \\\n')
+fp_KappaHeader.write('		}                         \\\n')
+fp_KappaHeader.write('	}                             \\\n\n')
 
-fp_d = open('classes_def.xml', 'w')
-fp_d.write('<lcgdict>\n')
+fp_LCGDict = open('classes_def.xml', 'w')
+fp_LCGDict.write('<lcgdict>\n')
 
 for line in map(str.strip, fp):
 	if line != '':
 		if line[0] == '#':
 			continue
 		if line.startswith('K'):
-			fp_k.write('REGISTER_NAME_OF_TYPE(%s);\n' % line)
-			fp_h.write('\t\t%s kappa_%s;\n' % (line, line[1:].lower()))
+			fp_KappaHeader.write('REGISTER_NAME_OF_TYPE(%s);\n' % line)
+			fp_ClassesH.write('\t\t%s kappa_%s;\n' % (line, line[1:].lower()))
 			if line.endswith('s') and line[:-1] in debug:
 				pass
 			else:
 				if line not in debug:
 					print line, 'has no debug output!'
 		else:
-			fp_h.write('\t\t%s kappa_%s;\n' % (line, line.lower()))
-		fp_d.write('\t<class name="%s"/>\n' % line)
+			fp_ClassesH.write('\t\t%s kappa_%s;\n' % (line, line.lower()))
+		fp_LCGDict.write('\t<class name="%s"/>\n' % line)
 	else:
-		fp_h.write('\n')
-		fp_d.write('\n')
+		fp_ClassesH.write('\n')
+		fp_LCGDict.write('\n')
 
-fp_d.write('</lcgdict>\n')
-fp_h.write('\t};\n}\n\n#endif\n')
-fp_k.write('\n#endif\n')
+fp_LCGDict.write('</lcgdict>\n')
+fp_ClassesH.write('\t};\n}\n\n#endif\n')
+fp_KappaHeader.write('\n#endif\n')
 
 print ' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! '
 print ' !!! DO NOT FORGET TO EDIT ../test/LinkDef.h !!! '
