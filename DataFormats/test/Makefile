@@ -10,10 +10,10 @@ all: $(PROGRAM)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.a: %.o KDebug.o
+%.a: %.o
 	ar rcs $@ $^
 
-%.so: %.o KDebug.o
+%.so: %.o
 	$(CXX) $(LDFLAGS) -shared -o $@ $^
 
 libKappa.cpp: standalone.h ../src/classes.h LinkDef.h
