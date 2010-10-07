@@ -12,18 +12,18 @@ all: $(PROGRAM)
 
 %.a: %.o
 	ar rcs $@ $^
+	mkdir -p ../../lib
+	cp $@ ../../lib
 
 %.so: %.o
 	$(CXX) $(LDFLAGS) -shared -o $@ $^
+	mkdir -p ../../lib
+	cp $@ ../../lib
 
 libKappa.cpp: standalone.h ../src/classes.h LinkDef.h
 	rootcint -f $@ -c $^
 
 install: $(PROGRAM)
-	test -d "$(MYPREFIX)/lib"
-	[ -n "$(filter %.a %.so, $(PROGRAM))" ] && \
-		cp $(filter %.a %.so, $(PROGRAM)) "$(MYPREFIX)/lib" \
-		|| true
 
 clean:
-	@rm -f libKappa.*
+	@rm -f *.o libKappa.*
