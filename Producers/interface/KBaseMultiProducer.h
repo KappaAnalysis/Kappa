@@ -70,18 +70,7 @@ class KManualMultiProducer : public KBaseMultiProducer<Tin, Tout>
 {
 public:
 	KManualMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree)
-	{
-		std::cout << "Requesting entries: ";
-		std::vector<std::string> names = cfg.getParameterNamesForType<edm::ParameterSet>();
-		for (size_t i = 0; i < names.size(); ++i)
-		{
-			std::cout << "\"" << names[i] << "\" ";
-			edm::ParameterSet pset = cfg.getParameter<edm::ParameterSet>(names[i]);
-			entries[names[i]] = pset;
-		}
-		std::cout << std::endl;
-	}
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree) {}
 	virtual ~KManualMultiProducer() {}
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
@@ -92,20 +81,30 @@ public:
 
 	bool addPSetRequests(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		for (std::map<std::string, edm::ParameterSet>::const_iterator it = entries.begin(); it != entries.end(); ++it)
+		std::cout << "Requesting entries: ";
+
+		const edm::ParameterSet &psBase = this->psBase;
+		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+		for (size_t i = 0; i < names.size(); ++i)
 		{
+			std::cout << "\"" << names[i] << "\" ";
+			edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+
 			// Add branch
 			if (this->verbosity > 0)
-				std::cout << " => Adding branch: " << it->first << std::endl;
-			this->addProvenance(it->second.getParameter<edm::InputTag>("src").encode(), it->first);
+				std::cout << " => Adding branch: " << names[i] << std::endl;
+			const edm::InputTag src = pset.getParameter<edm::InputTag>("src");
+			this->addProvenance(src.encode(), names[i]);
 
 			// Static storage of ROOT bronch target - never changes, only accessed here:
-			typename Tout::type *target = this->allocateBronch(this->event_tree, it->first);
+			typename Tout::type *target = this->allocateBronch(this->event_tree, names[i]);
 
 			// Mapping between target
-			targetIDMap[target] = &(it->second);
-			nameMap[target] = it->first;
+			targetIDMap[target] = &(pset);
+			nameMap[target] = names[i];
 		}
+		std::cout << std::endl;
 		return true;
 	}
 
