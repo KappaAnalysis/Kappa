@@ -15,7 +15,15 @@ class KBaseMultiProducer : public KBaseProducerWP
 public:
 	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseProducerWP(cfg, _event_tree, _run_tree, Tout::producer()),
-		event_tree(_event_tree) {}
+		event_tree(_event_tree),
+		viManual(cfg.getParameter<std::vector<edm::InputTag> >("manual")),
+
+		vsWhitelist(cfg.getParameter<std::vector<std::string> >("whitelist")),
+		vsBlacklist(cfg.getParameter<std::vector<std::string> >("blacklist")),
+
+		vsRename(cfg.getParameter<std::vector<std::string> >("rename")),
+		vsRenameWhitelist(cfg.getParameter<std::vector<std::string> >("rename_whitelist")),
+		vsRenameBlacklist(cfg.getParameter<std::vector<std::string> >("rename_blacklist")) {}
 	virtual ~KBaseMultiProducer() {}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
@@ -52,6 +60,8 @@ public:
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
+		addPSetRequests(event, setup);
+		addRegExRequests(event, setup);
 		if (this->verbosity > 0)
 			std::cout << "Accepted number of products: " << bronchStorage.size() << std::endl;
 		return true;
@@ -102,27 +112,6 @@ protected:
 	std::map<typename Tout::type*, std::pair<std::string, std::string> > nameMap;
 
 private:
-	std::map<std::string, typename Tout::type*> bronchStorage;
-};
-
-// KManualMultiProducer - input is specified manually in the form of parameter sets,
-//   therefore it is possible to specify additional input objects
-//   The main input is selected via the inputtag src
-//   eg. Jets + JetID objects
-template<typename Tin, typename Tout>
-class KManualMultiProducer : public KBaseMultiProducer<Tin, Tout>
-{
-public:
-	KManualMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree) {}
-	virtual ~KManualMultiProducer() {}
-
-	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
-	{
-		addPSetRequests(event, setup);
-		return KBaseMultiProducer<Tin, Tout>::onFirstEvent(event, setup);
-	}
-
 	bool addPSetRequests(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		std::cout << "Requesting entries: ";
@@ -140,34 +129,6 @@ public:
 		std::cout << std::endl;
 
 		return true;
-	}
-};
-
-
-// KRegexMultiProducer - input is specified as regular expressions, most things are automated
-// Subproducers have to override:
-//  * void fillProduct(const InputType &input, OutputType &output, edm::InputTag *tag)
-//  * void clearProduct(OutputType &output);
-template<typename Tin, typename Tout>
-class KRegexMultiProducer : public KBaseMultiProducer<Tin, Tout>
-{
-public:
-	KRegexMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
-		viManual(cfg.getParameter<std::vector<edm::InputTag> >("manual")),
-
-		vsWhitelist(cfg.getParameter<std::vector<std::string> >("whitelist")),
-		vsBlacklist(cfg.getParameter<std::vector<std::string> >("blacklist")),
-
-		vsRename(cfg.getParameter<std::vector<std::string> >("rename")),
-		vsRenameWhitelist(cfg.getParameter<std::vector<std::string> >("rename_whitelist")),
-		vsRenameBlacklist(cfg.getParameter<std::vector<std::string> >("rename_blacklist")) {}
-	virtual ~KRegexMultiProducer() {}
-
-	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
-	{
-		addRegExRequests(event, setup);
-		return KBaseMultiProducer<Tin, Tout>::onFirstEvent(event, setup);
 	}
 
 	bool addRegExRequests(const edm::Event &event, const edm::EventSetup &setup)
@@ -225,7 +186,6 @@ public:
 		return true;
 	}
 
-protected:
 	std::vector<edm::InputTag> viManual;
 
 	std::vector<std::string> vsWhitelist;
@@ -234,6 +194,32 @@ protected:
 	std::vector<std::string> vsRename;
 	std::vector<std::string> vsRenameWhitelist;
 	std::vector<std::string> vsRenameBlacklist;
+
+	std::map<std::string, typename Tout::type*> bronchStorage;
+};
+
+// KManualMultiProducer - input is specified manually in the form of parameter sets,
+//   therefore it is possible to specify additional input objects
+//   The main input is selected via the inputtag src
+//   eg. Jets + JetID objects
+template<typename Tin, typename Tout>
+class KManualMultiProducer : public KBaseMultiProducer<Tin, Tout>
+{
+public:
+	KManualMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree) {}
+	virtual ~KManualMultiProducer() {}
+};
+
+
+// KRegexMultiProducer - input is specified as regular expressions, most things are automated
+template<typename Tin, typename Tout>
+class KRegexMultiProducer : public KBaseMultiProducer<Tin, Tout>
+{
+public:
+	KRegexMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree) {}
+	virtual ~KRegexMultiProducer() {}
 };
 
 #endif
