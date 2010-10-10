@@ -78,6 +78,11 @@ public:
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
+		return addPSetRequests(event, setup);
+	}
+
+	bool addPSetRequests(const edm::Event &event, const edm::EventSetup &setup)
+	{
 		for (std::map<std::string, edm::ParameterSet>::const_iterator it = entries.begin(); it != entries.end(); ++it)
 		{
 			// Add branch
@@ -157,6 +162,11 @@ public:
 	virtual ~KRegexMultiProducer() {}
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
+	{
+		return addRegExRequests(event, setup);
+	}
+
+	bool addRegExRequests(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		std::vector<edm::Provenance const*> plist;
 		event.getAllProvenance(plist);
