@@ -30,10 +30,11 @@ public:
 		return true;
 	}
 
-	void printAcceptedProducts(int verbosity)
+	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		if (verbosity > 0)
+		if (this->verbosity > 0)
 			std::cout << "Accepted number of products: " << bronchStorage.size() << std::endl;
+		return true;
 	}
 
 	typedef typename Tout::type OutputType;
@@ -78,7 +79,8 @@ public:
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		return addPSetRequests(event, setup);
+		addPSetRequests(event, setup);
+		return KBaseMultiProducer<Tin, Tout>::onFirstEvent(event, setup);
 	}
 
 	bool addPSetRequests(const edm::Event &event, const edm::EventSetup &setup)
@@ -97,7 +99,6 @@ public:
 			targetIDMap[target] = &(it->second);
 			nameMap[target] = it->first;
 		}
-		printAcceptedProducts(this->verbosity);
 		return true;
 	}
 
@@ -163,7 +164,8 @@ public:
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		return addRegExRequests(event, setup);
+		addRegExRequests(event, setup);
+		return KBaseMultiProducer<Tin, Tout>::onFirstEvent(event, setup);
 	}
 
 	bool addRegExRequests(const edm::Event &event, const edm::EventSetup &setup)
@@ -227,7 +229,6 @@ public:
 			// Used for fast lookup of selector and lv collection
 			targetIDMap[target] = &tag;
 		}
-		printAcceptedProducts(this->verbosity);
 		return true;
 	}
 
