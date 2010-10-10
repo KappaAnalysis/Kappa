@@ -209,6 +209,11 @@ public:
 				continue;
 			}
 
+			// Crate selection tag
+			edm::InputTag tag((*piter)->moduleLabel(), (*piter)->productInstanceName(), (*piter)->processName());
+			if (this->verbosity > 1)
+				std::cout << " => Branch will be selected with " << tag << std::endl;
+
 			// Add branch
 			if (this->verbosity > 0)
 				std::cout << " => Adding branch: " << targetName << " for product ID: " << (*piter)->productID() << std::endl;
@@ -216,16 +221,11 @@ public:
 
 			typename Tout::type *target = this->allocateBronch(this->event_tree, targetName);
 
-			// Crate selection tag
-			edm::InputTag *tag = new edm::InputTag((*piter)->moduleLabel(), (*piter)->productInstanceName(), (*piter)->processName());
-			if (this->verbosity > 1)
-				std::cout << " => Branch will be selected with " << *tag << std::endl;
-
 			// Used to display tuple label
-			nameMap[tag] = make_pair(targetName, (*piter)->branchName());
+			nameMap[&tag] = make_pair(targetName, (*piter)->branchName());
 
 			// Used for fast lookup of selector and lv collection
-			targetIDMap[target] = tag;
+			targetIDMap[target] = &tag;
 		}
 		printAcceptedProducts(this->verbosity);
 		return true;
