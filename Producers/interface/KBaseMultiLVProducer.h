@@ -23,8 +23,7 @@ public:
 	KCommonVectorProducer(const edm::ParameterSet &cfg) :
 		maxN(cfg.getParameter<int>("maxN")) {}
 
-	virtual void fillProduct(const Tin &in, typename Tout::type &out,
-		const std::string &name)
+	virtual void fillProduct(const Tin &in, typename Tout::type &out, const std::string &name)
 	{
 		if (KBaseProducer::verbosity > 0)
 			std::cout << in.size() << " objects in collection " << name << std::endl;
@@ -81,8 +80,7 @@ public:
 		std::sort(out.begin(), out.end(), sorter);
 	}
 
-	virtual void fillProduct(const Tin &in, typename Tout::type &out,
-		const std::string &name)
+	virtual void fillProduct(const Tin &in, typename Tout::type &out, const std::string &name)
 	{
 		KCommonVectorProducer<Tin, Tout>::fillProduct(in, out, name);
 		if ((KBaseProducer::verbosity > 1) && (out.size() > 0))

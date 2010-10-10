@@ -18,14 +18,6 @@ public:
 		event_tree(_event_tree) {}
 	virtual ~KBaseMultiProducer() {}
 
-	typename Tout::type *allocateBronch(TTree *event_tree, const std::string bronchName)
-	{
-		// Static storage of ROOT bronch target - never changes, only accessed here:
-		bronchStorage[bronchName] = new typename Tout::type();
-		event_tree->Bronch(bronchName.c_str(), Tout::id().c_str(), &(bronchStorage[bronchName]));
-		return bronchStorage[bronchName];
-	}
-
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		this->cEvent = &event;
@@ -69,6 +61,33 @@ public:
 	typedef Tin InputType;
 
 protected:
+	typename Tout::type *allocateBronch(const std::string bronchName)
+	{
+		// Static storage of ROOT bronch target - never changes, only accessed here:
+		bronchStorage[bronchName] = new typename Tout::type();
+		event_tree->Bronch(bronchName.c_str(), Tout::id().c_str(), &(bronchStorage[bronchName]));
+		return bronchStorage[bronchName];
+	}
+
+	void registerBronch(const std::string outputName, const std::string inputName,
+		const edm::ParameterSet &pset, const edm::InputTag &tag)
+	{
+		// Add branch
+		if (this->verbosity > 0)
+			std::cout << " => Adding branch: " << outputName << std::endl;
+
+		// Static storage of ROOT bronch target - never changes, only accessed here:
+		typename Tout::type *target = allocateBronch(outputName);
+		this->addProvenance(tag.encode(), outputName);
+
+		// Mapping between target and outputName
+		nameMap[target] = make_pair(outputName, inputName);
+
+		// Used for fast lookup of selector and lv collection
+		typedef std::pair<const edm::ParameterSet, const edm::InputTag> TmpType;
+		this->targetSetupMap.insert(std::pair<typename Tout::type*, TmpType>(target, TmpType(pset, tag)));
+	}
+
 	virtual void fillProduct(const InputType &input, OutputType &output,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset) = 0;
 	virtual void clearProduct(OutputType &output) = 0;
@@ -115,20 +134,8 @@ public:
 		{
 			std::cout << "\"" << names[i] << "\" ";
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-
-			// Add branch
-			if (this->verbosity > 0)
-				std::cout << " => Adding branch: " << names[i] << std::endl;
-			const edm::InputTag src = pset.getParameter<edm::InputTag>("src");
-			this->addProvenance(src.encode(), names[i]);
-
-			// Static storage of ROOT bronch target - never changes, only accessed here:
-			typename Tout::type *target = this->allocateBronch(this->event_tree, names[i]);
-
-			// Mapping between target
-			typedef std::pair<const edm::ParameterSet, const edm::InputTag> TmpType;
-			this->targetSetupMap.insert(std::pair<typename Tout::type*, TmpType>(target, TmpType(pset, src)));
-			this->nameMap[target] = std::pair<std::string, std::string>(names[i], names[i]);
+			// Register branch
+			this->registerBronch(names[i], names[i], pset, pset.getParameter<edm::InputTag>("src"));
 		}
 		std::cout << std::endl;
 
@@ -211,19 +218,8 @@ public:
 			if (this->verbosity > 1)
 				std::cout << " => Branch will be selected with " << tag << std::endl;
 
-			// Add branch
-			if (this->verbosity > 0)
-				std::cout << " => Adding branch: " << targetName << " for product ID: " << (*piter)->productID() << std::endl;
-			this->addProvenance((*piter)->branchName(), targetName);
-
-			typename Tout::type *target = this->allocateBronch(this->event_tree, targetName);
-
-			// Used to display tuple label
-			this->nameMap[target] = std::pair<std::string, std::string>(targetName, (*piter)->branchName());
-
-			// Used for fast lookup of selector and lv collection
-			typedef std::pair<const edm::ParameterSet, const edm::InputTag> TmpType;
-			this->targetSetupMap.insert(std::pair<typename Tout::type*, TmpType>(target, TmpType(this->psBase, tag)));
+			// Register branch
+			this->registerBronch(targetName, (*piter)->branchName(), this->psBase, tag);
 		}
 
 		return true;
