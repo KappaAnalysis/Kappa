@@ -35,8 +35,7 @@ protected:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		if (verbosity > 0)
-			std::cout << input.size() << " objects in collection "
-				<< nameMap[tag].first << " (" << nameMap[tag].second << ")" << std::endl;
+			std::cout << input.size() << " objects in collection " << name << std::endl;
 		output.reserve(input.size());
 
 		// Get information for vertex correction

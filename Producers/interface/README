@@ -29,16 +29,16 @@ TODO:
 GOAL:
 ========
 
-KBaseMultiProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
-        ^            |                           |
-        |            |\-> KMETProducer           |\-> KTrackProducer
- KBaseProducerWP     |                           |
-        ^            |\-> KVertexProducer        |\-> KMuonProducer
-        |            |                           |
-  KBaseProducer      \--> KTowerProducer         |\-> KCaloJetProducer
-                                                 |
-                                                 |\-> KPartonProducer --> KGenTauProducer
-                                                 |
-                                                 |                    /-> KCaloTauProducer
-                                                 \--> KTauProducer --*
-                                                                      \-> KPFTauProducer
+KBaseMultiVectorProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
+            ^              |                           |
+            |              |\-> KMETProducer           |\-> KTrackProducer
+    KBaseMultiProducer     |                           |
+            ^              |\-> KVertexProducer        |\-> KMuonProducer
+            |              |                           |
+     KBaseProducerWP       \--> KTowerProducer         |\-> KCaloJetProducer
+            ^                                          |
+            |                                          |\-> KPartonProducer --> KGenTauProducer
+      KBaseProducer                                    |
+                                                       |                    /-> KCaloTauProducer
+                                                       \--> KTauProducer --*
+                                                                            \-> KPFTauProducer
