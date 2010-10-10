@@ -15,11 +15,11 @@ struct KTowerProducer_Product
 	static const std::string producer() { return "KTowerProducer"; };
 };
 
-class KTowerProducer : public KRegexMultiProducer<CaloTowerCollection, KTowerProducer_Product>
+class KTowerProducer : public KBaseMultiProducer<CaloTowerCollection, KTowerProducer_Product>
 {
 public:
 	KTowerProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KRegexMultiProducer<CaloTowerCollection, KTowerProducer_Product>(cfg, _event_tree, _run_tree),
+		KBaseMultiProducer<CaloTowerCollection, KTowerProducer_Product>(cfg, _event_tree, _run_tree),
 		srcPVs(cfg.getParameter<edm::InputTag>("srcPVs")),
 		nMaxJets(cfg.getParameter<int>("maxN")),
 		minPt(cfg.getParameter<double>("minPt")) {}

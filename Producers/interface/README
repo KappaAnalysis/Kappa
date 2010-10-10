@@ -3,7 +3,7 @@ CURRENT:
 
                                                                              /-- KCaloJetProducer
                                                                             |
-                     KManualMultiProducer -------- KManualMultiLVProducer --*--- KPartonProducer -- KGenTauProducer
+                     /-----*---------------------- KManualMultiLVProducer --*--- KPartonProducer -- KGenTauProducer
                     /       \                     /                         |
                    |         KVertexProducer     |                          |                    /-- KCaloTauProducer
                    |        /                    |                           \-- KTauProducer --*
@@ -13,7 +13,7 @@ KBaseMultiProducer *   KCommonVectorProducer     |                              
         |          |        \                    |
         |          |         KHitProducer        |                           /-- KTrackProducer
  KBaseProducerWP    \       /                     \                         |
-        ^            KRegexMultiProducer ----*---- KRegexMultiLVProducer ---*--- KLorentzProducer
+        ^            \-----*-----------------*---- KRegexMultiLVProducer ---*--- KLorentzProducer
         |                                    |                              |
   KBaseProducer                              |\--- KMETProducer              \-- KMuonProducer
                                              |

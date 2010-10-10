@@ -99,12 +99,12 @@ private:
 // This is the pset variant of the LV producer
 template<typename Tin, typename Tout>
 class KManualMultiLVProducer :
-	public KManualMultiProducer<Tin, Tout>,
+	public KBaseMultiProducer<Tin, Tout>,
 	public KCommonLVProducer<Tin, Tout>
 {
 public:
 	KManualMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KManualMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		KCommonLVProducer<Tin, Tout>(cfg) {}
 	virtual ~KManualMultiLVProducer() {};
 
@@ -122,12 +122,12 @@ public:
 // This is the regex variant of the LV producer
 template<typename Tin, typename Tout>
 class KRegexMultiLVProducer :
-	public KRegexMultiProducer<Tin, Tout>,
+	public KBaseMultiProducer<Tin, Tout>,
 	public KCommonLVProducer<Tin, Tout>
 {
 public:
 	KRegexMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KRegexMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		KCommonLVProducer<Tin, Tout>(cfg) {}
 	virtual ~KRegexMultiLVProducer() {};
 

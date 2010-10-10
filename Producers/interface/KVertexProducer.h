@@ -14,20 +14,20 @@ struct KVertexProducer_Product
 };
 
 class KVertexProducer :
-	public KManualMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>,
+	public KBaseMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>,
 	public KCommonVectorProducer<edm::View<reco::Vertex>, KVertexProducer_Product>
 {
 public:
 	KVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KManualMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>(cfg, _event_tree, _run_tree),
+		KBaseMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>(cfg, _event_tree, _run_tree),
 		KCommonVectorProducer<edm::View<reco::Vertex>, KVertexProducer_Product>(cfg) {}
 	virtual ~KVertexProducer() {};
 protected:
-	virtual void clearProduct(KManualMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>::OutputType &out) { out.clear(); }
+	virtual void clearProduct(KBaseMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>::OutputType &out) { out.clear(); }
 
 	virtual void fillProduct(
-		const KManualMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>::InputType &in,
-		KManualMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>::OutputType &out,
+		const KBaseMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>::InputType &in,
+		KBaseMultiProducer<edm::View<reco::Vertex>, KVertexProducer_Product>::OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		KCommonVectorProducer<edm::View<reco::Vertex>, KVertexProducer_Product>::fillProduct(in, out, name);

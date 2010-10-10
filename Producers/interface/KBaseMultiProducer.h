@@ -198,28 +198,4 @@ private:
 	std::map<std::string, typename Tout::type*> bronchStorage;
 };
 
-// KManualMultiProducer - input is specified manually in the form of parameter sets,
-//   therefore it is possible to specify additional input objects
-//   The main input is selected via the inputtag src
-//   eg. Jets + JetID objects
-template<typename Tin, typename Tout>
-class KManualMultiProducer : public KBaseMultiProducer<Tin, Tout>
-{
-public:
-	KManualMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree) {}
-	virtual ~KManualMultiProducer() {}
-};
-
-
-// KRegexMultiProducer - input is specified as regular expressions, most things are automated
-template<typename Tin, typename Tout>
-class KRegexMultiProducer : public KBaseMultiProducer<Tin, Tout>
-{
-public:
-	KRegexMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree) {}
-	virtual ~KRegexMultiProducer() {}
-};
-
 #endif
