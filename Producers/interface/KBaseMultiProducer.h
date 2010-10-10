@@ -30,6 +30,31 @@ public:
 	{
 		this->cEvent = &event;
 		this->cSetup = &setup;
+
+		for (typename std::map<typename Tout::type*, std::pair<const edm::ParameterSet, const edm::InputTag> >::iterator
+			it = targetSetupMap.begin(); it != targetSetupMap.end(); ++it)
+		{
+			const edm::ParameterSet &pset = it->second.first;
+			const edm::InputTag &src = it->second.second;
+			const std::pair<std::string, std::string> desc = this->nameMap[it->first];
+
+			// Clear previous collection
+			typename Tout::type &ref = *it->first;
+			clearProduct(ref);
+
+			// Try to get product via id
+			if (!event.getByLabel(src, this->handle))
+			{
+				std::cout << "Could not get main product! " << desc.second << ".src = " << src.encode() << std::endl;
+				continue;
+			}
+
+			std::string name = desc.first;
+			if (desc.first != desc.second)
+				name += " (" + desc.second + ")";
+			fillProduct(*(this->handle), ref, name, &src, pset);
+		}
+
 		return true;
 	}
 
@@ -54,6 +79,9 @@ protected:
 	const edm::Event *cEvent;
 	const edm::EventSetup *cSetup;
 
+	std::map<typename Tout::type*, std::pair<const edm::ParameterSet, const edm::InputTag> > targetSetupMap;
+	std::map<typename Tout::type*, std::pair<std::string, std::string> > nameMap;
+
 private:
 	std::map<std::string, typename Tout::type*> bronchStorage;
 };
@@ -62,9 +90,6 @@ private:
 //   therefore it is possible to specify additional input objects
 //   The main input is selected via the inputtag src
 //   eg. Jets + JetID objects
-// Subproducers have to override:
-//  * void fillProduct(const InputType &input, OutputType &output, const std::string &name, const edm::ParameterSet &pset);
-//  * void clearProduct(OutputType &output);
 template<typename Tin, typename Tout>
 class KManualMultiProducer : public KBaseMultiProducer<Tin, Tout>
 {
@@ -89,7 +114,7 @@ public:
 		for (size_t i = 0; i < names.size(); ++i)
 		{
 			std::cout << "\"" << names[i] << "\" ";
-			edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
 
 			// Add branch
 			if (this->verbosity > 0)
@@ -101,45 +126,14 @@ public:
 			typename Tout::type *target = this->allocateBronch(this->event_tree, names[i]);
 
 			// Mapping between target
-			targetIDMap[target] = &(pset);
-			nameMap[target] = names[i];
+			typedef std::pair<const edm::ParameterSet, const edm::InputTag> TmpType;
+			this->targetSetupMap.insert(std::pair<typename Tout::type*, TmpType>(target, TmpType(pset, src)));
+			this->nameMap[target] = std::pair<std::string, std::string>(names[i], names[i]);
 		}
 		std::cout << std::endl;
+
 		return true;
 	}
-
-	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
-	{
-		KBaseMultiProducer<Tin, Tout>::onEvent(event, setup);
-		for (typename std::map<typename Tout::type*, const edm::ParameterSet*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
-		{
-			const edm::ParameterSet *pset = it->second;
-			const edm::InputTag src = pset->getParameter<edm::InputTag>("src");
-
-			// Clear previous collection
-			typename Tout::type &ref = *it->first;
-			clearProduct(ref);
-
-			// Try to get product via id
-			try
-			{
-				event.getByLabel(src, this->handle);
-			}
-			catch (...)
-			{
-				std::cout << "Could not get main product! " << nameMap[it->first] << ".src = " << src.encode() << std::endl;
-				continue;
-			}
-
-			fillProduct(*(this->handle), ref, nameMap[it->first], &src, *pset);
-		}
-		return true;
-	}
-
-protected:
-	std::map<typename Tout::type*, std::string> nameMap;
-	std::map<std::string, edm::ParameterSet> entries;
-	std::map<typename Tout::type*, const edm::ParameterSet*> targetIDMap;
 };
 
 
@@ -213,7 +207,7 @@ public:
 			}
 
 			// Crate selection tag
-			edm::InputTag tag((*piter)->moduleLabel(), (*piter)->productInstanceName(), (*piter)->processName());
+			const edm::InputTag tag((*piter)->moduleLabel(), (*piter)->productInstanceName(), (*piter)->processName());
 			if (this->verbosity > 1)
 				std::cout << " => Branch will be selected with " << tag << std::endl;
 
@@ -225,34 +219,13 @@ public:
 			typename Tout::type *target = this->allocateBronch(this->event_tree, targetName);
 
 			// Used to display tuple label
-			nameMap[&tag] = make_pair(targetName, (*piter)->branchName());
+			this->nameMap[target] = std::pair<std::string, std::string>(targetName, (*piter)->branchName());
 
 			// Used for fast lookup of selector and lv collection
-			targetIDMap[target] = &tag;
+			typedef std::pair<const edm::ParameterSet, const edm::InputTag> TmpType;
+			this->targetSetupMap.insert(std::pair<typename Tout::type*, TmpType>(target, TmpType(this->psBase, tag)));
 		}
-		return true;
-	}
 
-	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
-	{
-		KBaseMultiProducer<Tin, Tout>::onEvent(event, setup);
-
-		for (typename std::map<typename Tout::type*, const edm::InputTag*>::iterator it = targetIDMap.begin(); it != targetIDMap.end(); ++it)
-		{
-			// Clear previous collection
-			typename Tout::type &ref = *it->first;
-			clearProduct(ref);
-
-			// Try to get product via id
-			if (!event.getByLabel(*(it->second), this->handle))
-			{
-				std::cout << "Could not get product!" << nameMap[it->second].second << std::endl;
-				continue;
-			}
-
-			const std::string name = this->nameMap[it->second].first + " (" + this->nameMap[it->second].second + ")";
-			fillProduct(*(this->handle), ref, name, it->second, this->psBase);
-		}
 		return true;
 	}
 
@@ -265,9 +238,6 @@ protected:
 	std::vector<std::string> vsRename;
 	std::vector<std::string> vsRenameWhitelist;
 	std::vector<std::string> vsRenameBlacklist;
-
-	std::map<const edm::InputTag*, std::pair<std::string, std::string> > nameMap;
-	std::map<typename Tout::type*, const edm::InputTag*> targetIDMap;
 };
 
 #endif
