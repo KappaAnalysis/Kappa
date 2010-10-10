@@ -134,7 +134,6 @@ private:
 		// KMetadataProducer<KMetadata_Product>::metaLumi->hltNamesMuons
 		const size_t sizeFilters = triggerEventHandle->sizeFilters();
 
-		int idx = 0;
 		for (size_t iF = 0; iF < sizeFilters; ++iF)
 		{
 			const std::string nameFilter(triggerEventHandle->filterTag(iF).label());
@@ -142,8 +141,6 @@ private:
 
 			if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(nameFilter) == KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
 				continue;
-
-			++idx;
 
 			for (size_t iK = 0; iK < keys.size(); ++iK)
 			{
