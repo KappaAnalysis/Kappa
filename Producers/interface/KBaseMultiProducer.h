@@ -6,6 +6,9 @@
 #include <FWCore/Utilities/interface/InputTag.h>
 #include "../../DataFormats/interface/KBasic.h"
 
+// Subproducers have to override:
+//  * void fillProduct(const InputType &input, OutputType &output, const std::string &name, const edm::ParameterSet &pset);
+//  * void clearProduct(OutputType &output);
 template<typename Tin, typename Tout>
 class KBaseMultiProducer : public KBaseProducerWP
 {
@@ -41,6 +44,10 @@ public:
 	typedef Tin InputType;
 
 protected:
+	virtual void fillProduct(const InputType &input, OutputType &output,
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset) = 0;
+	virtual void clearProduct(OutputType &output) = 0;
+
 	typename edm::Handle<Tin> handle;
 
 	TTree *event_tree;
@@ -129,11 +136,6 @@ public:
 		}
 		return true;
 	}
-
-	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
-	virtual void fillProduct(const typename KBaseMultiProducer<Tin, Tout>::InputType &input,
-		typename KBaseMultiProducer<Tin, Tout>::OutputType &output,
-		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset) = 0;
 
 protected:
 	std::map<typename Tout::type*, std::string> nameMap;
@@ -254,11 +256,6 @@ public:
 		}
 		return true;
 	}
-
-	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) = 0;
-	virtual void fillProduct(const typename KBaseMultiProducer<Tin, Tout>::InputType &input,
-		typename KBaseMultiProducer<Tin, Tout>::OutputType &output,
-		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset) = 0;
 
 protected:
 	std::vector<edm::InputTag> viManual;
