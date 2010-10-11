@@ -11,26 +11,13 @@ struct KHitProducer_Product
 	static const std::string producer() { return "KHitProducer"; };
 };
 
-class KHitProducer :
-	public KBaseMultiProducer<edm::View<PSimHit>, KHitProducer_Product>,
-	public KCommonVectorProducer<edm::View<PSimHit>, KHitProducer_Product>
+class KHitProducer : public KBaseMultiVectorProducer<edm::View<PSimHit>, KHitProducer_Product>
 {
 public:
 	KHitProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<PSimHit>, KHitProducer_Product>(cfg, _event_tree, _run_tree),
-		KCommonVectorProducer<edm::View<PSimHit>, KHitProducer_Product>(cfg) {}
+		KBaseMultiVectorProducer<edm::View<PSimHit>, KHitProducer_Product>(cfg, _event_tree, _run_tree) {}
 	virtual ~KHitProducer() {};
 protected:
-	virtual void clearProduct(KBaseMultiProducer<edm::View<PSimHit>, KHitProducer_Product>::OutputType &out) { out.clear(); }
-
-	virtual void fillProduct(
-		const KBaseMultiProducer<edm::View<PSimHit>, KHitProducer_Product>::InputType &in,
-		KBaseMultiProducer<edm::View<PSimHit>, KHitProducer_Product>::OutputType &out,
-		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
-	{
-		KCommonVectorProducer<edm::View<PSimHit>, KHitProducer_Product>::fillProduct(in, out, name);
-	}
-
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		out.theta = in.thetaAtEntry();

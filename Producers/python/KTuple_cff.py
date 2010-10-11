@@ -12,6 +12,12 @@ kappaNoRename = cms.PSet(
 	rename_blacklist = cms.vstring(),
 )
 
+kappaNoRegEx = cms.PSet(kappaNoRename,
+	manual = cms.VInputTag(),
+	whitelist = cms.vstring(),
+	blacklist = cms.vstring(),
+)
+
 kappaTupleDefaultsBlock = cms.PSet(
 	verbose = cms.int32(0),
 	active = cms.vstring("Metadata"),
@@ -84,7 +90,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		printErrorsAndWarnings = cms.bool(False),
 	),
 
-	Muons = cms.PSet(kappaNoCut,
+	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
 			# track/ecal/hcal iso are directly taken from reco instead...
@@ -102,13 +108,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltMaxdPt_Pt = cms.double(1.),
 	),
 
-	CaloTaus = cms.PSet(kappaNoCut,
+	CaloTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		caloRecoTaus = cms.PSet(
 			src = cms.InputTag("caloRecoTauProducer"),
 			discr = cms.vstring("caloRecoTau*")
 		)
 	),
-	PFTaus = cms.PSet(kappaNoCut,
+
+	PFTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		shrinkingConePFTaus = cms.PSet(
 			src = cms.InputTag("shrinkingConePFTauProducer"),
 			discr = cms.vstring("shrinkingConePFTau*")
@@ -173,7 +180,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	Partons = cms.PSet(kappaNoCut,
+	Partons = cms.PSet(kappaNoCut, kappaNoRegEx,
 		genParticles = cms.PSet(
 			src = cms.InputTag("genParticles"),
 			selectedStatus = cms.int32(8),      # select, if (1<<status & selectedStatus) or selectedStatus==0
@@ -186,7 +193,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
-	GenTaus = cms.PSet(kappaNoCut,
+	GenTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		genTaus = cms.PSet(
 			src = cms.InputTag("genParticles"),
 			selectedStatus = cms.int32(0)      # select, if (1<<status & selectedStatus) or selectedStatus==0
@@ -217,12 +224,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	Vertex = cms.PSet(kappaNoRename,
-		manual = cms.VInputTag(),
-
-		whitelist = cms.vstring(),
-		blacklist = cms.vstring(),
-
+	Vertex = cms.PSet(kappaNoRegEx,
 		maxN = cms.int32(-1),
 
 		offlinePrimaryVertices = cms.PSet(

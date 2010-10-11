@@ -1,23 +1,22 @@
 CURRENT:
 ========
 
-                                                                             /-- KCaloJetProducer
-                                                                            |
-                     /-----*---------------------- KManualMultiLVProducer --*--- KPartonProducer -- KGenTauProducer
-                    /       \                     /                         |
-                   |         KVertexProducer     |                          |                    /-- KCaloTauProducer
-                   |        /                    |                           \-- KTauProducer --*
-KBaseMultiProducer *   KCommonVectorProducer     |                                               \-- KPFTauProducer
-        ^          |        |                    |
-        |          |        |\-KCommonLVProducer *
-        |          |        \                    |
-        |          |         KHitProducer        |                           /-- KTrackProducer
- KBaseProducerWP    \       /                     \                         |
-        ^            \-----*-----------------*---- KRegexMultiLVProducer ---*--- KLorentzProducer
-        |                                    |                              |
-  KBaseProducer                              |\--- KMETProducer              \-- KMuonProducer
-                                             |
-                                             \---- KTowerProducer
+                                                                                /-- KCaloJetProducer
+                                                                               |
+                                                      KManualMultiLVProducer --*--- KPartonProducer -- KGenTauProducer
+                                                     /                         |
+                             KBaseMultiLVProducer---*                          |                    /-- KCaloTauProducer
+                            /                       |                           \-- KTauProducer --*
+KBaseMultiProducer *-- KBaseMultiVectorProducer     |                                               \-- KPFTauProducer
+        ^          |        |                       |
+        |          |        |\-- KVertexProducer    |
+        |          |        |                       |
+        |          |        \--- KHitProducer       |                           /-- KTrackProducer
+ KBaseProducerWP   |                                 \                         |
+        ^          |\-- KMETProducer                  KRegexMultiLVProducer ---*--- KLorentzProducer
+        |          |                                                           |
+  KBaseProducer    \--- KTowerProducer                                         \-- KMuonProducer
+
 
 TODO:
 ========
@@ -29,16 +28,14 @@ TODO:
 GOAL:
 ========
 
-KBaseMultiVectorProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
-            ^              |                           |
-            |              |\-> KMETProducer           |\-> KTrackProducer
-    KBaseMultiProducer     |                           |
-            ^              |\-> KVertexProducer        |\-> KMuonProducer
-            |              |                           |
-     KBaseProducerWP       \--> KTowerProducer         |\-> KCaloJetProducer
-            ^                                          |
-            |                                          |\-> KPartonProducer --> KGenTauProducer
-      KBaseProducer                                    |
-                                                       |                    /-> KCaloTauProducer
-                                                       \--> KTauProducer --*
-                                                                            \-> KPFTauProducer
+KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
+        ^            |                               |                           |
+        |            \--> KMETProducer               |\-> KTrackProducer         |\-> KCaloJetProducer
+ KBaseProducerWP                                     |                           |
+        ^                                            |\-> KVertexProducer        |\-> KMuonProducer
+        |                                            |                           |
+  KBaseProducer                                      \--> KTowerProducer         |\-> KPartonProducer --> KGenTauProducer
+                                                                                 |
+                                                                                 |                    /-> KCaloTauProducer
+                                                                                 \--> KTauProducer --*
+                                                                                                      \-> KPFTauProducer
