@@ -15,31 +15,21 @@ struct KTowerProducer_Product
 	static const std::string producer() { return "KTowerProducer"; };
 };
 
-class KTowerProducer : public KBaseMultiProducer<CaloTowerCollection, KTowerProducer_Product>
+class KTowerProducer : public KBaseMultiLVProducer<CaloTowerCollection, KTowerProducer_Product>
 {
 public:
 	KTowerProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<CaloTowerCollection, KTowerProducer_Product>(cfg, _event_tree, _run_tree),
-		srcPVs(cfg.getParameter<edm::InputTag>("srcPVs")),
-		nMaxJets(cfg.getParameter<int>("maxN")),
-		minPt(cfg.getParameter<double>("minPt")) {}
+		KBaseMultiLVProducer<CaloTowerCollection, KTowerProducer_Product>(cfg, _event_tree, _run_tree),
+		srcPVs(cfg.getParameter<edm::InputTag>("srcPVs")) {}
 	virtual ~KTowerProducer() {};
 
 protected:
 	edm::InputTag srcPVs;
-	int nMaxJets;
-	double minPt;
 
-	virtual void clearProduct(OutputType &output) { output.clear(); }
-	virtual void fillProduct(const InputType &input, OutputType &output,
+	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		if (verbosity > 0)
-			std::cout << input.size() << " objects in collection " << name << std::endl;
-		output.reserve(input.size());
-
 		// Get information for vertex correction
-		reco::Jet::Point vertex;
 		edm::Handle<reco::VertexCollection> pvCollection;
 		cEvent->getByLabel(srcPVs, pvCollection);
 		if (pvCollection->size() > 0)
@@ -47,31 +37,18 @@ protected:
 		else
 			vertex = reco::Jet::Point(0, 0, 0);
 
-		for (InputType::const_iterator lvit = input.begin(); lvit < input.end(); ++lvit)
-			if (lvit->pt() >= minPt)
-			{
-				output.push_back(OutputType::value_type());
-				math::PtEtaPhiMLorentzVector ct(lvit->p4(vertex));
-				copyP4(ct, output.back().p4);
-			}
-		std::sort(output.begin(), output.end(), towersorter_pt);
-		if (nMaxJets > 0)
-			output.erase(output.begin() + std::min(output.size(), (size_t)nMaxJets), output.end());
+		KBaseMultiVectorProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::fillProduct(in, out, name, tag, pset);
+	}
 
-		if (verbosity > 1)
-		{
-			std::cout << "\t" << "Number of accepted objects: " << output.size() << "\t";
-			if (output.size() > 0)
-				std::cout << "First: " << output[0].p4 << "\t" << "Last: " << output[output.size() - 1].p4;
-			std::cout << std::endl;
-		}
+	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
+	{
+		math::PtEtaPhiMLorentzVector ct(in.p4(vertex));
+		copyP4(ct, output.p4);
 	}
 
 private:
-	struct KTowerSorter_PT
-	{
-		bool operator()(const KDataLV &a, const KDataLV &b) { return (a.p4.pt() > b.p4.pt()); };
-	} towersorter_pt;
+	reco::Jet::Point vertex;
+	KLVSorter<KDataLV> towersorter_pt;
 };
 
 #endif

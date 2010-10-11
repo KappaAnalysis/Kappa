@@ -5,12 +5,12 @@ KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer -
         ^            |                               |                           |
         |            |\-> KMETProducer               |\-> KVertexProducer        |\-> KCaloJetProducer
  KBaseProducerWP--\  |\-> KPFMETProducer             |                           |\-> PFJetProducer
-        ^         |  |\-> KTowerProducer             |\-> KHitProducer           |\-> KMuonProducer
+        ^         |  |\-> KBeamSpotProducer          |\-> KHitProducer           |\-> KMuonProducer
         |         |  |\-> KTrackSummaryProducer      |                           |\-> KTrackProducer
-  KBaseProducer   |  |\-> KBeamSpotProducer          \--> KTrackProducer         |\-> KPFCandidateProducer
-                  |  \--> KTriggerObjectProducer                                 |\-> KPartonProducer --> KGenTauProducer
-                  |                                                              |
-                  \-----> KMetadataProducer --> KGenMetadataProduce              |                    /-> KCaloTauProducer
+  KBaseProducer   |  \--> KTriggerObjectProducer     \--> KTrackProducer         |\-> KPFCandidateProducer
+                  |                                                              |\-> KTowerProducer
+                  \-----> KMetadataProducer --> KGenMetadataProduce              |\-> KPartonProducer --> KGenTauProducer
+                                                                                 |                    /-> KCaloTauProducer
                                                                                  \--> KTauProducer --*
                                                                                                       \-> KPFTauProducer
 
