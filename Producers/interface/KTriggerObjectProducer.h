@@ -27,7 +27,7 @@ public:
 	{
 		for (std::vector<std::string>::iterator it = triggerObjects.begin(); it != triggerObjects.end(); ++it)
 		{
-			std::vector<KDataLV> *target = this->allocateBronch(this->event_tree, "TriggerObject_" + (*it));
+			std::vector<KDataLV> *target = this->allocateBronch("TriggerObject_" + (*it));
 			targetIDMap[*it] = target;
 		}
 		return true;
@@ -38,6 +38,14 @@ protected:
 	std::map<std::string, std::vector<KDataLV>*> targetIDMap;
 	edm::InputTag tagHLTrigger;
 
+	virtual void fillProduct(const trigger::TriggerEvent &in, KTriggerObjectProducer_Product::type &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
+	{
+
+	}
+	virtual void clearProduct(KTriggerObjectProducer_Product::type&)
+	{
+
+	}
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer_Product>::onEvent(event, setup);
