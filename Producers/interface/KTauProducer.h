@@ -9,18 +9,18 @@ template<typename TTau, typename TTauDiscriminator, typename TTauRef, typename T
 // respectively, since they have std::vector somewhere hardcoded in their
 // inheritance hierarchy. If we changed that to edm::View then
 // cEvent->getManyByType does not find any discriminators anymore.
-class KTauProducer : public KManualMultiLVProducer<std::vector<TTau>, TProduct>
+class KTauProducer : public KBaseMultiLVProducer<std::vector<TTau>, TProduct>
 {
 public:
 	KTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, typename TMeta::TauDiscriminatorMap& discr_map) :
-		KManualMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _run_tree),
+		KBaseMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _run_tree),
 		discriminator_map_(discr_map)
 	{
 	}
 
 	virtual void fillProduct(
-		const typename KManualMultiLVProducer<std::vector<TTau>, TProduct>::InputType &in,
-		typename KManualMultiLVProducer<std::vector<TTau>, TProduct>::OutputType &out,
+		const typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::InputType &in,
+		typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Get tau discriminators from event
@@ -30,12 +30,12 @@ public:
 		discriminators_use_ = pset.getParameter<std::vector<std::string> >("discr");
 
 		// Continue normally
-		KManualMultiLVProducer<std::vector<TTau>, TProduct>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<std::vector<TTau>, TProduct>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(
-		const typename KManualMultiLVProducer<std::vector<TTau>, TProduct>::SingleInputType &in,
-		typename KManualMultiLVProducer<std::vector<TTau>, TProduct>::SingleOutputType &out)
+		const typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::SingleInputType &in,
+		typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::SingleOutputType &out)
 	{
 		// Momentum:
 		copyP4(in, out.p4);

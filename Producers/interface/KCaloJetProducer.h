@@ -14,11 +14,11 @@ struct KCaloJetProducer_Product
 	static const std::string producer() { return "KCaloJetProducer"; };
 };
 
-class KCaloJetProducer : public KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>
+class KCaloJetProducer : public KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>
 {
 public:
 	KCaloJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>(cfg, _event_tree, _run_tree),
+		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>(cfg, _event_tree, _run_tree),
 		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("srcNoiseHCAL")) {}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
@@ -47,7 +47,7 @@ public:
 		}
 
 		// Continue normally
-		return KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::onEvent(event, setup);
+		return KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::onEvent(event, setup);
 	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
@@ -63,7 +63,7 @@ public:
 			cEvent->getByLabel(tagJetID, hJetID);
 
 		// Continue normally
-		KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

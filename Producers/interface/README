@@ -1,41 +1,20 @@
 CURRENT:
 ========
 
-                                                                                /-- KCaloJetProducer
-                                                                               |
-                                                      KManualMultiLVProducer --*--- KPartonProducer -- KGenTauProducer
-                                                     /                         |
-                             KBaseMultiLVProducer---*                          |                    /-- KCaloTauProducer
-                            /                       |                           \-- KTauProducer --*
-KBaseMultiProducer *-- KBaseMultiVectorProducer     |                                               \-- KPFTauProducer
-        ^          |        |                       |
-        |          |        |\-- KVertexProducer    |
-        |          |        |                       |
-        |          |        \--- KHitProducer       |                           /-- KTrackProducer
- KBaseProducerWP   |                                 \                         |
-        ^          |\-- KMETProducer                  KRegexMultiLVProducer ---*--- KLorentzProducer
-        |          |                                                           |
-  KBaseProducer    \--- KTowerProducer                                         \-- KMuonProducer
-
+KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
+        ^            |                               |                           |
+        |            |\-> KMETProducer               |\-> KVertexProducer        |\-> KCaloJetProducer
+ KBaseProducerWP--\  |\-> KPFMETProducer             |                           |\-> PFJetProducer
+        ^         |  |\-> KTowerProducer             |\-> KHitProducer           |\-> KMuonProducer
+        |         |  |\-> KTrackSummaryProducer      |                           |\-> KTrackProducer
+  KBaseProducer   |  |\-> KBeamSpotProducer          \--> KTrackProducer         |\-> KPFCandidateProducer
+                  |  \--> KTriggerObjectProducer                                 |\-> KPartonProducer --> KGenTauProducer
+                  |                                                              |
+                  \-----> KMetadataProducer --> KGenMetadataProduce              |                    /-> KCaloTauProducer
+                                                                                 \--> KTauProducer --*
+                                                                                                      \-> KPFTauProducer
 
 TODO:
 ========
  * Redo verbose limits ...
- * Merge Manual and RegexProducer using PSet::augment to provide
-   per output object configuration (Must use untracked parameters?)
-   => This will simplify the producer structure VERY much...
-
-GOAL:
-========
-
-KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
-        ^            |                               |                           |
-        |            \--> KMETProducer               |\-> KTrackProducer         |\-> KCaloJetProducer
- KBaseProducerWP                                     |                           |
-        ^                                            |\-> KVertexProducer        |\-> KMuonProducer
-        |                                            |                           |
-  KBaseProducer                                      \--> KTowerProducer         |\-> KPartonProducer --> KGenTauProducer
-                                                                                 |
-                                                                                 |                    /-> KCaloTauProducer
-                                                                                 \--> KTauProducer --*
-                                                                                                      \-> KPFTauProducer
+ * using PSet::augment to provide per output object configuration (Must use untracked parameters?)

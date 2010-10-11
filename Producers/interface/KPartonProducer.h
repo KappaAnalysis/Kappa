@@ -12,14 +12,14 @@ struct KPartonProducer_Product
 };
 
 template<typename TProduct>
-class KBasicPartonProducer : public KManualMultiLVProducer<edm::View<reco::Candidate>, TProduct>
+class KBasicPartonProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>
 {
 public:
 	KBasicPartonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KManualMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _run_tree) {}
 	virtual ~KBasicPartonProducer() {};
 protected:
-	virtual void fillSingle(const typename KManualMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in, typename KManualMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleOutputType &out)
+	virtual void fillSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in, typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
 		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
@@ -28,7 +28,7 @@ protected:
 			out.pdgid |= KPartonChargeMask;
 		out.children = 0;
 	}
-	virtual bool acceptSingle(const typename KManualMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in)
+	virtual bool acceptSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in)
 	{
 		bool acceptStatus = false;
 		bool acceptPdgId = false;

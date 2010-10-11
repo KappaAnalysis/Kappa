@@ -21,11 +21,11 @@ struct KMuonProducer_Product
 	static const std::string producer() { return "KMuonProducer"; };
 };
 
-class KMuonProducer : public KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>
+class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>
 {
 public:
 	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree),
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")) {}
@@ -46,7 +46,7 @@ public:
 		pfIsoVetoMinPt = pset.getParameter<double>("pfIsoVetoMinPt");
 
 		// Continue normally
-		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

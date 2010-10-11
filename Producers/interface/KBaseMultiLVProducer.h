@@ -100,26 +100,4 @@ private:
 	KLVSorter<typename KBaseMultiVectorProducer<Tin, Tout>::SingleOutputType> sorter;
 };
 
-
-// This is the pset variant of the LV producer
-template<typename Tin, typename Tout>
-class KManualMultiLVProducer : public KBaseMultiLVProducer<Tin, Tout>
-{
-public:
-	KManualMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<Tin, Tout>(cfg, _event_tree, _run_tree) {}
-	virtual ~KManualMultiLVProducer() {};
-};
-
-
-// This is the regex variant of the LV producer
-template<typename Tin, typename Tout>
-class KRegexMultiLVProducer : public KBaseMultiLVProducer<Tin, Tout>
-{
-public:
-	KRegexMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<Tin, Tout>(cfg, _event_tree, _run_tree) {}
-	virtual ~KRegexMultiLVProducer() {};
-};
-
 #endif
