@@ -17,6 +17,7 @@ public:
 	KHitProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiVectorProducer<edm::View<PSimHit>, KHitProducer_Product>(cfg, _event_tree, _run_tree) {}
 	virtual ~KHitProducer() {};
+
 protected:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

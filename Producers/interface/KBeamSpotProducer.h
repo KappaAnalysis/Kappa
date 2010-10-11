@@ -19,6 +19,7 @@ public:
 	KBeamSpotProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<reco::BeamSpot, KBeamSpotProducer_Product>(cfg, _event_tree, _run_tree) {}
 	virtual ~KBeamSpotProducer() {};
+
 protected:
 	virtual void clearProduct(OutputType &output) { output.position.SetCoordinates(0, 0, 0); output.type = -1; }
 	virtual void fillProduct(const InputType &in, OutputType &out,

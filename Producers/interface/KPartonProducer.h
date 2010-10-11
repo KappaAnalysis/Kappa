@@ -18,6 +18,7 @@ public:
 	KBasicPartonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _run_tree) {}
 	virtual ~KBasicPartonProducer() {};
+
 protected:
 	virtual void fillSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in, typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleOutputType &out)
 	{
@@ -56,6 +57,7 @@ protected:
 	{
 		selectedParticles.assign(begin, end);
 	}
+
 private:
 	int selectedStatus; // bit map
 	std::vector<int> selectedParticles;

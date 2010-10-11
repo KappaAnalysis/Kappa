@@ -73,7 +73,6 @@ public:
 	}
 
 private:
-
 	//typedef edm::AssociationVector<edm::RefProd<std::vector<TTau> >, std::vector<float> > TauDiscriminator; // Does not work since getManyByType does not find anything using this...
 	typedef TTauDiscriminator TauDiscriminator;
 	typename TMeta::TauDiscriminatorMap& discriminator_map_; // map from discriminator name to index
