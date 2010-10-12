@@ -4,7 +4,7 @@ CURRENT:
 KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
         ^            |                               |                           |
         |            |\-> KMETProducer               |\-> KVertexProducer        |\-> KCaloJetProducer
- KBaseProducerWP--\  |\-> KPFMETProducer             |                           |\-> PFJetProducer
+ KBaseProducerWP -\  |\-> KPFMETProducer             |                           |\-> PFJetProducer
         ^         |  |\-> KBeamSpotProducer          |\-> KHitProducer           |\-> KMuonProducer
         |         |  |\-> KTrackSummaryProducer      |                           |\-> KTrackProducer
   KBaseProducer   |  \--> KTriggerObjectProducer     \--> KTrackProducer         |\-> KPFCandidateProducer

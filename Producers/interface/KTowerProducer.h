@@ -37,13 +37,13 @@ protected:
 		else
 			vertex = reco::Jet::Point(0, 0, 0);
 
-		KBaseMultiVectorProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiVectorProducer<CaloTowerCollection, KTowerProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		math::PtEtaPhiMLorentzVector ct(in.p4(vertex));
-		copyP4(ct, output.p4);
+		copyP4(ct, out.p4);
 	}
 
 private:
