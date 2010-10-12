@@ -294,4 +294,17 @@ kappaTupleDefaultsBlock = cms.PSet(
 		whitelist = cms.vstring("recoPFCandidates_particleFlow"),
 		blacklist = cms.vstring(),
 	),
+
+	L1Muons = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("l1extraL1MuonParticles_l1extraParticles"),
+		blacklist = cms.vstring(),
+		
+		rename = cms.vstring(
+			"l1extraParticles => l1muons",
+		),
+		rename_whitelist = cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
 )
