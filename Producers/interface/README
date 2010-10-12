@@ -11,7 +11,7 @@ KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer -
                   |                                                              |\-> KTowerProducer
                   \-----> KMetadataProducer --> KGenMetadataProduce              |\-> KPartonProducer --> KGenTauProducer
                                                                                  |                    /-> KCaloTauProducer
-                                                                                 \--> KTauProducer --*
+                                                                                 \--> KTauProducer --O
                                                                                                       \-> KPFTauProducer
 
 TODO:
