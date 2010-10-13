@@ -1,18 +1,21 @@
 CURRENT:
 ========
-
-KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
-        ^            |                               |                           |
-        |            |\-> KMETProducer               |\-> KVertexProducer        |\-> KCaloJetProducer
- KBaseProducerWP -\  |\-> KPFMETProducer             |                           |\-> PFJetProducer
-        ^         |  |\-> KBeamSpotProducer          |\-> KHitProducer           |\-> KMuonProducer
-        |         |  |\-> KTrackSummaryProducer      |                           |\-> KTrackProducer
-  KBaseProducer   |  \--> KTriggerObjectProducer     \--> KTrackProducer         |\-> KPFCandidateProducer
-                  |                                                              |\-> KTowerProducer
-                  \-----> KMetadataProducer --> KGenMetadataProduce              |\-> KPartonProducer --> KGenTauProducer
-                                                                                 |                    /-> KCaloTauProducer
-                                                                                 \--> KTauProducer --O
-                                                                                                      \-> KPFTauProducer
+                             KGenTauProducer <-- KPartonProducer <-\
+                                                                    |/-> KMuonProducer
+                            KCaloTauProducer <-\                    |/-> KTrackProducer
+  KBaseProducer                                 O-- KTauProducer <-\|/->KPFCandidateProducer
+        |                     KPFTauProducer <-/                    |/->KTowerProducer
+        v                                                           |/->KPFJetProducer
+ KBaseProducerWP --> KMetadataProducer --> KGenMetadataProduce      |/->KCaloJetProducer
+        |                                                           |/->KLorentzProducer
+        v                                                           |
+KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer
+                     |                               |
+                     |\-> KMETProducer               |\-> KVertexProducer
+                     |\-> KPFMETProducer             |
+                     |\-> KBeamSpotProducer          |\-> KHitProducer
+                     |\-> KTrackSummaryProducer      |
+                     \--> KTriggerObjectProducer     \--> KTrackProducer
 
 TODO:
 ========
