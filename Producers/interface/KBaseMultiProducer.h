@@ -55,7 +55,7 @@ public:
 			fillProduct(*(this->handle), ref, name, &src, pset);
 		}
 
-		return true;
+		return KBaseProducer::onEvent(event, setup);
 	}
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
@@ -64,7 +64,7 @@ public:
 		addRegExRequests(event, setup);
 		if (this->verbosity > 0)
 			std::cout << "Accepted number of products: " << bronchStorage.size() << std::endl;
-		return true;
+		return KBaseProducer::onFirstEvent(event, setup);
 	}
 
 	typedef typename Tout::type OutputType;

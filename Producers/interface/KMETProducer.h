@@ -29,8 +29,6 @@ protected:
 		{
 			copyP4(in.at(0), out.p4);
 			out.sumEt = in.at(0).sumEt();
-			if (verbosity > 3)
-				std::cout << tag->encode() << "\t" << out << std::endl;
 		}
 		else
 			if (verbosity > 1)

@@ -37,9 +37,6 @@ protected:
 			out.neutralHadEtFraction = in.at(0).NeutralHadEtFraction();
 			out.type6EtFraction = in.at(0).Type6EtFraction();
 			out.type7EtFraction = in.at(0).Type7EtFraction();
-
-			if (verbosity > 3)
-				std::cout << tag->encode() << "\t" << out << std::endl;
 		}
 		else
 			if (verbosity > 1)
