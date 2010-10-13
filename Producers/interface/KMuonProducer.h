@@ -14,6 +14,45 @@
 #include "DataFormats/HLTReco/interface/TriggerEvent.h"
 #include "Math/GenVector/VectorUtil.h"
 
+
+#include <DataFormats/Common/interface/Ref.h>
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "DataFormats/GeometrySurface/interface/Cylinder.h"
+#include "DataFormats/GeometrySurface/interface/Plane.h"
+#include "TrackingTools/GeomPropagators/interface/Propagator.h"
+#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
+#include "TMath.h"
+
+class MuPropagator{
+	public:
+		MuPropagator();
+		~MuPropagator();
+		inline double get_phi_endcap(){ return propagated_phi_endcap; };
+		inline double get_eta_endcap(){ return propagated_eta_endcap; };
+		inline double get_phi_barrel(){ return propagated_phi_barrel; };
+		inline double get_eta_barrel(){ return propagated_eta_barrel; };
+
+		void setup(edm::EventSetup const &setup);
+
+		void propagate_track(reco::TrackRef inner_track, KDataMuon * muon);
+	private:
+		TrajectoryStateOnSurface cylExtrapTrkSam(reco::TrackRef track, double rho);
+		TrajectoryStateOnSurface surfExtrapTrkSam(reco::TrackRef track, double z);
+		FreeTrajectoryState freeTrajStateMuon(reco::TrackRef track);
+		double propagated_phi_barrel;
+		double propagated_phi_endcap;
+		double propagated_eta_barrel;
+		double propagated_eta_endcap;
+
+		// The Magnetic field
+		edm::ESHandle<MagneticField> theBField;
+
+		// Extrapolator to cylinder
+		edm::ESHandle<Propagator> propagatorAlong;
+		edm::ESHandle<Propagator> propagatorOpposite;
+};
+
 struct KMuonProducer_Product
 {
 	typedef std::vector<KDataMuon> type;
@@ -29,6 +68,12 @@ public:
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")) {}
+
+	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
+	{
+		muPropagator.setup(setup);
+		return KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onFirstEvent(event, setup);
+	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
@@ -114,10 +159,21 @@ public:
 		out.vertex.nTracks = 1;
 		out.vertex.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >();
 
+		out.eta_propag_barrel = -1000.;
+		out.eta_propag_endcap = -1000.;
+		out.phi_propag_barrel = -1000.;
+		out.phi_propag_endcap = -1000.;
+
+		// propagated values
+		if (in.innerTrack().isNonnull())
+			muPropagator.propagate_track(in.innerTrack(), &out);
+
 		out.hltMatch = getHLTInfo(out.p4);
 	}
 
 private:
+	MuPropagator muPropagator;
+
 	edm::InputTag tagHLTrigger;
 	double hltMaxdR, hltMaxdPt_Pt;
 	double pfIsoVetoCone, pfIsoVetoMinPt;
@@ -159,5 +215,170 @@ private:
 		return ret;
 	}
 };
+
+// ------------------------------------------------
+
+MuPropagator::MuPropagator()
+{
+}
+
+MuPropagator::~MuPropagator()
+{
+}
+
+void MuPropagator::setup(edm::EventSetup const &setup)
+{
+	// Get the propagators
+	setup.get<TrackingComponentsRecord>().get("SmartPropagatorAnyRK", propagatorAlong   );
+	setup.get<TrackingComponentsRecord>().get("SmartPropagatorAnyOpposite", propagatorOpposite);
+
+	//Get the Magnetic field from the setup
+	setup.get<IdealMagneticFieldRecord>().get(theBField);
+}
+
+//// Phi Propagation from inner to outer .....
+void MuPropagator::propagate_track(reco::TrackRef inner_track, KDataMuon * muon)
+{
+	// z planes
+	int endcapPlane=0;
+	if (inner_track->eta() > 0) endcapPlane =  1;
+	if (inner_track->eta() < 0) endcapPlane = -1;
+
+	float zzPlaneME2  = endcapPlane*830;
+	float zzPlaneME1  = endcapPlane*695; //ME1/3 615
+
+	double muons_glb_phi_mb2=0;
+	double muons_glb_eta_mb2=0;
+	double muons_glb_phi_me1=0;
+	double muons_glb_eta_me1=0;
+	double muons_glb_eta_me2=0;
+	double muons_glb_phi_me2=0;
+	float pig = TMath::Pi();
+
+	TrajectoryStateOnSurface tsos;
+	tsos = cylExtrapTrkSam(inner_track, 500);  // track at MB2 radius - extrapolation
+	if (tsos.isValid()) {
+		double xx = tsos.globalPosition().x();
+		double yy = tsos.globalPosition().y();
+		double zz = tsos.globalPosition().z();
+
+		//muons_glb_z_mb2 = zz;
+
+		double rr = sqrt(xx*xx + yy*yy);
+		double cosphi = xx/rr;
+		if(yy>=0)
+			muons_glb_phi_mb2 = acos(cosphi);
+		else
+			muons_glb_phi_mb2 = 2*pig-acos(cosphi);
+
+		double abspseta = -log( tan( atan(fabs(rr/zz))/2.0 ) );
+		if(zz>=0)
+			muons_glb_eta_mb2 = abspseta;
+		else
+			muons_glb_eta_mb2 = -abspseta;
+	}
+
+	// track at ME1 surface, +/-6.15 m - extrapolation
+	tsos = surfExtrapTrkSam(inner_track, zzPlaneME1);
+	if (tsos.isValid()) {
+		double xx = tsos.globalPosition().x();
+		double yy = tsos.globalPosition().y();
+		double zz = tsos.globalPosition().z();
+
+		double rr     = sqrt(xx*xx + yy*yy);
+		double cosphi = xx/rr;
+		if(yy>=0) muons_glb_phi_me1 = acos(cosphi);
+		else      muons_glb_phi_me1 = 2*pig-acos(cosphi);
+
+
+		double abspseta = -log( tan( atan(fabs(rr/zz))/2.0 ) );
+		if(zz>=0) muons_glb_eta_me1 = abspseta;
+		else      muons_glb_eta_me1 = -abspseta;
+	}
+
+	//
+	tsos = surfExtrapTrkSam(inner_track, zzPlaneME2);   // track at ME2+/- plane - extrapolation
+	if (tsos.isValid()) {
+		double xx = tsos.globalPosition().x();
+		double yy = tsos.globalPosition().y();
+		double zz = tsos.globalPosition().z();
+
+		double rr = sqrt(xx*xx + yy*yy);
+
+		//muons_glb_r_me2 = rr;
+
+		double cosphi = xx/rr;
+		if (yy>=0)
+			muons_glb_phi_me2 = acos(cosphi);
+		else
+			muons_glb_phi_me2 = 2*pig-acos(cosphi);
+
+		double abspseta = -log( tan( atan(fabs(rr/zz))/2.0 ) );
+		if (zz>=0) muons_glb_eta_me2 = abspseta;
+		else       muons_glb_eta_me2 = -abspseta;
+	}
+
+	if(muons_glb_phi_mb2 > pig)
+		propagated_phi_barrel = muons_glb_phi_mb2-2*pig;
+	else
+		propagated_phi_barrel = muons_glb_phi_mb2;
+
+	if(muons_glb_phi_me2 > pig)
+		propagated_phi_endcap = muons_glb_phi_me2-2*pig;
+	else
+		propagated_phi_endcap = muons_glb_phi_me2;
+
+	propagated_eta_barrel = muons_glb_eta_mb2;
+	propagated_eta_endcap = muons_glb_eta_me2;
+
+	muon->eta_propag_barrel = propagated_eta_barrel;
+	muon->eta_propag_endcap = propagated_eta_endcap;
+	muon->phi_propag_barrel = propagated_phi_barrel;
+	muon->phi_propag_endcap = propagated_phi_endcap;
+}
+
+// to get the track position info at a particular rho
+TrajectoryStateOnSurface MuPropagator::cylExtrapTrkSam(reco::TrackRef track, double rho)
+{
+	Cylinder::PositionType pos(0, 0, 0);
+	Cylinder::RotationType rot;
+	Cylinder::CylinderPointer myCylinder = Cylinder::build(pos, rot, rho);
+
+	FreeTrajectoryState recoStart = freeTrajStateMuon(track);
+	TrajectoryStateOnSurface recoProp;
+	recoProp = propagatorAlong->propagate(recoStart, *myCylinder);
+	if (!recoProp.isValid()) {
+		recoProp = propagatorOpposite->propagate(recoStart, *myCylinder);
+	}
+	return recoProp;
+}
+
+// to get track position at a particular (xy) plane given its z
+TrajectoryStateOnSurface MuPropagator::surfExtrapTrkSam(reco::TrackRef track, double z)
+{
+	Plane::PositionType pos(0, 0, z);
+	Plane::RotationType rot;
+	Plane::PlanePointer myPlane = Plane::build(pos, rot);
+
+	FreeTrajectoryState recoStart = freeTrajStateMuon(track);
+	TrajectoryStateOnSurface recoProp;
+	recoProp = propagatorAlong->propagate(recoStart, *myPlane);
+	if (!recoProp.isValid()) {
+		recoProp = propagatorOpposite->propagate(recoStart, *myPlane);
+	}
+	return recoProp;
+}
+
+
+
+FreeTrajectoryState MuPropagator::freeTrajStateMuon(reco::TrackRef track)
+{
+	GlobalPoint  innerPoint(track->innerPosition().x(), track->innerPosition().y(),  track->innerPosition().z());
+	GlobalVector innerVec  (track->innerMomentum().x(), track->innerMomentum().y(),  track->innerMomentum().z());
+
+	FreeTrajectoryState recoStart(innerPoint, innerVec, track->charge(), &*theBField);
+
+	return recoStart;
+}
 
 #endif
