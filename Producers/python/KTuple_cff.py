@@ -15,7 +15,7 @@ kappaNoRename = cms.PSet(
 kappaNoRegEx = cms.PSet(kappaNoRename,
 	manual = cms.VInputTag(),
 	whitelist = cms.vstring(),
-	blacklist = cms.vstring(),
+	blacklist = cms.vstring(".*"),
 )
 
 kappaTupleDefaultsBlock = cms.PSet(
