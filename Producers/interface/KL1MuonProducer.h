@@ -11,11 +11,11 @@ struct KL1MuonProducer_Product
 	static const std::string producer() { return "KL1MuonProducer"; };
 };
 
-class KL1MuonProducer : public KRegexMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1MuonProducer_Product>
+class KL1MuonProducer : public KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1MuonProducer_Product>
 {
 public:
 	KL1MuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KRegexMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1MuonProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1MuonProducer_Product>(cfg, _event_tree, _run_tree) {}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

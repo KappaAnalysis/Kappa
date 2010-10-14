@@ -72,7 +72,7 @@ public:
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		muPropagator.setup(setup);
-		return KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onLumi(lumiBlock, setup);
+		return KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onLumi(lumiBlock, setup);
 	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
