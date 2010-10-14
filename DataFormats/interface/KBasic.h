@@ -109,13 +109,13 @@ struct KL1Muon : KDataLV
   // 11-13  detector
   unsigned short state; // bit map
 
-  int quality() { return (state & ( 7 )); };
-  bool isForward() { return (state & (1 << 3)); };
-  bool isRPC() { return (state & (1 << 4)); };
-  bool isMip() { return (state & (1 << 5)); };
-  bool isIsolated() { return (state & (1 << 6)); };
-  int bx() { return ((state & (15 << 7)) >> 7) - 7; };
-  int detector() { return ((state & (7 << 11)) >> 11);};
+  int quality() const { return (state & ( 7 )); };
+  bool isForward() const { return (state & (1 << 3)); };
+  bool isRPC() const { return (state & (1 << 4)); };
+  bool isMip() const { return (state & (1 << 5)); };
+  bool isIsolated() const { return (state & (1 << 6)); };
+  int bx() const { return ((state & (15 << 7)) >> 7) - 7; };
+  int detector() const { return ((state & (7 << 11)) >> 11);};
 };
 typedef std::vector<KL1Muon> KL1Muons;
 #endif
