@@ -114,7 +114,7 @@ struct KL1Muon : KDataLV
   bool isRPC() { return (state & (1 << 4)); };
   bool isMip() { return (state & (1 << 5)); };
   bool isIsolated() { return (state & (1 << 6)); };
-  int bx() { return ((state & (15 << 7)) >> 7); };
+  int bx() { return ((state & (15 << 7)) >> 7) - 7; };
   int detector() { return ((state & (7 << 11)) >> 11);};
 };
 typedef std::vector<KL1Muon> KL1Muons;

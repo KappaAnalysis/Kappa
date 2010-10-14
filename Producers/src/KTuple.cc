@@ -32,6 +32,7 @@
 #include "../interface/KPFTauProducer.h"
 #include "../interface/KGenTauProducer.h"
 #include "../interface/KPFCandidateProducer.h"
+#include "../interface/KL1MuonProducer.h"
 // #include "../interface/KHepMCPartonProducer.h"
 
 int KBaseProducer::verbosity = 0;
@@ -168,6 +169,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KGenTauProducer>(psConfig, active[i]);
 		else if (active[i] == "PFCandidates")
 			addProducer<KPFCandidateProducer>(psConfig, active[i]);
+		else if (active[i] == "L1Muons")
+			addProducer<KL1MuonProducer>(psConfig, active[i]);
 		else
 		{
 			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;

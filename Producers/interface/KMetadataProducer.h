@@ -140,7 +140,7 @@ public:
 				counter++;
 			}
 			else
-				std::cout << "Too many HLT bits selected! " << name << " discarded!" << std::endl;
+				throw cms::Exception("Too many HLT bits selected!");
 		}
 		if (verbosity > 0)
 			std::cout << "Accepted number of trigger streams: " << counter - 1 << std::endl;
