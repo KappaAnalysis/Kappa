@@ -37,6 +37,8 @@ process.kappatuple.active = cms.vstring(
 )
 process.kappatuple.Tracks.minPt = cms.double(5.)
 
+process.load("Configuration.StandardSequences.Reconstruction_cff")
+
 #-------------------------------------------------------------------------------
 triggerObjects = cms.vstring(
 # HLT_Mu7
