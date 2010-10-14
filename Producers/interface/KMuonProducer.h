@@ -69,10 +69,10 @@ public:
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")) {}
 
-	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
+	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		muPropagator.setup(setup);
-		return KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onFirstEvent(event, setup);
+		return KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onLumi(lumiBlock, setup);
 	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
