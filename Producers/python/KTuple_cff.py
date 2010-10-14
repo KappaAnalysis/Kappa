@@ -224,15 +224,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	Vertex = cms.PSet(kappaNoRegEx,
-		maxN = cms.int32(-1),
+	Vertex = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
 
-		offlinePrimaryVertices = cms.PSet(
-			src = cms.InputTag("offlinePrimaryVertices")
-		),
-		offlinePrimaryVerticesWithBS = cms.PSet(
-			src = cms.InputTag("offlinePrimaryVerticesWithBS")
-		),
+		whitelist = cms.vstring(".*offlinePrimaryVertices.*"),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring(),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
 	),
 
 	BeamSpot = cms.PSet(kappaNoRename,
