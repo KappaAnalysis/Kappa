@@ -11,11 +11,11 @@ struct KTrackSummaryProducer_Product
 	static const std::string producer() { return "KTrackSummaryProducer"; };
 };
 
-class KTrackSummaryProducer : public KRegexMultiProducer<edm::View<reco::Track>, KTrackSummaryProducer_Product>
+class KTrackSummaryProducer : public KBaseMultiProducer<edm::View<reco::Track>, KTrackSummaryProducer_Product>
 {
 public:
 	KTrackSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KRegexMultiProducer<edm::View<reco::Track>, KTrackSummaryProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiProducer<edm::View<reco::Track>, KTrackSummaryProducer_Product>(cfg, _event_tree, _run_tree) {}
 
 	virtual void clearProduct(OutputType &output) { output.nTracks = 0; output.nTracksHQ = 0; }
 	virtual void fillProduct(const InputType &in, OutputType &out,

@@ -10,48 +10,50 @@ struct KLVSorter
 };
 
 
-// This producer is responsible for the common task of writing a vector of objects
-// into the destination vector Tout::type
+// This producer is responsible for writing a vector of objects into the destination vector Tout::type
 // The filling is implemented via:
 //  * virtual bool acceptSingle(const SingleInputType &in);
 //  * virtual void fillSingle(const SingleInputType &in, SingleOutputType &out);
 //  * virtual void sort(typename Tout::type &out);
 template<typename Tin, typename Tout>
-class KCommonVectorProducer
+class KBaseMultiVectorProducer : public KBaseMultiProducer<Tin, Tout>
 {
 public:
-	KCommonVectorProducer(const edm::ParameterSet &cfg) :
+	KBaseMultiVectorProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		maxN(cfg.getParameter<int>("maxN")) {}
 
-	virtual void fillProduct(const Tin &in, typename Tout::type &out,
-		const std::string &name)
+	virtual void fillProduct(const typename KBaseMultiProducer<Tin, Tout>::InputType &input,
+		typename KBaseMultiProducer<Tin, Tout>::OutputType &output,
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		if (KBaseProducer::verbosity > 0)
-			std::cout << in.size() << " objects in collection " << name << std::endl;
-		out.reserve(in.size());
+			std::cout << input.size() << " objects in collection " << name << std::endl;
+		output.reserve(input.size());
 
 		// Cursor is necessary to get "Refs" later
 		typename Tin::const_iterator lvit;
-		for (lvit = in.begin(), nCursor = 0; lvit < in.end(); ++lvit, ++nCursor)
+		for (lvit = input.begin(), nCursor = 0; lvit < input.end(); ++lvit, ++nCursor)
 			if (acceptSingle(*lvit))
 			{
-				out.push_back(SingleOutputType());
-				fillSingle(*lvit, out.back());
+				output.push_back(SingleOutputType());
+				fillSingle(*lvit, output.back());
 			}
 		if (maxN > 0)
-			out.erase(out.begin() + std::min(out.size(), (size_t)maxN), out.end());
+			output.erase(output.begin() + std::min(output.size(), (size_t)maxN), output.end());
 
 		if (KBaseProducer::verbosity > 1)
-			std::cout << "\t" << "Number of accepted objects: " << out.size() << "\t";
+			std::cout << "\t" << "Number of accepted objects: " << output.size() << "\t";
 	}
 
-	virtual void sort(typename Tout::type &out) {}
+	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) { output.clear(); }
+	virtual void sort(typename KBaseMultiProducer<Tin, Tout>::OutputType &out) {}
 
 protected:
 	int maxN, nCursor;
 
-	typedef typename Tin::value_type SingleInputType;
-	typedef typename Tout::type::value_type SingleOutputType;
+	typedef typename KBaseMultiProducer<Tin, Tout>::InputType::value_type SingleInputType;
+	typedef typename KBaseMultiProducer<Tin, Tout>::OutputType::value_type SingleOutputType;
 
 	virtual bool acceptSingle(const SingleInputType &in) { return true; }
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out) = 0;
@@ -63,30 +65,31 @@ protected:
 // The filling is implemented via:
 //  * virtual void fillSingle(const SingleInputType &in, SingleOutputType &out);
 template<typename Tin, typename Tout>
-class KCommonLVProducer : public KCommonVectorProducer<Tin, Tout>
+class KBaseMultiLVProducer : public KBaseMultiVectorProducer<Tin, Tout>
 {
 public:
-	KCommonLVProducer(const edm::ParameterSet &cfg) :
-		KCommonVectorProducer<Tin, Tout>(cfg),
+	KBaseMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiVectorProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
 		minPt(cfg.getParameter<double>("minPt")),
 		maxEta(cfg.getParameter<double>("maxEta")) {}
 
-	virtual bool acceptSingle(const typename Tin::value_type &in)
+	virtual bool acceptSingle(const typename KBaseMultiVectorProducer<Tin, Tout>::SingleInputType &in)
 	{
 		return ((in.pt() >= minPt) && ((maxEta < 0) || (std::abs(in.eta()) <= maxEta)));
 	}
 
-	virtual void sort(typename Tout::type &out)
+	virtual void sort(typename KBaseMultiVectorProducer<Tin, Tout>::OutputType &out)
 	{
 		std::sort(out.begin(), out.end(), sorter);
 	}
 
-	virtual void fillProduct(const Tin &in, typename Tout::type &out,
-		const std::string &name)
+	virtual void fillProduct(const typename KBaseMultiVectorProducer<Tin, Tout>::InputType &input,
+		typename KBaseMultiVectorProducer<Tin, Tout>::OutputType &output,
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		KCommonVectorProducer<Tin, Tout>::fillProduct(in, out, name);
-		if ((KBaseProducer::verbosity > 1) && (out.size() > 0))
-			std::cout << "First: " << out[0].p4 << "\tLast: " << out[out.size() - 1].p4 << std::endl;
+		KBaseMultiVectorProducer<Tin, Tout>::fillProduct(input, output, name, tag, pset);
+		if ((KBaseProducer::verbosity > 1) && (output.size() > 0))
+			std::cout << "First: " << output[0].p4 << "\tLast: " << output[output.size() - 1].p4 << std::endl;
 	}
 
 protected:
@@ -94,53 +97,7 @@ protected:
 	double maxEta;
 
 private:
-	KLVSorter<typename Tout::type::value_type> sorter;
-};
-
-
-// This is the pset variant of the LV producer
-template<typename Tin, typename Tout>
-class KManualMultiLVProducer :
-	public KManualMultiProducer<Tin, Tout>,
-	public KCommonLVProducer<Tin, Tout>
-{
-public:
-	KManualMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KManualMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
-		KCommonLVProducer<Tin, Tout>(cfg) {}
-	virtual ~KManualMultiLVProducer() {};
-
-	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
-	virtual void fillProduct(
-		const typename KBaseMultiProducer<Tin, Tout>::InputType &in,
-		typename KBaseMultiProducer<Tin, Tout>::OutputType &out,
-		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
-	{
-		KCommonLVProducer<Tin, Tout>::fillProduct(in, out, name);
-	}
-};
-
-
-// This is the regex variant of the LV producer
-template<typename Tin, typename Tout>
-class KRegexMultiLVProducer :
-	public KRegexMultiProducer<Tin, Tout>,
-	public KCommonLVProducer<Tin, Tout>
-{
-public:
-	KRegexMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KRegexMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
-		KCommonLVProducer<Tin, Tout>(cfg) {}
-	virtual ~KRegexMultiLVProducer() {};
-
-	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &out) { out.clear(); }
-	virtual void fillProduct(
-		const typename KBaseMultiProducer<Tin, Tout>::InputType &in,
-		typename KBaseMultiProducer<Tin, Tout>::OutputType &out,
-		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
-	{
-		KCommonLVProducer<Tin, Tout>::fillProduct(in, out, name);
-	}
+	KLVSorter<typename KBaseMultiVectorProducer<Tin, Tout>::SingleOutputType> sorter;
 };
 
 #endif

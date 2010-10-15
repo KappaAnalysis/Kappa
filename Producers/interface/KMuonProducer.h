@@ -60,11 +60,11 @@ struct KMuonProducer_Product
 	static const std::string producer() { return "KMuonProducer"; };
 };
 
-class KMuonProducer : public KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>
+class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>
 {
 public:
 	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree),
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")) {}
@@ -72,7 +72,7 @@ public:
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		muPropagator.setup(setup);
-		return KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onLumi(lumiBlock, setup);
+		return KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onLumi(lumiBlock, setup);
 	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
@@ -91,7 +91,7 @@ public:
 		pfIsoVetoMinPt = pset.getParameter<double>("pfIsoVetoMinPt");
 
 		// Continue normally
-		KManualMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
@@ -190,7 +190,6 @@ private:
 		// KMetadataProducer<KMetadata_Product>::metaLumi->hltNamesMuons
 		const size_t sizeFilters = triggerEventHandle->sizeFilters();
 
-		int idx = 0;
 		for (size_t iF = 0; iF < sizeFilters; ++iF)
 		{
 			const std::string nameFilter(triggerEventHandle->filterTag(iF).label());
@@ -198,8 +197,6 @@ private:
 
 			if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(nameFilter) == KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
 				continue;
-
-			++idx;
 
 			for (size_t iK = 0; iK < keys.size(); ++iK)
 			{

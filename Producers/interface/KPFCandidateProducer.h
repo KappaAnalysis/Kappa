@@ -11,11 +11,11 @@ struct KPFCandidateProducer_Product
 	static const std::string producer() { return "KPFCandidateProducer"; };
 };
 
-class KPFCandidateProducer : public KRegexMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidateProducer_Product>
+class KPFCandidateProducer : public KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidateProducer_Product>
 {
 public:
 	KPFCandidateProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KRegexMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidateProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidateProducer_Product>(cfg, _event_tree, _run_tree) {}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

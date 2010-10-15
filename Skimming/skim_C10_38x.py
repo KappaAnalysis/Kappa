@@ -31,10 +31,9 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	process.kappaTupleDefaultsBlock,
 	outputFile = cms.string('skim.root'),
 	CaloJets = cms.PSet(
+		process.kappaNoCut,
+		process.kappaNoRegEx,
 		srcNoiseHCAL = cms.InputTag("hcalnoise"),
-		maxN = cms.int32(-1),
-		minPt = cms.double(-1),
-		maxEta = cms.double(-1),
 		AK5CaloJets = cms.PSet(
 			src = cms.InputTag("ak5CaloJets"),
 			srcExtender = cms.InputTag("ak5JetExtender"),

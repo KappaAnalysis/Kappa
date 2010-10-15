@@ -13,12 +13,13 @@ struct KPFMETProducer_Product
 	static const std::string producer() { return "KPFMETProducer"; };
 };
 
-class KPFMETProducer : public KRegexMultiProducer<edm::View<reco::PFMET>, KPFMETProducer_Product>
+class KPFMETProducer : public KBaseMultiProducer<edm::View<reco::PFMET>, KPFMETProducer_Product>
 {
 public:
 	KPFMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KRegexMultiProducer<edm::View<reco::PFMET>, KPFMETProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiProducer<edm::View<reco::PFMET>, KPFMETProducer_Product>(cfg, _event_tree, _run_tree) {}
 	virtual ~KPFMETProducer() {};
+
 protected:
 	virtual void clearProduct(OutputType &output) { output.p4.SetCoordinates(0, 0, 0, 0); output.sumEt = -1; }
 	virtual void fillProduct(const InputType &in, OutputType &out,
@@ -36,9 +37,6 @@ protected:
 			out.neutralHadEtFraction = in.at(0).NeutralHadEtFraction();
 			out.type6EtFraction = in.at(0).Type6EtFraction();
 			out.type7EtFraction = in.at(0).Type7EtFraction();
-
-			if (verbosity > 3)
-				std::cout << tag->encode() << "\t" << out << std::endl;
 		}
 		else
 			if (verbosity > 1)

@@ -26,46 +26,37 @@ public:
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		for (std::vector<std::string>::iterator it = triggerObjects.begin(); it != triggerObjects.end(); ++it)
-		{
-			std::vector<KDataLV> *target = this->allocateBronch(this->event_tree, "TriggerObject_" + (*it));
-			targetIDMap[*it] = target;
-		}
+			this->registerBronch("TriggerObject_" + (*it), (*it), this->psBase, tagHLTrigger);
 		return true;
 	}
 
 protected:
 	std::vector<std::string> triggerObjects;
-	std::map<std::string, std::vector<KDataLV>*> targetIDMap;
 	edm::InputTag tagHLTrigger;
 
-	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
+	virtual void fillProduct(const trigger::TriggerEvent &triggerEventHandle, KTriggerObjectProducer_Product::type &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer_Product>::onEvent(event, setup);
-		for (std::vector<std::string>::iterator it = triggerObjects.begin(); it != triggerObjects.end(); ++it)
-			targetIDMap[*it]->clear();
-
-		edm::Handle< trigger::TriggerEvent > triggerEventHandle;
-		event.getByLabel(tagHLTrigger, triggerEventHandle);
-		if (!triggerEventHandle.isValid())
-			return false;
-
-		for (size_t iF = 0; iF < triggerEventHandle->sizeFilters(); ++iF)
+		for (size_t iF = 0; iF < triggerEventHandle.sizeFilters(); ++iF)
 		{
-			const std::string nameFilter(triggerEventHandle->filterTag(iF).label());
+			const std::string nameFilter(triggerEventHandle.filterTag(iF).label());
 
 			if (find(triggerObjects.begin(), triggerObjects.end(), nameFilter) == triggerObjects.end())
 				continue;
 
-			const trigger::Keys & keys = triggerEventHandle->filterKeys(iF);
+			const trigger::Keys & keys = triggerEventHandle.filterKeys(iF);
 			for (size_t iK = 0; iK < keys.size(); ++iK)
 			{
-				trigger::TriggerObject triggerObject(triggerEventHandle->getObjects().at(keys[iK]));
+				trigger::TriggerObject triggerObject(triggerEventHandle.getObjects().at(keys[iK]));
 				KDataLV tmpP4;
 				copyP4(triggerObject, tmpP4.p4);
-				targetIDMap[nameFilter]->push_back(tmpP4);
+				out.push_back(tmpP4);
 			}
 		}
-		return true;
+	}
+
+	virtual void clearProduct(KTriggerObjectProducer_Product::type& prod)
+	{
+		prod.clear();
 	}
 };
 

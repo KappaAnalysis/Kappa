@@ -4,7 +4,6 @@
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/JetReco/interface/CaloJet.h>
 #include <DataFormats/METReco/interface/HcalNoiseRBX.h>
-#include <DataFormats/JetReco/interface/JetExtendedAssociation.h>
 #include <DataFormats/JetReco/interface/JetID.h>
 
 struct KCaloJetProducer_Product
@@ -14,11 +13,11 @@ struct KCaloJetProducer_Product
 	static const std::string producer() { return "KCaloJetProducer"; };
 };
 
-class KCaloJetProducer : public KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>
+class KCaloJetProducer : public KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>
 {
 public:
 	KCaloJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>(cfg, _event_tree, _run_tree),
+		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>(cfg, _event_tree, _run_tree),
 		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("srcNoiseHCAL")) {}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
@@ -47,38 +46,34 @@ public:
 		}
 
 		// Continue normally
-		return KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::onEvent(event, setup);
+		return KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::onEvent(event, setup);
 	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Retrieve additional input products
-		tagExtender = pset.getParameter<edm::InputTag>("srcExtender");
-		if (tagExtender.label() != "")
-			cEvent->getByLabel(tagExtender, hJetExtender);
-
 		tagJetID = pset.getParameter<edm::InputTag>("srcJetID");
 		if (tagJetID.label() != "")
 			cEvent->getByLabel(tagJetID, hJetID);
 
 		// Continue normally
-		KManualMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
 		out.area = in.jetArea();
-		out.detectorEta = in.detectorP4().eta();
-		out.emf = in.emEnergyFraction();
+		out.fEM = in.emEnergyFraction();
 		out.nConst = in.getJetConstituents().size();
 		out.n90 = in.n90();
 
 		// Jet ID variables
-		out.n90Hits = -1;
-		out.fHPD = -1;
-		out.fRBX = -1;
+		out.n90Hits = -2;
+		out.fHPD = -2;
+		out.fRBX = -2;
+		out.fHO = -2;
 		if (tagJetID.label() != "")
 		{
 			edm::RefToBase<reco::Jet> jetRef(edm::Ref<reco::CaloJetCollection>(handle, this->nCursor));
@@ -88,30 +83,25 @@ public:
 			out.fHPD = jetID.fHPD;
 			// energy fraction from dominant readout box
 			out.fRBX = jetID.fRBX;
-		}
-
-		// Jet extender variables
-		out.nTracksAtCalo = -1;
-		out.nTracksAtVertex = -1;
-		if (tagExtender.label() != "")
-		{
-			out.nTracksAtCalo = reco::JetExtendedAssociation::tracksAtCaloNumber(*hJetExtender, in);
-			out.nTracksAtVertex = reco::JetExtendedAssociation::tracksAtVertexNumber(*hJetExtender, in);
+			// energy fraction in HO
+			out.fHO = jetID.fHO;
 		}
 
 		// Get noise of constituents
-		out.noiseHCAL = 0;
+		out.noiseHCAL = -2;
+		double noiseSum = 0;
 		std::vector<CaloTowerPtr> towers = in.getCaloConstituents();
 		for (unsigned int tID = 0; tID < towers.size(); tID++)
 			if (hcalNoise.find(towers[tID]->id()) != hcalNoise.end())
-				out.noiseHCAL += hcalNoise[towers[tID]->id()];
+				noiseSum += hcalNoise[towers[tID]->id()];
+		if (std::abs(noiseSum) > 1e-5)
+			out.noiseHCAL = noiseSum;
 	}
 
 private:
-	edm::InputTag tagNoiseHCAL, tagJetID, tagExtender;
+	edm::InputTag tagNoiseHCAL, tagJetID;
 
 	edm::Handle<reco::HcalNoiseRBXCollection> noiseHCALcoll;
-	edm::Handle<reco::JetExtendedAssociation::Container> hJetExtender;
 	edm::Handle<edm::ValueMap<reco::JetID> > hJetID;
 
 	std::map<CaloTowerDetId, double> hcalNoise;

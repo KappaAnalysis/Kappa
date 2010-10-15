@@ -5,22 +5,20 @@
 
 struct KDataJet : public KDataLV
 {
-	double emf;
 	double area;
-	int n90, n90Hits;
 	double noiseHCAL;
-	double detectorEta;
 	double fHPD, fRBX;
-	int nTracksAtCalo;
-	int nTracksAtVertex;
-	int nConst;
+	double fEM, fHO;
+	int nConst, n90, n90Hits;
 };
 typedef std::vector<KDataJet> KDataJets;
 
-struct KDataPFJet : public KDataJet
+struct KDataPFJet : public KDataLV
 {
-	float neutralEmFraction, chargedEmFraction;
+	double area;
+	float neutralEMFraction, chargedEMFraction;
 	float neutralHadFraction, chargedHadFraction;
+	int nConst, n90;
 };
 typedef std::vector<KDataPFJet> KDataPFJets;
 

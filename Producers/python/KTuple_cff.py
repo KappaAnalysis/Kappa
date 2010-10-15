@@ -12,6 +12,12 @@ kappaNoRename = cms.PSet(
 	rename_blacklist = cms.vstring(),
 )
 
+kappaNoRegEx = cms.PSet(kappaNoRename,
+	manual = cms.VInputTag(),
+	whitelist = cms.vstring(),
+	blacklist = cms.vstring(".*"),
+)
+
 kappaTupleDefaultsBlock = cms.PSet(
 	verbose = cms.int32(0),
 	active = cms.vstring("Metadata"),
@@ -41,39 +47,46 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
 		muonTriggerObjects = cms.vstring(
-			"hltL1sL1SingleMu0",
-			"hltL1sL1SingleMu20",
-			"hltL1sL1SingleMu3",
+			# HLT_Mu7
+			"hltL1sL1SingleMu5",
+			"hltL1SingleMu5L1Filtered0",
+			"hltSingleMu7L2Filtered5",
+			"hltSingleMu7L3Filtered7",
+			# HLT_Mu9
+			"hltSingleMu9L3Filtered9",
+			# path HLT_Mu11
+			"hltSingleMu11L3Filtered11",
+			# path HLT_Mu13_v1
+			"hltSingleMu13L3Filtered13",
+			# HLT_Mu15_v1
+			"hltSingleMu15L3Filtered15",
+			# HLT_IsoMu9
+			"hltSingleMuIsoL3PreFiltered9",
+			"hltSingleMuIsoL3IsoFiltered9",
+			# HLT_IsoMu11_v1
 			"hltL1sL1SingleMu7",
-			"hltL1sL1SingleMuOpenL1SingleMu0",
-			"hltL1sL1SingleMuOpenL1SingleMu0L1SingleMu3",
-			"hltL2Mu11L2Filtered11",
+			"hltL1SingleMu7L1Filtered0",
+			"hltL2Mu7L2Filtered7",
+			"hltSingleMuIsoL2IsoFiltered7",
+			"hltSingleMuIsoL3PreFiltered11",
+			"hltSingleMuIsoL3IsoFiltered11",
+			# andere
+			"hltL1sL1SingleMu0",
+			"hltL1sL1SingleMu3",
+			"hltL1sL1SingleMu20",
+			"hltL1SingleMu0L1Filtered0",
+			"hltL1SingleMu3L1Filtered0",
 			"hltL2Mu9L2Filtered9",
-			"hltMu0TrackJpsiL3Filtered0",
-			"hltMu0TrackJpsiPixelMassFiltered",
-			"hltMu3TrackJpsiL3Filtered3",
-			"hltMu3TrackJpsiPixelMassFiltered",
-			"hltMu5TrackJpsiL3Filtered5",
-			"hltMu5TrackJpsiPixelMassFiltered",
+			"hltL2Mu11L2Filtered11",
+			"hltSingleMu3L2Filtered3",
+			"hltSingleMu5L2Filtered4",
+			"hltSingleMu9L2Filtered7",
 			"hltSingleMu3L3Filtered3",
-			"hltSingleMu3L3PreFilterNoVtx",
 			"hltSingleMu5L3Filtered5",
 			"hltSingleMu9L3Filtered9",
 			"hltSingleMuIsoL3IsoFiltered3",
 			"hltDiMuonL3PreFiltered0",
-			"hltMu0L1MuOpenL3Filtered0",
-			"hltMu0TrackJpsiTrackMassFiltered",
-			"hltMu3L1MuOpenL3Filtered3",
-			"hltMu5L1MuOpenL3Filtered5",
 			"hltDiMuonL3PreFiltered",
-			"hltMu3TrackJpsiTrackMassFiltered",
-			"hltMu5TrackJpsiTrackMassFiltered",
-			"hltSingleMu3L2Filtered3",
-			"hltSingleMu5L2Filtered4",
-			"hltSingleMu9L2Filtered7",
-			"hltL1SingleMu0L1Filtered0",
-			"hltL1SingleMu3L1Filtered0",
-			"hltL1SingleMu7L1Filtered0",
 		),
 		noiseHCAL = cms.InputTag("hcalnoise"),
 
@@ -82,7 +95,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		printErrorsAndWarnings = cms.bool(False),
 	),
 
-	Muons = cms.PSet(kappaNoCut,
+	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
 			# track/ecal/hcal iso are directly taken from reco instead...
@@ -100,13 +113,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltMaxdPt_Pt = cms.double(1.),
 	),
 
-	CaloTaus = cms.PSet(kappaNoCut,
+	CaloTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		caloRecoTaus = cms.PSet(
 			src = cms.InputTag("caloRecoTauProducer"),
 			discr = cms.vstring("caloRecoTau*")
 		)
 	),
-	PFTaus = cms.PSet(kappaNoCut,
+
+	PFTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		shrinkingConePFTaus = cms.PSet(
 			src = cms.InputTag("shrinkingConePFTauProducer"),
 			discr = cms.vstring("shrinkingConePFTau*")
@@ -124,39 +138,46 @@ kappaTupleDefaultsBlock = cms.PSet(
 	TriggerObjects = cms.PSet(
 		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
 		triggerObjects = cms.vstring(
-			"hltL1sL1SingleMu0",
-			"hltL1sL1SingleMu20",
-			"hltL1sL1SingleMu3",
+			# HLT_Mu7
+			"hltL1sL1SingleMu5",
+			"hltL1SingleMu5L1Filtered0",
+			"hltSingleMu7L2Filtered5",
+			"hltSingleMu7L3Filtered7",
+			# HLT_Mu9
+			"hltSingleMu9L3Filtered9",
+			# path HLT_Mu11
+			"hltSingleMu11L3Filtered11",
+			# path HLT_Mu13_v1
+			"hltSingleMu13L3Filtered13",
+			# HLT_Mu15_v1
+			"hltSingleMu15L3Filtered15",
+			# HLT_IsoMu9
+			"hltSingleMuIsoL3PreFiltered9",
+			"hltSingleMuIsoL3IsoFiltered9",
+			# HLT_IsoMu11_v1
 			"hltL1sL1SingleMu7",
-			"hltL1sL1SingleMuOpenL1SingleMu0",
-			"hltL1sL1SingleMuOpenL1SingleMu0L1SingleMu3",
-			"hltL2Mu11L2Filtered11",
+			"hltL1SingleMu7L1Filtered0",
+			"hltL2Mu7L2Filtered7",
+			"hltSingleMuIsoL2IsoFiltered7",
+			"hltSingleMuIsoL3PreFiltered11",
+			"hltSingleMuIsoL3IsoFiltered11",
+			# andere
+			"hltL1sL1SingleMu0",
+			"hltL1sL1SingleMu3",
+			"hltL1sL1SingleMu20",
+			"hltL1SingleMu0L1Filtered0",
+			"hltL1SingleMu3L1Filtered0",
 			"hltL2Mu9L2Filtered9",
-			"hltMu0TrackJpsiL3Filtered0",
-			"hltMu0TrackJpsiPixelMassFiltered",
-			"hltMu3TrackJpsiL3Filtered3",
-			"hltMu3TrackJpsiPixelMassFiltered",
-			"hltMu5TrackJpsiL3Filtered5",
-			"hltMu5TrackJpsiPixelMassFiltered",
+			"hltL2Mu11L2Filtered11",
+			"hltSingleMu3L2Filtered3",
+			"hltSingleMu5L2Filtered4",
+			"hltSingleMu9L2Filtered7",
 			"hltSingleMu3L3Filtered3",
-			"hltSingleMu3L3PreFilterNoVtx",
 			"hltSingleMu5L3Filtered5",
 			"hltSingleMu9L3Filtered9",
 			"hltSingleMuIsoL3IsoFiltered3",
 			"hltDiMuonL3PreFiltered0",
-			"hltMu0L1MuOpenL3Filtered0",
-			"hltMu0TrackJpsiTrackMassFiltered",
-			"hltMu3L1MuOpenL3Filtered3",
-			"hltMu5L1MuOpenL3Filtered5",
 			"hltDiMuonL3PreFiltered",
-			"hltMu3TrackJpsiTrackMassFiltered",
-			"hltMu5TrackJpsiTrackMassFiltered",
-			"hltSingleMu3L2Filtered3",
-			"hltSingleMu5L2Filtered4",
-			"hltSingleMu9L2Filtered7",
-			"hltL1SingleMu0L1Filtered0",
-			"hltL1SingleMu3L1Filtered0",
-			"hltL1SingleMu7L1Filtered0",
 		),
 	),
 
@@ -171,7 +192,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	Partons = cms.PSet(kappaNoCut,
+	Partons = cms.PSet(kappaNoCut, kappaNoRegEx,
 		genParticles = cms.PSet(
 			src = cms.InputTag("genParticles"),
 			selectedStatus = cms.int32(8),      # select, if (1<<status & selectedStatus) or selectedStatus==0
@@ -184,10 +205,10 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
-	GenTaus = cms.PSet(kappaNoCut,
+	GenTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		genTaus = cms.PSet(
 			src = cms.InputTag("genParticles"),
-			selectedStatus = cms.int32(0)      # select, if (1<<status & selectedStatus) or selectedStatus==0
+			selectedStatus = cms.int32(0)       # select, if (1<<status & selectedStatus) or selectedStatus==0
 		)
 	),
 
@@ -215,20 +236,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	Vertex = cms.PSet(kappaNoRename,
+	Vertex = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring(),
+		whitelist = cms.vstring(".*offlinePrimaryVertices.*"),
 		blacklist = cms.vstring(),
 
-		maxN = cms.int32(-1),
-
-		offlinePrimaryVertices = cms.PSet(
-			src = cms.InputTag("offlinePrimaryVertices")
-		),
-		offlinePrimaryVerticesWithBS = cms.PSet(
-			src = cms.InputTag("offlinePrimaryVerticesWithBS")
-		),
+		rename = cms.vstring(),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
 	),
 
 	BeamSpot = cms.PSet(kappaNoRename,
@@ -286,7 +302,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	PFCandidates = cms.PSet(kappaNoRename,kappaNoCut,
+	PFCandidates = cms.PSet(kappaNoRename, kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFCandidates_particleFlow"),

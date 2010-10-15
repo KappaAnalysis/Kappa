@@ -1,44 +1,23 @@
 CURRENT:
 ========
-
-                                                                             /-- KCaloJetProducer
-                                                                            |
-                     KManualMultiProducer -------- KManualMultiLVProducer --*--- KPartonProducer -- KGenTauProducer
-                    /       \                     /                         |
-                   |         KVertexProducer     |                          |                    /-- KCaloTauProducer
-                   |        /                    |                           \-- KTauProducer --*
-KBaseMultiProducer *   KCommonVectorProducer     |                                               \-- KPFTauProducer
-        ^          |        |                    |
-        |          |        |\-KCommonLVProducer *
-        |          |        \                    |
-        |          |         KHitProducer        |                           /-- KTrackProducer
- KBaseProducerWP    \       /                     \                         |
-        ^            KRegexMultiProducer ----*---- KRegexMultiLVProducer ---*--- KLorentzProducer
-        |                                    |                              |
-  KBaseProducer                              |\--- KMETProducer              \-- KMuonProducer
-                                             |
-                                             \---- KTowerProducer
+                             KGenTauProducer <-- KPartonProducer <-\
+                                                                    |/-> KMuonProducer
+                            KCaloTauProducer <-\                    |/-> KTrackProducer
+  KBaseProducer                                 O-- KTauProducer <-\|/-> KPFCandidateProducer
+        |                     KPFTauProducer <-/                    |/-> KTowerProducer
+        v                                                           |/-> KPFJetProducer
+ KBaseProducerWP --> KMetadataProducer --> KGenMetadataProduce      |/-> KCaloJetProducer
+        |                                                           |/-> KLorentzProducer
+        v                                                           |
+KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer
+                     |                               |
+                     |\-> KMETProducer               |\-> KVertexProducer
+                     |\-> KPFMETProducer             |
+                     |\-> KBeamSpotProducer          |\-> KHitProducer
+                     |\-> KTrackSummaryProducer      |
+                     \--> KTriggerObjectProducer     \--> KTrackProducer
 
 TODO:
 ========
  * Redo verbose limits ...
- * Merge Manual and RegexProducer using PSet::augment to provide
-   per output object configuration (Must use untracked parameters?)
-   => This will simplify the producer structure VERY much...
-
-GOAL:
-========
-
-KBaseMultiProducer --*--> KBaseMultiLVProducer --*--> KLorentzProducer
-        ^            |                           |
-        |            |\-> KMETProducer           |\-> KTrackProducer
- KBaseProducerWP     |                           |
-        ^            |\-> KVertexProducer        |\-> KMuonProducer
-        |            |                           |
-  KBaseProducer      \--> KTowerProducer         |\-> KCaloJetProducer
-                                                 |
-                                                 |\-> KPartonProducer --> KGenTauProducer
-                                                 |
-                                                 |                    /-> KCaloTauProducer
-                                                 \--> KTauProducer --*
-                                                                      \-> KPFTauProducer
+ * using PSet::augment to provide per output object configuration (Must use untracked parameters?)

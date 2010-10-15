@@ -22,6 +22,7 @@ public:
 	{
 	}
 
+protected:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		// Fill fields of KDataTau via base class

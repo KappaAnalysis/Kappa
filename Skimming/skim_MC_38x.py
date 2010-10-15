@@ -3,20 +3,27 @@ import FWCore.ParameterSet.Config as cms
 # Basic process setup ----------------------------------------------------------
 process = cms.Process("kappaSkim")
 process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring(
-	#'file:///home/piparo/testFiles/Spring10_MinBias_GENSIMRECO_MC_3XY_V25_S09_preproduction-v2.root',
-	'file://EWKMuSkim_L1TG04041_AllMuAtLeastThreeTracks135149_Z.root',
-	#'file:///storage/6/zeise/temp/minbias_pr_v9_FE9B4520-7D5B-DF11-B4DA-0019DB2F3F9A.root'
+	'file:///home/piparo/testFiles/Spring10_MinBias_GENSIMRECO_MC_3XY_V25_S09_preproduction-v2.root',
 ))
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 #-------------------------------------------------------------------------------
 
 # Includes + Global Tag --------------------------------------------------------
-process.load("FWCore.MessageService.MessageLogger_cfi")
+process.load("FWCore/MessageService/MessageLogger_cfi")
 process.load('Configuration/StandardSequences/Services_cff')
-process.load('Configuration.StandardSequences.MagneticField_38T_cff')
-#process.load('RecoJets.Configuration.RecoJetAssociations_cff')
+process.load('Configuration/StandardSequences/MagneticField_38T_cff')
+#process.load('RecoJets/Configuration/RecoJetAssociations_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
+process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.GlobalTag.globaltag = '@GLOBALTAG@'
+#-------------------------------------------------------------------------------
+
+# Produce jets -----------------------------------------------------------------
+process.load('Configuration/StandardSequences/Generator_cff')
+process.load('Configuration/StandardSequences/GeometryPilot2_cff')
+process.load('RecoJets.JetProducers.ak5GenJets_cfi')
+process.ak7GenJets = process.ak5GenJets.clone( rParam = 0.7 )
+process.MoreJets = cms.Path(process.genParticlesForJets * process.ak5GenJets * process.ak7GenJets)
 #-------------------------------------------------------------------------------
 
 # Produce PF muon isolation ----------------------------------------------------
@@ -63,12 +70,12 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 )
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
-	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'Metadata', 'BeamSpot', 'CaloTaus', 'PFTaus', @ACTIVE@
+	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'BeamSpot', 'GenMetadata', 'Partons', 'CaloTaus', 'PFTaus', 'GenTaus', @ACTIVE@
 )
 #-------------------------------------------------------------------------------
 
 # Process schedule -------------------------------------------------------------
 #process.pathDAT = cms.Path(process.recoJetAssociations+process.kappatuple)
 process.pathDAT = cms.Path(process.kappatuple)
-process.schedule = cms.Schedule(process.pfMuonIsolCandidates, process.pathDAT)
+process.schedule = cms.Schedule(process.MoreJets, process.pfMuonIsolCandidates, process.pathDAT)
 #-------------------------------------------------------------------------------
