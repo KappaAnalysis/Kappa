@@ -31,20 +31,18 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltSource = cms.InputTag("TriggerResults"),
 		hltWhitelist = cms.vstring(
 			".*Jet.*",
-			"^HLT_MET[0-9]*",
+			".*Mu.*",
 			"^HLT_Activity.*", ".*(Bias|BSC).*",
-			"HLT_L1Mu20", "HLT_L1Mu14_L1SingleJet6U",
-			"^HLT_L1MuOpen$","^HLT_L1Mu$",
-			"^HLT_L2Mu0$", "^HLT_L2Mu3$", "^HLT_L2Mu5$", "^HLT_L2Mu9$", "^HLT_L2Mu11$",
-			"^HLT_Mu3", "^HLT_IsoMu3$", "^HLT_Mu5$", "^HLT_Mu9", "^HLT_Mu11",
-			"^HLT_DoubleMu0$", "^HLT_DoubleMu3$"
-			# "^HLT_(L1|Di|Double|Triple|Quad)?(Jet)+(Ave)?",
-			# "HLT_L2DoubleMu0", "HLT_L1DoubleMuOpen", "HLT_L1Mu14_L1SingleEG10",
-			# "HLT_L1Mu14_L1ETM30", "HLT_Mu0_L1MuOpen", "HLT_Mu0_Track0_Jpsi",
-			# "HLT_Mu3_L1MuOpen", "HLT_Mu3_Track0_Jpsi", "HLT_Mu5_L1MuOpen",
-			# "HLT_Mu5_Track0_Jpsi", "HLT_Mu0_L2Mu0", "HLT_Mu3_L2Mu0", "HLT_Mu5_L2Mu0"
+			"^HLT_MET[0-9]*",
 		),
-		hltBlacklist = cms.vstring(),
+		hltBlacklist = cms.vstring(
+			".*_Jpsi.*",
+			".*L1MuOpen.*",
+			".*L2Mu0.*",
+			".*NoVertex.*",
+			".*AlCa.*",
+			"^HLT_L1Mu14_L1.*",
+		),
 		printHltList = cms.bool(True),
 
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
@@ -224,15 +222,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	Vertex = cms.PSet(kappaNoRegEx,
-		maxN = cms.int32(-1),
+	Vertex = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
 
-		offlinePrimaryVertices = cms.PSet(
-			src = cms.InputTag("offlinePrimaryVertices")
-		),
-		offlinePrimaryVerticesWithBS = cms.PSet(
-			src = cms.InputTag("offlinePrimaryVerticesWithBS")
-		),
+		whitelist = cms.vstring(".*offlinePrimaryVertices.*"),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring(),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
 	),
 
 	BeamSpot = cms.PSet(kappaNoRename,
@@ -295,5 +293,18 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		whitelist = cms.vstring("recoPFCandidates_particleFlow"),
 		blacklist = cms.vstring(),
+	),
+
+	L1Muons = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("l1extraL1MuonParticles_l1extraParticles"),
+		blacklist = cms.vstring(),
+		
+		rename = cms.vstring(
+			"l1extraParticles => l1muons",
+		),
+		rename_whitelist = cms.vstring(),
+		rename_blacklist = cms.vstring(),
 	),
 )

@@ -4,7 +4,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("kappaSkim")
 process.source = cms.Source("PoolSource", fileNames = cms.untracked.vstring(
 	#'file:///home/piparo/testFiles/Spring10_MinBias_GENSIMRECO_MC_3XY_V25_S09_preproduction-v2.root',
-	'file://EWKMuSkim_L1TG04041_AllMuAtLeastThreeTracks135149_Z.root',
+	'file:///storage/6/zeise/temp/Mu_Run2010B-WZMu-v2_RAW-RECO_12C344DF-63CB-DF11-9C18-E0CB4E553640.root',
 	#'file:///storage/6/zeise/temp/minbias_pr_v9_FE9B4520-7D5B-DF11-B4DA-0019DB2F3F9A.root'
 ))
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
@@ -16,7 +16,7 @@ process.load('Configuration/StandardSequences/Services_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 #process.load('RecoJets.Configuration.RecoJetAssociations_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = '@GLOBALTAG@'
+process.GlobalTag.globaltag = '@GLOBALTAG@' #'GR10_P_V10::All'
 #-------------------------------------------------------------------------------
 
 # Produce PF muon isolation ----------------------------------------------------
@@ -30,40 +30,53 @@ process.load("Kappa.Producers.KTuple_cff")
 process.kappatuple = cms.EDAnalyzer('KTuple',
 	process.kappaTupleDefaultsBlock,
 	outputFile = cms.string('skim.root'),
-	CaloJets = cms.PSet(
-		process.kappaNoCut,
-		process.kappaNoRegEx,
-		srcNoiseHCAL = cms.InputTag("hcalnoise"),
-		AK5CaloJets = cms.PSet(
-			src = cms.InputTag("ak5CaloJets"),
-			srcExtender = cms.InputTag("ak5JetExtender"),
-			srcJetID = cms.InputTag("ak5JetID"),
-		),
-		AK7CaloJets = cms.PSet(
-			src = cms.InputTag("ak7CaloJets"),
-			srcExtender = cms.InputTag("ak7JetExtender"),
-			srcJetID = cms.InputTag("ak7JetID"),
-		),
-		IC5CaloJets = cms.PSet(
-			src = cms.InputTag("iterativeCone5CaloJets"),
-			srcExtender = cms.InputTag("iterativeCone5JetExtender"),
-			srcJetID = cms.InputTag("ic5JetID"),
-		),
-		KT4CaloJets = cms.PSet(
-			src = cms.InputTag("kt4CaloJets"),
-			srcExtender = cms.InputTag("kt4JetExtender"),
-			srcJetID = cms.InputTag("kt4JetID")
-		),
-		KT6CaloJets = cms.PSet(
-			src = cms.InputTag("kt6CaloJets"),
-			srcExtender = cms.InputTag(""),
-			srcJetID = cms.InputTag("kt6JetID")
-		),
-	)
 )
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
-	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'Metadata', 'BeamSpot', 'CaloTaus', 'PFTaus', @ACTIVE@
+	'L1Muons', 'Muons', 'TrackSummary', 'TriggerObjects', 'Vertex', 'Metadata', 'BeamSpot', @ACTIVE@ #'Tracks'
+)
+process.kappatuple.Tracks.minPt = cms.double(5.)
+
+process.load("Configuration.StandardSequences.Reconstruction_cff")
+
+#-------------------------------------------------------------------------------
+triggerObjects = cms.vstring(
+# HLT_Mu7
+	"hltL1sL1SingleMu5",
+	"hltL1SingleMu5L1Filtered0",
+	"hltSingleMu7L2Filtered5",
+	"hltSingleMu7L3Filtered7",
+# HLT_Mu9
+	"hltSingleMu9L3Filtered9",
+# path HLT_Mu11
+	"hltSingleMu11L3Filtered11",
+# path HLT_Mu13_v1
+	"hltSingleMu13L3Filtered13",
+# HLT_Mu15_v1
+	"hltSingleMu15L3Filtered15",
+# HLT_IsoMu9
+	"hltSingleMuIsoL3PreFiltered9",
+	"hltSingleMuIsoL3IsoFiltered9",
+# HLT_IsoMu11_v1
+	"hltL1sL1SingleMu7",
+	"hltL1SingleMu7L1Filtered0",
+	"hltL2Mu7L2Filtered7",
+	"hltSingleMuIsoL2IsoFiltered7",
+	"hltSingleMuIsoL3PreFiltered11",
+	"hltSingleMuIsoL3IsoFiltered11"
+)
+
+process.kappatuple.TriggerObjects.triggerObjects = triggerObjects
+process.kappatuple.Metadata.muonTriggerObjects = triggerObjects
+
+process.kappatuple.Metadata.hltWhitelist = cms.vstring(
+			"^HLT_Jet*", "^HLT_LQuadJet*",
+			"^HLT_Activity.*", ".*(Bias|BSC).*",
+			"^HLT_L1Mu$",
+			"^HLT_L2Mu[0-9]*",
+			"^HLT_Mu[0-9]",
+			"^HLT_IsoMu[0-9]$",
+			"^HLT_DoubleMu[0-9]$"
 )
 #-------------------------------------------------------------------------------
 
