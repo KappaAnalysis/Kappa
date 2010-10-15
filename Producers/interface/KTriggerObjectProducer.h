@@ -26,9 +26,7 @@ public:
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		for (std::vector<std::string>::iterator it = triggerObjects.begin(); it != triggerObjects.end(); ++it)
-		{
 			this->registerBronch("TriggerObject_" + (*it), (*it), this->psBase, tagHLTrigger);
-		}
 		return true;
 	}
 
@@ -55,6 +53,7 @@ protected:
 			}
 		}
 	}
+
 	virtual void clearProduct(KTriggerObjectProducer_Product::type& prod)
 	{
 		prod.clear();
