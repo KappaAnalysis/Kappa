@@ -3,11 +3,11 @@ CURRENT:
                              KGenTauProducer <-- KPartonProducer <-\
                                                                     |/-> KMuonProducer
                             KCaloTauProducer <-\                    |/-> KTrackProducer
-  KBaseProducer                                 O-- KTauProducer <-\|/->KPFCandidateProducer
-        |                     KPFTauProducer <-/                    |/->KTowerProducer
-        v                                                           |/->KPFJetProducer
- KBaseProducerWP --> KMetadataProducer --> KGenMetadataProduce      |/->KCaloJetProducer
-        |                                                           |/->KLorentzProducer
+  KBaseProducer                                 O-- KTauProducer <-\|/-> KPFCandidateProducer
+        |                     KPFTauProducer <-/                    |/-> KTowerProducer
+        v                                                           |/-> KPFJetProducer
+ KBaseProducerWP --> KMetadataProducer --> KGenMetadataProduce      |/-> KCaloJetProducer
+        |                                                           |/-> KLorentzProducer
         v                                                           |
 KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer
                      |                               |

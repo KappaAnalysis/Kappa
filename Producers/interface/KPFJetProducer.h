@@ -21,19 +21,11 @@ public:
 	{
 		copyP4(in, out.p4);
 
-		out.emf = in.neutralEmEnergyFraction() + in.chargedEmEnergyFraction();
 		out.area = in.jetArea();;
 		out.n90 = in.nCarrying(0.9);
-		out.n90Hits = -1;
-		out.noiseHCAL = -1;
-		out.detectorEta = in.detectorP4(in.vertex(), in).eta();
-		out.fHPD = -1.;
-		out.fRBX = -1.;
-		out.nTracksAtCalo = -1;
-		out.nTracksAtVertex = -1;
 		out.nConst = in.nConstituents();
-		out.neutralEmFraction = in.neutralEmEnergyFraction();
-		out.chargedEmFraction = in.chargedEmEnergyFraction();
+		out.neutralEMFraction = in.neutralEmEnergyFraction();
+		out.chargedEMFraction = in.chargedEmEnergyFraction();
 		out.neutralHadFraction = in.neutralHadronEnergyFraction();
 		out.chargedHadFraction = in.chargedHadronEnergyFraction();
 	}
