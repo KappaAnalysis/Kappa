@@ -16,6 +16,7 @@ process.load('Configuration/StandardSequences/Services_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 #process.load('RecoJets.Configuration.RecoJetAssociations_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
+process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.GlobalTag.globaltag = '@GLOBALTAG@' #'GR10_P_V10::All'
 #-------------------------------------------------------------------------------
 
@@ -42,8 +43,7 @@ process.kappatuple.Metadata.hltWhitelist = cms.vstring(
 	"^HLT_(L[123])?(Iso|Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
 	"^HLT_Activity.*", ".*(Bias|BSC).*",
 )
-
-process.load("Configuration.StandardSequences.Reconstruction_cff")
+#-------------------------------------------------------------------------------
 
 # Process schedule -------------------------------------------------------------
 #process.pathDAT = cms.Path(process.recoJetAssociations+process.kappatuple)
