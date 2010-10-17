@@ -30,6 +30,8 @@ process.kappatuple.active = cms.vstring(
 process.kappatuple.Tracks.minPt = cms.double(5.)
 #-------------------------------------------------------------------------------
 
+process.load("Configuration.StandardSequences.Reconstruction_cff")
+
 # Process schedule -------------------------------------------------------------
 #process.pathDAT = cms.Path(process.recoJetAssociations+process.kappatuple)
 process.pathDAT = cms.Path(process.kappatuple)
