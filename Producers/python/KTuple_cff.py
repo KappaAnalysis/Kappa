@@ -31,17 +31,12 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltSource = cms.InputTag("TriggerResults"),
 		hltWhitelist = cms.vstring(
 			".*Jet.*",
-			".*Mu.*",
+			"^HLT_(L[123])?(Iso|Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
 			"^HLT_Activity.*", ".*(Bias|BSC).*",
 			"^HLT_MET[0-9]*",
 		),
 		hltBlacklist = cms.vstring(
-			".*_Jpsi.*",
-			".*L1MuOpen.*",
-			".*L2Mu0.*",
-			".*NoVertex.*",
 			".*AlCa.*",
-			"^HLT_L1Mu14_L1.*",
 		),
 		printHltList = cms.bool(True),
 
