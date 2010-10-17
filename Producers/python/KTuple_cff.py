@@ -131,6 +131,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 	),
 
 	TriggerObjects = cms.PSet(
+		kappaNoRegEx,
 		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
 		triggerObjects = cms.vstring(
 			# HLT_Mu7
