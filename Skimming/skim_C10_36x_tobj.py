@@ -48,5 +48,5 @@ process.kappatuple.Metadata.hltWhitelist = cms.vstring(
 # Process schedule -------------------------------------------------------------
 #process.pathDAT = cms.Path(process.recoJetAssociations+process.kappatuple)
 process.pathDAT = cms.Path(process.kappatuple)
-process.schedule = cms.Schedule(process.pathDAT)
+process.schedule = cms.Schedule(process.pfMuonIsolCandidates, process.pathDAT)
 #-------------------------------------------------------------------------------
