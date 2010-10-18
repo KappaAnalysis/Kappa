@@ -164,6 +164,8 @@ public:
 		for (std::vector<std::string>::iterator it = svMuonTriggerObjects.begin(); it != svMuonTriggerObjects.end(); it++)
 		{
 			std::string filterName = *it;
+			if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(filterName) != KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
+				throw cms::Exception("The muon trigger object '"+filterName+"' exists twice. Please remove one from your configuration!");
 			std::cout << filterName << "\n";
 			metaLumi->hltNamesMuons.push_back(filterName);
 			KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName] = metaLumi->hltNamesMuons.size() - 1;
