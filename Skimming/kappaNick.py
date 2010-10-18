@@ -17,6 +17,7 @@ def parseCuts(data):
 		return tmp[0]
 	return re.findall('pt[-_]*([0-9]+)', data.lower())
 
+
 class Summer10Nicks(NickNameProducer):
 	def getName(self, oldnick, dataset):
 		if oldnick != '':
@@ -63,3 +64,8 @@ class Summer10Nicks(NickNameProducer):
 		else:
 			nick += addPart(str.join('_', map(lambda x: "%04d" % int(x), parseCuts(pd))))
 		return nick
+
+
+class Fall10Nicks(NickNameProducer):
+	def getName(self, oldnick, dataset):
+		return oldnick
