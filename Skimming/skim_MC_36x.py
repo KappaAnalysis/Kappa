@@ -14,6 +14,7 @@ process.load('Configuration/StandardSequences/Services_cff')
 process.load('Configuration/StandardSequences/MagneticField_38T_cff')
 #process.load('RecoJets/Configuration/RecoJetAssociations_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
+process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.GlobalTag.globaltag = '@GLOBALTAG@'
 #-------------------------------------------------------------------------------
 
@@ -37,10 +38,9 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	process.kappaTupleDefaultsBlock,
 	outputFile = cms.string('skim.root'),
 	CaloJets = cms.PSet(
+		process.kappaNoCut,
+		process.kappaNoRegEx,
 		srcNoiseHCAL = cms.InputTag("hcalnoise"),
-		maxN = cms.int32(-1),
-		minPt = cms.double(-1),
-		maxEta = cms.double(-1),
 		AK5CaloJets = cms.PSet(
 			src = cms.InputTag("ak5CaloJets"),
 			srcExtender = cms.InputTag("ak5JetExtender"),
