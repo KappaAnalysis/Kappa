@@ -16,6 +16,7 @@ process.load('Configuration/StandardSequences/Services_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 #process.load('RecoJets.Configuration.RecoJetAssociations_cff')
 process.load('Configuration/StandardSequences/FrontierConditions_GlobalTag_cff')
+process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.GlobalTag.globaltag = '@GLOBALTAG@' #'GR10_P_V10::All'
 #-------------------------------------------------------------------------------
 
@@ -37,46 +38,10 @@ process.kappatuple.active = cms.vstring(
 )
 process.kappatuple.Tracks.minPt = cms.double(5.)
 
-process.load("Configuration.StandardSequences.Reconstruction_cff")
-
-#-------------------------------------------------------------------------------
-triggerObjects = cms.vstring(
-# HLT_Mu7
-	"hltL1sL1SingleMu5",
-	"hltL1SingleMu5L1Filtered0",
-	"hltSingleMu7L2Filtered5",
-	"hltSingleMu7L3Filtered7",
-# HLT_Mu9
-	"hltSingleMu9L3Filtered9",
-# path HLT_Mu11
-	"hltSingleMu11L3Filtered11",
-# path HLT_Mu13_v1
-	"hltSingleMu13L3Filtered13",
-# HLT_Mu15_v1
-	"hltSingleMu15L3Filtered15",
-# HLT_IsoMu9
-	"hltSingleMuIsoL3PreFiltered9",
-	"hltSingleMuIsoL3IsoFiltered9",
-# HLT_IsoMu11_v1
-	"hltL1sL1SingleMu7",
-	"hltL1SingleMu7L1Filtered0",
-	"hltL2Mu7L2Filtered7",
-	"hltSingleMuIsoL2IsoFiltered7",
-	"hltSingleMuIsoL3PreFiltered11",
-	"hltSingleMuIsoL3IsoFiltered11"
-)
-
-process.kappatuple.TriggerObjects.triggerObjects = triggerObjects
-process.kappatuple.Metadata.muonTriggerObjects = triggerObjects
-
 process.kappatuple.Metadata.hltWhitelist = cms.vstring(
-			"^HLT_Jet*", "^HLT_LQuadJet*",
-			"^HLT_Activity.*", ".*(Bias|BSC).*",
-			"^HLT_L1Mu$",
-			"^HLT_L2Mu[0-9]*",
-			"^HLT_Mu[0-9]",
-			"^HLT_IsoMu[0-9]$",
-			"^HLT_DoubleMu[0-9]$"
+	"^HLT_(QuadJet|Jet|DiJetAve)[0-9]+U(_v[[:digit:]]+)?$",
+	"^HLT_(L[123])?(Iso|Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
+	"^HLT_Activity.*", ".*(Bias|BSC).*",
 )
 #-------------------------------------------------------------------------------
 
