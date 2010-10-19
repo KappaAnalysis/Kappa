@@ -38,9 +38,9 @@ protected:
 	{
 		for (size_t iF = 0; iF < triggerEventHandle.sizeFilters(); ++iF)
 		{
-			const std::string nameFilter(triggerEventHandle.filterTag(iF).label());
+			const std::string filterName(triggerEventHandle.filterTag(iF).label());
 
-			if (find(triggerObjects.begin(), triggerObjects.end(), nameFilter) == triggerObjects.end())
+			if (name != "TriggerObject_"+filterName+" ("+filterName+")")
 				continue;
 
 			const trigger::Keys & keys = triggerEventHandle.filterKeys(iF);
