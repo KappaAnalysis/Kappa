@@ -13,7 +13,7 @@ template<typename Tin, typename Tout>
 class KBaseMultiProducer : public KBaseProducerWP
 {
 public:
-	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, bool _justOutputName = true) :
+	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, bool _justOutputName = false) :
 		KBaseProducerWP(cfg, _event_tree, _run_tree, Tout::producer()),
 		event_tree(_event_tree), justOutputName(_justOutputName),
 		viManual(cfg.getParameter<std::vector<edm::InputTag> >("manual")),
