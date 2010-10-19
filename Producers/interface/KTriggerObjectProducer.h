@@ -18,7 +18,7 @@ class KTriggerObjectProducer : public KBaseMultiProducer<trigger::TriggerEvent, 
 {
 public:
 	KTriggerObjectProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer_Product>(cfg, _event_tree, _run_tree),
+		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer_Product>(cfg, _event_tree, _run_tree, false),
 		triggerObjects(cfg.getParameter<std::vector<std::string> >("triggerObjects")),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hltTag")) {};
 	virtual ~KTriggerObjectProducer() {};
@@ -39,8 +39,7 @@ protected:
 		for (size_t iF = 0; iF < triggerEventHandle.sizeFilters(); ++iF)
 		{
 			const std::string filterName(triggerEventHandle.filterTag(iF).label());
-
-			if (name != "TriggerObject_"+filterName+" ("+filterName+")")
+			if (name != "TriggerObject_" + filterName)
 				continue;
 
 			const trigger::Keys & keys = triggerEventHandle.filterKeys(iF);
