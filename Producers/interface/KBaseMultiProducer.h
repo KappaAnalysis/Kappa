@@ -13,9 +13,9 @@ template<typename Tin, typename Tout>
 class KBaseMultiProducer : public KBaseProducerWP
 {
 public:
-	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, bool _justOutputName = true) :
 		KBaseProducerWP(cfg, _event_tree, _run_tree, Tout::producer()),
-		event_tree(_event_tree),
+		event_tree(_event_tree), justOutputName(_justOutputName),
 		viManual(cfg.getParameter<std::vector<edm::InputTag> >("manual")),
 
 		vsWhitelist(cfg.getParameter<std::vector<std::string> >("whitelist")),
@@ -50,7 +50,7 @@ public:
 			}
 
 			std::string name = desc.first;
-			if (desc.first != desc.second)
+			if ((desc.first != desc.second) && !justOutputName)
 				name += " (" + desc.second + ")";
 			fillProduct(*(this->handle), ref, name, &src, pset);
 		}
@@ -186,6 +186,7 @@ private:
 		return true;
 	}
 
+	bool justOutputName;
 	std::vector<edm::InputTag> viManual;
 
 	std::vector<std::string> vsWhitelist;
