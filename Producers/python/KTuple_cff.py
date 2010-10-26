@@ -39,6 +39,9 @@ kappaTupleDefaultsBlock = cms.PSet(
 			".*AlCa.*",
 			"^HLT_BTagMu_.*",
 			".*ForwardBackward.*",
+			".*L1Tech.*",
+			"^HLT_Mu([0357])(_v[[:digit:]]+)?$",
+			"^HLT_MET[0-9]*_.*Jet.*",
 		),
 		printHltList = cms.bool(True),
 
