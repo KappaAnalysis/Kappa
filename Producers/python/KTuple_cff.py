@@ -34,11 +34,16 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"^HLT_(L[123])?(Iso|Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
 			".*(Bias|BSC).*",
 			"^HLT_MET[0-9]*",
+			"^HLT_(Iso)?Mu([0-9]+)_PFTau([0-9]+)(_v[[:digit:]]+)?$",
 		),
 		hltBlacklist = cms.vstring(
 			".*AlCa.*",
 			"^HLT_BTagMu_.*",
 			".*ForwardBackward.*",
+			".*L1Tech.*",
+			"^HLT_Mu([0357])(_v[[:digit:]]+)?$",
+			"^HLT_MET[0-9]*_.*Jet.*",
+			"^HLT_Mu([0-9]+)_Jet([0-9]+).*",
 		),
 		printHltList = cms.bool(True),
 
