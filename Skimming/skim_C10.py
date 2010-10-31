@@ -74,7 +74,7 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	)
 )
 process.kappatuple.verbose = cms.int32(0)
-process.kappatuple.PFTaus = cms.PSet(process.kappaNoCut,
+process.kappatuple.PFTaus = cms.PSet(process.kappaNoCut, process.kappaNoRegEx,
     shrinkingConePFTaus = cms.PSet(
             src = cms.InputTag("shrinkingConePFTauProducer"),
             discr = cms.vstring("shrinkingConePFTau*")
