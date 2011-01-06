@@ -6,6 +6,7 @@
 #include <FWCore/Framework/interface/LuminosityBlock.h>
 #include <FWCore/Framework/interface/Run.h>
 #include "../../DataFormats/interface/KMetadata.h"
+#include <FWCore/ParameterSet/interface/ParameterSet.h>
 
 // KBaseProducer is the base class for all producers
 //  - provides common matching tools

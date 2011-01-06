@@ -9,6 +9,8 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
+#include "FWCore/ParameterSet/interface/Registry.h"
+
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include <TFile.h>
 
