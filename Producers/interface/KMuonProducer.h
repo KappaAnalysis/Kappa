@@ -67,7 +67,8 @@ public:
 		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
-		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")) {}
+		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")),
+		noPropagation(cfg.getParameter<bool>("noPropagation")) {}
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
@@ -165,7 +166,7 @@ public:
 		out.phi_propag_endcap = -1000.;
 
 		// propagated values
-		if (in.innerTrack().isNonnull())
+		if (in.innerTrack().isNonnull() && !noPropagation)
 			muPropagator.propagate_track(in.innerTrack(), &out);
 
 		out.hltMatch = getHLTInfo(out.p4);
@@ -177,6 +178,7 @@ private:
 	edm::InputTag tagHLTrigger;
 	double hltMaxdR, hltMaxdPt_Pt;
 	double pfIsoVetoCone, pfIsoVetoMinPt;
+	bool noPropagation;
 	edm::Handle< edm::ValueMap<reco::IsoDeposit> > isoDepsPF;
 
 	edm::Handle< trigger::TriggerEvent > triggerEventHandle;

@@ -136,6 +136,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
 		hltMaxdR = cms.double(0.2),
 		hltMaxdPt_Pt = cms.double(1.),
+		noPropagation = cms.bool(False),
 	),
 
 	CaloTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
