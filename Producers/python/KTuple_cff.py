@@ -137,6 +137,10 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltMaxdR = cms.double(0.2),
 		hltMaxdPt_Pt = cms.double(1.),
 		noPropagation = cms.bool(False),
+
+		useSimpleGeometry = cms.bool(True),
+		useTrack = cms.string("tracker"),
+		useState = cms.string("atVertex"),
 	),
 
 	CaloTaus = cms.PSet(kappaNoCut, kappaNoRegEx,

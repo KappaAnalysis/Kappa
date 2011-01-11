@@ -19,6 +19,11 @@
 <use name="PhysicsTools/UtilAlgos" />
 <use name="PhysicsTools/IsolationAlgos" />
 <use name="TrackingTools/Records"/>
+<use name="HLTriggerOffline/Muon"/>
+<use name="RecoMuon/DetLayers"/>
+<use name="RecoMuon/Records"/>
+<use name="TrackingTools/KalmanUpdators"/>
+
 <use name="root"/>
 <use name="rootcore"/>
 
