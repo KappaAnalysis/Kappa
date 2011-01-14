@@ -61,6 +61,9 @@
 	<class name="KPFCandidate"/>
 	<class name="KPFCandidates"/>
 
+	<class name="KJetArea"/>
+
+
 	<class name="KProvenance"/>
 
 	<class name="KLumiMetadata"/>

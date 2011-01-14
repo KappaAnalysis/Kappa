@@ -76,6 +76,9 @@ namespace
 		KPFCandidate kappa_pfcandidate;
 		KPFCandidates kappa_pfcandidates;
 
+		KJetArea kappa_jetarea;
+
+
 		KProvenance kappa_provenance;
 
 		KLumiMetadata kappa_lumimetadata;

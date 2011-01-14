@@ -35,4 +35,8 @@ struct KDataPFMET : public KDataMET
 	double type6EtFraction, type7EtFraction;
 };
 
+struct KJetArea
+{
+	float median, sigma;
+};
 #endif

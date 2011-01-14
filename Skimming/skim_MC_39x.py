@@ -38,6 +38,13 @@ process.pfmuIsoDepositPFCandidates = isoDepositReplace("muons", "particleFlow")
 process.pfMuonIsolCandidates = cms.Path(process.pfmuIsoDepositPFCandidates)
 #-------------------------------------------------------------------------------
 
+# Produce rho distribution------------------------------------------------------
+process.load('RecoJets.JetProducers.kt4PFJets_cfi')
+process.kt6PFJetsRho = process.kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
+process.kt6PFJetsRho.Rho_EtaMax = cms.double(1.5)
+process.JetArea = cms.Path(process.kt6PFJetsRho)
+#-------------------------------------------------------------------------------
+
 # Configure tuple generation ---------------------------------------------------
 process.load("Kappa.Producers.KTuple_cff")
 process.kappatuple = cms.EDAnalyzer('KTuple',
@@ -76,12 +83,12 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 )
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
-	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'BeamSpot', 'GenMetadata', 'Partons', 'CaloTaus', 'PFTaus', 'GenTaus', @ACTIVE@
+	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'BeamSpot', 'GenMetadata', 'Partons', 'CaloTaus', 'PFTaus', 'GenTaus', 'JetArea', @ACTIVE@
 )
 #-------------------------------------------------------------------------------
 
 # Process schedule -------------------------------------------------------------
 #process.pathDAT = cms.Path(process.recoJetAssociations+process.kappatuple)
 process.pathDAT = cms.Path(process.kappatuple)
-process.schedule = cms.Schedule(process.MoreJets, process.pfMuonIsolCandidates, process.pathDAT)
+process.schedule = cms.Schedule(process.JetArea, process.MoreJets, process.pfMuonIsolCandidates, process.pathDAT)
 #-------------------------------------------------------------------------------

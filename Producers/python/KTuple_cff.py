@@ -368,11 +368,18 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		whitelist = cms.vstring("l1extraL1MuonParticles_l1extraParticles"),
 		blacklist = cms.vstring(),
-		
+
 		rename = cms.vstring(
 			"l1extraParticles => l1muons",
 		),
 		rename_whitelist = cms.vstring(),
 		rename_blacklist = cms.vstring(),
+	),
+
+	JetArea = cms.PSet(kappaNoRename, kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("kt6PFJetsRho_rho"),
+		blacklist = cms.vstring(),
 	),
 )

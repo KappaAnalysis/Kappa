@@ -109,6 +109,8 @@
 #pragma link C++ class std::vector<KPFCandidate>+;
 #pragma link C++ typedef KPFCandidates;
 
+#pragma link C++ struct KJetArea+;
+
 /************************************************************/
 /* METADATA                                                 */
 /************************************************************/
