@@ -76,6 +76,9 @@ namespace
 		KPFCandidate kappa_pfcandidate;
 		KPFCandidates kappa_pfcandidates;
 
+		KGenPhoton kappa_genphoton;
+		KGenPhotons kappa_genphotons;
+
 		KJetArea kappa_jetarea;
 
 

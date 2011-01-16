@@ -259,6 +259,12 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
+	GenPhotons = cms.PSet(kappaNoCut, kappaNoRegEx,
+		genPhotons = cms.PSet(
+			src = cms.InputTag("genParticles"),
+		),
+	),
+
 	GenTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		genTaus = cms.PSet(
 			src = cms.InputTag("genParticles"),
