@@ -35,6 +35,7 @@ struct KDataPFMET : public KDataMET
 	double type6EtFraction, type7EtFraction;
 };
 
+#define KAPPA_FEATURE_JETAREA
 struct KJetArea
 {
 	float median, sigma;
