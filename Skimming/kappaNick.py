@@ -81,6 +81,7 @@ class Fall10Nicks(NickNameProducer):
 		}
 		condMap = {
 			'Fall10-START38_V12': 'F10S38v12',
+			'BX156_START38_V12': 'F10S38v12_PPU',
 		}
 		tuneMap = dict(map(lambda x: ('Tune' + x, x), ['Z2', 'ProPT0', 'P0', 'DW', 'D6T', 'CW']))
 		tuneMap['pythia8'] = 'T1'
