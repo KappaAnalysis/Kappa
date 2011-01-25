@@ -35,7 +35,7 @@ process.pfMuonIsolCandidates = cms.Path(process.pfmuIsoDepositPFCandidates)
 # Produce rho distribution------------------------------------------------------
 process.load('RecoJets.JetProducers.kt4PFJets_cfi')
 process.kt6PFJetsRho = process.kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
-process.kt6PFJetsRho.Rho_EtaMax = cms.double(1.5)
+process.kt6PFJetsRho.Rho_EtaMax = cms.double(5.)
 process.JetArea = cms.Path(process.kt6PFJetsRho)
 #-------------------------------------------------------------------------------
 
