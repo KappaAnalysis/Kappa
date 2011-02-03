@@ -19,6 +19,12 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		KL1MuonProducer::fillL1Muon(in, out);
+	}
+
+	// Static method for filling Tracks in other producers
+	static void fillL1Muon(const SingleInputType &in, SingleOutputType &out)
+	{
 		out.state = 0;
 
 		copyP4(in, out.p4);
