@@ -225,10 +225,10 @@ public:
 		// always be HLT.
 		assert(!event.isRealData() || tagHLTResults.process() == "HLT");
 
-		// Set HLT trigger bits
 		metaEvent->bitsHLT = 0;
 		if (tagHLTResults.label() != "")
 		{
+			// set HLT trigger bits
 			edm::Handle<edm::TriggerResults> hTriggerResults;
 			event.getByLabel(tagHLTResults, hTriggerResults);
 
@@ -242,11 +242,8 @@ public:
 			}
 			if (hltFAIL)
 				metaEvent->bitsHLT |= 1;
-		}
 
-		// Set HLT prescales
-		if (tagHLTResults.label() != "")
-		{
+			// set and check trigger prescales
 			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
 			{
 				const std::string &name = metaLumi->hltNames[i];
