@@ -24,6 +24,7 @@
 #include "FWCore/MessageLogger/interface/ELseverityLevel.h"
 #include "FWCore/MessageLogger/interface/ErrorSummaryEntry.h"
 
+#include "FWCore/Framework/interface/ConstProductRegistry.h"
 
 #define NEWHLT
 
@@ -42,6 +43,7 @@ class KMetadataProducer : public KBaseProducerWP
 public:
 	KMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KBaseProducerWP(cfg, _event_tree, _lumi_tree, "KMetadata"),
+		tauDiscrProcessName(cfg.getUntrackedParameter<std::string>("tauDiscrProcessName", "")),
 		tagL1Results(cfg.getParameter<edm::InputTag>("l1Source")),
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
 		svHLTWhitelist(cfg.getParameter<std::vector<std::string> >("hltWhitelist")),
@@ -166,10 +168,12 @@ public:
 			std::string filterName = *it;
 			if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(filterName) != KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
 				throw cms::Exception("The muon trigger object '"+filterName+"' exists twice. Please remove one from your configuration!");
-			std::cout << filterName << "\n";
+			if (verbosity > 0)
+				std::cout << filterName << "\n";
 			metaLumi->hltNamesMuons.push_back(filterName);
 			KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName] = metaLumi->hltNamesMuons.size() - 1;
-			std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size() - 1) << " = " << filterName << "\n";
+			if (verbosity > 0)
+				std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size() - 1) << " = " << filterName << "\n";
 		}
 
 		// Clear tau discriminator maps, they will be refilled by
@@ -178,6 +182,35 @@ public:
 		metaLumi->discrTauPF.clear();
 		KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap.clear();
 		KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap.clear();
+
+		edm::Service<edm::ConstProductRegistry> reg;
+		if (verbosity > 0)
+			std::cout << "Lese Produkt-Liste fuer "<< metaLumi->nRun << " " << metaLumi->nLumi << " ein\n";
+		for (edm::ProductRegistry::ProductList::const_iterator it = reg->productList().begin(); it != reg->productList().end(); ++it)
+		{
+			edm::BranchDescription desc = it->second;
+			if (tauDiscrProcessName != "" && desc.processName() != tauDiscrProcessName)
+				continue;
+
+			const std::string& name = desc.moduleLabel();
+
+			if (desc.className() == "reco::CaloTauDiscriminator")
+			{
+				metaLumi->discrTau.push_back(name);
+				KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap[name] = metaLumi->discrTau.size() - 1;
+
+				if (this->verbosity > 0)
+					std::cout << "CaloTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+			}
+			if (desc.className() == "reco::PFTauDiscriminator")
+			{
+				metaLumi->discrTauPF.push_back(name);
+				KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size() - 1;
+
+				if (this->verbosity > 0)
+					std::cout << "PFTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+			}
+		}
 
 		return true;
 	}
@@ -235,29 +268,6 @@ public:
 
 					metaLumi->hltPrescales[i] = prescale;
 				}
-			}
-
-			// Build tau discriminator maps
-			std::vector<edm::Handle<reco::CaloTauDiscriminator> > caloTauDiscriminators;
-			event.getManyByType(caloTauDiscriminators);
-			assert(metaLumi->discrTau.empty());
-			for(unsigned int i = 0; i < caloTauDiscriminators.size(); ++i)
-			{
-				const std::string& name = caloTauDiscriminators[i].provenance()->moduleLabel();
-				metaLumi->discrTau.push_back(name);
-				KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap[name] = metaLumi->discrTau.size() - 1;
-				std::cout << "CaloTau discriminator " << i << ": " << name << std::endl;
-			}
-
-			std::vector<edm::Handle<reco::PFTauDiscriminator> > pfTauDiscriminators;
-			event.getManyByType(pfTauDiscriminators);
-			assert(metaLumi->discrTauPF.empty());
-			for(unsigned int i = 0; i < pfTauDiscriminators.size(); ++i)
-			{
-				const std::string& name = pfTauDiscriminators[i].provenance()->moduleLabel();
-				metaLumi->discrTauPF.push_back(name);
-				KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size() - 1;
-				std::cout << "PFTau discriminator " << i << ": " << name << std::endl;
 			}
 
 			firstEventInLumi = false;
@@ -332,6 +342,7 @@ public:
 	static TauDiscriminatorMap pfTauDiscriminatorBitMap;
 
 protected:
+	std::string tauDiscrProcessName;
 	bool firstEventInLumi;
 	edm::InputTag tagL1Results, tagHLTResults;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
