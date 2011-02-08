@@ -135,7 +135,7 @@ public:
 				continue;
 			if (verbosity > 0 || printHltList)
 				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter
-					<< " with placeholder prescale 1" << std::endl;
+					<< " with placeholder prescale 0" << std::endl;
 			if (hltKappa2FWK.size() < 64)
 			{
 				addHLT(idx, name, 0);
