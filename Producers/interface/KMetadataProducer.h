@@ -138,7 +138,7 @@ public:
 					<< " with placeholder prescale 1" << std::endl;
 			if (hltKappa2FWK.size() < 64)
 			{
-				addHLT(idx, name, 1);
+				addHLT(idx, name, 0);
 				counter++;
 			}
 			else
@@ -246,33 +246,34 @@ public:
 				metaEvent->bitsHLT |= 1;
 		}
 
-		if ((firstEventInLumi))
+		// Set HLT prescales
+		if (tagHLTResults.label() != "")
 		{
-			// Set HLT prescales
-			if (tagHLTResults.label() != "")
+			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
 			{
-				for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
-				{
-					const std::string &name = metaLumi->hltNames[i];
-					int prescale = 0;
+				const std::string &name = metaLumi->hltNames[i];
+				unsigned int prescale = 0;
 #ifdef NEWHLT
-					std::pair<int,int> tmpPrescale = hltConfig.prescaleValues(event, setup, name);
-					if (tmpPrescale.first < 0 || tmpPrescale.second < 0)
-						prescale = -1;
-					else
-						prescale = tmpPrescale.first * tmpPrescale.second;
+				std::pair<int,int> tmpPrescale = hltConfig.prescaleValues(event, setup, name);
+				if (tmpPrescale.first < 0 || tmpPrescale.second < 0)
+					prescale = 0;
+				else
+					prescale = tmpPrescale.first * tmpPrescale.second;
 #endif
-					if (verbosity > 0 || printHltList)
-						std::cout << " => Adding prescale for trigger: '" << name
-							<< " with value: " << prescale << std::endl;
+				if (verbosity > 0 || printHltList)
+					std::cout << " => Adding prescale for trigger: '" << name
+						<< " with value: " << prescale << std::endl;
 
+				if (metaLumi->hltPrescales[i] == 0)
 					metaLumi->hltPrescales[i] = prescale;
-				}
+				assert(metaLumi->hltPrescales[i] == prescale);
 			}
-
-			firstEventInLumi = false;
 		}
-
+		else
+		{
+			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
+				metaLumi->hltPrescales[i] = 1;
+		}
 		// Set L1 trigger bits
 		metaEvent->bitsL1 = 0;
 		bool bPhysicsDeclared = true;
