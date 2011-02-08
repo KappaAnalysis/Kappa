@@ -152,8 +152,6 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		firstEventInLumi = true;
-
 		metaLumi = &(metaLumiMap[std::pair<run_id, lumi_id>(lumiBlock.run(), lumiBlock.luminosityBlock())]);
 		metaLumi->nRun = lumiBlock.run();
 		metaLumi->nLumi = lumiBlock.luminosityBlock();
@@ -344,7 +342,6 @@ public:
 
 protected:
 	std::string tauDiscrProcessName;
-	bool firstEventInLumi;
 	edm::InputTag tagL1Results, tagHLTResults;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
 	std::vector<std::string> svMuonTriggerObjects;
