@@ -45,7 +45,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"^HLT_MET[0-9]*_.*Jet.*",
 			"^HLT_Mu([0-9]+)_Jet([0-9]+).*",
 		),
-		printHltList = cms.bool(True),
+		printHltList = cms.bool(False),
 
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
 		muonTriggerObjects = cms.vstring(
