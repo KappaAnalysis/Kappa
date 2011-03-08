@@ -53,7 +53,7 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	CaloJets = cms.PSet(
 		process.kappaNoCut,
 		process.kappaNoRegEx,
-		srcNoiseHCAL = cms.InputTag("hcalnoise"),
+		srcNoiseHCAL = cms.InputTag(""),
 		AK5CaloJets = cms.PSet(
 			src = cms.InputTag("ak5CaloJets"),
 			srcExtender = cms.InputTag("ak5JetExtender"),
