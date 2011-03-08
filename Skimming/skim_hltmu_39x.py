@@ -42,7 +42,7 @@ process.JetArea = cms.Path(process.kt6PFJetsRho)
 # Require one good muon --------------------------------------------------------
 process.goodMuons = cms.EDFilter("CandViewSelector",
         src = cms.InputTag("muons"),
-        cut = cms.string("pt > 12 & abs( eta ) < 2.3 & isGlobalMuon() & isTrackerMuon()"),
+        cut = cms.string("pt > 7 & abs( eta ) < 2.3 & isGlobalMuon() & isTrackerMuon()"),
 )
 
 process.oneGoodMuon = cms.EDFilter("CandViewCountFilter",
