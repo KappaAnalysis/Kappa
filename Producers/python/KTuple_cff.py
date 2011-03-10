@@ -478,7 +478,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 	L3MuonTrajectorySeed = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 		whitelist = cms.vstring("hltL3TrajectorySeed"),
-		blacklist = cms.vstring(),
+		blacklist = cms.vstring("hltL3TrajectorySeedNoVtx"),
 
 		rename = cms.vstring(),
 		rename_whitelist = cms.vstring(),
