@@ -24,6 +24,11 @@ process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.GlobalTag.globaltag = '@GLOBALTAG@'
 #-------------------------------------------------------------------------------
 
+# Reduce amount of messages ----------------------------------------------------
+process.MessageLogger.default = cms.untracked.PSet(ERROR = cms.untracked.PSet(limit = cms.untracked.int32(5)))
+process.MessageLogger.cerr.FwkReport.reportEvery = 42
+#-------------------------------------------------------------------------------
+
 # Produce jets -----------------------------------------------------------------
 process.load('Configuration/StandardSequences/Generator_cff')
 process.load('Configuration/StandardSequences/GeometryPilot2_cff')
@@ -53,7 +58,7 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 	CaloJets = cms.PSet(
 		process.kappaNoCut,
 		process.kappaNoRegEx,
-		srcNoiseHCAL = cms.InputTag("hcalnoise"),
+		srcNoiseHCAL = cms.InputTag(""),
 		AK5CaloJets = cms.PSet(
 			src = cms.InputTag("ak5CaloJets"),
 			srcExtender = cms.InputTag("ak5JetExtender"),
