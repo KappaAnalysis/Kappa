@@ -55,7 +55,8 @@ public:
 		tagErrorsAndWarnings(cfg.getParameter<edm::InputTag>("errorsAndWarnings")),
 		avoidEaWCategories(cfg.getParameter<std::vector<std::string> >("errorsAndWarningsAvoidCategories")),
 		printErrorsAndWarnings(cfg.getParameter<bool>("printErrorsAndWarnings")),
-		printHltList(cfg.getParameter<bool>("printHltList"))
+		printHltList(cfg.getParameter<bool>("printHltList")),
+		overrideHLTCheck(cfg.getUntrackedParameter<bool>("overrideHLTCheck", false))
 	{
 		metaLumi = new typename Tmeta::typeLumi();
 		_lumi_tree->Bronch("KLumiMetadata", Tmeta::idLumi().c_str(), &metaLumi);
@@ -224,7 +225,8 @@ public:
 
 		// If we are running on real data then the trigger should
 		// always be HLT.
-		assert(!event.isRealData() || tagHLTResults.process() == "HLT");
+		if (!overrideHLTCheck)
+			assert(!event.isRealData() || tagHLTResults.process() == "HLT");
 
 		bool triggerPrescaleError = false;
 		metaEvent->bitsHLT = 0;
@@ -363,6 +365,7 @@ protected:
 	std::vector<std::string> avoidEaWCategories;
 	bool printErrorsAndWarnings;
 	bool printHltList;
+	bool overrideHLTCheck;
 
 	std::vector<std::string> hltNames;
 	std::vector<unsigned int> hltPrescales;
