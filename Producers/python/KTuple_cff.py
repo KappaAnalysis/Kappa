@@ -49,55 +49,54 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
 		muonTriggerObjects = cms.vstring(
-			# HLT_Mu7
-			"hltL1sL1SingleMu5",
-			"hltL1SingleMu5L1Filtered0",
+			# L1 (2010/2011)
+			"hltL1sL1SingleMu7",
+			"hltL1sL1SingleMu10",
+			"hltL1sL1SingleMu12",
+
+			# HLT_MuX (2010)
 			"hltSingleMu7L2Filtered5",
 			"hltSingleMu7L3Filtered7",
-			# HLT_Mu9
 			"hltSingleMu9L3Filtered9",
-			# path HLT_Mu11
 			"hltSingleMu11L3Filtered11",
-			# path HLT_Mu13_v1
 			"hltSingleMu13L3Filtered13",
-			# HLT_Mu15_v1
 			"hltSingleMu15L3Filtered15",
-			# HLT_Mu17_v1
 			"hltSingleMu17L3Filtered17",
-			# HLT_Mu19_v1
 			"hltSingleMu19L3Filtered19",
-			# HLT_Mu21_v1
 			"hltSingleMu21L3Filtered21",
-			# HLT_Mu25_v1
 			"hltSingleMu21L3Filtered25",
-			# HLT_IsoMu9
-			"hltSingleMuIsoL3PreFiltered9",
+
+			# HLT_MuX (2011)
+			"hltSingleMu12L3Filtered12",
+			"hltL3Muon15",					# no kidding, other version above
+			"hltSingleMu20L3Filtered20",
+			"hltSingleMu24L3Filtered24",
+			"hltSingleMu30L3Filtered30",
+
+			# HLT_IsoMuX (2010)
 			"hltSingleMuIsoL3IsoFiltered9",
-			# HLT_IsoMu11_v1
-			"hltL1sL1SingleMu7",
-			"hltL1SingleMu7L1Filtered0",
-			"hltL2Mu7L2Filtered7",
-			"hltSingleMuIsoL2IsoFiltered7",
-			"hltSingleMuIsoL3PreFiltered11",
 			"hltSingleMuIsoL3IsoFiltered11",
-			# HLT_IsoMu13_v1
-			"hltSingleMuIsoL3PreFiltered13",
 			"hltSingleMuIsoL3IsoFiltered13",
-			# HLT_IsoMu15_v1
-			"hltSingleMuIsoL3PreFiltered15",
 			"hltSingleMuIsoL3IsoFiltered15",
-			# HLT_IsoMu17_v1
-			"hltSingleMuIsoL3PreFiltered17",
 			"hltSingleMuIsoL3IsoFiltered17",
-			# HLT_DoubleMu
+
+			# HLT_IsoMuX (2011)
+			"hltSingleMuIsoL3IsoFiltered12",
+			#"hltSingleMuIsoL3IsoFiltered15",
+			#"hltSingleMuIsoL3IsoFiltered17",
+			"hltSingleMuIsoL3IsoFiltered24",
+			"hltSingleMuIsoL3IsoFiltered30",
+
+			# HLT_DoubleMu (2010+2011)
 			"hltL1sL1DoubleMuOpen",
+			"hltL1sL1DoubleMu0",
 			"hltL1sL1DoubleMu3",
-			"hltDiMuonL1Filtered",
-			"hltDiMuonL1Filtered0",
 			"hltDiMuonL3PreFiltered0",
 			"hltDiMuonL3PreFiltered",
 			"hltDiMuonL3PreFiltered3",
 			"hltDiMuonL3PreFiltered5",
+			"hltDiMuonL3PreFiltered7",
+
 			# andere
 			"hltL1sL1SingleMu0",
 			"hltL1sL1SingleMu3",
@@ -169,55 +168,54 @@ kappaTupleDefaultsBlock = cms.PSet(
 		kappaNoRegEx,
 		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
 		triggerObjects = cms.vstring(
-			# HLT_Mu7
-			"hltL1sL1SingleMu5",
-			"hltL1SingleMu5L1Filtered0",
+			# L1 (2010/2011)
+			"hltL1sL1SingleMu7",
+			"hltL1sL1SingleMu10",
+			"hltL1sL1SingleMu12",
+
+			# HLT_MuX (2010)
 			"hltSingleMu7L2Filtered5",
 			"hltSingleMu7L3Filtered7",
-			# HLT_Mu9
 			"hltSingleMu9L3Filtered9",
-			# path HLT_Mu11
 			"hltSingleMu11L3Filtered11",
-			# path HLT_Mu13_v1
 			"hltSingleMu13L3Filtered13",
-			# HLT_Mu15_v1
 			"hltSingleMu15L3Filtered15",
-			# HLT_Mu17_v1
 			"hltSingleMu17L3Filtered17",
-			# HLT_Mu19_v1
 			"hltSingleMu19L3Filtered19",
-			# HLT_Mu21_v1
 			"hltSingleMu21L3Filtered21",
-			# HLT_Mu25_v1
 			"hltSingleMu21L3Filtered25",
-			# HLT_IsoMu9
-			"hltSingleMuIsoL3PreFiltered9",
+
+			# HLT_MuX (2011)
+			"hltSingleMu12L3Filtered12",
+			"hltL3Muon15",					# no kidding, other version above
+			"hltSingleMu20L3Filtered20",
+			"hltSingleMu24L3Filtered24",
+			"hltSingleMu30L3Filtered30",
+
+			# HLT_IsoMuX (2010)
 			"hltSingleMuIsoL3IsoFiltered9",
-			# HLT_IsoMu11_v1
-			"hltL1sL1SingleMu7",
-			"hltL1SingleMu7L1Filtered0",
-			"hltL2Mu7L2Filtered7",
-			"hltSingleMuIsoL2IsoFiltered7",
-			"hltSingleMuIsoL3PreFiltered11",
 			"hltSingleMuIsoL3IsoFiltered11",
-			# HLT_IsoMu13_v1
-			"hltSingleMuIsoL3PreFiltered13",
 			"hltSingleMuIsoL3IsoFiltered13",
-			# HLT_IsoMu15_v1
-			"hltSingleMuIsoL3PreFiltered15",
 			"hltSingleMuIsoL3IsoFiltered15",
-			# HLT_IsoMu17_v1
-			"hltSingleMuIsoL3PreFiltered17",
 			"hltSingleMuIsoL3IsoFiltered17",
-			# HLT_DoubleMu
+
+			# HLT_IsoMuX (2011)
+			"hltSingleMuIsoL3IsoFiltered12",
+			#"hltSingleMuIsoL3IsoFiltered15",
+			#"hltSingleMuIsoL3IsoFiltered17",
+			"hltSingleMuIsoL3IsoFiltered24",
+			"hltSingleMuIsoL3IsoFiltered30",
+
+			# HLT_DoubleMu (2010+2011)
 			"hltL1sL1DoubleMuOpen",
+			"hltL1sL1DoubleMu0",
 			"hltL1sL1DoubleMu3",
-			"hltDiMuonL1Filtered",
-			"hltDiMuonL1Filtered0",
 			"hltDiMuonL3PreFiltered0",
 			"hltDiMuonL3PreFiltered",
 			"hltDiMuonL3PreFiltered3",
 			"hltDiMuonL3PreFiltered5",
+			"hltDiMuonL3PreFiltered7",
+
 			# andere
 			"hltL1sL1SingleMu0",
 			"hltL1sL1SingleMu3",
