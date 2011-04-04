@@ -30,7 +30,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		l1Source = cms.InputTag("gtDigis"),
 		hltSource = cms.InputTag("TriggerResults"),
 		hltWhitelist = cms.vstring(
-			".*HT.*",
+			"^HLT_HT([0-9]+)(_v[[:digit:]]+)?$",
 			".*Jet.*",
 			".*PFTau.*",
 			"^HLT_(L[123])?(Iso|Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
