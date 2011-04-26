@@ -36,24 +36,7 @@ protected:
 		out.cntSignalCands = in.signalPFCands().size();
 
 		if(in.leadPFCand().isNonnull())
-		{
-			// Vertex
-			out.vertex.fake = false;
-			out.vertex.position = in.leadPFCand()->vertex();
-			out.vertex.chi2 = in.leadPFCand()->vertexChi2();
-			out.vertex.nDOF = in.leadPFCand()->vertexNdof();
-			out.vertex.nTracks = 1;
-			out.vertex.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >(); //in.leadPFCand()->vertexCovariance());
-/*			out.errDxy = in.leadPFCand()->dxyError();
-			out.errDz = in.leadPFCand()->dzError();*/
-
 			copyP4(in.leadPFCand()->p4(), out.leadTrack);
-		}
-		else
-		{
-			out.vertex.fake = true;
-		}
-
 		if(in.leadPFChargedHadrCand().isNonnull())
 			copyP4(in.leadPFChargedHadrCand()->p4(), out.leadChargedHadrTrack);
 		if(in.leadPFNeutralCand().isNonnull())

@@ -34,8 +34,6 @@ struct KDataPFTau : KDataTau
 	RMDataLV leadChargedHadrTrack;
 	RMDataLV leadNeutralTrack;
 
-	KDataVertex vertex;
-
 	//bool longLived
 	int cntSignalTracks;
 
