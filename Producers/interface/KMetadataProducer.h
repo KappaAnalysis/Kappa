@@ -225,6 +225,7 @@ public:
 		// always be HLT.
 		assert(!event.isRealData() || tagHLTResults.process() == "HLT");
 
+		bool triggerPrescaleError = false;
 		metaEvent->bitsHLT = 0;
 		if (tagHLTResults.label() != "")
 		{
@@ -255,13 +256,19 @@ public:
 				else
 					prescale = tmpPrescale.first * tmpPrescale.second;
 #endif
-				if (verbosity > 0 || printHltList)
-					std::cout << " => Adding prescale for trigger: '" << name
-						<< " with value: " << prescale << std::endl;
-
 				if (metaLumi->hltPrescales[i] == 0)
+				{
+					if (verbosity > 0 || printHltList)
+						std::cout << " => Adding prescale for trigger: '" << name
+							<< " with value: " << prescale << std::endl;
 					metaLumi->hltPrescales[i] = prescale;
-				assert(metaLumi->hltPrescales[i] == prescale);
+				}
+				if (metaLumi->hltPrescales[i] != prescale)
+				{
+					if (this->verbosity > 0)
+						std::cout << "!!!!!!!!!!! the prescale of " << name << " has changed with respect to the beginning of the luminosity section from " << metaLumi->hltPrescales[i] << " to " << prescale << std::endl;
+					triggerPrescaleError = true;
+				}
 			}
 		}
 		else
@@ -269,6 +276,7 @@ public:
 			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
 				metaLumi->hltPrescales[i] = 1;
 		}
+
 		// Set L1 trigger bits
 		metaEvent->bitsL1 = 0;
 		bool bPhysicsDeclared = true;
@@ -288,6 +296,10 @@ public:
 		// Physics declared
 		if (bPhysicsDeclared)
 			metaEvent->bitsUserFlags |= KFlagPhysicsDeclared;
+
+		// Detection of unexpected trigger prescale change
+		if (triggerPrescaleError)
+			metaEvent->bitsUserFlags |= KFlagPrescaleError;
 
 		if (tagNoiseHCAL.label() != "")
 		{

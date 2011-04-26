@@ -62,6 +62,7 @@ const unsigned int KFlagHCALLooseNoise = 1 << 1;
 const unsigned int KFlagHCALTightNoise = 1 << 2;
 const unsigned int KFlagRecoErrors = 1 << 3;
 const unsigned int KFlagRecoWarnings = 1 << 4;
+const unsigned int KFlagPrescaleError = 1 << 5;
 
 struct KGenEventMetadata : public KEventMetadata
 {
