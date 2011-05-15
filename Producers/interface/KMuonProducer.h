@@ -131,10 +131,8 @@ public:
 		out.vertex.nTracks = 1;
 		out.vertex.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >();
 
-		out.eta_propag_barrel = -1000.;
-		out.eta_propag_endcap = -1000.;
-		out.phi_propag_barrel = -1000.;
-		out.phi_propag_endcap = -1000.;
+		out.eta_propagated = -1000.;
+		out.phi_propagated = -1000.;
 
 		// propagated values
 		if (in.innerTrack().isNonnull() && !noPropagation)
@@ -142,10 +140,8 @@ public:
 			TrajectoryStateOnSurface prop = propagatorToMuonSystem.extrapolate(in);
 			if (prop.isValid())
 			{
-				out.eta_propag_barrel = prop.globalPosition().eta();
-				out.eta_propag_endcap = prop.globalPosition().eta();
-				out.phi_propag_barrel = prop.globalPosition().phi();
-				out.phi_propag_endcap = prop.globalPosition().phi();
+				out.eta_propagated = prop.globalPosition().eta();
+				out.phi_propagated = prop.globalPosition().phi();
 			}
 		}
 
