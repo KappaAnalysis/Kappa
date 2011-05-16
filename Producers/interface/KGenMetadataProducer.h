@@ -83,7 +83,7 @@ public:
 			if (event.getByLabel(puInfoSource, puHandle) && puHandle.isValid())
 				nPU = puHandle->getPU_NumInteractions();
 		}
-		this->metaEvent->numInteractions = (unsigned char)std::min(255, nPU);
+		this->metaEvent->numPUInteractions = (unsigned char)std::min(255, nPU);
 
 		return true;
 	}
