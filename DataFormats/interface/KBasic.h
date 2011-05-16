@@ -31,6 +31,12 @@ struct KDataVertex
 };
 typedef std::vector<KDataVertex> KDataVertices;
 
+struct KVertexSummary
+{
+	KDataVertex pv;
+	unsigned int nVertices;
+}
+
 struct KDataBeamSpot
 {
 	RMPoint position;

@@ -19,8 +19,9 @@ public:
 	KVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiVectorProducer<edm::View<reco::Vertex>, KVertexProducer_Product>(cfg, _event_tree, _run_tree) {}
 	virtual ~KVertexProducer() {};
-protected:
-	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
+
+	// Static method for filling a vertex in other producers
+	static void fillVertex(const SingleInputType &in, SingleOutputType &out)
 	{
 		out.position = in.position();
 		out.fake = in.isFake();
@@ -29,6 +30,11 @@ protected:
 		out.chi2 = in.chi2();
 		out.nDOF = in.ndof();
 		out.covariance = in.covariance();
+	}
+protected:
+	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
+	{
+		fillVertex(in, out);
 	}
 };
 

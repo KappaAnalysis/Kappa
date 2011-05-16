@@ -33,6 +33,8 @@ KTrackSummary
 KDataVertex
 KDataVertices
 
+KVertexSummary
+
 KDataBeamSpot
 KDataBeamSpots
 
