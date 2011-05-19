@@ -73,6 +73,7 @@ KProvenance
 
 KLumiMetadata
 KGenLumiMetadata
+KDataLumiMetadata
 
 KEventMetadata
 KGenEventMetadata

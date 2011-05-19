@@ -85,6 +85,7 @@ namespace
 
 		KLumiMetadata kappa_lumimetadata;
 		KGenLumiMetadata kappa_genlumimetadata;
+		KDataLumiMetadata kappa_datalumimetadata;
 
 		KEventMetadata kappa_eventmetadata;
 		KGenEventMetadata kappa_geneventmetadata;

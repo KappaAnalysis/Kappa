@@ -16,6 +16,7 @@
 
 #include "../interface/KMetadataProducer.h"
 #include "../interface/KGenMetadataProducer.h"
+#include "../interface/KDataMetadataProducer.h"
 #include "../interface/KLorentzProducer.h"
 #include "../interface/KMETProducer.h"
 #include "../interface/KPFMETProducer.h"
@@ -122,7 +123,12 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KMetadataProducer<KMetadata_Product> >(psConfig, "Metadata");
 			break;
 		}
-		else if (active[i] == "GenMetadata")
+		if (active[i] == "DataMetadata")
+		{
+			addProducer<KDataMetadataProducer<KDataMetadata_Product> >(psConfig, "Metadata");
+			break;
+		}
+		if (active[i] == "GenMetadata")
 		{
 			addProducer<KGenMetadataProducer<KGenMetadata_Product> >(psConfig, "Metadata");
 			break;
@@ -134,6 +140,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 	{
 		std::cout << "Init producer " << active[i] << std::endl;
 		if (active[i] == "Metadata")
+			continue;
+		else if (active[i] == "DataMetadata")
 			continue;
 		else if (active[i] == "GenMetadata")
 			continue;

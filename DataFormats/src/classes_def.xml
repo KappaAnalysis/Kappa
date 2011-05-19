@@ -70,6 +70,7 @@
 
 	<class name="KLumiMetadata"/>
 	<class name="KGenLumiMetadata"/>
+	<class name="KDataLumiMetadata"/>
 
 	<class name="KEventMetadata"/>
 	<class name="KGenEventMetadata"/>

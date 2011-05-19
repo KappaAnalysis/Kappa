@@ -31,6 +31,17 @@ struct KGenLumiMetadata : public KLumiMetadata
 	double xSectionInt;
 };
 
+struct KDataLumiMetadata : public KLumiMetadata
+{
+	float avgInsDelLumi;
+	float avgInsDelLumiErr;
+	float avgInsRecLumi;
+	float avgInsRecLumiErr;
+	float deadFrac;
+	float lumiSectionLength;
+	short lumiSecQual;
+};
+
 /* EVENT METADATA */
 struct KEventMetadata
 {
