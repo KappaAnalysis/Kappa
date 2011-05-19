@@ -35,7 +35,7 @@ struct KVertexSummary
 {
 	KDataVertex pv;
 	unsigned int nVertices;
-}
+};
 
 struct KDataBeamSpot
 {

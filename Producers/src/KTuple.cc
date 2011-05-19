@@ -22,6 +22,7 @@
 #include "../interface/KTrackProducer.h"
 #include "../interface/KTowerProducer.h"
 #include "../interface/KVertexProducer.h"
+#include "../interface/KVertexSummaryProducer.h"
 #include "../interface/KMuonProducer.h"
 #include "../interface/KCaloJetProducer.h"
 #include "../interface/KPFJetProducer.h"
@@ -146,6 +147,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KMuonProducer>(psConfig, active[i]);
 		else if (active[i] == "Vertex")
 			addProducer<KVertexProducer>(psConfig, active[i]);
+		else if (active[i] == "VertexSummary")
+			addProducer<KVertexSummaryProducer>(psConfig, active[i]);
 		else if (active[i] == "BeamSpot")
 			addProducer<KBeamSpotProducer>(psConfig, active[i]);
 		else if (active[i] == "Tracks")

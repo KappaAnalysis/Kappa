@@ -134,51 +134,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		printErrorsAndWarnings = cms.bool(False),
 	),
 
-	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
-		muons = cms.PSet(
-			src = cms.InputTag("muons"),
-			# track/ecal/hcal iso are directly taken from reco instead...
-			#srcMuonIsolationTrack = cms.InputTag("muIsoDepositTk"),
-			#srcMuonIsolationEcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","ecal"),
-			#srcMuonIsolationHcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","hcal"),
-			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
-			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
-			# Cuts for PF isolation
-			pfIsoVetoCone = cms.double(0.01),
-			pfIsoVetoMinPt = cms.double(0.5),
-		),
-		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
-		hltMaxdR = cms.double(0.2),
-		hltMaxdPt_Pt = cms.double(1.),
-		noPropagation = cms.bool(False),
-
-		useSimpleGeometry = cms.bool(True),
-		useTrack = cms.string("tracker"),
-		useState = cms.string("atVertex"),
-	),
-
-	CaloTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
-		caloRecoTaus = cms.PSet(
-			src = cms.InputTag("caloRecoTauProducer"),
-			discr = cms.vstring("caloRecoTau*")
-		)
-	),
-
-	PFTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
-		shrinkingConePFTaus = cms.PSet(
-			src = cms.InputTag("shrinkingConePFTauProducer"),
-			discr = cms.vstring("shrinkingConePFTau*")
-		),
-		#fixedConePFTaus = cms.PSet(
-		#	src = cms.InputTag("fixedConePFTauProducer"),
-		#	discr = cms.vstring("fixedConePFTau*")
-		#),
-		hpsPFTaus = cms.PSet(
-			src = cms.InputTag("hpsPFTauProducer"),
-			discr = cms.vstring("hpsPFTau*")
-		)
-	),
-
 	TriggerObjects = cms.PSet(
 		kappaNoRegEx,
 		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
@@ -259,26 +214,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	Partons = cms.PSet(kappaNoCut, kappaNoRegEx,
-		genParticles = cms.PSet(
-			src = cms.InputTag("genParticles"),
-			selectedStatus = cms.int32(8),      # select, if (1<<status & selectedStatus) or selectedStatus==0
-			selectedParticles = cms.vint32(),   # empty = all pdgIds possible
-		),
-		genStableMuons = cms.PSet(
-			src = cms.InputTag("genParticles"),
-			selectedStatus = cms.int32(2),      # select, if (1<<status & selectedStatus) or selectedStatus==0
-			selectedParticles = cms.vint32(13, -13),   # empty = all pdgIds possible
-		),
-	),
-
-	GenTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
-		genTaus = cms.PSet(
-			src = cms.InputTag("genParticles"),
-			selectedStatus = cms.int32(0)       # select, if (1<<status & selectedStatus) or selectedStatus==0
-		)
-	),
-
 	TrackSummary = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
@@ -290,19 +225,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	PFJets = cms.PSet(kappaNoCut,
-		manual = cms.VInputTag(),
-
-		whitelist = cms.vstring("recoPFJets_.*Jet"),
-		blacklist = cms.vstring(),
-
-		rename = cms.vstring(
-			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)$7"
-		),
-		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(),
-	),
-
 	Vertex = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
@@ -311,6 +233,17 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		rename = cms.vstring(),
 		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
+
+	VertexSummary = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring(".*offlinePrimaryVertices.*"),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring("$ => Summary"),
+		rename_whitelist = cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
 
@@ -369,11 +302,54 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
+	Partons = cms.PSet(kappaNoCut, kappaNoRegEx,
+		genParticles = cms.PSet(
+			src = cms.InputTag("genParticles"),
+			selectedStatus = cms.int32(8),      # select, if (1<<status & selectedStatus) or selectedStatus==0
+			selectedParticles = cms.vint32(),   # empty = all pdgIds possible
+		),
+		genStableMuons = cms.PSet(
+			src = cms.InputTag("genParticles"),
+			selectedStatus = cms.int32(2),      # select, if (1<<status & selectedStatus) or selectedStatus==0
+			selectedParticles = cms.vint32(13, -13),   # empty = all pdgIds possible
+		),
+	),
+
 	PFCandidates = cms.PSet(kappaNoRename, kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFCandidates_particleFlow"),
 		blacklist = cms.vstring(),
+	),
+
+	JetArea = cms.PSet(kappaNoRename, kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("kt6PFJetsRho_rho"),
+		blacklist = cms.vstring(),
+	),
+
+	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
+		muons = cms.PSet(
+			src = cms.InputTag("muons"),
+			# track/ecal/hcal iso are directly taken from reco instead...
+			#srcMuonIsolationTrack = cms.InputTag("muIsoDepositTk"),
+			#srcMuonIsolationEcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","ecal"),
+			#srcMuonIsolationHcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","hcal"),
+			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
+			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
+			# Cuts for PF isolation
+			pfIsoVetoCone = cms.double(0.01),
+			pfIsoVetoMinPt = cms.double(0.5),
+		),
+		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
+		hltMaxdR = cms.double(0.2),
+		hltMaxdPt_Pt = cms.double(1.),
+		noPropagation = cms.bool(False),
+
+		useSimpleGeometry = cms.bool(True),
+		useTrack = cms.string("tracker"),
+		useState = cms.string("atVertex"),
 	),
 
 	L1Muons = cms.PSet(kappaNoCut,
@@ -389,10 +365,46 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	JetArea = cms.PSet(kappaNoRename, kappaNoCut,
+	PFJets = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("kt6PFJetsRho_rho"),
-		blacklist = cms.vstring(),
+		whitelist = cms.vstring("recoPFJets_.*Jet"),
+		blacklist = cms.vstring("*Rho"),
+
+		rename = cms.vstring(
+			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)$7"
+		),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
 	),
+
+	GenTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+		genTaus = cms.PSet(
+			src = cms.InputTag("genParticles"),
+			selectedStatus = cms.int32(0)       # select, if (1<<status & selectedStatus) or selectedStatus==0
+		)
+	),
+
+	CaloTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+		caloRecoTaus = cms.PSet(
+			src = cms.InputTag("caloRecoTauProducer"),
+			discr = cms.vstring("caloRecoTau*")
+		)
+	),
+
+	PFTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+		shrinkingConePFTaus = cms.PSet(
+			src = cms.InputTag("shrinkingConePFTauProducer"),
+			discr = cms.vstring("shrinkingConePFTau*")
+		),
+		#fixedConePFTaus = cms.PSet(
+		#	src = cms.InputTag("fixedConePFTauProducer"),
+		#	discr = cms.vstring("fixedConePFTau*")
+		#),
+		hpsPFTaus = cms.PSet(
+			src = cms.InputTag("hpsPFTauProducer"),
+			discr = cms.vstring("hpsPFTau*")
+		)
+	),
+
 )
