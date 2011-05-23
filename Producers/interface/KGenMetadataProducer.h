@@ -4,6 +4,7 @@
 #include "KMetadataProducer.h"
 #include <SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h>
 #include <SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h>
+#include <SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h>
 
 // MC data
 struct KGenMetadata_Product
@@ -22,7 +23,8 @@ public:
 		KMetadataProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
 		ignoreExtXSec(cfg.getParameter<bool>("ignoreExtXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
-		tagSource(cfg.getParameter<edm::InputTag>("genSource")) {}
+		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
+		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource")) {}
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
@@ -66,13 +68,24 @@ public:
 		this->metaEvent->weight = hEventInfo->weight();
 		this->metaEvent->alphaQCD = hEventInfo->alphaQCD();
 		//metaEvent->alphaQED = hEventInfo->alphaQED();
+
+		// We write the PileUp information into the nBX field since it is
+		// unused anyway in Monte Carlo. This is a small hack and it will
+		// be done right when we make the next dictionary change. See also
+		// the dictchanges branch.
+		edm::Handle<PileupSummaryInfo> puHandle;
+		if (event.getByLabel(puInfoSource, puHandle))
+			this->metaEvent->nBX = puHandle->getPU_NumInteractions();
+		else
+			this->metaEvent->nBX = 0;
+
 		return true;
 	}
 
 protected:
 	bool ignoreExtXSec;
 	int forceLumi;
-	edm::InputTag tagSource;
+	edm::InputTag tagSource, puInfoSource;
 };
 
 #endif
