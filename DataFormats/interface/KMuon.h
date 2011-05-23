@@ -3,6 +3,7 @@
 
 #include "KTrack.h"
 #include "KMetadata.h"
+#include "KJetMET.h"
 
 struct KDataMuon : KDataLV
 {
@@ -60,6 +61,15 @@ struct KDataMuon : KDataLV
 			if(lumimetadata->hltNamesMuons[i] == name)
 				return (hltMatch & (1ull << i)) != 0;
 		return false; // Named HLT does not exist
+	}
+
+	double puSubtractedPFIso04(const KJetArea* jetArea) const
+	{
+		// jetArea == NULL --> no PU subtraction
+		if(jetArea == NULL) return pfIso04;
+
+		static const double coneSize = 0.4;
+		return std::max(0.0, pfIso04 - jetArea->median * coneSize * coneSize * 3.14159);
 	}
 };
 typedef std::vector<KDataMuon> KDataMuons;
