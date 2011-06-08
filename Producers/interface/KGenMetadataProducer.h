@@ -69,15 +69,25 @@ public:
 		this->metaEvent->alphaQCD = hEventInfo->alphaQCD();
 		//metaEvent->alphaQED = hEventInfo->alphaQED();
 
+		int nPU = 0;
+		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
+		if (event.getByLabel(puInfoSource, puHandles) && puHandles.isValid())
+		{
+			for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
+				nPU += it->getPU_NumInteractions();
+		}
+		else
+		{
+			// in some versions of CMSSW it's not a vector:
+			edm::Handle<PileupSummaryInfo> puHandle;
+			if (event.getByLabel(puInfoSource, puHandle) && puHandle.isValid())
+				nPU = puHandle->getPU_NumInteractions();
+		}
 		// We write the PileUp information into the nBX field since it is
 		// unused anyway in Monte Carlo. This is a small hack and it will
 		// be done right when we make the next dictionary change. See also
 		// the dictchanges branch.
-		edm::Handle<PileupSummaryInfo> puHandle;
-		if (event.getByLabel(puInfoSource, puHandle))
-			this->metaEvent->nBX = puHandle->getPU_NumInteractions();
-		else
-			this->metaEvent->nBX = 0;
+		this->metaEvent->nBX = (unsigned char)std::min(255, nPU);
 
 		return true;
 	}
