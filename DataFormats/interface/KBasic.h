@@ -3,7 +3,7 @@
 
 #include "KLorentzVector.h"
 #include <vector>
-#include "Math/SMatrix.h"
+#include <Math/SMatrix.h>
 
 struct KLV
 {

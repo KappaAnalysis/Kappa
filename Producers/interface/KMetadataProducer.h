@@ -5,26 +5,27 @@
 #include <algorithm>
 
 #include "KBaseProducer.h"
-#include <FWCore/ParameterSet/interface/ParameterSet.h>
-#include <FWCore/Utilities/interface/InputTag.h>
 #include "../../DataFormats/interface/KMetadata.h"
 
+#include <FWCore/Framework/interface/ConstProductRegistry.h>
+#include <FWCore/MessageLogger/interface/ELseverityLevel.h>
+#include <FWCore/MessageLogger/interface/ErrorSummaryEntry.h>
+#include <FWCore/ParameterSet/interface/ParameterSet.h>
+#include <FWCore/Utilities/interface/InputTag.h>
+
 #include <DataFormats/Common/interface/TriggerResults.h>
-#include <HLTrigger/HLTcore/interface/HLTConfigProvider.h>
-#include <L1Trigger/GlobalTriggerAnalyzer/interface/L1GtUtils.h>
-#include <DataFormats/METReco/interface/HcalNoiseSummary.h>
+#include <DataFormats/HLTReco/interface/TriggerEvent.h>
 #include <DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h>
-#include "DataFormats/VertexReco/interface/Vertex.h"
-#include "DataFormats/VertexReco/interface/VertexFwd.h"
-#include "DataFormats/TauReco/interface/CaloTauDiscriminator.h"
-#include "DataFormats/TauReco/interface/PFTauDiscriminator.h"
+#include <L1Trigger/GlobalTriggerAnalyzer/interface/L1GtUtils.h>
+#include <HLTrigger/HLTcore/interface/HLTConfigProvider.h>
 
-#include "DataFormats/HLTReco/interface/TriggerEvent.h"
+#include <DataFormats/METReco/interface/HcalNoiseSummary.h>
 
-#include "FWCore/MessageLogger/interface/ELseverityLevel.h"
-#include "FWCore/MessageLogger/interface/ErrorSummaryEntry.h"
+#include <DataFormats/TauReco/interface/CaloTauDiscriminator.h>
+#include <DataFormats/TauReco/interface/PFTauDiscriminator.h>
 
-#include "FWCore/Framework/interface/ConstProductRegistry.h"
+#include <DataFormats/VertexReco/interface/VertexFwd.h>
+#include <DataFormats/VertexReco/interface/Vertex.h>
 
 #define NEWHLT
 

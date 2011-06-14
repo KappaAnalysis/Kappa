@@ -2,7 +2,7 @@
 #define KAPPA_DEBUG_H
 
 #include <iostream>
-#include "../src/classes.h"
+#include "Kappa.h"
 
 std::ostream &operator<<(std::ostream &os, const KLV &lv);
 std::ostream &operator<<(std::ostream &os, const KDataLV &lv);

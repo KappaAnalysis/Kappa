@@ -2,7 +2,6 @@
 #define KAPPA_MULTIPRODUCER_H
 
 #include "KBaseProducer.h"
-#include <FWCore/ParameterSet/interface/ParameterSet.h>
 #include <FWCore/Utilities/interface/InputTag.h>
 #include "../../DataFormats/interface/KBasic.h"
 

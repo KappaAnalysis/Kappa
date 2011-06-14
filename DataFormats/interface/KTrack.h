@@ -2,7 +2,7 @@
 #define KAPPA_TRACK_H
 
 #include "KBasic.h"
-#include "Math/GenVector/VectorUtil.h"
+#include <Math/GenVector/VectorUtil.h>
 
 enum KTrackQuality
 {
