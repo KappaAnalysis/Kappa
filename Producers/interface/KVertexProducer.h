@@ -9,7 +9,7 @@
 struct KVertexProducer_Product
 {
 	typedef std::vector<KDataVertex> type;
-	static const std::string id() { return "vector<KDataVertex>"; };
+	static const std::string id() { return "std::vector<KDataVertex>"; };
 	static const std::string producer() { return "KVertexProducer"; };
 };
 
