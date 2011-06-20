@@ -66,6 +66,9 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"^HLT_L[12].*",
 			"^HLT_QuadJet.*_IsoPFTau.*",
 			"^HLT_DiJet([0-9]+)_MET([0-9]+)_.*",
+			"^HLT_EightJet.*",
+			"^HLT_FatJetMass750.*",
+			"^HLT_.*DoubleIsoPFTau([0-9]+)_.*"
 		),
 		printHltList = cms.bool(False),
 
