@@ -3,9 +3,7 @@
 // Need thin wrapper class for ostream operator overloading
 // - overkill here, but simplifies vector output later
 template<typename T> struct KLVWrap { KLVWrap(const T &_p4) : p4(_p4) {}; const T &p4; };
-
-template<typename T>
-std::ostream &operator<<(std::ostream &os, const KLVWrap<T> &lv)
+template<typename T> std::ostream &operator<<(std::ostream &os, const KLVWrap<T> &lv)
 {
 	return os << "(pt=" << lv.p4.pt() << ", eta=" << lv.p4.eta() << ", phi="
 		<< lv.p4.phi() << ", E=" << lv.p4.E()  << ", m=" << lv.p4.M() << ")";
@@ -114,10 +112,11 @@ std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 	return os << "Weight: " << m.weight;
 }
 
-void displayHLT(std::ostream &os, KLumiMetadata *metaLumi, KEventMetadata *metaEvent)
+std::ostream &displayHLT(std::ostream &os, const KLumiMetadata &metaLumi, const KEventMetadata &metaEvent)
 {
-	for (size_t hltIdx = 0; hltIdx < metaLumi->hltNames.size(); ++hltIdx)
-		if (metaEvent->bitsHLT & ((unsigned long long)1 << hltIdx))
-			os << hltIdx << ":" << metaLumi->hltNames[hltIdx] << " ";
+	for (size_t hltIdx = 0; hltIdx < metaLumi.hltNames.size(); ++hltIdx)
+		if (metaEvent.bitsHLT & ((unsigned long long)1 << hltIdx))
+			os << hltIdx << ":" << metaLumi.hltNames[hltIdx] << " ";
 		os << std::endl;
+	return os;
 }
