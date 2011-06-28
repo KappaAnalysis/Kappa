@@ -69,12 +69,13 @@ public:
 		this->metaEvent->alphaQCD = hEventInfo->alphaQCD();
 		//metaEvent->alphaQED = hEventInfo->alphaQED();
 
-		int nPU = 0;
+		unsigned int nPU = 0;
 		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
 		if (event.getByLabel(puInfoSource, puHandles) && puHandles.isValid())
 		{
 			for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
-				nPU += it->getPU_NumInteractions();
+				if (it->getBunchCrossing() == 0)
+					nPU = it->getPU_NumInteractions();
 		}
 		else
 		{
@@ -87,7 +88,7 @@ public:
 		// unused anyway in Monte Carlo. This is a small hack and it will
 		// be done right when we make the next dictionary change. See also
 		// the dictchanges branch.
-		this->metaEvent->nBX = (unsigned char)std::min(255, nPU);
+		this->metaEvent->nBX = (unsigned char)std::min((unsigned int)255, nPU);
 
 		return true;
 	}
