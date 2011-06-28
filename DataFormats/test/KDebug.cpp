@@ -47,9 +47,18 @@ std::ostream &operator<<(std::ostream &os, const KParton &p)
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
 {
 	os << static_cast<KDataLV>(jet) << std::endl;
-	os << "Const: " << jet.nConst << " n90: " << jet.n90 << " n90Hits: " << jet.n90Hits << std::endl;
+	os << "#Const: " << jet.nConst << " n90: " << jet.n90 << " n90Hits: " << jet.n90Hits << std::endl;
 	os << "fHPD: " << jet.fHPD << " fRBX: " << jet.fRBX << " HCAL noise: " << jet.noiseHCAL << std::endl;
 	os << "fEM: " << jet.fEM << " fHO: " << jet.fHO << " area: " << jet.area << std::endl;
+	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataPFJet &jet)
+{
+	os << static_cast<KDataLV>(jet) << std::endl;
+	os << "#Const: " << jet.nConst << " #Charged: " << jet.nCharged << " area: " << jet.area << std::endl;
+	os << "Charged (em,had): " << jet.chargedEMFraction << ", " << jet.chargedHadFraction << std::endl;
+	os << "Neutral (em,had): " << jet.neutralEMFraction << ", " << jet.neutralHadFraction << std::endl;
 	return os;
 }
 
@@ -97,8 +106,7 @@ std::ostream &operator<<(std::ostream &os, const KGenLumiMetadata &m)
 	os << static_cast<KLumiMetadata>(m) << std::endl;
 	return os
 		<< "ext. xSec: " << m.xSectionExt << " "
-		<< "int. xSec: " << m.xSectionInt
-		<< std::endl;
+		<< "int. xSec: " << m.xSectionInt;
 }
 
 std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
@@ -109,7 +117,9 @@ std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
 std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 {
 	os << static_cast<KEventMetadata>(m) << std::endl;
-	return os << "Weight: " << m.weight;
+	return os
+		<< "Weight: " << m.weight
+		<< "#PU: " << m.numPUInteractions;
 }
 
 std::ostream &displayHLT(std::ostream &os, const KLumiMetadata &metaLumi, const KEventMetadata &metaEvent)
