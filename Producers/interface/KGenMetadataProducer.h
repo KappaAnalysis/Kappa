@@ -69,12 +69,13 @@ public:
 		this->metaEvent->alphaQCD = hEventInfo->alphaQCD();
 		//metaEvent->alphaQED = hEventInfo->alphaQED();
 
-		int nPU = 0;
+		unsigned int nPU = 0;
 		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
 		if (event.getByLabel(puInfoSource, puHandles) && puHandles.isValid())
 		{
 			for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
-				nPU += it->getPU_NumInteractions();
+				if (it->getBunchCrossing() == 0)
+					nPU = it->getPU_NumInteractions();
 		}
 		else
 		{
@@ -83,7 +84,7 @@ public:
 			if (event.getByLabel(puInfoSource, puHandle) && puHandle.isValid())
 				nPU = puHandle->getPU_NumInteractions();
 		}
-		this->metaEvent->numPUInteractions = (unsigned char)std::min(255, nPU);
+		this->metaEvent->numPUInteractions = (unsigned char)std::min((unsigned int)255, nPU);
 
 		return true;
 	}
