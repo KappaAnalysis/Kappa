@@ -38,6 +38,7 @@
 #include "../interface/KPFCandidateProducer.h"
 #include "../interface/KL1MuonProducer.h"
 #include "../interface/KJetAreaProducer.h"
+#include "../interface/KL2MuonProducer.h"
 // #include "../interface/KHepMCPartonProducer.h"
 
 int KBaseProducer::verbosity = 0;
@@ -187,6 +188,12 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KL1MuonProducer>(psConfig, active[i]);
 		else if (active[i] == "JetArea")
 			addProducer<KJetAreaProducer>(psConfig, active[i]);
+		else if (active[i] == "L2MuonTrajectorySeed")
+			addProducer<KL2MuonTrajectorySeedProducer>(psConfig, active[i]);
+		else if (active[i] == "L3MuonTrajectorySeed")
+			addProducer<KL3MuonTrajectorySeedProducer>(psConfig, active[i]);
+		else if (active[i] == "MuonTriggerCandidates")
+			addProducer<KMuonTriggerCandidateProducer>(psConfig, active[i]);
 		else
 		{
 			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;
