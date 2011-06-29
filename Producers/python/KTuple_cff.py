@@ -332,11 +332,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	JetArea = cms.PSet(kappaNoRename, kappaNoCut,
+	JetArea = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("kt6PFJetsRho_rho"),
 		blacklist = cms.vstring(),
+
+		rename = cms.vstring("kt6PFJetsRho => KT6Area"),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
 	),
 
 	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
@@ -383,7 +387,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_.*Jet"),
-		blacklist = cms.vstring("*Rho"),
+		blacklist = cms.vstring("Rho"),
 
 		rename = cms.vstring(
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)$7"
