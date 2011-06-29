@@ -235,15 +235,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	Vertex = cms.PSet(kappaNoCut,
+	Vertex = cms.PSet(kappaNoCut, kappaNoRename,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring(".*offlinePrimaryVertices.*"),
 		blacklist = cms.vstring(),
-
-		rename = cms.vstring(),
-		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(),
 	),
 
 	VertexSummary = cms.PSet(kappaNoCut,
@@ -268,7 +264,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("reco.*Jets_.*Jet"),
-		blacklist = cms.vstring("recoCastor.*"),
+		blacklist = cms.vstring("Castor", "BasicJet"),
 
 		rename = cms.vstring(
 			"JetPlusTrack(.*) => $1JPT",
@@ -276,7 +272,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
 		),
 		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(".*CaloJets",".*PFJets"),
+		rename_blacklist = cms.vstring(".*CaloJets", ".*PFJets"),
 	),
 
 	Tower = cms.PSet(kappaNoCut,
@@ -305,11 +301,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	PFMET = cms.PSet(kappaNoRename,
+	PFMET = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFMET"),
 		blacklist = cms.vstring(),
+
+		rename = cms.vstring("pfMet => PFMET"),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
 	),
 
 	Partons = cms.PSet(kappaNoCut, kappaNoRegEx,
