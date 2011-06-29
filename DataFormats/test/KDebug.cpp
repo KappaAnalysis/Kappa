@@ -26,60 +26,91 @@ std::ostream &operator<<(std::ostream &os, const KDataBeamSpot &bs)
 
 std::ostream &operator<<(std::ostream &os, const KDataMET &met)
 {
-	return os << static_cast<KDataLV>(met) << " sumEt=" << met.sumEt;
+	return os << static_cast<const KDataLV>(met) << " sumEt=" << met.sumEt;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataPFMET &met)
 {
-	return os << static_cast<KDataMET>(met) << " cEMF=" << met.chargedEMEtFraction << " cHADF=" << met.chargedHadEtFraction << " nEMF=" << met.neutralEMEtFraction << " nHADF=" << met.neutralHadEtFraction << " MuonF=" << met.muonEtFraction << " type6F=" << met.type6EtFraction << " type7F=" << met.type7EtFraction;
+	os << static_cast<const KDataMET>(met) << std::endl;
+	os << "\tCharged (em,had): " << met.chargedEMEtFraction << ", " << met.chargedHadEtFraction << std::endl;
+	os << "\tNeutral (em,had): " << met.neutralEMEtFraction << ", " << met.neutralHadEtFraction << std::endl;
+	os << "\tMuonF=" << met.muonEtFraction << " type6F=" << met.type6EtFraction << " type7F=" << met.type7EtFraction;
+	return os;
 }
 
 std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 {
-	return os << "#Tracks=" << s.nTracks << ", #HQ Tracks=" << s.nTracksHQ;
+	return os << "#Tracks=" << s.nTracks << " #HQ Tracks=" << s.nTracksHQ;
 }
 
 std::ostream &operator<<(std::ostream &os, const KParton &p)
 {
-	return os << p.status() << "|" << p.pdgId() << "|" << KLVWrap<KParton::KInternalLV>(p.p4);
+	return os << KLVWrap<KParton::KInternalLV>(p.p4)
+		<< " status=" << p.status() << " pdgid=" << p.pdgId();
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
 {
-	os << static_cast<KDataLV>(jet) << std::endl;
-	os << "#Const: " << jet.nConst << " n90: " << jet.n90 << " n90Hits: " << jet.n90Hits << std::endl;
-	os << "fHPD: " << jet.fHPD << " fRBX: " << jet.fRBX << " HCAL noise: " << jet.noiseHCAL << std::endl;
-	os << "fEM: " << jet.fEM << " fHO: " << jet.fHO << " area: " << jet.area << std::endl;
-	return os;
+	os << static_cast<const KDataLV>(jet) << std::endl;
+	os << "\t#Const=" << jet.nConst << " n90=" << jet.n90 << " n90Hits=" << jet.n90Hits << std::endl;
+	os << "\tfHPD=" << jet.fHPD << " fRBX=" << jet.fRBX << " HCAL noise=" << jet.noiseHCAL << std::endl;
+	return os << "\tfEM=" << jet.fEM << " fHO=" << jet.fHO << " area=" << jet.area;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataPFJet &jet)
 {
-	os << static_cast<KDataLV>(jet) << std::endl;
-	os << "#Const: " << jet.nConst << " #Charged: " << jet.nCharged << " area: " << jet.area << std::endl;
-	os << "Charged (em,had): " << jet.chargedEMFraction << ", " << jet.chargedHadFraction << std::endl;
-	os << "Neutral (em,had): " << jet.neutralEMFraction << ", " << jet.neutralHadFraction << std::endl;
-	return os;
+	os << static_cast<const KDataLV>(jet) << std::endl;
+	os << "\tCharged (em,had): " << jet.chargedEMFraction << ", " << jet.chargedHadFraction << std::endl;
+	os << "\tNeutral (em,had): " << jet.neutralEMFraction << ", " << jet.neutralHadFraction << std::endl;
+	return os << "\t#Const=" << jet.nConst << " #Charged=" << jet.nCharged << " area=" << jet.area;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataTau &tau)
 {
-	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge;
+	return os << static_cast<const KDataLV>(tau) << " charge=" << tau.charge;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau)
 {
-	return os << static_cast<KDataLV>(tau) << " charge=" << tau.charge;
+	return os << static_cast<const KDataLV>(tau) << " charge=" << tau.charge;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau)
 {
-	return os << static_cast<const KParton&>(tau) << " p4_vis=" << static_cast<RMLV>(tau.p4_vis) << " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
+	return os << static_cast<const KParton>(tau)
+		<< " p4_vis=" << KLVWrap<KDataLV::KInternalLV>(tau.p4_vis)
+		<< " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataVertex &vertex)
 {
-	return os << vertex.position << " nTracks=" << vertex.nTracks << " fake=" << vertex.fake << " chi2=" << vertex.chi2 << " nDOF=" << vertex.nDOF;
+	return os << vertex.position
+		<< " #Tracks=" << vertex.nTracks << " fake=" << vertex.fake
+		<< " chi2=" << vertex.chi2 << " DOF=" << vertex.nDOF;
+}
+
+std::ostream &operator<<(std::ostream &os, const KVertexSummary &vs)
+{
+	return os << vs.pv << " #Vertices=" << vs.nVertices;
+}
+
+std::ostream &operator<<(std::ostream &os, const KJetArea &ja)
+{
+	return os << "median=" << ja.median << " sigma=" << ja.sigma;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataHit &hit)
+{
+	return os << "theta=" << hit.theta << " phi=" << hit.phi
+		<< " pAbs=" << hit.pAbs << " Eloss=" << hit.energyLoss;
+}
+
+std::ostream &operator<<(std::ostream &os, const KPFCandidate &cand)
+{
+	return os << static_cast<const KDataLV>(cand)
+		<< " charge=" << cand.charge() << " pdgid=" << cand.pdgId()
+		<< " deltaP=" << cand.deltaP
+		<< " Eecal=" << cand.ecalEnergy << " Ehcal=" << cand.hcalEnergy;
 }
 
 ////////////////////////////////////////////////////////////
@@ -103,10 +134,19 @@ std::ostream &operator<<(std::ostream &os, const KLumiMetadata &m)
 
 std::ostream &operator<<(std::ostream &os, const KGenLumiMetadata &m)
 {
-	os << static_cast<KLumiMetadata>(m) << std::endl;
+	os << static_cast<const KLumiMetadata>(m) << std::endl;
 	return os
 		<< "ext. xSec: " << m.xSectionExt << " "
 		<< "int. xSec: " << m.xSectionInt;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataLumiMetadata &m)
+{
+	os << static_cast<const KLumiMetadata>(m) << std::endl;
+	return os
+		<< "Delivered=" << m.avgInsDelLumi << "+/-" << m.avgInsDelLumiErr << std::endl
+		<< "Recorded=" << m.avgInsRecLumi << "+/-" << m.avgInsRecLumiErr << std::endl
+		<< "deadtime=" << m.deadFrac << " length=" << m.lumiSectionLength << " quality=" << m.lumiSecQual;
 }
 
 std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
@@ -116,7 +156,7 @@ std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
 
 std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 {
-	os << static_cast<KEventMetadata>(m) << std::endl;
+	os << static_cast<const KEventMetadata>(m) << std::endl;
 	return os
 		<< "Weight: " << m.weight
 		<< "#PU: " << m.numPUInteractions;

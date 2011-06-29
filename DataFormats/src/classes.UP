@@ -15,7 +15,10 @@ def writeDebugHeader():
 	for line in open('../test/KDebug.cpp', 'r').readlines():
 		if line.startswith('std::ostream'):
 			if 'operator<<' in line:
-				yield line.split('const')[1].split('&')[0].strip()
+				classname = line.split('const')[1].split('&')[0].strip()
+				yield classname
+				if "Vertex" in classname:
+					yield classname.replace("Vertex", "Vertices")
 			fp_DebugHeader.write(line.replace('\n', ';\n'))
 	fp_DebugHeader.write("""
 #include "KDebug.hxx"
