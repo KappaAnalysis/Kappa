@@ -261,11 +261,11 @@ public:
 				const std::string &name = metaLumi->hltNames[i];
 				unsigned int prescale = 0;
 #ifdef NEWHLT
-				std::pair<int,int> tmpPrescale = hltConfig.prescaleValues(event, setup, name);
-				if (tmpPrescale.first < 0 || tmpPrescale.second < 0)
+				std::pair<int, int> prescale_L1_HLT = hltConfig.prescaleValues(event, setup, name);
+				if (prescale_L1_HLT.first < 0 || prescale_L1_HLT.second < 0)
 					prescale = 0;
 				else
-					prescale = tmpPrescale.first * tmpPrescale.second;
+					prescale = prescale_L1_HLT.first * prescale_L1_HLT.second;
 #endif
 				if (metaLumi->hltPrescales[i] == 0)
 				{
