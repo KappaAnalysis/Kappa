@@ -31,6 +31,17 @@ struct KGenLumiMetadata : public KLumiMetadata
 	double xSectionInt;
 };
 
+struct KDataLumiMetadata : public KLumiMetadata
+{
+	float avgInsDelLumi;
+	float avgInsDelLumiErr;
+	float avgInsRecLumi;
+	float avgInsRecLumiErr;
+	float deadFrac;
+	float lumiSectionLength;
+	short lumiSecQual;
+};
+
 /* EVENT METADATA */
 struct KEventMetadata
 {
@@ -62,6 +73,7 @@ const unsigned int KFlagHCALLooseNoise = 1 << 1;
 const unsigned int KFlagHCALTightNoise = 1 << 2;
 const unsigned int KFlagRecoErrors = 1 << 3;
 const unsigned int KFlagRecoWarnings = 1 << 4;
+const unsigned int KFlagPrescaleError = 1 << 5;
 
 struct KGenEventMetadata : public KEventMetadata
 {

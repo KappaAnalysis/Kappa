@@ -15,80 +15,83 @@ namespace
 	struct dictionary
 	{
 
-		RMDataLV_Store kappa_rmdatalv_store;
-		RMDataLV kappa_rmdatalv;
+		RMDataLV_Store dict_rmdatalv_store;
+		RMDataLV dict_rmdatalv;
 
-		RMLV_Store kappa_rmlv_store;
-		RMLV kappa_rmlv;
-
-
-
-		KDataLV kappa_datalv;
-		KDataLVs kappa_datalvs;
-
-		KLV kappa_lv;
-		KLVs kappa_lvs;
-
-		KDataMET kappa_datamet;
-		KDataPFMET kappa_datapfmet;
-
-		KDataJet kappa_datajet;
-		KDataJets kappa_datajets;
-
-		KDataPFJet kappa_datapfjet;
-		KDataPFJets kappa_datapfjets;
-
-		KDataTrack kappa_datatrack;
-		KDataTracks kappa_datatracks;
-
-		KTrackSummary kappa_tracksummary;
-
-		KDataVertex kappa_datavertex;
-		KDataVertices kappa_datavertices;
-
-		KDataBeamSpot kappa_databeamspot;
-		KDataBeamSpots kappa_databeamspots;
-
-		KParton kappa_parton;
-		KPartons kappa_partons;
-
-		KDataMuon kappa_datamuon;
-		KDataMuons kappa_datamuons;
-
-		KDataTau kappa_datatau;
-		KDataTaus kappa_datataus;
-
-		KDataCaloTau kappa_datacalotau;
-		KDataCaloTaus kappa_datacalotaus;
-
-		KDataPFTau kappa_datapftau;
-		KDataPFTaus kappa_datapftaus;
-
-		KDataGenTau kappa_datagentau;
-		KDataGenTaus kappa_datagentaus;
-
-		KDataHit kappa_datahit;
-		KDataHits kappa_datahits;
-
-		KL1Muon kappa_l1muon;
-		KL1Muons kappa_l1muons;
-
-		KPFCandidate kappa_pfcandidate;
-		KPFCandidates kappa_pfcandidates;
-
-		KGenPhoton kappa_genphoton;
-		KGenPhotons kappa_genphotons;
-
-		KJetArea kappa_jetarea;
+		RMLV_Store dict_rmlv_store;
+		RMLV dict_rmlv;
 
 
-		KProvenance kappa_provenance;
 
-		KLumiMetadata kappa_lumimetadata;
-		KGenLumiMetadata kappa_genlumimetadata;
+		KDataLV dict_kdatalv;
+		KDataLVs dict_kdatalvs;
 
-		KEventMetadata kappa_eventmetadata;
-		KGenEventMetadata kappa_geneventmetadata;
+		KLV dict_klv;
+		KLVs dict_klvs;
+
+		KDataMET dict_kdatamet;
+		KDataPFMET dict_kdatapfmet;
+
+		KDataJet dict_kdatajet;
+		KDataJets dict_kdatajets;
+
+		KDataPFJet dict_kdatapfjet;
+		KDataPFJets dict_kdatapfjets;
+
+		KDataTrack dict_kdatatrack;
+		KDataTracks dict_kdatatracks;
+
+		KTrackSummary dict_ktracksummary;
+
+		KDataVertex dict_kdatavertex;
+		KDataVertices dict_kdatavertices;
+
+		KVertexSummary dict_kvertexsummary;
+
+		KDataBeamSpot dict_kdatabeamspot;
+		KDataBeamSpots dict_kdatabeamspots;
+
+		KParton dict_kparton;
+		KPartons dict_kpartons;
+
+		KDataMuon dict_kdatamuon;
+		KDataMuons dict_kdatamuons;
+
+		KDataTau dict_kdatatau;
+		KDataTaus dict_kdatataus;
+
+		KDataCaloTau dict_kdatacalotau;
+		KDataCaloTaus dict_kdatacalotaus;
+
+		KDataPFTau dict_kdatapftau;
+		KDataPFTaus dict_kdatapftaus;
+
+		KDataGenTau dict_kdatagentau;
+		KDataGenTaus dict_kdatagentaus;
+
+		KDataHit dict_kdatahit;
+		KDataHits dict_kdatahits;
+
+		KL1Muon dict_kl1muon;
+		KL1Muons dict_kl1muons;
+
+		KPFCandidate dict_kpfcandidate;
+		KPFCandidates dict_kpfcandidates;
+
+		KGenPhoton dict_genphoton;
+		KGenPhotons dict_genphotons;
+
+		KJetArea dict_kjetarea;
+
+
+		KProvenance dict_kprovenance;
+
+		KLumiMetadata dict_klumimetadata;
+		KGenLumiMetadata dict_kgenlumimetadata;
+		KDataLumiMetadata dict_kdatalumimetadata;
+
+		KEventMetadata dict_keventmetadata;
+		KGenEventMetadata dict_kgeneventmetadata;
 
 	};
 }

@@ -3,28 +3,25 @@
 
 #include "KBaseMultiLVProducer.h"
 #include "KTrackProducer.h"
-#include <DataFormats/MuonReco/interface/Muon.h>
+
+#include <bitset>
+#include <TMath.h>
+#include <Math/GenVector/VectorUtil.h>
+#include <DataFormats/Common/interface/Ref.h>
+#include <DataFormats/Common/interface/ValueMap.h>
+#include <DataFormats/GeometrySurface/interface/Cylinder.h>
+#include <DataFormats/GeometrySurface/interface/Plane.h>
+#include <DataFormats/HLTReco/interface/TriggerEvent.h>
 #include <DataFormats/MuonReco/interface/MuonFwd.h>
+#include <DataFormats/MuonReco/interface/Muon.h>
 #include <DataFormats/MuonReco/src/MuonSelectors.cc>
 #include <DataFormats/RecoCandidate/interface/IsoDepositVetos.h>
-#include <bitset>
-#include "PhysicsTools/IsolationAlgos/interface/IsoDepositVetoFactory.h"
-#include <DataFormats/Common/interface/ValueMap.h>
-
-#include "DataFormats/HLTReco/interface/TriggerEvent.h"
-#include "Math/GenVector/VectorUtil.h"
-
-
-#include <DataFormats/Common/interface/Ref.h>
-#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
-#include "TrackingTools/Records/interface/TransientTrackRecord.h"
-#include "DataFormats/GeometrySurface/interface/Cylinder.h"
-#include "DataFormats/GeometrySurface/interface/Plane.h"
-#include "TrackingTools/GeomPropagators/interface/Propagator.h"
-#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
-#include "TMath.h"
-
-#include "HLTriggerOffline/Muon/src/PropagateToMuon.cc"
+#include <HLTriggerOffline/Muon/src/PropagateToMuon.cc>
+#include <PhysicsTools/IsolationAlgos/interface/IsoDepositVetoFactory.h>
+#include <TrackingTools/GeomPropagators/interface/Propagator.h>
+#include <TrackingTools/Records/interface/TrackingComponentsRecord.h>
+#include <TrackingTools/Records/interface/TransientTrackRecord.h>
+#include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 
 struct KMuonProducer_Product
 {

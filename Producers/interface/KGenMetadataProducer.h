@@ -4,6 +4,7 @@
 #include "KMetadataProducer.h"
 #include <SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h>
 #include <SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h>
+#include <SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h>
 
 // MC data
 struct KGenMetadata_Product
@@ -22,7 +23,8 @@ public:
 		KMetadataProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
 		ignoreExtXSec(cfg.getParameter<bool>("ignoreExtXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
-		tagSource(cfg.getParameter<edm::InputTag>("genSource")) {}
+		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
+		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource")) {}
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
@@ -66,13 +68,35 @@ public:
 		this->metaEvent->weight = hEventInfo->weight();
 		this->metaEvent->alphaQCD = hEventInfo->alphaQCD();
 		//metaEvent->alphaQED = hEventInfo->alphaQED();
+
+		unsigned int nPU = 0;
+		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
+		if (event.getByLabel(puInfoSource, puHandles) && puHandles.isValid())
+		{
+			for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
+				if (it->getBunchCrossing() == 0)
+					nPU = it->getPU_NumInteractions();
+		}
+		else
+		{
+			// in some versions of CMSSW it's not a vector:
+			edm::Handle<PileupSummaryInfo> puHandle;
+			if (event.getByLabel(puInfoSource, puHandle) && puHandle.isValid())
+				nPU = puHandle->getPU_NumInteractions();
+		}
+		// We write the PileUp information into the nBX field since it is
+		// unused anyway in Monte Carlo. This is a small hack and it will
+		// be done right when we make the next dictionary change. See also
+		// the dictchanges branch.
+		this->metaEvent->nBX = (unsigned char)std::min((unsigned int)255, nPU);
+
 		return true;
 	}
 
 protected:
 	bool ignoreExtXSec;
 	int forceLumi;
-	edm::InputTag tagSource;
+	edm::InputTag tagSource, puInfoSource;
 };
 
 #endif

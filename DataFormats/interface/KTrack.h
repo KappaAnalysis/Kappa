@@ -2,7 +2,7 @@
 #define KAPPA_TRACK_H
 
 #include "KBasic.h"
-#include "Math/GenVector/VectorUtil.h"
+#include <Math/GenVector/VectorUtil.h>
 
 enum KTrackQuality
 {
@@ -40,7 +40,7 @@ struct KDataTrack : public KDataLV
 		return sum;
 	}
 
-	double getDxy(KDataVertex * pv)
+	double getDxy(const KDataVertex * pv) const
 	{
 		if (!pv)
 			return -1.;
@@ -50,7 +50,7 @@ struct KDataTrack : public KDataLV
 		) / sqrt(p4.Perp2());
 	}
 
-	double getDxy(KDataBeamSpot *bs)
+	double getDxy(const KDataBeamSpot *bs) const
 	{
 		if (!bs)
 			return -1.;
@@ -66,7 +66,7 @@ struct KDataTrack : public KDataLV
 			1 - dxy/error(track)
 			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
 	*/
-	double getIP(KDataVertex *pv, unsigned int mode = 0)
+	double getIP(const KDataVertex *pv, unsigned int mode = 0) const
 	{
 		if (!pv)
 			return -10000.;
@@ -98,7 +98,7 @@ struct KDataTrack : public KDataLV
 			1 - dxy/error(track)
 			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
 	*/
-	double getIP(KDataBeamSpot *bs, unsigned int mode = 0)
+	double getIP(const KDataBeamSpot *bs, unsigned int mode = 0) const
 	{
 		if (!bs)
 			return -10000.;

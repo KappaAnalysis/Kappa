@@ -31,6 +31,8 @@
 	<class name="KDataVertex"/>
 	<class name="KDataVertices"/>
 
+	<class name="KVertexSummary"/>
+
 	<class name="KDataBeamSpot"/>
 	<class name="KDataBeamSpots"/>
 
@@ -71,6 +73,7 @@
 
 	<class name="KLumiMetadata"/>
 	<class name="KGenLumiMetadata"/>
+	<class name="KDataLumiMetadata"/>
 
 	<class name="KEventMetadata"/>
 	<class name="KGenEventMetadata"/>

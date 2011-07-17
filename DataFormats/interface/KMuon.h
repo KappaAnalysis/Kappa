@@ -3,6 +3,7 @@
 
 #include "KTrack.h"
 #include "KMetadata.h"
+#include "KJetMET.h"
 
 struct KDataMuon : KDataLV
 {
@@ -21,10 +22,10 @@ struct KDataMuon : KDataLV
 	// Bit 3 - globalMuon
 	unsigned char type;
 
-	bool isTrackerMuon()    { return (type & (1 << 2)); };
-	bool isCaloMuon()       { return (type & (1 << 4)); };
-	bool isStandAloneMuon() { return (type & (1 << 3)); };
-	bool isGlobalMuon()     { return (type & (1 << 1)); };
+	bool isTrackerMuon() const    { return (type & (1 << 2)); };
+	bool isCaloMuon() const       { return (type & (1 << 4)); };
+	bool isStandAloneMuon() const { return (type & (1 << 3)); };
+	bool isGlobalMuon() const     { return (type & (1 << 1)); };
 
 	float sumPtIso03;		// tracker isolation as given by muon.isolationR03().sumPt
 	float hcalIso03;		// hcal isolation as given by muon.isolationR03().hadEt
@@ -60,6 +61,15 @@ struct KDataMuon : KDataLV
 			if(lumimetadata->hltNamesMuons[i] == name)
 				return (hltMatch & (1ull << i)) != 0;
 		return false; // Named HLT does not exist
+	}
+
+	double puSubtractedPFIso04(const KJetArea* jetArea) const
+	{
+		// jetArea == NULL --> no PU subtraction
+		if(jetArea == NULL) return pfIso04;
+
+		static const double coneSize = 0.4;
+		return std::max(0.0, pfIso04 - jetArea->median * coneSize * coneSize * 3.14159);
 	}
 };
 typedef std::vector<KDataMuon> KDataMuons;

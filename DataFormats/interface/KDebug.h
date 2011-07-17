@@ -2,7 +2,7 @@
 #define KAPPA_DEBUG_H
 
 #include <iostream>
-#include "../src/classes.h"
+#include "Kappa.h"
 
 std::ostream &operator<<(std::ostream &os, const KLV &lv);
 std::ostream &operator<<(std::ostream &os, const KDataLV &lv);
@@ -21,5 +21,8 @@ std::ostream &operator<<(std::ostream &os, const KLumiMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KGenLumiMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KEventMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m);
+std::ostream &displayHLT(std::ostream &os, const KLumiMetadata &metaLumi, const KEventMetadata &metaEvent);
+
+#include "KDebug.hxx"
 
 #endif

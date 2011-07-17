@@ -5,25 +5,27 @@
 #include <algorithm>
 
 #include "KBaseProducer.h"
-#include <FWCore/ParameterSet/interface/ParameterSet.h>
-#include <FWCore/Utilities/interface/InputTag.h>
 #include "../../DataFormats/interface/KMetadata.h"
 
+#include <FWCore/Framework/interface/ConstProductRegistry.h>
+#include <FWCore/MessageLogger/interface/ELseverityLevel.h>
+#include <FWCore/MessageLogger/interface/ErrorSummaryEntry.h>
+#include <FWCore/ParameterSet/interface/ParameterSet.h>
+#include <FWCore/Utilities/interface/InputTag.h>
+
 #include <DataFormats/Common/interface/TriggerResults.h>
-#include <HLTrigger/HLTcore/interface/HLTConfigProvider.h>
-#include <L1Trigger/GlobalTriggerAnalyzer/interface/L1GtUtils.h>
-#include <DataFormats/METReco/interface/HcalNoiseSummary.h>
+#include <DataFormats/HLTReco/interface/TriggerEvent.h>
 #include <DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h>
-#include "DataFormats/VertexReco/interface/Vertex.h"
-#include "DataFormats/VertexReco/interface/VertexFwd.h"
-#include "DataFormats/TauReco/interface/CaloTauDiscriminator.h"
-#include "DataFormats/TauReco/interface/PFTauDiscriminator.h"
+#include <L1Trigger/GlobalTriggerAnalyzer/interface/L1GtUtils.h>
+#include <HLTrigger/HLTcore/interface/HLTConfigProvider.h>
 
-#include "DataFormats/HLTReco/interface/TriggerEvent.h"
+#include <DataFormats/METReco/interface/HcalNoiseSummary.h>
 
-#include "FWCore/MessageLogger/interface/ELseverityLevel.h"
-#include "FWCore/MessageLogger/interface/ErrorSummaryEntry.h"
+#include <DataFormats/TauReco/interface/CaloTauDiscriminator.h>
+#include <DataFormats/TauReco/interface/PFTauDiscriminator.h>
 
+#include <DataFormats/VertexReco/interface/VertexFwd.h>
+#include <DataFormats/VertexReco/interface/Vertex.h>
 
 #define NEWHLT
 
@@ -42,6 +44,7 @@ class KMetadataProducer : public KBaseProducerWP
 public:
 	KMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KBaseProducerWP(cfg, _event_tree, _lumi_tree, "KMetadata"),
+		tauDiscrProcessName(cfg.getUntrackedParameter<std::string>("tauDiscrProcessName", "")),
 		tagL1Results(cfg.getParameter<edm::InputTag>("l1Source")),
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
 		svHLTWhitelist(cfg.getParameter<std::vector<std::string> >("hltWhitelist")),
@@ -52,7 +55,8 @@ public:
 		tagErrorsAndWarnings(cfg.getParameter<edm::InputTag>("errorsAndWarnings")),
 		avoidEaWCategories(cfg.getParameter<std::vector<std::string> >("errorsAndWarningsAvoidCategories")),
 		printErrorsAndWarnings(cfg.getParameter<bool>("printErrorsAndWarnings")),
-		printHltList(cfg.getParameter<bool>("printHltList"))
+		printHltList(cfg.getParameter<bool>("printHltList")),
+		overrideHLTCheck(cfg.getUntrackedParameter<bool>("overrideHLTCheck", false))
 	{
 		metaLumi = new typename Tmeta::typeLumi();
 		_lumi_tree->Bronch("KLumiMetadata", Tmeta::idLumi().c_str(), &metaLumi);
@@ -133,10 +137,10 @@ public:
 				continue;
 			if (verbosity > 0 || printHltList)
 				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter
-					<< " with placeholder prescale 1" << std::endl;
+					<< " with placeholder prescale 0" << std::endl;
 			if (hltKappa2FWK.size() < 64)
 			{
-				addHLT(idx, name, 1);
+				addHLT(idx, name, 0);
 				counter++;
 			}
 			else
@@ -150,8 +154,6 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		firstEventInLumi = true;
-
 		metaLumi = &(metaLumiMap[std::pair<run_id, lumi_id>(lumiBlock.run(), lumiBlock.luminosityBlock())]);
 		metaLumi->nRun = lumiBlock.run();
 		metaLumi->nLumi = lumiBlock.luminosityBlock();
@@ -166,10 +168,12 @@ public:
 			std::string filterName = *it;
 			if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(filterName) != KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
 				throw cms::Exception("The muon trigger object '"+filterName+"' exists twice. Please remove one from your configuration!");
-			std::cout << filterName << "\n";
+			if (verbosity > 0)
+				std::cout << filterName << "\n";
 			metaLumi->hltNamesMuons.push_back(filterName);
 			KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName] = metaLumi->hltNamesMuons.size() - 1;
-			std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size() - 1) << " = " << filterName << "\n";
+			if (verbosity > 0)
+				std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size() - 1) << " = " << filterName << "\n";
 		}
 
 		// Clear tau discriminator maps, they will be refilled by
@@ -178,6 +182,35 @@ public:
 		metaLumi->discrTauPF.clear();
 		KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap.clear();
 		KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap.clear();
+
+		edm::Service<edm::ConstProductRegistry> reg;
+		if (verbosity > 0)
+			std::cout << "Lese Produkt-Liste fuer "<< metaLumi->nRun << " " << metaLumi->nLumi << " ein\n";
+		for (edm::ProductRegistry::ProductList::const_iterator it = reg->productList().begin(); it != reg->productList().end(); ++it)
+		{
+			edm::BranchDescription desc = it->second;
+			if (tauDiscrProcessName != "" && desc.processName() != tauDiscrProcessName)
+				continue;
+
+			const std::string& name = desc.moduleLabel();
+
+			if (desc.className() == "reco::CaloTauDiscriminator")
+			{
+				metaLumi->discrTau.push_back(name);
+				KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap[name] = metaLumi->discrTau.size() - 1;
+
+				if (this->verbosity > 0)
+					std::cout << "CaloTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+			}
+			if (desc.className() == "reco::PFTauDiscriminator")
+			{
+				metaLumi->discrTauPF.push_back(name);
+				KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size() - 1;
+
+				if (this->verbosity > 0)
+					std::cout << "PFTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+			}
+		}
 
 		return true;
 	}
@@ -192,12 +225,14 @@ public:
 
 		// If we are running on real data then the trigger should
 		// always be HLT.
-		assert(!event.isRealData() || tagHLTResults.process() == "HLT");
+		if (!overrideHLTCheck)
+			assert(!event.isRealData() || tagHLTResults.process() == "HLT");
 
-		// Set HLT trigger bits
+		bool triggerPrescaleError = false;
 		metaEvent->bitsHLT = 0;
 		if (tagHLTResults.label() != "")
 		{
+			// set HLT trigger bits
 			edm::Handle<edm::TriggerResults> hTriggerResults;
 			event.getByLabel(tagHLTResults, hTriggerResults);
 
@@ -211,54 +246,38 @@ public:
 			}
 			if (hltFAIL)
 				metaEvent->bitsHLT |= 1;
-		}
 
-		if ((firstEventInLumi))
-		{
-			// Set HLT prescales
-			if (tagHLTResults.label() != "")
+			// set and check trigger prescales
+			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
 			{
-				for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
-				{
-					const std::string &name = metaLumi->hltNames[i];
-					int prescale = 0, prescaleSet = -1;
+				const std::string &name = metaLumi->hltNames[i];
+				unsigned int prescale = 0;
 #ifdef NEWHLT
-					prescaleSet = hltConfig.prescaleSet(event, setup);
-					if (prescaleSet != -1)
-						prescale = hltConfig.prescaleValue(event, setup, name);
+				std::pair<int,int> tmpPrescale = hltConfig.prescaleValues(event, setup, name);
+				if (tmpPrescale.first < 0 || tmpPrescale.second < 0)
+					prescale = 0;
+				else
+					prescale = tmpPrescale.first * tmpPrescale.second;
 #endif
+				if (metaLumi->hltPrescales[i] == 0)
+				{
 					if (verbosity > 0 || printHltList)
 						std::cout << " => Adding prescale for trigger: '" << name
-							<< "' from prescale set: " << prescaleSet
 							<< " with value: " << prescale << std::endl;
 					metaLumi->hltPrescales[i] = prescale;
 				}
+				if (metaLumi->hltPrescales[i] != prescale)
+				{
+					if (this->verbosity > 0)
+						std::cout << "!!!!!!!!!!! the prescale of " << name << " has changed with respect to the beginning of the luminosity section from " << metaLumi->hltPrescales[i] << " to " << prescale << std::endl;
+					triggerPrescaleError = true;
+				}
 			}
-
-			// Build tau discriminator maps
-			std::vector<edm::Handle<reco::CaloTauDiscriminator> > caloTauDiscriminators;
-			event.getManyByType(caloTauDiscriminators);
-			assert(metaLumi->discrTau.empty());
-			for(unsigned int i = 0; i < caloTauDiscriminators.size(); ++i)
-			{
-				const std::string& name = caloTauDiscriminators[i].provenance()->moduleLabel();
-				metaLumi->discrTau.push_back(name);
-				KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap[name] = metaLumi->discrTau.size() - 1;
-				std::cout << "CaloTau discriminator " << i << ": " << name << std::endl;
-			}
-
-			std::vector<edm::Handle<reco::PFTauDiscriminator> > pfTauDiscriminators;
-			event.getManyByType(pfTauDiscriminators);
-			assert(metaLumi->discrTauPF.empty());
-			for(unsigned int i = 0; i < pfTauDiscriminators.size(); ++i)
-			{
-				const std::string& name = pfTauDiscriminators[i].provenance()->moduleLabel();
-				metaLumi->discrTauPF.push_back(name);
-				KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size() - 1;
-				std::cout << "PFTau discriminator " << i << ": " << name << std::endl;
-			}
-
-			firstEventInLumi = false;
+		}
+		else
+		{
+			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
+				metaLumi->hltPrescales[i] = 1;
 		}
 
 		// Set L1 trigger bits
@@ -280,6 +299,10 @@ public:
 		// Physics declared
 		if (bPhysicsDeclared)
 			metaEvent->bitsUserFlags |= KFlagPhysicsDeclared;
+
+		// Detection of unexpected trigger prescale change
+		if (triggerPrescaleError)
+			metaEvent->bitsUserFlags |= KFlagPrescaleError;
 
 		if (tagNoiseHCAL.label() != "")
 		{
@@ -330,7 +353,7 @@ public:
 	static TauDiscriminatorMap pfTauDiscriminatorBitMap;
 
 protected:
-	bool firstEventInLumi;
+	std::string tauDiscrProcessName;
 	edm::InputTag tagL1Results, tagHLTResults;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
 	std::vector<std::string> svMuonTriggerObjects;
@@ -342,6 +365,7 @@ protected:
 	std::vector<std::string> avoidEaWCategories;
 	bool printErrorsAndWarnings;
 	bool printHltList;
+	bool overrideHLTCheck;
 
 	std::vector<std::string> hltNames;
 	std::vector<unsigned int> hltPrescales;

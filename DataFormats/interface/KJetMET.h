@@ -40,4 +40,5 @@ struct KJetArea
 {
 	float median, sigma;
 };
+
 #endif

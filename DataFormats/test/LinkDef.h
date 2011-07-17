@@ -89,6 +89,8 @@
 #pragma link C++ class std::vector<KDataVertex>+;
 #pragma link C++ typedef KDataVertices;
 
+#pragma link C++ struct KVertexSummary+;
+
 #pragma link C++ struct KDataBeamSpot+;
 #pragma link C++ class std::vector<KDataBeamSpot>+;
 #pragma link C++ typedef KDataBeamSpots;
@@ -125,6 +127,7 @@
 //#pragma link C++ class std::map<std::string, int>+;
 #pragma link C++ struct KLumiMetadata+;
 #pragma link C++ struct KGenLumiMetadata+;
+#pragma link C++ struct KDataLumiMetadata+;
 
 #pragma link C++ struct KEventMetadata+;
 #pragma link C++ struct KGenEventMetadata+;

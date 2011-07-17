@@ -21,7 +21,8 @@ namespace ROOT
 {
 	namespace Math
 	{
-		template <unsigned int D> struct SymMatrixOffsets
+		template<unsigned int D>
+		struct SymMatrixOffsets
 		{
 		protected:
 			static RowOffsets<D> offsets;

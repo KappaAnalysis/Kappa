@@ -1,20 +1,9 @@
 #include "../interface/KDebug.h"
 
-template<typename T>
-void printvec(std::ostream &os, const T &v)
-{
-	os << "Size: " << v.size() << std::endl;
-	for (typename T::const_iterator it = v.begin(); it != v.end(); ++it)
-		os << " " << *it;
-	os << std::endl;
-}
-
 // Need thin wrapper class for ostream operator overloading
 // - overkill here, but simplifies vector output later
 template<typename T> struct KLVWrap { KLVWrap(const T &_p4) : p4(_p4) {}; const T &p4; };
-
-template<typename T>
-std::ostream &operator<<(std::ostream &os, const KLVWrap<T> &lv)
+template<typename T> std::ostream &operator<<(std::ostream &os, const KLVWrap<T> &lv)
 {
 	return os << "(pt=" << lv.p4.pt() << ", eta=" << lv.p4.eta() << ", phi="
 		<< lv.p4.phi() << ", E=" << lv.p4.E()  << ", m=" << lv.p4.M() << ")";
@@ -99,14 +88,17 @@ std::ostream &operator<<(std::ostream &os, const KProvenance &p)
 std::ostream &operator<<(std::ostream &os, const KLumiMetadata &m)
 {
 	os << "Run: " << m.nRun << " " << m.nLumi << std::endl;
-	os << "HLT names "; printvec(os, m.hltNames);
+	os << "HLT names "; displayVector(os, m.hltNames);
 	return os;
 }
 
 std::ostream &operator<<(std::ostream &os, const KGenLumiMetadata &m)
 {
 	os << static_cast<KLumiMetadata>(m) << std::endl;
-	return os << "ext. xSec: " << m.xSectionExt << " int. xSec: " << m.xSectionInt << std::endl;
+	return os
+		<< "ext. xSec: " << m.xSectionExt << " "
+		<< "int. xSec: " << m.xSectionInt
+		<< std::endl;
 }
 
 std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
@@ -118,4 +110,13 @@ std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 {
 	os << static_cast<KEventMetadata>(m) << std::endl;
 	return os << "Weight: " << m.weight;
+}
+
+std::ostream &displayHLT(std::ostream &os, const KLumiMetadata &metaLumi, const KEventMetadata &metaEvent)
+{
+	for (size_t hltIdx = 0; hltIdx < metaLumi.hltNames.size(); ++hltIdx)
+		if (metaEvent.bitsHLT & ((unsigned long long)1 << hltIdx))
+			os << hltIdx << ":" << metaLumi.hltNames[hltIdx] << " ";
+		os << std::endl;
+	return os;
 }

@@ -10,12 +10,12 @@ all: $(PROGRAM)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-%.a: %.o
+%.a: %.o KDebug.o
 	ar rcs $@ $^
 	mkdir -p ../../lib
 	cp $@ ../../lib
 
-%.so: %.o
+%.so: %.o KDebug.o
 	$(CXX) $(LDFLAGS) -shared -o $@ $^
 	mkdir -p ../../lib
 	cp $@ ../../lib

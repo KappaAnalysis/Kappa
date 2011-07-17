@@ -81,6 +81,7 @@ class Fall10Nicks(NickNameProducer):
 		}
 		condMap = {
 			'Fall10-START38_V12': 'F10S38v12',
+			'BX156_START38_V12': 'F10S38v12_PPU',
 		}
 		tuneMap = dict(map(lambda x: ('Tune' + x, x), ['Z2', 'ProPT0', 'P0', 'DW', 'D6T', 'CW']))
 		tuneMap['pythia8'] = 'T1'
@@ -93,4 +94,40 @@ class Fall10Nicks(NickNameProducer):
 			nick += '_flat'
 		else:
 			nick += addPart(str.join('_', map(lambda x: '%04d' % int(x), parseCuts(pd))))
+		return nick
+
+
+class Summer11Nicks(NickNameProducer):
+	def getName(self, oldnick, dataset):
+		if oldnick != '':
+			return oldnick
+		(pd, sd, tier) = dataset.lstrip('/').split('/')
+		pd = pd.replace('_pythia', '-pythia')
+		dsMap = {
+			'QCD': 'qcd',
+			'MinBias': 'mb',
+		}
+		genMap = {
+			'herwig6': 'HJ',
+			'herwigpp': 'HW',
+			'pythia6': 'P6',
+			'pythia8': 'P8',
+		}
+		
+		condMap = {
+			'Summer11-PU_S3_START42_V11': 'SU11S42v11PUS3',
+			'Summer11-PU_S4_START42_V11': 'SU11S42v11PUS4',
+		}
+		ds, cut, tune, other = pd.split('_', 3)
+		if 'Tune' not in tune:
+			tune += '_' + (filter(lambda x: x.startswith('Tune'), pd.split('_')) + ['!'])[0]
+		tune = tune.replace('Tune', '')
+		nick = '%s%s_%s' % (lookup(pd, dsMap, '!'), lookup(pd, genMap, '!'), tune)
+		nick += addPart(lookup(sd, condMap, '!'))
+		if 'flat' in pd.lower():
+			nick += '_flat'
+		else:
+			nick += addPart(str.join('_', map(lambda x: '%04d' % int(x), parseCuts(cut))))
+		if '!' in nick:
+			raise DatasetError("Dataset %s was mapped to %s" % (dataset, nick))
 		return nick
