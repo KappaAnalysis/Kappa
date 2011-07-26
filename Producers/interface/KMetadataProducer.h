@@ -201,6 +201,9 @@ public:
 
 				if (this->verbosity > 0)
 					std::cout << "CaloTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+
+				if (metaLumi->discrTau.size()>64)
+					throw cms::Exception("Too many CaloTauDiscriminator selected!");
 			}
 			if (desc.className() == "reco::PFTauDiscriminator")
 			{
@@ -209,6 +212,9 @@ public:
 
 				if (this->verbosity > 0)
 					std::cout << "PFTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+
+				if (metaLumi->discrTauPF.size()>64)
+					throw cms::Exception("Too many PFTauDiscriminator selected!");
 			}
 		}
 
