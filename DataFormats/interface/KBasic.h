@@ -80,6 +80,16 @@ struct KParton
 };
 typedef std::vector<KParton> KPartons;
 
+struct KGenPhoton
+{
+	RMDataLV p4;
+	RMDataLV mother;
+	char type;
+	bool isPhoton() const { return (type == 1); }
+	bool isPi0() const { return (type == 2); }
+};
+typedef std::vector<KGenPhoton> KGenPhotons;
+
 struct KDataHit
 {
 	double theta, phi, pAbs, energyLoss;

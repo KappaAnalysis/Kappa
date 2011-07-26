@@ -78,6 +78,9 @@ namespace
 		KPFCandidate dict_kpfcandidate;
 		KPFCandidates dict_kpfcandidates;
 
+		KGenPhoton dict_genphoton;
+		KGenPhotons dict_genphotons;
+
 		KJetArea dict_kjetarea;
 
 

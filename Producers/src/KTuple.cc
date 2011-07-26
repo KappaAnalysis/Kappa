@@ -37,6 +37,7 @@
 #include "../interface/KGenTauProducer.h"
 #include "../interface/KPFCandidateProducer.h"
 #include "../interface/KL1MuonProducer.h"
+#include "../interface/KGenPhotonProducer.h"
 #include "../interface/KJetAreaProducer.h"
 #include "../interface/KL2MuonProducer.h"
 // #include "../interface/KHepMCPartonProducer.h"
@@ -186,6 +187,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KPFCandidateProducer>(psConfig, active[i]);
 		else if (active[i] == "L1Muons")
 			addProducer<KL1MuonProducer>(psConfig, active[i]);
+		else if (active[i] == "GenPhotons")
+			addProducer<KGenPhotonProducer>(psConfig, active[i]);
 		else if (active[i] == "JetArea")
 			addProducer<KJetAreaProducer>(psConfig, active[i]);
 		else if (active[i] == "L2MuonTrajectorySeed")

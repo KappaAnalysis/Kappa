@@ -63,6 +63,9 @@
 	<class name="KPFCandidate"/>
 	<class name="KPFCandidates"/>
 
+	<class name="KGenPhoton"/>
+	<class name="KGenPhotons"/>
+
 	<class name="KJetArea"/>
 
 

@@ -235,15 +235,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	Vertex = cms.PSet(kappaNoCut,
+	Vertex = cms.PSet(kappaNoCut, kappaNoRename,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring(".*offlinePrimaryVertices.*"),
 		blacklist = cms.vstring(),
-
-		rename = cms.vstring(),
-		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(),
 	),
 
 	VertexSummary = cms.PSet(kappaNoCut,
@@ -268,7 +264,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("reco.*Jets_.*Jet"),
-		blacklist = cms.vstring("recoCastor.*"),
+		blacklist = cms.vstring("Castor", "BasicJet"),
 
 		rename = cms.vstring(
 			"JetPlusTrack(.*) => $1JPT",
@@ -276,7 +272,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
 		),
 		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(".*CaloJets",".*PFJets"),
+		rename_blacklist = cms.vstring(".*CaloJets", ".*PFJets"),
 	),
 
 	Tower = cms.PSet(kappaNoCut,
@@ -305,11 +301,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	PFMET = cms.PSet(kappaNoRename,
+	PFMET = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFMET"),
 		blacklist = cms.vstring(),
+
+		rename = cms.vstring("pfMet => PFMET"),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
 	),
 
 	Partons = cms.PSet(kappaNoCut, kappaNoRegEx,
@@ -325,6 +325,12 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
+	GenPhotons = cms.PSet(kappaNoCut, kappaNoRegEx,
+		genPhotons = cms.PSet(
+			src = cms.InputTag("genParticles"),
+		),
+	),
+
 	PFCandidates = cms.PSet(kappaNoRename, kappaNoCut,
 		manual = cms.VInputTag(),
 
@@ -332,11 +338,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	JetArea = cms.PSet(kappaNoRename, kappaNoCut,
+	JetArea = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("kt6PFJetsRho_rho"),
 		blacklist = cms.vstring(),
+
+		rename = cms.vstring("kt6PFJetsRho => KT6Area"),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
 	),
 
 	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
@@ -383,7 +393,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_.*Jet"),
-		blacklist = cms.vstring("*Rho"),
+		blacklist = cms.vstring("Rho"),
 
 		rename = cms.vstring(
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)$7"

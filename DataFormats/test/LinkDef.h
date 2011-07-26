@@ -111,6 +111,10 @@
 #pragma link C++ class std::vector<KPFCandidate>+;
 #pragma link C++ typedef KPFCandidates;
 
+#pragma link C++ struct KGenPhoton+;
+#pragma link C++ class std::vector<KGenPhoton>+;
+#pragma link C++ typedef KGenPhotons;
+
 #pragma link C++ struct KJetArea+;
 
 /************************************************************/
