@@ -196,7 +196,8 @@ public:
 
 			if (desc.className() == "reco::CaloTauDiscriminator")
 			{
-				metaLumi->discrTau.push_back(name);
+				if (std::find(metaLumi->discrTau.begin(), metaLumi->discrTau.end(), name) == metaLumi->discrTau.end())
+					metaLumi->discrTau.push_back(name);
 				KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap[name] = metaLumi->discrTau.size() - 1;
 
 				if (this->verbosity > 0)
@@ -207,7 +208,8 @@ public:
 			}
 			if (desc.className() == "reco::PFTauDiscriminator")
 			{
-				metaLumi->discrTauPF.push_back(name);
+				if (std::find(metaLumi->discrTauPF.begin(), metaLumi->discrTauPF.end(), name) == metaLumi->discrTauPF.end())
+					metaLumi->discrTauPF.push_back(name);
 				KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size() - 1;
 
 				if (this->verbosity > 0)
