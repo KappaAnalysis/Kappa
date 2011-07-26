@@ -19,7 +19,7 @@ def parseCuts(data):
 
 
 class Summer10Nicks(NickNameProducer):
-	def getName(self, oldnick, dataset):
+	def getName(self, oldnick, dataset, block):
 		if oldnick != '':
 			return oldnick
 		(pd, sd, tier) = dataset.lstrip('/').split('/')
@@ -67,7 +67,7 @@ class Summer10Nicks(NickNameProducer):
 
 
 class Fall10Nicks(NickNameProducer):
-	def getName(self, oldnick, dataset):
+	def getName(self, oldnick, dataset, block):
 		if oldnick != '':
 			return oldnick
 		(pd, sd, tier) = dataset.lstrip('/').split('/')
@@ -98,36 +98,45 @@ class Fall10Nicks(NickNameProducer):
 
 
 class Summer11Nicks(NickNameProducer):
-	def getName(self, oldnick, dataset):
+	def getName(self, oldnick, dataset, block):
 		if oldnick != '':
 			return oldnick
-		(pd, sd, tier) = dataset.lstrip('/').split('/')
-		pd = pd.replace('_pythia', '-pythia')
-		dsMap = {
-			'QCD': 'qcd',
-			'MinBias': 'mb',
-		}
-		genMap = {
-			'herwig6': 'HJ',
-			'herwigpp': 'HW',
-			'pythia6': 'P6',
-			'pythia8': 'P8',
-		}
+		try:
+			(pd, sd, tier) = dataset.lstrip('/').split('/')
+			pd = pd.replace('_pythia', '-pythia')
+			pd = pd.replace('_herwig', '-herwig')
+			dsMap = {
+				'QCD': 'qcd',
+				'MinBias': 'mb',
+			}
+			genMap = {
+				'herwig6': 'HJ',
+				'herwigpp': 'HW',
+				'pythia6': 'P6',
+				'pythia8': 'P8',
+			}
 		
-		condMap = {
-			'Summer11-PU_S3_START42_V11': 'SU11S42v11PUS3',
-			'Summer11-PU_S4_START42_V11': 'SU11S42v11PUS4',
-		}
-		ds, cut, tune, other = pd.split('_', 3)
-		if 'Tune' not in tune:
-			tune += '_' + (filter(lambda x: x.startswith('Tune'), pd.split('_')) + ['!'])[0]
-		tune = tune.replace('Tune', '')
-		nick = '%s%s_%s' % (lookup(pd, dsMap, '!'), lookup(pd, genMap, '!'), tune)
-		nick += addPart(lookup(sd, condMap, '!'))
-		if 'flat' in pd.lower():
-			nick += '_flat'
-		else:
-			nick += addPart(str.join('_', map(lambda x: '%04d' % int(x), parseCuts(cut))))
-		if '!' in nick:
-			raise DatasetError("Dataset %s was mapped to %s" % (dataset, nick))
+			condMap = {
+				'Summer11-PU_S3_START42_V11': 'SU11S42v11PUS3',
+				'Summer11-PU_S4_START42_V11': 'SU11S42v11PUS4',
+			}
+			print pd.split("_")
+			if pd.count("_") < 3:
+				ds, cut, other = pd.split('_', 2)
+			else:
+				ds, cut, tune, other = pd.split('_', 3)
+			if 'Tune' not in tune:
+				tune += '_' + (filter(lambda x: x.startswith('Tune'), pd.split('_')) + ['!'])[0]
+			tune = tune.replace('Tune', '')
+			nick = '%s%s_%s' % (lookup(pd, dsMap, '!'), lookup(pd, genMap, '!'), tune)
+			nick += addPart(lookup(sd, condMap, '!'))
+			if 'flat' in pd.lower():
+				nick += '_flat'
+			else:
+				nick += addPart(str.join('_', map(lambda x: '%04d' % int(x), parseCuts(cut))))
+			if '!' in nick:
+				raise DatasetError("Dataset %s was mapped to %s" % (dataset, nick))
+		except:
+			print oldnick, dataset
+			raise
 		return nick
