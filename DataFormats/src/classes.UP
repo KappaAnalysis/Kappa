@@ -70,7 +70,7 @@ for line in map(str.strip, fp):
 			else:
 				if line not in debug:
 					print line, 'has no debug output!'
-		fp_ClassesH.write('\t\t%s dict_%s;\n' % (line, line.lower()))
+		fp_ClassesH.write('\t\t%s dict_%s;\n' % (line, line))
 		fp_LCGDict.write('\t<class name="%s"/>\n' % line)
 	else:
 		fp_ClassesH.write('\n')
