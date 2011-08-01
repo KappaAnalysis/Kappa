@@ -157,6 +157,7 @@ public:
 		metaLumi = &(metaLumiMap[std::pair<run_id, lumi_id>(lumiBlock.run(), lumiBlock.luminosityBlock())]);
 		metaLumi->nRun = lumiBlock.run();
 		metaLumi->nLumi = lumiBlock.luminosityBlock();
+		metaLumi->bitsUserFlags = 0;
 
 		metaLumi->hltNames = hltNames;
 		metaLumi->hltPrescales = hltPrescales;
@@ -306,11 +307,11 @@ public:
 
 		// Physics declared
 		if (bPhysicsDeclared)
-			metaEvent->bitsUserFlags |= KFlagPhysicsDeclared;
+			metaEvent->bitsUserFlags |= KEFPhysicsDeclared;
 
 		// Detection of unexpected trigger prescale change
 		if (triggerPrescaleError)
-			metaEvent->bitsUserFlags |= KFlagPrescaleError;
+			metaLumi->bitsUserFlags |= KLFPrescaleError;
 
 		if (tagNoiseHCAL.label() != "")
 		{
@@ -318,9 +319,9 @@ public:
 			edm::Handle<HcalNoiseSummary> noiseSummary;
 			event.getByLabel(tagNoiseHCAL, noiseSummary);
 			if (noiseSummary->passLooseNoiseFilter())
-				metaEvent->bitsUserFlags |= KFlagHCALLooseNoise;
+				metaEvent->bitsUserFlags |= KEFHCALLooseNoise;
 			if (noiseSummary->passTightNoiseFilter())
-				metaEvent->bitsUserFlags |= KFlagHCALTightNoise;
+				metaEvent->bitsUserFlags |= KEFHCALTightNoise;
 		}
 
 		edm::Handle<std::vector<edm::ErrorSummaryEntry> > errorsAndWarnings;
@@ -329,8 +330,8 @@ public:
 		{
 			if (errorsAndWarnings.failedToGet())
 			{
-				metaEvent->bitsUserFlags |= KFlagRecoErrors;
-				metaEvent->bitsUserFlags |= KFlagRecoWarnings;
+				metaEvent->bitsUserFlags |= KEFRecoErrors;
+				metaEvent->bitsUserFlags |= KEFRecoWarnings;
 			}
 			else
 			{
@@ -339,9 +340,9 @@ public:
 					if (avoidEaWCategories.size() != 0 && std::find(avoidEaWCategories.begin(), avoidEaWCategories.end(), it->category) != avoidEaWCategories.end())
 						continue;
 					if (it->severity.getLevel() == edm::ELseverityLevel::ELsev_error || it->severity.getLevel() == edm::ELseverityLevel::ELsev_error2)
-						metaEvent->bitsUserFlags |= KFlagRecoErrors;
+						metaEvent->bitsUserFlags |= KEFRecoErrors;
 					if (it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning || it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning2)
-						metaEvent->bitsUserFlags |= KFlagRecoWarnings;
+						metaEvent->bitsUserFlags |= KEFRecoWarnings;
 
 					if (printErrorsAndWarnings && (it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning || it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning2))
 						std::cout << "warning: " << it->category << ", " << it->module << ", " << it->count << "\n";

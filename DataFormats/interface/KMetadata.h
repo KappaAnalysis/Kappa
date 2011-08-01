@@ -17,6 +17,7 @@ struct KLumiMetadata
 {
 	unsigned int nLumi;
 	unsigned int nRun;
+	unsigned int bitsUserFlags;
 	std::vector<unsigned int> hltPrescales;
 	std::vector<std::string> hltNames;
 	std::vector<std::string> hltNamesMuons;
@@ -67,13 +68,15 @@ typedef unsigned int lumi_id;
 typedef unsigned int run_id;
 typedef int bx_id;
 
-// List of user flags
-const unsigned int KFlagPhysicsDeclared = 1 << 0;
-const unsigned int KFlagHCALLooseNoise = 1 << 1;
-const unsigned int KFlagHCALTightNoise = 1 << 2;
-const unsigned int KFlagRecoErrors = 1 << 3;
-const unsigned int KFlagRecoWarnings = 1 << 4;
-const unsigned int KFlagPrescaleError = 1 << 5;
+// List of user flags for events (KEventFlag...)
+const unsigned int KEFPhysicsDeclared = 1 << 0;
+const unsigned int KEFHCALLooseNoise = 1 << 1;
+const unsigned int KEFHCALTightNoise = 1 << 2;
+const unsigned int KEFRecoErrors = 1 << 3;
+const unsigned int KEFRecoWarnings = 1 << 4;
+
+// List of user flags for luminosity sections (KLumiFlag...)
+const unsigned int KLFPrescaleError = 1 << 0;
 
 struct KGenEventMetadata : public KEventMetadata
 {
