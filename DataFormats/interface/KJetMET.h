@@ -6,10 +6,9 @@
 struct KDataJet : public KDataLV
 {
 	double area;
-	double noiseHCAL;
 	double fHPD, fRBX;
 	double fEM, fHO;
-	int nConst, n90, n90Hits;
+	int nConst, n90Hits;
 };
 typedef std::vector<KDataJet> KDataJets;
 
