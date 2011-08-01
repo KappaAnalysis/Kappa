@@ -42,7 +42,7 @@ struct KDataLumiMetadata : public KLumiMetadata
 	float lumiSectionLength;
 	short lumiSecQual;
 
-	double getLumi()
+	double getLumi() const
 	{
 		return avgInsRecLumi * lumiSectionLength / 10.0 / 1e6;
 	}
