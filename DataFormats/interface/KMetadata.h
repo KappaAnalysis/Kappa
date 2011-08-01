@@ -41,6 +41,11 @@ struct KDataLumiMetadata : public KLumiMetadata
 	float deadFrac;
 	float lumiSectionLength;
 	short lumiSecQual;
+
+	double getLumi()
+	{
+		return avgInsRecLumi * lumiSectionLength / 10.0 / 1e6;
+	}
 };
 
 /* EVENT METADATA */
