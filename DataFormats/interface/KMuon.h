@@ -52,8 +52,7 @@ struct KDataMuon : KDataLV
 	// is necessary for the matching to L1 trigger objects
 	// both barrel and endcap values are necessary since CSC and DT
 	// require different values in the transition region
-	float eta_propag_barrel, phi_propag_barrel;
-	float eta_propag_endcap, phi_propag_endcap;
+	float eta_propagated, phi_propagated;
 
 	bool hltFired(const std::string& name, const KLumiMetadata * lumimetadata) const
 	{

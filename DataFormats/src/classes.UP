@@ -15,7 +15,10 @@ def writeDebugHeader():
 	for line in open('../test/KDebug.cpp', 'r').readlines():
 		if line.startswith('std::ostream'):
 			if 'operator<<' in line:
-				yield line.split('const')[1].split('&')[0].strip()
+				classname = line.split('const')[1].split('&')[0].strip()
+				yield classname
+				if "Vertex" in classname:
+					yield classname.replace("Vertex", "Vertices")
 			fp_DebugHeader.write(line.replace('\n', ';\n'))
 	fp_DebugHeader.write("""
 #include "KDebug.hxx"
@@ -67,7 +70,7 @@ for line in map(str.strip, fp):
 			else:
 				if line not in debug:
 					print line, 'has no debug output!'
-		fp_ClassesH.write('\t\t%s dict_%s;\n' % (line, line.lower()))
+		fp_ClassesH.write('\t\t%s dict_%s;\n' % (line, line))
 		fp_LCGDict.write('\t<class name="%s"/>\n' % line)
 	else:
 		fp_ClassesH.write('\n')

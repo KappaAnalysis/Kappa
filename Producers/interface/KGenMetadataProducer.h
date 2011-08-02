@@ -84,11 +84,7 @@ public:
 			if (event.getByLabel(puInfoSource, puHandle) && puHandle.isValid())
 				nPU = puHandle->getPU_NumInteractions();
 		}
-		// We write the PileUp information into the nBX field since it is
-		// unused anyway in Monte Carlo. This is a small hack and it will
-		// be done right when we make the next dictionary change. See also
-		// the dictchanges branch.
-		this->metaEvent->nBX = (unsigned char)std::min((unsigned int)255, nPU);
+		this->metaEvent->numPUInteractions = (unsigned char)std::min((unsigned int)255, nPU);
 
 		return true;
 	}

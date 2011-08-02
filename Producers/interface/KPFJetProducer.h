@@ -22,8 +22,8 @@ public:
 		copyP4(in, out.p4);
 
 		out.area = in.jetArea();;
-		out.n90 = in.nCarrying(0.9);
 		out.nConst = in.nConstituents();
+		out.nCharged = in.chargedMultiplicity();
 		out.neutralEMFraction = in.neutralEmEnergyFraction();
 		out.chargedEMFraction = in.chargedEmEnergyFraction();
 		out.neutralHadFraction = in.neutralHadronEnergyFraction();

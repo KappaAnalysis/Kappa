@@ -431,19 +431,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		)
 	),
 
-	MuonTriggerCandidates = cms.PSet(kappaNoCut, kappaNoRegEx,
-		l2muon = cms.PSet(
-			src = cms.InputTag("hltL2MuonCandidates"),
-			srcIsolation = cms.InputTag("hltL2MuonIsolations"),
-			isoDeltaR = cms.double(0.24),
-		),
-		l3muon = cms.PSet(
-			src = cms.InputTag("hltL3MuonCandidates"),
-			srcIsolation = cms.InputTag("hltL3MuonIsolations"),
-			isoDeltaR = cms.double(0.24),
-		),
-	),
-
 	L2MuonTrajectorySeed = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 		whitelist = cms.vstring("hltL2MuonSeeds"),
@@ -462,5 +449,18 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename = cms.vstring(),
 		rename_whitelist = cms.vstring(),
 		rename_blacklist = cms.vstring(),
+	),
+
+	MuonTriggerCandidates = cms.PSet(kappaNoCut, kappaNoRegEx,
+		l2muon = cms.PSet(
+			src = cms.InputTag("hltL2MuonCandidates"),
+			srcIsolation = cms.InputTag("hltL2MuonIsolations"),
+			isoDeltaR = cms.double(0.24),
+		),
+		l3muon = cms.PSet(
+			src = cms.InputTag("hltL3MuonCandidates"),
+			srcIsolation = cms.InputTag("hltL3MuonIsolations"),
+			isoDeltaR = cms.double(0.24),
+		),
 	),
 )
