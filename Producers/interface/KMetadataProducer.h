@@ -169,6 +169,8 @@ public:
 			std::string filterName = *it;
 			if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(filterName) != KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
 				throw cms::Exception("The muon trigger object '"+filterName+"' exists twice. Please remove one from your configuration!");
+			if (muonTriggerObjectBitMap.size()==64)
+					throw cms::Exception("Too many muon trigger objects selected!");
 			if (verbosity > 0)
 				std::cout << filterName << "\n";
 			metaLumi->hltNamesMuons.push_back(filterName);
