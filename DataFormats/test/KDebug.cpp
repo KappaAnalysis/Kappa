@@ -52,8 +52,8 @@ std::ostream &operator<<(std::ostream &os, const KParton &p)
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
 {
 	os << static_cast<const KDataLV>(jet) << std::endl;
-	os << "\t#Const=" << jet.nConst << " n90=" << jet.n90 << " n90Hits=" << jet.n90Hits << std::endl;
-	os << "\tfHPD=" << jet.fHPD << " fRBX=" << jet.fRBX << " HCAL noise=" << jet.noiseHCAL << std::endl;
+	os << "\t#Const=" << jet.nConst << " n90Hits=" << jet.n90Hits << std::endl;
+	os << "\tfHPD=" << jet.fHPD << " fRBX=" << jet.fRBX << std::endl;
 	return os << "\tfEM=" << jet.fEM << " fHO=" << jet.fHO << " area=" << jet.area;
 }
 
