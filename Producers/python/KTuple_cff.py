@@ -82,6 +82,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			# HLT_MuX (2010)
 			"hltSingleMu7L2Filtered5",
 			"hltSingleMu7L3Filtered7",
+			"hltSingleMu7L3Filtered8",
 			"hltSingleMu9L3Filtered9",
 			"hltSingleMu11L3Filtered11",
 			"hltSingleMu13L3Filtered13",
@@ -97,6 +98,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMu20L3Filtered20",
 			"hltSingleMu24L3Filtered24",
 			"hltSingleMu30L3Filtered30",
+			"hltSingleMu40L3Filtered40",
+			"hltSingleMuL3Filtered100",
 
 			# HLT_IsoMuX (2010)
 			"hltSingleMuIsoL3IsoFiltered9",
@@ -109,6 +112,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMuIsoL3IsoFiltered12",
 			#"hltSingleMuIsoL3IsoFiltered15",
 			#"hltSingleMuIsoL3IsoFiltered17",
+			"hltSingleMuIsoL3IsoFiltered17Eta21",
+			"hltSingleMuIsoL3IsoFiltered20Eta21",
 			"hltSingleMuIsoL3IsoFiltered24",
 			"hltSingleMuIsoL3IsoFiltered30",
 
@@ -119,8 +124,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltDiMuonL3PreFiltered0",
 			"hltDiMuonL3PreFiltered",
 			"hltDiMuonL3PreFiltered3",
+			"hltDiMuonL3PreFiltered4",
 			"hltDiMuonL3PreFiltered5",
+			"hltDiMuonL3PreFiltered6",
 			"hltDiMuonL3PreFiltered7",
+			"hltDiMuonL3PreFiltered8",
+			"hltDiMuonL3PreFiltered45",
+			"hltDoubleMu4ExclL3PreFiltered",
+			"hltDoubleMu5ExclL3PreFiltered",
 
 			# andere
 			"hltL1sL1SingleMu0",
@@ -156,6 +167,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			# HLT_MuX (2010)
 			"hltSingleMu7L2Filtered5",
 			"hltSingleMu7L3Filtered7",
+			"hltSingleMu7L3Filtered8",
 			"hltSingleMu9L3Filtered9",
 			"hltSingleMu11L3Filtered11",
 			"hltSingleMu13L3Filtered13",
@@ -171,6 +183,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMu20L3Filtered20",
 			"hltSingleMu24L3Filtered24",
 			"hltSingleMu30L3Filtered30",
+			"hltSingleMu40L3Filtered40",
+			"hltSingleMuL3Filtered100",
 
 			# HLT_IsoMuX (2010)
 			"hltSingleMuIsoL3IsoFiltered9",
@@ -183,6 +197,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMuIsoL3IsoFiltered12",
 			#"hltSingleMuIsoL3IsoFiltered15",
 			#"hltSingleMuIsoL3IsoFiltered17",
+			"hltSingleMuIsoL3IsoFiltered17Eta21",
+			"hltSingleMuIsoL3IsoFiltered20Eta21",
 			"hltSingleMuIsoL3IsoFiltered24",
 			"hltSingleMuIsoL3IsoFiltered30",
 
@@ -193,8 +209,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltDiMuonL3PreFiltered0",
 			"hltDiMuonL3PreFiltered",
 			"hltDiMuonL3PreFiltered3",
+			"hltDiMuonL3PreFiltered4",
 			"hltDiMuonL3PreFiltered5",
+			"hltDiMuonL3PreFiltered6",
 			"hltDiMuonL3PreFiltered7",
+			"hltDiMuonL3PreFiltered8",
+			"hltDiMuonL3PreFiltered45",
+			"hltDoubleMu4ExclL3PreFiltered",
+			"hltDoubleMu5ExclL3PreFiltered",
 
 			# andere
 			"hltL1sL1SingleMu0",
