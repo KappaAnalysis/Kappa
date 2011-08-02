@@ -95,7 +95,7 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 process.kappatuple.Metadata.noiseHCAL = cms.InputTag("")
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
-	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'BeamSpot', 'GenMetadata', 'Partons', 'CaloTaus', 'PFTaus', 'GenTaus', 'JetArea', @ACTIVE@
+	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'VertexSummary', 'BeamSpot', 'GenMetadata', 'Partons', 'PFTaus', 'GenTaus', 'JetArea', @ACTIVE@
 )
 #-------------------------------------------------------------------------------
 

@@ -90,7 +90,7 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.Muons.noPropagation = cms.bool(True)
 process.kappatuple.active = cms.vstring(
-	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'Vertex', 'Metadata', 'BeamSpot', 'CaloTaus', 'PFTaus', 'JetArea', @ACTIVE@
+	'Muons', 'TrackSummary', 'LV', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'VertexSummary', 'Metadata', 'BeamSpot', 'PFTaus', 'JetArea', @ACTIVE@
 )
 #-------------------------------------------------------------------------------
 
