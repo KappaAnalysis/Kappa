@@ -26,6 +26,11 @@ process.load("Configuration.StandardSequences.Reconstruction_cff")
 process.GlobalTag.globaltag = '@GLOBALTAG@' #'GR10_P_V10::All'
 #-------------------------------------------------------------------------------
 
+# Reduce amount of messages ----------------------------------------------------
+process.MessageLogger.default = cms.untracked.PSet(ERROR = cms.untracked.PSet(limit = cms.untracked.int32(5)))
+process.MessageLogger.cerr.FwkReport.reportEvery = 42
+#-------------------------------------------------------------------------------
+
 # Produce PF muon isolation ----------------------------------------------------
 from CommonTools.ParticleFlow.Isolation.tools_cfi import *
 process.pfmuIsoDepositPFCandidates = isoDepositReplace("muons", "particleFlow")
