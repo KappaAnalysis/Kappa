@@ -41,6 +41,7 @@ struct KDataLumiMetadata : public KLumiMetadata
 	float deadFrac;
 	float lumiSectionLength;
 	short lumiSecQual;
+	unsigned short nFill; // fill number
 
 	double getLumi() const
 	{
