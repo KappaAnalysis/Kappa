@@ -69,8 +69,6 @@ process.kappatuple.active = cms.vstring(
 process.kappatuple.Tracks.minPt = cms.double(5.)
 
 process.kappatuple.Metadata.hltWhitelist = cms.vstring(
-	"^HLT_(Jet)[0-9]+U(_v[[:digit:]]+)?$",
-	"^HLT_(Jet)[0-9]+(_v[[:digit:]]+)?$",
 	"^HLT_(L[123])?(Iso|Double|Triple)?Mu([0-9]+)",
 	"^HLT_DoubleMu([0-9]+)_Acoplanarity([0-9]+)(_v[[:digit:]]+)?$",
 )
