@@ -138,6 +138,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMuIsoL3IsoFiltered3",
 
 			# Objekte aus DoubleMu
+			"hltSingleMu13L3Filtered17",
 			"hltDiL3fL1sDoubleMu3p5L1f0L2f0L3Filtered45",
 			"hltDiMuonL1Filtered0",
 			"hltDiMuonL2PreFiltered0",
@@ -239,6 +240,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMuIsoL3IsoFiltered3",
 
 			# Objekte aus DoubleMu
+			"hltSingleMu13L3Filtered17",
 			"hltDiL3fL1sDoubleMu3p5L1f0L2f0L3Filtered45",
 			"hltDiMuonL1Filtered0",
 			"hltDiMuonL2PreFiltered0",
