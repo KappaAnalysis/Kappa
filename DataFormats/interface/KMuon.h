@@ -14,8 +14,6 @@ struct KDataMuon : KDataLV
 	KDataTrack innerTrack;
 	KDataTrack outerTrack;
 
-	KDataVertex vertex;
-
 	// Bit 0 - trackerMuon
 	// Bit 1 - caloMuon
 	// Bit 2 - standaloneMuon

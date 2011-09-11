@@ -122,15 +122,6 @@ public:
 		out.hcalIso05				= in.isolationR05().hadEt;
 		out.trackIso05				= 0.0f;
 
-		// Vertex
-		out.vertex = KDataVertex();
-		out.vertex.fake = false;
-		out.vertex.position = in.vertex();
-		out.vertex.chi2 = in.vertexChi2();
-		out.vertex.nDOF = in.vertexNdof();
-		out.vertex.nTracks = 1;
-		out.vertex.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >();
-
 		out.eta_propagated = -1000.;
 		out.phi_propagated = -1000.;
 
