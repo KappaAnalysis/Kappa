@@ -5,6 +5,8 @@
 #include "KMetadata.h"
 #include "KJetMET.h"
 
+#include <algorithm>
+
 struct KDataMuon : KDataLV
 {
 	char charge;
@@ -54,9 +56,9 @@ struct KDataMuon : KDataLV
 
 	bool hltFired(const std::string& name, const KLumiMetadata * lumimetadata) const
 	{
-		for(size_t i = 0; i < lumimetadata->hltNamesMuons.size(); ++i)
-			if(lumimetadata->hltNamesMuons[i] == name)
-				return (hltMatch & (1ull << i)) != 0;
+		std::vector<std::string>::const_iterator itSearch = std::lower_bound(lumimetadata->hltNamesMuons.begin(), lumimetadata->hltNamesMuons.end(), name);
+		if (itSearch != lumimetadata->hltNamesMuons.end())
+			return (hltMatch & (1ull << (itSearch - lumimetadata->hltNamesMuons.begin()))) != 0;
 		return false; // Named HLT does not exist
 	}
 

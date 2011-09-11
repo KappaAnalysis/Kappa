@@ -62,6 +62,7 @@ public:
 		_lumi_tree->Bronch("KLumiMetadata", Tmeta::idLumi().c_str(), &metaLumi);
 		metaEvent = new typename Tmeta::typeEvent();
 		_event_tree->Bronch("KEventMetadata", Tmeta::idEvent().c_str(), &metaEvent);
+		std::sort(svMuonTriggerObjects.begin(), svMuonTriggerObjects.end());
 	}
 	virtual ~KMetadataProducer() {};
 
