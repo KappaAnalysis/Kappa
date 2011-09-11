@@ -20,10 +20,10 @@ struct KDataMuon : KDataLV
 	// Bit 3 - globalMuon
 	unsigned char type;
 
-	bool isTrackerMuon() const    { return (type & (1 << 2)); };
-	bool isCaloMuon() const       { return (type & (1 << 4)); };
-	bool isStandAloneMuon() const { return (type & (1 << 3)); };
-	bool isGlobalMuon() const     { return (type & (1 << 1)); };
+	inline bool isTrackerMuon() const    { return (type & (1 << 2)); };
+	inline bool isCaloMuon() const       { return (type & (1 << 4)); };
+	inline bool isStandAloneMuon() const { return (type & (1 << 3)); };
+	inline bool isGlobalMuon() const     { return (type & (1 << 1)); };
 
 	float sumPtIso03;		// tracker isolation as given by muon.isolationR03().sumPt
 	float hcalIso03;		// hcal isolation as given by muon.isolationR03().hadEt
