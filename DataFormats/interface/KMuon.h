@@ -50,8 +50,6 @@ struct KDataMuon : KDataLV
 
 	// eta and phi after the propagation to the muon system, this quantity
 	// is necessary for the matching to L1 trigger objects
-	// both barrel and endcap values are necessary since CSC and DT
-	// require different values in the transition region
 	float eta_propagated, phi_propagated;
 
 	bool hltFired(const std::string& name, const KLumiMetadata * lumimetadata) const
