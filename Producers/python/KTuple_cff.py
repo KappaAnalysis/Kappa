@@ -112,6 +112,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMuIsoL3IsoFiltered24",
 			"hltSingleMuIsoL3IsoFiltered30",
 
+			# HLT with quality criteria
+			"hltSingleMu24L2QualL3Filtered24",
+			"hltSingleMu30L2QualL3Filtered30",
+			"hltSingleMu40L2QualL3Filtered40",
+			"hltSingleMuL2QualIsoL3IsoFiltered17",
+			"hltSingleMuL2QualIsoL3IsoFiltered20",
+			"hltSingleMuL2QualIsoL3IsoFiltered24",
+
 			# HLT_DoubleMu (2010+2011)
 			"hltL1sL1DoubleMuOpen",
 			"hltL1sL1DoubleMu0",
@@ -130,9 +138,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltDoubleMu6ExclL3PreFiltered",
 
 			# andere
-			"hltSingleMu3L2Filtered3",
-			"hltSingleMu5L2Filtered4",
-			"hltSingleMu9L2Filtered7",
 			"hltSingleMu3L3Filtered3",
 			"hltSingleMu5L3Filtered5",
 			"hltSingleMuIsoL3IsoFiltered3",
@@ -140,8 +145,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 			# Objekte aus DoubleMu
 			"hltSingleMu13L3Filtered17",
 			"hltDiL3fL1sDoubleMu3p5L1f0L2f0L3Filtered45",
-			"hltDiMuonL1Filtered0",
-			"hltDiMuonL2PreFiltered0",
 			"hltDiMuonL3p5PreFiltered8",
 			"hltDiMuonL3PreFiltered5Eta2p15",
 			"hltL1DoubleMu3L3TriMuFiltered5",
@@ -207,6 +210,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMuIsoL3IsoFiltered24",
 			"hltSingleMuIsoL3IsoFiltered30",
 
+			# HLT with quality criteria
+			"hltSingleMu24L2QualL3Filtered24",
+			"hltSingleMu30L2QualL3Filtered30",
+			"hltSingleMu40L2QualL3Filtered40",
+			"hltSingleMuL2QualIsoL3IsoFiltered17",
+			"hltSingleMuL2QualIsoL3IsoFiltered20",
+			"hltSingleMuL2QualIsoL3IsoFiltered24",
+
 			# HLT_DoubleMu (2010+2011)
 			"hltL1sL1DoubleMuOpen",
 			"hltL1sL1DoubleMu0",
@@ -254,6 +265,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltL3Mu8Jet20L3Filtered8",
 			"hltSingleL2MuOpenL2PreFilteredNoVtx",
 			"hltTripleMu0L3TriMuFiltered5",
+
 		),
 	),
 
