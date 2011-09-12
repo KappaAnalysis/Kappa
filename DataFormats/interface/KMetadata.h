@@ -65,6 +65,10 @@ struct KEventMetadata
 				return (bitsHLT & (1ull << i)) != 0;
 		return false; // Named HLT does not exist
 	}
+	inline bool hltFired (const size_t pos) const
+	{
+		return (bitsHLT & (1ull << pos)) != 0;
+	}
 };
 
 // Nice names for types
