@@ -20,7 +20,10 @@ public:
 	KTriggerObjectProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer_Product>(cfg, _event_tree, _run_tree, true),
 		triggerObjects(cfg.getParameter<std::vector<std::string> >("triggerObjects")),
-		tagHLTrigger(cfg.getParameter<edm::InputTag>("hltTag")) {};
+		tagHLTrigger(cfg.getParameter<edm::InputTag>("hltTag"))
+		{
+			std::sort(triggerObjects.begin(), triggerObjects.end());
+		};
 	virtual ~KTriggerObjectProducer() {};
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
