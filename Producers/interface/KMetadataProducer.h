@@ -164,13 +164,18 @@ public:
 
 		metaLumi->hltNamesMuons.clear();
 		KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.clear();
+		if (svMuonTriggerObjects.size() > 64)
+		{
+			std::cout << "Too many muon trigger objects selected ("<< svMuonTriggerObjects.size() << ">64)!" << std::endl;
+			throw cms::Exception("Too many muon trigger objects selected");
+		}
 		for (std::vector<std::string>::iterator it = svMuonTriggerObjects.begin(); it != svMuonTriggerObjects.end(); it++)
 		{
 			std::string filterName = *it;
 			if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(filterName) != KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
 				throw cms::Exception("The muon trigger object '"+filterName+"' exists twice. Please remove one from your configuration!");
-			if (muonTriggerObjectBitMap.size()==64)
-					throw cms::Exception("Too many muon trigger objects selected!");
+			if (metaLumi->hltNamesMuons.size()>=64)
+				throw cms::Exception("Too many muon trigger objects selected!");
 			if (verbosity > 0)
 				std::cout << filterName << "\n";
 			metaLumi->hltNamesMuons.push_back(filterName);
@@ -200,26 +205,30 @@ public:
 			if (desc.className() == "reco::CaloTauDiscriminator")
 			{
 				if (std::find(metaLumi->discrTau.begin(), metaLumi->discrTau.end(), name) == metaLumi->discrTau.end())
+				{
 					metaLumi->discrTau.push_back(name);
-				KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap[name] = metaLumi->discrTau.size() - 1;
+					KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap[name] = metaLumi->discrTau.size() - 1;
 
-				if (this->verbosity > 0)
-					std::cout << "CaloTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+					if (this->verbosity > 0)
+						std::cout << "CaloTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
 
-				if (metaLumi->discrTau.size()>64)
-					throw cms::Exception("Too many CaloTauDiscriminator selected!");
+					if (metaLumi->discrTau.size()>64)
+						throw cms::Exception("Too many CaloTauDiscriminator selected!");
+				}
 			}
 			if (desc.className() == "reco::PFTauDiscriminator")
 			{
-				if (std::find(metaLumi->discrTauPF.begin(), metaLumi->discrTauPF.end(), name) == metaLumi->discrTauPF.end())
+				if (std::find(metaLumi->discrTauPF.begin(), metaLumi->discrTauPF.end(), name) == metaLumi->discrTauPF.end() && name.substr(name.length()-5) != "PFlow") // ignore stupid PAT bullshit
+				{
 					metaLumi->discrTauPF.push_back(name);
-				KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size() - 1;
+					KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size() - 1;
 
-				if (this->verbosity > 0)
-					std::cout << "PFTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+					if (this->verbosity > 0)
+						std::cout << "PFTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
 
-				if (metaLumi->discrTauPF.size()>64)
-					throw cms::Exception("Too many PFTauDiscriminator selected!");
+					if (metaLumi->discrTauPF.size()>64)
+						throw cms::Exception("Too many PFTauDiscriminator selected!");
+				}
 			}
 		}
 

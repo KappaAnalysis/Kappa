@@ -3,6 +3,7 @@
 
 #include "KMetadataProducer.h"
 #include <DataFormats/Luminosity/interface/LumiSummary.h>
+#include <DataFormats/Common/interface/ConditionsInEdm.h>
 
 // MC data
 struct KDataMetadata_Product
@@ -19,8 +20,22 @@ class KDataMetadataProducer : public KMetadataProducer<Tmeta>
 public:
 	KDataMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KMetadataProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+		currentRun(0),
 		lumiSource(cfg.getParameter<edm::InputTag>("lumiSource")) {}
 
+	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
+	{
+		edm::Handle<edm::ConditionsInRunBlock> condInRunBlock;
+		if (!run.getByType(condInRunBlock))
+			throw cms::Exception("The ConditionsInRunBlock object could not be found!");
+
+		if (condInRunBlock.isValid())
+			currentRun = condInRunBlock->lhcFillNumber;
+		else
+			currentRun = 0;
+
+		return KMetadataProducer<Tmeta>::onRun(run, setup);
+	}
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		// Fill data related infos
@@ -39,6 +54,8 @@ public:
 		this->metaLumi->lumiSectionLength = hLumiSummary->lumiSectionLength();
 		this->metaLumi->lumiSecQual = hLumiSummary->lumiSecQual();
 
+		this->metaLumi->nFill = currentRun;
+
 		return true;
 	}
 
@@ -48,6 +65,7 @@ public:
 	}
 
 protected:
+	short currentRun;
 	edm::InputTag lumiSource;
 };
 
