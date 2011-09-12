@@ -74,11 +74,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
 		muonTriggerObjects = cms.vstring(
-			# L1 (2010/2011)
-			"hltL1sL1SingleMu7",
-			"hltL1sL1SingleMu10",
-			"hltL1sL1SingleMu12",
-
 			# HLT_MuX (2010)
 			"hltSingleMu7L2Filtered5",
 			"hltSingleMu7L3Filtered7",
@@ -117,6 +112,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMuIsoL3IsoFiltered24",
 			"hltSingleMuIsoL3IsoFiltered30",
 
+			# HLT with quality criteria
+			"hltSingleMu24L2QualL3Filtered24",
+			"hltSingleMu30L2QualL3Filtered30",
+			"hltSingleMu40L2QualL3Filtered40",
+			"hltSingleMuL2QualIsoL3IsoFiltered17",
+			"hltSingleMuL2QualIsoL3IsoFiltered20",
+			"hltSingleMuL2QualIsoL3IsoFiltered24",
+
 			# HLT_DoubleMu (2010+2011)
 			"hltL1sL1DoubleMuOpen",
 			"hltL1sL1DoubleMu0",
@@ -132,21 +135,26 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltDiMuonL3PreFiltered45",
 			"hltDoubleMu4ExclL3PreFiltered",
 			"hltDoubleMu5ExclL3PreFiltered",
+			"hltDoubleMu6ExclL3PreFiltered",
 
 			# andere
-			"hltL1sL1SingleMu0",
-			"hltL1sL1SingleMu3",
-			"hltL1sL1SingleMu20",
-			"hltL1SingleMu0L1Filtered0",
-			"hltL1SingleMu3L1Filtered0",
-			"hltL2Mu9L2Filtered9",
-			"hltL2Mu11L2Filtered11",
-			"hltSingleMu3L2Filtered3",
-			"hltSingleMu5L2Filtered4",
-			"hltSingleMu9L2Filtered7",
 			"hltSingleMu3L3Filtered3",
 			"hltSingleMu5L3Filtered5",
 			"hltSingleMuIsoL3IsoFiltered3",
+
+			# Objekte aus DoubleMu
+			"hltSingleMu13L3Filtered17",
+			"hltDiL3fL1sDoubleMu3p5L1f0L2f0L3Filtered45",
+			"hltDiMuonL3p5PreFiltered8",
+			"hltDiMuonL3PreFiltered5Eta2p15",
+			"hltL1DoubleMu3L3TriMuFiltered5",
+			"hltL2DoubleMu23NoVertexL2PreFiltered",
+			"hltL2DoubleMu30NoVertexL2PreFiltered",
+			"hltL2DoubleMu35NoVertexL2PreFiltered",
+			"hltL3fL1sDiMu3p5L1f3p5L2f3p5L3f6",
+			"hltL3Mu8Jet20L3Filtered8",
+			"hltSingleL2MuOpenL2PreFilteredNoVtx",
+			"hltTripleMu0L3TriMuFiltered5",
 		),
 		noiseHCAL = cms.InputTag("hcalnoise"),
 
@@ -202,6 +210,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMuIsoL3IsoFiltered24",
 			"hltSingleMuIsoL3IsoFiltered30",
 
+			# HLT with quality criteria
+			"hltSingleMu24L2QualL3Filtered24",
+			"hltSingleMu30L2QualL3Filtered30",
+			"hltSingleMu40L2QualL3Filtered40",
+			"hltSingleMuL2QualIsoL3IsoFiltered17",
+			"hltSingleMuL2QualIsoL3IsoFiltered20",
+			"hltSingleMuL2QualIsoL3IsoFiltered24",
+
 			# HLT_DoubleMu (2010+2011)
 			"hltL1sL1DoubleMuOpen",
 			"hltL1sL1DoubleMu0",
@@ -217,6 +233,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltDiMuonL3PreFiltered45",
 			"hltDoubleMu4ExclL3PreFiltered",
 			"hltDoubleMu5ExclL3PreFiltered",
+			"hltDoubleMu6ExclL3PreFiltered",
 
 			# andere
 			"hltL1sL1SingleMu0",
@@ -232,6 +249,23 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMu3L3Filtered3",
 			"hltSingleMu5L3Filtered5",
 			"hltSingleMuIsoL3IsoFiltered3",
+
+			# Objekte aus DoubleMu
+			"hltSingleMu13L3Filtered17",
+			"hltDiL3fL1sDoubleMu3p5L1f0L2f0L3Filtered45",
+			"hltDiMuonL1Filtered0",
+			"hltDiMuonL2PreFiltered0",
+			"hltDiMuonL3p5PreFiltered8",
+			"hltDiMuonL3PreFiltered5Eta2p15",
+			"hltL1DoubleMu3L3TriMuFiltered5",
+			"hltL2DoubleMu23NoVertexL2PreFiltered",
+			"hltL2DoubleMu30NoVertexL2PreFiltered",
+			"hltL2DoubleMu35NoVertexL2PreFiltered",
+			"hltL3fL1sDiMu3p5L1f3p5L2f3p5L3f6",
+			"hltL3Mu8Jet20L3Filtered8",
+			"hltSingleL2MuOpenL2PreFilteredNoVtx",
+			"hltTripleMu0L3TriMuFiltered5",
+
 		),
 	),
 

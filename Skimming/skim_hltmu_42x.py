@@ -64,15 +64,23 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 )
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
-	'L1Muons', 'Muons', 'TrackSummary', 'TriggerObjects', 'Vertex', 'BeamSpot', 'JetArea', @ACTIVE@ #'Tracks'
+	'L1Muons', 'Muons', 'TrackSummary', 'TriggerObjects', 'VertexSummary', 'BeamSpot', 'JetArea', @ACTIVE@ #'Tracks'
 )
 process.kappatuple.Tracks.minPt = cms.double(5.)
 
 process.kappatuple.Metadata.hltWhitelist = cms.vstring(
-	"^HLT_(QuadJet|Jet|DiJetAve)[0-9]+U(_v[[:digit:]]+)?$",
-	"^HLT_(L[123])?(Iso|Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
-	"^HLT_Activity.*", ".*(Bias|BSC).*",
+	"^HLT_(L[123])?(Iso|Double|Triple)?Mu([0-9]+)",
+	"^HLT_DoubleMu([0-9]+)_Acoplanarity([0-9]+)(_v[[:digit:]]+)?$",
 )
+
+process.kappatuple.Metadata.hltBlacklist = cms.vstring(
+	"Ele([0-9]+)",
+	"Photon([0-9]+)",
+	"CentralJet([0-9]+)",
+	"HT([0-9]+)",
+	"CaloId",
+)
+
 #-------------------------------------------------------------------------------
 
 # Process schedule -------------------------------------------------------------
