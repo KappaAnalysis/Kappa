@@ -154,7 +154,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltL3fL1sDiMu3p5L1f3p5L2f3p5L3f6",
 			"hltL3Mu8Jet20L3Filtered8",
 			"hltSingleL2MuOpenL2PreFilteredNoVtx",
-			"hltTripleMu0L3TriMuFiltered5",
 		),
 		noiseHCAL = cms.InputTag("hcalnoise"),
 
@@ -264,8 +263,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltL3fL1sDiMu3p5L1f3p5L2f3p5L3f6",
 			"hltL3Mu8Jet20L3Filtered8",
 			"hltSingleL2MuOpenL2PreFilteredNoVtx",
-			"hltTripleMu0L3TriMuFiltered5",
-
 		),
 	),
 
