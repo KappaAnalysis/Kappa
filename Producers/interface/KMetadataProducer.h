@@ -144,7 +144,18 @@ public:
 				counter++;
 			}
 			else
+			{
+				std::cout << "The following HLT bits would have been selected:" << std::endl;
+				unsigned int cntMatch = 0;
+				for (size_t j = 0; j < hltConfig.size(); ++j)
+				{
+					if (regexMatch(hltConfig.triggerName(j), svHLTWhitelist, svHLTBlacklist))
+					{
+						std::cout << "\t" << (++cntMatch) << "\t" << hltConfig.triggerName(j) << std::endl;
+					}
+				}
 				throw cms::Exception("Too many HLT bits selected!");
+			}
 		}
 		if (verbosity > 0)
 			std::cout << "Accepted number of trigger streams: " << counter - 1 << std::endl;
