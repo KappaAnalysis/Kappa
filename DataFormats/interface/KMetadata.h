@@ -93,7 +93,9 @@ struct KGenEventMetadata : public KEventMetadata
 	double weight;
 	double binValue;
 	double alphaQCD;
-	unsigned char numPUInteractions;
+	unsigned char numPUInteractionsM1;	// bx = -1
+	unsigned char numPUInteractions0;	// bx =  0
+	unsigned char numPUInteractionsP1;	// bx = +1
 };
 
 #endif

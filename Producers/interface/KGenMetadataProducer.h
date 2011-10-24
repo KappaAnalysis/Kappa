@@ -69,22 +69,32 @@ public:
 		this->metaEvent->alphaQCD = hEventInfo->alphaQCD();
 		//metaEvent->alphaQED = hEventInfo->alphaQED();
 
-		unsigned int nPU = 0;
+		unsigned char nPU = 0;
 		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
 		if (event.getByLabel(puInfoSource, puHandles) && puHandles.isValid())
 		{
 			for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
+			{
+				nPU = (unsigned char)std::min(255, it->getPU_NumInteractions());
+				if (it->getBunchCrossing() == -1)
+					this->metaEvent->numPUInteractionsM1 = nPU;
 				if (it->getBunchCrossing() == 0)
-					nPU = it->getPU_NumInteractions();
+					this->metaEvent->numPUInteractions0 = nPU;
+				if (it->getBunchCrossing() == 1)
+					this->metaEvent->numPUInteractionsP1 = nPU;
+			}
 		}
 		else
 		{
 			// in some versions of CMSSW it's not a vector:
 			edm::Handle<PileupSummaryInfo> puHandle;
 			if (event.getByLabel(puInfoSource, puHandle) && puHandle.isValid())
-				nPU = puHandle->getPU_NumInteractions();
+			{
+				this->metaEvent->numPUInteractionsM1 = 0;
+				this->metaEvent->numPUInteractions0 = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
+				this->metaEvent->numPUInteractionsP1 = 0;
+			}
 		}
-		this->metaEvent->numPUInteractions = (unsigned char)std::min((unsigned int)255, nPU);
 
 		return true;
 	}
