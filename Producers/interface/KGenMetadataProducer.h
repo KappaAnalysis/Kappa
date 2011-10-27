@@ -69,6 +69,12 @@ public:
 		this->metaEvent->alphaQCD = hEventInfo->alphaQCD();
 		//metaEvent->alphaQED = hEventInfo->alphaQED();
 
+		// Get PU infos
+		this->metaEvent->numPUInteractionsM2 = 0;
+		this->metaEvent->numPUInteractionsM1 = 0;
+		this->metaEvent->numPUInteractions0 = 0
+		this->metaEvent->numPUInteractionsP1 = 0;
+		this->metaEvent->numPUInteractionsP2 = 0;
 		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
 		if (event.getByLabel(puInfoSource, puHandles) && puHandles.isValid())
 		{
@@ -92,13 +98,7 @@ public:
 			// in some versions of CMSSW it's not a vector:
 			edm::Handle<PileupSummaryInfo> puHandle;
 			if (event.getByLabel(puInfoSource, puHandle) && puHandle.isValid())
-			{
-				this->metaEvent->numPUInteractionsM2 = 0;
-				this->metaEvent->numPUInteractionsM1 = 0;
 				this->metaEvent->numPUInteractions0 = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
-				this->metaEvent->numPUInteractionsP1 = 0;
-				this->metaEvent->numPUInteractionsP2 = 0;
-			}
 		}
 
 		return true;
