@@ -91,6 +91,9 @@ public:
 					this->metaEvent->numPUInteractionsP1 = nPU;
 				else if (it->getBunchCrossing() == 2)
 					this->metaEvent->numPUInteractionsP2 = nPU;
+
+				// remove the following line to compile with CMSSW 4.2.7 or earlier
+				this->metaEvent->numPUInteractionsTruth = it->getTrueNumInteractions();
 			}
 		}
 		else
