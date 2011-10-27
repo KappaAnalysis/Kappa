@@ -72,7 +72,7 @@ public:
 		// Get PU infos
 		this->metaEvent->numPUInteractionsM2 = 0;
 		this->metaEvent->numPUInteractionsM1 = 0;
-		this->metaEvent->numPUInteractions0 = 0
+		this->metaEvent->numPUInteractions0 = 0;
 		this->metaEvent->numPUInteractionsP1 = 0;
 		this->metaEvent->numPUInteractionsP2 = 0;
 		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
