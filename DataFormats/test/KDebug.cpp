@@ -159,7 +159,7 @@ std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 	os << static_cast<const KEventMetadata>(m) << std::endl;
 	return os
 		<< "Weight: " << m.weight
-		<< "#PU: " << m.numPUInteractions;
+		<< "#PU: " << m.numPUInteractionsTruth;
 }
 
 std::ostream &displayHLT(std::ostream &os, const KLumiMetadata &metaLumi, const KEventMetadata &metaEvent)
