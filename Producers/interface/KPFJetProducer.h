@@ -28,6 +28,9 @@ public:
 		out.chargedEMFraction = in.chargedEmEnergyFraction();
 		out.neutralHadFraction = in.neutralHadronEnergyFraction();
 		out.chargedHadFraction = in.chargedHadronEnergyFraction();
+		out.muonFraction = in.muonEnergyFraction();
+		out.photonFraction = in.photonEnergyFraction();
+		out.electronFraction = in.electronEnergyFraction();
 	}
 };
 
