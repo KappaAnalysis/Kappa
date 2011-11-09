@@ -17,6 +17,8 @@ struct KDataPFJet : public KDataLV
 	double area;
 	float neutralEMFraction, chargedEMFraction;
 	float neutralHadFraction, chargedHadFraction;
+	float muonFraction, photonFraction, electronFraction;
+
 	int nConst, nCharged;
 };
 typedef std::vector<KDataPFJet> KDataPFJets;
