@@ -102,11 +102,11 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 
 	// Make sure there are no duplicates
 	bool have_duplicates = false;
-	for(size_t i = 0; i < active.size(); ++i)
+	for (size_t i = 0; i < active.size(); ++i)
 	{
-		for(size_t j = i+1; j < active.size(); ++j)
+		for (size_t j = i + 1; j < active.size(); ++j)
 		{
-			if(active[i] == active[j])
+			if (active[i] == active[j])
 			{
 				std::cout << "Duplicate producer found: " << active[i] << std::endl;
 				have_duplicates = true;
@@ -114,7 +114,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 		}
 	}
 
-	if(have_duplicates) exit(1);
+	if (have_duplicates)
+		exit(1);
 
 	// Create metadata producer
 	for (size_t i = 0; i < active.size(); ++i)

@@ -36,7 +36,7 @@ bool KBaseProducer::tagMatch(const edm::Provenance *prov, const std::vector<edm:
 bool KBaseProducer::regexMatch(const std::string &in, const std::string &filter)
 {
 	if (verbosity > 2)
-		std::cout << in << " ";
+		std::cout << "\t" << in << " ";
 	try
 	{
 		boost::regex pattern(filter, boost::regex::icase | boost::regex::extended);
@@ -65,7 +65,7 @@ bool KBaseProducer::regexMatch(const std::string &in, const std::vector<std::str
 	else
 	{
 		if (verbosity > 1)
-			std::cout << "Whitelist matching..." << std::endl;
+			std::cout << std::endl << " * Whitelist matching..." << std::endl;
 		for (size_t wIdx = 0; wIdx < whitelist.size(); ++wIdx)
 			if (regexMatch(in, whitelist[wIdx]))
 			{
@@ -76,7 +76,7 @@ bool KBaseProducer::regexMatch(const std::string &in, const std::vector<std::str
 	if (accept && (blacklist.size() > 0))
 	{
 		if (verbosity > 1)
-			std::cout << "Blacklist matching..." << std::endl;
+			std::cout << std::endl << " * Blacklist matching..." << std::endl;
 		for (size_t bIdx = 0; bIdx < blacklist.size(); ++bIdx)
 			if (regexMatch(in, blacklist[bIdx]))
 			{
