@@ -92,8 +92,9 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 	}
 	else
 	{
-		file = new TFile(outputFile.c_str(), "RECREATE");
 		lumi_tree = new TTree("Lumis", "Lumis");
+		lumi_tree->SetDirectory(0);
+		file = new TFile(outputFile.c_str(), "RECREATE");
 		event_tree = new TTree("Events", "Events");
 	}
 
@@ -218,6 +219,7 @@ KTuple::~KTuple()
 	if (file != 0)
 	{
 		file->cd();
+		lumi_tree->SetDirectory(file);
 		lumi_tree->Write();
 		event_tree->Write();
 		file->Close();
