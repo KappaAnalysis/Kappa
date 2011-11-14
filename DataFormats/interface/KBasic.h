@@ -135,4 +135,17 @@ struct KL1Muon : KDataLV
 };
 typedef std::vector<KL1Muon> KL1Muons;
 
+struct KTriggerObjectInfos
+{
+	std::vector<std::string> toL1L2;
+	std::vector<std::string> toHLT;
+};
+
+struct KTriggerObjects
+{
+	std::vector<KDataLV> trgObjects;
+	std::vector<std::vector<size_t> > toIdxL1L2;
+	std::vector<std::vector<size_t> > toIdxHLT;
+};
+
 #endif

@@ -83,6 +83,9 @@ namespace
 
 		KJetArea dict_KJetArea;
 
+		KTriggerObjectInfos dict_KTriggerObjectInfos;
+		KTriggerObjects dict_KTriggerObjects;
+
 
 		KProvenance dict_KProvenance;
 

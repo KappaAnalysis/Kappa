@@ -68,6 +68,9 @@
 
 	<class name="KJetArea"/>
 
+	<class name="KTriggerObjectInfos"/>
+	<class name="KTriggerObjects"/>
+
 
 	<class name="KProvenance"/>
 
