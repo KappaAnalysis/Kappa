@@ -38,12 +38,25 @@ struct KMetadata_Product
 	static const std::string idEvent() { return "KEventMetadata"; };
 };
 
+class KMetadataProducerBase : public KBaseProducerWP
+{
+public:
+	KMetadataProducerBase(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KBaseProducerWP(cfg, _event_tree, _lumi_tree, "KMetadata") {}
+
+	static HLTConfigProvider hltConfig;
+	static std::vector<size_t> hltKappa2FWK;
+};
+
+HLTConfigProvider KMetadataProducerBase::hltConfig;
+std::vector<size_t> KMetadataProducerBase::hltKappa2FWK;
+
 template<typename Tmeta>
-class KMetadataProducer : public KBaseProducerWP
+class KMetadataProducer : public KMetadataProducerBase
 {
 public:
 	KMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseProducerWP(cfg, _event_tree, _lumi_tree, "KMetadata"),
+		KMetadataProducerBase(cfg, _event_tree, _lumi_tree),
 		tauDiscrProcessName(cfg.getUntrackedParameter<std::string>("tauDiscrProcessName", "")),
 		tagL1Results(cfg.getParameter<edm::InputTag>("l1Source")),
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
@@ -68,14 +81,14 @@ public:
 
 	inline void addHLT(const int idx, const std::string name, const int prescale)
 	{
-		hltKappa2FWK.push_back(idx);
+		KMetadataProducerBase::hltKappa2FWK.push_back(idx);
 		hltNames.push_back(name);
 		hltPrescales.push_back(prescale);
 	}
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		hltKappa2FWK.clear();
+		KMetadataProducerBase::hltKappa2FWK.clear();
 		hltNames.clear();
 		hltPrescales.clear();
 		addHLT(0, "fail", 42);
@@ -117,10 +130,10 @@ public:
 		}
 		bool hltSetupChanged = false;
 #ifdef NEWHLT
-		if (!hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
+		if (!KMetadataProducerBase::hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
 #else
-		if (!hltConfig.init(tagHLTResults.process()))
+		if (!KMetadataProducerBase::hltConfig.init(tagHLTResults.process()))
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
 #endif
 
@@ -128,10 +141,10 @@ public:
 			std::cout << "HLT setup has changed...";
 
 		int counter = 1;
-		for (size_t i = 0; i < hltConfig.size(); ++i)
+		for (size_t i = 0; i < KMetadataProducerBase::hltConfig.size(); ++i)
 		{
-			const std::string &name = hltConfig.triggerName(i);
-			const int idx = hltConfig.triggerIndex(name);
+			const std::string &name = KMetadataProducerBase::hltConfig.triggerName(i);
+			const int idx = KMetadataProducerBase::hltConfig.triggerIndex(name);
 			if (verbosity > 1)
 				std::cout << "Trigger: " << idx << " = ";
 			if (!regexMatch(name, svHLTWhitelist, svHLTBlacklist))
@@ -139,7 +152,7 @@ public:
 			if (verbosity > 0 || printHltList)
 				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter
 					<< " with placeholder prescale 0" << std::endl;
-			if (hltKappa2FWK.size() < 64)
+			if (KMetadataProducerBase::hltKappa2FWK.size() < 64)
 			{
 				addHLT(idx, name, 0);
 				counter++;
@@ -167,15 +180,15 @@ public:
 		KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.clear();
 		if (svMuonTriggerObjects.size() > 64)
 		{
-			std::cout << "Too many muon trigger objects selected ("<< svMuonTriggerObjects.size() << ">64)!" << std::endl;
+			std::cout << "Too many muon trigger objects selected (" << svMuonTriggerObjects.size() << ">64)!" << std::endl;
 			throw cms::Exception("Too many muon trigger objects selected");
 		}
 		for (std::vector<std::string>::iterator it = svMuonTriggerObjects.begin(); it != svMuonTriggerObjects.end(); it++)
 		{
 			std::string filterName = *it;
 			if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(filterName) != KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
-				throw cms::Exception("The muon trigger object '"+filterName+"' exists twice. Please remove one from your configuration!");
-			if (metaLumi->hltNamesMuons.size()>=64)
+				throw cms::Exception("The muon trigger object '" + filterName + "' exists twice. Please remove one from your configuration!");
+			if (metaLumi->hltNamesMuons.size() >= 64)
 				throw cms::Exception("Too many muon trigger objects selected!");
 			if (verbosity > 0)
 				std::cout << filterName << "\n";
@@ -258,9 +271,9 @@ public:
 			event.getByLabel(tagHLTResults, hTriggerResults);
 
 			bool hltFAIL = false;
-			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
+			for (size_t i = 1; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
 			{
-				const size_t idx = hltKappa2FWK[i];
+				const size_t idx = KMetadataProducerBase::hltKappa2FWK[i];
 				if (hTriggerResults->accept(idx))
 					metaEvent->bitsHLT |= ((unsigned long long)1 << i);
 				hltFAIL = hltFAIL || hTriggerResults->error(idx);
@@ -269,12 +282,12 @@ public:
 				metaEvent->bitsHLT |= 1;
 
 			// set and check trigger prescales
-			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
+			for (size_t i = 1; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
 			{
 				const std::string &name = metaLumi->hltNames[i];
 				unsigned int prescale = 0;
 #ifdef NEWHLT
-				std::pair<int, int> prescale_L1_HLT = hltConfig.prescaleValues(event, setup, name);
+				std::pair<int, int> prescale_L1_HLT = KMetadataProducerBase::hltConfig.prescaleValues(event, setup, name);
 				if (prescale_L1_HLT.first < 0 || prescale_L1_HLT.second < 0)
 					prescale = 0;
 				else
@@ -297,7 +310,7 @@ public:
 		}
 		else
 		{
-			for (size_t i = 1; i < hltKappa2FWK.size(); ++i)
+			for (size_t i = 1; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
 				metaLumi->hltPrescales[i] = 1;
 		}
 
@@ -378,8 +391,6 @@ protected:
 	edm::InputTag tagL1Results, tagHLTResults;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
 	std::vector<std::string> svMuonTriggerObjects;
-	HLTConfigProvider hltConfig;
-	std::vector<size_t> hltKappa2FWK;
 
 	edm::InputTag tagNoiseHCAL, tagHLTrigger;
 	edm::InputTag tagErrorsAndWarnings;

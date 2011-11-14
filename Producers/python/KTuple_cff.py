@@ -269,6 +269,12 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
+	TriggerObjects2 = cms.PSet(
+		kappaNoRegEx,
+		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
+		triggerObjects = cms.vstring(),
+	),
+
 	Tracks = cms.PSet(kappaNoRename,
 		maxN = cms.int32(-1),
 		minPt = cms.double(10.),

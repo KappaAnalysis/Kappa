@@ -32,6 +32,7 @@
 #include "../interface/KBeamSpotProducer.h"
 #include "../interface/KHitProducer.h"
 #include "../interface/KTriggerObjectProducer.h"
+#include "../interface/KTriggerObjectProducer2.h"
 #include "../interface/KCaloTauProducer.h"
 #include "../interface/KPFTauProducer.h"
 #include "../interface/KGenTauProducer.h"
@@ -178,6 +179,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KHitProducer>(psConfig, active[i]);
 		else if (active[i] == "TriggerObjects")
 			addProducer<KTriggerObjectProducer>(psConfig, active[i]);
+		else if (active[i] == "TriggerObjects2")
+			addProducer<KTriggerObjectProducer2>(psConfig, active[i]);
 		else if (active[i] == "CaloTaus")
 			addProducer<KCaloTauProducer>(psConfig, active[i]);
 		else if (active[i] == "PFTaus")
