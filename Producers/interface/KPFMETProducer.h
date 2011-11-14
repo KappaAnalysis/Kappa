@@ -37,6 +37,13 @@ protected:
 			out.neutralHadEtFraction = in.at(0).NeutralHadEtFraction();
 			out.type6EtFraction = in.at(0).Type6EtFraction();
 			out.type7EtFraction = in.at(0).Type7EtFraction();
+
+			TMatrixD mat = in.at(0).getSignificanceMatrix();
+			assert(mat(0,1) == mat(1,0));
+			out.significance(0,0) = mat(0,0);
+			out.significance(0,1) = mat(0,1);
+			assert(out.significance(1,0) == mat(1,0));
+			out.significance(1,1) = mat(1,1);
 		}
 		else
 			if (verbosity > 1)

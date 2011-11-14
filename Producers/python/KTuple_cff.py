@@ -154,7 +154,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltL3fL1sDiMu3p5L1f3p5L2f3p5L3f6",
 			"hltL3Mu8Jet20L3Filtered8",
 			"hltSingleL2MuOpenL2PreFilteredNoVtx",
-			"hltTripleMu0L3TriMuFiltered5",
 		),
 		noiseHCAL = cms.InputTag("hcalnoise"),
 
@@ -264,8 +263,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltL3fL1sDiMu3p5L1f3p5L2f3p5L3f6",
 			"hltL3Mu8Jet20L3Filtered8",
 			"hltSingleL2MuOpenL2PreFilteredNoVtx",
-			"hltTripleMu0L3TriMuFiltered5",
-
 		),
 	),
 
@@ -334,7 +331,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
 		),
 		rename_whitelist= cms.vstring(),
-		rename_blacklist = cms.vstring(".*CaloJets", ".*PFJets"),
+		rename_blacklist = cms.vstring(".*CaloJets", ".*PFJets", ".*JPTJets"),
 	),
 
 	Tower = cms.PSet(kappaNoCut,
@@ -353,13 +350,13 @@ kappaTupleDefaultsBlock = cms.PSet(
 	MET = cms.PSet(
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("reco.*MET"),
+		whitelist = cms.vstring("reco(Calo|Gen)MET"),
 		blacklist = cms.vstring("recoPFMET"),
 
 		rename = cms.vstring(
 			"(gen)?(ht)?met => (?1Gen:Calo)MET(?2HT)",
 		),
-		rename_whitelist = cms.vstring("^(Calo|Gen)MET"),
+		rename_whitelist = cms.vstring("^(Calo|Gen)MET(Calo|True)?$"),
 		rename_blacklist = cms.vstring(),
 	),
 
@@ -455,7 +452,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_.*Jet"),
-		blacklist = cms.vstring("Rho"),
+		blacklist = cms.vstring("Rho", "Tau.*Region"),
 
 		rename = cms.vstring(
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)$7"

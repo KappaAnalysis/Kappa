@@ -1,6 +1,7 @@
 #ifndef KAPPA_JET_H
 #define KAPPA_JET_H
 
+#include <Math/SMatrix.h>
 #include "KBasic.h"
 
 struct KDataJet : public KDataLV
@@ -17,6 +18,8 @@ struct KDataPFJet : public KDataLV
 	double area;
 	float neutralEMFraction, chargedEMFraction;
 	float neutralHadFraction, chargedHadFraction;
+	float muonFraction, photonFraction, electronFraction;
+
 	int nConst, nCharged;
 };
 typedef std::vector<KDataPFJet> KDataPFJets;
@@ -24,6 +27,8 @@ typedef std::vector<KDataPFJet> KDataPFJets;
 struct KDataMET : public KDataLV
 {
 	double sumEt;
+
+	ROOT::Math::SMatrix<double, 2, 2, ROOT::Math::MatRepSym<double, 2> > significance;
 };
 
 struct KDataPFMET : public KDataMET
