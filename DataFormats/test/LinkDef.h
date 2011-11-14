@@ -117,6 +117,9 @@
 
 #pragma link C++ struct KJetArea+;
 
+#pragma link C++ struct KTriggerObjects;
+#pragma link C++ struct KTriggerObjectInfos;
+
 /************************************************************/
 /* METADATA                                                 */
 /************************************************************/

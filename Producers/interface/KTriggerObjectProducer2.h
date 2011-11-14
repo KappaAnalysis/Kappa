@@ -11,7 +11,7 @@
 struct KTriggerObjectProducer2_Product
 {
 	typedef KTriggerObjects type;
-	static const std::string id() { return "std::vector<KDataLV>"; };
+	static const std::string id() { return "KTriggerObjects"; };
 	static const std::string producer() { return "KTriggerObjectProducer2"; };
 };
 
