@@ -17,15 +17,12 @@ struct KTriggerObjectProducer2_Product
 
 struct KTrgObjSorter
 {
-	KTrgObjSorter(const trigger::TriggerEvent &triggerEventHandle) : teh(triggerEventHandle) {}
-
-	bool operator()(const int &a, const int &b)
+	KTrgObjSorter(const KTriggerObjects &_to) : to(_to) {}
+	bool operator()(const size_t &a, const size_t &b)
 	{
-		trigger::TriggerObject ta(teh.getObjects().at(a));
-		trigger::TriggerObject tb(teh.getObjects().at(b));
-		return (ta.pt() > tb.pt());
+		return (to.trgObjects[a].p4.pt() > to.trgObjects[b].p4.pt());
 	}
-	const trigger::TriggerEvent &teh;
+	const KTriggerObjects &to;
 };
 
 class KTriggerObjectProducer2 : public KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer2_Product>
@@ -89,14 +86,12 @@ protected:
 				if (toFWK2Kappa.count(keys[iK]) == 0)
 					toFWK2Kappa.insert(std::make_pair(keys[iK], toFWK2Kappa.size()));
 				if (verbosity > 2)
-					std::cout << keys[iK] << "=>" << toFWK2Kappa[keys[iK]] << " (pt="
-						<< triggerEventHandle.getObjects().at(keys[iK]).pt() << ") ";
+					std::cout << keys[iK] << "=>" << toFWK2Kappa[keys[iK]]
+						<< " (pt=" << triggerEventHandle.getObjects().at(keys[iK]).pt() << ") ";
 				outputIdxList.push_back(toFWK2Kappa[keys[iK]]);
 			}
 			if (verbosity > 2)
 				std::cout << std::endl;
-			KTrgObjSorter sorter(triggerEventHandle);
-			std::sort(outputIdxList.begin(), outputIdxList.end(), sorter);
 		}
 	}
 
@@ -154,6 +149,12 @@ protected:
 			copyP4(triggerObject, out.trgObjects[it->second].p4);
 		}
 
+		KTrgObjSorter toSorter(out);
+		for (size_t i = 0; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
+		{
+			std::sort(out.toIdxL1L2[i].begin(), out.toIdxL1L2[i].end(), toSorter);
+			std::sort(out.toIdxHLT[i].begin(), out.toIdxHLT[i].end(), toSorter);
+		}
 	}
 
 	virtual void clearProduct(KTriggerObjectProducer2_Product::type& prod)
