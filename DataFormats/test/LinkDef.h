@@ -122,8 +122,10 @@
 
 #pragma link C++ struct KJetArea+;
 
-#pragma link C++ struct KTriggerObjects;
-#pragma link C++ struct KTriggerObjectInfos;
+#pragma link C++ struct KTriggerInfos+;
+
+#pragma link C++ class std::vector<std::vector<size_t> >+;
+#pragma link C++ struct KTriggerObjects+;
 
 /************************************************************/
 /* METADATA                                                 */
