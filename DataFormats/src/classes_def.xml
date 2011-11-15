@@ -68,7 +68,7 @@
 
 	<class name="KJetArea"/>
 
-	<class name="KTriggerObjectInfos"/>
+	<class name="KTriggerInfos"/>
 	<class name="KTriggerObjects"/>
 
 

@@ -83,7 +83,7 @@ namespace
 
 		KJetArea dict_KJetArea;
 
-		KTriggerObjectInfos dict_KTriggerObjectInfos;
+		KTriggerInfos dict_KTriggerInfos;
 		KTriggerObjects dict_KTriggerObjects;
 
 

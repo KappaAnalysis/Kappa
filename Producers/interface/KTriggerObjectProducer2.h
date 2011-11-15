@@ -15,21 +15,35 @@ struct KTriggerObjectProducer2_Product
 	static const std::string producer() { return "KTriggerObjectProducer2"; };
 };
 
+struct KTrgObjSorter
+{
+	KTrgObjSorter(const trigger::TriggerEvent &triggerEventHandle) : teh(triggerEventHandle) {}
+
+	bool operator()(const int &a, const int &b)
+	{
+		trigger::TriggerObject ta(teh.getObjects().at(a));
+		trigger::TriggerObject tb(teh.getObjects().at(b));
+		return (ta.pt() > tb.pt());
+	}
+	const trigger::TriggerEvent &teh;
+};
+
 class KTriggerObjectProducer2 : public KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer2_Product>
 {
 public:
 	KTriggerObjectProducer2(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer2_Product>(cfg, _event_tree, _run_tree, true)
 	{
-		trgInfos = new KTriggerObjectInfos;
-		_run_tree->Bronch("KTriggerObjectInfos", "KTriggerObjectInfos", &trgInfos);
-		this->registerBronch("TriggerObjects", "TriggerObjects", this->psBase,
+		trgInfos = new KTriggerInfos;
+		_run_tree->Bronch("KTriggerInfos", "KTriggerInfos", &trgInfos);
+		this->registerBronch("KTriggerObjects", "KTriggerObjects", this->psBase,
 			cfg.getParameter<edm::InputTag>("hltTag"));
 	}
 	virtual ~KTriggerObjectProducer2() {};
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
+		trgInfos->menu = KMetadataProducerBase::hltConfig.tableName();
 		trgInfos->toHLT.clear();
 		trgInfos->toL1L2.clear();
 		for (size_t i = 0; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
@@ -41,7 +55,7 @@ public:
 	}
 
 protected:
-	KTriggerObjectInfos *trgInfos;
+	KTriggerInfos *trgInfos;
 	KTriggerObjects *trgObjects;
 	std::vector<int> listL1L2;
 	std::vector<int> listHLT;
@@ -50,6 +64,8 @@ protected:
 		std::string name, int fwkIdx, std::map<size_t, size_t> &toFWK2Kappa,
 		std::string &outputModuleName, std::vector<size_t> &outputIdxList)
 	{
+		if (verbosity > 2)
+			std::cout << "Processing " << name << "..." << std::endl;
 		if (fwkIdx >= 0)
 		{
 			const std::string currentModuleName = triggerEventHandle.filterTag(fwkIdx).label();
@@ -72,14 +88,23 @@ protected:
 			{
 				if (toFWK2Kappa.count(keys[iK]) == 0)
 					toFWK2Kappa.insert(std::make_pair(keys[iK], toFWK2Kappa.size()));
+				if (verbosity > 2)
+					std::cout << keys[iK] << "=>" << toFWK2Kappa[keys[iK]] << " (pt="
+						<< triggerEventHandle.getObjects().at(keys[iK]).pt() << ") ";
 				outputIdxList.push_back(toFWK2Kappa[keys[iK]]);
 			}
+			if (verbosity > 2)
+				std::cout << std::endl;
+			KTrgObjSorter sorter(triggerEventHandle);
+			std::sort(outputIdxList.begin(), outputIdxList.end(), sorter);
 		}
 	}
 
 	virtual void fillProduct(const trigger::TriggerEvent &triggerEventHandle, KTriggerObjectProducer2_Product::type &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		HLTConfigProvider &hltConfig(KMetadataProducerBase::hltConfig);
+		if (verbosity > 0)
+			std::cout << hltConfig.tableName() << std::endl;
 
 		std::map<size_t, size_t> toFWK2Kappa;
 
@@ -122,12 +147,11 @@ protected:
 		}
 
 		// Save used trigger objects
+		out.trgObjects.resize(toFWK2Kappa.size());
 		for (std::map<size_t, size_t>::const_iterator it = toFWK2Kappa.begin(); it != toFWK2Kappa.end(); ++it)
 		{
 			trigger::TriggerObject triggerObject(triggerEventHandle.getObjects().at(it->first));
-			KDataLV tmpP4;
-			copyP4(triggerObject, tmpP4.p4);
-			out.trgObjects.push_back(tmpP4);
+			copyP4(triggerObject, out.trgObjects[it->second].p4);
 		}
 
 	}
