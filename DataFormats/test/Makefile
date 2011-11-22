@@ -20,6 +20,9 @@ all: $(PROGRAM)
 	mkdir -p ../../lib
 	cp $@ ../../lib
 
+%.sbin: %.o libKappa.o
+	$(CXX) $(LDFLAGS) -o $@ $^
+
 libKappa.cpp: standalone.h ../src/classes.h LinkDef.h
 	rootcint -f $@ -c $^
 

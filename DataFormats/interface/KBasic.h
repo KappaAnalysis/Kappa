@@ -58,6 +58,7 @@ const unsigned int KPartonChargePosition = 31;
 const unsigned int KPartonChargeMask = (unsigned int)1 << KPartonChargePosition;
 const unsigned int KPartonStatusMask = (unsigned int)3 << KPartonStatusPosition;
 const unsigned int KPartonPdgIdMask = ((unsigned int)1 << KPartonStatusPosition) - (unsigned int)1;
+
 struct KParton
 {
 	typedef RMLV KInternalLV;
