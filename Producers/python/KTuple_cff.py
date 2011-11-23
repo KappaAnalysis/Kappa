@@ -94,6 +94,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMu24L3Filtered24",
 			"hltSingleMu30L3Filtered30",
 			"hltSingleMu40L3Filtered40",
+			"hltL3fL1sMu16Eta2p1L1f0L2f16QL3Filtered40",
 			"hltSingleMuL3Filtered100",
 
 			# HLT_IsoMuX (2010)
@@ -191,6 +192,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"hltSingleMu24L3Filtered24",
 			"hltSingleMu30L3Filtered30",
 			"hltSingleMu40L3Filtered40",
+			"hltL3fL1sMu16Eta2p1L1f0L2f16QL3Filtered40",
 			"hltSingleMuL3Filtered100",
 
 			# HLT_IsoMuX (2010)
