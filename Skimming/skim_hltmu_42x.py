@@ -64,7 +64,7 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 )
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring(
-	'L1Muons', 'Muons', 'TrackSummary', 'TriggerObjects', 'VertexSummary', 'BeamSpot', 'JetArea', @ACTIVE@ #'Tracks'
+	'L1Muons', 'Muons', 'TrackSummary', 'TriggerObjects', 'PFMET', 'VertexSummary', 'BeamSpot', 'JetArea', @ACTIVE@ #'Tracks'
 )
 process.kappatuple.Tracks.minPt = cms.double(5.)
 
