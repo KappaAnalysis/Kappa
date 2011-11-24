@@ -130,7 +130,6 @@ protected:
 			}
 			if (verbosity > 0)
 				std::cout << std::endl;
-			std::cout << idxL1L2 << " " << idxHLT << std::endl;
 
 			// Fill L1L2 object
 			out.toIdxL1L2.push_back(std::vector<size_t>());
