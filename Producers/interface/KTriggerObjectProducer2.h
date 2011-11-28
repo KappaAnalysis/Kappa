@@ -105,7 +105,13 @@ protected:
 
 		for (size_t i = 0; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
 		{
+			out.toIdxL1L2.push_back(std::vector<size_t>());
+			out.toIdxHLT.push_back(std::vector<size_t>());
+			if (i == 0)
+				continue;
+
 			size_t hltIdx = KMetadataProducerBase::hltKappa2FWK[i];
+			// Determine modules writing L1L2 / HLT objects
 			const std::vector<std::string> &moduleLabels(hltConfig.moduleLabels(hltIdx));
 			if (verbosity > 0)
 				std::cout << hltConfig.triggerName(hltIdx) << ": ";
@@ -131,12 +137,8 @@ protected:
 			if (verbosity > 0)
 				std::cout << std::endl;
 
-			// Fill L1L2 object
-			out.toIdxL1L2.push_back(std::vector<size_t>());
+			// Fill L1L2 / HLT object
 			fillTriggerObject(triggerEventHandle, "L1L2", idxL1L2, toFWK2Kappa, trgInfos->toL1L2[i], out.toIdxL1L2[i]);
-
-			// Fill HLT object
-			out.toIdxHLT.push_back(std::vector<size_t>());
 			fillTriggerObject(triggerEventHandle, "HLT", idxHLT, toFWK2Kappa, trgInfos->toHLT[i], out.toIdxHLT[i]);
 		}
 
