@@ -20,22 +20,60 @@ public:
 	KTriggerObjectProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer_Product>(cfg, _event_tree, _run_tree, true),
 		triggerObjects(cfg.getParameter<std::vector<std::string> >("triggerObjects")),
-		tagHLTrigger(cfg.getParameter<edm::InputTag>("hltTag"))
+		tagHLTrigger(cfg.getParameter<edm::InputTag>("hltTag")),
+		autoTriggerObjects(cfg.getParameter<bool>("autoTriggerObjects")),
+		firstRun(true)
 		{
 			std::sort(triggerObjects.begin(), triggerObjects.end());
 		};
 	virtual ~KTriggerObjectProducer() {};
 
-	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
+	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		for (std::vector<std::string>::iterator it = triggerObjects.begin(); it != triggerObjects.end(); ++it)
-			this->registerBronch("TriggerObject_" + (*it), (*it), this->psBase, tagHLTrigger);
+		if (firstRun)
+		{
+			firstRun = false;
+			for (std::vector<std::string>::iterator it = triggerObjects.begin(); it != triggerObjects.end(); ++it)
+			{
+				this->registerBronch("TriggerObject_" + (*it), (*it), this->psBase, tagHLTrigger);
+			}
+
+			if (autoTriggerObjects)
+			{
+				if (verbosity > 0)
+					std::cout << "--- Begin of automatic trigger object detection ---\n";
+				for (std::vector<std::string>::const_iterator it = KMetadataProducerBase::selectedHLT.begin()+1; it != KMetadataProducerBase::selectedHLT.end(); ++it)
+				{
+					if (verbosity > 0)
+						std::cout << "\t" << (*it) << "\n";
+					std::vector<std::string> modules = KMetadataProducerBase::hltConfig.saveTagsModules(*it);
+					for (std::vector<std::string>::const_iterator it2 = modules.begin(); it2 != modules.end(); ++it2)
+					{
+						if (verbosity > 0)
+							std::cout << "\t\t"<< (*it2);
+						if (std::find(triggerObjects.begin(), triggerObjects.end(), *it2) == triggerObjects.end())
+						{
+							this->registerBronch("TriggerObject_" + (*it2), (*it2), this->psBase, tagHLTrigger);
+						}
+						else
+						{
+							if (verbosity > 0)
+								std::cout << "\n";
+						}
+					}
+				}
+				if (verbosity > 0)
+					std::cout << "--- End of automatic trigger object detection ---\n";
+			}
+		}
+
 		return true;
 	}
-
 protected:
 	std::vector<std::string> triggerObjects;
 	edm::InputTag tagHLTrigger;
+	bool autoTriggerObjects;
+	bool firstRun;
 
 	virtual void fillProduct(const trigger::TriggerEvent &triggerEventHandle, KTriggerObjectProducer_Product::type &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{

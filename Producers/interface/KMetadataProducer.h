@@ -46,10 +46,12 @@ public:
 
 	static HLTConfigProvider hltConfig;
 	static std::vector<size_t> hltKappa2FWK;
+	static std::vector<std::string> selectedHLT;
 };
 
 HLTConfigProvider KMetadataProducerBase::hltConfig;
 std::vector<size_t> KMetadataProducerBase::hltKappa2FWK;
+std::vector<std::string> KMetadataProducerBase::selectedHLT;
 
 template<typename Tmeta>
 class KMetadataProducer : public KMetadataProducerBase
@@ -83,6 +85,7 @@ public:
 	{
 		KMetadataProducerBase::hltKappa2FWK.push_back(idx);
 		hltNames.push_back(name);
+		selectedHLT.push_back(name);
 		hltPrescales.push_back(prescale);
 	}
 
