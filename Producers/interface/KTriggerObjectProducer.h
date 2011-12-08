@@ -49,6 +49,8 @@ public:
 					std::vector<std::string> modules = KMetadataProducerBase::hltConfig.saveTagsModules(*it);
 					for (std::vector<std::string>::const_iterator it2 = modules.begin(); it2 != modules.end(); ++it2)
 					{
+						if (verbosity == 0)
+							std::cout << " -> adding trigger object automatically: " << (*it2) << "\n";
 						if (verbosity > 0)
 							std::cout << "\t\t"<< (*it2);
 						if (std::find(triggerObjects.begin(), triggerObjects.end(), *it2) == triggerObjects.end())
