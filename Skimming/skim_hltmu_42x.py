@@ -84,6 +84,7 @@ process.kappatuple.Metadata.hltBlacklist = cms.vstring(
 	"Displaced",
 	"L1ETM",
 	"^HLT_Mu([0-9]+)_R([0-9]+)_MR([0-9]+)(_v[[:digit:]]+)?$",
+	"(Quad|Tri|Di)Jet",
 )
 #-------------------------------------------------------------------------------
 
