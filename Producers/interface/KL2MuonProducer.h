@@ -31,8 +31,8 @@ struct KL3MuonTrajectorySeedProducer_Product
 
 struct KMuonTriggerCandidateProducer_Product
 {
-	typedef std::vector<KDataTrack> type;
-	static const std::string id() { return "std::vector<KDataTrack>"; };
+	typedef std::vector<KMuonTriggerCandidate> type;
+	static const std::string id() { return "std::vector<KMuonTriggerCandidate>"; };
 	static const std::string producer() { return "MuonTriggerCandidateProducer"; };
 };
 
@@ -118,8 +118,8 @@ public:
 			edm::Ref< std::vector<reco::Track> > tk = in.track();
 			reco::IsoDepositMap::value_type calDeposit= (*isoDeps)[tk];
 
-			out.sumPtIso03=calDeposit.depositWithin(isoDeltaR);
-			out.trackIso03=(*isoDepDecisions)[tk];					// decision
+			out.isoQuantity = calDeposit.depositWithin(isoDeltaR);
+			out.isoDecision = (*isoDepDecisions)[tk];					// decision
 		}
 	}
 

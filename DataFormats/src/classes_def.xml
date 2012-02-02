@@ -71,6 +71,9 @@
 	<class name="KTriggerInfos"/>
 	<class name="KTriggerObjects"/>
 
+	<class name="KMuonTriggerCandidate"/>
+	<class name="KMuonTriggerCandidates"/>
+
 
 	<class name="KProvenance"/>
 

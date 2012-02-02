@@ -127,6 +127,10 @@
 #pragma link C++ class std::vector<std::vector<size_t> >+;
 #pragma link C++ struct KTriggerObjects+;
 
+#pragma link C++ struct KMuonTriggerCandidate+;
+#pragma link C++ class std::vector<KMuonTriggerCandidate>+;
+#pragma link C++ typedef KMuonTriggerCandidates;
+
 /************************************************************/
 /* METADATA                                                 */
 /************************************************************/

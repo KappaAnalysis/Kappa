@@ -127,6 +127,14 @@ struct KDataTrack : public KDataLV
 };
 typedef std::vector<KDataTrack> KDataTracks;
 
+struct KMuonTriggerCandidate : public KDataTrack
+{
+	bool isoDecision;
+	float isoQuantity;
+};
+
+typedef std::vector<KMuonTriggerCandidate> KMuonTriggerCandidates;
+
 struct KTrackSummary
 {
 	unsigned int nTracks;

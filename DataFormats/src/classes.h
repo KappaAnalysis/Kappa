@@ -86,6 +86,9 @@ namespace
 		KTriggerInfos dict_KTriggerInfos;
 		KTriggerObjects dict_KTriggerObjects;
 
+		KMuonTriggerCandidate dict_KMuonTriggerCandidate;
+		KMuonTriggerCandidates dict_KMuonTriggerCandidates;
+
 
 		KProvenance dict_KProvenance;
 

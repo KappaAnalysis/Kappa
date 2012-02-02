@@ -73,6 +73,9 @@ KJetArea
 KTriggerInfos
 KTriggerObjects
 
+KMuonTriggerCandidate
+KMuonTriggerCandidates
+
 #################################
 
 KProvenance
