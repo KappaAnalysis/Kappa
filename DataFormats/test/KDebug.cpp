@@ -166,7 +166,7 @@ std::ostream &displayHLT(std::ostream &os, const KLumiMetadata &metaLumi, const 
 {
 	for (size_t hltIdx = 0; hltIdx < metaLumi.hltNames.size(); ++hltIdx)
 		if (metaEvent.bitsHLT & ((unsigned long long)1 << hltIdx))
-			os << hltIdx << ":" << metaLumi.hltNames[hltIdx] << " ";
+			os << hltIdx << ":" << metaLumi.hltNames[hltIdx] << "(" << metaLumi.hltPrescales[hltIdx] << ")" << " ";
 		os << std::endl;
 	return os;
 }
