@@ -29,4 +29,4 @@ libKappa.cpp: standalone.h ../src/classes.h LinkDef.h
 install: $(PROGRAM)
 
 clean:
-	@rm -f *.o libKappa.*
+	@rm -f *.o libKappa.* ../../lib/*

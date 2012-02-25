@@ -76,6 +76,7 @@ struct KEventMetadata
 typedef unsigned int event_id;
 typedef unsigned int lumi_id;
 typedef unsigned int run_id;
+typedef unsigned short fill_id;
 typedef int bx_id;
 
 // List of user flags for events (KEventFlag...)

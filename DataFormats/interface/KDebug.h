@@ -28,6 +28,7 @@ std::ostream &operator<<(std::ostream &os, const KDataLumiMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KEventMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m);
 std::ostream &displayHLT(std::ostream &os, const KLumiMetadata &metaLumi, const KEventMetadata &metaEvent);
+std::ostream &displayTO(std::ostream &os, const size_t hltIdx, const KTriggerObjects *trgObj);
 
 #include "KDebug.hxx"
 
