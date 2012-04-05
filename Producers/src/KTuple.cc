@@ -17,31 +17,33 @@
 #include "../interface/KMetadataProducer.h"
 #include "../interface/KGenMetadataProducer.h"
 #include "../interface/KDataMetadataProducer.h"
+
+#include "../interface/KBeamSpotProducer.h"
+#include "../interface/KCaloJetProducer.h"
+#include "../interface/KCaloTauProducer.h"
+#include "../interface/KGenPhotonProducer.h"
+#include "../interface/KGenTauProducer.h"
+#include "../interface/KHCALNoiseSummaryProducer.h"
+// #include "../interface/KHepMCPartonProducer.h"
+#include "../interface/KHitProducer.h"
+#include "../interface/KJetAreaProducer.h"
+#include "../interface/KL1MuonProducer.h"
+#include "../interface/KL2MuonProducer.h"
 #include "../interface/KLorentzProducer.h"
 #include "../interface/KMETProducer.h"
+#include "../interface/KMuonProducer.h"
+#include "../interface/KPartonProducer.h"
+#include "../interface/KPFCandidateProducer.h"
+#include "../interface/KPFJetProducer.h"
 #include "../interface/KPFMETProducer.h"
-#include "../interface/KTrackProducer.h"
+#include "../interface/KPFTauProducer.h"
 #include "../interface/KTowerProducer.h"
+#include "../interface/KTrackProducer.h"
+#include "../interface/KTrackSummaryProducer.h"
+#include "../interface/KTriggerObjectProducer2.h"
+#include "../interface/KTriggerObjectProducer.h"
 #include "../interface/KVertexProducer.h"
 #include "../interface/KVertexSummaryProducer.h"
-#include "../interface/KMuonProducer.h"
-#include "../interface/KCaloJetProducer.h"
-#include "../interface/KPFJetProducer.h"
-#include "../interface/KPartonProducer.h"
-#include "../interface/KTrackSummaryProducer.h"
-#include "../interface/KBeamSpotProducer.h"
-#include "../interface/KHitProducer.h"
-#include "../interface/KTriggerObjectProducer.h"
-#include "../interface/KTriggerObjectProducer2.h"
-#include "../interface/KCaloTauProducer.h"
-#include "../interface/KPFTauProducer.h"
-#include "../interface/KGenTauProducer.h"
-#include "../interface/KPFCandidateProducer.h"
-#include "../interface/KL1MuonProducer.h"
-#include "../interface/KGenPhotonProducer.h"
-#include "../interface/KJetAreaProducer.h"
-#include "../interface/KL2MuonProducer.h"
-// #include "../interface/KHepMCPartonProducer.h"
 
 int KBaseProducer::verbosity = 0;
 
@@ -196,6 +198,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KGenPhotonProducer>(psConfig, active[i]);
 		else if (active[i] == "JetArea")
 			addProducer<KJetAreaProducer>(psConfig, active[i]);
+		else if (active[i] == "HCALNoiseSummary")
+			addProducer<KHCALNoiseSummaryProducer>(psConfig, active[i]);
 		else if (active[i] == "L2MuonTrajectorySeed")
 			addProducer<KL2MuonTrajectorySeedProducer>(psConfig, active[i]);
 		else if (active[i] == "L3MuonTrajectorySeed")

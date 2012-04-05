@@ -121,6 +121,7 @@
 #pragma link C++ typedef KGenPhotons;
 
 #pragma link C++ struct KJetArea+;
+#pragma link C++ struct KHCALNoiseSummary+;
 
 #pragma link C++ struct KTriggerInfos+;
 

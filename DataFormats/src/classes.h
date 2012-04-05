@@ -82,6 +82,7 @@ namespace
 		KGenPhotons dict_KGenPhotons;
 
 		KJetArea dict_KJetArea;
+		KHCALNoiseSummary dict_KHCALNoiseSummary;
 
 		KTriggerInfos dict_KTriggerInfos;
 		KTriggerObjects dict_KTriggerObjects;

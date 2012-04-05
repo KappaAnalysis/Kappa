@@ -67,6 +67,7 @@
 	<class name="KGenPhotons"/>
 
 	<class name="KJetArea"/>
+	<class name="KHCALNoiseSummary"/>
 
 	<class name="KTriggerInfos"/>
 	<class name="KTriggerObjects"/>
