@@ -64,6 +64,10 @@ public:
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
 		svHLTWhitelist(cfg.getParameter<std::vector<std::string> >("hltWhitelist")),
 		svHLTBlacklist(cfg.getParameter<std::vector<std::string> >("hltBlacklist")),
+		discrPFTauWhitelist(cfg.getParameter<std::vector<std::string> >("discrPFTauWhitelist")),
+		discrPFTauBlacklist(cfg.getParameter<std::vector<std::string> >("discrPFTauBlacklist")),
+		discrCaloTauWhitelist(cfg.getParameter<std::vector<std::string> >("discrCaloTauWhitelist")),
+		discrCaloTauBlacklist(cfg.getParameter<std::vector<std::string> >("discrCaloTauBlacklist")),
 		svMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
 		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL")),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
@@ -234,6 +238,9 @@ public:
 			{
 				if (std::find(metaLumi->discrTau.begin(), metaLumi->discrTau.end(), name) == metaLumi->discrTau.end())
 				{
+					if (!regexMatch(name, discrCaloTauWhitelist, discrCaloTauBlacklist))
+						continue;
+
 					metaLumi->discrTau.push_back(name);
 					KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap[name] = metaLumi->discrTau.size() - 1;
 
@@ -246,8 +253,11 @@ public:
 			}
 			if (desc.className() == "reco::PFTauDiscriminator")
 			{
-				if (std::find(metaLumi->discrTauPF.begin(), metaLumi->discrTauPF.end(), name) == metaLumi->discrTauPF.end() && name.substr(name.length()-5) != "PFlow") // ignore stupid PAT bullshit
+				if (std::find(metaLumi->discrTauPF.begin(), metaLumi->discrTauPF.end(), name) == metaLumi->discrTauPF.end())
 				{
+					if (!regexMatch(name, discrPFTauWhitelist, discrPFTauBlacklist))
+						continue;
+
 					metaLumi->discrTauPF.push_back(name);
 					KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size() - 1;
 
@@ -404,6 +414,9 @@ protected:
 	std::string tauDiscrProcessName;
 	edm::InputTag tagL1Results, tagHLTResults;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
+	std::vector<std::string> discrPFTauWhitelist, discrPFTauBlacklist;
+	std::vector<std::string> discrCaloTauWhitelist, discrCaloTauBlacklist;
+
 	std::vector<std::string> svMuonTriggerObjects;
 
 	edm::InputTag tagNoiseHCAL, tagHLTrigger;
