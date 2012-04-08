@@ -72,6 +72,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 		printHltList = cms.bool(False),
 
+		discrPFTauWhitelist = cms.vstring(".*"),
+		discrPFTauBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
+		discrCaloTauWhitelist = cms.vstring(".*"),
+		discrCaloTauBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
+
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
 		muonTriggerObjects = cms.vstring(
 			# HLT_MuX (2010)
