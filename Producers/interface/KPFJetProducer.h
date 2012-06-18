@@ -31,6 +31,8 @@ public:
 		out.muonFraction = in.muonEnergyFraction();
 		out.photonFraction = in.photonEnergyFraction();
 		out.electronFraction = in.electronEnergyFraction();
+		out.HFHadFraction = in.HFHadronEnergyFraction();
+		out.HFEMFraction = in.HFEMEnergyFraction();
 	}
 };
 

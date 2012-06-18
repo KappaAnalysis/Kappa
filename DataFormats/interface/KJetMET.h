@@ -19,6 +19,7 @@ struct KDataPFJet : public KDataLV
 	float neutralEMFraction, chargedEMFraction;
 	float neutralHadFraction, chargedHadFraction;
 	float muonFraction, photonFraction, electronFraction;
+	float HFHadFraction, HFEMFraction;
 
 	int nConst, nCharged;
 };
