@@ -1,7 +1,7 @@
 #ifndef KAPPA_GENTAUPRODUCER_H
 #define KAPPA_GENTAUPRODUCER_H
 
-#include "KPartonProducer.h"
+#include "KBaseMultiProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 
 struct KGenTauProducer_Product

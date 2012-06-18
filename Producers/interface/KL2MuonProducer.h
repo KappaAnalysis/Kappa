@@ -1,7 +1,7 @@
 #ifndef KAPPA_L2MUONPRODUCER_H
 #define KAPPA_L2MUONPRODUCER_H
 
-#include "KTrackProducer.h"
+#include "KBaseMultiProducer.h"
 #include "KL1MuonProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"

@@ -269,14 +269,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
-	HCALNoiseSummary = cms.PSet(kappaNoRename,
-		manual = cms.VInputTag(),
-
-		whitelist = cms.vstring("hcalnoise"),
-		blacklist = cms.vstring(),
-	),
-
-
 	TriggerObjects2 = cms.PSet(
 		kappaNoRegEx,
 		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
