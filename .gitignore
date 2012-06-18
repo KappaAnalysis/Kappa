@@ -10,3 +10,4 @@ work.*
 .svn
 DataFormats/test/libKappa.h
 DataFormats/test/libKappa.cpp
+/Producers/python/__init__.py
