@@ -403,10 +403,10 @@ kappaTupleDefaultsBlock = cms.PSet(
 	JetArea = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("kt6PFJetsRho_rho"),
+		whitelist = cms.vstring("kt6PFJetsRho_rho", "kt6PFJets_rho"),
 		blacklist = cms.vstring(),
 
-		rename = cms.vstring("kt6PFJetsRho => KT6Area"),
+		rename = cms.vstring("kt6PFJetsRho => KT6AreaRho", "kt6PFJets => KT6Area"),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
