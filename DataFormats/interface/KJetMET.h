@@ -40,6 +40,23 @@ struct KDataPFMET : public KDataMET
 	double type6EtFraction, type7EtFraction;
 };
 
+struct KHCALNoiseSummary
+{
+	bool hasBadRBXTS4TS5;
+	float isolatedNoiseSumE;
+	float isolatedNoiseSumEt;
+	float max25GeVHitTime;
+	float maxE2Over10TS;
+	int maxHPDHits;
+	int maxHPDNoOtherHits;
+	int maxRBXHits;
+	int maxZeros;
+	float min25GeVHitTime;
+	float minE2Over10TS;
+	float minRBXEMF;
+	int numIsolatedNoiseChannels;
+};
+
 #define KAPPA_FEATURE_JETAREA
 struct KJetArea
 {
