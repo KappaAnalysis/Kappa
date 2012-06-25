@@ -57,14 +57,8 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 )
 
 process.kappatuple.verbose = cms.int32(0)
-try:
-	@ACTIVE@
-#'GenMetadata', 'LV'
-except:
-	print "FAIL"
-	raise
 process.kappatuple.active = cms.vstring(
-#	'TrackSummary', 'VertexSummary', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'JetArea', @ACTIVE@
+	'TrackSummary', 'VertexSummary', 'MET', 'PFMET', 'CaloJets', 'PFJets', 'JetArea', @ACTIVE@
 )
 process.kappatuple.Metadata.noiseHCAL = cms.InputTag("")
 
