@@ -44,15 +44,27 @@ public:
 
 		// Read luminosity infos
 		edm::Handle<LumiSummary> hLumiSummary;
-		lumiBlock.getByLabel(lumiSource, hLumiSummary);
-
-		this->metaLumi->avgInsDelLumi = hLumiSummary->avgInsDelLumi();
-		this->metaLumi->avgInsDelLumiErr = hLumiSummary->avgInsDelLumiErr();
-		this->metaLumi->avgInsRecLumi = hLumiSummary->avgInsRecLumi();
-		this->metaLumi->avgInsRecLumiErr = hLumiSummary->avgInsRecLumiErr();
-		this->metaLumi->deadFrac = hLumiSummary->deadFrac();
-		this->metaLumi->lumiSectionLength = hLumiSummary->lumiSectionLength();
-		this->metaLumi->lumiSecQual = hLumiSummary->lumiSecQual();
+		if (lumiBlock.getByLabel(lumiSource, hLumiSummary))
+		{
+			this->metaLumi->avgInsDelLumi = hLumiSummary->avgInsDelLumi();
+			this->metaLumi->avgInsDelLumiErr = hLumiSummary->avgInsDelLumiErr();
+			this->metaLumi->avgInsRecLumi = hLumiSummary->avgInsRecLumi();
+			this->metaLumi->avgInsRecLumiErr = hLumiSummary->avgInsRecLumiErr();
+			this->metaLumi->deadFrac = hLumiSummary->deadFrac();
+			this->metaLumi->lumiSectionLength = hLumiSummary->lumiSectionLength();
+			this->metaLumi->lumiSecQual = hLumiSummary->lumiSecQual();
+		}
+		else
+		{
+			std::cout << "Warning: No edm lumi information found! All lumi values are set to zero." << std::endl;
+			this->metaLumi->avgInsDelLumi = 0.0f;
+			this->metaLumi->avgInsDelLumiErr = 0.0f;
+			this->metaLumi->avgInsRecLumi = 0.0f;
+			this->metaLumi->avgInsRecLumiErr = 0.0f;
+			this->metaLumi->deadFrac = 0.0f;
+			this->metaLumi->lumiSectionLength = 0;
+			this->metaLumi->lumiSecQual = 0;
+		}
 
 		this->metaLumi->nFill = currentRun;
 
