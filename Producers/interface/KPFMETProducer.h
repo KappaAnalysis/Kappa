@@ -39,10 +39,14 @@ protected:
 			out.type7EtFraction = in.at(0).Type7EtFraction();
 
 			TMatrixD mat = in.at(0).getSignificanceMatrix();
-			assert(mat(0,1) == mat(1,0));
+			if (mat(0,1) != mat(1,0))
+				std::cout << "Matrix is not symmetric: " << mat(0,1) << " != " << mat(1,0) << std::endl;
+			//assert(mat(0,1) == mat(1,0));
 			out.significance(0,0) = mat(0,0);
 			out.significance(0,1) = mat(0,1);
-			assert(out.significance(1,0) == mat(1,0));
+			if (out.significance(1,0) != mat(1,0))
+				std::cout << "Significance matrix is not identical to input:"
+					<< out.significance(1,0) << " != " << mat(1,0) << std::endl;
 			out.significance(1,1) = mat(1,1);
 		}
 		else
