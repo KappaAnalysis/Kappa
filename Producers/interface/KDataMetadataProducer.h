@@ -56,7 +56,13 @@ public:
 		}
 		else
 		{
-			std::cout << "Warning: No edm lumi information found! All lumi values are set to zero." << std::endl;
+			/*
+				if the luminosity information is not available, you can add the following module to your path:
+					process.lumiProducer=cms.EDProducer("LumiProducer",
+						connect=cms.string('frontier://LumiProd/CMS_LUMI_PROD'),
+					)
+			*/
+			edm::LogWarning("KDataMetadataProducer") << "Warning: No edm lumi information found! All lumi values are set to zero.";
 			this->metaLumi->avgInsDelLumi = 0.0f;
 			this->metaLumi->avgInsDelLumiErr = 0.0f;
 			this->metaLumi->avgInsRecLumi = 0.0f;
