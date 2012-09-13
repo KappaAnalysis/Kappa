@@ -89,6 +89,7 @@ public:
 		out.caloComp = in.caloCompatibility();
 		out.segComp = muon::segmentCompatibility(in);
 
+		assert(in.type() <= 255);
 		out.type = in.type();
 
 		// muon ID selection, described in AN-2008/098
