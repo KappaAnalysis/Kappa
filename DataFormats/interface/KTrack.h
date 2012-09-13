@@ -60,6 +60,26 @@ struct KDataTrack : public KDataLV
 		) / sqrt(p4.Perp2());
 	}
 
+	double getDz(const KDataVertex *pv) const
+	{
+		if (!pv)
+			return -1.;
+		return ref.z() - pv->position.z() - (
+				(ref.x() - pv->position.x()) * p4.x() +
+				(ref.y() - pv->position.y()) * p4.y()
+			) * p4.z() / p4.Perp2();
+	}
+
+	double getDz(const KDataBeamSpot *bs) const
+	{
+		if (!bs)
+			return -1.;
+		return ref.z() - bs->position.z() - (
+				(ref.x() - bs->position.x()) * p4.x() +
+				(ref.y() - bs->position.y()) * p4.y()
+			) * p4.z() / p4.Perp2();
+	}
+
 	/*
 		mode:
 			0 - dxy
