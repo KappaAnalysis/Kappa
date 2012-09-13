@@ -80,6 +80,8 @@ public:
 			KTrackProducer::fillTrack(*in.innerTrack(), out.innerTrack);
 		if (in.outerTrack().isNonnull())
 			KTrackProducer::fillTrack(*in.outerTrack(), out.outerTrack);
+		if (in.bestTrack())
+			KTrackProducer::fillTrack(*in.bestTrack(), out.bestTrack);
 
 
 		// Charge, ...

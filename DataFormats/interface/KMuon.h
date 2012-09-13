@@ -15,6 +15,7 @@ struct KDataMuon : KDataLV
 	KDataTrack globalTrack;
 	KDataTrack innerTrack;
 	KDataTrack outerTrack;
+	KDataTrack bestTrack;
 
 	// bits are set according to reco::Muon::type_;
 	unsigned char type;
