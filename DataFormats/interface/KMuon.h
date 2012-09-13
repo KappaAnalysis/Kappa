@@ -16,16 +16,14 @@ struct KDataMuon : KDataLV
 	KDataTrack innerTrack;
 	KDataTrack outerTrack;
 
-	// Bit 0 - trackerMuon
-	// Bit 1 - caloMuon
-	// Bit 2 - standaloneMuon
-	// Bit 3 - globalMuon
+	// bits are set according to reco::Muon::type_;
 	unsigned char type;
 
 	inline bool isTrackerMuon() const    { return (type & (1 << 2)); };
 	inline bool isCaloMuon() const       { return (type & (1 << 4)); };
 	inline bool isStandAloneMuon() const { return (type & (1 << 3)); };
 	inline bool isGlobalMuon() const     { return (type & (1 << 1)); };
+	inline bool isPFMuon() const         { return (type & (1 << 5)); };
 
 	float sumPtIso03;		// tracker isolation as given by muon.isolationR03().sumPt
 	float hcalIso03;		// hcal isolation as given by muon.isolationR03().hadEt
