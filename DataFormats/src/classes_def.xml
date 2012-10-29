@@ -36,8 +36,8 @@
 	<class name="KDataBeamSpot"/>
 	<class name="KDataBeamSpots"/>
 
-	<class name="KParton"/>
-	<class name="KPartons"/>
+	<class name="KGenParticle"/>
+	<class name="KGenParticles"/>
 
 	<class name="KDataMuon"/>
 	<class name="KDataMuons"/>

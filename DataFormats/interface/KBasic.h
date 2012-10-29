@@ -53,37 +53,34 @@ struct KDataBeamSpot
 typedef std::vector<KDataBeamSpot> KDataBeamSpots;
 
 // pdgid = [charge:1][status:3][id:...]
-const unsigned int KPartonStatusPosition = 28;
-const unsigned int KPartonChargePosition = 31;
-const unsigned int KPartonChargeMask = (unsigned int)1 << KPartonChargePosition;
-const unsigned int KPartonStatusMask = (unsigned int)3 << KPartonStatusPosition;
-const unsigned int KPartonPdgIdMask = ((unsigned int)1 << KPartonStatusPosition) - (unsigned int)1;
+const unsigned int KGenParticleStatusPosition = 28;
+const unsigned int KGenParticleChargePosition = 31;
+const unsigned int KGenParticleChargeMask = (unsigned int)1 << KGenParticleChargePosition;
+const unsigned int KGenParticleStatusMask = (unsigned int)3 << KGenParticleStatusPosition;
+const unsigned int KGenParticlePdgIdMask = ((unsigned int)1 << KGenParticleStatusPosition) - (unsigned int)1;
 
-struct KParton
+struct KGenParticle : public KDataLV
 {
-	typedef RMLV KInternalLV;
-	RMLV p4;
 	unsigned int pdgid;
 	unsigned int children;
 
 	int status() const
 	{
-		return (pdgid & KPartonStatusMask) >> KPartonStatusPosition;
+		return (pdgid & KGenParticleStatusMask) >> KGenParticleStatusPosition;
 	}
 	int pdgId() const
 	{
-		return (pdgid & KPartonChargeMask ? -1 : 1) * (pdgid & KPartonPdgIdMask);
+		return (pdgid & KGenParticleChargeMask ? -1 : 1) * (pdgid & KGenParticlePdgIdMask);
 	}
 	int charge() const
 	{
-		return (pdgid & KPartonChargeMask ? -1 : 1);
+		return (pdgid & KGenParticleChargeMask ? -1 : 1);
 	}
 };
-typedef std::vector<KParton> KPartons;
+typedef std::vector<KGenParticle> KGenParticles;
 
-struct KGenPhoton
+struct KGenPhoton : public KDataLV
 {
-	RMDataLV p4;
 	RMDataLV mother;
 	char type;
 	bool isPhoton() const { return (type == 1); }
@@ -105,11 +102,11 @@ struct KPFCandidate : KDataLV
 
 	int pdgId() const
 	{
-		return (pdgid & KPartonChargeMask ? -1 : 1) * (pdgid & KPartonPdgIdMask);
+		return (pdgid & KGenParticleChargeMask ? -1 : 1) * (pdgid & KGenParticlePdgIdMask);
 	}
 	int charge() const
 	{
-		return (pdgid & KPartonChargeMask ? -1 : 1);
+		return (pdgid & KGenParticleChargeMask ? -1 : 1);
 	}
 };
 typedef std::vector<KPFCandidate> KPFCandidates;

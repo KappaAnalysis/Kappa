@@ -38,8 +38,8 @@ KVertexSummary
 KDataBeamSpot
 KDataBeamSpots
 
-KParton
-KPartons
+KGenParticle
+KGenParticles
 
 KDataMuon
 KDataMuons

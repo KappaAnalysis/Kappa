@@ -51,8 +51,8 @@ namespace
 		KDataBeamSpot dict_KDataBeamSpot;
 		KDataBeamSpots dict_KDataBeamSpots;
 
-		KParton dict_KParton;
-		KPartons dict_KPartons;
+		KGenParticle dict_KGenParticle;
+		KGenParticles dict_KGenParticles;
 
 		KDataMuon dict_KDataMuon;
 		KDataMuons dict_KDataMuons;

@@ -43,9 +43,9 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 	return os << "#Tracks=" << s.nTracks << " #HQ Tracks=" << s.nTracksHQ;
 }
 
-std::ostream &operator<<(std::ostream &os, const KParton &p)
+std::ostream &operator<<(std::ostream &os, const KGenParticle &p)
 {
-	return os << KLVWrap<KParton::KInternalLV>(p.p4)
+	return os << KLVWrap<KDataLV::KInternalLV>(p.p4)
 		<< " status=" << p.status() << " pdgid=" << p.pdgId();
 }
 
@@ -77,7 +77,7 @@ std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau)
 
 std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau)
 {
-	return os << static_cast<const KParton>(tau)
+	return os << static_cast<const KGenParticle>(tau)
 		<< " p4_vis=" << KLVWrap<KDataLV::KInternalLV>(tau.p4_vis)
 		<< " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
 }

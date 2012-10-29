@@ -100,9 +100,9 @@
 #pragma link C++ class std::vector<KDataBeamSpot>+;
 #pragma link C++ typedef KDataBeamSpots;
 
-#pragma link C++ struct KParton+;
-#pragma link C++ class std::vector<KParton>+;
-#pragma link C++ typedef KPartons;
+#pragma link C++ struct KGenParticle+;
+#pragma link C++ class std::vector<KGenParticle>+;
+#pragma link C++ typedef KGenParticles;
 
 #pragma link C++ struct KDataHit+;
 #pragma link C++ class std::vector<KDataHit>+;

@@ -10,7 +10,7 @@ std::ostream &operator<<(std::ostream &os, const KDataBeamSpot &bs);
 std::ostream &operator<<(std::ostream &os, const KDataMET &met);
 std::ostream &operator<<(std::ostream &os, const KDataPFMET &met);
 std::ostream &operator<<(std::ostream &os, const KTrackSummary &s);
-std::ostream &operator<<(std::ostream &os, const KParton &p);
+std::ostream &operator<<(std::ostream &os, const KGenParticle &p);
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet);
 std::ostream &operator<<(std::ostream &os, const KDataPFJet &jet);
 std::ostream &operator<<(std::ostream &os, const KDataTau &tau);

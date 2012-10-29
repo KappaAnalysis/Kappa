@@ -49,7 +49,7 @@ struct KDataPFTau : KDataTau
 };
 typedef std::vector<KDataPFTau> KDataPFTaus;
 
-struct KDataGenTau : KParton
+struct KDataGenTau : KGenParticle
 {
 	RMDataLV p4_vis;		// momenta of visible particles
 	unsigned char decayMode;

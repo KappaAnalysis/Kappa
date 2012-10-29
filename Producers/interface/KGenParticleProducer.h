@@ -4,11 +4,11 @@
 #include "KBaseMultiProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 
-struct KPartonProducer_Product
+struct KGenParticleProducer_Product
 {
-	typedef std::vector<KParton> type;
-	static const std::string id() { return "std::vector<KParton>"; };
-	static const std::string producer() { return "KPartonProducer"; };
+	typedef std::vector<KGenParticle> type;
+	static const std::string id() { return "std::vector<KGenParticle>"; };
+	static const std::string producer() { return "KGenParticleProducer"; };
 };
 
 template<typename TProduct>
@@ -24,9 +24,9 @@ protected:
 	{
 		copyP4(in, out.p4);
 		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
-		out.pdgid = id | ((in.status() % 4) << KPartonStatusPosition);
+		out.pdgid = id | ((in.status() % 4) << KGenParticleStatusPosition);
 		if (in.pdgId() < 0)
-			out.pdgid |= KPartonChargeMask;
+			out.pdgid |= KGenParticleChargeMask;
 		out.children = 0;
 	}
 	virtual bool acceptSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in)
@@ -63,12 +63,12 @@ private:
 	std::vector<int> selectedParticles;
 };
 
-class KPartonProducer: public KBasicPartonProducer<KPartonProducer_Product>
+class KGenParticleProducer: public KBasicPartonProducer<KGenParticleProducer_Product>
 {
 public:
-	KPartonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBasicPartonProducer<KPartonProducer_Product>(cfg, _event_tree, _run_tree) {}
-	virtual ~KPartonProducer() {};
+	KGenParticleProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBasicPartonProducer<KGenParticleProducer_Product>(cfg, _event_tree, _run_tree) {}
+	virtual ~KGenParticleProducer() {};
 
 protected:
 	virtual void fillProduct(const InputType &in, OutputType &out,
@@ -81,7 +81,7 @@ protected:
 		selectStatus(status);
 		selectParticles(particles.begin(), particles.end());
 
-		KBasicPartonProducer<KPartonProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBasicPartonProducer<KGenParticleProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 };
 
