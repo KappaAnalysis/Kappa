@@ -387,7 +387,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	Partons = cms.PSet(kappaNoCut, kappaNoRegEx,
+	GenParticles = cms.PSet(kappaNoCut, kappaNoRegEx,
 		genParticles = cms.PSet(
 			src = cms.InputTag("genParticles"),
 			selectedStatus = cms.int32(8),      # select, if (1<<status & selectedStatus) or selectedStatus==0

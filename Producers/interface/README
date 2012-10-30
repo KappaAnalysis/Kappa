@@ -1,6 +1,6 @@
 CURRENT:
 ========
-                             KGenTauProducer <-- KPartonProducer <-\
+                        KGenTauProducer <-- KGenParticleProducer <-\
                                                                     |/-> KMuonProducer
                             KCaloTauProducer <-\                    |/-> KTrackProducer
   KBaseProducer                                 O-- KTauProducer <-\|/-> KPFCandidateProducer

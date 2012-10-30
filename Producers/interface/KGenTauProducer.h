@@ -1,7 +1,7 @@
 #ifndef KAPPA_GENTAUPRODUCER_H
 #define KAPPA_GENTAUPRODUCER_H
 
-#include "KPartonProducer.h"
+#include "KGenParticleProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 
 struct KGenTauProducer_Product
@@ -11,11 +11,11 @@ struct KGenTauProducer_Product
 	static const std::string producer() { return "KGenTauProducer"; };
 };
 
-class KGenTauProducer : public KBasicPartonProducer<KGenTauProducer_Product>
+class KGenTauProducer : public KBasicGenParticleProducer<KGenTauProducer_Product>
 {
 public:
 	KGenTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBasicPartonProducer<KGenTauProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBasicGenParticleProducer<KGenTauProducer_Product>(cfg, _event_tree, _run_tree) {}
 	virtual ~KGenTauProducer() {};
 
 protected:
@@ -29,12 +29,12 @@ protected:
 		const int particles = 15; // tau pdg ID
 		selectParticles(&particles, &particles + 1);
 
-		KBasicPartonProducer<KGenTauProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBasicGenParticleProducer<KGenTauProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		KBasicPartonProducer<KGenTauProducer_Product>::fillSingle(in, out);
+		KBasicGenParticleProducer<KGenTauProducer_Product>::fillSingle(in, out);
 
 		DecayInfo info;
 		walkDecayTree(in, info);
@@ -79,7 +79,7 @@ protected:
 
 	virtual bool acceptSingle(const SingleInputType& in)
 	{
-		if(!KBasicPartonProducer<KGenTauProducer_Product>::acceptSingle(in))
+		if(!KBasicGenParticleProducer<KGenTauProducer_Product>::acceptSingle(in))
 			return false;
 
 		// Reject decendant taus as all relevant information is contained in the

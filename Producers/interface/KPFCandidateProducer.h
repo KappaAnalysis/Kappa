@@ -22,7 +22,7 @@ public:
 		copyP4(in, out.p4);
 		out.pdgid = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
 		if (in.pdgId() < 0)
-			out.pdgid |= KPartonChargeMask;
+			out.pdgid |= KGenParticleChargeMask;
 		out.deltaP = in.deltaP();
 		out.hcalEnergy = in.hcalEnergy();
 		out.ecalEnergy = in.ecalEnergy();

@@ -12,12 +12,12 @@ struct KGenParticleProducer_Product
 };
 
 template<typename TProduct>
-class KBasicPartonProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>
+class KBasicGenParticleProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>
 {
 public:
-	KBasicPartonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+	KBasicGenParticleProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _run_tree) {}
-	virtual ~KBasicPartonProducer() {};
+	virtual ~KBasicGenParticleProducer() {};
 
 protected:
 	virtual void fillSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in, typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleOutputType &out)
@@ -63,11 +63,11 @@ private:
 	std::vector<int> selectedParticles;
 };
 
-class KGenParticleProducer: public KBasicPartonProducer<KGenParticleProducer_Product>
+class KGenParticleProducer: public KBasicGenParticleProducer<KGenParticleProducer_Product>
 {
 public:
 	KGenParticleProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBasicPartonProducer<KGenParticleProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBasicGenParticleProducer<KGenParticleProducer_Product>(cfg, _event_tree, _run_tree) {}
 	virtual ~KGenParticleProducer() {};
 
 protected:
@@ -81,7 +81,7 @@ protected:
 		selectStatus(status);
 		selectParticles(particles.begin(), particles.end());
 
-		KBasicPartonProducer<KGenParticleProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBasicGenParticleProducer<KGenParticleProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 };
 

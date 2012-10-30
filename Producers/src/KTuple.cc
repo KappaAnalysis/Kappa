@@ -32,7 +32,7 @@
 #include "../interface/KLorentzProducer.h"
 #include "../interface/KMETProducer.h"
 #include "../interface/KMuonProducer.h"
-#include "../interface/KPartonProducer.h"
+#include "../interface/KGenParticleProducer.h"
 #include "../interface/KPFCandidateProducer.h"
 #include "../interface/KPFJetProducer.h"
 #include "../interface/KPFMETProducer.h"
@@ -176,8 +176,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KPFMETProducer>(psConfig, active[i]);
 		else if (active[i] == "LV")
 			addProducer<KLorentzProducer>(psConfig, active[i]);
-		else if (active[i] == "Partons")
-			addProducer<KPartonProducer>(psConfig, active[i]);
+		else if (active[i] == "GenParticles")
+			addProducer<KGenParticleProducer>(psConfig, active[i]);
 		else if (active[i] == "Hits")
 			addProducer<KHitProducer>(psConfig, active[i]);
 		else if (active[i] == "TriggerObjects")
