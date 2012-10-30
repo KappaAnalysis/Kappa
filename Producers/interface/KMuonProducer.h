@@ -113,17 +113,15 @@ public:
 		vetosPF.push_back(&pf_cone_veto);
 		vetosPF.push_back(&pf_threshold_veto);
 
-		out.sumPtIso03				= in.isolationR03().sumPt;
 		out.ecalIso03				= in.isolationR03().emEt;
 		out.hcalIso03				= in.isolationR03().hadEt;
-		out.trackIso03				= 0.0f;
+		out.trackIso03				= in.isolationR03().sumPt;
 
 		out.pfIso04				= muonIsoDepositPF.depositWithin(0.4, vetosPF);
 
-		out.sumPtIso05				= in.isolationR05().sumPt;
 		out.ecalIso05				= in.isolationR05().emEt;
 		out.hcalIso05				= in.isolationR05().hadEt;
-		out.trackIso05				= 0.0f;
+		out.trackIso05				= in.isolationR05().sumPt;
 
 		out.eta_propagated = -1000.;
 		out.phi_propagated = -1000.;
