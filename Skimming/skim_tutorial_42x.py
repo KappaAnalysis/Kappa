@@ -48,8 +48,7 @@ process.pfMuonIsolCandidates = cms.Path(process.pfmuIsoDepositPFCandidates)
 
 # Produce rho distribution------------------------------------------------------
 process.load('RecoJets.JetProducers.kt4PFJets_cfi')
-process.kt6PFJetsRho = process.kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
-process.kt6PFJetsRho.Rho_EtaMax = cms.double(5.)
+process.kt6PFJetsRho = process.kt6PFJets.clone(rParam = 0.6, doAreaFastjet = True, doRhoFastjet = True )
 process.JetArea = cms.Path(process.kt6PFJetsRho)
 #-------------------------------------------------------------------------------
 
@@ -65,6 +64,7 @@ process.kappatuple.active = cms.vstring(
 	'Muons', 'TrackSummary', 'PFMET', 'VertexSummary', 'BeamSpot', 'JetArea', @ACTIVE@
 )
 process.kappatuple.Tracks.minPt = cms.double(5.)
+process.kappatuple.JetArea.whitelist = cms.vstring("kt6PFJetsRho_rho")
 
 process.kappatuple.Metadata.hltWhitelist = cms.vstring(
 	"^HLT_(L[123])?(Iso|Double|Triple)?Mu([0-9]+)",
