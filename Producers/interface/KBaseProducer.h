@@ -27,8 +27,8 @@ public:
 protected:
 	bool tagMatch(const edm::Provenance *prov, const std::vector<edm::InputTag> &tags);
 	bool regexMatch(const std::string &in, const std::string &filter);
-	bool regexMatch(const std::string &in, const std::vector<std::string> &whitelist,
-		const std::vector<std::string> &blacklist);
+	bool regexMatch(const std::string &in,
+		const std::vector<std::string> &whitelist, const std::vector<std::string> &blacklist);
 	std::string regexRename(std::string in, const std::vector<std::string> &patterns);
 	bool fail(const std::ostream &s);
 

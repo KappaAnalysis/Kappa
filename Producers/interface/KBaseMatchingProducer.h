@@ -123,14 +123,14 @@ private:
 			}
 
 			// Avoid name collisions: Ignore or Fail
-			if (std::find(vsMatched.begin(), vsMatched.end(), targetName) != vsMatched.end())
+			if (this->event_tree->FindBranch(targetName.c_str()))
 			{
 				if (this->verbosity > 0)
-					std::cout << " => Matching name was already processed!" << std::endl;
+					std::cout << " => Branch with this name was already added!" << std::endl;
 				continue;
 			}
 
-			// Create selection tag
+			// Crate selection tag
 			const edm::InputTag tag((*piter)->moduleLabel(), (*piter)->productInstanceName(), (*piter)->processName());
 			if (this->verbosity > 1)
 				std::cout << " => Branch will be selected with " << tag << std::endl;
