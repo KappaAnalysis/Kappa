@@ -123,10 +123,10 @@ private:
 			}
 
 			// Avoid name collisions: Ignore or Fail
-			if (this->event_tree->FindBranch(targetName.c_str()))
+			if (std::find(vsMatched.begin(), vsMatched.end(), targetName) != vsMatched.end())
 			{
 				if (this->verbosity > 0)
-					std::cout << " => Branch with this name was already added!" << std::endl;
+					std::cout << " => Matching name was already processed!" << std::endl;
 				continue;
 			}
 

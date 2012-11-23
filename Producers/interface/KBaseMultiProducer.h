@@ -56,26 +56,26 @@ public:
 	typedef Tin InputType;
 
 protected:
-	virtual void onMatchingInput(const std::string outputName, const std::string inputName,
+	virtual void onMatchingInput(const std::string targetName, const std::string inputName,
 		const edm::ParameterSet &pset, const edm::InputTag &tag)
 	{
-		KBaseMatchingProducer<Tout>::onMatchingInput(outputName, inputName, pset, tag);
-		registerBronch(outputName, inputName, pset, tag);
+		KBaseMatchingProducer<Tout>::onMatchingInput(targetName, inputName, pset, tag);
+		registerBronch(targetName, inputName, pset, tag);
 	}
 
-	void registerBronch(const std::string outputName, const std::string inputName,
+	void registerBronch(const std::string targetName, const std::string inputName,
 		const edm::ParameterSet &pset, const edm::InputTag &tag)
 	{
 		// Add branch
 		if (this->verbosity > 0)
-			std::cout << " => Adding branch: " << outputName << std::endl;
+			std::cout << " => Adding branch: " << targetName << std::endl;
 
 		// Static storage of ROOT bronch target - never changes, only accessed here:
-		typename Tout::type *target = this->allocateBronch(outputName);
-		this->addProvenance(tag.encode(), outputName);
+		typename Tout::type *target = this->allocateBronch(targetName);
+		this->addProvenance(tag.encode(), targetName);
 
-		// Mapping between target and outputName
-		nameMap[target] = make_pair(outputName, inputName);
+		// Mapping between target and targetName
+		nameMap[target] = make_pair(targetName, inputName);
 
 		// Used for fast lookup of selector and lv collection
 		typedef std::pair<const edm::ParameterSet, const edm::InputTag> TmpType;
