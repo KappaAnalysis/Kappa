@@ -24,6 +24,7 @@
 #include "../interface/KGenPhotonProducer.h"
 #include "../interface/KGenTauProducer.h"
 #include "../interface/KHCALNoiseSummaryProducer.h"
+#include "../interface/KFilterSummaryProducer.h"
 // #include "../interface/KHepMCPartonProducer.h"
 #include "../interface/KHitProducer.h"
 #include "../interface/KJetAreaProducer.h"
@@ -164,6 +165,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KVertexProducer>(psConfig, active[i]);
 		else if (active[i] == "VertexSummary")
 			addProducer<KVertexSummaryProducer>(psConfig, active[i]);
+		else if (active[i] == "FilterSummary")
+			addProducer<KFilterSummaryProducer>(psConfig, active[i]);
 		else if (active[i] == "BeamSpot")
 			addProducer<KBeamSpotProducer>(psConfig, active[i]);
 		else if (active[i] == "Tracks")

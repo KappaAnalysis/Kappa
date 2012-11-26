@@ -102,4 +102,33 @@ struct KGenEventMetadata : public KEventMetadata
 	unsigned char numPUInteractionsP2;	// bx = +2
 };
 
+struct KFilterMetadata
+{
+	std::vector<std::string> filternames;
+};
+
+struct KFilterSummary
+{
+	unsigned long presence;
+	unsigned long decision;
+
+	inline bool passedFilters() const
+	{
+		return decision & presence;
+	}
+
+	bool passedFilter(const std::string &name, const KFilterMetadata *filtermetadata) const
+	{
+		for (size_t i = 0; i < filtermetadata->filternames.size(); ++i)
+			if (filtermetadata->filternames[i] == name)
+				return (decision & presence & (1ul << i)) != 0;
+		return false; // Filter does not exist
+	}
+
+	inline bool passedFilter(const size_t pos) const
+	{
+		return (decision & presence & (1ul << pos)) != 0;
+	}
+};
+
 #endif

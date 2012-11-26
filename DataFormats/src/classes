@@ -71,6 +71,9 @@ KGenPhotons
 KJetArea
 KHCALNoiseSummary
 
+KFilterSummary
+KFilterMetadata
+
 KTriggerInfos
 KTriggerObjects
 

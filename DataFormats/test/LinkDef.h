@@ -122,6 +122,8 @@
 
 #pragma link C++ struct KJetArea+;
 #pragma link C++ struct KHCALNoiseSummary+;
+#pragma link C++ struct KFilterSummary+;
+#pragma link C++ struct KFilterMetadata+;
 
 #pragma link C++ struct KTriggerInfos+;
 

@@ -84,6 +84,9 @@ namespace
 		KJetArea dict_KJetArea;
 		KHCALNoiseSummary dict_KHCALNoiseSummary;
 
+		KFilterSummary dict_KFilterSummary;
+		KFilterMetadata dict_KFilterMetadata;
+
 		KTriggerInfos dict_KTriggerInfos;
 		KTriggerObjects dict_KTriggerObjects;
 

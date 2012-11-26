@@ -281,9 +281,25 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
+	FilterSummary = cms.PSet(
+		manual = cms.VInputTag(),
 
-	TriggerObjects2 = cms.PSet(
-		kappaNoRegEx,
+		whitelist = cms.vstring("bool_.*Filter"),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring(
+			"(.*)Filter => $1",
+			"(EcalDeadCellTriggerPrimitive)|(EcalDeadCellBoundaryEnergy)|(ecalLaserCorr)|(eeBadSc)|(eeNoise)|" +
+			"(hcalLaserEvent)|(greedyMuonPFCandidate)|(inconsistentMuonPFCandidate)" +
+			" => (?1ecalDeadCellTrigger)(?2ecalDeadCellBoundary)(?3ecalLaser)(?4ecalSupercrystal)(?5ecalNoise)" +
+			"(?6hcalLaser)(?7muonGreedy)(?8muonInconsistent)",
+		),
+
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
+
+	TriggerObjects2 = cms.PSet(kappaNoRegEx,
 		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
 		triggerObjects = cms.vstring(),
 	),
