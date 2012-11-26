@@ -21,7 +21,7 @@ public:
 	{
 		copyP4(in, out.p4);
 
-		out.area = in.jetArea();;
+		out.area = in.jetArea();
 		out.nConst = in.nConstituents();
 		out.nCharged = in.chargedMultiplicity();
 		out.neutralEMFraction = in.neutralEmEnergyFraction();
