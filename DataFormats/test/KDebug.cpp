@@ -113,6 +113,12 @@ std::ostream &operator<<(std::ostream &os, const KPFCandidate &cand)
 		<< " Eecal=" << cand.ecalEnergy << " Ehcal=" << cand.hcalEnergy;
 }
 
+std::ostream &operator<<(std::ostream &os, const KFilterSummary &filter)
+{
+	return os << "Filters=" << std::bitset<16>(filter.presence)
+		<< " decision=" << std::bitset<16>(filter.decision);
+}
+
 ////////////////////////////////////////////////////////////
 // KMetadata.h
 ////////////////////////////////////////////////////////////

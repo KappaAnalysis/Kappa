@@ -2,6 +2,7 @@
 #define KAPPA_DEBUG_H
 
 #include <iostream>
+#include <bitset>
 #include "Kappa.h"
 
 std::ostream &operator<<(std::ostream &os, const KLV &lv);
@@ -21,6 +22,7 @@ std::ostream &operator<<(std::ostream &os, const KVertexSummary &vs);
 std::ostream &operator<<(std::ostream &os, const KJetArea &ja);
 std::ostream &operator<<(std::ostream &os, const KDataHit &hit);
 std::ostream &operator<<(std::ostream &os, const KPFCandidate &cand);
+std::ostream &operator<<(std::ostream &os, const KFilterSummary &filter);
 std::ostream &operator<<(std::ostream &os, const KProvenance &p);
 std::ostream &operator<<(std::ostream &os, const KLumiMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KGenLumiMetadata &m);
