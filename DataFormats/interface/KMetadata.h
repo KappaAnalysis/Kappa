@@ -114,7 +114,17 @@ struct KFilterSummary
 
 	inline bool passedFilters() const
 	{
-		return decision & presence;
+		return (decision & presence) == presence;
+	}
+
+	inline bool passedFilter(const size_t pos) const
+	{
+		return (decision & presence & (1ul << pos)) != 0;
+	}
+
+	inline bool passedFilters(const unsigned long bitmask) const
+	{
+		return (decision & presence & bitmask) == (bitmask & presence);
 	}
 
 	bool passedFilter(const std::string &name, const KFilterMetadata *filtermetadata) const
@@ -125,9 +135,12 @@ struct KFilterSummary
 		return false; // Filter does not exist
 	}
 
-	inline bool passedFilter(const size_t pos) const
+	bool passedFilters(const std::vector<std::string> &names, const KFilterMetadata *filtermetadata) const
 	{
-		return (decision & presence & (1ul << pos)) != 0;
+		for (std::vector<std::string>::const_iterator name = names.begin(); name != names.end(); name++)
+			if (!passedFilter(*name, filtermetadata))
+				return false;
+		return true; // all filters passed
 	}
 };
 
