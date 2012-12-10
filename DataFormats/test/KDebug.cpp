@@ -167,6 +167,13 @@ std::ostream &operator<<(std::ostream &os, const KTauDiscriminatorMetadata &m)
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const KMuonMetadata &m)
+{
+	for (std::vector<std::string>::const_iterator it = m.hltNames.begin(); it != m.hltNames.end(); ++it)
+		os << "Muon HLT trigger objects: " << *it << std::endl;
+	return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 {
 	os << static_cast<const KEventMetadata>(m) << std::endl;

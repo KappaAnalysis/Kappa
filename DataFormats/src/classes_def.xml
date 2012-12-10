@@ -44,6 +44,8 @@
 
 	<class name="KTauDiscriminatorMetadata"/>
 
+	<class name="KMuonMetadata"/>
+
 	<class name="KDataTau"/>
 	<class name="KDataTaus"/>
 

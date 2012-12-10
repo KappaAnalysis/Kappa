@@ -33,17 +33,52 @@ struct KMuonProducer_Product
 class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>
 {
 public:
-	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _run_tree),
+	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _lumi_tree),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")),
+		selectedMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
 		noPropagation(cfg.getParameter<bool>("noPropagation")),
-		propagatorToMuonSystem(cfg) {}
+		propagatorToMuonSystem(cfg)
+	{
+		std::sort(selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
+		std::vector<std::string>::iterator tempIt = std::unique (selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
+		selectedMuonTriggerObjects.resize(tempIt - selectedMuonTriggerObjects.begin());
+
+		muonMetadata = new KMuonMetadata();
+		_lumi_tree->Bronch("KMuonMetadata", "KMuonMetadata", &muonMetadata);
+
+	}
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		propagatorToMuonSystem.init(setup);
+
+		muonMetadata->hltNames.clear();
+		muonTriggerObjectBitMap.clear();
+
+		if (selectedMuonTriggerObjects.size() > 64)
+		{
+			std::cout << "Too many muon trigger objects selected (" << selectedMuonTriggerObjects.size() << ">64)!" << std::endl;
+			throw cms::Exception("Too many muon trigger objects selected");
+		}
+
+		for (std::vector<std::string>::iterator it = selectedMuonTriggerObjects.begin(); it != selectedMuonTriggerObjects.end(); it++)
+		{
+			std::string filterName = *it;
+			if (muonTriggerObjectBitMap.find(filterName) != muonTriggerObjectBitMap.end())
+				throw cms::Exception("The muon trigger object '" + filterName + "' exists twice. Please remove one from your configuration!");
+			if (muonMetadata->hltNames.size() >= 64)
+				throw cms::Exception("Too many muon trigger objects selected!");
+			if (verbosity > 0)
+				std::cout << filterName << "\n";
+			muonMetadata->hltNames.push_back(filterName);
+			muonTriggerObjectBitMap[filterName] = muonMetadata->hltNames.size() - 1;
+			if (verbosity > 0)
+				std::cout << "muon trigger object: " << (muonMetadata->hltNames.size() - 1) << " = " << filterName << "\n";
+		}
+
 		return KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onLumi(lumiBlock, setup);
 	}
 
@@ -144,11 +179,16 @@ private:
 	edm::InputTag tagHLTrigger;
 	double hltMaxdR, hltMaxdPt_Pt;
 	double pfIsoVetoCone, pfIsoVetoMinPt;
+	std::vector<std::string> selectedMuonTriggerObjects;
 	bool noPropagation;
 	PropagateToMuon propagatorToMuonSystem;
 	edm::Handle< edm::ValueMap<reco::IsoDeposit> > isoDepsPF;
 
 	edm::Handle< trigger::TriggerEvent > triggerEventHandle;
+
+	KMuonMetadata *muonMetadata;
+
+	std::map<std::string, int> muonTriggerObjectBitMap;
 
 	unsigned long long getHLTInfo(const RMDataLV p4)
 	{
@@ -156,7 +196,6 @@ private:
 			return 0;
 		unsigned long long ret = 0;
 
-		// KMetadataProducer<KMetadata_Product>::metaLumi->hltNamesMuons
 		const size_t sizeFilters = triggerEventHandle->sizeFilters();
 
 		for (size_t iF = 0; iF < sizeFilters; ++iF)
@@ -164,7 +203,7 @@ private:
 			const std::string nameFilter(triggerEventHandle->filterTag(iF).label());
 			const trigger::Keys & keys = triggerEventHandle->filterKeys(iF);
 
-			if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(nameFilter) == KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
+			if (muonTriggerObjectBitMap.find(nameFilter) == muonTriggerObjectBitMap.end())
 				continue;
 
 			for (size_t iK = 0; iK < keys.size(); ++iK)
@@ -174,7 +213,7 @@ private:
 
 				if ((ROOT::Math::VectorUtil::DeltaR(p4, tmpP4) < hltMaxdR) && (std::abs(p4.pt() - tmpP4.pt()) / tmpP4.pt() < hltMaxdPt_Pt))
 				{
-					ret |= ((unsigned long long)1 << KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[nameFilter]);
+					ret |= ((unsigned long long)1 << muonTriggerObjectBitMap[nameFilter]);
 				}
 			}
 		}

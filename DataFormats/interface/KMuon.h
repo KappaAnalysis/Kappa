@@ -49,12 +49,12 @@ struct KDataMuon : KDataLV
 	// is necessary for the matching to L1 trigger objects
 	float eta_propagated, phi_propagated;
 
-	bool hltFired(const std::string& name, const KLumiMetadata * lumimetadata) const
+	bool hltFired(const std::string& name, const KMuonMetadata * muonMetadata) const
 	{
-		std::vector<std::string>::const_iterator itSearch = std::lower_bound(lumimetadata->hltNamesMuons.begin(), lumimetadata->hltNamesMuons.end(), name);
-		if (itSearch != lumimetadata->hltNamesMuons.end())
-			return (hltMatch & (1ull << (itSearch - lumimetadata->hltNamesMuons.begin()))) != 0;
-		return false; // Named HLT does not exist
+		std::vector<std::string>::const_iterator itSearch = std::lower_bound(muonMetadata->hltNames.begin(), muonMetadata->hltNames.end(), name);
+		if (itSearch != muonMetadata->hltNames.end())
+			return (hltMatch & (1ull << (itSearch - muonMetadata->hltNames.begin()))) != 0;
+		return false; // given HLT does not exist
 	}
 
 	double puSubtractedPFIso04(const KJetArea* jetArea) const

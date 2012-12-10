@@ -75,6 +75,7 @@
 #pragma link C++ typedef KDataMuons;
 
 #pragma link C++ KTauDiscriminatorMetadata+;
+#pragma link C++ KMuonMetadata+;
 
 #pragma link C++ struct KDataTau+;
 #pragma link C++ class std::vector<KDataTau>+;

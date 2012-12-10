@@ -64,7 +64,6 @@ public:
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
 		svHLTWhitelist(cfg.getParameter<std::vector<std::string> >("hltWhitelist")),
 		svHLTBlacklist(cfg.getParameter<std::vector<std::string> >("hltBlacklist")),
-		svMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
 		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL")),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		tagErrorsAndWarnings(cfg.getParameter<edm::InputTag>("errorsAndWarnings")),
@@ -77,7 +76,6 @@ public:
 		_lumi_tree->Bronch("KLumiMetadata", Tmeta::idLumi().c_str(), &metaLumi);
 		metaEvent = new typename Tmeta::typeEvent();
 		_event_tree->Bronch("KEventMetadata", Tmeta::idEvent().c_str(), &metaEvent);
-		std::sort(svMuonTriggerObjects.begin(), svMuonTriggerObjects.end());
 	}
 	virtual ~KMetadataProducer() {};
 
@@ -189,28 +187,6 @@ public:
 
 		metaLumi->hltNames = hltNames;
 		metaLumi->hltPrescales = hltPrescales;
-
-		metaLumi->hltNamesMuons.clear();
-		KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.clear();
-		if (svMuonTriggerObjects.size() > 64)
-		{
-			std::cout << "Too many muon trigger objects selected (" << svMuonTriggerObjects.size() << ">64)!" << std::endl;
-			throw cms::Exception("Too many muon trigger objects selected");
-		}
-		for (std::vector<std::string>::iterator it = svMuonTriggerObjects.begin(); it != svMuonTriggerObjects.end(); it++)
-		{
-			std::string filterName = *it;
-			if (KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.find(filterName) != KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap.end())
-				throw cms::Exception("The muon trigger object '" + filterName + "' exists twice. Please remove one from your configuration!");
-			if (metaLumi->hltNamesMuons.size() >= 64)
-				throw cms::Exception("Too many muon trigger objects selected!");
-			if (verbosity > 0)
-				std::cout << filterName << "\n";
-			metaLumi->hltNamesMuons.push_back(filterName);
-			KMetadataProducer<KMetadata_Product>::muonTriggerObjectBitMap[filterName] = metaLumi->hltNamesMuons.size() - 1;
-			if (verbosity > 0)
-				std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size() - 1) << " = " << filterName << "\n";
-		}
 
 		return true;
 	}
@@ -346,14 +322,10 @@ public:
 		return true;
 	}
 
-	static std::map<std::string, int> muonTriggerObjectBitMap;
-
 protected:
 	std::string tauDiscrProcessName;
 	edm::InputTag tagL1Results, tagHLTResults;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
-
-	std::vector<std::string> svMuonTriggerObjects;
 
 	edm::InputTag tagNoiseHCAL, tagHLTrigger;
 	edm::InputTag tagErrorsAndWarnings;
@@ -370,8 +342,4 @@ protected:
 
 	std::map<std::pair<run_id, lumi_id>, typename Tmeta::typeLumi> metaLumiMap;
 };
-
-template<typename Tmeta>
-std::map<std::string, int> KMetadataProducer<Tmeta>::muonTriggerObjectBitMap;
-
 #endif

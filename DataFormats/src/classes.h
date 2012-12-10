@@ -59,6 +59,8 @@ namespace
 
 		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
 
+		KMuonMetadata dict_KMuonMetadata;
+
 		KDataTau dict_KDataTau;
 		KDataTaus dict_KDataTaus;
 

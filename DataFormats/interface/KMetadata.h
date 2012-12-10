@@ -20,7 +20,6 @@ struct KLumiMetadata
 	unsigned int bitsUserFlags;
 	std::vector<unsigned int> hltPrescales;
 	std::vector<std::string> hltNames;
-	std::vector<std::string> hltNamesMuons;
 };
 
 struct KTauDiscriminatorMetadata
@@ -28,6 +27,10 @@ struct KTauDiscriminatorMetadata
 	std::vector<std::string> discriminatorNames;
 };
 
+struct KMuonMetadata
+{
+	std::vector<std::string> hltNames;
+};
 
 struct KGenLumiMetadata : public KLumiMetadata
 {
