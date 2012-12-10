@@ -9,19 +9,18 @@ struct KDataTau : KDataLV
 	unsigned long long discr;
 
 	char charge;
-};
-typedef std::vector<KDataTau> KDataTaus;
 
-struct KDataCaloTau : KDataTau
-{
-	bool hasID(const std::string& name, const KLumiMetadata * lumimetadata) const
+	bool hasID(const std::string& name, const KTauDiscriminatorMetadata * lumimetadata) const
 	{
-		for(size_t i = 0; i < lumimetadata->discrTau.size(); ++i)
-			if(lumimetadata->discrTau[i] == name)
+		for(size_t i = 0; i < lumimetadata->discriminatorNames.size(); ++i)
+			if(lumimetadata->discriminatorNames[i] == name)
 				return (discr & (1ull << i)) != 0;
 		return false; // Named discriminator does not exist
 	}
 };
+typedef std::vector<KDataTau> KDataTaus;
+
+struct KDataCaloTau : KDataTau {};
 typedef std::vector<KDataCaloTau> KDataCaloTaus;
 
 struct KDataPFTau : KDataTau
@@ -38,14 +37,6 @@ struct KDataPFTau : KDataTau
 
 	//bool longLived
 	int cntSignalTracks;
-
-	bool hasID(const std::string& name, const KLumiMetadata * lumimetadata) const
-	{
-		for(size_t i = 0; i < lumimetadata->discrTauPF.size(); ++i)
-			if(lumimetadata->discrTauPF[i] == name)
-				return (discr & (1ull << i)) != 0;
-		return false; // Named discriminator does not exist
-	}
 };
 typedef std::vector<KDataPFTau> KDataPFTaus;
 

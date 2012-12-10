@@ -64,10 +64,6 @@ public:
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
 		svHLTWhitelist(cfg.getParameter<std::vector<std::string> >("hltWhitelist")),
 		svHLTBlacklist(cfg.getParameter<std::vector<std::string> >("hltBlacklist")),
-		discrPFTauWhitelist(cfg.getParameter<std::vector<std::string> >("discrPFTauWhitelist")),
-		discrPFTauBlacklist(cfg.getParameter<std::vector<std::string> >("discrPFTauBlacklist")),
-		discrCaloTauWhitelist(cfg.getParameter<std::vector<std::string> >("discrCaloTauWhitelist")),
-		discrCaloTauBlacklist(cfg.getParameter<std::vector<std::string> >("discrCaloTauBlacklist")),
 		svMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
 		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL")),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
@@ -216,60 +212,6 @@ public:
 				std::cout << "muon trigger object: " << (metaLumi->hltNamesMuons.size() - 1) << " = " << filterName << "\n";
 		}
 
-		// Clear tau discriminator maps, they will be refilled by
-		// first event in lumi, see onEvent() below.
-		metaLumi->discrTau.clear();
-		metaLumi->discrTauPF.clear();
-		KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap.clear();
-		KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap.clear();
-
-		edm::Service<edm::ConstProductRegistry> reg;
-		if (verbosity > 0)
-			std::cout << "Lese Produkt-Liste fuer "<< metaLumi->nRun << " " << metaLumi->nLumi << " ein\n";
-		for (edm::ProductRegistry::ProductList::const_iterator it = reg->productList().begin(); it != reg->productList().end(); ++it)
-		{
-			edm::BranchDescription desc = it->second;
-			if (tauDiscrProcessName != "" && desc.processName() != tauDiscrProcessName)
-				continue;
-
-			const std::string& name = desc.moduleLabel();
-
-			if (desc.className() == "reco::CaloTauDiscriminator")
-			{
-				if (std::find(metaLumi->discrTau.begin(), metaLumi->discrTau.end(), name) == metaLumi->discrTau.end())
-				{
-					if (!regexMatch(name, discrCaloTauWhitelist, discrCaloTauBlacklist))
-						continue;
-
-					metaLumi->discrTau.push_back(name);
-					KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap[name] = metaLumi->discrTau.size() - 1;
-
-					if (this->verbosity > 0)
-						std::cout << "CaloTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
-
-					if (metaLumi->discrTau.size()>64)
-						throw cms::Exception("Too many CaloTauDiscriminator selected!");
-				}
-			}
-			if (desc.className() == "reco::PFTauDiscriminator")
-			{
-				if (std::find(metaLumi->discrTauPF.begin(), metaLumi->discrTauPF.end(), name) == metaLumi->discrTauPF.end())
-				{
-					if (!regexMatch(name, discrPFTauWhitelist, discrPFTauBlacklist))
-						continue;
-
-					metaLumi->discrTauPF.push_back(name);
-					KMetadataProducer<KMetadata_Product>::pfTauDiscriminatorBitMap[name] = metaLumi->discrTauPF.size() - 1;
-
-					if (this->verbosity > 0)
-						std::cout << "PFTau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
-
-					if (metaLumi->discrTauPF.size()>64)
-						throw cms::Exception("Too many PFTauDiscriminator selected!");
-				}
-			}
-		}
-
 		return true;
 	}
 
@@ -406,16 +348,10 @@ public:
 
 	static std::map<std::string, int> muonTriggerObjectBitMap;
 
-	typedef std::map<std::string, unsigned int> TauDiscriminatorMap;
-	static TauDiscriminatorMap caloTauDiscriminatorBitMap;
-	static TauDiscriminatorMap pfTauDiscriminatorBitMap;
-
 protected:
 	std::string tauDiscrProcessName;
 	edm::InputTag tagL1Results, tagHLTResults;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
-	std::vector<std::string> discrPFTauWhitelist, discrPFTauBlacklist;
-	std::vector<std::string> discrCaloTauWhitelist, discrCaloTauBlacklist;
 
 	std::vector<std::string> svMuonTriggerObjects;
 
@@ -437,10 +373,5 @@ protected:
 
 template<typename Tmeta>
 std::map<std::string, int> KMetadataProducer<Tmeta>::muonTriggerObjectBitMap;
-
-template<typename Tmeta>
-typename KMetadataProducer<Tmeta>::TauDiscriminatorMap KMetadataProducer<Tmeta>::caloTauDiscriminatorBitMap;
-template<typename Tmeta>
-typename KMetadataProducer<Tmeta>::TauDiscriminatorMap KMetadataProducer<Tmeta>::pfTauDiscriminatorBitMap;
 
 #endif

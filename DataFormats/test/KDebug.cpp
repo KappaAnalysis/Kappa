@@ -160,6 +160,13 @@ std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
 	return os << "Event ID = " << m.nRun << ":" << m.nLumi << ":" << m.nBX << ":" << m.nEvent;
 }
 
+std::ostream &operator<<(std::ostream &os, const KTauDiscriminatorMetadata &m)
+{
+	for (std::vector<std::string>::const_iterator it = m.discriminatorNames.begin(); it != m.discriminatorNames.end(); ++it)
+		os << "Tau discriminator: " << *it << std::endl;
+	return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
 {
 	os << static_cast<const KEventMetadata>(m) << std::endl;

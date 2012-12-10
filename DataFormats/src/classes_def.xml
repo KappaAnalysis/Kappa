@@ -42,6 +42,8 @@
 	<class name="KDataMuon"/>
 	<class name="KDataMuons"/>
 
+	<class name="KTauDiscriminatorMetadata"/>
+
 	<class name="KDataTau"/>
 	<class name="KDataTaus"/>
 

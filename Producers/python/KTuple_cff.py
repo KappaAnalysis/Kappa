@@ -72,11 +72,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 		printHltList = cms.bool(False),
 
-		discrPFTauWhitelist = cms.vstring(".*"),
-		discrPFTauBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
-		discrCaloTauWhitelist = cms.vstring(".*"),
-		discrCaloTauBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
-
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),
 		muonTriggerObjects = cms.vstring(
 			# HLT_MuX (2010)
@@ -503,14 +498,16 @@ kappaTupleDefaultsBlock = cms.PSet(
 	CaloTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		caloRecoTaus = cms.PSet(
 			src = cms.InputTag("caloRecoTauProducer"),
-			discr = cms.vstring("caloRecoTau*")
+			discrWhitelist = cms.vstring("caloRecoTau*"),
+			discrBlacklist = cms.vstring(".*PFlow$"),
 		)
 	),
 
 	PFTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		shrinkingConePFTaus = cms.PSet(
 			src = cms.InputTag("shrinkingConePFTauProducer"),
-			discr = cms.vstring("shrinkingConePFTau*")
+			discrWhitelist = cms.vstring("shrinkingConePFTau*"),
+			discrBlacklist = cms.vstring(".*PFlow$"),
 		),
 		#fixedConePFTaus = cms.PSet(
 		#	src = cms.InputTag("fixedConePFTauProducer"),
@@ -518,8 +515,9 @@ kappaTupleDefaultsBlock = cms.PSet(
 		#),
 		hpsPFTaus = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
-			discr = cms.vstring("hpsPFTau*")
-		)
+			discrWhitelist = cms.vstring("hpsPFTau*"),
+			discrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
+		),
 	),
 
 	L2MuonTrajectorySeed = cms.PSet(kappaNoCut,

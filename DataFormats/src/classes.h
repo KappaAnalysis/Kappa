@@ -57,6 +57,8 @@ namespace
 		KDataMuon dict_KDataMuon;
 		KDataMuons dict_KDataMuons;
 
+		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
+
 		KDataTau dict_KDataTau;
 		KDataTaus dict_KDataTaus;
 

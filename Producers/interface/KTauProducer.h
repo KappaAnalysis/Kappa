@@ -3,7 +3,7 @@
 
 #include "KBaseMultiLVProducer.h"
 
-template<typename TTau, typename TTauDiscriminator, typename TTauRef, typename TMeta, typename TProduct>
+template<typename TTau, typename TTauDiscriminator, typename TProduct>
 // Note: We need to use std::vector here, not edm::View, because otherwise
 // we cannot use reco::CaloTauDiscriminator or reco::PFTauDescriminator,
 // respectively, since they have std::vector somewhere hardcoded in their
@@ -12,10 +12,71 @@ template<typename TTau, typename TTauDiscriminator, typename TTauRef, typename T
 class KTauProducer : public KBaseMultiLVProducer<std::vector<TTau>, TProduct>
 {
 public:
-	KTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, typename TMeta::TauDiscriminatorMap& discr_map) :
-		KBaseMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _run_tree),
-		discriminator_map_(discr_map)
+	KTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KBaseMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _lumi_tree)
 	{
+		const edm::ParameterSet &psBase = this->psBase;
+		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+		for (size_t i = 0; i < names.size(); ++i)
+		{
+			if (this->verbosity > 0)
+				std::cout << "booking tau discriminator metadata bronch for \"" << names[i] << "\"\n";
+
+			tauDiscriminatorBitMap[names[i]] = std::map<std::string, unsigned int>();
+			discrMetadataMap[names[i]] = new KTauDiscriminatorMetadata();
+			_lumi_tree->Bronch(names[i].c_str(), "KTauDiscriminatorMetadata", &discrMetadataMap[names[i]]);
+
+			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+
+			discrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("discrWhitelist");
+			discrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("discrBlacklist");
+		}
+	}
+
+	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
+	{
+		const edm::ParameterSet &psBase = this->psBase;
+		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+		for (size_t i = 0; i < names.size(); ++i)
+		{
+			discrMetadataMap[names[i]]->discriminatorNames.clear();
+			tauDiscriminatorBitMap[names[i]].clear();
+
+			edm::Service<edm::ConstProductRegistry> reg;
+			for (edm::ProductRegistry::ProductList::const_iterator it = reg->productList().begin(); it != reg->productList().end(); ++it)
+			{
+				edm::BranchDescription desc = it->second;
+
+				//if (tauDiscrProcessName != "" && desc.processName() != tauDiscrProcessName)
+				//	continue;
+
+				const std::string& name = desc.moduleLabel();
+
+				if (isCorrectType(desc.className()))
+				{
+					if (std::find(discrMetadataMap[names[i]]->discriminatorNames.begin(), discrMetadataMap[names[i]]->discriminatorNames.end(), name) == discrMetadataMap[names[i]]->discriminatorNames.end())
+					{
+						if (!KBaseProducer::regexMatch(name, discrWhitelist[names[i]], discrBlacklist[names[i]]))
+							continue;
+
+						discrMetadataMap[names[i]]->discriminatorNames.push_back(name);
+
+						tauDiscriminatorBitMap[names[i]][name] = discrMetadataMap[names[i]]->discriminatorNames.size() - 1;
+
+						if (this->verbosity > 0)
+							std::cout << "Tau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+
+						if (discrMetadataMap[names[i]]->discriminatorNames.size()>64)
+							throw cms::Exception("Too many tau discriminators selected!");
+					}
+				}
+
+			}
+
+		}
+		return true;
 	}
 
 	virtual void fillProduct(
@@ -24,10 +85,14 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Get tau discriminators from event
-		this->cEvent->getManyByType(discriminators_);
+		this->cEvent->getManyByType(currentTauDiscriminators);
+
+		if (this->verbosity > 1)
+			std::cout << "switching to " << name << " in Tau producer\n";
 
 		// Get tau discriminators to use for this event
-		discriminators_use_ = pset.getParameter<std::vector<std::string> >("discr");
+		currentDiscriminators = discrMetadataMap[name]->discriminatorNames;
+		currentDiscriminatorMap = tauDiscriminatorBitMap[name];
 
 		// Continue normally
 		KBaseMultiLVProducer<std::vector<TTau>, TProduct>::fillProduct(in, out, name, tag, pset);
@@ -44,21 +109,20 @@ public:
 		out.charge = in.charge();
 
 		// Discriminator flags:
-		//edm::Ref<std::vector<TTau> > tauRef(this->handle, this->nCursor);
-		TTauRef tauRef(this->handle, this->nCursor);
 		out.discr = 0;
-		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = discriminators_.begin(); iter != discriminators_.end(); ++iter)
+		edm::Ref<std::vector<TTau> > tauRef(this->handle, this->nCursor);
+		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
 		{
 			std::string discr_name = iter->provenance()->moduleLabel();
-			typename TMeta::TauDiscriminatorMap::const_iterator name_iter = this->discriminator_map_.find(discr_name);
-			if(name_iter != this->discriminator_map_.end())
+			std::map<std::string, unsigned int>::const_iterator name_iter = currentDiscriminatorMap.find(discr_name);
+			if(name_iter != currentDiscriminatorMap.end())
 			{
 				// The discriminator does exist in our map so
 				// we have an index in the discr bitfield
 				// reserved for it. Now check whether we want
 				// to use this discriminator for this tau
 				// algorithm.
-				for(std::vector<std::string>::const_iterator use_iter = discriminators_use_.begin(); use_iter != discriminators_use_.end(); ++use_iter)
+				for(std::vector<std::string>::const_iterator use_iter = currentDiscriminators.begin(); use_iter != currentDiscriminators.end(); ++use_iter)
 				{
 					if(this->regexMatch(discr_name, *use_iter))
 					{
@@ -72,13 +136,18 @@ public:
 		}
 	}
 
+protected:
+	std::map<std::string, std::vector<std::string> > discrWhitelist, discrBlacklist;
+	std::map<std::string, KTauDiscriminatorMetadata *> discrMetadataMap;
+	std::map<std::string, std::map<std::string, unsigned int> > tauDiscriminatorBitMap;
+
+	virtual bool isCorrectType(std::string className) = 0;
 private:
-	//typedef edm::AssociationVector<edm::RefProd<std::vector<TTau> >, std::vector<float> > TauDiscriminator; // Does not work since getManyByType does not find anything using this...
 	typedef TTauDiscriminator TauDiscriminator;
-	typename TMeta::TauDiscriminatorMap& discriminator_map_; // map from discriminator name to index
 
-	std::vector<edm::Handle<TauDiscriminator> > discriminators_; // discriminators found in event
-	std::vector<std::string> discriminators_use_; // discriminators to use (regexes)
+	std::vector<edm::Handle<TauDiscriminator> > currentTauDiscriminators; // discriminators found in event
+
+	std::vector<std::string> currentDiscriminators; // discriminators to use (based on PSet)
+	std::map<std::string, unsigned int> currentDiscriminatorMap; // discriminator-to-bit mapping to use (based on PSet)
 };
-
 #endif

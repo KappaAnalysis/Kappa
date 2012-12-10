@@ -14,12 +14,17 @@ struct KCaloTauProducer_Product
 	static const std::string producer() { return "KDataCaloTauProducer"; };
 };
 
-class KCaloTauProducer : public KTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, reco::CaloTauRef, KMetadataProducer<KMetadata_Product>, KCaloTauProducer_Product>
+class KCaloTauProducer : public KTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, KCaloTauProducer_Product>
 {
 public:
-	KCaloTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, reco::CaloTauRef, KMetadataProducer<KMetadata_Product>, KCaloTauProducer_Product>(cfg, _event_tree, _run_tree, KMetadataProducer<KMetadata_Product>::caloTauDiscriminatorBitMap)
+	KCaloTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, KCaloTauProducer_Product>(cfg, _event_tree, _lumi_tree)
 	{
+	}
+protected:
+	virtual bool isCorrectType(std::string className)
+	{
+	 return className == "reco::CaloTauDiscriminator";
 	}
 };
 

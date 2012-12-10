@@ -21,9 +21,13 @@ struct KLumiMetadata
 	std::vector<unsigned int> hltPrescales;
 	std::vector<std::string> hltNames;
 	std::vector<std::string> hltNamesMuons;
-	std::vector<std::string> discrTau;
-	std::vector<std::string> discrTauPF;
 };
+
+struct KTauDiscriminatorMetadata
+{
+	std::vector<std::string> discriminatorNames;
+};
+
 
 struct KGenLumiMetadata : public KLumiMetadata
 {
