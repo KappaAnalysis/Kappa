@@ -126,7 +126,7 @@ struct KFilterSummary
 
 	inline bool passedFilter(const size_t pos) const
 	{
-		return (decision & presence & (1ul << pos)) != 0;
+		return (decision & presence & (1ul << pos)) == (presence & (1ul << pos));
 	}
 
 	inline bool passedFilters(const unsigned long bitmask) const
@@ -138,7 +138,7 @@ struct KFilterSummary
 	{
 		for (size_t i = 0; i < filtermetadata->filternames.size(); ++i)
 			if (filtermetadata->filternames[i] == name)
-				return (decision & presence & (1ul << i)) != 0;
+				return (decision & presence & (1ul << i)) == (presence & (1ul << i));
 		return false; // Filter does not exist
 	}
 
