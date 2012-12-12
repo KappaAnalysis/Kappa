@@ -53,6 +53,14 @@ public:
 		if (!KBaseMatchingProducer<KFilterSummaryProducer_Product>::onFirstEvent(event, setup))
 			return false;
 
+		// sort alphabetically
+		std::sort(namesAndTags.begin(), namesAndTags.end());
+		for (size_t i = 0; i < namesAndTags.size(); i++)
+		{
+			tags[i] = namesAndTags[i].tag;
+			names->filternames[i] = namesAndTags[i].name;
+		}
+
 		summary = this->allocateBronch("filterSummary");
 		this->addProvenance(provenance, "KFilterSummary");
 
@@ -60,6 +68,15 @@ public:
 	}
 
 private:
+	struct nameAndTag {
+		edm::InputTag tag;
+		std::string name;
+		nameAndTag(std::string n, edm::InputTag t): tag(t), name(n) {}
+		bool operator<(nameAndTag const & second) const {
+			return (this->name < second.name);
+		}
+	};
+	std::vector<nameAndTag> namesAndTags;
 	std::string provenance;
 	KFilterSummary *summary;
 	KFilterMetadata *names;
@@ -71,8 +88,9 @@ private:
 		if (!KBaseMatchingProducer<KFilterSummaryProducer_Product>::onMatchingInput(
 				targetName, inputName, pset, tag))
 			return false;
-		tags.push_back(tag);
-		names->filternames.push_back(targetName);
+
+		nameAndTag nt(targetName, tag);
+		namesAndTags.push_back(nt);
 		provenance += tag.encode() + ",";
 		return true;
 	}
