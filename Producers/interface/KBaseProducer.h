@@ -17,6 +17,7 @@ public:
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup);
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup);
+	virtual ~KBaseProducer() {};
 
 protected:
 	bool tagMatch(const edm::Provenance *prov, const std::vector<edm::InputTag> &tags);
@@ -35,6 +36,7 @@ public:
 class KBaseProducerWP : public KBaseProducer
 {
 public:
+	virtual ~KBaseProducerWP() {};
 	KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string producerName);
 	void addProvenance(std::string oldName, std::string newName);
 

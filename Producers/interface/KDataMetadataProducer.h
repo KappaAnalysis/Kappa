@@ -3,7 +3,6 @@
 
 #include "KMetadataProducer.h"
 #include <DataFormats/Luminosity/interface/LumiSummary.h>
-#include <DataFormats/Common/interface/ConditionsInEdm.h>
 
 // MC data
 struct KDataMetadata_Product
@@ -25,15 +24,7 @@ public:
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		edm::Handle<edm::ConditionsInRunBlock> condInRunBlock;
-		if (!run.getByType(condInRunBlock))
-			throw cms::Exception("The ConditionsInRunBlock object could not be found!");
-
-		if (condInRunBlock.isValid())
-			currentRun = condInRunBlock->lhcFillNumber;
-		else
-			currentRun = 0;
-
+		currentRun = run.run();
 		return KMetadataProducer<Tmeta>::onRun(run, setup);
 	}
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)

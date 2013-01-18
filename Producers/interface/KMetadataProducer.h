@@ -27,6 +27,8 @@
 #include <DataFormats/VertexReco/interface/VertexFwd.h>
 #include <DataFormats/VertexReco/interface/Vertex.h>
 
+#include <DataFormats/Provenance/interface/ProcessHistory.h>
+
 #define NEWHLT
 
 // real data
@@ -43,6 +45,7 @@ class KMetadataProducerBase : public KBaseProducerWP
 public:
 	KMetadataProducerBase(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KBaseProducerWP(cfg, _event_tree, _lumi_tree, "KMetadata") {}
+	virtual ~KMetadataProducerBase() {};
 
 	static HLTConfigProvider hltConfig;
 	static std::vector<size_t> hltKappa2FWK;
