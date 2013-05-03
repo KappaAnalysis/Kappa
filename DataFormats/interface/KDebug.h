@@ -2,7 +2,6 @@
 #define KAPPA_DEBUG_H
 
 #include <iostream>
-#include <bitset>
 #include "Kappa.h"
 
 std::ostream &operator<<(std::ostream &os, const KLV &lv);
