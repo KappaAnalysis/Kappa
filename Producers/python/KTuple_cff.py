@@ -271,7 +271,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		rename = cms.vstring(
 			"JetPlusTrack(.*) => $1JPT",
-			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)$7",
+			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8",
 			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
 		),
 		rename_whitelist= cms.vstring(),
@@ -482,7 +482,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring("Rho", "Tau.*Region"),
 
 		rename = cms.vstring(
-			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)$7"
+			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8"
 		),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
