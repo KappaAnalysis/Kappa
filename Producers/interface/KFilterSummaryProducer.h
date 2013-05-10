@@ -55,6 +55,8 @@ public:
 
 		// sort alphabetically
 		std::sort(namesAndTags.begin(), namesAndTags.end());
+		tags.resize(namesAndTags.size());
+		names->filternames.resize(namesAndTags.size());
 		for (size_t i = 0; i < namesAndTags.size(); i++)
 		{
 			tags[i] = namesAndTags[i].tag;
