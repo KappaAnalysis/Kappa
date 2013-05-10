@@ -75,7 +75,7 @@ private:
 		std::string name;
 		nameAndTag(std::string n, edm::InputTag t): tag(t), name(n) {}
 		bool operator<(nameAndTag const & second) const {
-			return (this->name < second.name);
+			return (this->name.compare(second.name) < 0 );
 		}
 	};
 	std::vector<nameAndTag> namesAndTags;
