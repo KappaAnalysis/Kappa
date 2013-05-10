@@ -3,6 +3,7 @@
 
 #include "KBaseMultiProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
+#include <bitset>
 
 struct KGenParticleProducer_Product
 {
@@ -23,11 +24,18 @@ protected:
 	virtual void fillSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in, typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
+
 		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
 		out.pdgid = id | ((in.status() % 4) << KGenParticleStatusPosition);
 		if (in.pdgId() < 0)
 			out.pdgid |= KGenParticleChargeMask;
 		out.children = 0;
+
+		if (in.pdgId() != out.pdgId())
+			std::cout << "The pdgId is not skimmed correctly! "
+				<< "in=" << in.pdgId() << ", out=" << out.pdgId()
+				<< std::endl << std::flush;
+		assert(in.pdgId() == out.pdgId());
 	}
 	virtual bool acceptSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in)
 	{
