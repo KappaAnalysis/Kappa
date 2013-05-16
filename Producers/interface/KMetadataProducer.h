@@ -142,7 +142,7 @@ public:
 #endif
 
 		if (hltSetupChanged)
-			std::cout << "HLT setup has changed...";
+			std::cout << "HLT setup has changed..." << std::endl;
 
 		int counter = 1;
 		for (size_t i = 0; i < KMetadataProducerBase::hltConfig.size(); ++i)
