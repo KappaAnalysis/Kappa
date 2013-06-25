@@ -1,4 +1,5 @@
 #include "../interface/KDebug.h"
+#include <bitset>
 
 // Need thin wrapper class for ostream operator overloading
 // - overkill here, but simplifies vector output later
