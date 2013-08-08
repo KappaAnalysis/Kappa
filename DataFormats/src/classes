@@ -25,6 +25,9 @@ KDataJets
 KDataPFJet
 KDataPFJets
 
+KDataPFJetTagged
+KDataPFJetsTagged
+
 KDataTrack
 KDataTracks
 

@@ -25,6 +25,24 @@ struct KDataPFJet : public KDataLV
 };
 typedef std::vector<KDataPFJet> KDataPFJets;
 
+
+struct KDataPFJetTagged : public KDataPFJet
+{
+	float QGLikelihood, QGMLP,
+
+        TrackCountingHighEffBJetTag,TrackCountingHighPurBJetTag,
+        JetProbabilityBJetTag, JetBProbabilityBJetTag,
+        SoftElectronBJetTag, SoftMuonBJetTag, SoftMuonByIP3dBJetTag, SoftMuonByPtBJetTag,
+        SimpleSecondaryVertexBJetTag, CombinedSecondaryVertexBJetTag, CombinedSecondaryVertexMVABJetTag,
+
+        PUJetMVAfull, PUJetMVAcutbased;
+    int PUJetIDfull, PUJetIDcutbased;
+    bool PUJetIDfull_passloose, PUJetIDfull_passmedium, PUJetIDfull_passtight, 
+        PUJetIDcutbased_passloose, PUJetIDcutbased_passmedium, PUJetIDcutbased_passtight;
+};
+typedef std::vector<KDataPFJetTagged> KDataPFJetsTagged;
+
+
 struct KDataMET : public KDataLV
 {
 	double sumEt;
