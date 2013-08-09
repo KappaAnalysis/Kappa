@@ -38,8 +38,8 @@ namespace
 		KDataPFJet dict_KDataPFJet;
 		KDataPFJets dict_KDataPFJets;
 
-		KDataPFJetTagged dict_KDataPFJetTagged;
-		KDataPFJetsTagged dict_KDataPFJetsTagged;
+		KDataPFTaggedJet dict_KDataPFTaggedJet;
+		KDataPFTaggedJets dict_KDataPFTaggedJets;
 
 		KDataTrack dict_KDataTrack;
 		KDataTracks dict_KDataTracks;

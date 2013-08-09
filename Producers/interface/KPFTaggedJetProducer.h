@@ -1,5 +1,5 @@
-#ifndef KAPPA_PFJETTAGGEDPRODUCER_H
-#define KAPPA_PFJETTAGGEDPRODUCER_H
+#ifndef KAPPA_PFTAGGEDJETPRODUCER_H
+#define KAPPA_PFTAGGEDJETPRODUCER_H
 
 #include "KPFJetProducer.h"
 #include "KBaseMultiProducer.h"
@@ -8,18 +8,18 @@
 #include <DataFormats/BTauReco/interface/JetTag.h>
 
 
-struct KPFJetTaggedProducer_Product
+struct KPFTaggedJetProducer_Product
 {
-	typedef std::vector<KDataPFJetTagged> type;
-	static const std::string id() { return "std::vector<KDataPFJetTagged>"; };
-	static const std::string producer() { return "KPFJetTaggedProducer"; };
+	typedef std::vector<KDataPFTaggedJet> type;
+	static const std::string id() { return "std::vector<KDataPFTaggedJet>"; };
+	static const std::string producer() { return "KPFTaggedJetProducer"; };
 };
 
-class KPFJetTaggedProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KPFJetTaggedProducer_Product>
+class KPFTaggedJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KPFTaggedJetProducer_Product>
 {
 public:
-	KPFJetTaggedProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KPFJetTaggedProducer_Product>(cfg, _event_tree, _run_tree) {}
+	KPFTaggedJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiLVProducer<reco::PFJetCollection, KPFTaggedJetProducer_Product>(cfg, _event_tree, _run_tree) {}
 
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
@@ -73,7 +73,7 @@ public:
         }
 
 		// Continue normally
-		KBaseMultiLVProducer<reco::PFJetCollection, KPFJetTaggedProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<reco::PFJetCollection, KPFTaggedJetProducer_Product>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
@@ -83,34 +83,34 @@ public:
         // -> initialize all tagging variables with -1 and change only if defined
 
 
-        out.QGLikelihood = -1;
-        out.QGMLP = -1;
+        out.qgLikelihood = -1;
+        out.qgMLP = -1;
 
-        out.TrackCountingHighEffBJetTag = -1;
-        out.TrackCountingHighPurBJetTag = -1;
-        out.JetProbabilityBJetTag = -1;
-        out.JetBProbabilityBJetTag = -1;
-        out.SoftElectronBJetTag = -1;
-        out.SoftMuonBJetTag = -1;
-        out.SoftMuonByIP3dBJetTag = -1;
-        out.SoftMuonByPtBJetTag = -1;
-        out.SimpleSecondaryVertexBJetTag = -1;
-        out.CombinedSecondaryVertexBJetTag = -1;
-        out.CombinedSecondaryVertexMVABJetTag = -1;
+        out.trackCountingHighEffBTag = -1;
+        out.trackCountingHighPurBTag = -1;
+        out.jetProbabilityBTag = -1;
+        out.jetBProbabilityBTag = -1;
+        out.softElectronBTag = -1;
+        out.softMuonBTag = -1;
+        out.softMuonByIP3dBTag = -1;
+        out.softMuonByPtBTag = -1;
+        out.simpleSecondaryVertexBTag = -1;
+        out.combinedSecondaryVertexBTag = -1;
+        out.combinedSecondaryVertexMVABTag = -1;
 
-        out.PUJetMVAfull = -1;
-        out.PUJetIDfull = -1;
+        out.puJetFull = -1;
+        out.puJetIDFull = -1;
 
-        out.PUJetMVAcutbased = -1;
-        out.PUJetIDcutbased = -1;
+        out.puJetCutbased = -1;
+        out.puJetIDCutbased = -1;
 
         // get the QG Tag 
         if (QGtagger.label() != "")
         {   
         	edm::RefToBase<reco::Jet> jetRef(edm::Ref<reco::PFJetCollection>(handle, this->nCursor));
-            out.QGLikelihood = (*QGTagsHandleLikelihood)[jetRef];
+            out.qgLikelihood = (*QGTagsHandleLikelihood)[jetRef];
             if ((*QGTagsHandleMLP)[jetRef] != -999.)
-                out.QGMLP = (*QGTagsHandleMLP)[jetRef];
+                out.qgMLP = (*QGTagsHandleMLP)[jetRef];
         }
 
         // get the B tags from the according handles
@@ -118,30 +118,30 @@ public:
         {
             const reco::JetTagCollection & TrackCountingHighEffBJetTags = *(TrackCountingHighEffBJetTags_Handle.product());
             if (TrackCountingHighEffBJetTags[this->nCursor].second != -100.)
-                out.TrackCountingHighEffBJetTag = TrackCountingHighEffBJetTags[this->nCursor].second;
+                out.trackCountingHighEffBTag = TrackCountingHighEffBJetTags[this->nCursor].second;
             const reco::JetTagCollection & TrackCountingHighPurBJetTags = *(TrackCountingHighPurBJetTags_Handle.product());
             if (TrackCountingHighPurBJetTags[this->nCursor].second != -100.)
-                out.TrackCountingHighPurBJetTag = TrackCountingHighPurBJetTags[this->nCursor].second;
+                out.trackCountingHighPurBTag = TrackCountingHighPurBJetTags[this->nCursor].second;
             const reco::JetTagCollection & JetProbabilityBJetTags = *(JetProbabilityBJetTags_Handle.product());
-                out.JetProbabilityBJetTag = JetProbabilityBJetTags[this->nCursor].second;
+                out.jetProbabilityBTag = JetProbabilityBJetTags[this->nCursor].second;
             const reco::JetTagCollection & JetBProbabilityBJetTags = *(JetBProbabilityBJetTags_Handle.product());
-                out.JetBProbabilityBJetTag = JetBProbabilityBJetTags[this->nCursor].second;
+                out.jetBProbabilityBTag = JetBProbabilityBJetTags[this->nCursor].second;
             const reco::JetTagCollection & SoftElectronBJetTags = *(SoftElectronBJetTags_Handle.product());
-                out.SoftElectronBJetTag = SoftElectronBJetTags[this->nCursor].second;
+                out.softElectronBTag = SoftElectronBJetTags[this->nCursor].second;
             const reco::JetTagCollection & SoftMuonBJetTags = *(SoftMuonBJetTags_Handle.product());
-                out.SoftMuonBJetTag = SoftMuonBJetTags[this->nCursor].second;
+                out.softMuonBTag = SoftMuonBJetTags[this->nCursor].second;
             const reco::JetTagCollection & SoftMuonByIP3dBJetTags = *(SoftMuonByIP3dBJetTags_Handle.product());
-                out.SoftMuonByIP3dBJetTag = SoftMuonByIP3dBJetTags[this->nCursor].second;
+                out.softMuonByIP3dBTag = SoftMuonByIP3dBJetTags[this->nCursor].second;
             const reco::JetTagCollection & SoftMuonByPtBJetTags = *(SoftMuonByPtBJetTags_Handle.product());
-                out.SoftMuonByPtBJetTag = SoftMuonByPtBJetTags[this->nCursor].second;
+                out.softMuonByPtBTag = SoftMuonByPtBJetTags[this->nCursor].second;
             const reco::JetTagCollection & SimpleSecondaryVertexBJetTags = *(SimpleSecondaryVertexBJetTags_Handle.product());
-                out.SimpleSecondaryVertexBJetTag = SimpleSecondaryVertexBJetTags[this->nCursor].second;
+                out.simpleSecondaryVertexBTag = SimpleSecondaryVertexBJetTags[this->nCursor].second;
             const reco::JetTagCollection & CombinedSecondaryVertexBJetTags = *(CombinedSecondaryVertexBJetTags_Handle.product());
             if (CombinedSecondaryVertexBJetTags[this->nCursor].second != -10.)
-                out.CombinedSecondaryVertexBJetTag = CombinedSecondaryVertexBJetTags[this->nCursor].second;
+                out.combinedSecondaryVertexBTag = CombinedSecondaryVertexBJetTags[this->nCursor].second;
             const reco::JetTagCollection & CombinedSecondaryVertexMVABJetTags = *(CombinedSecondaryVertexMVABJetTags_Handle.product());
             if (CombinedSecondaryVertexMVABJetTags[this->nCursor].second != -10.)
-                out.CombinedSecondaryVertexMVABJetTag = CombinedSecondaryVertexMVABJetTags[this->nCursor].second;
+                out.combinedSecondaryVertexMVABTag = CombinedSecondaryVertexMVABJetTags[this->nCursor].second;
         }
 
         // get the PU-ID and discriminator
@@ -149,19 +149,19 @@ public:
         {
         	edm::RefToBase<reco::Jet> jetRef(edm::Ref<reco::PFJetCollection>(handle, this->nCursor));
 
-            out.PUJetMVAfull = (*puJetMVAfull_Handle)[jetRef];
-            out.PUJetIDfull = (*puJetIDfull_Handle)[jetRef];
+            out.puJetFull = (*puJetMVAfull_Handle)[jetRef];
+            out.puJetIDFull = (*puJetIDfull_Handle)[jetRef];
 
-            out.PUJetIDfull_passloose = (( (*puJetIDfull_Handle)[jetRef] & (1 << 2) ) != 0);
-            out.PUJetIDfull_passmedium = (( (*puJetIDfull_Handle)[jetRef] & (1 << 1) ) != 0);
-            out.PUJetIDfull_passtight = (( (*puJetIDfull_Handle)[jetRef] & (1 << 0) ) != 0);
+            out.puJetIDFullLoose = (( (*puJetIDfull_Handle)[jetRef] & (1 << 2) ) != 0);
+            out.puJetIDFullMedium = (( (*puJetIDfull_Handle)[jetRef] & (1 << 1) ) != 0);
+            out.puJetIDFullTight = (( (*puJetIDfull_Handle)[jetRef] & (1 << 0) ) != 0);
 
-            out.PUJetMVAcutbased = (*puJetMVAcutbased_Handle)[jetRef];
-            out.PUJetIDcutbased = (*puJetIDcutbased_Handle)[jetRef];
+            out.puJetCutbased = (*puJetMVAcutbased_Handle)[jetRef];
+            out.puJetIDCutbased = (*puJetIDcutbased_Handle)[jetRef];
 
-            out.PUJetIDcutbased_passloose = (( (*puJetIDcutbased_Handle)[jetRef] & (1 << 2) ) != 0);
-            out.PUJetIDcutbased_passmedium = (( (*puJetIDcutbased_Handle)[jetRef] & (1 << 1) ) != 0);
-            out.PUJetIDcutbased_passtight = (( (*puJetIDcutbased_Handle)[jetRef] & (1 << 0) ) != 0);
+            out.puJetIDCutbasedLoose = (( (*puJetIDcutbased_Handle)[jetRef] & (1 << 2) ) != 0);
+            out.puJetIDCutbasedMedium = (( (*puJetIDcutbased_Handle)[jetRef] & (1 << 1) ) != 0);
+            out.puJetIDCutbasedTight = (( (*puJetIDcutbased_Handle)[jetRef] & (1 << 0) ) != 0);
 
         }
 

@@ -45,7 +45,7 @@
 #include "../interface/KTriggerObjectProducer.h"
 #include "../interface/KVertexProducer.h"
 #include "../interface/KVertexSummaryProducer.h"
-#include "../interface/KPFJetTaggedProducer.h"
+#include "../interface/KPFTaggedJetProducer.h"
 
 int KBaseProducer::verbosity = 0;
 
@@ -210,8 +210,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KL3MuonTrajectorySeedProducer>(psConfig, active[i]);
 		else if (active[i] == "MuonTriggerCandidates")
 			addProducer<KMuonTriggerCandidateProducer>(psConfig, active[i]);
-		else if (active[i] == "PFJetsTagged")
-			addProducer<KPFJetTaggedProducer>(psConfig, active[i]);
+		else if (active[i] == "PFTaggedJets")
+			addProducer<KPFTaggedJetProducer>(psConfig, active[i]);
 		else
 		{
 			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;

@@ -26,21 +26,21 @@ struct KDataPFJet : public KDataLV
 typedef std::vector<KDataPFJet> KDataPFJets;
 
 
-struct KDataPFJetTagged : public KDataPFJet
+struct KDataPFTaggedJet : public KDataPFJet
 {
-	float QGLikelihood, QGMLP,
+	float qgLikelihood, qgMLP;
 
-        TrackCountingHighEffBJetTag,TrackCountingHighPurBJetTag,
-        JetProbabilityBJetTag, JetBProbabilityBJetTag,
-        SoftElectronBJetTag, SoftMuonBJetTag, SoftMuonByIP3dBJetTag, SoftMuonByPtBJetTag,
-        SimpleSecondaryVertexBJetTag, CombinedSecondaryVertexBJetTag, CombinedSecondaryVertexMVABJetTag,
+	float trackCountingHighEffBTag, trackCountingHighPurBTag;
+    float jetProbabilityBTag, jetBProbabilityBTag;
+	float softElectronBTag, softMuonBTag, softMuonByIP3dBTag, softMuonByPtBTag;
+	float simpleSecondaryVertexBTag, combinedSecondaryVertexBTag, combinedSecondaryVertexMVABTag;
 
-        PUJetMVAfull, PUJetMVAcutbased;
-    int PUJetIDfull, PUJetIDcutbased;
-    bool PUJetIDfull_passloose, PUJetIDfull_passmedium, PUJetIDfull_passtight, 
-        PUJetIDcutbased_passloose, PUJetIDcutbased_passmedium, PUJetIDcutbased_passtight;
+	float puJetFull, puJetCutbased;
+    int puJetIDFull, puJetIDCutbased;
+    bool puJetIDFullLoose, puJetIDFullMedium, puJetIDFullTight;
+    bool puJetIDCutbasedLoose, puJetIDCutbasedMedium, puJetIDCutbasedTight;
 };
-typedef std::vector<KDataPFJetTagged> KDataPFJetsTagged;
+typedef std::vector<KDataPFTaggedJet> KDataPFTaggedJets;
 
 
 struct KDataMET : public KDataLV

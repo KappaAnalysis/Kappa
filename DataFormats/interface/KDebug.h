@@ -13,6 +13,7 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s);
 std::ostream &operator<<(std::ostream &os, const KGenParticle &p);
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet);
 std::ostream &operator<<(std::ostream &os, const KDataPFJet &jet);
+std::ostream &operator<<(std::ostream &os, const KDataPFTaggedJet &jet);
 std::ostream &operator<<(std::ostream &os, const KDataTau &tau);
 std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau);
 std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau);
