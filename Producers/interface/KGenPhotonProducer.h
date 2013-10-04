@@ -1,3 +1,7 @@
+/* Copyright (c) 2011 - All Rights Reserved
+ *   Manuel Zeise <zeise@cern.ch>
+ */
+
 #ifndef KAPPA_GENPHOTONPRODUCER_H
 #define KAPPA_GENPHOTONPRODUCER_H
 

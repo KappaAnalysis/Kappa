@@ -1,3 +1,11 @@
+/* Copyright (c) 2010 - All Rights Reserved
+ *   Corinna Guenth <cguenth@ekpcms5.ekpplus.cluster>
+ *   Fred Stober <stober@cern.ch>
+ *   Joram Berger <joram.berger@cern.ch>
+ *   Manuel Zeise <zeise@cern.ch>
+ *   Thomas Hauth <Thomas.Hauth@cern.ch>
+ */
+
 #include "../interface/KDebug.h"
 #include <bitset>
 

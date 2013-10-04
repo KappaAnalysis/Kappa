@@ -1,3 +1,9 @@
+/* Copyright (c) 2011 - All Rights Reserved
+ *   Fred Stober <stober@cern.ch>
+ *   Joram Berger <joram.berger@cern.ch>
+ *   Manuel Zeise <zeise@cern.ch>
+ */
+
 #ifndef KAPPA_L2MUONPRODUCER_H
 #define KAPPA_L2MUONPRODUCER_H
 

@@ -1,3 +1,8 @@
+/* Copyright (c) 2010 - All Rights Reserved
+ *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+ *   Fred Stober <stober@cern.ch>
+ */
+
 #ifndef KAPPA_METPRODUCER_H
 #define KAPPA_METPRODUCER_H
 

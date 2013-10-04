@@ -1,3 +1,8 @@
+# Copyright (c) 2010 - All Rights Reserved
+#   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+#   Manuel Zeise <zeise@cern.ch>
+#
+
 import FWCore.ParameterSet.Config as cms
 
 # Basic process setup ----------------------------------------------------------

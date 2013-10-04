@@ -1,3 +1,11 @@
+/* Copyright (c) 2010 - All Rights Reserved
+ *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+ *   Danilo Piparo <danilo.piparo@cern.ch>
+ *   Fred Stober <stober@cern.ch>
+ *   Joram Berger <joram.berger@cern.ch>
+ *   Manuel Zeise <zeise@cern.ch>
+ */
+
 #include <memory>
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"

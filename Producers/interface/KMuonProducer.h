@@ -1,3 +1,9 @@
+/* Copyright (c) 2010 - All Rights Reserved
+ *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+ *   Fred Stober <stober@cern.ch>
+ *   Manuel Zeise <zeise@cern.ch>
+ */
+
 #ifndef KAPPA_MUONPRODUCER_H
 #define KAPPA_MUONPRODUCER_H
 

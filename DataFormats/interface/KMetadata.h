@@ -1,3 +1,9 @@
+/* Copyright (c) 2010 - All Rights Reserved
+ *   Fred Stober <stober@cern.ch>
+ *   Joram Berger <joram.berger@cern.ch>
+ *   Manuel Zeise <zeise@cern.ch>
+ */
+
 #ifndef KAPPA_METADATA_H
 #define KAPPA_METADATA_H
 

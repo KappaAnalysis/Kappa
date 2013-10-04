@@ -1,3 +1,7 @@
+/* Copyright (c) 2010 - All Rights Reserved
+ *   Fred Stober <stober@cern.ch>
+ */
+
 #ifndef KAPPA_LORENTZPRODUCER_H
 #define KAPPA_LORENTZPRODUCER_H
 

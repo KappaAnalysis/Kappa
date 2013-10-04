@@ -1,3 +1,8 @@
+/* Copyright (c) 2011 - All Rights Reserved
+ *   Fred Stober <stober@cern.ch>
+ *   Manuel Zeise <zeise@cern.ch>
+ */
+
 #ifndef KAPPA_TRIGGEROBJECTPRODUCER2_H
 #define KAPPA_TRIGGEROBJECTPRODUCER2_H
 

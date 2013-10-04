@@ -1,3 +1,8 @@
+/* Copyright (c) 2010 - All Rights Reserved
+ *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+ *   Manuel Zeise <zeise@cern.ch>
+ */
+
 #ifndef KAPPA_CALOTAUPRODUCER_H
 #define KAPPA_CALOTAUPRODUCER_H
 

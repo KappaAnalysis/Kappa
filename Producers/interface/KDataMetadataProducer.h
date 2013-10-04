@@ -1,3 +1,8 @@
+/* Copyright (c) 2011 - All Rights Reserved
+ *   Joram Berger <joram.berger@cern.ch>
+ *   Manuel Zeise <zeise@cern.ch>
+ */
+
 #ifndef KAPPA_DATAMETADATAPRODUCER_H
 #define KAPPA_DATAMETADATAPRODUCER_H
 

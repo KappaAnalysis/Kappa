@@ -1,3 +1,8 @@
+/* Copyright (c) 2011 - All Rights Reserved
+ *   Fred Stober <stober@cern.ch>
+ *   Manuel Zeise <zeise@cern.ch>
+ */
+
 #ifndef KAPPA_JETAREAPRODUCER_H
 #define KAPPA_JETAREAPRODUCER_H
 

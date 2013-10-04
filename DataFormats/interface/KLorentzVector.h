@@ -1,3 +1,7 @@
+/* Copyright (c) 2010 - All Rights Reserved
+ *   Fred Stober <stober@cern.ch>
+ */
+
 #ifndef KAPPA_LORENTZVECTOR_H
 #define KAPPA_LORENTZVECTOR_H
 

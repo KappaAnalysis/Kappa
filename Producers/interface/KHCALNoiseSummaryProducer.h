@@ -1,3 +1,7 @@
+/* Copyright (c) 2012 - All Rights Reserved
+ *   Fred Stober <stober@cern.ch>
+ */
+
 #ifndef KAPPA_HCALNOISEPRODUCER_H
 #define KAPPA_HCALNOISEPRODUCER_H
 

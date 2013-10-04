@@ -1,3 +1,8 @@
+/* Copyright (c) 2010 - All Rights Reserved
+ *   Fred Stober <stober@cern.ch>
+ *   Manuel Zeise <zeise@cern.ch>
+ */
+
 #include "../interface/KBaseProducer.h"
 #include <TTree.h>
 #include <boost/regex.hpp>

@@ -1,3 +1,7 @@
+# Copyright (c) 2010 - All Rights Reserved
+#   Fred Stober <stober@cern.ch>
+#
+
 import re
 from grid_control import datasets, DatasetError
 from grid_control.datasets import NickNameProducer

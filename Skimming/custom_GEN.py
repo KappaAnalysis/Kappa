@@ -1,3 +1,7 @@
+# Copyright (c) 2010 - All Rights Reserved
+#   Fred Stober <stober@cern.ch>
+#
+
 def customise(process):
 	# Remove output modules
 	process.schedule.remove(process.endjob_step)

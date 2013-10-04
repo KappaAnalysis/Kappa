@@ -1,3 +1,8 @@
+# Copyright (c) 2010 - All Rights Reserved
+#   Fred Stober <stober@cern.ch>
+#   Manuel Zeise <zeise@cern.ch>
+#
+
 import FWCore.ParameterSet.Config as cms
 
 # Basic process setup ----------------------------------------------------------

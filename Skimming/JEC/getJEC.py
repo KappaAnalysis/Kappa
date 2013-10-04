@@ -1,3 +1,7 @@
+# Copyright (c) 2011 - All Rights Reserved
+#   Fred Stober <stober@cern.ch>
+#
+
 import FWCore.ParameterSet.Config as cms
 process = cms.Process("jectxt")
 process.load('Configuration.StandardSequences.Services_cff')

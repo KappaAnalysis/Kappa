@@ -1,3 +1,7 @@
+# Copyright (c) 2011 - All Rights Reserved
+#   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+#
+
 import FWCore.ParameterSet.Config as cms
 import copy
 
