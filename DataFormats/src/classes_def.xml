@@ -23,6 +23,9 @@
 	<class name="KDataPFJet"/>
 	<class name="KDataPFJets"/>
 
+	<class name="KDataPFTaggedJet"/>
+	<class name="KDataPFTaggedJets"/>
+
 	<class name="KDataTrack"/>
 	<class name="KDataTracks"/>
 
