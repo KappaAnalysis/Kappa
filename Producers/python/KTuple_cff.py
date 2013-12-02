@@ -482,6 +482,17 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
+	Electrons = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("recoGsfElectrons_gsfElectrons*"),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring("gsfElectrons => Electrons"),
+		rename_whitelist = cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
+
 	PFJets = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 

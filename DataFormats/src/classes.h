@@ -13,6 +13,7 @@
 #include "../interface/KLorentzVector.h"
 #include "../interface/KMetadata.h"
 #include "../interface/KMuon.h"
+#include "../interface/KElectron.h"
 #include "../interface/KTau.h"
 #include "../interface/KTrack.h"
 
@@ -65,6 +66,9 @@ namespace
 
 		KDataMuon dict_KDataMuon;
 		KDataMuons dict_KDataMuons;
+
+		KDataElectron dict_KDataElectron;
+		KDataElectrons dict_KDataElectrons;
 
 		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
 

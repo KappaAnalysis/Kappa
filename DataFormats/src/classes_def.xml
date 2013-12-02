@@ -45,6 +45,9 @@
 	<class name="KDataMuon"/>
 	<class name="KDataMuons"/>
 
+	<class name="KDataElectron"/>
+	<class name="KDataElectrons"/>
+
 	<class name="KTauDiscriminatorMetadata"/>
 
 	<class name="KMuonMetadata"/>

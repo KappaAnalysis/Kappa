@@ -12,6 +12,7 @@
 #include "KLorentzVector.h"
 #include "KMetadata.h"
 #include "KMuon.h"
+#include "KElectron.h"
 #include "KTau.h"
 #include "KTrack.h"
 
@@ -51,6 +52,8 @@ REGISTER_NAME_OF_TYPE(KGenParticle);
 REGISTER_NAME_OF_TYPE(KGenParticles);
 REGISTER_NAME_OF_TYPE(KDataMuon);
 REGISTER_NAME_OF_TYPE(KDataMuons);
+REGISTER_NAME_OF_TYPE(KDataElectron);
+REGISTER_NAME_OF_TYPE(KDataElectrons);
 REGISTER_NAME_OF_TYPE(KTauDiscriminatorMetadata);
 REGISTER_NAME_OF_TYPE(KMuonMetadata);
 REGISTER_NAME_OF_TYPE(KDataTau);

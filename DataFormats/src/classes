@@ -47,6 +47,9 @@ KGenParticles
 KDataMuon
 KDataMuons
 
+KDataElectron
+KDataElectron
+
 KTauDiscriminatorMetadata
 
 KMuonMetadata

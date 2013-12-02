@@ -58,6 +58,11 @@ std::ostream &operator<<(std::ostream &os, const KGenParticle &p)
 		<< " status=" << p.status() << " pdgid=" << p.pdgId();
 }
 
+std::ostream &operator<<(std::ostream &os, const KDataElectron &e)
+{
+	return os << KLVWrap<KDataLV::KInternalLV>(e.p4);
+}
+
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
 {
 	os << static_cast<const KDataLV>(jet) << std::endl;
