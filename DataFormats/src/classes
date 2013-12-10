@@ -48,7 +48,11 @@ KDataMuon
 KDataMuons
 
 KDataElectron
+<<<<<<< HEAD
+KDataElectrons
+=======
 KDataElectron
+>>>>>>> 7f27c71be8613bbcc8e11ef242b306b780533e20
 
 KTauDiscriminatorMetadata
 
