@@ -11,16 +11,11 @@
 #include "KMetadata.h"
 #include "KJetMET.h"
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 7f27c71be8613bbcc8e11ef242b306b780533e20
 #include <algorithm>
 
 struct KDataElectron : KDataLV
 {
 	char charge;
-<<<<<<< HEAD
     bool isEB, isEE;
 
 
@@ -48,9 +43,6 @@ struct KDataElectron : KDataLV
 
     float mva; // PF data
     int status;
-=======
-
->>>>>>> 7f27c71be8613bbcc8e11ef242b306b780533e20
 };
 typedef std::vector<KDataElectron> KDataElectrons;
 

@@ -9,11 +9,7 @@
 
 #include "KBaseMultiLVProducer.h"
 
-<<<<<<< HEAD
 #include <DataFormats/EgammaCandidates/interface/GsfElectron.h>
-
-=======
->>>>>>> 7f27c71be8613bbcc8e11ef242b306b780533e20
 #include <bitset>
 #include <TMath.h>
 
@@ -37,7 +33,6 @@ public:
 
 		// Charge, ...
 		out.charge = in.charge();
-<<<<<<< HEAD
 
         out.isEB = in.isEB();
         out.isEE = in.isEE();
@@ -67,8 +62,6 @@ public:
         out.trackMomentumError = in.trackMomentumError();
         //out.electronMomentumError = in.electronMomentumError();
 
-=======
->>>>>>> 7f27c71be8613bbcc8e11ef242b306b780533e20
 	}
 
 };
