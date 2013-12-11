@@ -150,6 +150,11 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			addProducer<KGenMetadataProducer<KGenMetadata_Product> >(psConfig, "Metadata");
 			break;
 		}
+		if (active[i] == "HepMCMetadata")
+		{
+			addProducer<KHepMCMetadataProducer<KGenMetadata_Product> >(psConfig, "Metadata");
+			break;
+		}
 	}
 
 	// Create all active producers
@@ -161,6 +166,8 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 		else if (active[i] == "DataMetadata")
 			continue;
 		else if (active[i] == "GenMetadata")
+			continue;
+		else if (active[i] == "HepMCMetadata")
 			continue;
 		else if (active[i] == "CaloJets")
 			addProducer<KCaloJetProducer>(psConfig, active[i]);
