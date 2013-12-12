@@ -30,7 +30,7 @@ public:
 
 	virtual std::string getProductName() const
 	{
-		return std::string(TypeName<Tout>::name());
+		return std::string(TypeName<Tout>::long_name());
 	}
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
