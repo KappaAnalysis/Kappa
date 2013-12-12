@@ -12,18 +12,13 @@
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/JetReco/interface/PFJet.h>
 
-struct KPFJetProducer_Product
-{
-	typedef std::vector<KDataPFJet> type;
-	static const std::string id() { return "std::vector<KDataPFJet>"; };
-	static const std::string producer() { return "KPFJetProducer"; };
-};
-
-class KPFJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KPFJetProducer_Product>
+class KPFJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, std::vector<KDataPFJet> >
 {
 public:
 	KPFJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KPFJetProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiLVProducer<reco::PFJetCollection, KDataPFJets>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "PFJets"; }
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

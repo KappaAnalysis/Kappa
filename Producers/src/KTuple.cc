@@ -29,31 +29,33 @@
 #include "../interface/KBeamSpotProducer.h"
 #include "../interface/KCaloJetProducer.h"
 #include "../interface/KCaloTauProducer.h"
+#include "../interface/KFilterSummaryProducer.h"
+#include "../interface/KGenParticleProducer.h"
 #include "../interface/KGenPhotonProducer.h"
 #include "../interface/KGenTauProducer.h"
 #include "../interface/KHCALNoiseSummaryProducer.h"
-#include "../interface/KFilterSummaryProducer.h"
-// #include "../interface/KHepMCPartonProducer.h"
 #include "../interface/KHitProducer.h"
 #include "../interface/KJetAreaProducer.h"
-#include "../interface/KL1MuonProducer.h"
-#include "../interface/KL2MuonProducer.h"
 #include "../interface/KLorentzProducer.h"
 #include "../interface/KMETProducer.h"
 #include "../interface/KMuonProducer.h"
-#include "../interface/KGenParticleProducer.h"
 #include "../interface/KPFCandidateProducer.h"
 #include "../interface/KPFJetProducer.h"
 #include "../interface/KPFMETProducer.h"
+#include "../interface/KPFTaggedJetProducer.h"
 #include "../interface/KPFTauProducer.h"
 #include "../interface/KTowerProducer.h"
 #include "../interface/KTrackProducer.h"
 #include "../interface/KTrackSummaryProducer.h"
 #include "../interface/KTriggerObjectProducer2.h"
-#include "../interface/KTriggerObjectProducer.h"
 #include "../interface/KVertexProducer.h"
 #include "../interface/KVertexSummaryProducer.h"
-#include "../interface/KPFTaggedJetProducer.h"
+/* are these still used?
+#include "../interface/KHepMCPartonProducer.h"
+#include "../interface/KL1MuonProducer.h"
+#include "../interface/KL2MuonProducer.h"
+#include "../interface/KTriggerObjectProducer.h"
+*/
 
 int KBaseProducer::verbosity = 0;
 
@@ -69,15 +71,24 @@ public:
 	virtual void endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
 
 protected:
+	const edm::ParameterSet &psConfig;
+
 	bool first;
 	std::vector<KBaseProducer*> producers;
 	TTree *event_tree, *lumi_tree;
 	TFile *file;
 
 	template<typename Tprod>
-	void addProducer(const edm::ParameterSet &psCfg, const std::string sName)
+	bool addProducer(const std::string sActive, std::string sName = "")
 	{
-		producers.push_back(new Tprod(psCfg.getParameter<edm::ParameterSet>(sName), event_tree, lumi_tree));
+		if (sActive == Tprod::getLabel())
+		{
+			if (sName == "")
+				sName = sActive;
+			producers.push_back(new Tprod(psConfig.getParameter<edm::ParameterSet>(sName), event_tree, lumi_tree));
+			return true;
+		}
+		return false;
 	}
 };
 
@@ -91,7 +102,8 @@ private:
 	TFile *file;
 };
 
-KTuple::KTuple(const edm::ParameterSet &psConfig)
+KTuple::KTuple(const edm::ParameterSet &_psConfig) :
+	psConfig(_psConfig)
 {
 	ROOTContextSentinel ctx;
 	std::string outputFile = psConfig.getParameter<std::string>("outputFile");
@@ -135,26 +147,15 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 	for (size_t i = 0; i < active.size(); ++i)
 	{
 		std::cout << "Init producer " << active[i] << std::endl;
-		if (active[i] == "Metadata")
-		{
-			addProducer<KMetadataProducer<KMetadata_Product> >(psConfig, "Metadata");
+
+		if (addProducer<KMetadataProducer<KMetadata_Product> >(active[i], "Metadata"))
 			break;
-		}
-		if (active[i] == "DataMetadata")
-		{
-			addProducer<KDataMetadataProducer<KDataMetadata_Product> >(psConfig, "Metadata");
+		if (addProducer<KDataMetadataProducer<KDataMetadata_Product> >(active[i], "Metadata"))
 			break;
-		}
-		if (active[i] == "GenMetadata")
-		{
-			addProducer<KGenMetadataProducer<KGenMetadata_Product> >(psConfig, "Metadata");
+		if (addProducer<KGenMetadataProducer<KGenMetadata_Product> >(active[i], "Metadata"))
 			break;
-		}
-		if (active[i] == "HepMCMetadata")
-		{
-			addProducer<KHepMCMetadataProducer<KGenMetadata_Product> >(psConfig, "Metadata");
+		if (addProducer<KHepMCMetadataProducer<KGenMetadata_Product> >(active[i], "Metadata"))
 			break;
-		}
 	}
 
 	// Create all active producers
@@ -169,65 +170,52 @@ KTuple::KTuple(const edm::ParameterSet &psConfig)
 			continue;
 		else if (active[i] == "HepMCMetadata")
 			continue;
-		else if (active[i] == "CaloJets")
-			addProducer<KCaloJetProducer>(psConfig, active[i]);
-		else if (active[i] == "PFJets")
-			addProducer<KPFJetProducer>(psConfig, active[i]);
-		else if (active[i] == "Tower")
-			addProducer<KTowerProducer>(psConfig, active[i]);
-		else if (active[i] == "Muons")
-			addProducer<KMuonProducer>(psConfig, active[i]);
-		else if (active[i] == "Vertex")
-			addProducer<KVertexProducer>(psConfig, active[i]);
-		else if (active[i] == "VertexSummary")
-			addProducer<KVertexSummaryProducer>(psConfig, active[i]);
-		else if (active[i] == "FilterSummary")
-			addProducer<KFilterSummaryProducer>(psConfig, active[i]);
-		else if (active[i] == "BeamSpot")
-			addProducer<KBeamSpotProducer>(psConfig, active[i]);
-		else if (active[i] == "Tracks")
-			addProducer<KTrackProducer>(psConfig, active[i]);
-		else if (active[i] == "TrackSummary")
-			addProducer<KTrackSummaryProducer>(psConfig, active[i]);
-		else if (active[i] == "MET")
-			addProducer<KMETProducer>(psConfig, active[i]);
-		else if (active[i] == "PFMET")
-			addProducer<KPFMETProducer>(psConfig, active[i]);
-		else if (active[i] == "LV")
-			addProducer<KLorentzProducer>(psConfig, active[i]);
-		else if (active[i] == "GenParticles")
-			addProducer<KGenParticleProducer>(psConfig, active[i]);
-		else if (active[i] == "Hits")
-			addProducer<KHitProducer>(psConfig, active[i]);
+
+		size_t nProducers = producers.size();
+
+		addProducer<KBeamSpotProducer>(active[i]);
+		addProducer<KCaloJetProducer>(active[i]);
+		addProducer<KCaloTauProducer>(active[i]);
+		addProducer<KFilterSummaryProducer>(active[i]);
+		addProducer<KGenParticleProducer>(active[i]);
+		addProducer<KGenPhotonProducer>(active[i]);
+		addProducer<KGenTauProducer>(active[i]);
+		addProducer<KHCALNoiseSummaryProducer>(active[i]);
+		addProducer<KHitProducer>(active[i]);
+		addProducer<KJetAreaProducer>(active[i]);
+		addProducer<KLorentzProducer>(active[i]);
+		addProducer<KMETProducer>(active[i]);
+		addProducer<KMuonProducer>(active[i]);
+		addProducer<KPFCandidateProducer>(active[i]);
+		addProducer<KPFJetProducer>(active[i]);
+		addProducer<KPFMETProducer>(active[i]);
+		addProducer<KPFTaggedJetProducer>(active[i]);
+		addProducer<KPFTauProducer>(active[i]);
+		addProducer<KTowerProducer>(active[i]);
+		addProducer<KTrackProducer>(active[i]);
+		addProducer<KTrackSummaryProducer>(active[i]);
+		addProducer<KTriggerObjectProducer2>(active[i]);
+		addProducer<KVertexProducer>(active[i]);
+		addProducer<KVertexSummaryProducer>(active[i]);
+
+/* are these still used?
 		else if (active[i] == "TriggerObjects")
 			addProducer<KTriggerObjectProducer>(psConfig, active[i]);
-		else if (active[i] == "TriggerObjects2")
-			addProducer<KTriggerObjectProducer2>(psConfig, active[i]);
-		else if (active[i] == "CaloTaus")
-			addProducer<KCaloTauProducer>(psConfig, active[i]);
-		else if (active[i] == "PFTaus")
-			addProducer<KPFTauProducer>(psConfig, active[i]);
-		else if (active[i] == "GenTaus")
-			addProducer<KGenTauProducer>(psConfig, active[i]);
-		else if (active[i] == "PFCandidates")
-			addProducer<KPFCandidateProducer>(psConfig, active[i]);
 		else if (active[i] == "L1Muons")
 			addProducer<KL1MuonProducer>(psConfig, active[i]);
-		else if (active[i] == "GenPhotons")
-			addProducer<KGenPhotonProducer>(psConfig, active[i]);
-		else if (active[i] == "JetArea")
-			addProducer<KJetAreaProducer>(psConfig, active[i]);
-		else if (active[i] == "HCALNoiseSummary")
-			addProducer<KHCALNoiseSummaryProducer>(psConfig, active[i]);
 		else if (active[i] == "L2MuonTrajectorySeed")
 			addProducer<KL2MuonTrajectorySeedProducer>(psConfig, active[i]);
 		else if (active[i] == "L3MuonTrajectorySeed")
 			addProducer<KL3MuonTrajectorySeedProducer>(psConfig, active[i]);
 		else if (active[i] == "MuonTriggerCandidates")
 			addProducer<KMuonTriggerCandidateProducer>(psConfig, active[i]);
-		else if (active[i] == "PFTaggedJets")
-			addProducer<KPFTaggedJetProducer>(psConfig, active[i]);
-		else
+*/
+		if (producers.size() > nProducers + 1)
+		{
+			std::cout << "MULTIPLE PRODUCER CREATED!!! " << active[i] << std::endl;
+			exit(1);
+		}
+		else if (producers.size() != nProducers + 1)
 		{
 			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;
 			exit(1);

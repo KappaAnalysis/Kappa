@@ -7,18 +7,13 @@
 
 #include "KVertexProducer.h"
 
-struct KVertexSummaryProducer_Product
-{
-	typedef KVertexSummary type;
-	static const std::string id() { return "KVertexSummary"; };
-	static const std::string producer() { return "KVertexSummaryProducer"; };
-};
-
-class KVertexSummaryProducer : public KBaseMultiProducer<edm::View<reco::Vertex>, KVertexSummaryProducer_Product>
+class KVertexSummaryProducer : public KBaseMultiProducer<edm::View<reco::Vertex>, KVertexSummary>
 {
 public:
 	KVertexSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::Vertex>, KVertexSummaryProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiProducer<edm::View<reco::Vertex>, KVertexSummary>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "VertexSummary"; }
 
 	virtual void clearProduct(OutputType &output) { output.pv = KDataVertex(); output.nVertices = 0; }
 	virtual void fillProduct(const InputType &in, OutputType &out,

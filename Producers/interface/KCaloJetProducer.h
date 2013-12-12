@@ -11,18 +11,13 @@
 #include <DataFormats/JetReco/interface/CaloJet.h>
 #include <DataFormats/JetReco/interface/JetID.h>
 
-struct KCaloJetProducer_Product
-{
-	typedef std::vector<KDataJet> type;
-	static const std::string id() { return "std::vector<KDataJet>"; };
-	static const std::string producer() { return "KCaloJetProducer"; };
-};
-
-class KCaloJetProducer : public KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>
+class KCaloJetProducer : public KBaseMultiLVProducer<reco::CaloJetCollection, KDataJets>
 {
 public:
 	KCaloJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiLVProducer<reco::CaloJetCollection, KDataJets>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "CaloJet"; }
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
@@ -33,7 +28,7 @@ public:
 			cEvent->getByLabel(tagJetID, hJetID);
 
 		// Continue normally
-		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJetProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<reco::CaloJetCollection, KDataJets>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

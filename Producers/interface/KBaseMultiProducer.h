@@ -15,8 +15,8 @@ template<typename Tin, typename Tout>
 class KBaseMultiProducer : public KBaseMatchingProducer<Tout>
 {
 public:
-	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, bool _justOutputName = false) :
-		KBaseMatchingProducer<Tout>(cfg, _event_tree, _run_tree),
+	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName, bool _justOutputName = false) :
+		KBaseMatchingProducer<Tout>(cfg, _event_tree, _run_tree, producerName),
 		event_tree(_event_tree), justOutputName(_justOutputName) {}
 	virtual ~KBaseMultiProducer() {}
 
@@ -25,7 +25,7 @@ public:
 		this->cEvent = &event;
 		this->cSetup = &setup;
 
-		for (typename std::map<typename Tout::type*, std::pair<const edm::ParameterSet, const edm::InputTag> >::iterator
+		for (typename std::map<Tout*, std::pair<const edm::ParameterSet, const edm::InputTag> >::iterator
 			it = targetSetupMap.begin(); it != targetSetupMap.end(); ++it)
 		{
 			const edm::ParameterSet &pset = it->second.first;
@@ -33,7 +33,7 @@ public:
 			const std::pair<std::string, std::string> desc = this->nameMap[it->first];
 
 			// Clear previous collection
-			typename Tout::type &ref = *it->first;
+			Tout &ref = *it->first;
 			clearProduct(ref);
 
 			// Try to get product via id
@@ -52,15 +52,17 @@ public:
 		return KBaseProducer::onEvent(event, setup);
 	}
 
-	typedef typename Tout::type OutputType;
+	typedef Tout OutputType;
 	typedef Tin InputType;
 
 protected:
-	virtual void onMatchingInput(const std::string targetName, const std::string inputName,
+	virtual bool onMatchingInput(const std::string targetName, const std::string inputName,
 		const edm::ParameterSet &pset, const edm::InputTag &tag)
 	{
-		KBaseMatchingProducer<Tout>::onMatchingInput(targetName, inputName, pset, tag);
+		if (!KBaseMatchingProducer<Tout>::onMatchingInput(targetName, inputName, pset, tag))
+			return false;
 		registerBronch(targetName, inputName, pset, tag);
+		return true;
 	}
 
 	void registerBronch(const std::string targetName, const std::string inputName,
@@ -71,7 +73,7 @@ protected:
 			std::cout << " => Adding branch: " << targetName << std::endl;
 
 		// Static storage of ROOT bronch target - never changes, only accessed here:
-		typename Tout::type *target = this->allocateBronch(targetName);
+		Tout *target = this->allocateBronch(targetName);
 		this->addProvenance(tag.encode(), targetName);
 
 		// Mapping between target and targetName
@@ -79,7 +81,7 @@ protected:
 
 		// Used for fast lookup of selector and lv collection
 		typedef std::pair<const edm::ParameterSet, const edm::InputTag> TmpType;
-		this->targetSetupMap.insert(std::pair<typename Tout::type*, TmpType>(target, TmpType(pset, tag)));
+		this->targetSetupMap.insert(std::pair<Tout*, TmpType>(target, TmpType(pset, tag)));
 	}
 
 	virtual void fillProduct(const InputType &input, OutputType &output,
@@ -92,8 +94,8 @@ protected:
 	const edm::Event *cEvent;
 	const edm::EventSetup *cSetup;
 
-	std::map<typename Tout::type*, std::pair<const edm::ParameterSet, const edm::InputTag> > targetSetupMap;
-	std::map<typename Tout::type*, std::pair<std::string, std::string> > nameMap;
+	std::map<Tout*, std::pair<const edm::ParameterSet, const edm::InputTag> > targetSetupMap;
+	std::map<Tout*, std::pair<std::string, std::string> > nameMap;
 
 private:
 	bool justOutputName;

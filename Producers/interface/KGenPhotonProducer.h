@@ -9,22 +9,16 @@
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 #include <queue>
 
-struct KGenPhotonProducer_Product
-{
-	typedef std::vector<KGenPhoton> type;
-	static const std::string id() { return "std::vector<KGenPhoton>"; };
-	static const std::string producer() { return "KGenPhotonProducer"; };
-};
-
-class KGenPhotonProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotonProducer_Product>
+class KGenPhotonProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotons>
 {
 public:
 	KGenPhotonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotonProducer_Product>(cfg, _event_tree, _run_tree) {}
-	virtual ~KGenPhotonProducer() {};
+		KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotons>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "GenPhotons"; }
 
 protected:
-	virtual void fillSingle(const KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotonProducer_Product>::SingleInputType &in,  KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotonProducer_Product>::SingleOutputType &out)
+	virtual void fillSingle(const KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotons>::SingleInputType &in,  KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotons>::SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
 
@@ -72,7 +66,7 @@ protected:
 			std::cout << "   isPi0? " << out.isPi0() << "\n";
 		}
 	}
-	virtual bool acceptSingle(const KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotonProducer_Product>::SingleInputType &in)
+	virtual bool acceptSingle(const KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotons>::SingleInputType &in)
 	{
 		if ( this->verbosity > 2 &&
 			(
@@ -138,6 +132,5 @@ private:
 	int selectedStatus; // bit map
 	std::vector<int> selectedParticles;
 };
-
 
 #endif

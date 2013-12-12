@@ -8,19 +8,13 @@
 #include "KBaseMultiLVProducer.h"
 #include <SimDataFormats/TrackingHit/interface/PSimHit.h>
 
-struct KHitProducer_Product
-{
-	typedef std::vector<KDataHit> type;
-	static const std::string id() { return "std::vector<KDataHit>"; };
-	static const std::string producer() { return "KHitProducer"; };
-};
-
-class KHitProducer : public KBaseMultiVectorProducer<edm::View<PSimHit>, KHitProducer_Product>
+class KHitProducer : public KBaseMultiVectorProducer<edm::View<PSimHit>, KDataHits>
 {
 public:
 	KHitProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiVectorProducer<edm::View<PSimHit>, KHitProducer_Product>(cfg, _event_tree, _run_tree) {}
-	virtual ~KHitProducer() {};
+		KBaseMultiVectorProducer<edm::View<PSimHit>, KDataHits>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "Hits"; }
 
 protected:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

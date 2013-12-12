@@ -27,6 +27,8 @@ public:
 		currentRun(0),
 		lumiSource(cfg.getParameter<edm::InputTag>("lumiSource")) {}
 
+	static const std::string getLabel() { return "DataMetadata"; }
+
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
 		currentRun = run.run();

@@ -29,18 +29,11 @@
 #include <TrackingTools/Records/interface/TransientTrackRecord.h>
 #include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 
-struct KMuonProducer_Product
-{
-	typedef std::vector<KDataMuon> type;
-	static const std::string id() { return "std::vector<KDataMuon>"; };
-	static const std::string producer() { return "KMuonProducer"; };
-};
-
-class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>
+class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KDataMuons>
 {
 public:
 	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>(cfg, _event_tree, _lumi_tree),
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KDataMuons>(cfg, _event_tree, _lumi_tree, getLabel()),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")),
@@ -56,6 +49,8 @@ public:
 		_lumi_tree->Bronch("KMuonMetadata", "KMuonMetadata", &muonMetadata);
 
 	}
+
+	static const std::string getLabel() { return "Muons"; }
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
@@ -85,7 +80,7 @@ public:
 				std::cout << "muon trigger object: " << (muonMetadata->hltNames.size() - 1) << " = " << filterName << "\n";
 		}
 
-		return KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::onLumi(lumiBlock, setup);
+		return KBaseMultiLVProducer<edm::View<reco::Muon>, KDataMuons>::onLumi(lumiBlock, setup);
 	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
@@ -104,7 +99,7 @@ public:
 		pfIsoVetoMinPt = pset.getParameter<double>("pfIsoVetoMinPt");
 
 		// Continue normally
-		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuonProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KDataMuons>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

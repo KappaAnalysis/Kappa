@@ -10,20 +10,13 @@
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 #include <bitset>
 
-struct KGenParticleProducer_Product
-{
-	typedef std::vector<KGenParticle> type;
-	static const std::string id() { return "std::vector<KGenParticle>"; };
-	static const std::string producer() { return "KGenParticleProducer"; };
-};
-
 template<typename TProduct>
 class KBasicGenParticleProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>
 {
 public:
-	KBasicGenParticleProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _run_tree) {}
-	virtual ~KBasicGenParticleProducer() {};
+	KBasicGenParticleProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName) :
+		KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _run_tree, producerName) {}
+
 
 protected:
 	virtual void fillSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType &in, typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleOutputType &out)
@@ -76,12 +69,13 @@ private:
 	std::vector<int> selectedParticles;
 };
 
-class KGenParticleProducer: public KBasicGenParticleProducer<KGenParticleProducer_Product>
+class KGenParticleProducer: public KBasicGenParticleProducer<KGenParticles>
 {
 public:
 	KGenParticleProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBasicGenParticleProducer<KGenParticleProducer_Product>(cfg, _event_tree, _run_tree) {}
-	virtual ~KGenParticleProducer() {};
+		KBasicGenParticleProducer<KGenParticles>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "GenParticles"; }
 
 protected:
 	virtual void fillProduct(const InputType &in, OutputType &out,
@@ -94,7 +88,7 @@ protected:
 		selectStatus(status);
 		selectParticles(particles.begin(), particles.end());
 
-		KBasicGenParticleProducer<KGenParticleProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBasicGenParticleProducer<KGenParticles>::fillProduct(in, out, name, tag, pset);
 	}
 };
 

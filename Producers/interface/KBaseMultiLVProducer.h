@@ -15,17 +15,17 @@ struct KLVSorter
 };
 
 
-// This producer is responsible for writing a vector of objects into the destination vector Tout::type
+// This producer is responsible for writing a vector of objects into the destination vector Tout
 // The filling is implemented via:
 //  * virtual bool acceptSingle(const SingleInputType &in);
 //  * virtual void fillSingle(const SingleInputType &in, SingleOutputType &out);
-//  * virtual void sort(typename Tout::type &out);
+//  * virtual void sort(typename Tout &out);
 template<typename Tin, typename Tout>
 class KBaseMultiVectorProducer : public KBaseMultiProducer<Tin, Tout>
 {
 public:
-	KBaseMultiVectorProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
+	KBaseMultiVectorProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName) :
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree, producerName),
 		maxN(cfg.getParameter<int>("maxN")) {}
 
 	virtual void fillProduct(const typename KBaseMultiProducer<Tin, Tout>::InputType &input,
@@ -66,15 +66,15 @@ protected:
 
 
 // This producer is responsible for the common task of writing a vector of objects
-// into the destination vector Tout::type, which has a p4 property
+// into the destination vector Tout, which has a p4 property
 // The filling is implemented via:
 //  * virtual void fillSingle(const SingleInputType &in, SingleOutputType &out);
 template<typename Tin, typename Tout>
 class KBaseMultiLVProducer : public KBaseMultiVectorProducer<Tin, Tout>
 {
 public:
-	KBaseMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiVectorProducer<Tin, Tout>(cfg, _event_tree, _run_tree),
+	KBaseMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName) :
+		KBaseMultiVectorProducer<Tin, Tout>(cfg, _event_tree, _run_tree, producerName),
 		minPt(cfg.getParameter<double>("minPt")),
 		maxEta(cfg.getParameter<double>("maxEta")) {}
 

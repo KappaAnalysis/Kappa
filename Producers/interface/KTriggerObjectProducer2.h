@@ -13,13 +13,6 @@
 #include <DataFormats/MuonReco/interface/Muon.h>
 #include <algorithm>
 
-struct KTriggerObjectProducer2_Product
-{
-	typedef KTriggerObjects type;
-	static const std::string id() { return "KTriggerObjects"; };
-	static const std::string producer() { return "KTriggerObjectProducer2"; };
-};
-
 struct KTrgObjSorter
 {
 	KTrgObjSorter(const KTriggerObjects &_to) : to(_to) {}
@@ -30,18 +23,20 @@ struct KTrgObjSorter
 	const KTriggerObjects &to;
 };
 
-class KTriggerObjectProducer2 : public KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer2_Product>
+class KTriggerObjectProducer2 : public KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjects>
 {
 public:
 	KTriggerObjectProducer2(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer2_Product>(cfg, _event_tree, _run_tree, true)
+		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjects>(cfg, _event_tree, _run_tree, getLabel(), true)
 	{
 		trgInfos = new KTriggerInfos;
 		_run_tree->Bronch("KTriggerInfos", "KTriggerInfos", &trgInfos);
 		this->registerBronch("KTriggerObjects", "KTriggerObjects", this->psBase,
 			cfg.getParameter<edm::InputTag>("hltTag"));
 	}
-	virtual ~KTriggerObjectProducer2() {};
+
+	static const std::string getLabel() { return "TriggerObjects2"; }
+
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
@@ -100,7 +95,7 @@ protected:
 		}
 	}
 
-	virtual void fillProduct(const trigger::TriggerEvent &triggerEventHandle, KTriggerObjectProducer2_Product::type &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
+	virtual void fillProduct(const trigger::TriggerEvent &triggerEventHandle, KTriggerObjects &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		HLTConfigProvider &hltConfig(KMetadataProducerBase::hltConfig);
 		if (verbosity > 0)
@@ -163,7 +158,7 @@ protected:
 		}
 	}
 
-	virtual void clearProduct(KTriggerObjectProducer2_Product::type& prod)
+	virtual void clearProduct(KTriggerObjects &prod)
 	{
 		prod.trgObjects.clear();
 		prod.toIdxL1L2.clear();
