@@ -74,15 +74,17 @@ public:
 	}
 
 private:
-	struct nameAndTag {
+	struct NameAndTagComparison
+	{
 		edm::InputTag tag;
 		std::string name;
-		nameAndTag(std::string n, edm::InputTag t): tag(t), name(n) {}
-		bool operator<(nameAndTag const & second) const {
+		NameAndTagComparison(std::string n, edm::InputTag t): tag(t), name(n) {}
+		bool operator<(NameAndTagComparison const & second) const
+		{
 			return (this->name.compare(second.name) < 0 );
 		}
 	};
-	std::vector<nameAndTag> namesAndTags;
+	std::vector<NameAndTagComparison> namesAndTags;
 	std::string provenance;
 	KFilterSummary *summary;
 	KFilterMetadata *names;
@@ -95,7 +97,7 @@ private:
 				targetName, inputName, pset, tag))
 			return false;
 
-		nameAndTag nt(targetName, tag);
+		NameAndTagComparison nt(targetName, tag);
 		namesAndTags.push_back(nt);
 		provenance += tag.encode() + ",";
 		return true;
