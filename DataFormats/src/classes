@@ -10,85 +10,39 @@ RMLV
 
 #################################
 
-KDataLV
-KDataLVs
-
-KLV
-KLVs
-
+KDataBeamSpot			KDataBeamSpots
+KDataCaloTau			KDataCaloTaus
+KDataGenTau				KDataGenTaus
+KDataHit				KDataHits
+KDataJet				KDataJets
+KDataLV					KDataLVs
 KDataMET
+KDataMuon				KDataMuons
+KDataElectron			KDataElectrons
+KDataPFJet				KDataPFJets
 KDataPFMET
-
-KDataJet
-KDataJets
-
-KDataPFJet
-KDataPFJets
-
-KDataPFTaggedJet
-KDataPFTaggedJets
-
-KDataTrack
-KDataTracks
-
+KDataPFTaggedJet		KDataPFTaggedJets
+KDataPFTau				KDataPFTaus
+KDataTau				KDataTaus
+KDataTrack				KDataTracks
+KDataVertex				KDataVertices
+KFilterSummary
+KGenParticle			KGenParticles
+KGenPhoton				KGenPhotons
+KHCALNoiseSummary
+KJetArea
+KL1Muon					KL1Muons
+KLV						KLVs
+KMuonTriggerCandidate	KMuonTriggerCandidates
+KPFCandidate			KPFCandidates
 KTrackSummary
-
-KDataVertex
-KDataVertices
-
+KTriggerObjects
 KVertexSummary
 
-KDataBeamSpot
-KDataBeamSpots
-
-KGenParticle
-KGenParticles
-
-KDataMuon
-KDataMuons
-
-KDataElectron
-KDataElectrons
-
-KTauDiscriminatorMetadata
-
-KMuonMetadata
-
-KDataTau
-KDataTaus
-
-KDataCaloTau
-KDataCaloTaus
-
-KDataPFTau
-KDataPFTaus
-
-KDataGenTau
-KDataGenTaus
-
-KDataHit
-KDataHits
-
-KL1Muon
-KL1Muons
-
-KPFCandidate
-KPFCandidates
-
-KGenPhoton
-KGenPhotons
-
-KJetArea
-KHCALNoiseSummary
-
-KFilterSummary
-KFilterMetadata
-
 KTriggerInfos
-KTriggerObjects
-
-KMuonTriggerCandidate
-KMuonTriggerCandidates
+KFilterMetadata
+KMuonMetadata
+KTauDiscriminatorMetadata
 
 #################################
 

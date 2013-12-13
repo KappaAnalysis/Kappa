@@ -1,93 +1,63 @@
 <lcgdict>
-
 	<class name="RMDataLV_Store"/>
 	<class name="RMDataLV"/>
 
 	<class name="RMLV_Store"/>
 	<class name="RMLV"/>
 
-
-
-	<class name="KDataLV"/>
-	<class name="KDataLVs"/>
-
-	<class name="KLV"/>
-	<class name="KLVs"/>
-
-	<class name="KDataMET"/>
-	<class name="KDataPFMET"/>
-
-	<class name="KDataJet"/>
-	<class name="KDataJets"/>
-
-	<class name="KDataPFJet"/>
-	<class name="KDataPFJets"/>
-
-	<class name="KDataPFTaggedJet"/>
-	<class name="KDataPFTaggedJets"/>
-
-	<class name="KDataTrack"/>
-	<class name="KDataTracks"/>
-
-	<class name="KTrackSummary"/>
-
-	<class name="KDataVertex"/>
-	<class name="KDataVertices"/>
-
-	<class name="KVertexSummary"/>
-
 	<class name="KDataBeamSpot"/>
 	<class name="KDataBeamSpots"/>
-
-	<class name="KGenParticle"/>
-	<class name="KGenParticles"/>
-
-	<class name="KDataMuon"/>
-	<class name="KDataMuons"/>
-
-	<class name="KDataElectron"/>
-	<class name="KDataElectrons"/>
-
-	<class name="KTauDiscriminatorMetadata"/>
-
-	<class name="KMuonMetadata"/>
-
-	<class name="KDataTau"/>
-	<class name="KDataTaus"/>
-
 	<class name="KDataCaloTau"/>
 	<class name="KDataCaloTaus"/>
-
-	<class name="KDataPFTau"/>
-	<class name="KDataPFTaus"/>
-
 	<class name="KDataGenTau"/>
 	<class name="KDataGenTaus"/>
-
 	<class name="KDataHit"/>
 	<class name="KDataHits"/>
-
-	<class name="KL1Muon"/>
-	<class name="KL1Muons"/>
-
-	<class name="KPFCandidate"/>
-	<class name="KPFCandidates"/>
-
+	<class name="KDataJet"/>
+	<class name="KDataJets"/>
+	<class name="KDataLV"/>
+	<class name="KDataLVs"/>
+	<class name="KDataMET"/>
+	<class name="KDataMuon"/>
+	<class name="KDataMuons"/>
+	<class name="KDataElectron"/>
+	<class name="KDataElectrons"/>
+	<class name="KDataPFJet"/>
+	<class name="KDataPFJets"/>
+	<class name="KDataPFMET"/>
+	<class name="KDataPFTaggedJet"/>
+	<class name="KDataPFTaggedJets"/>
+	<class name="KDataPFTau"/>
+	<class name="KDataPFTaus"/>
+	<class name="KDataTau"/>
+	<class name="KDataTaus"/>
+	<class name="KDataTrack"/>
+	<class name="KDataTracks"/>
+	<class name="KDataVertex"/>
+	<class name="KDataVertices"/>
+	<class name="KFilterSummary"/>
+	<class name="KGenParticle"/>
+	<class name="KGenParticles"/>
 	<class name="KGenPhoton"/>
 	<class name="KGenPhotons"/>
-
-	<class name="KJetArea"/>
 	<class name="KHCALNoiseSummary"/>
-
-	<class name="KFilterSummary"/>
-	<class name="KFilterMetadata"/>
-
-	<class name="KTriggerInfos"/>
-	<class name="KTriggerObjects"/>
-
+	<class name="KJetArea"/>
+	<class name="KL1Muon"/>
+	<class name="KL1Muons"/>
+	<class name="KLV"/>
+	<class name="KLVs"/>
 	<class name="KMuonTriggerCandidate"/>
 	<class name="KMuonTriggerCandidates"/>
+	<class name="KPFCandidate"/>
+	<class name="KPFCandidates"/>
+	<class name="KTrackSummary"/>
+	<class name="KTriggerObjects"/>
+	<class name="KVertexSummary"/>
 
+	<class name="KTriggerInfos"/>
+	<class name="KFilterMetadata"/>
+	<class name="KMuonMetadata"/>
+	<class name="KTauDiscriminatorMetadata"/>
 
 	<class name="KProvenance"/>
 

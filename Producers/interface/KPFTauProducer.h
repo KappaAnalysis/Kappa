@@ -13,20 +13,13 @@
 #include <DataFormats/TauReco/interface/PFTau.h>
 #include <DataFormats/TauReco/interface/PFTauDiscriminator.h>
 
-struct KPFTauProducer_Product
-{
-	typedef std::vector<KDataPFTau> type;
-	static const std::string id() { return "std::vector<KDataPFTau>"; };
-	static const std::string producer() { return "KDataPFTauProducer"; };
-};
-
-class KPFTauProducer : public KTauProducer<reco::PFTau, reco::PFTauDiscriminator, KPFTauProducer_Product>
+class KPFTauProducer : public KTauProducer<reco::PFTau, reco::PFTauDiscriminator, KDataPFTaus>
 {
 public:
 	KPFTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KTauProducer<reco::PFTau, reco::PFTauDiscriminator, KPFTauProducer_Product>(cfg, _event_tree, _lumi_tree)
-	{
-	}
+		KTauProducer<reco::PFTau, reco::PFTauDiscriminator, KDataPFTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "PFTaus"; }
 
 protected:
 	virtual bool isCorrectType(std::string className)
@@ -36,7 +29,7 @@ protected:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		// Fill fields of KDataTau via base class
-		KTauProducer<reco::PFTau, reco::PFTauDiscriminator, KPFTauProducer_Product>::fillSingle(in, out);
+		KTauProducer<reco::PFTau, reco::PFTauDiscriminator, KDataPFTaus>::fillSingle(in, out);
 
 		// Fill additional fields from KDataPFTau
 		out.emFraction = in.emFraction();

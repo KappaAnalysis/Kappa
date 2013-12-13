@@ -12,14 +12,7 @@
 #include <DataFormats/MuonReco/interface/Muon.h>
 #include <algorithm>
 
-struct KTriggerObjectProducer_Product
-{
-	typedef std::vector<KDataLV> type;
-	static const std::string id() { return "std::vector<KDataLV>"; };
-	static const std::string producer() { return "KTriggerObjectProducer"; };
-};
-
-class KTriggerObjectProducer : public KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjectProducer_Product>
+class KTriggerObjectProducer : public KBaseMultiProducer<trigger::TriggerEvent, std::vector<KDataLV> >
 {
 public:
 	KTriggerObjectProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :

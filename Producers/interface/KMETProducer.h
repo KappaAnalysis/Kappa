@@ -11,19 +11,13 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/MET.h>
 
-struct KMETProducer_Product
-{
-	typedef KDataMET type;
-	static const std::string id() { return "KDataMET"; };
-	static const std::string producer() { return "KMETProducer"; };
-};
-
-class KMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KMETProducer_Product>
+class KMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KDataMET>
 {
 public:
 	KMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::MET>, KMETProducer_Product>(cfg, _event_tree, _run_tree) {}
-	virtual ~KMETProducer() {};
+		KBaseMultiProducer<edm::View<reco::MET>, KDataMET>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "MET"; }
 
 protected:
 	virtual void clearProduct(OutputType &output) { output.p4.SetCoordinates(0, 0, 0, 0); output.sumEt = -1; }

@@ -10,19 +10,13 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/HcalNoiseSummary.h>
 
-struct KHCALNoiseSummaryProducer_Product
-{
-	typedef KHCALNoiseSummary type;
-	static const std::string id() { return "KHCALNoiseSummary"; };
-	static const std::string producer() { return "KHCALNoiseSummaryProducer"; };
-};
-
-class KHCALNoiseSummaryProducer : public KBaseMultiProducer<HcalNoiseSummary, KHCALNoiseSummaryProducer_Product>
+class KHCALNoiseSummaryProducer : public KBaseMultiProducer<HcalNoiseSummary, KHCALNoiseSummary>
 {
 public:
 	KHCALNoiseSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<HcalNoiseSummary, KHCALNoiseSummaryProducer_Product>(cfg, _event_tree, _run_tree) {}
-	virtual ~KHCALNoiseSummaryProducer() {};
+		KBaseMultiProducer<HcalNoiseSummary, KHCALNoiseSummary>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "HCALNoiseSummary"; }
 
 protected:
 	virtual void clearProduct(OutputType &output)
@@ -41,6 +35,7 @@ protected:
 		output.minRBXEMF = -1;
 		output.numIsolatedNoiseChannels = -1;
 	}
+
 	virtual void fillProduct(const InputType &input, OutputType &output,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{

@@ -11,19 +11,14 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 
-struct KBeamSpotProducer_Product
-{
-	typedef KDataBeamSpot type;
-	static const std::string id() { return "KDataBeamSpot"; };
-	static const std::string producer() { return "KDataBeamSpotProducer"; };
-};
-
-class KBeamSpotProducer : public KBaseMultiProducer<reco::BeamSpot, KBeamSpotProducer_Product>
+class KBeamSpotProducer : public KBaseMultiProducer<reco::BeamSpot, KDataBeamSpot>
 {
 public:
 	KBeamSpotProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<reco::BeamSpot, KBeamSpotProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiProducer<reco::BeamSpot, KDataBeamSpot>(cfg, _event_tree, _run_tree, getLabel()) {}
 	virtual ~KBeamSpotProducer() {};
+
+	static const std::string getLabel() { return "BeamSpot"; }
 
 protected:
 	virtual void clearProduct(OutputType &output) { output.position.SetCoordinates(0, 0, 0); output.type = -1; }

@@ -12,24 +12,18 @@
 #include <DataFormats/TauReco/interface/CaloTau.h>
 #include <DataFormats/TauReco/interface/CaloTauDiscriminator.h>
 
-struct KCaloTauProducer_Product
-{
-	typedef std::vector<KDataCaloTau> type;
-	static const std::string id() { return "std::vector<KDataCaloTau>"; };
-	static const std::string producer() { return "KDataCaloTauProducer"; };
-};
-
-class KCaloTauProducer : public KTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, KCaloTauProducer_Product>
+class KCaloTauProducer : public KTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, KDataCaloTaus>
 {
 public:
 	KCaloTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, KCaloTauProducer_Product>(cfg, _event_tree, _lumi_tree)
-	{
-	}
+		KTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, KDataCaloTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "CaloTaus"; }
+
 protected:
 	virtual bool isCorrectType(std::string className)
 	{
-	 return className == "reco::CaloTauDiscriminator";
+		return className == "reco::CaloTauDiscriminator";
 	}
 };
 

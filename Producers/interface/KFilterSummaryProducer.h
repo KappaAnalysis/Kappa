@@ -9,24 +9,17 @@
 #include "../../DataFormats/interface/KMetadata.h"
 #include <FWCore/Utilities/interface/InputTag.h>
 
-struct KFilterSummaryProducer_Product
-{
-	typedef KFilterSummary type;
-	static const std::string id() { return "KFilterSummary"; };
-	static const std::string producer() { return "KFilterSummaryProducer"; };
-};
-
-
-class KFilterSummaryProducer : public KBaseMatchingProducer<KFilterSummaryProducer_Product>
+class KFilterSummaryProducer : public KBaseMatchingProducer<KFilterSummary>
 {
 public:
 	KFilterSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseMatchingProducer<KFilterSummaryProducer_Product>(cfg, _event_tree, _lumi_tree)
+		KBaseMatchingProducer<KFilterSummary>(cfg, _event_tree, _lumi_tree, getLabel())
 	{
 		names = new KFilterMetadata;
 		_lumi_tree->Bronch("KFilterMetadata", "KFilterMetadata", &names);
 	}
-	virtual ~KFilterSummaryProducer() {}
+
+	static const std::string getLabel() { return "FilterSummary"; }
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
@@ -54,7 +47,7 @@ public:
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		if (!KBaseMatchingProducer<KFilterSummaryProducer_Product>::onFirstEvent(event, setup))
+		if (!KBaseMatchingProducer<KFilterSummary>::onFirstEvent(event, setup))
 			return false;
 
 		// sort alphabetically
@@ -74,15 +67,17 @@ public:
 	}
 
 private:
-	struct nameAndTag {
+	struct NameAndTagComparison
+	{
 		edm::InputTag tag;
 		std::string name;
-		nameAndTag(std::string n, edm::InputTag t): tag(t), name(n) {}
-		bool operator<(nameAndTag const & second) const {
+		NameAndTagComparison(std::string n, edm::InputTag t): tag(t), name(n) {}
+		bool operator<(NameAndTagComparison const & second) const
+		{
 			return (this->name.compare(second.name) < 0 );
 		}
 	};
-	std::vector<nameAndTag> namesAndTags;
+	std::vector<NameAndTagComparison> namesAndTags;
 	std::string provenance;
 	KFilterSummary *summary;
 	KFilterMetadata *names;
@@ -91,11 +86,11 @@ private:
 	virtual bool onMatchingInput(const std::string targetName, const std::string inputName,
 		const edm::ParameterSet &pset, const edm::InputTag &tag)
 	{
-		if (!KBaseMatchingProducer<KFilterSummaryProducer_Product>::onMatchingInput(
+		if (!KBaseMatchingProducer<KFilterSummary>::onMatchingInput(
 				targetName, inputName, pset, tag))
 			return false;
 
-		nameAndTag nt(targetName, tag);
+		NameAndTagComparison nt(targetName, tag);
 		namesAndTags.push_back(nt);
 		provenance += tag.encode() + ",";
 		return true;

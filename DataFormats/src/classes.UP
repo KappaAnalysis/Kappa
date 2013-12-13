@@ -48,33 +48,43 @@ fp_KappaHeader.write("""
 template<typename T>
 struct TypeName;
 
-#define REGISTER_NAME_OF_TYPE(X)  \\
-	template<> struct TypeName<X> \\
-	{                             \\
-		static const char *name() \\
-		{                         \\
-			return (#X);          \\
-		}                         \\
-	}                             \\
+#define REGISTER_NAME_OF_TYPE(X,Y)     \\
+	template<> struct TypeName<X>      \\
+	{                                  \\
+		static const char *name()      \\
+		{                              \\
+			return (#X);               \\
+		}                              \\
+		static const char *long_name() \\
+		{                              \\
+			return (#Y);               \\
+		}                              \\
+	}                                  \\
 
 """)
 
+prevContent = False
 for line in map(str.strip, fp):
 	if line != '':
 		if line[0] == '#':
 			continue
 		if line.startswith('K'):
-			fp_KappaHeader.write('REGISTER_NAME_OF_TYPE(%s);\n' % line)
-			if line.endswith('s') and line[:-1] in debug: # skip defined vector typedefs
-				pass
-			else:
-				if line not in debug:
-					print line, 'has no debug output!'
-		fp_ClassesH.write('\t\t%s dict_%s;\n' % (line, line))
-		fp_LCGDict.write('\t<class name="%s"/>\n' % line)
-	else:
+			tmp = line.split()
+			fp_KappaHeader.write('REGISTER_NAME_OF_TYPE(%s,%s);\n' % (tmp[0], tmp[0]))
+			if len(tmp) == 2:
+				fp_KappaHeader.write('REGISTER_NAME_OF_TYPE(%s,std::vector<%s>);\n' % (tmp[1], tmp[0]))
+			if tmp[0] not in debug:
+						print tmp[0], 'has no debug output!'
+		for tname in line.split():
+			fp_ClassesH.write('\t\t%s dict_%s;\n' % (tname, tname))
+			fp_LCGDict.write('\t<class name="%s"/>\n' % tname)
+#		fp_ClassesH.write('\n')
+#		fp_LCGDict.write('\n')
+		prevContent = True
+	elif prevContent:
 		fp_ClassesH.write('\n')
 		fp_LCGDict.write('\n')
+		prevContent = False
 
 fp_LCGDict.write('</lcgdict>\n')
 fp_ClassesH.write('\t};\n}\n\n#endif\n')

@@ -7,20 +7,13 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/BTauReco/interface/JetTag.h>
 
-
-struct KPFTaggedJetProducer_Product
-{
-	typedef std::vector<KDataPFTaggedJet> type;
-	static const std::string id() { return "std::vector<KDataPFTaggedJet>"; };
-	static const std::string producer() { return "KPFTaggedJetProducer"; };
-};
-
-class KPFTaggedJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KPFTaggedJetProducer_Product>
+class KPFTaggedJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KDataPFTaggedJets>
 {
 public:
 	KPFTaggedJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KPFTaggedJetProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiLVProducer<reco::PFJetCollection, KDataPFTaggedJets>(cfg, _event_tree, _run_tree, getLabel()) {}
 
+	static const std::string getLabel() { return "PFTaggedJets"; }
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
@@ -73,7 +66,7 @@ public:
         }
 
 		// Continue normally
-		KBaseMultiLVProducer<reco::PFJetCollection, KPFTaggedJetProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<reco::PFJetCollection, KDataPFTaggedJets>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

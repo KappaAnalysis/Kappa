@@ -11,19 +11,13 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/VertexReco/interface/Vertex.h>
 
-struct KVertexProducer_Product
-{
-	typedef std::vector<KDataVertex> type;
-	static const std::string id() { return "std::vector<KDataVertex>"; };
-	static const std::string producer() { return "KVertexProducer"; };
-};
-
-class KVertexProducer : public KBaseMultiVectorProducer<edm::View<reco::Vertex>, KVertexProducer_Product>
+class KVertexProducer : public KBaseMultiVectorProducer<edm::View<reco::Vertex>, std::vector<KDataVertex> >
 {
 public:
 	KVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiVectorProducer<edm::View<reco::Vertex>, KVertexProducer_Product>(cfg, _event_tree, _run_tree) {}
-	virtual ~KVertexProducer() {};
+		KBaseMultiVectorProducer<edm::View<reco::Vertex>, std::vector<KDataVertex> >(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "Vertex"; }
 
 	// Static method for filling a vertex in other producers
 	static void fillVertex(const SingleInputType &in, SingleOutputType &out)

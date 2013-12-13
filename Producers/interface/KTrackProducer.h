@@ -12,18 +12,13 @@
 #include <DataFormats/METReco/interface/HcalNoiseRBX.h>
 #include <DataFormats/TrackReco/interface/Track.h>
 
-struct KTrackProducer_Product
-{
-	typedef std::vector<KDataTrack> type;
-	static const std::string id() { return "std::vector<KDataTrack>"; };
-	static const std::string producer() { return "KTrackProducer"; };
-};
-
-class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KTrackProducer_Product>
+class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KDataTracks>
 {
 public:
 	KTrackProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Track>, KTrackProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiLVProducer<edm::View<reco::Track>, KDataTracks>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "Tracks"; }
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

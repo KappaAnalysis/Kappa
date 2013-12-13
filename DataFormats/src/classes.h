@@ -1,9 +1,3 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Fred Stober <stober@cern.ch>
- *   Joram Berger <joram.berger@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
-
 #ifndef KDATAFORMAT_CLASSES_H
 #define KDATAFORMAT_CLASSES_H
 
@@ -21,95 +15,65 @@ namespace
 {
 	struct dictionary
 	{
-
 		RMDataLV_Store dict_RMDataLV_Store;
 		RMDataLV dict_RMDataLV;
 
 		RMLV_Store dict_RMLV_Store;
 		RMLV dict_RMLV;
 
-
-
-		KDataLV dict_KDataLV;
-		KDataLVs dict_KDataLVs;
-
-		KLV dict_KLV;
-		KLVs dict_KLVs;
-
-		KDataMET dict_KDataMET;
-		KDataPFMET dict_KDataPFMET;
-
-		KDataJet dict_KDataJet;
-		KDataJets dict_KDataJets;
-
-		KDataPFJet dict_KDataPFJet;
-		KDataPFJets dict_KDataPFJets;
-
-		KDataPFTaggedJet dict_KDataPFTaggedJet;
-		KDataPFTaggedJets dict_KDataPFTaggedJets;
-
-		KDataTrack dict_KDataTrack;
-		KDataTracks dict_KDataTracks;
-
-		KTrackSummary dict_KTrackSummary;
-
-		KDataVertex dict_KDataVertex;
-		KDataVertices dict_KDataVertices;
-
-		KVertexSummary dict_KVertexSummary;
-
 		KDataBeamSpot dict_KDataBeamSpot;
 		KDataBeamSpots dict_KDataBeamSpots;
-
-		KGenParticle dict_KGenParticle;
-		KGenParticles dict_KGenParticles;
-
-		KDataMuon dict_KDataMuon;
-		KDataMuons dict_KDataMuons;
-
-		KDataElectron dict_KDataElectron;
-		KDataElectrons dict_KDataElectrons;
-
-		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
-
-		KMuonMetadata dict_KMuonMetadata;
-
-		KDataTau dict_KDataTau;
-		KDataTaus dict_KDataTaus;
-
 		KDataCaloTau dict_KDataCaloTau;
 		KDataCaloTaus dict_KDataCaloTaus;
-
-		KDataPFTau dict_KDataPFTau;
-		KDataPFTaus dict_KDataPFTaus;
-
 		KDataGenTau dict_KDataGenTau;
 		KDataGenTaus dict_KDataGenTaus;
-
 		KDataHit dict_KDataHit;
 		KDataHits dict_KDataHits;
-
-		KL1Muon dict_KL1Muon;
-		KL1Muons dict_KL1Muons;
-
-		KPFCandidate dict_KPFCandidate;
-		KPFCandidates dict_KPFCandidates;
-
+		KDataJet dict_KDataJet;
+		KDataJets dict_KDataJets;
+		KDataLV dict_KDataLV;
+		KDataLVs dict_KDataLVs;
+		KDataMET dict_KDataMET;
+		KDataMuon dict_KDataMuon;
+		KDataMuons dict_KDataMuons;
+		KDataElectron dict_KDataElectron;
+		KDataElectrons dict_KDataElectrons;
+		KDataPFJet dict_KDataPFJet;
+		KDataPFJets dict_KDataPFJets;
+		KDataPFMET dict_KDataPFMET;
+		KDataPFTaggedJet dict_KDataPFTaggedJet;
+		KDataPFTaggedJets dict_KDataPFTaggedJets;
+		KDataPFTau dict_KDataPFTau;
+		KDataPFTaus dict_KDataPFTaus;
+		KDataTau dict_KDataTau;
+		KDataTaus dict_KDataTaus;
+		KDataTrack dict_KDataTrack;
+		KDataTracks dict_KDataTracks;
+		KDataVertex dict_KDataVertex;
+		KDataVertices dict_KDataVertices;
+		KFilterSummary dict_KFilterSummary;
+		KGenParticle dict_KGenParticle;
+		KGenParticles dict_KGenParticles;
 		KGenPhoton dict_KGenPhoton;
 		KGenPhotons dict_KGenPhotons;
-
-		KJetArea dict_KJetArea;
 		KHCALNoiseSummary dict_KHCALNoiseSummary;
-
-		KFilterSummary dict_KFilterSummary;
-		KFilterMetadata dict_KFilterMetadata;
-
-		KTriggerInfos dict_KTriggerInfos;
-		KTriggerObjects dict_KTriggerObjects;
-
+		KJetArea dict_KJetArea;
+		KL1Muon dict_KL1Muon;
+		KL1Muons dict_KL1Muons;
+		KLV dict_KLV;
+		KLVs dict_KLVs;
 		KMuonTriggerCandidate dict_KMuonTriggerCandidate;
 		KMuonTriggerCandidates dict_KMuonTriggerCandidates;
+		KPFCandidate dict_KPFCandidate;
+		KPFCandidates dict_KPFCandidates;
+		KTrackSummary dict_KTrackSummary;
+		KTriggerObjects dict_KTriggerObjects;
+		KVertexSummary dict_KVertexSummary;
 
+		KTriggerInfos dict_KTriggerInfos;
+		KFilterMetadata dict_KFilterMetadata;
+		KMuonMetadata dict_KMuonMetadata;
+		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
 
 		KProvenance dict_KProvenance;
 

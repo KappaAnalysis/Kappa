@@ -12,20 +12,14 @@
 #include <DataFormats/VertexReco/interface/Vertex.h>
 #include <DataFormats/VertexReco/interface/VertexFwd.h>
 
-struct KTowerProducer_Product
-{
-	typedef std::vector<KDataLV> type;
-	static const std::string id() { return "std::vector<KDataLV>"; };
-	static const std::string producer() { return "KTowerProducer"; };
-};
-
-class KTowerProducer : public KBaseMultiLVProducer<CaloTowerCollection, KTowerProducer_Product>
+class KTowerProducer : public KBaseMultiLVProducer<CaloTowerCollection, KDataLVs>
 {
 public:
 	KTowerProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<CaloTowerCollection, KTowerProducer_Product>(cfg, _event_tree, _run_tree),
+		KBaseMultiLVProducer<CaloTowerCollection, KDataLVs>(cfg, _event_tree, _run_tree, getLabel()),
 		srcPVs(cfg.getParameter<edm::InputTag>("srcPVs")) {}
-	virtual ~KTowerProducer() {};
+
+	static const std::string getLabel() { return "Tower"; }
 
 protected:
 	edm::InputTag srcPVs;
@@ -41,7 +35,7 @@ protected:
 		else
 			vertex = reco::Jet::Point(0, 0, 0);
 
-		KBaseMultiVectorProducer<CaloTowerCollection, KTowerProducer_Product>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiVectorProducer<CaloTowerCollection, KDataLVs>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

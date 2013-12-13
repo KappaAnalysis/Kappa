@@ -13,19 +13,13 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/PFMET.h>
 
-struct KPFMETProducer_Product
-{
-	typedef KDataPFMET type;
-	static const std::string id() { return "KDataPFMET"; };
-	static const std::string producer() { return "KPFMETProducer"; };
-};
-
-class KPFMETProducer : public KBaseMultiProducer<edm::View<reco::PFMET>, KPFMETProducer_Product>
+class KPFMETProducer : public KBaseMultiProducer<edm::View<reco::PFMET>, KDataPFMET>
 {
 public:
 	KPFMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::PFMET>, KPFMETProducer_Product>(cfg, _event_tree, _run_tree) {}
-	virtual ~KPFMETProducer() {};
+		KBaseMultiProducer<edm::View<reco::PFMET>, KDataPFMET>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "PFMET"; }
 
 protected:
 	virtual void clearProduct(OutputType &output) { output.p4.SetCoordinates(0, 0, 0, 0); output.sumEt = -1; }

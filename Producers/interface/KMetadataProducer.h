@@ -89,6 +89,8 @@ public:
 	}
 	virtual ~KMetadataProducer() {};
 
+	static const std::string getLabel() { return "Metadata"; }
+
 	inline void addHLT(const int idx, const std::string name, const int prescale)
 	{
 		KMetadataProducerBase::hltKappa2FWK.push_back(idx);

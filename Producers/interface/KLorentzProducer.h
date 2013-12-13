@@ -10,18 +10,13 @@
 #include <DataFormats/METReco/interface/HcalNoiseRBX.h>
 #include <DataFormats/TrackReco/interface/Track.h>
 
-struct KLorentzProducer_Product
-{
-	typedef std::vector<KDataLV> type;
-	static const std::string id() { return "std::vector<KDataLV>"; };
-	static const std::string producer() { return "KLorentzProducer"; };
-};
-
-class KLorentzProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, KLorentzProducer_Product>
+class KLorentzProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, KDataLVs>
 {
 public:
 	KLorentzProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Candidate>, KLorentzProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiLVProducer<edm::View<reco::Candidate>, KDataLVs>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "LV"; }
 
 protected:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

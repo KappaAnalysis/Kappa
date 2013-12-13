@@ -13,18 +13,14 @@
 #include <bitset>
 #include <TMath.h>
 
-struct KElectronProducer_Product
-{
-	typedef std::vector<KDataElectron> type;
-	static const std::string id() { return "std::vector<KDataElectron>"; };
-	static const std::string producer() { return "KElectronProducer"; };
-};
 
-class KElectronProducer : public KBaseMultiLVProducer<edm::View<reco::GsfElectron>, KElectronProducer_Product>
+class KElectronProducer : public KBaseMultiLVProducer<edm::View<reco::GsfElectron>, KDataElectrons>
 {
 public:
 	KElectronProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseMultiLVProducer<edm::View<reco::GsfElectron>, KElectronProducer_Product>(cfg, _event_tree, _lumi_tree) {}
+		KBaseMultiLVProducer<edm::View<reco::GsfElectron>, KDataElectrons>(cfg, _event_tree, _lumi_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "Electrons"; }
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

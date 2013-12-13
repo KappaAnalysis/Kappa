@@ -8,14 +8,7 @@
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/L1Trigger/interface/L1MuonParticle.h>
 
-struct KL1MuonProducer_Product
-{
-	typedef std::vector<KL1Muon> type;
-	static const std::string id() { return "std::vector<KL1Muon>"; };
-	static const std::string producer() { return "KL1MuonProducer"; };
-};
-
-class KL1MuonProducer : public KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1MuonProducer_Product>
+class KL1MuonProducer : public KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1Muons>
 {
 public:
 	KL1MuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
@@ -54,4 +47,5 @@ public:
 		assert(in.gmtMuonCand().detector() == (unsigned int) out.detector());
 	}
 };
+
 #endif

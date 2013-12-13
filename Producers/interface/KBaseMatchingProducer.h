@@ -7,14 +7,15 @@
 
 #include "KBaseProducer.h"
 #include <FWCore/Utilities/interface/InputTag.h>
+#include <Kappa/DataFormats/interface/Kappa.h>
 
 template<typename Tout>
 class KBaseMatchingProducer : public KBaseProducerWP
 {
 public:
-	KBaseMatchingProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseProducerWP(cfg, _event_tree, _run_tree, Tout::producer()),
-		event_tree(_event_tree), matchingCounter(0),
+	KBaseMatchingProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName) :
+		KBaseProducerWP(cfg, _event_tree, _run_tree, producerName),
+		event_tree(_event_tree), matchingCounter(0), producerLabel(producerName),
 		viManual(cfg.getParameter<std::vector<edm::InputTag> >("manual")),
 
 		vsWhitelist(cfg.getParameter<std::vector<std::string> >("whitelist")),
@@ -26,6 +27,11 @@ public:
 	{
 	}
 	virtual ~KBaseMatchingProducer() {}
+
+	virtual std::string getProductName() const
+	{
+		return std::string(TypeName<Tout>::long_name());
+	}
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
@@ -45,11 +51,11 @@ protected:
 		return true;
 	}
 
-	typename Tout::type *allocateBronch(const std::string bronchName)
+	Tout *allocateBronch(const std::string bronchName)
 	{
 		// Static storage of ROOT bronch target - never changes, only accessed here:
-		bronchStorage[bronchName] = new typename Tout::type();
-		this->event_tree->Bronch(bronchName.c_str(), Tout::id().c_str(), &(bronchStorage[bronchName]));
+		bronchStorage[bronchName] = new Tout();
+		this->event_tree->Bronch(bronchName.c_str(), this->getProductName().c_str(), &(bronchStorage[bronchName]));
 		return bronchStorage[bronchName];
 	}
 
@@ -57,6 +63,7 @@ private:
 	TTree *event_tree;
 
 	int matchingCounter;
+	std::string producerLabel;
 	std::vector<edm::InputTag> viManual;
 	std::vector<std::string> vsWhitelist;
 	std::vector<std::string> vsBlacklist;
@@ -66,7 +73,7 @@ private:
 	std::vector<std::string> vsRenameBlacklist;
 
 	std::vector<std::string> vsMatched;
-	std::map<std::string, typename Tout::type*> bronchStorage;
+	std::map<std::string, Tout*> bronchStorage;
 
 	bool addPSetRequests(const edm::Event &event, const edm::EventSetup &setup)
 	{
@@ -80,7 +87,8 @@ private:
 			std::cout << "\"" << names[i] << "\" ";
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
 			// Notify about match
-			onMatchingInput(names[i], names[i], pset, pset.getParameter<edm::InputTag>("src"));
+			if (!onMatchingInput(names[i], names[i], pset, pset.getParameter<edm::InputTag>("src")))
+				return false;
 		}
 		std::cout << std::endl;
 
@@ -107,7 +115,7 @@ private:
 			// Rename branch if requested
 			if ((this->verbosity > 0) && (vsRename.size() > 0))
 			{
-				std::cout << " => " + Tout::producer() + " will use: ";
+				std::cout << " => Producer " + this->producerLabel + " will use: ";
 				std::cout.flush();
 			}
 			const std::string targetName = this->regexRename((*piter)->moduleLabel(), vsRename);
@@ -130,13 +138,14 @@ private:
 				continue;
 			}
 
-			// Create selection tag
+			// Crate selection tag
 			const edm::InputTag tag((*piter)->moduleLabel(), (*piter)->productInstanceName(), (*piter)->processName());
 			if (this->verbosity > 1)
 				std::cout << " => Branch will be selected with " << tag << std::endl;
 
 			// Notify about match
-			onMatchingInput(targetName, (*piter)->branchName(), this->psBase, tag);
+			if (!onMatchingInput(targetName, (*piter)->branchName(), this->psBase, tag))
+				return false;
 		}
 
 		return true;

@@ -31,6 +31,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	Metadata = cms.PSet(
 		forceLumi = cms.int32(-1),
+		forceXSec = cms.double(1),
 		ignoreExtXSec = cms.bool(False),
 		genSource = cms.InputTag("generator"),
 		lumiSource = cms.InputTag("lumiProducer"),

@@ -9,18 +9,13 @@
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/ParticleFlowCandidate/interface/PFCandidate.h>
 
-struct KPFCandidateProducer_Product
-{
-	typedef std::vector<KPFCandidate> type;
-	static const std::string id() { return "std::vector<KPFCandidate>"; };
-	static const std::string producer() { return "KPFCandidateProducer"; };
-};
-
-class KPFCandidateProducer : public KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidateProducer_Product>
+class KPFCandidateProducer : public KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidates>
 {
 public:
 	KPFCandidateProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidateProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidates>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "PFCandidates"; }
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

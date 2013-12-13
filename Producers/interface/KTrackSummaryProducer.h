@@ -8,18 +8,13 @@
 #include "KBaseMultiProducer.h"
 #include <DataFormats/TrackReco/interface/Track.h>
 
-struct KTrackSummaryProducer_Product
-{
-	typedef KTrackSummary type;
-	static const std::string id() { return "KTrackSummary"; };
-	static const std::string producer() { return "KTrackSummaryProducer"; };
-};
-
-class KTrackSummaryProducer : public KBaseMultiProducer<edm::View<reco::Track>, KTrackSummaryProducer_Product>
+class KTrackSummaryProducer : public KBaseMultiProducer<edm::View<reco::Track>, KTrackSummary>
 {
 public:
 	KTrackSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::Track>, KTrackSummaryProducer_Product>(cfg, _event_tree, _run_tree) {}
+		KBaseMultiProducer<edm::View<reco::Track>, KTrackSummary>(cfg, _event_tree, _run_tree, getLabel()) {}
+
+	static const std::string getLabel() { return "TrackSummary"; }
 
 	virtual void clearProduct(OutputType &output) { output.nTracks = 0; output.nTracksHQ = 0; }
 	virtual void fillProduct(const InputType &in, OutputType &out,
