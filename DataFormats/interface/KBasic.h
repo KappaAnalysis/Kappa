@@ -79,9 +79,54 @@ struct KGenParticle : public KDataLV
 	{
 		return (pdgid & KGenParticleChargeMask ? -1 : 1) * (pdgid & KGenParticlePdgIdMask);
 	}
-	int charge() const
+	int sign() const
 	{
 		return (pdgid & KGenParticleChargeMask ? -1 : 1);
+	}
+
+	// particle charge multiplied by 3
+	// e.g. 2 for up-quark, -3 for electron
+	// valid for quarks, leptons, bosons, diquarks, mesons and baryons
+	// no special, technicolor, SUSY, Kaluza-Klein particles, R-hadrons and pentaquarks
+	int chargeTimesThree() const
+	{
+		int pdg = std::abs(pdgId());
+		int had = pdg % 10000 / 10;  // quark content of hadrons (digits 2-4)
+
+		if (pdg == 0)
+			return 0;
+		// quark
+		if (pdg < 9)
+			return (-3 * (pdg % 2) + 2) * sign();
+		// lepton
+		if (pdg > 10 && pdg < 19)
+			return -3 * (pdg % 2) * sign();
+		// boson
+		if (pdg > 20 && pdg < 40)
+			return (pdg == 24 || pdg == 34 || pdg == 37) ? 3 * sign() : 0;
+		// meson
+		if (had < 100)
+		{
+			int q1 = -3 * (had / 10 % 2) + 2;
+			int q2 = -3 * (had % 2) + 2;
+			return (q1 - q2) * sign();
+		}
+		// baryon
+		else
+		{
+			int q1 = had / 100;
+			int q2 = had / 10 % 10;
+			int q3 = had % 10;
+			q1 = (q1 == 0) ? 0 : -3 * (q1 % 2) + 2;
+			q2 = (q2 == 0) ? 0 : -3 * (q2 % 2) + 2;
+			q3 = (q3 == 0) ? 0 : -3 * (q3 % 2) + 2;
+			return (q1 + q2 + q3) * sign();
+		}
+	}
+	// particle charge
+	double charge() const
+	{
+		return chargeTimesThree() / 3.;
 	}
 };
 typedef std::vector<KGenParticle> KGenParticles;
