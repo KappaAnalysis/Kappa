@@ -55,7 +55,7 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 std::ostream &operator<<(std::ostream &os, const KGenParticle &p)
 {
 	return os << KLVWrap<KDataLV::KInternalLV>(p.p4)
-		<< " status=" << p.status() << " pdgid=" << p.pdgId();
+		<< " status=" << p.status() << " pdgid=" << p.pdgId() << " charge=" << p.charge();
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
