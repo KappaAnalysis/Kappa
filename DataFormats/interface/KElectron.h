@@ -43,6 +43,7 @@ struct KDataElectron : KDataLV
 
     float mva; // PF data
     int status;
+    float electronIDmvaNonTrig;
 };
 typedef std::vector<KDataElectron> KDataElectrons;
 

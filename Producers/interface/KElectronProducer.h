@@ -9,16 +9,17 @@
 
 #include "KBaseMultiLVProducer.h"
 
-#include <DataFormats/EgammaCandidates/interface/GsfElectron.h>
+//#include <DataFormats/EgammaCandidates/interface/GsfElectron.h>
+#include <DataFormats/PatCandidates/interface/Electron.h>
 #include <bitset>
 #include <TMath.h>
 
 
-class KElectronProducer : public KBaseMultiLVProducer<edm::View<reco::GsfElectron>, KDataElectrons>
+class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>
 {
 public:
 	KElectronProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseMultiLVProducer<edm::View<reco::GsfElectron>, KDataElectrons>(cfg, _event_tree, _lumi_tree, getLabel()) {}
+		KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>(cfg, _event_tree, _lumi_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "Electrons"; }
 
@@ -57,7 +58,7 @@ public:
         //out.isMomentumCorrected = in.isMomentumCorrected();
         out.trackMomentumError = in.trackMomentumError();
         //out.electronMomentumError = in.electronMomentumError();
-
+        out.electronIDmvaNonTrig = in.electronID("mvaTrigV0");
 	}
 
 };

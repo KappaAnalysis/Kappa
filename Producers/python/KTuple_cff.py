@@ -486,10 +486,10 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Electrons = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("recoGsfElectrons_gsfElectrons*"),
+		whitelist = cms.vstring("patElectrons_selectedPatElectrons*"),
 		blacklist = cms.vstring(),
 
-		rename = cms.vstring("gsfElectrons => Electrons"),
+		rename = cms.vstring("patElectrons => Electrons"),
 		rename_whitelist = cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
