@@ -486,7 +486,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Electrons = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("patElectrons_selectedPatElectrons*"),
+		whitelist = cms.vstring("patElectrons_patElectrons*"),
 		blacklist = cms.vstring(),
 
 		rename = cms.vstring("patElectrons => Electrons"),
