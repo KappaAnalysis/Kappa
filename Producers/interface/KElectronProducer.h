@@ -61,6 +61,8 @@ public:
         out.electronIDmvaTrigV0 = in.electronID("mvaTrigV0");
         out.electronIDmvaTrigNoIPV0 = in.electronID("mvaTrigNoIPV0");
         out.electronIDmvaNonTrigV0 = in.electronID("mvaNonTrigV0");
+
+        out.numberOfLostHits = in.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
 	}
 
 };
