@@ -13,7 +13,9 @@ process.source.fileNames      = cms.untracked.vstring('root://eoscms//eos/cms/st
 
 process.maxEvents.input       = 100                                                                  ## number of events to be processed (-1 = all in file)
 process.kappaTuple.outputFile = 'kappaTuple_electrons.root'                                          ## name of output file
-process.kappaTuple.active     = cms.vstring('Electrons')                                             ## produce KappaElectrons
+process.kappaTuple.active     = cms.vstring('Electrons',                                              ## produce KappaElectrons,
+                                            'VertexSummary',                                         ## produce Metadata,
+                                            'BeamSpot')                                              ## save Beamspot,
 process.kappaTuple.verbose    = cms.int32(0)                                                         ## verbosity level
 #process.kappaTuple.Metadata.hltWhitelist = cms.vstring(                                             ## HLT preselection
 #    # matches 'HLT_Mu17_Mu8_v7' etc.
