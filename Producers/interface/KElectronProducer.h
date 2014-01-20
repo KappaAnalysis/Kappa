@@ -58,7 +58,9 @@ public:
         //out.isMomentumCorrected = in.isMomentumCorrected();
         out.trackMomentumError = in.trackMomentumError();
         //out.electronMomentumError = in.electronMomentumError();
-        out.electronIDmvaNonTrig = in.electronID("mvaTrigV0");
+        out.electronIDmvaTrigV0 = in.electronID("mvaTrigV0");
+        out.electronIDmvaTrigNoIPV0 = in.electronID("mvaTrigNoIPV0");
+        out.electronIDmvaNonTrigV0 = in.electronID("mvaNonTrigV0");
 	}
 
 };
