@@ -54,6 +54,7 @@
 
 	<class name="KTriggerInfos"/>
 	<class name="KFilterMetadata"/>
+	<class name="KTaggerMetadata"/>
 	<class name="KMuonMetadata"/>
 	<class name="KTauDiscriminatorMetadata"/>
 
