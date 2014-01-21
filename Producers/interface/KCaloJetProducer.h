@@ -17,7 +17,7 @@ public:
 	KCaloJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiLVProducer<reco::CaloJetCollection, KDataJets>(cfg, _event_tree, _run_tree, getLabel()) {}
 
-	static const std::string getLabel() { return "CaloJet"; }
+	static const std::string getLabel() { return "CaloJets"; }
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
