@@ -15,7 +15,9 @@
 
 struct KDataElectron : KDataLV
 {
-	char charge;
+    KDataTrack track;
+
+    char charge;
     bool isEB, isEE;
 
 

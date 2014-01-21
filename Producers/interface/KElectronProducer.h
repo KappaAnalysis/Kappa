@@ -25,11 +25,15 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		// Momentum:
-		copyP4(in, out.p4);
+        // Momentum:
+        copyP4(in, out.p4);
 
-		// Charge, ...
-		out.charge = in.charge();
+        // Charge, ...
+        out.charge = in.charge();
+
+        // electron track
+        KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
+
 
         out.isEB = in.isEB();
         out.isEE = in.isEE();
