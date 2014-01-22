@@ -26,6 +26,9 @@ process.kappaTuple.verbose    = cms.int32(0)                                    
 
 ## ------------------------------------------------------------------------
 ## declare edm OutputModule (expects a path 'p'), uncommented if wanted
+
+from RecoEgamma.EgammaPhotonProducers.allConversionSequence_cff import *
+
 process.edmOut = cms.OutputModule("PoolOutputModule",
                                fileName = cms.untracked.string('patTuple_electrons.root'),           ## name of output file 
                                SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ), ## save only events passing the full path
