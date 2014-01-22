@@ -15,7 +15,9 @@
 
 struct KDataElectron : KDataLV
 {
-	char charge;
+    KDataTrack track;
+
+    char charge;
     bool isEB, isEE;
 
 
@@ -43,7 +45,11 @@ struct KDataElectron : KDataLV
 
     float mva; // PF data
     int status;
-    float electronIDmvaNonTrig;
+    float electronIDmvaTrigV0;
+    float electronIDmvaTrigNoIPV0;
+    float electronIDmvaNonTrigV0;
+
+    int numberOfLostHits;
 };
 typedef std::vector<KDataElectron> KDataElectrons;
 
