@@ -50,6 +50,8 @@ struct KDataElectron : KDataLV
     float electronIDmvaNonTrigV0;
 
     int numberOfLostHits;
+
+    bool hasConversionMatch;
 };
 typedef std::vector<KDataElectron> KDataElectrons;
 

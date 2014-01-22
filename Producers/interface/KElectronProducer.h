@@ -13,6 +13,9 @@
 #include <DataFormats/PatCandidates/interface/Electron.h>
 #include <bitset>
 #include <TMath.h>
+#include <RecoEgamma/EgammaTools/interface/ConversionTools.h>
+#include <DataFormats/BeamSpot/interface/BeamSpot.h>
+
 
 
 class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>
@@ -67,7 +70,29 @@ public:
         out.electronIDmvaNonTrigV0 = in.electronID("mvaNonTrigV0");
 
         out.numberOfLostHits = in.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
+
+	const reco::GsfElectron* tmpGsfElectron = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
+	out.hasConversionMatch = ConversionTools::hasMatchedConversion(*tmpGsfElectron, hConversions, BeamSpot->position(), true, 2.0, 1e-6, 0);
+
 	}
+
+	virtual void fillProduct(const InputType &in, OutputType &out,
+		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
+	{
+		//todo: füllen der hConversions
+		edm::InputTag tagConversionSource = pset.getParameter<edm::InputTag>("allConversions");
+		cEvent->getByLabel( tagConversionSource, hConversions);
+
+		edm::InputTag beamSpotSource =pset.getParameter<edm::InputTag>("offlineBeamSpot");
+		cEvent->getByLabel( beamSpotSource, BeamSpot);
+
+		// Continue normally
+		KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>::fillProduct(in, out, name, tag, pset);
+
+	}
+private:
+	edm::Handle<reco::ConversionCollection> hConversions;
+	edm::Handle<reco::BeamSpot> BeamSpot;
 
 };
 

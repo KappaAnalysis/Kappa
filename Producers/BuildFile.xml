@@ -24,6 +24,7 @@
 <use name="RecoMuon/DetLayers"/>
 <use name="RecoMuon/Records"/>
 <use name="TrackingTools/KalmanUpdators"/>
+<use name="RecoEgamma/EgammaTools"/>
 
 <use name="root"/>
 <use name="rootcore"/>
