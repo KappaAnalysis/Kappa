@@ -40,8 +40,11 @@ process.kappaOut+=process.edmOut
 ## ------------------------------------------------------------------------
 ## KappaElectrons 
 process.load("Kappa.Producers.KElectrons_cff")
+process.load("Kappa.Producers.KPFCandidates_cff")
+process.kappaTuple.PFCandidates.blacklist = cms.vstring("particleFlowTmp")
 
 ## And let it run
 process.p = cms.Path(
-    process.makeKappaElectrons
-    )
+	process.makeKappaElectrons *
+	process.makeKappaPFCandidates
+	)
