@@ -7,10 +7,10 @@ import FWCore.ParameterSet.Config as cms
 from EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi import *
 
 electronIdMVA = cms.Sequence(
-    mvaTrigV0+
-    mvaTrigNoIPV0+
-    mvaNonTrigV0
-    )
+	mvaTrigV0+
+	mvaTrigNoIPV0+
+	mvaNonTrigV0
+	)
 
 ## ------------------------------------------------------------------------
 ## PAT electorn configuration
@@ -20,16 +20,16 @@ from TrackingTools.TransientTrack.TransientTrackBuilder_cfi import *
 from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
 
 patElectrons.electronIDSources = cms.PSet(
-    ## default cut based Id
-    eidRobustLoose      = cms.InputTag("eidRobustLoose"     ),
-    eidRobustTight      = cms.InputTag("eidRobustTight"     ),
-    eidLoose            = cms.InputTag("eidLoose"           ),
-    eidTight            = cms.InputTag("eidTight"           ),
-    eidRobustHighEnergy = cms.InputTag("eidRobustHighEnergy"),
-    ## MVA based Id
-    mvaTrigV0           = cms.InputTag("mvaTrigV0"          ),
-    mvaTrigNoIPV0       = cms.InputTag("mvaTrigNoIPV0"      ),
-    mvaNonTrigV0        = cms.InputTag("mvaNonTrigV0"       ),
+	## default cut based Id
+	eidRobustLoose      = cms.InputTag("eidRobustLoose"     ),
+	eidRobustTight      = cms.InputTag("eidRobustTight"     ),
+	eidLoose            = cms.InputTag("eidLoose"           ),
+	eidTight            = cms.InputTag("eidTight"           ),
+	eidRobustHighEnergy = cms.InputTag("eidRobustHighEnergy"),
+	## MVA based Id
+	mvaTrigV0           = cms.InputTag("mvaTrigV0"          ),
+	mvaTrigNoIPV0       = cms.InputTag("mvaTrigNoIPV0"      ),
+	mvaNonTrigV0        = cms.InputTag("mvaNonTrigV0"       ),
 )
 
 patElectrons.addGenMatch      = False
@@ -39,6 +39,6 @@ patElectrons.genParticleMatch = ""
 ## ------------------------------------------------------------------------
 ## Definition of sequences
 makeKappaElectrons = cms.Sequence(
-    electronIdMVA *
-    patElectrons
-    )
+	electronIdMVA *
+	patElectrons
+	)

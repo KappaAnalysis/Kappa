@@ -14,8 +14,9 @@ process.source.fileNames      = cms.untracked.vstring('root://eoscms//eos/cms/st
 process.maxEvents.input       = 100                                                                  ## number of events to be processed (-1 = all in file)
 process.kappaTuple.outputFile = 'kappaTuple_electrons.root'                                          ## name of output file
 process.kappaTuple.active     = cms.vstring('Electrons',                                              ## produce KappaElectrons,
-                                            'VertexSummary',                                         ## produce Metadata,
-                                            'BeamSpot')                                              ## save Beamspot,
+															'VertexSummary',                                         ## produce Metadata,
+															'BeamSpot',                                              ## save Beamspot,
+															'PFCandidates')                                          ## save PFCandidates for deltaBeta corrected isolation
 process.kappaTuple.verbose    = cms.int32(0)                                                         ## verbosity level
 #process.kappaTuple.Metadata.hltWhitelist = cms.vstring(                                             ## HLT preselection
 #    # matches 'HLT_Mu17_Mu8_v7' etc.
@@ -30,10 +31,10 @@ process.kappaTuple.verbose    = cms.int32(0)                                    
 from RecoEgamma.EgammaPhotonProducers.allConversionSequence_cff import *
 
 process.edmOut = cms.OutputModule("PoolOutputModule",
-                               fileName = cms.untracked.string('patTuple_electrons.root'),           ## name of output file 
-                               SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ), ## save only events passing the full path
-                               outputCommands = cms.untracked.vstring('drop *', 'keep *_*_*_KAPPA')  ## save each edm object that has been produced by process KAPPA 
-                               )
+										fileName = cms.untracked.string('patTuple_electrons.root'),           ## name of output file 
+										SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ), ## save only events passing the full path
+										outputCommands = cms.untracked.vstring('drop *', 'keep *_*_*_KAPPA')  ## save each edm object that has been produced by process KAPPA 
+										)
 process.kappaOut+=process.edmOut
 
 ## ------------------------------------------------------------------------

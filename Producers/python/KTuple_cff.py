@@ -484,12 +484,12 @@ kappaTupleDefaultsBlock = cms.PSet(
 	),
 
 	Electrons = cms.PSet(kappaNoCut,
-                kappaNoRegEx,
-                electrons = cms.PSet(
-                        src = cms.InputTag("patElectrons"),
-                        allConversions = cms.InputTag("allConversions"),
-                        offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
-                        ),                
+		kappaNoRegEx,
+		electrons = cms.PSet(
+		src = cms.InputTag("patElectrons"),
+		allConversions = cms.InputTag("allConversions"),
+		offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
+		),
 	),
 
 	PFJets = cms.PSet(kappaNoCut,

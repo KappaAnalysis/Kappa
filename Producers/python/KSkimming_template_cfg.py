@@ -10,7 +10,7 @@ process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
 ## Source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring()
+	fileNames = cms.untracked.vstring()
 )
 ## Maximal Number of Events
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
