@@ -487,6 +487,8 @@ kappaTupleDefaultsBlock = cms.PSet(
                 kappaNoRegEx,
                 electrons = cms.PSet(
                         src = cms.InputTag("patElectrons"),
+                        allConversions = cms.InputTag("allConversions"),
+                        offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
                         ),                
 	),
 
