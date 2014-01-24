@@ -13,7 +13,6 @@ from Kappa.Producers.KSkimming_template_cfg import *
 ## test file for RWTH
 process.source.fileNames     = cms.untracked.vstring('file:/user/kargoll/testfiles/DYTauTau/DYTauTau_Summer12.root')
 
-
 process.maxEvents.input       = 100                                                                  ## number of events to be processed (-1 = all in file)
 process.kappaTuple.outputFile = 'kappaTuple_taus.root'                                               ## name of output file
 process.kappaTuple.active     = cms.vstring('PFTaus')                                                ## produce KappaTaus
@@ -29,7 +28,7 @@ process.kappaTuple.verbose    = cms.int32(0)                                    
 ## declare edm OutputModule (expects a path 'p'), uncommented if wanted
 
 process.edmOut = cms.OutputModule("PoolOutputModule",
-                               fileName = cms.untracked.string('patTuple_taus.root'),                ## name of output file 
+                               fileName = cms.untracked.string('edmOutput_taus.root'),               ## name of output file 
                                SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ), ## save only events passing the full path
                                outputCommands = cms.untracked.vstring('drop *', 'keep *_*_*_KAPPA')  ## save each edm object that has been produced by process KAPPA 
                                )
