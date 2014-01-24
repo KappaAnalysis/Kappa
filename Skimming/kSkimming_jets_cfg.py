@@ -43,9 +43,3 @@ process.p = cms.Path(
     process.makePFJets *
     process.makePFJetsCHS
     )
-
-## !!! temporary: this will later go in the highest-level cfg !!!
-datatype = 'mc'
-
-if datatype == 'mc':
-	process.p.insert(0, process.makeNoNuGenJets)
