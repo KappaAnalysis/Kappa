@@ -73,11 +73,11 @@ public:
 			if (muonMetadata->hltNames.size() >= 64)
 				throw cms::Exception("Too many muon trigger objects selected!");
 			if (verbosity > 0)
-				std::cout << filterName << "\n";
+				std::cout << "KMuonProducer::onLumi : " << filterName << "\n";
 			muonMetadata->hltNames.push_back(filterName);
 			muonTriggerObjectBitMap[filterName] = muonMetadata->hltNames.size() - 1;
 			if (verbosity > 0)
-				std::cout << "muon trigger object: " << (muonMetadata->hltNames.size() - 1) << " = " << filterName << "\n";
+				std::cout << "KMuonProducer::onLumi : muon trigger object: " << (muonMetadata->hltNames.size() - 1) << " = " << filterName << "\n";
 		}
 
 		return KBaseMultiLVProducer<edm::View<reco::Muon>, KDataMuons>::onLumi(lumiBlock, setup);
