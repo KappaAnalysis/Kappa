@@ -73,6 +73,7 @@ REGISTER_NAME_OF_TYPE(KTriggerObjects,KTriggerObjects);
 REGISTER_NAME_OF_TYPE(KVertexSummary,KVertexSummary);
 REGISTER_NAME_OF_TYPE(KTriggerInfos,KTriggerInfos);
 REGISTER_NAME_OF_TYPE(KFilterMetadata,KFilterMetadata);
+REGISTER_NAME_OF_TYPE(KTaggerMetadata,KTaggerMetadata);
 REGISTER_NAME_OF_TYPE(KMuonMetadata,KMuonMetadata);
 REGISTER_NAME_OF_TYPE(KTauDiscriminatorMetadata,KTauDiscriminatorMetadata);
 REGISTER_NAME_OF_TYPE(KProvenance,KProvenance);
