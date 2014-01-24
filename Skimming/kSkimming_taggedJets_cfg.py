@@ -11,7 +11,7 @@ process.source.fileNames     = cms.untracked.vstring('file:///storage/6/fcolombo
 ## test file for lxplus
 #process.source.fileNames      = cms.untracked.vstring('')
 
-process.maxEvents.input       = 10                             ## number of events to be processed (-1 = all in file)
+process.maxEvents.input       = 100                             ## number of events to be processed (-1 = all in file)
 process.kappaTuple.outputFile = 'kappaTuple_taggedJets.root'    ## name of output file
 process.kappaTuple.active     = cms.vstring('PFTaggedJets')     ## produce KappaPFTaggedJets
 process.kappaTuple.verbose    = cms.int32(0)                    ## verbosity level
@@ -42,20 +42,6 @@ process.kappaTuple.PFTaggedJets = cms.PSet(
                          PUJetID = cms.InputTag("ak5PFCHSPuJetMva"),
                          PUJetID_full = cms.InputTag("full"),
                      ),
-                     AK7PFTaggedJets = cms.PSet(
-                         src = cms.InputTag("ak7PFJets"),
-                         QGtagger = cms.InputTag("AK7PFJetsQGTagger"),
-                         Btagger = cms.InputTag("ak7PF"),
-                         PUJetID = cms.InputTag("ak7PFPuJetMva"),
-                         PUJetID_full = cms.InputTag("full53x"),
-                     ),
-                     AK7PFTaggedJetsCHS = cms.PSet(
-                         src = cms.InputTag("ak7PFJetsCHS"),
-                         QGtagger = cms.InputTag("AK7PFJetsCHSQGTagger"),
-                         Btagger = cms.InputTag("ak7PFCHS"),
-                         PUJetID = cms.InputTag("ak7PFCHSPuJetMva"),
-                         PUJetID_full = cms.InputTag("full"),
-                     ),
                   )
 
 ## ------------------------------------------------------------------------
@@ -80,4 +66,3 @@ process.p = cms.Path(
     process.makeBTagging *
     process.makePUJetID
     )
-
