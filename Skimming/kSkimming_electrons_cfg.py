@@ -41,6 +41,14 @@ process.kappaOut+=process.edmOut
 ## KappaElectrons 
 process.load("Kappa.Producers.KElectrons_cff")
 
+## ------------------------------------------------------------------------
+## Configure (no)PileUp Collections
+process.kappaTuple.PFCandidates.whitelist = cms.vstring("pfNoPileUpChargedHadrons",
+																			"pfNoPileUpNeutralHadrons",
+																			"pfNoPileUpPhotons",
+																			"pfPileUpChargedHadrons",
+																			)
+
 ## And let it run
 process.p = cms.Path(
 	process.makeKappaElectrons
