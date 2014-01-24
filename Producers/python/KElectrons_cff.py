@@ -11,6 +11,7 @@ electronIdMVA = cms.Sequence(
 	mvaTrigNoIPV0+
 	mvaNonTrigV0
 	)
+makeKappaElectrons = cms.Sequence( electronIdMVA )
 
 ## ------------------------------------------------------------------------
 ## PAT electorn configuration
@@ -36,9 +37,31 @@ patElectrons.addGenMatch      = False
 patElectrons.embedGenMatch    = False
 patElectrons.genParticleMatch = ""
 
+makeKappaElectrons *= cms.Sequence( patElectrons )
+
+
 ## ------------------------------------------------------------------------
-## Definition of sequences
-makeKappaElectrons = cms.Sequence(
-	electronIdMVA *
-	patElectrons
+# create pfNoPileup and pfPileupIso collections for deltaBeta corrected isolation
+
+from CommonTools.ParticleFlow.pfParticleSelection_cff import *
+
+pfPileUpIso.PFCandidates = 'particleFlow'
+pfNoPileUpIso.bottomCollection='particleFlow'
+
+# import filters and name them with clear scheme
+from CommonTools.ParticleFlow.ParticleSelectors.pfSortByType_cff import *
+
+pfNoPileUpChargedHadrons	= pfAllChargedHadrons.clone()
+pfNoPileUpNeutralHadrons	= pfAllNeutralHadrons.clone()
+pfNoPileUpPhotons 			= pfAllPhotons.clone()
+pfPileUpChargedHadrons		= pfAllChargedHadrons.clone(src = cms.InputTag("pfPileUpIso") )
+
+
+SequenceForDeltaBeta = cms.Sequence(
+	pfNoPileUpChargedHadrons *
+	pfNoPileUpNeutralHadrons *
+	pfNoPileUpPhotons *
+	pfPileUpChargedHadrons
 	)
+
+makeKappaElectrons *= cms.Sequence( pfParticleSelectionSequence * SequenceForDeltaBeta )
