@@ -7,9 +7,9 @@ sys.path.append(os.path.abspath(os.path.dirname(sys.argv[0])) + "/Kappa/")
 from Kappa.Producers.KSkimming_template_cfg import *
 
 ## test file for EKP
-process.source.fileNames			= cms.untracked.vstring('file:/storage/8/dhaitz/testfiles/mc11.root')
+#process.source.fileNames			= cms.untracked.vstring('file:/storage/8/dhaitz/testfiles/mc11.root')
 ## test file for lxplus
-#process.source.fileNames			= cms.untracked.vstring('root://eoscms//eos/cms/store/relval/CMSSW_5_3_6-START53_V14/RelValProdTTbar/AODSIM/v2/00000/76ED0FA6-1E2A-E211-B8F1-001A92971B72.root')
+process.source.fileNames			= cms.untracked.vstring('root://eoscms//eos/cms/store/relval/CMSSW_5_3_6-START53_V14/RelValProdTTbar/AODSIM/v2/00000/76ED0FA6-1E2A-E211-B8F1-001A92971B72.root')
 
 process.maxEvents.input				= 100											## number of events to be processed (-1 = all in file)
 process.kappaTuple.outputFile 	= 'kappaTuple_muons.root'				## name of output file
