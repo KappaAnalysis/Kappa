@@ -41,7 +41,7 @@ bool KBaseProducer::tagMatch(const edm::Provenance *prov, const std::vector<edm:
 bool KBaseProducer::regexMatch(const std::string &in, const std::string &filter)
 {
 	if (verbosity > 2)
-		std::cout << "\t" << in << " ";
+		std::cout << "\t KBaseProducer::regexMatch : " << in << " ";
 	try
 	{
 		boost::regex pattern(filter, boost::regex::icase | boost::regex::extended);
@@ -54,7 +54,7 @@ bool KBaseProducer::regexMatch(const std::string &in, const std::string &filter)
 	}
 	catch (...)
 	{
-		std::cout << "Error while matching \"" << in << "\" against regular expression \"" << filter << "\"" << std::endl;
+		std::cout << "KBaseProducer::regexMatch : Error while matching \"" << in << "\" against regular expression \"" << filter << "\"" << std::endl;
 	}
 	if (verbosity > 2)
 		std::cout << "not matched" << std::endl;
@@ -70,7 +70,7 @@ bool KBaseProducer::regexMatch(const std::string &in, const std::vector<std::str
 	else
 	{
 		if (verbosity > 1)
-			std::cout << std::endl << " * Whitelist matching..." << std::endl;
+			std::cout << std::endl << "KBaseProducer::regexMatch :  * Whitelist matching..." << std::endl;
 		for (size_t wIdx = 0; wIdx < whitelist.size(); ++wIdx)
 			if (regexMatch(in, whitelist[wIdx]))
 			{
@@ -81,7 +81,7 @@ bool KBaseProducer::regexMatch(const std::string &in, const std::vector<std::str
 	if (accept && (blacklist.size() > 0))
 	{
 		if (verbosity > 1)
-			std::cout << std::endl << " * Blacklist matching..." << std::endl;
+			std::cout << std::endl << "KBaseProducer::regexMatch :  * Blacklist matching..." << std::endl;
 		for (size_t bIdx = 0; bIdx < blacklist.size(); ++bIdx)
 			if (regexMatch(in, blacklist[bIdx]))
 			{
@@ -90,7 +90,7 @@ bool KBaseProducer::regexMatch(const std::string &in, const std::vector<std::str
 			}
 	}
 	if (verbosity > 1)
-		std::cout << in << " was " << ((accept) ? "" : "not ") << "accepted!" << std::endl;
+		std::cout << "KBaseProducer::regexMatch : " << in << " was " << ((accept) ? "" : "not ") << "accepted!" << std::endl;
 	return accept;
 }
 
@@ -106,7 +106,7 @@ std::string KBaseProducer::regexRename(std::string in, const std::vector<std::st
 			continue;
 
 		if (verbosity > 1)
-			std::cout << "\t(" << i + 1 << "): " << rename_tok[0] << " => " << rename_tok[1] << std::endl;
+			std::cout << "KBaseProducer::regexRename : \t(" << i + 1 << "): " << rename_tok[0] << " => " << rename_tok[1] << std::endl;
 
 		std::string tmp;
 		boost::regex rx(rename_tok[0], boost::regex::icase | boost::regex::extended);
@@ -114,7 +114,7 @@ std::string KBaseProducer::regexRename(std::string in, const std::vector<std::st
 			rename_tok[1], boost::match_default | boost::format_all);
 
 		if ((verbosity == 1) && (in != tmp))
-			std::cout << in << " => ";
+			std::cout << "KBaseProducer::regexRename : " << in << " => ";
 		if (verbosity > 1)
 			std::cout << "\t\t" << in << " => " << tmp << std::endl;
 

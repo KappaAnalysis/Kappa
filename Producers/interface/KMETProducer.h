@@ -38,7 +38,7 @@ protected:
 		}
 		else
 			if (verbosity > 1)
-				std::cout << "Found " << in.size() << " MET objects!" << std::endl;
+				std::cout << "KMETProducer::fillProduct : Found " << in.size() << " MET objects!" << std::endl;
 	}
 };
 

@@ -39,7 +39,7 @@ public:
 			if (autoTriggerObjects)
 			{
 				if (verbosity > 0)
-					std::cout << "--- Begin of automatic trigger object detection ---\n";
+					std::cout << "KTriggerObjectProducer::onRun : --- Begin of automatic trigger object detection ---\n";
 				for (std::vector<std::string>::const_iterator it = KMetadataProducerBase::selectedHLT.begin()+1; it != KMetadataProducerBase::selectedHLT.end(); ++it)
 				{
 					if (verbosity > 0)
@@ -63,7 +63,7 @@ public:
 					}
 				}
 				if (verbosity > 0)
-					std::cout << "--- End of automatic trigger object detection ---\n";
+					std::cout << "KTriggerObjectProducer::onRun : --- End of automatic trigger object detection ---\n";
 			}
 		}
 

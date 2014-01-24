@@ -159,11 +159,11 @@ public:
 			const std::string &name = KMetadataProducerBase::hltConfig.triggerName(i);
 			const int idx = KMetadataProducerBase::hltConfig.triggerIndex(name);
 			if (verbosity > 1)
-				std::cout << "Trigger: " << idx << " = ";
+				std::cout << "KMetadataProducer::onRun : Trigger: " << idx << " = ";
 			if (!regexMatch(name, svHLTWhitelist, svHLTBlacklist))
 				continue;
 			if (verbosity > 0 || printHltList)
-				std::cout << " => Adding trigger: " << name << " with ID: " << idx << " as " << counter
+				std::cout << "KMetadataProducer::onRun :  => Adding trigger: " << name << " with ID: " << idx << " as " << counter
 					<< " with placeholder prescale 0" << std::endl;
 			if (KMetadataProducerBase::hltKappa2FWK.size() < 64)
 			{
@@ -185,7 +185,7 @@ public:
 			}
 		}
 		if (verbosity > 0)
-			std::cout << "Accepted number of trigger streams: " << counter - 1 << std::endl;
+			std::cout << "KMetadataProducer::onRun : Accepted number of trigger streams: " << counter - 1 << std::endl;
 
 		return true;
 	}
@@ -250,14 +250,14 @@ public:
 				if (metaLumi->hltPrescales[i] == 0)
 				{
 					if (verbosity > 0 || printHltList)
-						std::cout << " => Adding prescale for trigger: '" << name
+						std::cout << "KMetadataProducer::onEvent :  => Adding prescale for trigger: '" << name
 							<< " with value: " << prescale << std::endl;
 					metaLumi->hltPrescales[i] = prescale;
 				}
 				if (metaLumi->hltPrescales[i] != prescale)
 				{
 					if (this->verbosity > 0)
-						std::cout << "!!!!!!!!!!! the prescale of " << name << " has changed with respect to the beginning of the luminosity section from " << metaLumi->hltPrescales[i] << " to " << prescale << std::endl;
+						std::cout << "KMetadataProducer::onEvent :  !!!!!!!!!!! the prescale of " << name << " has changed with respect to the beginning of the luminosity section from " << metaLumi->hltPrescales[i] << " to " << prescale << std::endl;
 					triggerPrescaleError = true;
 				}
 			}
