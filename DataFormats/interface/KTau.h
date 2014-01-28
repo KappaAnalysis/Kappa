@@ -34,16 +34,18 @@ struct KDataPFTau : KDataTau
 {
 	float emFraction;
 
-	int cntSignalChargedHadrCands, cntSignalGammaCands, cntSignalNeutrHadrCands, cntSignalCands;
+	int cntSignalChargedHadrCands, cntSignalGammaCands, cntSignalNeutrHadrCands, cntSignalPiZeroCands, cntSignalCands;
 
 	RMDataLV leadTrack;
 	RMDataLV leadChargedHadrTrack;
 	RMDataLV leadNeutralTrack;
 
-	KDataVertex vertex;
+	KDataVertex vertexPoca; // point of closest approach to beamspot
 
 	//bool longLived
 	int cntSignalTracks;
+
+	int hpsDecayMode; // hadronic decay mode as identified by HPS algorithm
 };
 typedef std::vector<KDataPFTau> KDataPFTaus;
 

@@ -521,11 +521,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 	),
 
 	PFTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
-		shrinkingConePFTaus = cms.PSet(
-			src = cms.InputTag("shrinkingConePFTauProducer"),
-			discrWhitelist = cms.vstring("shrinkingConePFTau*"),
-			discrBlacklist = cms.vstring(".*PFlow$"),
-		),
+		#shrinkingConePFTaus = cms.PSet(
+		#	src = cms.InputTag("shrinkingConePFTauProducer"),
+		#	discrWhitelist = cms.vstring("shrinkingConePFTau*"),
+		#	discrBlacklist = cms.vstring(".*PFlow$"),
+		#),
 		#fixedConePFTaus = cms.PSet(
 		#	src = cms.InputTag("fixedConePFTauProducer"),
 		#	discr = cms.vstring("fixedConePFTau*")
@@ -534,6 +534,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
 			discrWhitelist = cms.vstring("hpsPFTau*"),
 			discrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
+                        tauDiscrProcessName = cms.string("KAPPA")
 		),
 	),
 
