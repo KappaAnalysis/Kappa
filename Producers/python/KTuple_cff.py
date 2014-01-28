@@ -483,11 +483,20 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
+	Electrons = cms.PSet(kappaNoCut,
+		kappaNoRegEx,
+		electrons = cms.PSet(
+		src = cms.InputTag("patElectrons"),
+		allConversions = cms.InputTag("allConversions"),
+		offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
+		),
+	),
+
 	PFJets = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("recoPFJets_.*Jet"),
-		blacklist = cms.vstring("Rho", "Tau.*Region"),
+		whitelist = cms.vstring("recoPFJets_ak5PFJets.*"),
+		blacklist = cms.vstring("Tau.*"),
 
 		rename = cms.vstring(
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8"

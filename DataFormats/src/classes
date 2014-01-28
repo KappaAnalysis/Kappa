@@ -18,6 +18,7 @@ KDataJet				KDataJets
 KDataLV					KDataLVs
 KDataMET
 KDataMuon				KDataMuons
+KDataElectron			KDataElectrons
 KDataPFJet				KDataPFJets
 KDataPFMET
 KDataPFTaggedJet		KDataPFTaggedJets

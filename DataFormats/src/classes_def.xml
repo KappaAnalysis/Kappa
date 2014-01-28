@@ -20,6 +20,8 @@
 	<class name="KDataMET"/>
 	<class name="KDataMuon"/>
 	<class name="KDataMuons"/>
+	<class name="KDataElectron"/>
+	<class name="KDataElectrons"/>
 	<class name="KDataPFJet"/>
 	<class name="KDataPFJets"/>
 	<class name="KDataPFMET"/>

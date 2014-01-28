@@ -6,6 +6,7 @@
 #include "KLorentzVector.h"
 #include "KMetadata.h"
 #include "KMuon.h"
+#include "KElectron.h"
 #include "KTau.h"
 #include "KTrack.h"
 
@@ -40,6 +41,8 @@ REGISTER_NAME_OF_TYPE(KDataLVs,std::vector<KDataLV>);
 REGISTER_NAME_OF_TYPE(KDataMET,KDataMET);
 REGISTER_NAME_OF_TYPE(KDataMuon,KDataMuon);
 REGISTER_NAME_OF_TYPE(KDataMuons,std::vector<KDataMuon>);
+REGISTER_NAME_OF_TYPE(KDataElectron,KDataElectron);
+REGISTER_NAME_OF_TYPE(KDataElectrons,std::vector<KDataElectron>);
 REGISTER_NAME_OF_TYPE(KDataPFJet,KDataPFJet);
 REGISTER_NAME_OF_TYPE(KDataPFJets,std::vector<KDataPFJet>);
 REGISTER_NAME_OF_TYPE(KDataPFMET,KDataPFMET);
