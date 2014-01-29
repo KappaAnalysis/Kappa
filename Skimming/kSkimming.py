@@ -35,9 +35,6 @@ else:
 # Configure Electrons
 
 process.kappaTuple.active		+= cms.vstring('Electrons')			## produce KappaElectrons,
-
-
-from RecoEgamma.EgammaPhotonProducers.allConversionSequence_cff import *
 process.load("Kappa.Producers.KElectrons_cff")
 
 # configure PFCandidates and what to write out
