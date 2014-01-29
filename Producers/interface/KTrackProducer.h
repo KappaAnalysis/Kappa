@@ -54,7 +54,6 @@ public:
 		out.nLostHits = in.hitPattern().numberOfLostHits();
 		out.nPixelLayers = in.hitPattern().pixelLayersWithMeasurement();
 		out.nStripLayers = in.hitPattern().trackerLayersWithMeasurement();
-		// todo: check which of the two is needed for the e ID
 		out.nInnerHits = in.trackerExpectedHitsInner().numberOfHits();
 		out.nLostInnerHits = in.trackerExpectedHitsInner().numberOfLostHits();
 	}
