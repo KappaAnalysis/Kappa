@@ -25,6 +25,7 @@ struct KDataTrack : public KDataLV
 	unsigned short nValidPixelHits, nValidStripHits;
 	unsigned short nValidMuonHits, nLostMuonHits, nBadMuonHits;
 	unsigned short nValidHits, nLostHits;
+	unsigned short nInnerHits, nLostInnerHits;
 	int quality;
 	float sumPtIso03;
 	float trackIso03;

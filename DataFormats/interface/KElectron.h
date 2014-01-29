@@ -65,8 +65,6 @@ Within the electron, the corresponding values are grouped into an attribute call
 	float idMvaTrigNoIPV0;
 	float idMvaNonTrigV0;
 
-	int nLostHits;
-
 	bool hasConversionMatch;
 };
 typedef std::vector<KDataElectron> KDataElectrons;

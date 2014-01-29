@@ -68,8 +68,6 @@ public:
 		out.idMvaTrigNoIPV0 = in.electronID("mvaTrigNoIPV0");
 		out.idMvaNonTrigV0 = in.electronID("mvaNonTrigV0");
 
-		out.nLostHits = in.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
-
 	const reco::GsfElectron* tmpGsfElectron = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
 	out.hasConversionMatch = ConversionTools::hasMatchedConversion(*tmpGsfElectron, hConversions, BeamSpot->position(), true, 2.0, 1e-6, 0);
 
