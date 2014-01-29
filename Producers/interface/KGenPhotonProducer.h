@@ -43,7 +43,7 @@ protected:
 					if (tmpID == 11 || tmpID == 13 || tmpID == 15)
 					{
 						if (this->verbosity > 2)
-							std::cout << "corresponding lepton found: "<< tmpID << "\n";
+							std::cout << "KGenPhotonProducer::fillSingle : corresponding lepton found: "<< tmpID << "\n";
 						copyP4(ancestors.front()->p4(), out.mother);
 					}
 					else
@@ -58,12 +58,12 @@ protected:
 
 		if (this->verbosity > 2)
 		{
-			std::cout << "child:             " << out.p4 << "\t" << in.pdgId() << "\n";
-			std::cout << "mother:            " << in.mother(0)->polarP4() << "\t" << in.mother(0)->pdgId()<< "\n";
-			std::cout << "associated mother: " << out.mother << "\n";
+			std::cout << "KGenPhotonProducer::fillSingle :child:             " << out.p4 << "\t" << in.pdgId() << "\n";
+			std::cout << "KGenPhotonProducer::fillSingle :mother:            " << in.mother(0)->polarP4() << "\t" << in.mother(0)->pdgId()<< "\n";
+			std::cout << "KGenPhotonProducer::fillSingle :associated mother: " << out.mother << "\n";
 
-			std::cout << "isPhoton? " << out.isPhoton() << "\n";
-			std::cout << "   isPi0? " << out.isPi0() << "\n";
+			std::cout << "KGenPhotonProducer::fillSingle :isPhoton? " << out.isPhoton() << "\n";
+			std::cout << "KGenPhotonProducer::fillSingle :   isPi0? " << out.isPi0() << "\n";
 		}
 	}
 	virtual bool acceptSingle(const KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotons>::SingleInputType &in)
@@ -75,7 +75,7 @@ protected:
 				|| std::abs(in.pdgId()) == 15
 			)
 			)
-			std::cout << "lepton: " <<in.pdgId() << "\t" << in.status() << "\t"<< in.polarP4() << "\n";
+			std::cout << "KGenPhotonProducer::fillSingle :lepton: " <<in.pdgId() << "\t" << in.status() << "\t"<< in.polarP4() << "\n";
 
 		if (in.numberOfMothers() == 0)
 			return false;

@@ -4,6 +4,12 @@
  *   Manuel Zeise <zeise@cern.ch>
  */
 
+// todo: input needed for global mu+tau_h(3prong) event fit:
+// - primary vertex refitted without tracks that belong to tau candidate
+// - secondary vertex fitted using only 3 tracks from 3-prong tau candidate
+// - reconstructed a1 candidate from 3 prongs, including covariance
+// - for muon leg: muon helix parameters with covariance
+
 #ifndef KAPPA_PFTAUPRODUCER_H
 #define KAPPA_PFTAUPRODUCER_H
 
@@ -36,31 +42,31 @@ protected:
 		out.cntSignalChargedHadrCands = in.signalPFChargedHadrCands().size();
 		out.cntSignalGammaCands = in.signalPFGammaCands().size();
 		out.cntSignalNeutrHadrCands = in.signalPFNeutrHadrCands().size();
+		out.cntSignalPiZeroCands = in.signalPiZeroCandidates().size();
 		out.cntSignalCands = in.signalPFCands().size();
+		out.hpsDecayMode = in.decayMode();
 
 		if(in.leadPFCand().isNonnull())
 		{
-			// Vertex
-			out.vertex.fake = false;
-			out.vertex.position = in.leadPFCand()->vertex();
-			out.vertex.chi2 = in.leadPFCand()->vertexChi2();
-			out.vertex.nDOF = in.leadPFCand()->vertexNdof();
-			out.vertex.nTracks = 1;
-			out.vertex.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >(); //in.leadPFCand()->vertexCovariance());
-/*			out.errDxy = in.leadPFCand()->dxyError();
-			out.errDz = in.leadPFCand()->dzError();*/
+			// position of point of closest approach to beamspot
+			out.vertexPoca.fake = false;
+			out.vertexPoca.position = in.leadPFCand()->vertex();
+			out.vertexPoca.chi2 = -1; // POCA is no fitted vertex -> no chi2, nDOF, cov. available
+			out.vertexPoca.nDOF = -1;
+			out.vertexPoca.nTracks = 1;
+			out.vertexPoca.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >(); //in.leadPFCand()->vertexCovariance());
 
 			copyP4(in.leadPFCand()->p4(), out.leadTrack);
 		}
 		else
 		{
-			out.vertex.fake = true;
+			out.vertexPoca.fake = true;
 		}
 
 		if(in.leadPFChargedHadrCand().isNonnull())
 			copyP4(in.leadPFChargedHadrCand()->p4(), out.leadChargedHadrTrack);
 		if(in.leadPFNeutralCand().isNonnull())
-			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralTrack);
+			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralTrack); // leading PFGamma candidate
 
 		out.cntSignalTracks = in.signalTracks().size();
 	}

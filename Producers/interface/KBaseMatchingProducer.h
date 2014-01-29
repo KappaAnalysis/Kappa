@@ -38,7 +38,7 @@ public:
 		addPSetRequests(event, setup);
 		addRegExRequests(event, setup);
 		if (this->verbosity > 0)
-			std::cout << "Accepted number of matched products: " << matchingCounter << std::endl;
+			std::cout << "KBaseMatchingProducer::onFirstEvent : Accepted number of matched products: " << matchingCounter << std::endl;
 		return KBaseProducerWP::onFirstEvent(event, setup);
 	}
 
@@ -103,7 +103,7 @@ private:
 		for (std::vector<edm::Provenance const*>::const_iterator piter = plist.begin(); piter < plist.end(); ++piter)
 		{
 			if (this->verbosity > 1)
-				std::cout << "Product: ";
+				std::cout << "KBaseMatchingProducer::addRegExRequests : Product: ";
 
 			// Check if branch was selected
 			if (!(this->regexMatch((*piter)->branchName(), vsWhitelist, vsBlacklist)
@@ -115,18 +115,18 @@ private:
 			// Rename branch if requested
 			if ((this->verbosity > 0) && (vsRename.size() > 0))
 			{
-				std::cout << " => Producer " + this->producerLabel + " will use: ";
+				std::cout << "\t\t => Producer " + this->producerLabel + " will use: ";
 				std::cout.flush();
 			}
 			const std::string targetName = this->regexRename((*piter)->moduleLabel(), vsRename);
 			if ((this->verbosity > 0) && (vsRename.size() > 0))
-				std::cout << targetName << " as matching name." << std::endl;
+				std::cout << targetName << "\t\t as matching name." << std::endl;
 
 			// Filter on the new name
 			if (!this->regexMatch(targetName, vsRenameWhitelist, vsRenameBlacklist))
 			{
 				if (this->verbosity > 0)
-					std::cout << " => Branch was vetoed by post-rename Black/Whitelist!" << std::endl;
+					std::cout << "\t\t => Branch was vetoed by post-rename Black/Whitelist!" << std::endl;
 				continue;
 			}
 
@@ -134,14 +134,14 @@ private:
 			if (std::find(vsMatched.begin(), vsMatched.end(), targetName) != vsMatched.end())
 			{
 				if (this->verbosity > 0)
-					std::cout << " => Matching name was already processed!" << std::endl;
+					std::cout << "\t\t => Matching name was already processed!" << std::endl;
 				continue;
 			}
 
 			// Crate selection tag
 			const edm::InputTag tag((*piter)->moduleLabel(), (*piter)->productInstanceName(), (*piter)->processName());
 			if (this->verbosity > 1)
-				std::cout << " => Branch will be selected with " << tag << std::endl;
+				std::cout << "\t\t => Branch will be selected with " << tag << std::endl;
 
 			// Notify about match
 			if (!onMatchingInput(targetName, (*piter)->branchName(), this->psBase, tag))

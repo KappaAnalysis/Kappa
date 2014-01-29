@@ -37,6 +37,7 @@ public:
 
 			discrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("discrWhitelist");
 			discrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("discrBlacklist");
+			tauDiscrProcessName[names[i]] = pset.getParameter< std::string >("tauDiscrProcessName");
 		}
 	}
 
@@ -54,9 +55,6 @@ public:
 			for (edm::ProductRegistry::ProductList::const_iterator it = reg->productList().begin(); it != reg->productList().end(); ++it)
 			{
 				edm::BranchDescription desc = it->second;
-
-				//if (tauDiscrProcessName != "" && desc.processName() != tauDiscrProcessName)
-				//	continue;
 
 				const std::string& name = desc.moduleLabel();
 
@@ -98,6 +96,7 @@ public:
 
 		// Get tau discriminators to use for this event
 		currentDiscriminators = discrMetadataMap[name]->discriminatorNames;
+		currentDiscrProcessName = tauDiscrProcessName[name];
 		currentDiscriminatorMap = tauDiscriminatorBitMap[name];
 
 		// Continue normally
@@ -120,6 +119,10 @@ public:
 		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
 		{
 			std::string discr_name = iter->provenance()->moduleLabel();
+			std::string process_name = iter->provenance()->processName();
+			if (this->verbosity > 1)
+						  std::cout << "KTauProducer: moduleLabel: " << discr_name << " \n" << "              processName: " << iter->provenance()->processName() << " \n";
+
 			std::map<std::string, unsigned int>::const_iterator name_iter = currentDiscriminatorMap.find(discr_name);
 			if(name_iter != currentDiscriminatorMap.end())
 			{
@@ -130,8 +133,10 @@ public:
 				// algorithm.
 				for(std::vector<std::string>::const_iterator use_iter = currentDiscriminators.begin(); use_iter != currentDiscriminators.end(); ++use_iter)
 				{
-					if(this->regexMatch(discr_name, *use_iter))
+					if(this->regexMatch(discr_name, *use_iter) && this->regexMatch(process_name,currentDiscrProcessName))
 					{
+					        if (this->verbosity > 5)
+						  std::cout << "KTauProducer: access " << discr_name << " with id = " << (**iter).keyProduct().id() << " using tau with id = " << tauRef.id() << " \n";
 						// We have a match, so evaluate the discriminator
 						if( (**iter)[tauRef] > 0.5)
 							out.discr |= (1ull << name_iter->second);
@@ -145,6 +150,7 @@ public:
 protected:
 	std::map<std::string, std::vector<std::string> > discrWhitelist, discrBlacklist;
 	std::map<std::string, KTauDiscriminatorMetadata *> discrMetadataMap;
+	std::map<std::string, std::string > tauDiscrProcessName;
 	std::map<std::string, std::map<std::string, unsigned int> > tauDiscriminatorBitMap;
 
 	virtual bool isCorrectType(std::string className) = 0;
@@ -154,6 +160,7 @@ private:
 	std::vector<edm::Handle<TauDiscriminator> > currentTauDiscriminators; // discriminators found in event
 
 	std::vector<std::string> currentDiscriminators; // discriminators to use (based on PSet)
+	std::string currentDiscrProcessName; // process name to use for accessing discriminators (based on PSet)
 	std::map<std::string, unsigned int> currentDiscriminatorMap; // discriminator-to-bit mapping to use (based on PSet)
 };
 #endif

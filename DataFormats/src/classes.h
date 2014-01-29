@@ -7,6 +7,7 @@
 #include "../interface/KLorentzVector.h"
 #include "../interface/KMetadata.h"
 #include "../interface/KMuon.h"
+#include "../interface/KElectron.h"
 #include "../interface/KTau.h"
 #include "../interface/KTrack.h"
 
@@ -35,6 +36,8 @@ namespace
 		KDataMET dict_KDataMET;
 		KDataMuon dict_KDataMuon;
 		KDataMuons dict_KDataMuons;
+		KDataElectron dict_KDataElectron;
+		KDataElectrons dict_KDataElectrons;
 		KDataPFJet dict_KDataPFJet;
 		KDataPFJets dict_KDataPFJets;
 		KDataPFMET dict_KDataPFMET;

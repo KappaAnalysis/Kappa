@@ -85,6 +85,10 @@
 #pragma link C++ class std::vector<KDataMuon>+;
 #pragma link C++ typedef KDataMuons;
 
+#pragma link C++ struct KDataElectron+;
+#pragma link C++ class std::vector<KDataElectron>+;
+#pragma link C++ typedef KDataElectrons;
+
 #pragma link C++ struct KTauDiscriminatorMetadata+;
 #pragma link C++ struct KMuonMetadata+;
 

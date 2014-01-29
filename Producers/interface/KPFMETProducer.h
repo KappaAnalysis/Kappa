@@ -52,7 +52,7 @@ protected:
 		}
 		else
 			if (verbosity > 1)
-				std::cout << "Found " << in.size() << " PFMET objects!" << std::endl;
+				std::cout << "KPFMETProducer::fillProduct : Found " << in.size() << " PFMET objects!" << std::endl;
 	}
 };
 
