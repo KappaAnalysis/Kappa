@@ -37,14 +37,16 @@ struct KDataPFTau : KDataTau
 	int nSignalChargedHadrCands, nSignalGammaCands, nSignalNeutrHadrCands, nSignalPiZeroCands, nSignalCands;
 	int nSignalTracks;
 
-	RMDataLV leadTrack;
-	RMDataLV leadChargedHadrTrack;
-	RMDataLV leadNeutralTrack;
+	// todo: does it make sense to store candidates here?
+	// Then dxy/z functions could be implemented like for tracks
+	// and the poca could be removed
+	RMDataLV leadCand;
+	RMDataLV leadChargedHadrCand;
+	RMDataLV leadNeutralCand;
 
-	KDataVertex vertexPoca; // point of closest approach to beamspot
+	RMPoint poca; // point of closest approach to beamspot
 
 	//bool longLived
-
 	int hpsDecayMode; // hadronic decay mode as identified by HPS algorithm
 };
 typedef std::vector<KDataPFTau> KDataPFTaus;
