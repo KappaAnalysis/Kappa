@@ -149,14 +149,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Vertex = cms.PSet(kappaNoCut, kappaNoRename,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring(".*offlinePrimaryVertices.*"),
+		whitelist = cms.vstring(".*fflinePrimaryVertices.*"),
 		blacklist = cms.vstring(),
 	),
 
 	VertexSummary = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring(".*offlinePrimaryVertices.*"),
+		whitelist = cms.vstring(".*fflinePrimaryVertices.*"),
 		blacklist = cms.vstring(),
 
 		rename = cms.vstring("$ => Summary"),
@@ -226,14 +226,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 	GenParticles = cms.PSet(kappaNoCut, kappaNoRegEx,
 		genParticles = cms.PSet(
 			src = cms.InputTag("genParticles"),
-			selectedStatus = cms.int32(8),      # select, if (1<<status & selectedStatus) or selectedStatus==0
+			selectedStatus = cms.int32(0),      # select, if (1<<status & selectedStatus) or selectedStatus==0
 			selectedParticles = cms.vint32(),   # empty = all pdgIds possible
 		),
-		genStableMuons = cms.PSet(
-			src = cms.InputTag("genParticles"),
-			selectedStatus = cms.int32(2),      # select, if (1<<status & selectedStatus) or selectedStatus==0
-			selectedParticles = cms.vint32(13, -13),   # empty = all pdgIds possible
-		),
+		#genStableMuons = cms.PSet(
+		#	src = cms.InputTag("genParticles"),
+		#	selectedStatus = cms.int32(2),      # select, if (1<<status & selectedStatus) or selectedStatus==0
+		#	selectedParticles = cms.vint32(13, -13),   # empty = all pdgIds possible
+		#),
 	),
 
 	GenPhotons = cms.PSet(kappaNoCut, kappaNoRegEx,
@@ -396,7 +396,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_ak5PFJets.*"),
-		blacklist = cms.vstring("Tau.*"),
+		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim"),
 
 		rename = cms.vstring(
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8"
@@ -434,7 +434,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
 			discrWhitelist = cms.vstring("hpsPFTau*"),
 			discrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
-                        tauDiscrProcessName = cms.string("KAPPA")
+			tauDiscrProcessName = cms.string("KAPPA"),
 		),
 	),
 
