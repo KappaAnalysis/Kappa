@@ -65,11 +65,11 @@ public:
 		//out.isMomentumCorrected = in.isMomentumCorrected();
 		out.trackMomentumError = in.trackMomentumError();
 		//out.electronMomentumError = in.electronMomentumError();
-		out.electronIDmvaTrigV0 = in.electronID("mvaTrigV0");
-		out.electronIDmvaTrigNoIPV0 = in.electronID("mvaTrigNoIPV0");
-		out.electronIDmvaNonTrigV0 = in.electronID("mvaNonTrigV0");
+		out.idMvaTrigV0 = in.electronID("mvaTrigV0");
+		out.idMvaTrigNoIPV0 = in.electronID("mvaTrigNoIPV0");
+		out.idMvaNonTrigV0 = in.electronID("mvaNonTrigV0");
 
-		out.numberOfLostHits = in.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
+		out.nLostHits = in.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
 
 	const reco::GsfElectron* tmpGsfElectron = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
 	out.hasConversionMatch = ConversionTools::hasMatchedConversion(*tmpGsfElectron, hConversions, BeamSpot->position(), true, 2.0, 1e-6, 0);

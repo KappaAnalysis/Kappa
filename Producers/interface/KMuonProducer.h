@@ -122,8 +122,8 @@ public:
 
 		// Charge, ...
 		out.charge = in.charge();
-		out.numberOfChambers = in.numberOfChambers();
-		out.numberOfMatches = in.numberOfMatches();
+		out.nChambers = in.numberOfChambers();
+		out.nMatches = in.numberOfMatches();
 		out.caloComp = in.caloCompatibility();
 		out.segComp = muon::segmentCompatibility(in);
 

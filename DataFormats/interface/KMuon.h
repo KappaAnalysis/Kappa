@@ -46,8 +46,8 @@ struct KDataMuon : KDataLV
 
 	float caloComp, segComp;
 
-	int numberOfChambers;
-	int numberOfMatches;
+	int nChambers;
+	int nMatches;
 
 	unsigned long long hltMatch;
 

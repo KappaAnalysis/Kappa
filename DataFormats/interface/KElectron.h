@@ -45,11 +45,11 @@ struct KDataElectron : KDataLV
 
 	float mva; // PF data
 	int status;
-	float electronIDmvaTrigV0;
-	float electronIDmvaTrigNoIPV0;
-	float electronIDmvaNonTrigV0;
+	float idMvaTrigV0;
+	float idMvaTrigNoIPV0;
+	float idMvaNonTrigV0;
 
-	int numberOfLostHits;
+	int nLostHits;
 
 	bool hasConversionMatch;
 };
