@@ -79,12 +79,12 @@ public:
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		//todo: füllen der hConversions
+		//todo: fill hConversions
 		edm::InputTag tagConversionSource = pset.getParameter<edm::InputTag>("allConversions");
-		cEvent->getByLabel( tagConversionSource, hConversions);
+		cEvent->getByLabel(tagConversionSource, hConversions);
 
-		edm::InputTag beamSpotSource =pset.getParameter<edm::InputTag>("offlineBeamSpot");
-		cEvent->getByLabel( beamSpotSource, BeamSpot);
+		edm::InputTag beamSpotSource = pset.getParameter<edm::InputTag>("offlineBeamSpot");
+		cEvent->getByLabel(beamSpotSource, BeamSpot);
 
 		// Continue normally
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>::fillProduct(in, out, name, tag, pset);

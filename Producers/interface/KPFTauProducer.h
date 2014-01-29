@@ -39,11 +39,11 @@ protected:
 
 		// Fill additional fields from KDataPFTau
 		out.emFraction = in.emFraction();
-		out.cntSignalChargedHadrCands = in.signalPFChargedHadrCands().size();
-		out.cntSignalGammaCands = in.signalPFGammaCands().size();
-		out.cntSignalNeutrHadrCands = in.signalPFNeutrHadrCands().size();
-		out.cntSignalPiZeroCands = in.signalPiZeroCandidates().size();
-		out.cntSignalCands = in.signalPFCands().size();
+		out.nSignalChargedHadrCands = in.signalPFChargedHadrCands().size();
+		out.nSignalGammaCands = in.signalPFGammaCands().size();
+		out.nSignalNeutrHadrCands = in.signalPFNeutrHadrCands().size();
+		out.nSignalPiZeroCands = in.signalPiZeroCandidates().size();
+		out.nSignalCands = in.signalPFCands().size();
 		out.hpsDecayMode = in.decayMode();
 
 		if(in.leadPFCand().isNonnull())
@@ -68,7 +68,7 @@ protected:
 		if(in.leadPFNeutralCand().isNonnull())
 			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralTrack); // leading PFGamma candidate
 
-		out.cntSignalTracks = in.signalTracks().size();
+		out.nSignalTracks = in.signalTracks().size();
 	}
 };
 

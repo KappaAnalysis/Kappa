@@ -21,8 +21,8 @@ struct KDataElectron : KDataLV
 	bool isEB, isEE;
 
 
-	float dr03TkSumPt;					//track iso deposit with electron footprint removed.
-	float dr03EcalRecHitSumEt;			//ecal iso deposit with electron footprint removed.
+	float dr03TkSumPt;				//track iso deposit with electron footprint removed.
+	float dr03EcalRecHitSumEt;		//ecal iso deposit with electron footprint removed.
 	float dr03HcalDepth1TowerSumEt;	//hcal depht 1 iso deposit with electron footprint removed.
 	float dr03HcalDepth2TowerSumEt;	//hcal depht 2 iso deposit with electron footprint removed. 
 
