@@ -20,16 +20,32 @@ struct KDataElectron : KDataLV
 	char charge;
 	bool isEB, isEE;
 
+/* if needed, all these could be easily added in one byte as is done for muons:
+https://github.com/cms-sw/cmssw/blob/CMSSW_5_3_X/DataFormats/EgammaCandidates/interface/GsfElectron.h
+    bool isEB(): true if the electron is in ECAL Barrel.
+    bool isEE(): true if the electron is in ECAL Endcaps.
+    bool isEBEEGap(): true if the electron is in the crack between EB and EE.
+    bool isEBEtaGap(): true if the electron is in EB, and in the eta gaps between modules.
+    bool isEBPhiGap(): true if the electron is in EB, and in the phi gaps between modules.
+    bool isEEDeeGap(): true if the electron is in EE, and in the gaps between dees.
+    bool isEERingGap(): true if the electron is in EE, and in the gaps between rings.
 
-	float dr03TkSumPt;				//track iso deposit with electron footprint removed.
-	float dr03EcalRecHitSumEt;		//ecal iso deposit with electron footprint removed.
-	float dr03HcalDepth1TowerSumEt;	//hcal depht 1 iso deposit with electron footprint removed.
-	float dr03HcalDepth2TowerSumEt;	//hcal depht 2 iso deposit with electron footprint removed. 
+Within the electron, the corresponding values are grouped into an attribute called fiducialFlags_, of type FiducialFlags. One will see this attribute when TBrowsing an edm ROOT file. The global getter CMS.GsfElectron::fiducialFlags() gives direct access to the attribute. Also, a few more utility methods are combining some of the flags:
 
-	float dr04TkSumPt;
-	float dr04EcalRecHitSumEt;
-	float dr04HcalDepth1TowerSumEt;
-	float dr04HcalDepth2TowerSumEt;
+    bool isEBGap(): true if isEBEtaGap() or isEBPhiGap().
+    bool isEEGap(): true if isEEDeeGap() or isEERingGap().
+    bool isGap(): true if isEBEEGap() or isEBGap() or isEEGap().
+*/
+
+	float trackIso03;		// dr03TkSumPt: track iso deposit with electron footprint removed.
+	float ecalIso03;		// dr03EcalRecHitSumEt: ecal iso deposit with electron footprint removed.
+	float hcal1Iso03;		// dr03HcalDepth1TowerSumEt: hcal depht 1 iso deposit with electron footprint removed.
+	float hcal2Iso03;		// dr03HcalDepth2TowerSumEt: hcal depht 2 iso deposit with electron footprint removed.
+
+	float trackIso04;
+	float ecalIso04;
+	float hcal1Iso04;
+	float hcal2Iso04;
 
 	bool ecalDrivenSeed;
 	bool ecalDriven;

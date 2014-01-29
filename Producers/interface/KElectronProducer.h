@@ -37,7 +37,6 @@ public:
 		// electron track
 		KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
 
-
 		out.isEB = in.isEB();
 		out.isEE = in.isEE();
 
@@ -48,15 +47,15 @@ public:
 		out.ecalDriven = in.ecalDriven();
 
 		// isolation
-		out.dr03TkSumPt = in.dr03TkSumPt();
-		out.dr03EcalRecHitSumEt = in.dr03EcalRecHitSumEt();
-		out.dr03HcalDepth1TowerSumEt = in.dr03HcalDepth1TowerSumEt();
-		out.dr03HcalDepth2TowerSumEt = in.dr03HcalDepth2TowerSumEt();
+		out.trackIso03 = in.dr03TkSumPt();
+		out.ecalIso03 = in.dr03EcalRecHitSumEt();
+		out.hcal1Iso03 = in.dr03HcalDepth1TowerSumEt();
+		out.hcal2Iso03 = in.dr03HcalDepth2TowerSumEt();
 
-		out.dr04TkSumPt = in.dr04TkSumPt();
-		out.dr04EcalRecHitSumEt = in.dr04EcalRecHitSumEt();
-		out.dr04HcalDepth1TowerSumEt = in.dr04HcalDepth1TowerSumEt();
-		out.dr04HcalDepth2TowerSumEt = in.dr04HcalDepth2TowerSumEt();
+		out.trackIso04 = in.dr04TkSumPt();
+		out.ecalIso04 = in.dr04EcalRecHitSumEt();
+		out.hcal1Iso04 = in.dr04HcalDepth1TowerSumEt();
+		out.hcal2Iso04 = in.dr04HcalDepth2TowerSumEt();
 
 		// Corrections
 		out.isEcalEnergyCorrected = in.isEcalEnergyCorrected();
