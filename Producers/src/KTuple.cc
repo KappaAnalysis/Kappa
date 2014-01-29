@@ -201,8 +201,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KVertexSummaryProducer>(active[i]);
 
 /* are these still used?
-		else if (active[i] == "TriggerObjects")
-			addProducer<KTriggerObjectProducer>(psConfig, active[i]);
 		else if (active[i] == "L1Muons")
 			addProducer<KL1MuonProducer>(psConfig, active[i]);
 		else if (active[i] == "L2MuonTrajectorySeed")
