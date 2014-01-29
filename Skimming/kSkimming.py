@@ -14,12 +14,22 @@ process.source.fileNames      = cms.untracked.vstring('root://eoscms//eos/cms/st
 process.maxEvents.input			= 100											## number of events to be processed (-1 = all in file)
 process.kappaTuple.outputFile	= 'kappaTuple.root'						## name of output file
 process.kappaTuple.verbose		= cms.int32(0)								## verbosity level
+datatype = 'mc'
+data = (datatype == 'data')
+
 
 ## ------------------------------------------------------------------------
 # General configuration
 
 process.kappaTuple.active		= cms.vstring('VertexSummary')		## produce Metadata,
 process.kappaTuple.active		+= cms.vstring('BeamSpot')				## save Beamspot,
+
+if data:
+	process.kappaTuple.active		+= cms.vstring('DataMetadata')		## produce Metadata,
+else:
+	process.kappaTuple.active		+= cms.vstring('GenMetadata')			## produce Metadata,
+	process.kappaTuple.active		+= cms.vstring('GenParticles')		## produce Metadata,
+
 
 ## ------------------------------------------------------------------------
 # Configure Electrons
