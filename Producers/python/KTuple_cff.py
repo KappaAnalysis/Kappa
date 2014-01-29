@@ -119,7 +119,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	TriggerObjects2 = cms.PSet(kappaNoRegEx,
+	TriggerObjects = cms.PSet(kappaNoRegEx,
 		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
 		triggerObjects = cms.vstring(),
 	),

@@ -3,8 +3,8 @@
  *   Manuel Zeise <zeise@cern.ch>
  */
 
-#ifndef KAPPA_TRIGGEROBJECTPRODUCER2_H
-#define KAPPA_TRIGGEROBJECTPRODUCER2_H
+#ifndef KAPPA_TRIGGEROBJECTPRODUCER_H
+#define KAPPA_TRIGGEROBJECTPRODUCER_H
 
 #include "KBaseMultiProducer.h"
 #include "KMetadataProducer.h"
@@ -23,10 +23,10 @@ struct KTrgObjSorter
 	const KTriggerObjects &to;
 };
 
-class KTriggerObjectProducer2 : public KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjects>
+class KTriggerObjectProducer : public KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjects>
 {
 public:
-	KTriggerObjectProducer2(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+	KTriggerObjectProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjects>(cfg, _event_tree, _run_tree, getLabel(), true)
 	{
 		trgInfos = new KTriggerInfos;
@@ -35,7 +35,7 @@ public:
 			cfg.getParameter<edm::InputTag>("hltTag"));
 	}
 
-	static const std::string getLabel() { return "TriggerObjects2"; }
+	static const std::string getLabel() { return "TriggerObjects"; }
 
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
@@ -62,7 +62,7 @@ protected:
 		std::string &outputModuleName, std::vector<size_t> &outputIdxList)
 	{
 		if (verbosity > 2)
-			std::cout << "KTriggerObjectProducer2::fillTriggerObject : Processing " << name << "..." << std::endl;
+			std::cout << "KTriggerObjectProducer::fillTriggerObject : Processing " << name << "..." << std::endl;
 		if (fwkIdx >= 0)
 		{
 			const std::string currentModuleName = triggerEventHandle.filterTag(fwkIdx).label();
@@ -99,7 +99,7 @@ protected:
 	{
 		HLTConfigProvider &hltConfig(KMetadataProducerBase::hltConfig);
 		if (verbosity > 0)
-			std::cout << "KTriggerObjectProducer2::fillProduct : " << hltConfig.tableName() << std::endl;
+			std::cout << "KTriggerObjectProducer::fillProduct : " << hltConfig.tableName() << std::endl;
 
 		std::map<size_t, size_t> toFWK2Kappa;
 
@@ -114,7 +114,7 @@ protected:
 			// Determine modules writing L1L2 / HLT objects
 			const std::vector<std::string> &moduleLabels(hltConfig.moduleLabels(hltIdx));
 			if (verbosity > 0)
-				std::cout << "KTriggerObjectProducer2::fillProduct : " << hltConfig.triggerName(hltIdx) << ": ";
+				std::cout << "KTriggerObjectProducer::fillProduct : " << hltConfig.triggerName(hltIdx) << ": ";
 			int idxL1L2 = -1, idxHLT = -1;
 			for (size_t m = 0; m < moduleLabels.size(); ++m)
 			{
