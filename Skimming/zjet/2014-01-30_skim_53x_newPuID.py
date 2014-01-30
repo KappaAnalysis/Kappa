@@ -465,25 +465,8 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
     for active in additional_actives:
         process.kappatuple.active.append(active)
 
-    # custom whitelist, otherwise the HLT trigger bits are not sufficient!
-    process.kappatuple.Metadata.hltWhitelist = cms.vstring(
-        # matches 'HLT_Mu17_Mu8_v7' etc.
-        "^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
-        # matches 'HLT_DoubleMu7_v8' etc.
-        "^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
-    )
-    process.kappatuple.Metadata.tauDiscrProcessName = cms.untracked.string("XXXXXXXXX")
-    process.kappatuple.GenParticles.genParticles.selectedStatus = cms.int32(31)
-
-    # use the good objects not temporary ones
-    process.kappatuple.VertexSummary.whitelist = cms.vstring(".*fflinePrimaryVertices")
-    process.kappatuple.VertexSummary.blacklist += cms.vstring(".*QG.*")
-    process.kappatuple.LV.whitelist += cms.vstring("recoCaloJets.*")
     process.kappatuple.LV.blacklist += cms.vstring("AK5TrackJets", ".*KT.*")
-    process.kappatuple.PFJets.whitelist = cms.vstring("recoPFJets.*kappaSkim")
     process.kappatuple.PFMET.blacklist = cms.vstring("pfType1.*CorrectedMet")
-    process.kappatuple.PFJets.blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", ".*ak5.*", ".*ak7.*", ".*QG.*", ".*KT.*")
-    del process.kappatuple.GenParticles.genStableMuons
 
     process.pathKappa = cms.Path(
         process.goodMuons * process.twoGoodMuons * process.kappatuple
