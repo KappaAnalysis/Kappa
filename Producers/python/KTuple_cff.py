@@ -54,34 +54,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"^HLT_(Iso)?Mu([0-9]+)_PFTau([0-9]+)(_v[[:digit:]]+)?$",
 		),
 		hltBlacklist = cms.vstring(
-			".*AlCa.*",
-			".*NoBPTX.*",
-			".*ForwardBackward.*",
-			".*L1Tech.*",
-			".*CentralJet.*",
-			".*BTag.*",
-			"^HLT_Mu([0-7])(_v[[:digit:]]+)?$",
-			"^HLT_MET[0-9]*_.*Jet.*",
-			"^HLT_Mu([0-9]+)_.*Jet([0-9]+).*",
-			"^HLT_JetE30_NoBPTX.*",
-			"^HLT_Ele25_CaloIdVT_TrkIdT_.*",
-			".*_CaloIdL.*",
-			".*_CaloIdT.*",
-			".*_CaloIdVT.*",
-			"^HLT_ExclDiJet60_.*",
-			"^HLT_CentralJet80_MET.*",
-			"^HLT_Mu*_HT",
-			"^HLT_DiJet.*_PT.*",
-			"^HLT_Mu([0-9]+)_(Di|Tri)CentralJet.*",
-			"^HLT_(Iso|Double)?Mu.*_HT.*",
-			".*HT.*_DoubleLooseIsoPFTau.*",
-			".*HT.*_DoubleDisplacedJet.*",
-			"^HLT_L[12].*",
-			"^HLT_QuadJet.*_IsoPFTau.*",
-			"^HLT_DiJet([0-9]+)_MET([0-9]+)_.*",
-			"^HLT_EightJet.*",
-			"^HLT_FatJetMass.*",
-			"^HLT_.*DoubleIsoPFTau([0-9]+)_.*"
 		),
 		printHltList = cms.bool(False),
 
@@ -93,111 +65,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		printErrorsAndWarnings = cms.bool(False),
 	),
 
-	TriggerObjects = cms.PSet(
-		kappaNoRegEx,
-		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
-		autoTriggerObjects = cms.bool(True),
-		triggerObjects = cms.vstring(
-			# L1 (2010/2011)
-			"hltL1sL1SingleMu7",
-			"hltL1sL1SingleMu10",
-			"hltL1sL1SingleMu12",
-
-			# HLT_MuX (2010)
-			"hltSingleMu7L2Filtered5",
-			"hltSingleMu7L3Filtered7",
-			"hltSingleMu7L3Filtered8",
-			"hltSingleMu9L3Filtered9",
-			"hltSingleMu11L3Filtered11",
-			"hltSingleMu13L3Filtered13",
-			"hltSingleMu15L3Filtered15",
-			"hltSingleMu17L3Filtered17",
-			"hltSingleMu19L3Filtered19",
-			"hltSingleMu21L3Filtered21",
-			"hltSingleMu21L3Filtered25",
-
-			# HLT_MuX (2011)
-			"hltSingleMu12L3Filtered12",
-			"hltL3Muon15",					# no kidding, other version above
-			"hltSingleMu20L3Filtered20",
-			"hltSingleMu24L3Filtered24",
-			"hltSingleMu30L3Filtered30",
-			"hltSingleMu40L3Filtered40",
-			"hltL3fL1sMu16Eta2p1L1f0L2f16QL3Filtered40",
-			"hltSingleMuL3Filtered100",
-
-			# HLT_IsoMuX (2010)
-			"hltSingleMuIsoL3IsoFiltered9",
-			"hltSingleMuIsoL3IsoFiltered11",
-			"hltSingleMuIsoL3IsoFiltered13",
-			"hltSingleMuIsoL3IsoFiltered15",
-			"hltSingleMuIsoL3IsoFiltered17",
-
-			# HLT_IsoMuX (2011)
-			"hltSingleMuIsoL3IsoFiltered12",
-			#"hltSingleMuIsoL3IsoFiltered15",
-			#"hltSingleMuIsoL3IsoFiltered17",
-			"hltSingleMuIsoL3IsoFiltered17Eta21",
-			"hltSingleMuIsoL3IsoFiltered20Eta21",
-			"hltSingleMuIsoL3IsoFiltered24",
-			"hltSingleMuIsoL3IsoFiltered30",
-
-			# HLT with quality criteria
-			"hltSingleMu24L2QualL3Filtered24",
-			"hltSingleMu30L2QualL3Filtered30",
-			"hltSingleMu40L2QualL3Filtered40",
-			"hltSingleMuL2QualIsoL3IsoFiltered17",
-			"hltSingleMuL2QualIsoL3IsoFiltered20",
-			"hltSingleMuL2QualIsoL3IsoFiltered24",
-
-			# HLT_DoubleMu (2010+2011)
-			"hltL1sL1DoubleMuOpen",
-			"hltL1sL1DoubleMu0",
-			"hltL1sL1DoubleMu3",
-			"hltDiMuonL3PreFiltered0",
-			"hltDiMuonL3PreFiltered",
-			"hltDiMuonL3PreFiltered3",
-			"hltDiMuonL3PreFiltered4",
-			"hltDiMuonL3PreFiltered5",
-			"hltDiMuonL3PreFiltered6",
-			"hltDiMuonL3PreFiltered7",
-			"hltDiMuonL3PreFiltered8",
-			"hltDiMuonL3PreFiltered45",
-			"hltDoubleMu4ExclL3PreFiltered",
-			"hltDoubleMu5ExclL3PreFiltered",
-			"hltDoubleMu6ExclL3PreFiltered",
-
-			# andere
-			"hltL1sL1SingleMu0",
-			"hltL1sL1SingleMu3",
-			"hltL1sL1SingleMu20",
-			"hltL1SingleMu0L1Filtered0",
-			"hltL1SingleMu3L1Filtered0",
-			"hltL2Mu9L2Filtered9",
-			"hltL2Mu11L2Filtered11",
-			"hltSingleMu3L2Filtered3",
-			"hltSingleMu5L2Filtered4",
-			"hltSingleMu9L2Filtered7",
-			"hltSingleMu3L3Filtered3",
-			"hltSingleMu5L3Filtered5",
-			"hltSingleMuIsoL3IsoFiltered3",
-
-			# Objekte aus DoubleMu
-			"hltSingleMu13L3Filtered17",
-			"hltDiL3fL1sDoubleMu3p5L1f0L2f0L3Filtered45",
-			"hltDiMuonL1Filtered0",
-			"hltDiMuonL2PreFiltered0",
-			"hltDiMuonL3p5PreFiltered8",
-			"hltDiMuonL3PreFiltered5Eta2p15",
-			"hltL1DoubleMu3L3TriMuFiltered5",
-			"hltL2DoubleMu23NoVertexL2PreFiltered",
-			"hltL2DoubleMu30NoVertexL2PreFiltered",
-			"hltL2DoubleMu35NoVertexL2PreFiltered",
-			"hltL3fL1sDiMu3p5L1f3p5L2f3p5L3f6",
-			"hltL3Mu8Jet20L3Filtered8",
-			"hltSingleL2MuOpenL2PreFilteredNoVtx",
-		),
-	),
 
 	HCALNoiseSummary = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),
@@ -224,7 +91,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	TriggerObjects2 = cms.PSet(kappaNoRegEx,
+	TriggerObjects = cms.PSet(kappaNoRegEx,
 		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
 		triggerObjects = cms.vstring(),
 	),
@@ -254,14 +121,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Vertex = cms.PSet(kappaNoCut, kappaNoRename,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring(".*offlinePrimaryVertices.*"),
+		whitelist = cms.vstring(".*fflinePrimaryVertices.*"),
 		blacklist = cms.vstring(),
 	),
 
 	VertexSummary = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring(".*offlinePrimaryVertices.*"),
+		whitelist = cms.vstring(".*fflinePrimaryVertices.*"),
 		blacklist = cms.vstring(),
 
 		rename = cms.vstring("$ => Summary"),
@@ -331,14 +198,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 	GenParticles = cms.PSet(kappaNoCut, kappaNoRegEx,
 		genParticles = cms.PSet(
 			src = cms.InputTag("genParticles"),
-			selectedStatus = cms.int32(8),      # select, if (1<<status & selectedStatus) or selectedStatus==0
+			selectedStatus = cms.int32(0),      # select, if (1<<status & selectedStatus) or selectedStatus==0
 			selectedParticles = cms.vint32(),   # empty = all pdgIds possible
 		),
-		genStableMuons = cms.PSet(
-			src = cms.InputTag("genParticles"),
-			selectedStatus = cms.int32(2),      # select, if (1<<status & selectedStatus) or selectedStatus==0
-			selectedParticles = cms.vint32(13, -13),   # empty = all pdgIds possible
-		),
+		#genStableMuons = cms.PSet(
+		#	src = cms.InputTag("genParticles"),
+		#	selectedStatus = cms.int32(2),      # select, if (1<<status & selectedStatus) or selectedStatus==0
+		#	selectedParticles = cms.vint32(13, -13),   # empty = all pdgIds possible
+		#),
 	),
 
 	GenPhotons = cms.PSet(kappaNoCut, kappaNoRegEx,
@@ -501,7 +368,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_ak5PFJets.*"),
-		blacklist = cms.vstring("Tau.*"),
+		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim"),
 
 		rename = cms.vstring(
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8"
@@ -539,7 +406,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
 			discrWhitelist = cms.vstring("hpsPFTau*"),
 			discrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
-                        tauDiscrProcessName = cms.string("KAPPA")
+			tauDiscrProcessName = cms.string("KAPPA"),
 		),
 	),
 
