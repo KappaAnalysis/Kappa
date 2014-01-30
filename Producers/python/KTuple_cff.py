@@ -121,15 +121,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Vertex = cms.PSet(kappaNoCut, kappaNoRename,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring(".*fflinePrimaryVertices.*"),
+		whitelist = cms.vstring("offlinePrimaryVertices"),
 		blacklist = cms.vstring(),
 	),
 
 	VertexSummary = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring(".*fflinePrimaryVertices.*"),
-		blacklist = cms.vstring(),
+		whitelist = cms.vstring("offlinePrimaryVertices"),
+		blacklist = cms.vstring("Vertices(QG|WithBS)"),
 
 		rename = cms.vstring("$ => Summary"),
 		rename_whitelist = cms.vstring(),
@@ -368,7 +368,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_ak5PFJets.*"),
-		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim"),
+		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG"),
 
 		rename = cms.vstring(
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8"
