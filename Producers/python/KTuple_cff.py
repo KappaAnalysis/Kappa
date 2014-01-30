@@ -404,6 +404,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		#),
 		hpsPFTaus = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
+			preselectOnDiscriminators = cms.VInputTag("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
 			discrWhitelist = cms.vstring("hpsPFTau*"),
 			discrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
 			tauDiscrProcessName = cms.string("KAPPA"),

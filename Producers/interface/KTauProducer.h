@@ -35,6 +35,7 @@ public:
 
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
 
+			preselectionDiscr[names[i]] = pset.getParameter< std::vector<edm::InputTag> >("preselectOnDiscriminators");
 			discrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("discrWhitelist");
 			discrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("discrBlacklist");
 			tauDiscrProcessName[names[i]] = pset.getParameter< std::string >("tauDiscrProcessName");
@@ -95,6 +96,7 @@ public:
 			std::cout << "switching to " << name << " in Tau producer\n";
 
 		// Get tau discriminators to use for this event
+		currentPreselDiscr = preselectionDiscr[name];
 		currentDiscriminators = discrMetadataMap[name]->discriminatorNames;
 		currentDiscrProcessName = tauDiscrProcessName[name];
 		currentDiscriminatorMap = tauDiscriminatorBitMap[name];
@@ -121,7 +123,7 @@ public:
 			std::string discr_name = iter->provenance()->moduleLabel();
 			std::string process_name = iter->provenance()->processName();
 			if (this->verbosity > 1)
-						  std::cout << "KTauProducer: moduleLabel: " << discr_name << " \n" << "              processName: " << iter->provenance()->processName() << " \n";
+						  std::cout << "KTauProducer: moduleLabel: " << discr_name << " \n" << "              processName: " << process_name << " \n";
 
 			std::map<std::string, unsigned int>::const_iterator name_iter = currentDiscriminatorMap.find(discr_name);
 			if(name_iter != currentDiscriminatorMap.end())
@@ -146,8 +148,31 @@ public:
 			}
 		}
 	}
+	virtual bool acceptSingle(const typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::SingleInputType &in)
+	{
+		bool acceptTau = true;
+		edm::Ref<std::vector<TTau> > tauRef(this->handle, this->nCursor);
+
+		// preselect taus by given set of discriminators
+		// do not use regex matching here, as we do not want to apply any preselection by "accident"
+		for(typename std::vector<edm::InputTag >::const_iterator iter = currentPreselDiscr.begin(); iter != currentPreselDiscr.end(); ++iter)
+		{
+			edm::Handle<TauDiscriminator> discr;
+			if (!this->cEvent->getByLabel(*iter, discr)){
+				std::cout << "KTauProducer::acceptSingle : Could not get discriminator! \n";
+				continue; // keep the tau
+			}
+			if (!this->regexMatch(discr.provenance()->processName(),currentDiscrProcessName))
+				continue;
+
+			acceptTau = acceptTau &&  ( (*discr)[tauRef] > 0.5);
+		}
+
+		return acceptTau;
+	}
 
 protected:
+	std::map<std::string, std::vector<edm::InputTag> > preselectionDiscr;
 	std::map<std::string, std::vector<std::string> > discrWhitelist, discrBlacklist;
 	std::map<std::string, KTauDiscriminatorMetadata *> discrMetadataMap;
 	std::map<std::string, std::string > tauDiscrProcessName;
@@ -159,6 +184,7 @@ private:
 
 	std::vector<edm::Handle<TauDiscriminator> > currentTauDiscriminators; // discriminators found in event
 
+	std::vector<edm::InputTag> currentPreselDiscr; // discriminators to use for tau preselection (based on PSet)
 	std::vector<std::string> currentDiscriminators; // discriminators to use (based on PSet)
 	std::string currentDiscrProcessName; // process name to use for accessing discriminators (based on PSet)
 	std::map<std::string, unsigned int> currentDiscriminatorMap; // discriminator-to-bit mapping to use (based on PSet)
