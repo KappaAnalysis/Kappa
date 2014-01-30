@@ -48,14 +48,13 @@
 #include "../interface/KTowerProducer.h"
 #include "../interface/KTrackProducer.h"
 #include "../interface/KTrackSummaryProducer.h"
-#include "../interface/KTriggerObjectProducer2.h"
+#include "../interface/KTriggerObjectProducer.h"
 #include "../interface/KVertexProducer.h"
 #include "../interface/KVertexSummaryProducer.h"
 /* are these still used?
 #include "../interface/KHepMCPartonProducer.h"
 #include "../interface/KL1MuonProducer.h"
 #include "../interface/KL2MuonProducer.h"
-#include "../interface/KTriggerObjectProducer.h"
 */
 
 int KBaseProducer::verbosity = 0;
@@ -196,13 +195,11 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KTowerProducer>(active[i]);
 		addProducer<KTrackProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);
-		addProducer<KTriggerObjectProducer2>(active[i]);
+		addProducer<KTriggerObjectProducer>(active[i]);
 		addProducer<KVertexProducer>(active[i]);
 		addProducer<KVertexSummaryProducer>(active[i]);
 
 /* are these still used?
-		else if (active[i] == "TriggerObjects")
-			addProducer<KTriggerObjectProducer>(psConfig, active[i]);
 		else if (active[i] == "L1Muons")
 			addProducer<KL1MuonProducer>(psConfig, active[i]);
 		else if (active[i] == "L2MuonTrajectorySeed")

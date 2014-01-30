@@ -39,36 +39,27 @@ protected:
 
 		// Fill additional fields from KDataPFTau
 		out.emFraction = in.emFraction();
-		out.cntSignalChargedHadrCands = in.signalPFChargedHadrCands().size();
-		out.cntSignalGammaCands = in.signalPFGammaCands().size();
-		out.cntSignalNeutrHadrCands = in.signalPFNeutrHadrCands().size();
-		out.cntSignalPiZeroCands = in.signalPiZeroCandidates().size();
-		out.cntSignalCands = in.signalPFCands().size();
+		out.nSignalChargedHadrCands = in.signalPFChargedHadrCands().size();
+		out.nSignalGammaCands = in.signalPFGammaCands().size();
+		out.nSignalNeutrHadrCands = in.signalPFNeutrHadrCands().size();
+		out.nSignalPiZeroCands = in.signalPiZeroCandidates().size();
+		out.nSignalCands = in.signalPFCands().size();
 		out.hpsDecayMode = in.decayMode();
 
 		if(in.leadPFCand().isNonnull())
 		{
 			// position of point of closest approach to beamspot
-			out.vertexPoca.fake = false;
-			out.vertexPoca.position = in.leadPFCand()->vertex();
-			out.vertexPoca.chi2 = -1; // POCA is no fitted vertex -> no chi2, nDOF, cov. available
-			out.vertexPoca.nDOF = -1;
-			out.vertexPoca.nTracks = 1;
-			out.vertexPoca.covariance = ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >(); //in.leadPFCand()->vertexCovariance());
+			out.poca = in.leadPFCand()->vertex();
 
-			copyP4(in.leadPFCand()->p4(), out.leadTrack);
-		}
-		else
-		{
-			out.vertexPoca.fake = true;
+			copyP4(in.leadPFCand()->p4(), out.leadCand);
 		}
 
 		if(in.leadPFChargedHadrCand().isNonnull())
-			copyP4(in.leadPFChargedHadrCand()->p4(), out.leadChargedHadrTrack);
+			copyP4(in.leadPFChargedHadrCand()->p4(), out.leadChargedHadrCand);
 		if(in.leadPFNeutralCand().isNonnull())
-			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralTrack); // leading PFGamma candidate
+			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralCand); // leading PFGamma candidate
 
-		out.cntSignalTracks = in.signalTracks().size();
+		out.nSignalTracks = in.signalTracks().size();
 	}
 };
 

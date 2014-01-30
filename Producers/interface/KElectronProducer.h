@@ -37,7 +37,6 @@ public:
 		// electron track
 		KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
 
-
 		out.isEB = in.isEB();
 		out.isEE = in.isEE();
 
@@ -48,15 +47,15 @@ public:
 		out.ecalDriven = in.ecalDriven();
 
 		// isolation
-		out.dr03TkSumPt = in.dr03TkSumPt();
-		out.dr03EcalRecHitSumEt = in.dr03EcalRecHitSumEt();
-		out.dr03HcalDepth1TowerSumEt = in.dr03HcalDepth1TowerSumEt();
-		out.dr03HcalDepth2TowerSumEt = in.dr03HcalDepth2TowerSumEt();
+		out.trackIso03 = in.dr03TkSumPt();
+		out.ecalIso03 = in.dr03EcalRecHitSumEt();
+		out.hcal1Iso03 = in.dr03HcalDepth1TowerSumEt();
+		out.hcal2Iso03 = in.dr03HcalDepth2TowerSumEt();
 
-		out.dr04TkSumPt = in.dr04TkSumPt();
-		out.dr04EcalRecHitSumEt = in.dr04EcalRecHitSumEt();
-		out.dr04HcalDepth1TowerSumEt = in.dr04HcalDepth1TowerSumEt();
-		out.dr04HcalDepth2TowerSumEt = in.dr04HcalDepth2TowerSumEt();
+		out.trackIso04 = in.dr04TkSumPt();
+		out.ecalIso04 = in.dr04EcalRecHitSumEt();
+		out.hcal1Iso04 = in.dr04HcalDepth1TowerSumEt();
+		out.hcal2Iso04 = in.dr04HcalDepth2TowerSumEt();
 
 		// Corrections
 		out.isEcalEnergyCorrected = in.isEcalEnergyCorrected();
@@ -65,11 +64,9 @@ public:
 		//out.isMomentumCorrected = in.isMomentumCorrected();
 		out.trackMomentumError = in.trackMomentumError();
 		//out.electronMomentumError = in.electronMomentumError();
-		out.electronIDmvaTrigV0 = in.electronID("mvaTrigV0");
-		out.electronIDmvaTrigNoIPV0 = in.electronID("mvaTrigNoIPV0");
-		out.electronIDmvaNonTrigV0 = in.electronID("mvaNonTrigV0");
-
-		out.numberOfLostHits = in.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
+		out.idMvaTrigV0 = in.electronID("mvaTrigV0");
+		out.idMvaTrigNoIPV0 = in.electronID("mvaTrigNoIPV0");
+		out.idMvaNonTrigV0 = in.electronID("mvaNonTrigV0");
 
 	const reco::GsfElectron* tmpGsfElectron = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
 	out.hasConversionMatch = ConversionTools::hasMatchedConversion(*tmpGsfElectron, hConversions, BeamSpot->position(), true, 2.0, 1e-6, 0);
@@ -79,12 +76,12 @@ public:
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		//todo: füllen der hConversions
+		//todo: fill hConversions
 		edm::InputTag tagConversionSource = pset.getParameter<edm::InputTag>("allConversions");
-		cEvent->getByLabel( tagConversionSource, hConversions);
+		cEvent->getByLabel(tagConversionSource, hConversions);
 
-		edm::InputTag beamSpotSource =pset.getParameter<edm::InputTag>("offlineBeamSpot");
-		cEvent->getByLabel( beamSpotSource, BeamSpot);
+		edm::InputTag beamSpotSource = pset.getParameter<edm::InputTag>("offlineBeamSpot");
+		cEvent->getByLabel(beamSpotSource, BeamSpot);
 
 		// Continue normally
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>::fillProduct(in, out, name, tag, pset);

@@ -2,11 +2,11 @@
 #define KDATAFORMAT_H
 
 #include "KBasic.h"
+#include "KElectron.h"
 #include "KJetMET.h"
 #include "KLorentzVector.h"
 #include "KMetadata.h"
 #include "KMuon.h"
-#include "KElectron.h"
 #include "KTau.h"
 #include "KTrack.h"
 
