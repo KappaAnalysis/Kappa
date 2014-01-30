@@ -218,35 +218,39 @@ ak5PFCHSJetBtagging = cms.Sequence(
 
 ## ------------------------------------------------------------------------
 ## Pile-Up Jet ID
-from CMGTools.External.pujetidsequence_cff import *
+from RecoJets.JetProducers.PileupJetID_cfi import *
 
 # AK5
-ak5PFPuJetId = puJetId.clone(
+ak5PFPuJetId = pileupJetIdProducer.clone(
     jets = cms.InputTag("ak5PFJets"),
     applyJec = cms.bool(True),
     inputIsCorrected = cms.bool(False),
-)
+    residualsTxt     = cms.FileInPath("RecoMET/METPUSubtraction/data/dummy.txt"),
+    )
 
-ak5PFPuJetMva = puJetMva.clone(
+ak5PFPuJetMva = pileupJetIdProducer.clone(
     jets = cms.InputTag("ak5PFJets"),
     jetids = cms.InputTag("ak5PFPuJetId"),
     applyJec = cms.bool(True),
     inputIsCorrected = cms.bool(False),
-)
+    residualsTxt     = cms.FileInPath("RecoMET/METPUSubtraction/data/dummy.txt"),
+    )
 
 # AK5 CHS
-ak5PFCHSPuJetId = puJetIdChs.clone(
+ak5PFCHSPuJetId = pileupJetIdProducerChs.clone(
     jets = cms.InputTag("ak5PFJetsCHS"),
     applyJec = cms.bool(True),
     inputIsCorrected = cms.bool(False),
-)
+    residualsTxt     = cms.FileInPath("RecoMET/METPUSubtraction/data/dummy.txt"),
+    )
 
-ak5PFCHSPuJetMva = puJetMvaChs.clone(
+ak5PFCHSPuJetMva = pileupJetIdProducerChs.clone(
     jets = cms.InputTag("ak5PFJetsCHS"),
     jetids = cms.InputTag("ak5PFCHSPuJetId"),
     applyJec = cms.bool(True),
     inputIsCorrected = cms.bool(False),
-)
+    residualsTxt     = cms.FileInPath("RecoMET/METPUSubtraction/data/dummy.txt"),
+    )
 
 
 ## ------------------------------------------------------------------------

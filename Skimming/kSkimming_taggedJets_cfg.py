@@ -33,7 +33,7 @@ process.kappaTuple.PFTaggedJets = cms.PSet(
                          QGtagger = cms.InputTag("AK5PFJetsQGTagger"),
                          Btagger = cms.InputTag("ak5PF"),
                          PUJetID = cms.InputTag("ak5PFPuJetMva"),
-                         PUJetID_full = cms.InputTag("full53x"),
+                         PUJetID_full = cms.InputTag("full"),
                      ),
                      AK5PFTaggedJetsCHS = cms.PSet(
                          src = cms.InputTag("ak5PFJetsCHS"),
