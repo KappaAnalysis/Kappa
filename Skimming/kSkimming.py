@@ -83,7 +83,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=100, datatype='data'):
 
 if __name__ == "__main__":
 	# for grid-control:
-	# process = getBaseConfig('@GLOBALTAG@', datatype='@TYPE@')
+	process = getBaseConfig('@GLOBALTAG@', datatype='@TYPE@')
 
 	## test file for EKP
 	#testfile	= cms.untracked.vstring('file:/storage/8/dhaitz/testfiles/mc11.root')
@@ -92,4 +92,4 @@ if __name__ == "__main__":
 	## test file for RWTH
 	#testfile	= cms.untracked.vstring('file:/user/kargoll/testfiles/DYTauTau/DYTauTau_Summer12.root')
 
-	process = getBaseConfig(globaltag = 'FT53_V21A_AN6', testfile = testfile, maxevents = 100, datatype = 'mc')
+	#process = getBaseConfig(globaltag = 'FT53_V21A_AN6', testfile = testfile, maxevents = 100, datatype = 'mc')
