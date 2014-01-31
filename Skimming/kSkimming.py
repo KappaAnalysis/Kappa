@@ -11,7 +11,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=100, datatype='data'):
 	process.maxEvents.input			= maxevents										## number of events to be processed (-1 = all in file)
 	process.kappaTuple.outputFile	= 'kappaTuple.root'							## name of output file
 	process.kappaTuple.verbose		= cms.int32(0)									## verbosity level
-
+	process.GlobalTag.globaltag = globaltag + '::All'
 	data = (datatype == 'data')
 
 
