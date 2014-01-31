@@ -78,6 +78,7 @@ struct KEventMetadata
 	unsigned int nLumi;
 	unsigned int nRun;
 	int nBX;
+	float randomNumber;
 	bool hltFired (const std::string &name, const KLumiMetadata *lumimetadata) const
 	{
 		for (size_t i = 0; i < lumimetadata->hltNames.size(); ++i)
