@@ -38,6 +38,12 @@ struct KMuonMetadata
 	std::vector<std::string> hltNames;
 };
 
+struct KTaggerMetadata
+{
+	std::vector<std::string> taggernames;
+	std::vector<std::string> pujetidnames;
+};
+
 struct KGenLumiMetadata : public KLumiMetadata
 {
 	double filterEff;

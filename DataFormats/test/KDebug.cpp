@@ -82,26 +82,10 @@ std::ostream &operator<<(std::ostream &os, const KDataPFJet &jet)
 std::ostream &operator<<(std::ostream &os, const KDataPFTaggedJet &jet)
 {
 	os << static_cast<const KDataPFJet>(jet) << std::endl;
-	os << "\tQG (LH, MLP): " << jet.qgLikelihood << ", " << jet.qgMLP << std::endl;
-	os << "\tb-Tag (TCHE, TCHP, JP, JBP, Se, Smu, SmuIP, SmuPt): "
-	   << jet.trackCountingHighEffBTag << ", "
-	   << jet.trackCountingHighPurBTag << ", "
-	   << jet.jetProbabilityBTag << ", "
-	   << jet.jetBProbabilityBTag << ", "
-	   << jet.softElectronBTag << ", "
-	   << jet.softMuonBTag << ", "
-	   << jet.softMuonByIP3dBTag << ", "
-	   << jet.softMuonByPtBTag << std::endl;
-	os << "\t      (SSV, CSV, MVA): "
-	   << jet.simpleSecondaryVertexBTag << ", "
-	   << jet.combinedSecondaryVertexBTag << ", "
-	   << jet.combinedSecondaryVertexMVABTag << std::endl;
-	os << "\tPU [ID] (MVA, cutbased): "
-	   << jet.puJetFull << " [" << jet.puJetIDFull << "], "
-	   << jet.puJetCutbased << " [" << jet.puJetIDCutbased << "]" << std::endl;
-	return os << "\t   MVA, cutbased (loose, medium, tight): "
-	   << "(" << jet.puJetIDFullLoose << ", " << jet.puJetIDFullMedium << ", " << jet.puJetIDFullTight << "), "
-	   << "(" << jet.puJetIDCutbasedLoose << ", " << jet.puJetIDCutbasedMedium << ", " << jet.puJetIDCutbasedTight << ")" << std::endl;
+	os << "taggers: " << std::endl;
+    for (size_t i = 0; i < jet.taggers.size(); ++i)
+        os << jet.taggers[i] << " " << std::endl;
+	return os << "\tpuJetId: " << jet.puJetID << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataTau &tau)

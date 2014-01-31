@@ -41,6 +41,7 @@ KVertexSummary
 
 KTriggerInfos
 KFilterMetadata
+KTaggerMetadata
 KMuonMetadata
 KTauDiscriminatorMetadata
 

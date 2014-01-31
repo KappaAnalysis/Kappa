@@ -11,6 +11,7 @@
 
 #include <Math/SMatrix.h>
 #include "KBasic.h"
+#include "KMetadata.h"
 
 struct KDataJet : public KDataLV
 {
@@ -33,23 +34,36 @@ struct KDataPFJet : public KDataLV
 };
 typedef std::vector<KDataPFJet> KDataPFJets;
 
-
 struct KDataPFTaggedJet : public KDataPFJet
 {
-	float qgLikelihood, qgMLP;
+    std::vector<float> taggers;
+    unsigned int puJetID;
 
-	float trackCountingHighEffBTag, trackCountingHighPurBTag;
-    float jetProbabilityBTag, jetBProbabilityBTag;
-	float softElectronBTag, softMuonBTag, softMuonByIP3dBTag, softMuonByPtBTag;
-	float simpleSecondaryVertexBTag, combinedSecondaryVertexBTag, combinedSecondaryVertexMVABTag;
+    float getTagger(const std::string &name, const KTaggerMetadata *taggermetadata) const
+    {
+ 		for (unsigned int i = 0; i < taggermetadata->taggernames.size(); ++i)
+        {
+            if (taggermetadata->taggernames[i] == name)
+				return taggers[i];
+		}
+		std::cout << "Tagger " << name << " not available!" << std::endl;
+		exit(1);
+    }
 
-	float puJetFull, puJetCutbased;
-    int puJetIDFull, puJetIDCutbased;
-    bool puJetIDFullLoose, puJetIDFullMedium, puJetIDFullTight;
-    bool puJetIDCutbasedLoose, puJetIDCutbasedMedium, puJetIDCutbasedTight;
+    bool getpuJetID(const std::string &name, const KTaggerMetadata *taggermetadata) const
+    {
+		for (unsigned int i = 0; i < taggermetadata->pujetidnames.size(); ++i)
+        {
+            if (taggermetadata->pujetidnames[i] == name)
+                return puJetID & (1 << i);
+        }
+		std::cout << "PUJetID " << name << " not available!" << std::endl;
+		exit(1);
+    }
+
 };
-typedef std::vector<KDataPFTaggedJet> KDataPFTaggedJets;
 
+typedef std::vector<KDataPFTaggedJet> KDataPFTaggedJets;
 
 struct KDataMET : public KDataLV
 {
