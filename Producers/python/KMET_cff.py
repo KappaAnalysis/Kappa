@@ -17,6 +17,5 @@ from RecoMET.METPUSubtraction.noPileUpPFMET_cff import *
 #Type1 Corrections
 from JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff import *
 from JetMETCorrections.Type1MET.correctedMet_cff import *
-JetCorrection = "ak5PFL1FastL2L3"
+JetCorrection = "ak5PFL1FastL2L3" # NOTE: use "ak5PFL1FastL2L3" for MC / "ak5PFL1FastL2L3Residual" for Data. See comment in mvaPFMET_cff.py
 corrPfMetType1.jetCorrLabel = cms.string(JetCorrection)
-
