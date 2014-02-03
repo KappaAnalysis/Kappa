@@ -3,7 +3,7 @@ import sys
 import FWCore.ParameterSet.Config as cms
 sys.path.append(os.path.abspath(os.path.dirname(sys.argv[0])) + "/Kappa/")
 
-def getBaseConfig(globaltag, testfile="", maxevents=100, datatype='data'):
+def getBaseConfig(globaltag, testfile=cms.untracked.vstring(""), maxevents=100, datatype='data'):
 
 	from Kappa.Producers.KSkimming_template_cfg import process
 	process.source.fileNames = testfile
