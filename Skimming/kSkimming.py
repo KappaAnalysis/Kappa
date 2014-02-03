@@ -98,8 +98,8 @@ def getBaseConfig(globaltag, testfile="", maxevents=100, datatype='data'):
 	process.p = cms.Path(
 		process.makeKappaElectrons *
 		process.pfmuIsoDepositPFCandidates *
-		process.pfMEtMVAsequence *
 		process.makeKappaTaus *
+		process.pfMEtMVAsequence *
 		process.makePfCHS *
 		process.makePFJets *
 		process.makePFJetsCHS *
