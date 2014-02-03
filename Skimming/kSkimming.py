@@ -72,12 +72,12 @@ def getBaseConfig(globaltag, testfile="", maxevents=100, datatype='data'):
 	## ------------------------------------------------------------------------
 	## declare edm OutputModule (expects a path 'p'), uncommented if wanted
 
-	process.edmOut = cms.OutputModule("PoolOutputModule",
-											fileName = cms.untracked.string('dump.root'),					## name of output file
-											SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),	## save only events passing the full path
-											outputCommands = cms.untracked.vstring('drop *', 'keep *_*_*_KAPPA')		## save each edm object that has been produced by process KAPPA
-											)
-	process.kappaOut+=process.edmOut
+	#process.edmOut = cms.OutputModule("PoolOutputModule",
+	#										fileName = cms.untracked.string('dump.root'),					## name of output file
+	#										SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),	## save only events passing the full path
+	#										outputCommands = cms.untracked.vstring('drop *', 'keep *_*_*_KAPPA')		## save each edm object that has been produced by process KAPPA
+	#										)
+	#process.kappaOut+=process.edmOut
 
 	return process
 
