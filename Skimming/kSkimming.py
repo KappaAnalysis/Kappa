@@ -1,7 +1,7 @@
 import os
 import sys
 import FWCore.ParameterSet.Config as cms
-sys.path.append(os.path.abspath(os.path.dirname(sys.argv[0])) + "/Kappa/")
+#sys.path.append(os.path.abspath(os.path.dirname(sys.argv[0])) + "/Kappa/")
 
 def getBaseConfig(globaltag, testfile=cms.untracked.vstring(""), maxevents=100, datatype='data'):
 
