@@ -38,6 +38,12 @@ struct KMuonMetadata
 	std::vector<std::string> hltNames;
 };
 
+struct KTaggerMetadata
+{
+	std::vector<std::string> taggernames;
+	std::vector<std::string> pujetidnames;
+};
+
 struct KGenLumiMetadata : public KLumiMetadata
 {
 	double filterEff;
@@ -72,6 +78,7 @@ struct KEventMetadata
 	unsigned int nLumi;
 	unsigned int nRun;
 	int nBX;
+	float randomNumber;
 	bool hltFired (const std::string &name, const KLumiMetadata *lumimetadata) const
 	{
 		for (size_t i = 0; i < lumimetadata->hltNames.size(); ++i)

@@ -1,22 +1,28 @@
 CURRENT:
 ========
-
-  KBaseProducer         KGenTauProducer <-- KGenParticleProducer <-\ /-> KPFCandidateProducer
-        |                                                           |/-> KTowerProducer
-        v                                                           |/-> KPFJetProducer
- KBaseProducerWP --> KMetadataProducer --> KGenMetadataProduce      |/-> KCaloJetProducer
-        |                                                           |/-> KLorentzProducer
+                      KGenTauProducer <-\
+                                         *- KGenParticleProducer <-\
+  KBaseProducer    KGenPhotonProducer <-/                           |/-> KPFCandidateProducer
+        |                                                           |/-> KPFTaggedJetProducer
+        v                                /-> KDataMetadataProducer  |/-> KPFJetProducer
+ KBaseProducerWP --> KMetadataProducer -*                           |/-> KCaloJetProducer
+        |                                \-> KGenMetadataProducer   |/-> KTowerProducer
+        |                                                           |/-> KTrackProducer
         v                   KCaloTauProducer <-\                    |/-> KMuonProducer
-KBaseMatchingProducer                           O-- KTauProducer <-\|/-> KTrackProducer
-        |                     KPFTauProducer <-/                    |
+KBaseMatchingProducer                           *-- KTauProducer <-\|/-> KElectronProducer
+        |                     KPFTauProducer <-/                    |/-> KLorentzProducer
         v                                                           |
 KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer
                      |                               |
                      |\-> KMETProducer               |\-> KVertexProducer
                      |\-> KPFMETProducer             |
-                     |\-> KBeamSpotProducer          |\-> KHitProducer
-                     |\-> KTrackSummaryProducer      |
-                     \--> KTriggerObjectProducer     \--> KTrackProducer
+                     |\-> KBeamSpotProducer           \-> KHitProducer
+                     |\-> KVertexSummaryProducer
+                     |\-> KFilterSummaryProducer
+                     |\-> KHCALNoiseSummaryProducer
+                     |\-> KTrackSummaryProducer
+                     |\-> KJetAreaProducer
+                      \-> KTriggerObjectProducer
 
 TODO:
 ========

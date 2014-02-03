@@ -47,15 +47,12 @@ protected:
 		out.hpsDecayMode = in.decayMode();
 
 		if(in.leadPFCand().isNonnull())
-		{
-			// position of point of closest approach to beamspot
-			out.poca = in.leadPFCand()->vertex();
-
 			copyP4(in.leadPFCand()->p4(), out.leadCand);
-		}
-
-		if(in.leadPFChargedHadrCand().isNonnull())
+		if(in.leadPFChargedHadrCand().isNonnull()){
 			copyP4(in.leadPFChargedHadrCand()->p4(), out.leadChargedHadrCand);
+			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
+				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.leadCandTrack);
+		}
 		if(in.leadPFNeutralCand().isNonnull())
 			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralCand); // leading PFGamma candidate
 

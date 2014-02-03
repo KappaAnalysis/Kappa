@@ -72,6 +72,7 @@ namespace
 
 		KTriggerInfos dict_KTriggerInfos;
 		KFilterMetadata dict_KFilterMetadata;
+		KTaggerMetadata dict_KTaggerMetadata;
 		KMuonMetadata dict_KMuonMetadata;
 		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
 

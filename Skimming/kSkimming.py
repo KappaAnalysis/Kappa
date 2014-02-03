@@ -53,20 +53,59 @@ def getBaseConfig(globaltag, testfile="", maxevents=100, datatype='data'):
 	process.kappaTuple.active			+= cms.vstring('PFTaus')					## produce KappaTaus
 	process.load("Kappa.Producers.KTaus_cff")
 
+	## ------------------------------------------------------------------------
+	## KappaPFTaggedJets
+	process.load("Kappa.Producers.KPFTaggedJets_cff")
+
+	process.kappaTuple.PFTaggedJets = cms.PSet(
+				process.kappaNoCut,
+				process.kappaNoRegEx,
+				taggers = cms.vstring(
+					"QGlikelihood", "QGmlp",
+					"TrackCountingHighEffBJetTags", "TrackCountingHighPurBJetTags", 
+					"JetProbabilityBJetTags", "JetBProbabilityBJetTags", 
+					"SoftElectronBJetTags", "SoftMuonBJetTags", "SoftMuonByIP3dBJetTags", "SoftMuonByPtBJetTags",
+					"SimpleSecondaryVertexBJetTags", 
+					"CombinedSecondaryVertexBJetTags", "CombinedSecondaryVertexMVABJetTags",
+					"puJetIDFullLoose", "puJetIDFullMedium", "puJetIDFullTight",
+					"puJetIDCutbasedLoose", "puJetIDCutbasedMedium", "puJetIDCutbasedTight" 
+				),
+				AK5PFTaggedJets = cms.PSet(
+					src = cms.InputTag("ak5PFJets"),
+					QGtagger = cms.InputTag("AK5PFJetsQGTagger"),
+					Btagger = cms.InputTag("ak5PF"),
+					PUJetID = cms.InputTag("ak5PFPuJetMva"),
+					PUJetID_full = cms.InputTag("full"),
+				),
+				AK5PFTaggedJetsCHS = cms.PSet(
+					src = cms.InputTag("ak5PFJetsCHS"),
+					QGtagger = cms.InputTag("AK5PFJetsCHSQGTagger"),
+					Btagger = cms.InputTag("ak5PFCHS"),
+					PUJetID = cms.InputTag("ak5PFCHSPuJetMva"),
+					PUJetID_full = cms.InputTag("full"),
+				),
+			)
+
 
 	## ------------------------------------------------------------------------
-	# Configure Jets
-	process.kappaTuple.active += cms.vstring('JetArea')					## produce KappaPFJets
-	process.kappaTuple.active += cms.vstring('PFJets')
-	process.load("Kappa.Producers.KJets_cff")
+	## MET
+	process.kappaTuple.active += cms.vstring('MET')
+	process.kappaTuple.active += cms.vstring('PFMET')
+	process.load("Kappa.Producers.KMET_cff")
 
+	## ------------------------------------------------------------------------
 	## And let it run
 	process.p = cms.Path(
 		process.makeKappaElectrons *
 		process.pfmuIsoDepositPFCandidates *
+		process.pfMEtMVAsequence *
 		process.makeKappaTaus *
 		process.makePfCHS *
-		process.makePFJetsCHS
+		process.makePFJets *
+		process.makePFJetsCHS *
+		process.makeQGTagging *
+		process.makeBTagging *
+		process.makePUJetID
 		)
 
 	## ------------------------------------------------------------------------

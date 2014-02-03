@@ -36,6 +36,8 @@
 
 #include <DataFormats/Provenance/interface/ProcessHistory.h>
 
+#include "TRandom3.h"
+
 #define NEWHLT
 
 // real data
@@ -62,6 +64,8 @@ public:
 HLTConfigProvider KMetadataProducerBase::hltConfig;
 std::vector<size_t> KMetadataProducerBase::hltKappa2FWK;
 std::vector<std::string> KMetadataProducerBase::selectedHLT;
+
+TRandom3 randomGenerator = TRandom3();
 
 template<typename Tmeta>
 class KMetadataProducer : public KMetadataProducerBase
@@ -210,7 +214,7 @@ public:
 		metaEvent->nEvent = event.id().event();
 		metaEvent->nLumi = event.luminosityBlock();
 		metaEvent->nBX = event.bunchCrossing();
-
+		metaEvent->randomNumber = randomGenerator.Rndm();
 		// If we are running on real data then the trigger should
 		// always be HLT.
 		if (!overrideHLTCheck)

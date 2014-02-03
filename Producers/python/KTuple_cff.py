@@ -44,13 +44,13 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"^HLT_(PF)?Jet[0-9]+(U)?(_NoJetID)?(_v[[:digit:]]+)?$",
 			# 2011 jet trigger
 			"^HLT_DiJetAve[0-9]+(U)?(_NoJetID)?(_v[[:digit:]]+)?$",
-			"^HLT_HT[0-9]+(U)?(_NoJetID)?(_v[[:digit:]]+)?$",
+			#"^HLT_HT[0-9]+(U)?(_NoJetID)?(_v[[:digit:]]+)?$",
 			# electron triggers
 			# muon triggers
 			"^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",  # matches 'HLT_DoubleMu7_v8' etc.
 			"^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",  # matches 'HLT_Mu17_Mu8_v7' etc.
 			# tau trigger
-			".*PFTau.*",
+			#".*PFTau.*",
 			"^HLT_(Iso)?Mu([0-9]+)_PFTau([0-9]+)(_v[[:digit:]]+)?$",
 		),
 		hltBlacklist = cms.vstring(
@@ -121,15 +121,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Vertex = cms.PSet(kappaNoCut, kappaNoRename,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring(".*fflinePrimaryVertices.*"),
+		whitelist = cms.vstring("offlinePrimaryVertices"),
 		blacklist = cms.vstring(),
 	),
 
 	VertexSummary = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring(".*fflinePrimaryVertices.*"),
-		blacklist = cms.vstring(),
+		whitelist = cms.vstring("offlinePrimaryVertices"),
+		blacklist = cms.vstring("Vertices(QG|WithBS)"),
 
 		rename = cms.vstring("$ => Summary"),
 		rename_whitelist = cms.vstring(),
@@ -368,7 +368,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_ak5PFJets.*"),
-		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim"),
+		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG"),
 
 		rename = cms.vstring(
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8"
@@ -404,6 +404,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		#),
 		hpsPFTaus = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
+			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
 			discrWhitelist = cms.vstring("hpsPFTau*"),
 			discrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
 			tauDiscrProcessName = cms.string("KAPPA"),
