@@ -23,6 +23,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=100, datatype='data'):
 
 	if data:
 		process.kappaTuple.active		+= cms.vstring('DataMetadata')		## produce Metadata for data,
+		process.kappaTuple.active		+= cms.vstring('TriggerObjects')	## produce Metadata for data,
 	else:
 		process.kappaTuple.active		+= cms.vstring('GenMetadata')		## produce Metadata for MC,
 		process.kappaTuple.active		+= cms.vstring('GenParticles')		## save GenParticles,
