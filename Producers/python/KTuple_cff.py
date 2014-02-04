@@ -44,13 +44,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 			"^HLT_(PF)?Jet[0-9]+(U)?(_NoJetID)?(_v[[:digit:]]+)?$",
 			# 2011 jet trigger
 			"^HLT_DiJetAve[0-9]+(U)?(_NoJetID)?(_v[[:digit:]]+)?$",
-			#"^HLT_HT[0-9]+(U)?(_NoJetID)?(_v[[:digit:]]+)?$",
 			# electron triggers
 			# muon triggers
 			"^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",  # matches 'HLT_DoubleMu7_v8' etc.
 			"^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",  # matches 'HLT_Mu17_Mu8_v7' etc.
 			# tau trigger
-			#".*PFTau.*",
 			"^HLT_(Iso)?Mu([0-9]+)_PFTau([0-9]+)(_v[[:digit:]]+)?$",
 		),
 		hltBlacklist = cms.vstring(
