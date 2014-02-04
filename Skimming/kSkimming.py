@@ -18,14 +18,14 @@ def getBaseConfig(globaltag, testfile="", maxevents=100, datatype='data'):
 	## ------------------------------------------------------------------------
 	# General configuration
 
-	process.kappaTuple.active		= cms.vstring('VertexSummary')			## produce Metadata,
+	process.kappaTuple.active		= cms.vstring('VertexSummary')			## save VertexSummary,
 	process.kappaTuple.active		+= cms.vstring('BeamSpot')					## save Beamspot,
 
 	if data:
-		process.kappaTuple.active		+= cms.vstring('DataMetadata')		## produce Metadata,
+		process.kappaTuple.active		+= cms.vstring('DataMetadata')		## produce Metadata for data,
 	else:
-		process.kappaTuple.active		+= cms.vstring('GenMetadata')			## produce Metadata,
-		process.kappaTuple.active		+= cms.vstring('GenParticles')		## produce Metadata,
+		process.kappaTuple.active		+= cms.vstring('GenMetadata')		## produce Metadata for MC,
+		process.kappaTuple.active		+= cms.vstring('GenParticles')		## save GenParticles,
 
 
 	## ------------------------------------------------------------------------
@@ -106,7 +106,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=100, datatype='data'):
 		process.makeQGTagging *
 		process.makeBTagging *
 		process.makePUJetID
-		)
+	)
 
 	## ------------------------------------------------------------------------
 	## declare edm OutputModule (expects a path 'p'), uncommented if wanted
@@ -126,6 +126,7 @@ if __name__ == "__main__":
 
 	## test file for EKP
 	#testfile	= cms.untracked.vstring('file:/storage/8/dhaitz/testfiles/mc11.root')
+	testfile	= cms.untracked.vstring('file:/storage/6/berger/testfiles/data_2012C_AOD.root')
 	## test file for lxplus
 	testfile	= cms.untracked.vstring('root://eoscms//eos/cms/store/relval/CMSSW_5_3_6-START53_V14/RelValProdTTbar/AODSIM/v2/00000/76ED0FA6-1E2A-E211-B8F1-001A92971B72.root')
 	## test file for RWTH
