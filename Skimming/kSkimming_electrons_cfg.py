@@ -18,12 +18,7 @@ process.kappaTuple.active     = cms.vstring('Electrons',                        
 															'BeamSpot',                                              ## save Beamspot,
 															'PFCandidates')                                          ## save PFCandidates for deltaBeta corrected isolation
 process.kappaTuple.verbose    = cms.int32(0)                                                         ## verbosity level
-#process.kappaTuple.Metadata.hltWhitelist = cms.vstring(                                             ## HLT preselection
-#    # matches 'HLT_Mu17_Mu8_v7' etc.
-#    "^HLT_(Double)?Electron([0-9]+)_(Double)?Electron([0-9]+)(_v[[:digit:]]+)?$",
-#    # matches 'HLT_DoubleMu7_v8' etc.
-#    "^HLT_(Double)?Electron([0-9]+)(_v[[:digit:]]+)?$",
-#)
+
 
 ## ------------------------------------------------------------------------
 ## declare edm OutputModule (expects a path 'p'), uncommented if wanted
