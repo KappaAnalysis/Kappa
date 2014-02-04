@@ -4,6 +4,12 @@ process = cms.Process("KAPPA")
 
 ## MessageLogger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
+process.MessageLogger.default = cms.untracked.PSet(
+	ERROR = cms.untracked.PSet(limit = cms.untracked.int32(5))
+	#suppressError = cms.untracked.vstring("electronIdMVAProducer")
+)
+
+process.MessageLogger.cerr.FwkReport.reportEvery = 50
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
