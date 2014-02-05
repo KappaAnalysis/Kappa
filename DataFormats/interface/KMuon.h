@@ -23,7 +23,7 @@ struct KDataMuon : KDataLV
 	KDataTrack outerTrack;
 	KDataTrack bestTrack;
 
-	// bits are set according to reco::Muon::type_;
+	/// type of the muon: bits are set according to reco::Muon::type_;
 	unsigned char type;
 
 	inline bool isTrackerMuon() const    { return (type & (1 << 2)); };
@@ -32,17 +32,17 @@ struct KDataMuon : KDataLV
 	inline bool isGlobalMuon() const     { return (type & (1 << 1)); };
 	inline bool isPFMuon() const         { return (type & (1 << 5)); };
 
-	float hcalIso03;		// hcal isolation as given by muon.isolationR03().hadEt
-	float ecalIso03;		// ecal isolation as given by muon.isolationR03().emEt
-	float trackIso03;		// tracker isolation as given by muon.isolationR03().sumPt
+	float hcalIso03;		///< hcal isolation as given by muon.isolationR03().hadEt
+	float ecalIso03;		///< ecal isolation as given by muon.isolationR03().emEt
+	float trackIso03;		///< tracker isolation as given by muon.isolationR03().sumPt
 
-	float pfIso04;			// PF isolation
+	float pfIso04;			///< PF isolation
 
 	float hcalIso05;
 	float ecalIso05;
 	float trackIso05;
 
-	unsigned int isGoodMuon;	// bitmask
+	unsigned int isGoodMuon;	///< bitmask
 
 	float caloComp, segComp;
 
@@ -51,11 +51,16 @@ struct KDataMuon : KDataLV
 
 	unsigned long long hltMatch;
 
-	// eta and phi after the propagation to the muon system, this quantity
-	// is necessary for the matching to L1 trigger objects
+	/// \f$\eta\f$ and \f$\phi\f$ after the propagation to the muon system, this quantity
+	/// is necessary for the matching to L1 trigger objects
 	float eta_propagated, phi_propagated;
 
-	bool hltFired(const std::string& name, const KMuonMetadata * muonMetadata) const
+	/// returns whether a given HLT fired
+	/** the information is read from the metadata
+		@param name Name of the HLT
+		@param muonMetadata reference to the meta data object
+	*/
+	bool hltFired(const std::string& name, const KMuonMetadata* muonMetadata) const
 	{
 		std::vector<std::string>::const_iterator itSearch = std::lower_bound(muonMetadata->hltNames.begin(), muonMetadata->hltNames.end(), name);
 		if (itSearch != muonMetadata->hltNames.end())
