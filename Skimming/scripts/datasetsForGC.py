@@ -15,6 +15,7 @@ dataset += $dataset
 """)
 
 gcConfigurations = {
+	"Data" : datasets.Data,
 	"DYJets" : datasets.DYJets,
 	"TTJets" : datasets.TTJets,
 	"Dibosons" : datasets.Dibosons,

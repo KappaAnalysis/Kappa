@@ -6,6 +6,151 @@
 
 datasets = {
 
+	##### Data #################################################################
+	"TauPlusX_Run2011A_May10ReReco" : {
+		"dataset" : {
+			7 : "/TauPlusX/Run2011A-May10ReReco-v1/AOD",
+		},
+	},
+	"TauPlusX_Run2011A_05Aug2011" : {
+		"dataset" : {
+			7 : "/TauPlusX/Run2011A-05Aug2011-v1/AOD",
+		},
+	},
+	"TauPlusX_Run2011A_PromptReco_v4" : {
+		"dataset" : {
+			7 : "/TauPlusX/Run2011A-PromptReco-v4/AOD",
+		},
+	},
+	"TauPlusX_Run2011A_PromptReco_v6" : {
+		"dataset" : {
+			7 : "/TauPlusX/Run2011A-PromptReco-v6/AOD",
+		},
+	},
+	"TauPlusX_Run2011B_PromptReco" : {
+		"dataset" : {
+			7 : "/TauPlusX/Run2011B-PromptReco-v1/AOD",
+		},
+	},
+	"SingleMu_Run2011A_May10ReReco" : {
+		"dataset" : {
+			7 : "/SingleMu/Run2011A-May10ReReco-v1/AOD",
+		},
+	},
+	"SingleMu_Run2011A_PromptReco" : {
+		"dataset" : {
+			7 : "/SingleMu/Run2011A-PromptReco-v4/AOD",
+		},
+	},
+	"DoubleMu_Run2011A_16Jan2012" : {
+		"dataset" : {
+			7 : "/DoubleMu/Run2011A-16Jan2012-v1/AOD",
+		},
+	},
+	"DoubleMu_Run2011B_16Jan2012" : {
+		"dataset" : {
+			7 : "/DoubleMu/Run2011B-16Jan2012-v1/AOD",
+		},
+	},
+	"DoubleElectron_Run2011A_16Jan2012" : {
+		"dataset" : {
+			7 : "/DoubleElectron/Run2011A-16Jan2012-v1/AOD",
+		},
+	},
+	
+	"TauPlusX_Run2012A_22Jan2013" : {
+		"dataset" : {
+			8 : "/TauPlusX/Run2012A-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"TauPlusX_Run2012B_22Jan2013" : {
+		"dataset" : {
+			8 : "/TauPlusX/Run2012B-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"TauPlusX_Run2012C_22Jan2013" : {
+		"dataset" : {
+			8 : "/TauPlusX/Run2012C-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"TauPlusX_Run2012D_22Jan2013" : {
+		"dataset" : {
+			8 : "/TauPlusX/Run2012D-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"Tau_Run2012A_22Jan2013" : {
+		"dataset" : {
+			8 : "/Tau/Run2012A-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"TauParked_Run2012B_22Jan2013" : {
+		"dataset" : {
+			8 : "/TauParked/Run2012B-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"TauParked_Run2012C_22Jan2013" : {
+		"dataset" : {
+			8 : "/TauParked/Run2012C-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"TauParked_Run2012D_22Jan2013" : {
+		"dataset" : {
+			8 : "/TauParked/Run2012D-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"DoubleMu_Run2012A_22Jan2013" : {
+		"dataset" : {
+			8 : "/DoubleMu/Run2012A-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"DoubleMuParked_Run2012B_22Jan2013" : {
+		"dataset" : {
+			8 : "/DoubleMuParked/Run2012B-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"DoubleMuParked_Run2012C_22Jan2013" : {
+		"dataset" : {
+			8 : "/DoubleMuParked/Run2012C-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"DoubleMuParked_Run2012D_22Jan2013" : {
+		"dataset" : {
+			8 : "/DoubleMuParked/Run2012D-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"DoubleElectron_Run2012A_22Jan2013" : {
+		"dataset" : {
+			8 : "/DoubleElectron/Run2012A-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"DoubleElectron_Run2012C_22Jan2013" : {
+		"dataset" : {
+			8 : "/DoubleElectron/Run2012C-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"DoubleElectron_Run2012D_22Jan2013" : {
+		"dataset" : {
+			8 : "/DoubleElectron/Run2012D-22Jan2013-v1/AOD",
+		},
+	},
+	
+	##### Embedded data ########################################################
+	# TODO
+
 	##### DY + Jets (8 TeV) ####################################################
 	"DYJetsToLL_M_50_madgraph" : {
 		"dataset" : {
@@ -15,25 +160,21 @@ datasets = {
 	},
 	"DY1JetsToLL_M_50_madgraph" : {
 		"dataset" : {
-			7 : None,
 			8 : "/DY1JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
 	"DY2JetsToLL_M_50_madgraph" : {
 		"dataset" : {
-			7 : None,
 			8 : "/DY2JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
 		},
 	},
 	"DY3JetsToLL_M_50_madgraph" : {
 		"dataset" : {
-			7 : None,
 			8 : "/DY3JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
 	"DY4JetsToLL_M_50_madgraph" : {
 		"dataset" : {
-			7 : None,
 			8 : "/DY4JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
@@ -46,20 +187,17 @@ datasets = {
 	},
 	"DY1JetsToLL_M_10To50_madgraph" : {
 		"dataset" : {
-			7 : None,
 			8 : "/DY1JetsToLL_M-10To50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
 	"DY2JetsToLL_M_10To50_madgraph" : {
 		"dataset" : {
-			7 : None,
 			8 : "/DY2JetsToLL_TuneZ2star_M-10To50_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
 	
 	"VBFZToLL_VBFNLO_pythia" : {
 		"dataset" : {
-			7 : None,
 			8 : "/VBF_ZToLL_VBFNLO_pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
 		},
 	},
@@ -73,19 +211,16 @@ datasets = {
 	},
 	"TTJetsToLL_madgraph_tauola" : {
 		"dataset" : {
-			7 : None,
 			8 : "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v2/AODSIM",
 		},
 	},
 	"TTJetsToLH_madgraph_tauola" : {
 		"dataset" : {
-			7 : None,
 			8 : "/TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
 		},
 	},
 	"TTJetsToHH_madgraph_tauola" : {
 		"dataset" : {
-			7 : None,
 			8 : "/TTJets_HadronicMGDecays_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A_ext-v1/AODSIM",
 		},
 	},
@@ -141,20 +276,17 @@ datasets = {
 	},
 	"WW_pythia_tauola" : {
 		"dataset" : {
-			7 : None,
 			8 : "/WW_TuneZ2star_8TeV_pythia6_tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
 	"WZ_pythia_tauola" : {
 		"dataset" : {
-			7 : None,
 			8 : "/WZ_TuneZ2star_8TeV_pythia6_tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
 	
 	"ZZ_pythia_tauola" : {
 		"dataset" : {
-			7 : None,
 			8 : "/ZZ_TuneZ2star_8TeV_pythia6_tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
@@ -473,6 +605,35 @@ datasets = {
 		},
 	},
 }
+
+Data = [
+	"TauPlusX_Run2011A_PromptReco_v4",
+	"TauPlusX_Run2011A_PromptReco_v6",
+	"TauPlusX_Run2011A_May10ReReco",
+	"TauPlusX_Run2011A_05Aug2011",
+	"SingleMu_Run2011A_PromptReco",
+	"SingleMu_Run2011A_May10ReReco",
+	"DoubleMu_Run2011A_16Jan2012",
+	"DoubleElectron_Run2011A_16Jan2012",
+	"TauPlusX_Run2011B_PromptReco",
+	"DoubleMu_Run2011B_16Jan2012",
+	
+	"TauPlusX_Run2012A_22Jan2013",
+	"Tau_Run2012A_22Jan2013",
+	"DoubleMu_Run2012A_22Jan2013",
+	"DoubleElectron_Run2012A_22Jan2013",
+	"TauPlusX_Run2012B_22Jan2013",
+	"TauParked_Run2012B_22Jan2013",
+	"DoubleMuParked_Run2012B_22Jan2013",
+	"TauPlusX_Run2012C_22Jan2013",
+	"TauParked_Run2012C_22Jan2013",
+	"DoubleMuParked_Run2012C_22Jan2013",
+	"DoubleElectron_Run2012C_22Jan2013",
+	"TauPlusX_Run2012D_22Jan2013",
+	"TauParked_Run2012D_22Jan2013",
+	"DoubleMuParked_Run2012D_22Jan2013",
+	"DoubleElectron_Run2012D_22Jan2013",
+]
 
 DYJets = [
 	"DYJetsToLL_M_50_madgraph",
