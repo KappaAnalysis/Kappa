@@ -21,14 +21,15 @@ gcConfigurations = {
 	"WJets" : datasets.WJets,
 }
 
-def createGcConfigs(outputDir, gcConfigs, period):
+def createGcConfigs(outputDir, gcConfigs, period, addPeriodToNickname):
 	for key, value in gcConfigs.items():
-		if type(value) == dict: createGcConfigs(os.path.join(outputDir, key), value, period)
+		if type(value) == dict: createGcConfigs(os.path.join(outputDir, key), value, period, addPeriodToNickname)
 		else:
 			gcTemplateOptions = { "dataset" : "" }
 			for nickName in value:
 				datasetString = datasets.datasets.get(nickName, {}).get("dataset", {}).get(period, None)
-				if datasetString: gcTemplateOptions["dataset"] += ("\n\t" + nickName + " : " + datasetString)
+				if datasetString:
+					gcTemplateOptions["dataset"] += ("\n\t" + nickName + (("_%dTeV" % period) if addPeriodToNickname else "") + " : " + datasetString)
 			
 			if not os.path.exists(outputDir): os.makedirs(outputDir)
 			gcConfigFileName = os.path.join(outputDir, key+".conf")
@@ -43,6 +44,7 @@ def main():
 	parser.add_option("-o", "--output-dir", help="Output directory where to put the configurations", default="$CMSSW_BASE/src/Kappa/Skimming/samples/")
 	parser.add_option("-c", "--clear-dir", help="Delete first all contents of the output directory. [Default: False]", default=False, action="store_true")
 	parser.add_option("-p", "--period", help="Running period (7 or 8TeV), multiple times possible. [Default: 8]", type=int, action="append")
+	parser.add_option("--add-period-to-nickname", help="Add period indication in the nick name. [Default: True]", default=True, action="store_false")
 
 	(options, args) = parser.parse_args()
 	
@@ -51,7 +53,7 @@ def main():
 	
 	if options.clear_dir: os.system("rm -rv " + os.path.join(options.output_dir, "*"))
 	
-	for period in options.period: createGcConfigs(options.output_dir, { ("%dTeV" % period) : gcConfigurations }, period)
+	for period in options.period: createGcConfigs(options.output_dir, { ("%dTeV" % period) : gcConfigurations }, period, addPeriodToNickname=options.add_period_to_nickname)
 	
 if __name__ == "__main__": main()
 
