@@ -160,31 +160,31 @@ datasets = {
 	},
 	
 	##### W + Jets #############################################################
-	"WJetsToLN_madgraph_tauola" : {
+	"WJetsToLN_madgraph" : {
 		"dataset" : {
 			7 : "/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM",
 		},
 	},
-	"W1JetsToLN_madgraph_tauola" : {
+	"W1JetsToLN_madgraph" : {
 		"dataset" : {
 			7 : "/W1Jet_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/W1JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
 		},
 	},
-	"W2JetsToLN_madgraph_tauola" : {
+	"W2JetsToLN_madgraph" : {
 		"dataset" : {
 			7 : "/W2Jets_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/W2JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
 		},
 	},
-	"W3JetsToLN_madgraph_tauola" : {
+	"W3JetsToLN_madgraph" : {
 		"dataset" : {
 			7 : "/W3Jets_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v2/AODSIM",
 			8 : "/W3JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
 		},
 	},
-	"W4JetsToLN_madgraph_tauola" : {
+	"W4JetsToLN_madgraph" : {
 		"dataset" : {
 			7 : "/W4Jets_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/W4JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
@@ -226,10 +226,10 @@ Dibosons = [
 ]
 
 WJets = [
-	"WJetsToLN_madgraph_tauola",
-	"W1JetsToLN_madgraph_tauola",
-	"W2JetsToLN_madgraph_tauola",
-	"W3JetsToLN_madgraph_tauola",
-	"W4JetsToLN_madgraph_tauola",
+	"WJetsToLN_madgraph",
+	"W1JetsToLN_madgraph",
+	"W2JetsToLN_madgraph",
+	"W3JetsToLN_madgraph",
+	"W4JetsToLN_madgraph",
 ]
 
