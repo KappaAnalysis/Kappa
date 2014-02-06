@@ -190,6 +190,288 @@ datasets = {
 			8 : "/W4JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
+	
+	##### SM ggH->tautau #######################################################
+	"SM_GluGluToHToTauTau_M_90_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-90_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-90_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_95_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-95_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-95_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_100_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-100_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-100_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_105_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-105_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-105_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_110_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-110_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-110_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_115_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-115_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-115_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_120_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-120_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-120_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_125_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-125_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-125_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_130_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-130_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-130_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_135_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-135_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-135_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_140_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-140_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-140_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_145_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-145_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-145_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_150_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-150_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-150_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_155_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-155_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-155_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_GluGluToHToTauTau_M_160_powheg_pythia" : {
+		"dataset" : {
+			7 : "/GluGluToHToTauTau_M-160_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/GluGluToHToTauTau_M-160_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	
+	##### SM VBF H->tautau #####################################################
+	"SM_VBFHToTauTau_M_90_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-90_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBFHToTauTau_M-90_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_95_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-95_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBFHToTauTau_M-95_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_100_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-100_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBFHToTauTau_M-100_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_105_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-105_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBFHToTauTau_M-105_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_110_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-110_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-110_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_115_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-115_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-115_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_120_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-120_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-120_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_125_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-125_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-125_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_130_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-130_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-130_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_135_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-135_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-135_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_140_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-140_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-140_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_145_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-145_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-145_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_150_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-150_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-150_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_155_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-155_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-155_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_VBFHToTauTau_M_160_powheg_pythia" : {
+		"dataset" : {
+			7 : "/VBF_HToTauTau_M-160_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/VBF_HToTauTau_M-160_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_90_powheg_pythia" : {
+		"dataset" : {
+			7 : "",
+			8 : "",
+		},
+	},
+	
+	##### SM (W/Z/tt)H->tautau #################################################
+	"SM_WH_ZH_TTH_HToTauTau_M_90_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-90_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-90_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_95_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-95_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-95_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_100_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-100_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-100_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_105_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-105_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-105_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_110_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-110_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-110_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_115_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-115_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-115_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_120_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-120_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-120_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_125_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-125_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-125_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_130_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-130_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-130_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_135_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-135_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-135_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_140_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-140_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-140_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_145_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-145_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-145_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_150_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-150_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-150_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_155_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-155_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-155_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_WH_ZH_TTH_HToTauTau_M_160_powheg_pythia" : {
+		"dataset" : {
+			7 : "/WH_ZH_TTH_HToTauTau_M-160_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+			8 : "/WH_ZH_TTH_HToTauTau_M-160_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
 }
 
 DYJets = [
@@ -232,4 +514,8 @@ WJets = [
 	"W3JetsToLN_madgraph",
 	"W4JetsToLN_madgraph",
 ]
+
+SM_GluGluToHToTauTau = ["SM_GluGluToHToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
+SM_VBFHToTauTau = ["SM_VBFHToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
+SM_WH_ZH_TTH_HToTauTau = ["SM_WH_ZH_TTH_HToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
 
