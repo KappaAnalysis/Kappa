@@ -10,6 +10,7 @@
 #include "../interface/KMuon.h"
 #include "../interface/KTau.h"
 #include "../interface/KTrack.h"
+#include "../interface/KTreeMetadata.h"
 
 namespace
 {

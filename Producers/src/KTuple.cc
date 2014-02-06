@@ -25,6 +25,7 @@
 #include "../interface/KMetadataProducer.h"
 #include "../interface/KGenMetadataProducer.h"
 #include "../interface/KDataMetadataProducer.h"
+#include "../interface/KTreeMetadataProducer.h"
 
 #include "../interface/KBeamSpotProducer.h"
 #include "../interface/KCaloJetProducer.h"
@@ -156,6 +157,8 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 			break;
 		if (addProducer<KHepMCMetadataProducer<KGenMetadata_Product> >(active[i], "Metadata"))
 			break;
+		if (addProducer<KTreeMetadataProducer >(active[i], "TreeMetadata"))
+			break;
 	}
 
 	// Create all active producers
@@ -169,6 +172,8 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		else if (active[i] == "GenMetadata")
 			continue;
 		else if (active[i] == "HepMCMetadata")
+			continue;
+		else if (active[i] == "TreeMetadata")
 			continue;
 
 		size_t nProducers = producers.size();
