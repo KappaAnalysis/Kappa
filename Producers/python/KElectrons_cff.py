@@ -2,8 +2,9 @@ import FWCore.ParameterSet.Config as cms
 
 ## ------------------------------------------------------------------------
 ## POG recommended MVA based electron Id:
-##  - aus electronPOC twiki. Zugriff siehe HTauTau2ElecAnalysis53x.cc, z1778.
-##  - Arbeitet auf pat electron level, nicht auf gsfElectron
+##  - from electron POG TWiki. Check access from HTauTau2ElecAnalysis53x.cc,
+##    l1778.
+##  - works for patElectron level, not for gsfElectron
 from EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi import *
 
 electronIdMVA = cms.Sequence(
@@ -11,12 +12,12 @@ electronIdMVA = cms.Sequence(
 	mvaTrigNoIPV0+
 	mvaNonTrigV0
 	)
-makeKappaElectrons = cms.Sequence( electronIdMVA )
 
 ## ------------------------------------------------------------------------
 ## PAT electorn configuration
 ##  - electron Id sources
 ##  - switch generator matches off
+##  - switch embedding off (not needed and dangerous for conversion veto)
 from TrackingTools.TransientTrack.TransientTrackBuilder_cfi import *
 from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
 
@@ -32,36 +33,29 @@ patElectrons.electronIDSources = cms.PSet(
 	mvaTrigNoIPV0       = cms.InputTag("mvaTrigNoIPV0"      ),
 	mvaNonTrigV0        = cms.InputTag("mvaNonTrigV0"       ),
 )
-
-patElectrons.addGenMatch      = False
-patElectrons.embedGenMatch    = False
-patElectrons.genParticleMatch = ""
-
-makeKappaElectrons *= cms.Sequence( patElectrons )
-
+patElectrons.addGenMatch                   = False
+patElectrons.embedGenMatch                 = False
+patElectrons.genParticleMatch              = ""
+patElectrons.embedGsfElectronCore          = False
+patElectrons.embedGsfTrack                 = False
+patElectrons.embedSuperCluster             = False
+patElectrons.embedPflowSuperCluster        = False
+patElectrons.embedSeedCluster              = False
+patElectrons.embedBasicClusters            = False
+patElectrons.embedPreshowerClusters        = False
+patElectrons.embedPflowBasicClusters       = False
+patElectrons.embedPflowPreshowerClusters   = False
+patElectrons.embedPFCandidate              = False
+patElectrons.embedTrack                    = False
+patElectrons.embedRecHits                  = False
+patElectrons.embedHighLevelSelection.pvSrc = "goodOfflinePrimaryVertices"
 
 ## ------------------------------------------------------------------------
-# create pfNoPileup and pfPileupIso collections for deltaBeta corrected isolation
+## Definition of sequences
 
-from CommonTools.ParticleFlow.pfParticleSelection_cff import *
-
-pfPileUpIso.PFCandidates = 'particleFlow'
-pfNoPileUpIso.bottomCollection='particleFlow'
-
-# import filters and name them with clear scheme
-from CommonTools.ParticleFlow.ParticleSelectors.pfSortByType_cff import *
-
-pfNoPileUpChargedHadrons	= pfAllChargedHadrons.clone()
-pfNoPileUpNeutralHadrons	= pfAllNeutralHadrons.clone()
-pfNoPileUpPhotons 			= pfAllPhotons.clone()
-pfPileUpChargedHadrons		= pfAllChargedHadrons.clone(src = cms.InputTag("pfPileUpIso") )
-
-
-SequenceForDeltaBeta = cms.Sequence(
-	pfNoPileUpChargedHadrons *
-	pfNoPileUpNeutralHadrons *
-	pfNoPileUpPhotons *
-	pfPileUpChargedHadrons
-	)
-
-makeKappaElectrons *= cms.Sequence( pfParticleSelectionSequence * SequenceForDeltaBeta )
+## run this to produce patElectrons w/o generator match or trigger match
+## and with MVA electron ID
+makeKappaElectrons = cms.Sequence(
+    electronIdMVA *
+    patElectrons
+    )
