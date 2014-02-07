@@ -10,7 +10,9 @@ def getBaseConfig(globaltag, testfile=cms.untracked.vstring(""), maxevents=100, 
 	process.maxEvents.input	      = maxevents				## number of events to be processed (-1 = all in file)
 	process.kappaTuple.outputFile = 'kappaTuple.root'			## name of output file
 	process.kappaTuple.verbose    = cms.int32(0)				## verbosity level
-	process.GlobalTag.globaltag   = globaltag + '::All'
+	if not globaltag.lower() == 'auto' :
+		process.GlobalTag.globaltag   = globaltag + '::All'
+		print "GT (overwritten):", process.GlobalTag.globaltag
 	data = (datatype == 'data')
 
 	## ------------------------------------------------------------------------
@@ -55,13 +57,9 @@ def getBaseConfig(globaltag, testfile=cms.untracked.vstring(""), maxevents=100, 
 		)
 
 	## ------------------------------------------------------------------------
-	# Configure Electrons
-
-	process.kappaTuple.active	 += cms.vstring('Electrons')	        ## produce/save KappaElectrons,
-	process.load("Kappa.Producers.KElectrons_cff")
-
-	# configure PFCandidates and what to write out
-	process.kappaTuple.active	 += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected 
+	# Configure PFCandidates and offline PV
+	process.load("Kappa.Producers.KPFCandidates_cff")
+	process.kappaTuple.active += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected 
 	process.kappaTuple.PFCandidates.whitelist = cms.vstring(                ## isolation used for electrons and muons.
 		"pfNoPileUpChargedHadrons",
 		"pfNoPileUpNeutralHadrons",
@@ -71,18 +69,22 @@ def getBaseConfig(globaltag, testfile=cms.untracked.vstring(""), maxevents=100, 
 
 	## ------------------------------------------------------------------------
 	# Configure Muons
-	process.kappaTuple.active	 += cms.vstring('Muons')	        ## produce/save KappaMuons
 	process.load("Kappa.Producers.KMuons_cff")
+	process.kappaTuple.active += cms.vstring('Muons')	                ## produce/save KappaMuons
+	
+	## ------------------------------------------------------------------------
+	# Configure Electrons
+	process.load("Kappa.Producers.KElectrons_cff")
+	process.kappaTuple.active += cms.vstring('Electrons')	                ## produce/save KappaElectrons,
 
 	## ------------------------------------------------------------------------
 	# Configure Taus
-	process.kappaTuple.active	 += cms.vstring('PFTaus')	        ## produce/save KappaTaus
 	process.load("Kappa.Producers.KTaus_cff")
+	process.kappaTuple.active += cms.vstring('PFTaus')	                ## produce/save KappaTaus
 
 	## ------------------------------------------------------------------------
 	## KappaPFTaggedJets
 	process.load("Kappa.Producers.KPFTaggedJets_cff")
-
 	process.kappaTuple.PFTaggedJets = cms.PSet(
 		process.kappaNoCut,
 		process.kappaNoRegEx,
@@ -125,24 +127,25 @@ def getBaseConfig(globaltag, testfile=cms.untracked.vstring(""), maxevents=100, 
 
 	## ------------------------------------------------------------------------
 	## MET
-	process.kappaTuple.active        += cms.vstring('MET')
-	process.kappaTuple.active        += cms.vstring('PFMET')
 	process.load("Kappa.Producers.KMET_cff")
+	process.kappaTuple.active += cms.vstring('MET')                         ## produce/save KappaMET
+	process.kappaTuple.active += cms.vstring('PFMET')                       ## produce/save KappaPFMET
 
 	## ------------------------------------------------------------------------
 	## And let it run
 	process.p = cms.Path(
+		process.makePFBRECO *
+		process.makePFCandidatesForDeltaBeta *
+		process.makeKappaMuons *
 		process.makeKappaElectrons *
-		process.pfmuIsoDepositPFCandidates *
 		process.makeKappaTaus *
-		process.pfMEtMVAsequence *
-		process.makePfCHS *
 		process.makePFJets *
 		process.makePFJetsCHS *
 		process.makeQGTagging *
 		process.makeBTagging *
-		process.makePUJetID
-	)
+		process.makePUJetID *
+		process.makeKappaMET
+		)
 
 	## ------------------------------------------------------------------------
 	## declare edm OutputModule (expects a path 'p'), uncommented if wanted
@@ -169,4 +172,4 @@ if __name__ == "__main__":
 	## test file for RWTH
 	#testfile	= cms.untracked.vstring('file:/user/kargoll/testfiles/DYTauTau/DYTauTau_Summer12.root')
 
-	process = getBaseConfig(globaltag = 'FT53_V21A_AN6', testfile = testfile, maxevents = 100, datatype = 'mc') ## START53_V15A::All might be better suited
+	process = getBaseConfig(globaltag = 'START53_V15A', testfile = testfile, maxevents = 100, datatype = 'mc') ## FT53_V21A_AN6 for data
