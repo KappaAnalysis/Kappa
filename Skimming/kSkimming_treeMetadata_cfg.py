@@ -1,7 +1,6 @@
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.dirname(sys.argv[0])) + "/Kappa/")
-
+import Kappa.Skimming.datasetsHelper as datasetsHelper
 ## ------------------------------------------------------------------------
 ## import skeleton process KAPPA
 from Kappa.Producers.KSkimming_template_cfg import *
@@ -18,18 +17,28 @@ process.kappaTuple.verbose			= cms.int32(0)								## verbosity level
 ## ------------------------------------------------------------------------
 ## declare edm OutputModule (expects a path 'p'), uncommented if wanted
 
-process.kappaTuple.active									= cms.vstring('TreeMetadata')
-process.kappaTuple.TreeMetadata.dataset				= cms.string("datasetName")
-process.kappaTuple.TreeMetadata.generator				= cms.string("pythia")
-process.kappaTuple.TreeMetadata.tune 					= cms.string("")
-process.kappaTuple.TreeMetadata.productionProcess	= cms.string("DyMuMu")
-process.kappaTuple.TreeMetadata.globalTag				= cms.string("START53_V19F")
-process.kappaTuple.TreeMetadata.runPeriod				= cms.string("")
-process.kappaTuple.TreeMetadata.kappaTag				= cms.string("Kappa_1_0_0")
-process.kappaTuple.TreeMetadata.isEmbedded			= cms.bool(False)
-process.kappaTuple.TreeMetadata.jetMultiplicity		= cms.int32(0)
+centerOfMassEnergy = 8
+nickname = "DYJetsToLL_M_50_madgraph"
+kappaTag = "Kappa_1_0_0"
+globaltag = ""
 
 
+
+process.kappaTuple.active										= cms.vstring('TreeMetadata')
+process.kappaTuple.TreeMetadata.dataset					= cms.string(datasetsHelper.getDatasetName(nickname ,centerOfMassEnergy))
+process.kappaTuple.TreeMetadata.generator					= cms.string(datasetsHelper.getGenerator(nickname))
+process.kappaTuple.TreeMetadata.productionProcess		= cms.string(datasetsHelper.getProcess(nickname))
+process.kappaTuple.TreeMetadata.globalTag					= cms.string(globaltag)
+process.kappaTuple.TreeMetadata.prodCampaignGlobalTag	= cms.string(datasetsHelper.getProductionCampaignGlobalTag(nickname, centerOfMassEnergy))
+process.kappaTuple.TreeMetadata.runPeriod					= cms.string(datasetsHelper.getRunPeriod(nickname))
+process.kappaTuple.TreeMetadata.kappaTag					= cms.string(kappaTag)
+process.kappaTuple.TreeMetadata.isEmbedded				= cms.bool(datasetsHelper.getIsEmbedded(nickname))
+process.kappaTuple.TreeMetadata.jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname))
+process.kappaTuple.TreeMetadata.centerOfMassEnergy		= cms.int32(centerOfMassEnergy)
+process.kappaTuple.TreeMetadata.puScenario				= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy))
+
+process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
+process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 process.edmOut = cms.OutputModule("PoolOutputModule",
 										fileName = cms.untracked.string('patTuple_muons.root'),						## name of output file 
 										SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),	## save only events passing the full path

@@ -15,16 +15,17 @@ struct KTreeMetadata
 {
 	std::string dataset;
 	std::string generator;
-	std::string tune;
 	std::string productionProcess;
 	std::string globalTag;
+	std::string prodCampaignGlobalTag;
 	std::string runPeriod;
 	std::string kappaTag;
 	bool isEmbedded;
 	int jetMultiplicity;
+	int centerOfMassEnergy;
+	std::string puScenario;
 
 	int year() { return 0; }
-	int centerOfMassEnergy() { return 0; }
 	bool isStandardModel() { return true; }
 	bool isHiggs() { return false; }
 	bool isData() { return false;}

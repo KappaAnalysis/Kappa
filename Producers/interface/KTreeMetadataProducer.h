@@ -20,15 +20,17 @@ public:
 	{
 	//read parameters from config
 
-	KTreeMetadataObject.dataset				= cfg.getParameter<std::string>("dataset");
-	KTreeMetadataObject.generator				= cfg.getParameter<std::string>("generator");
-	KTreeMetadataObject.tune					= cfg.getParameter<std::string>("tune");
-	KTreeMetadataObject.productionProcess	= cfg.getParameter<std::string>("productionProcess");
-	KTreeMetadataObject.globalTag				= cfg.getParameter<std::string>("globalTag");
-	KTreeMetadataObject.runPeriod				= cfg.getParameter<std::string>("runPeriod");
-	KTreeMetadataObject.kappaTag				= cfg.getParameter<std::string>("kappaTag");
-	KTreeMetadataObject.isEmbedded			= cfg.getParameter<bool>("isEmbedded");
-	KTreeMetadataObject.jetMultiplicity		= cfg.getParameter<int>("jetMultiplicity");
+	KTreeMetadataObject.dataset					= cfg.getParameter<std::string>("dataset");
+	KTreeMetadataObject.generator					= cfg.getParameter<std::string>("generator");
+	KTreeMetadataObject.productionProcess		= cfg.getParameter<std::string>("productionProcess");
+	KTreeMetadataObject.globalTag					= cfg.getParameter<std::string>("globalTag");
+	KTreeMetadataObject.prodCampaignGlobalTag	= cfg.getParameter<std::string>("prodCampaignGlobalTag");
+	KTreeMetadataObject.runPeriod					= cfg.getParameter<std::string>("runPeriod");
+	KTreeMetadataObject.kappaTag					= cfg.getParameter<std::string>("kappaTag");
+	KTreeMetadataObject.isEmbedded				= cfg.getParameter<bool>("isEmbedded");
+	KTreeMetadataObject.jetMultiplicity			= cfg.getParameter<int>("jetMultiplicity");
+	KTreeMetadataObject.centerOfMassEnergy		= cfg.getParameter<int>("centerOfMassEnergy");
+	KTreeMetadataObject.puScenario				= cfg.getParameter<std::string>("puScenario");
 
 	// write parameters in GetUserInfo of lumi tree
 	std::vector<TList*> label;
@@ -42,16 +44,16 @@ public:
 		tstring.push_back( new TObjString(getString(KTreeMetadataObject.generator).c_str()) );
 
 	label.push_back( new TList() );
-		label.back()->SetName("tune");
-		tstring.push_back( new TObjString(getString(KTreeMetadataObject.tune).c_str()) );
-
-	label.push_back( new TList() );
 		label.back()->SetName("productionProcess");
 		tstring.push_back( new TObjString(getString(KTreeMetadataObject.productionProcess).c_str()) );
 
 	label.push_back( new TList() );
 		label.back()->SetName("globalTag");
 		tstring.push_back( new TObjString(getString(KTreeMetadataObject.globalTag).c_str()) );
+
+	label.push_back( new TList() );
+		label.back()->SetName("prodCampaignGlobalTag");
+		tstring.push_back( new TObjString(getString(KTreeMetadataObject.prodCampaignGlobalTag).c_str()) );
 
 	label.push_back( new TList() );
 		label.back()->SetName("runPeriod");
@@ -68,6 +70,14 @@ public:
 	label.push_back( new TList() );
 		label.back()->SetName("jetMultiplicity");
 		tstring.push_back( new TObjString(getString(KTreeMetadataObject.jetMultiplicity).c_str()) );
+
+	label.push_back( new TList() );
+		label.back()->SetName("centerOfMassEnergy");
+		tstring.push_back( new TObjString(getString(KTreeMetadataObject.centerOfMassEnergy).c_str()) );
+
+	label.push_back( new TList() );
+		label.back()->SetName("puScenario");
+		tstring.push_back( new TObjString(getString(KTreeMetadataObject.puScenario).c_str()) );
 
 	for(unsigned int i = 0; i < label.size(); i++)
 		{
