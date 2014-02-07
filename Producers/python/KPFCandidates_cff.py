@@ -1,17 +1,57 @@
 import FWCore.ParameterSet.Config as cms
 
 ## ------------------------------------------------------------------------
-## TopProjections from CommonTools/ParticleFlow only up to:
-##  - pfNoPileUp (pfCandidates associated to PV of hard interaction) 
-##  - pfPileUp (pfCandidates associated to PU)
-##  - pfParticleSelection (categorization in charged, neutral, photon)
-from CommonTools.ParticleFlow.pfParticleSelection_cff import *
+## Good offline PV selection: 
+from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
 
-pfPileUpIso.PFCandidates = 'particleFlow' 
-pfNoPileUpIso.bottomCollection='particleFlow'
+goodOfflinePrimaryVertices = cms.EDFilter('PrimaryVertexObjectFilter',
+    src = cms.InputTag('offlinePrimaryVertices'),
+    filterParams = pvSelector.clone( minNdof = 4.0, maxZ = 24.0 ),
+)
+
+## ------------------------------------------------------------------------
+## TopProjections from CommonTools/ParticleFlow:
+from CommonTools.ParticleFlow.PFBRECO_cff import *
+
+## pf candidate configuration for everything but CHS jets
+pfPileUpIso.PFCandidates        = 'particleFlow'
+pfPileUpIso.Vertices            = 'goodOfflinePrimaryVertices'
+pfPileUpIso.checkClosestZVertex = True
+pfNoPileUpIso.bottomCollection  = 'particleFlow'
+
+## pf candidate configuration for deltaBeta corrections for muons and electrons 
+pfNoPileUpChargedHadrons        = pfAllChargedHadrons.clone()
+pfNoPileUpNeutralHadrons        = pfAllNeutralHadrons.clone()
+pfNoPileUpPhotons 	        = pfAllPhotons.clone()
+pfPileUpChargedHadrons	        = pfAllChargedHadrons.clone(src = 'pfPileUpIso')
+
+## pf candidate configuration for CHS jets
+pfPileUp.Vertices               = 'goodOfflinePrimaryVertices'
+pfPileUp.checkClosestZVertex    = False
 
 ## ------------------------------------------------------------------------
 ## Definition of sequences
+
+## run this to produce only those pf candidate collections that should go
+## into the KappaTuple and nothing more
 makeKappaPFCandidates = cms.Sequence(
+    goodOfflinePrimaryVertices *
     pfParticleSelectionSequence
     )
+
+## run this to run the full PFBRECO sequence, which is needed e.g. for CHS
+## jets ()
+makePFBRECO = cms.Sequence(
+    goodOfflinePrimaryVertices *
+    PFBRECO
+    )
+
+## run this to produce the particle flow collections that are expected to
+## be present for deltaBeta corrections for muons and electrons. This needs
+## at least makeKappaPFCandidates to be run beforehand
+makePFCandidatesForDeltaBeta = cms.Sequence(
+	pfNoPileUpChargedHadrons *
+	pfNoPileUpNeutralHadrons *
+	pfNoPileUpPhotons *
+	pfPileUpChargedHadrons
+	)
