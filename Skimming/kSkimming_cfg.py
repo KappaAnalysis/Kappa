@@ -1,9 +1,9 @@
 import os
 import sys
 import FWCore.ParameterSet.Config as cms
-#sys.path.append(os.path.abspath(os.path.dirname(sys.argv[0])) + "/Kappa/")
+import Kappa.Skimming.datasetsHelper as datasetsHelper
 
-def getBaseConfig(globaltag, testfile=cms.untracked.vstring(""), maxevents=100, datatype='data'):
+def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""), maxevents=100, nickname = 'DYJetsToLL_M_50_madgraph', centerOfMassEnergy = 8, kappaTag = 'Kappa_1_0_0'):
 
 	from Kappa.Producers.KSkimming_template_cfg import process
 	process.source.fileNames      = testfile
@@ -13,12 +13,29 @@ def getBaseConfig(globaltag, testfile=cms.untracked.vstring(""), maxevents=100, 
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag + '::All'
 		print "GT (overwritten):", process.GlobalTag.globaltag
-	data = (datatype == 'data')
+	data = datasetsHelper.isData(nickname)
+
+
+	## ------------------------------------------------------------------------
+	# Configure Metadata describing the file
+	process.kappaTuple.active										= cms.vstring('TreeMetadata')
+	process.kappaTuple.TreeMetadata.dataset					= cms.string(datasetsHelper.getDatasetName(nickname ,centerOfMassEnergy))
+	process.kappaTuple.TreeMetadata.generator					= cms.string(datasetsHelper.getGenerator(nickname))
+	process.kappaTuple.TreeMetadata.productionProcess		= cms.string(datasetsHelper.getProcess(nickname))
+	process.kappaTuple.TreeMetadata.globalTag					= cms.string(globaltag)
+	process.kappaTuple.TreeMetadata.prodCampaignGlobalTag	= cms.string(datasetsHelper.getProductionCampaignGlobalTag(nickname, centerOfMassEnergy))
+	process.kappaTuple.TreeMetadata.runPeriod					= cms.string(datasetsHelper.getRunPeriod(nickname))
+	process.kappaTuple.TreeMetadata.kappaTag					= cms.string(kappaTag)
+	process.kappaTuple.TreeMetadata.isEmbedded				= cms.bool(datasetsHelper.getIsEmbedded(nickname))
+	process.kappaTuple.TreeMetadata.jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname))
+	process.kappaTuple.TreeMetadata.centerOfMassEnergy		= cms.int32(centerOfMassEnergy)
+	process.kappaTuple.TreeMetadata.puScenario				= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy))
+
 
 	## ------------------------------------------------------------------------
 	# General configuration
 
-	process.kappaTuple.active	  = cms.vstring('VertexSummary')	## save VertexSummary,
+	process.kappaTuple.active	 += cms.vstring('VertexSummary')	## save VertexSummary,
 	process.kappaTuple.active	 += cms.vstring('BeamSpot')		## save Beamspot,
 
 	if data:
