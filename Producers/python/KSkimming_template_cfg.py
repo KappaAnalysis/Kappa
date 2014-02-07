@@ -28,7 +28,7 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 from Configuration.AlCa.autoCond import autoCond
 process.GlobalTag.globaltag = cms.string( autoCond[ 'startup' ] )
 # print the global tag until it is clear whether this auto global tag is fine
-print "GT:", process.GlobalTag.globaltag
+print "GT from autoCond:", process.GlobalTag.globaltag
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
 ## Kappa interface 

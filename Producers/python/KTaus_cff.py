@@ -8,6 +8,8 @@ from RecoTauTag.Configuration.RecoPFTauTag_cff import *
 
 ## ------------------------------------------------------------------------
 ## Definition of sequences
+
+## run this to get latest greatest HPS taus
 makeKappaTaus = cms.Sequence(
     recoTauClassicHPSSequence
     )
