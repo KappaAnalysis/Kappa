@@ -56,29 +56,33 @@ def getGenerator(nickname): ########todo
 		if nickname.find(generator) > -1: return generator
 	raise NameError("Generator information for nickname " + nickname + " could not be determined!")
 
+def getDatasetName(nickname):
+	posLeft = nickname.rfind("_")
+	centerOfMassEnergy = getCenterOfMassEnergy(nickname)
+	return datasets[nickname[0:posLeft]]["dataset"][centerOfMassEnergy]
+
+
 def getPuScenario(nickname, centerOfMassEnergy):
 	if getProcess(nickname) == "Data": return "None"
-	dataSetName = datasets[nickname]["dataset"][centerOfMassEnergy]
+	dataSetName = getDatasetName(nickname)
 	posLeft = dataSetName.find("PU_")
 	posRight = posLeft + dataSetName[posLeft+3:].find("_")
 	return dataSetName[posLeft:posRight+3]
 
-def getDatasetName(nickname, centerOfMassEnergy):
-	dataSetName = datasets[nickname]["dataset"][centerOfMassEnergy]
-	return dataSetName
-
 def getProductionCampaignGlobalTag(nickname, centerOfMassEnergy):
-	dataSetName = datasets[nickname]["dataset"][centerOfMassEnergy]
+	dataSetName = getDatasetName(nickname)
 	if getProcess(nickname) == "Data": return "None"
 	posLeft = dataSetName.find("_START") +1
 	posRight = posLeft + dataSetName[posLeft+5:].find("-")
 	return dataSetName[posLeft:posRight+5]
 
 def getCenterOfMassEnergy(nickname):
-	print nickname
 	posLeft = nickname.rfind("_")+1
 	posRight = nickname.rfind("TeV")
-	return int(nickname[posLeft:posRight])
+	if posLeft != posRight:
+		return int(nickname[posLeft:posRight])
+	else:
+		return 8
 
 def isData(nickname):
 	return (getProcess(nickname) == "Data")
@@ -95,6 +99,6 @@ def checkDatasets():
 			print "runPeriod: " + str(getRunPeriod(nickname))
 			print "Generator: " + str(getGenerator(nickname))
 			print "PU Scenario: " + str(getPuScenario(nickname, centerOfMassEnergy))
-			print "Dataset Name: " + str(getDatasetName(nickname, centerOfMassEnergy))
+			print "Dataset Name: " + str(getDatasetName(nickname))
 			print "Production Campaign Global Tag: " + str(getProductionCampaignGlobalTag(nickname, centerOfMassEnergy))
 			print "isData: " + str(isData(nickname))
