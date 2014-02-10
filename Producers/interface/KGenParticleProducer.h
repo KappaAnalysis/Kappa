@@ -47,7 +47,7 @@ protected:
 		out.pdgid = id | ((in.status() % 4) << KGenParticleStatusPosition);
 		if (in.pdgId() < 0)
 			out.pdgid |= KGenParticleChargeMask;
-		out.children = 0;
+		out.daughterIndices = daughters;
 
 		if (in.pdgId() != out.pdgId())
 			std::cout << "The pdgId is not skimmed correctly! "
