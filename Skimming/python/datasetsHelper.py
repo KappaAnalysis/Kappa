@@ -74,6 +74,12 @@ def getProductionCampaignGlobalTag(nickname, centerOfMassEnergy):
 	posRight = posLeft + dataSetName[posLeft+5:].find("-")
 	return dataSetName[posLeft:posRight+5]
 
+def getCenterOfMassEnergy(nickname):
+	print nickname
+	posLeft = nickname.rfind("_")+1
+	posRight = nickname.rfind("TeV")
+	return int(nickname[posLeft:posRight])
+
 def isData(nickname):
 	return (getProcess(nickname) == "Data")
 

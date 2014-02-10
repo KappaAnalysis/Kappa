@@ -14,7 +14,7 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 		process.GlobalTag.globaltag   = globaltag + '::All'
 		print "GT (overwritten):", process.GlobalTag.globaltag
 	data = datasetsHelper.isData(nickname)
-
+	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
 
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
@@ -190,7 +190,7 @@ if __name__ == "__main__":
 
 	## for grid-control:
 	else:
-		process = getBaseConfig('@GLOBALTAG@', nickname = '@NICK@', centerOfMassEnergy = '@CENTER_OF_MASS_ENERGY@', kappaTag = '@KAPPA_TAG@')
+		process = getBaseConfig('@GLOBALTAG@', nickname = '@NICK@', kappaTag = '@KAPPA_TAG@')
 
 
 
