@@ -76,3 +76,19 @@ def getProductionCampaignGlobalTag(nickname, centerOfMassEnergy):
 
 def isData(nickname):
 	return (getProcess(nickname) == "Data")
+
+def checkDatasets():
+	for nickname in datasets:
+		for centerOfMassEnergy in datasets[nickname]["dataset"]:
+			print ""
+			print "Nickname:" + nickname
+			print "Process: " + str(getProcess(nickname))
+			print "Energy: " + str(centerOfMassEnergy) + " GeV"
+			print "Embedded: " + str(getIsEmbedded(nickname))
+			print "JetMulitplicity: " + str(getJetMultiplicity(nickname))
+			print "runPeriod: " + str(getRunPeriod(nickname))
+			print "Generator: " + str(getGenerator(nickname))
+			print "PU Scenario: " + str(getPuScenario(nickname, centerOfMassEnergy))
+			print "Dataset Name: " + str(getDatasetName(nickname, centerOfMassEnergy))
+			print "Production Campaign Global Tag: " + str(getProductionCampaignGlobalTag(nickname, centerOfMassEnergy))
+			print "isData: " + str(isData(nickname))
