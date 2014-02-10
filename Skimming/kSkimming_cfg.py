@@ -178,7 +178,7 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 	return process
 
 if __name__ == "__main__":
-	if("@" in '@TYPE@'): # run local skim by hand without replacements by grid-control
+	if('@' in '@NICK@'): # run local skim by hand without replacements by grid-control
 		## test file for EKP
 		#testfile	= cms.untracked.vstring('file:/storage/8/dhaitz/testfiles/mc11.root')
 		#testfile	= cms.untracked.vstring('file:/storage/6/berger/testfiles/data_2012C_AOD.root')
