@@ -102,3 +102,18 @@ def checkDatasets():
 			print "Dataset Name: " + str(getDatasetName(nickname))
 			print "Production Campaign Global Tag: " + str(getProductionCampaignGlobalTag(nickname, centerOfMassEnergy))
 			print "isData: " + str(isData(nickname))
+
+def checkDataset(nickname):
+	centerOfMassEnergy = getCenterOfMassEnergy(nickname)
+	print ""
+	print "Nickname:" + nickname
+	print "Process: " + str(getProcess(nickname))
+	print "Energy: " + str(centerOfMassEnergy) + " GeV"
+	print "Embedded: " + str(getIsEmbedded(nickname))
+	print "JetMulitplicity: " + str(getJetMultiplicity(nickname))
+	print "runPeriod: " + str(getRunPeriod(nickname))
+	print "Generator: " + str(getGenerator(nickname))
+	print "PU Scenario: " + str(getPuScenario(nickname, centerOfMassEnergy))
+	print "Dataset Name: " + str(getDatasetName(nickname))
+	print "Production Campaign Global Tag: " + str(getProductionCampaignGlobalTag(nickname, centerOfMassEnergy))
+	print "isData: " + str(isData(nickname))
