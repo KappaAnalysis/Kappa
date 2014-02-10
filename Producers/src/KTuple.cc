@@ -157,8 +157,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 			break;
 		if (addProducer<KHepMCMetadataProducer<KGenMetadata_Product> >(active[i], "Metadata"))
 			break;
-		if (addProducer<KTreeMetadataProducer >(active[i], "TreeMetadata"))
-			break;
 	}
 
 	// Create all active producers
@@ -172,8 +170,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		else if (active[i] == "GenMetadata")
 			continue;
 		else if (active[i] == "HepMCMetadata")
-			continue;
-		else if (active[i] == "TreeMetadata")
 			continue;
 
 		size_t nProducers = producers.size();
@@ -203,7 +199,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KTriggerObjectProducer>(active[i]);
 		addProducer<KVertexProducer>(active[i]);
 		addProducer<KVertexSummaryProducer>(active[i]);
-
+		addProducer<KTreeMetadataProducer >(active[i]);
 /* are these still used?
 		else if (active[i] == "L1Muons")
 			addProducer<KL1MuonProducer>(psConfig, active[i]);
