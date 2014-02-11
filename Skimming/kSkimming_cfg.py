@@ -102,6 +102,7 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 	## ------------------------------------------------------------------------
 	## KappaPFTaggedJets
 	process.load("Kappa.Producers.KPFTaggedJets_cff")
+	process.kappaTuple.active += cms.vstring('PFTaggedJets')           ## produce KappaPFTaggedJets
 	process.kappaTuple.PFTaggedJets = cms.PSet(
 		process.kappaNoCut,
 		process.kappaNoRegEx,
