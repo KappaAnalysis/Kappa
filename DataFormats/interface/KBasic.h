@@ -69,23 +69,25 @@ const unsigned int KGenParticlePdgIdMask = ((unsigned int)1 << KGenParticleStatu
 struct KGenParticle : public KDataLV
 {
 	unsigned int pdgid;
-        std::vector<unsigned int> daughterIndices;
+	std::vector<unsigned int> daughterIndices;
 
-        // return daughter i; checks if i<numberOfDaughters; returns -1 in case i is out of bounds
-        unsigned int daughterIndex(unsigned int i)
-        {
-          if (i<daughterIndices.size()){ 
-            return daughterIndices.at(i); 
-          }
-          else{
-            return -1;
-          }
-        }
-        /// return the number of daughters
-        int numberOfDaughters()
-        {
-          return daughterIndices.size();
-        }
+	// return daughter i; checks if i<numberOfDaughters; returns -1 in case i is out of bounds
+	unsigned int daughterIndex(unsigned int i)
+	{
+		if (i<daughterIndices.size())
+		{
+			return daughterIndices.at(i);
+		}
+		else
+		{
+			return -1;
+		}
+	}
+	/// return the number of daughters
+	int numberOfDaughters()
+	{
+		return daughterIndices.size();
+	}
 	int status() const
 	{
 		return (pdgid & KGenParticleStatusMask) >> KGenParticleStatusPosition;
