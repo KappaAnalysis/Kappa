@@ -6,6 +6,9 @@ def getProcess(nickname):
 	for string in Data:
 		if string in nickname:
 			return "Data"
+	for string in Embedded:
+		if string in nickname:
+			return "Embedded"
 	for string in DYJets:
 		if string in nickname:
 			return "DYJets"
@@ -29,7 +32,8 @@ def getProcess(nickname):
 			return "SM_WH_ZH_TTH_HToTauTau"
 
 def getIsEmbedded(nickname):
-	# Todo together with implementation of embedded samples in datasets.py
+	if getProcess(nickname) == "Embedded":
+		return True
 	return False
 
 def getJetMultiplicity(nickname):
@@ -54,7 +58,8 @@ def getGenerator(nickname): ########todo
 	generators = ["madgraph_tauola", "pythia_tauola", "powheg_tauola", "powheg_pythia", "pythia", "madgraph"]
 	for generator in generators:
 		if nickname.find(generator) > -1: return generator
-	raise NameError("Generator information for nickname " + nickname + " could not be determined!")
+#	raise NameError("Generator information for nickname " + nickname + " could not be determined!")
+	return ""
 
 def getDatasetName(nickname):
 	posLeft = nickname.rfind("_")
@@ -73,6 +78,9 @@ def getProductionCampaignGlobalTag(nickname, centerOfMassEnergy):
 	dataSetName = getDatasetName(nickname)
 	if getProcess(nickname) == "Data": return "None"
 	posLeft = dataSetName.find("_START") +1
+	print posLeft
+	if posLeft < 1 :
+		return ""
 	posRight = posLeft + dataSetName[posLeft+5:].find("-")
 	return dataSetName[posLeft:posRight+5]
 

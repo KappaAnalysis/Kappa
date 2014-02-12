@@ -150,6 +150,17 @@ datasets = {
 	
 	##### Embedded data ########################################################
 	# TODO
+	"DoubleMu_RHembedded_Run2012A_22Jan2013_muhad" : {
+		"dataset": {
+			8: "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_RHembedded_trans1_tau116_ptmu1_16had1_18_v1-f456bdbb960236e5c696adfe9b04eaae/USER",
+		},
+	},
+
+	"DoubleMu_RHembedded_Run2012A_22Jan2013_RHembedded_muelec" : {
+		"dataset": {
+			8: "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_RHembedded_trans1_tau115_ptelec1_20had1_18_v1-f456bdbb960236e5c696adfe9b04eaae/USER",
+		},
+	},
 
 	##### DY + Jets (8 TeV) ####################################################
 	"DYJetsToLL_M_50_madgraph" : {
@@ -674,6 +685,11 @@ WJets = [
 	"W2JetsToLN_madgraph",
 	"W3JetsToLN_madgraph",
 	"W4JetsToLN_madgraph",
+]
+
+Embedded = [
+	"DoubleMu_RHembedded_Run2012A_22Jan2013_muhad",
+	"DoubleMu_RHembedded_Run2012A_22Jan2013_RHembedded_muelec",
 ]
 
 SM_GluGluToHToTauTau = ["SM_GluGluToHToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
