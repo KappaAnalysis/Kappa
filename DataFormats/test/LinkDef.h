@@ -168,8 +168,6 @@
 #pragma link C++ struct KEventMetadata+;
 #pragma link C++ struct KGenEventMetadata+;
 
-#pragma link C++ struct KTreeMetadata+;
-
 /************************************************************/
 
 #endif

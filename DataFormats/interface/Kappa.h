@@ -9,7 +9,6 @@
 #include "KMuon.h"
 #include "KTau.h"
 #include "KTrack.h"
-#include "KTreeMetadata.h"
 
 template<typename T>
 struct TypeName;
