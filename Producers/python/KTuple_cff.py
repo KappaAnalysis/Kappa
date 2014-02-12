@@ -63,20 +63,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		printErrorsAndWarnings = cms.bool(False),
 	),
 
-	TreeMetadata = cms.PSet(
-		dataset = cms.string(""),
-		generator = cms.string(""),
-		productionProcess= cms.string(""),
-		globalTag = cms.string(""),
-		prodCampaignGlobalTag = cms.string(""),
-		runPeriod = cms.string(""),
-		kappaTag = cms.string(""),
-		isEmbedded = cms.bool(False),
-		jetMultiplicity = cms.int32(-999),
-		centerOfMassEnergy = cms.int32(-999),
-		puScenario = cms.string("")
-
-	),
+	TreeMetadata = cms.PSet(),
 
 	HCALNoiseSummary = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),
