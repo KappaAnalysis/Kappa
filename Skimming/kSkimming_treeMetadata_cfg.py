@@ -18,25 +18,26 @@ process.kappaTuple.verbose			= cms.int32(0)								## verbosity level
 ## declare edm OutputModule (expects a path 'p'), uncommented if wanted
 
 centerOfMassEnergy = 8
-nickname = "DYJetsToLL_M_50_madgraph"
+nickname = "SM_VBFHToTauTau_M_90_powheg_pythia_8TeV"
 kappaTag = "Kappa_1_0_0"
 globaltag = ""
 
 
 
 process.kappaTuple.active										= cms.vstring('TreeMetadata')
-process.kappaTuple.TreeMetadata.dataset					= cms.string(datasetsHelper.getDatasetName(nickname ,centerOfMassEnergy))
-process.kappaTuple.TreeMetadata.generator					= cms.string(datasetsHelper.getGenerator(nickname))
-process.kappaTuple.TreeMetadata.productionProcess		= cms.string(datasetsHelper.getProcess(nickname))
-process.kappaTuple.TreeMetadata.globalTag					= cms.string(globaltag)
-process.kappaTuple.TreeMetadata.prodCampaignGlobalTag	= cms.string(datasetsHelper.getProductionCampaignGlobalTag(nickname, centerOfMassEnergy))
-process.kappaTuple.TreeMetadata.runPeriod					= cms.string(datasetsHelper.getRunPeriod(nickname))
-process.kappaTuple.TreeMetadata.kappaTag					= cms.string(kappaTag)
-process.kappaTuple.TreeMetadata.isEmbedded				= cms.bool(datasetsHelper.getIsEmbedded(nickname))
-process.kappaTuple.TreeMetadata.jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname))
-process.kappaTuple.TreeMetadata.centerOfMassEnergy		= cms.int32(centerOfMassEnergy)
-process.kappaTuple.TreeMetadata.puScenario				= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy))
-
+process.kappaTuple.TreeMetadata.parameters = cms.PSet(
+															dataset						= cms.string(datasetsHelper.getDatasetName(nickname)),
+															generator					= cms.string(datasetsHelper.getGenerator(nickname)),
+															productionProcess			= cms.string(datasetsHelper.getProcess(nickname)),
+															globalTag					= cms.string(globaltag),
+															prodCampaignGlobalTag	= cms.string(datasetsHelper.getProductionCampaignGlobalTag(nickname, centerOfMassEnergy)),
+															runPeriod					= cms.string(datasetsHelper.getRunPeriod(nickname)),
+															kappaTag						= cms.string(kappaTag),
+															isEmbedded					= cms.bool(datasetsHelper.getIsEmbedded(nickname)),
+															jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname)),
+															centerOfMassEnergy		= cms.int32(centerOfMassEnergy),
+															puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy))
+															)
 process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
 process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 process.edmOut = cms.OutputModule("PoolOutputModule",
