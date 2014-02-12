@@ -35,7 +35,7 @@ corrPfMetType1.jetCorrLabel = "ak5PFL1FastL2L3"
 mvaMETMuons = cms.EDFilter("MuonSelector",
     src = cms.InputTag('muons'),
     cut = cms.string(
-        "abs(eta)<2.5 & pt>15"                                      +
+        "abs(eta)<2.1 & pt>15"                                      +
         ## muon ID
         "& isTrackerMuon"                                           +
         "& isPFMuon"                                                +
@@ -57,7 +57,7 @@ mvaMETMuons = cms.EDFilter("MuonSelector",
 mvaMETElectrons = cms.EDFilter("GsfElectronSelector",
     src = cms.InputTag('gsfElectrons'),
     cut = cms.string(
-        "abs(eta) < 2.5 && pt > 9.5"                                +
+        "abs(eta) < 2.3 && pt > 15"                                 +
         "&& gsfTrack.trackerExpectedHitsInner.numberOfHits == 0"    +
         ## electron ID for barrel electrons
         "&& ((abs(eta) < 1.4442  "                                  +
@@ -82,16 +82,42 @@ mvaMETElectrons = cms.EDFilter("GsfElectronSelector",
 ## ------------------------------------------------------------------------
 ## taus as input for mvaMET producer
 ##  - NOTE that the selection for taus depends on the final state
-mvaMETTaus = cms.EDFilter("PFTauSelector",
+mvaMETTausET = cms.EDFilter("PFTauSelector",
     src = cms.InputTag('hpsPFTauProducer'),
     BooleanOperator = cms.string("and"),
     discriminators = cms.VPSet(              
-        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByDecayModeFinding"                      ), selectionCut=cms.double(0.5)),
-        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByLooseCombinedIsolationDBSumPtCorr3Hits"), selectionCut=cms.double(0.5)),
-        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByLooseElectronRejection"                ), selectionCut=cms.double(0.5)),
-        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByLooseMuonRejection2"                   ), selectionCut=cms.double(0.5)) 
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByDecayModeFinding"                       ), selectionCut=cms.double(0.5)),
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByLooseCombinedIsolationDBSumPtCorr3Hits" ), selectionCut=cms.double(0.5)),
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByMVA3MediumElectronRejection"            ), selectionCut=cms.double(0.5)),
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByLooseMuonRejection"                     ), selectionCut=cms.double(0.5)) 
         ),
-    cut = cms.string("abs(eta) < 2.3 && pt > 19.0 "),
+    cut = cms.string("abs(eta) < 2.3 && pt > 20.0 "),
+    filter = cms.bool(False)
+    )
+
+mvaMETTausMT = cms.EDFilter("PFTauSelector",
+    src = cms.InputTag('hpsPFTauProducer'),
+    BooleanOperator = cms.string("and"),
+    discriminators = cms.VPSet(              
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByDecayModeFinding"                       ), selectionCut=cms.double(0.5)),
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByLooseCombinedIsolationDBSumPtCorr3Hits" ), selectionCut=cms.double(0.5)),
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByLooseElectronRejection"                 ), selectionCut=cms.double(0.5)),
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByTightMuonRejection"                     ), selectionCut=cms.double(0.5)) 
+        ),
+    cut = cms.string("abs(eta) < 2.3 && pt > 20.0 "),
+    filter = cms.bool(False)
+    )
+
+mvaMETTausTT = cms.EDFilter("PFTauSelector",
+    src = cms.InputTag('hpsPFTauProducer'),
+    BooleanOperator = cms.string("and"),
+    discriminators = cms.VPSet(              
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByDecayModeFinding"                       ), selectionCut=cms.double(0.5)),
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByMediumCombinedIsolationDBSumPtCorr3Hits"), selectionCut=cms.double(0.5)),
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByLooseElectronRejection"                 ), selectionCut=cms.double(0.5)),
+        cms.PSet( discriminator=cms.InputTag("hpsPFTauDiscriminationByLooseMuonRejection"                     ), selectionCut=cms.double(0.5)) 
+        ),
+    cut = cms.string("abs(eta) < 2.3 && pt > 20.0 "),
     filter = cms.bool(False)
     )
 
@@ -154,21 +180,23 @@ pfMetMVA = cms.EDProducer(
     verbosity       = cms.int32(0)
 )
 
-## specify the leptons similar to those used in the analysis for tt (might need adaptaions of selection criteria)
-#pfMetMVA.srcLeptons = cms.VInputTag("mvaMETTaus")
-## specify the leptons similar to those used in the analysis for mt (might need adaptaions of selection criteria)
-pfMetMVA.srcLeptons = cms.VInputTag("mvaMETMuons", "mvaMETTaus")
-## specify the leptons similar to those used in the analysis for et (might need adaptaions of selection criteria)
-#pfMetMVA.srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETTaus")
-## specify the leptons similar to those used in the analysis for em (might need adaptaions of selection criteria)
-#pfMetMVA.srcLeptons = cms.VInputTag("mvaMETMuons", "mvaMETElectrons")
+## specify the leptons similar to those used in the analysis (channel specific)
+pfMetMVAEM = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETMuons" ))
+pfMetMVAET = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETTausET"))
+pfMetMVAMT = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETMuons"    , "mvaMETTausMT"))
+pfMetMVATT = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETTausTT"))
 
 ## ------------------------------------------------------------------------
 ## Definition of sequences
 makeKappaMET = cms.Sequence(
     mvaMETJets *
-    mvaMETTaus *
     mvaMETMuons *
+    mvaMETTausET *
+    mvaMETTausMT *
+    mvaMETTausTT *
     mvaMETElectrons *
-    pfMetMVA
+    pfMetMVAEM * 
+    pfMetMVAET *
+    pfMetMVAMT *
+    pfMetMVATT 
     )
