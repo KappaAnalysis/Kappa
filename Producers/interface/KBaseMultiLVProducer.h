@@ -44,6 +44,7 @@ public:
 				output.push_back(SingleOutputType());
 				fillSingle(*lvit, output.back());
 			}
+		this->sort(output);
 		if (maxN > 0)
 			output.erase(output.begin() + std::min(output.size(), (size_t)maxN), output.end());
 
