@@ -77,10 +77,14 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 		"^HLT_Photon20_CaloIdVT_IsoT_Ele8_CaloIdL_CaloIsoVL_v[0-9]+$",
 		)
 
-	process.kappaTuple.Metadata.hltBlacklist = cms.vstring(
-		"HLT_DoubleMediumIsoPFTau35_Trk5_eta2p1_v[0-9]+$",
-		"HLT_IsoMu18_eta2p1_MediumIsoPFTau25_Trk5_eta2p1_v[0-9]+$",
+	process.kappaTuple.Metadata.hltFailToleranceList = cms.vstring(
+		"hltDoubleL2Tau35eta2p1",
+		"hltL2Tau25eta2p1",
+		"hltL2Tau25eta2p1",
+		"hltL2fL1sMu16Eta2p1L1f0L2Filtered16Q",
 		)
+
+
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
