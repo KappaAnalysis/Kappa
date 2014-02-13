@@ -11,7 +11,7 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 	process.kappaTuple.outputFile = 'kappaTuple.root'			## name of output file
 	process.kappaTuple.verbose    = cms.int32(0)				## verbosity level
 	if not globaltag.lower() == 'auto' :
-		process.GlobalTag.globaltag   = globaltag + '::All'
+		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
 	data = datasetsHelper.isData(nickname)
 	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
@@ -30,7 +30,8 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 		isEmbedded					= cms.bool(datasetsHelper.getIsEmbedded(nickname)),
 		jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname)),
 		centerOfMassEnergy		= cms.int32(centerOfMassEnergy),
-		puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy))
+		puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy)),
+		isData						= cms.bool(data)
 		)
 
 
@@ -67,12 +68,18 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 		# mt
 		"^HLT_(Iso)?Mu[0-9]+(_eta2p1)?_(Loose|Medium|Tight)IsoPFTau[0-9]+(_Trk[0-9]_eta2p1)?_v[0-9]+$",
 		# tt
-		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk[0-9]_eta2p1_(Jet[0-9]+|Prong[0-9])?_v[0-9]+$",
+		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk1_eta2p1_(Jet[0-9]+|Prong[0-9])?_v[0-9]+$",
+		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk5_eta2p1_v[0-9]+$",
 		# specials (possible generalization: Mu15, L1ETM20, Photon20, Ele8)
 		"^HLT_Ele[0-9]+_CaloId(L|T|VT)_CaloIso(VL|T|VT)(_TrkIdT)?(_TrkIsoVT)?_(SC|Ele)[0-9](_Mass[0-9]+)?_v[0-9]+$",
 		"^HLT_Ele8_v[0-9]+$",
 		"^HLT_IsoMu15(_eta2p1)?_L1ETM20_v[0-9]+$",
 		"^HLT_Photon20_CaloIdVT_IsoT_Ele8_CaloIdL_CaloIsoVL_v[0-9]+$",
+		)
+
+	process.kappaTuple.Metadata.hltBlacklist = cms.vstring(
+		"HLT_DoubleMediumIsoPFTau35_Trk5_eta2p1_v[0-9]+$",
+		"HLT_IsoMu18_eta2p1_MediumIsoPFTau25_Trk5_eta2p1_v[0-9]+$",
 		)
 
 	## ------------------------------------------------------------------------
