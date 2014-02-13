@@ -62,6 +62,7 @@ protected:
 		std::string &outputModuleName, std::vector<size_t> &outputIdxList,
 		std::string triggerName)
 	{
+
 		if (verbosity > 2)
 			std::cout << "KTriggerObjectProducer::fillTriggerObject : Processing " << name << "..." << std::endl;
 		if (fwkIdx >= 0)
@@ -76,9 +77,15 @@ protected:
 			else
 				if (outputModuleName != currentModuleName) // Check existing entry
 				{
-					std::cout << std::endl << name << " index mismatch! "<< outputModuleName << " changed to " << currentModuleName << std::endl;
-					std::cout << "Try blacklisting the trigger " << triggerName << std::endl;
-					exit(1);
+					bool isPresent = (std::find(KMetadataProducerBase::svHLTFailToleranceList.begin(),
+										KMetadataProducerBase::svHLTFailToleranceList.end(), outputModuleName)
+										!= KMetadataProducerBase::svHLTFailToleranceList.end());
+					if(!isPresent) //Check if known problem that can be skipped
+					{
+						std::cout << std::endl << name << " index mismatch! "<< outputModuleName << " changed to " << currentModuleName << std::endl;
+						std::cout << "Try blacklisting the trigger " << triggerName << " or add the trigger objects to the hltFailToleranceList" << std::endl;
+						exit(1);
+					}
 				}
 
 			// Write trigger obj indices

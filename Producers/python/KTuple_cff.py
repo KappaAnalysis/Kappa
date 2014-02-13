@@ -53,6 +53,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 		hltBlacklist = cms.vstring(
 		),
+		hltFailToleranceList = cms.vstring(
+		),
 		printHltList = cms.bool(False),
 
 		hlTrigger = cms.InputTag("hltTriggerSummaryAOD"),

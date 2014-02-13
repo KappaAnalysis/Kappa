@@ -54,16 +54,19 @@ class KMetadataProducerBase : public KBaseProducerWP
 public:
 	KMetadataProducerBase(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KBaseProducerWP(cfg, _event_tree, _lumi_tree, "KMetadata") {}
+
 	virtual ~KMetadataProducerBase() {};
 
 	static HLTConfigProvider hltConfig;
 	static std::vector<size_t> hltKappa2FWK;
 	static std::vector<std::string> selectedHLT;
+	static std::vector<std::string> svHLTFailToleranceList;
 };
 
 HLTConfigProvider KMetadataProducerBase::hltConfig;
 std::vector<size_t> KMetadataProducerBase::hltKappa2FWK;
 std::vector<std::string> KMetadataProducerBase::selectedHLT;
+std::vector<std::string> KMetadataProducerBase::svHLTFailToleranceList;
 
 TRandom3 randomGenerator = TRandom3();
 
@@ -90,6 +93,12 @@ public:
 		_lumi_tree->Bronch("KLumiMetadata", Tmeta::idLumi().c_str(), &metaLumi);
 		metaEvent = new typename Tmeta::typeEvent();
 		_event_tree->Bronch("KEventMetadata", Tmeta::idEvent().c_str(), &metaEvent);
+
+		std::vector<std::string> list = cfg.getParameter<std::vector<std::string> >("hltFailToleranceList");
+		for (size_t i = 0; i < list.size(); ++i)
+		{
+			svHLTFailToleranceList.push_back(list[i]);
+		}
 	}
 	virtual ~KMetadataProducer() {};
 
