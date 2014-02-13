@@ -59,7 +59,8 @@ protected:
 
 	void fillTriggerObject(const trigger::TriggerEvent &triggerEventHandle,
 		std::string name, int fwkIdx, std::map<size_t, size_t> &toFWK2Kappa,
-		std::string &outputModuleName, std::vector<size_t> &outputIdxList)
+		std::string &outputModuleName, std::vector<size_t> &outputIdxList,
+		std::string triggerName)
 	{
 		if (verbosity > 2)
 			std::cout << "KTriggerObjectProducer::fillTriggerObject : Processing " << name << "..." << std::endl;
@@ -75,7 +76,8 @@ protected:
 			else
 				if (outputModuleName != currentModuleName) // Check existing entry
 				{
-					std::cout << std::endl << name << " index mismatch!" << std::endl;
+					std::cout << std::endl << name << " index mismatch! "<< outputModuleName << " changed to " << currentModuleName << std::endl;
+					std::cout << "Try blacklisting the trigger " << triggerName << std::endl;
 					exit(1);
 				}
 
@@ -138,8 +140,8 @@ protected:
 				std::cout << std::endl;
 
 			// Fill L1L2 / HLT object
-			fillTriggerObject(triggerEventHandle, "L1L2", idxL1L2, toFWK2Kappa, trgInfos->toL1L2[i], out.toIdxL1L2[i]);
-			fillTriggerObject(triggerEventHandle, "HLT", idxHLT, toFWK2Kappa, trgInfos->toHLT[i], out.toIdxHLT[i]);
+			fillTriggerObject(triggerEventHandle, "L1L2", idxL1L2, toFWK2Kappa, trgInfos->toL1L2[i], out.toIdxL1L2[i], hltConfig.triggerName(hltIdx));
+			fillTriggerObject(triggerEventHandle, "HLT", idxHLT, toFWK2Kappa, trgInfos->toHLT[i], out.toIdxHLT[i], hltConfig.triggerName(hltIdx));
 		}
 
 		// Save used trigger objects
