@@ -93,7 +93,7 @@ def getCenterOfMassEnergy(nickname):
 		return 8
 
 def isData(nickname):
-	return (getProcess(nickname) == "Data")
+	return (getProcess(nickname) == "Data" or getProcess(nickname) == "Embedded")
 
 def checkDatasets():
 	for nickname in datasets:

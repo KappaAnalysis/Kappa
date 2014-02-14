@@ -84,7 +84,8 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 		"hltL2fL1sMu16Eta2p1L1f0L2Filtered16Q",
 		)
 
-
+	# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
+	process.kappaTuple.Metadata.overrideHLTCheck = cms.untracked.bool(datasetsHelper.getIsEmbedded(nickname))
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
