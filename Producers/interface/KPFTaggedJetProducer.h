@@ -27,7 +27,8 @@ public:
 				|| (tagger[i] == "puJetIDFullTight")
 				|| (tagger[i] == "puJetIDCutbasedLoose")
 				|| (tagger[i] == "puJetIDCutbasedMedium")
-				|| (tagger[i] == "puJetIDCutbasedTight") )
+				|| (tagger[i] == "puJetIDCutbasedTight")
+				|| (tagger[i] == "puJetIDMET") )
 				names->pujetidnames.push_back(tagger[i]);
 			else
 				names->taggernames.push_back(tagger[i]);
@@ -74,6 +75,8 @@ public:
 				cEvent->getByLabel(Btagger.label()+"CombinedSecondaryVertexBJetTags", CombinedSecondaryVertexBJetTags_Handle);
 			else if (tagger[i] == "CombinedSecondaryVertexMVABJetTags")
 				cEvent->getByLabel(Btagger.label()+"CombinedSecondaryVertexMVABJetTags", CombinedSecondaryVertexMVABJetTags_Handle);
+			else if (tagger[i] == "puJetIDMET")
+				cEvent->getByLabel(PUJetID.label(), "metId", puJetIDMET_Handle);
 			else if (tagger[i].find( "puJetIDFull") != std::string::npos)
 				cEvent->getByLabel(PUJetID.label(), PUJetID_full.label()+"Id", puJetIDfull_Handle);
 			else if (tagger[i].find( "puJetIDCutbased") != std::string::npos)
@@ -120,11 +123,13 @@ public:
 			else if (tagger[i] == "puJetIDFullTight")
 				puJetID.push_back(( (*puJetIDfull_Handle)[jetRef] & (1 << 0) ) != 0);
 			else if (tagger[i] == "puJetIDCutbasedLoose")
-				puJetID.push_back (( (*puJetIDcutbased_Handle)[jetRef] & (1 << 2) ) != 0);
+				puJetID.push_back(( (*puJetIDcutbased_Handle)[jetRef] & (1 << 2) ) != 0);
 			else if (tagger[i] == "puJetIDCutbasedMedium")
-				puJetID.push_back (( (*puJetIDcutbased_Handle)[jetRef] & (1 << 1) ) != 0);
+				puJetID.push_back(( (*puJetIDcutbased_Handle)[jetRef] & (1 << 1) ) != 0);
 			else if (tagger[i] == "puJetIDCutbasedTight")
 				puJetID.push_back(( (*puJetIDcutbased_Handle)[jetRef] & (1 << 0) ) != 0);
+			else if (tagger[i] == "puJetIDMET")
+				puJetID.push_back(( (*puJetIDMET_Handle)[jetRef] & (1 << 2) ) != 0);
 			else
 			{
 				const reco::JetTagCollection & tags = *(tagmap_b[tagger[i]].product());
@@ -182,6 +187,7 @@ private:
 
 	edm::Handle< edm::ValueMap<int> > puJetIDfull_Handle;
 	edm::Handle< edm::ValueMap<int> > puJetIDcutbased_Handle;
+	edm::Handle< edm::ValueMap<int> > puJetIDMET_Handle;
 
 	static constexpr float default_for_not_defined_tagger_value = -999.;
 
