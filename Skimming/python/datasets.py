@@ -162,6 +162,18 @@ datasets = {
 		},
 	},
 
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_muhad" : {
+		"dataset": {
+			8: "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_muelec" : {
+		"dataset": {
+			8: "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+
 	##### DY + Jets (8 TeV) ####################################################
 	"DYJetsToLL_M_50_madgraph" : {
 		"dataset" : {
