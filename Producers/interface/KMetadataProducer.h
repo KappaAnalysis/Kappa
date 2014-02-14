@@ -226,6 +226,7 @@ public:
 		metaEvent->randomNumber = randomGenerator.Rndm();
 		// If we are running on real data then the trigger should
 		// always be HLT.
+		// Disable the overrideHLTCheck for embedded data
 		if (!overrideHLTCheck)
 			assert(!event.isRealData() || tagHLTResults.process() == "HLT");
 
