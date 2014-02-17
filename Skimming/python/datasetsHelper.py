@@ -27,6 +27,9 @@ def getProcess(nickname):
 	for string in SM_WH_ZH_TTH_HToTauTau:
 		if string in nickname:
 			return "SM_WH_ZH_TTH_HToTauTau"
+	for string in SM_TTH_HToTauTau:
+		if string in nickname:
+			return "SM_TTH_HToTauTau"
 
 def getIsEmbedded(nickname):
 	# Todo together with implementation of embedded samples in datasets.py
