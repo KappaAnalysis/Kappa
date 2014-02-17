@@ -9,6 +9,12 @@ goodOfflinePrimaryVertices = cms.EDFilter('PrimaryVertexObjectFilter',
     filterParams = pvSelector.clone( minNdof = 4.0, maxZ = 24.0 ),
 )
 
+goodOfflinePrimaryVertexEvents = cms.EDFilter("KVertexFilter",
+    minNumber = cms.uint32(1),
+    maxNumber = cms.uint32(999999),
+    src = cms.InputTag("goodOfflinePrimaryVertices")
+)
+
 ## ------------------------------------------------------------------------
 ## TopProjections from CommonTools/ParticleFlow:
 from CommonTools.ParticleFlow.PFBRECO_cff import *
@@ -36,6 +42,7 @@ pfPileUp.checkClosestZVertex    = False
 ## into the KappaTuple and nothing more
 makeKappaPFCandidates = cms.Sequence(
     goodOfflinePrimaryVertices *
+    goodOfflinePrimaryVertexEvents *
     pfParticleSelectionSequence
     )
 
@@ -43,6 +50,7 @@ makeKappaPFCandidates = cms.Sequence(
 ## jets ()
 makePFBRECO = cms.Sequence(
     goodOfflinePrimaryVertices *
+    goodOfflinePrimaryVertexEvents *
     PFBRECO
     )
 
