@@ -627,6 +627,53 @@ datasets = {
 			8 : "/WH_ZH_TTH_HToTauTau_M-160_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
+	
+	##### SM ttH->tautau #################################################
+	"SM_TTH_HToTauTau_M_110_pythia" : {
+		"dataset" : {
+			8 : "/TTH_HToTauTau_M-110_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_TTH_HToTauTau_M_115_pythia" : {
+		"dataset" : {
+			8 : "/TTH_HToTauTau_M-115_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_TTH_HToTauTau_M_120_pythia" : {
+		"dataset" : {
+			8 : "/TTH_HToTauTau_M-120_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_TTH_HToTauTau_M_122_5_pythia" : {
+		"dataset" : {
+			8 : "/TTH_HToTauTau_M-122_5_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_TTH_HToTauTau_M_125_pythia" : {
+		"dataset" : {
+			8 : "/TTH_HToTauTau_M-125_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_TTH_HToTauTau_M_127_5_pythia" : {
+		"dataset" : {
+			8 : "/TTH_HToTauTau_M-127_5_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_TTH_HToTauTau_M_130_pythia" : {
+		"dataset" : {
+			8 : "/TTH_HToTauTau_M-130_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_TTH_HToTauTau_M_135_pythia" : {
+		"dataset" : {
+			8 : "/TTH_HToTauTau_M-135_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SM_TTH_HToTauTau_M_140_pythia" : {
+		"dataset" : {
+			8 : "/TTH_HToTauTau_M-140_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
 }
 
 Data = [
@@ -707,4 +754,4 @@ Embedded = [
 SM_GluGluToHToTauTau = ["SM_GluGluToHToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
 SM_VBFHToTauTau = ["SM_VBFHToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
 SM_WH_ZH_TTH_HToTauTau = ["SM_WH_ZH_TTH_HToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
-
+SM_TTH_HToTauTau = ["SM_TTH_HToTauTau_M_%s_pythia" % higgsMass for higgsMass in ["110","115","120","122_5","125","127_5","130","135","140"]]
