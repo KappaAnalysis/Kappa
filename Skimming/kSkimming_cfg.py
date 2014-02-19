@@ -82,6 +82,8 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 		"hltL2Tau25eta2p1",
 		"hltL2Tau25eta2p1",
 		"hltL2fL1sMu16Eta2p1L1f0L2Filtered16Q",
+		"hltDoubleL2Tau30eta2p1",
+		"hltL2Tau25eta2p1"
 		)
 
 	# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error

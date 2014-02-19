@@ -33,6 +33,7 @@ def getProcess(nickname):
 	for string in SM_TTH_HToTauTau:
 		if string in nickname:
 			return "SM_TTH_HToTauTau"
+	return ""
 
 def getIsEmbedded(nickname):
 	if getProcess(nickname) == "Embedded":
