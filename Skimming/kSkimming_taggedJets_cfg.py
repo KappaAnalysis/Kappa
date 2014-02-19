@@ -56,13 +56,15 @@ process.kappaOut+=process.edmOut
 ## ------------------------------------------------------------------------
 ## KappaPFTaggedJets
 process.load("Kappa.Producers.KPFTaggedJets_cff")
+process.load("Kappa.Producers.KPFCandidates_cff")
 
 ## And let it run
 process.p = cms.Path(
-    process.makePfCHS *
+    process.makePFBRECO *
     process.makePFJets *
     process.makePFJetsCHS *
     process.makeQGTagging *
     process.makeBTagging *
     process.makePUJetID
     )
+
