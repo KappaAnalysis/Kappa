@@ -158,6 +158,7 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 			PUJetID_full = cms.InputTag("full"),
 			),
 		)
+	process.kappaTuple.active += cms.vstring('JetArea')
 
 	## ------------------------------------------------------------------------
 	## MET
