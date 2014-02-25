@@ -179,7 +179,8 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 		process.makeQGTagging *
 		process.makeBTagging *
 		process.makePUJetID *
-		process.makeKappaMET
+		process.makeKappaMET *
+		process.kappaOut
 		)
 
 	## ------------------------------------------------------------------------
