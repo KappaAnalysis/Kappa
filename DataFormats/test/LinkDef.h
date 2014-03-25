@@ -56,6 +56,10 @@
 #pragma link C++ class std::vector<KDataLV>+;
 #pragma link C++ typedef KDataLVs;
 
+#pragma link C++ struct KLepton+;
+#pragma link C++ class std::vector<KLeptons>+;
+#pragma link C++ typedef KLeptons;
+
 #pragma link C++ struct KDataMET+;
 #pragma link C++ struct KDataPFMET+;
 

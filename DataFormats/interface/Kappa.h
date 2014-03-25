@@ -38,6 +38,8 @@ REGISTER_NAME_OF_TYPE(KDataJet,KDataJet);
 REGISTER_NAME_OF_TYPE(KDataJets,std::vector<KDataJet>);
 REGISTER_NAME_OF_TYPE(KDataLV,KDataLV);
 REGISTER_NAME_OF_TYPE(KDataLVs,std::vector<KDataLV>);
+REGISTER_NAME_OF_TYPE(KLepton,KLepton);
+REGISTER_NAME_OF_TYPE(KLeptons,std::vector<KLepton>);
 REGISTER_NAME_OF_TYPE(KDataMET,KDataMET);
 REGISTER_NAME_OF_TYPE(KDataMuon,KDataMuon);
 REGISTER_NAME_OF_TYPE(KDataMuons,std::vector<KDataMuon>);

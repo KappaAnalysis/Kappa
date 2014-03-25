@@ -33,6 +33,8 @@ namespace
 		KDataJets dict_KDataJets;
 		KDataLV dict_KDataLV;
 		KDataLVs dict_KDataLVs;
+		KLepton dict_KLepton;
+		KLeptons dict_KLeptons;
 		KDataMET dict_KDataMET;
 		KDataMuon dict_KDataMuon;
 		KDataMuons dict_KDataMuons;
