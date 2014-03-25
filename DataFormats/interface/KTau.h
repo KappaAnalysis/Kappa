@@ -39,7 +39,7 @@ struct KDataPFTau : KDataTau
 	RMDataLV leadChargedHadrCand;
 	RMDataLV leadNeutralCand;
 
-	KDataTrack leadCandTrack;
+	KDataTrack track;
 
 	//bool longLived
 	int hpsDecayMode; // hadronic decay mode as identified by HPS algorithm

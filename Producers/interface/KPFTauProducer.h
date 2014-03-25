@@ -51,7 +51,7 @@ protected:
 		if(in.leadPFChargedHadrCand().isNonnull()){
 			copyP4(in.leadPFChargedHadrCand()->p4(), out.leadChargedHadrCand);
 			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
-				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.leadCandTrack);
+				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track);
 		}
 		if(in.leadPFNeutralCand().isNonnull())
 			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralCand); // leading PFGamma candidate

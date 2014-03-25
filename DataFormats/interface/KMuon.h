@@ -15,8 +15,6 @@
 
 struct KDataMuon : KLepton
 {
-
-	KDataTrack track;
 	KDataTrack globalTrack;
 	KDataTrack innerTrack;
 	KDataTrack outerTrack;

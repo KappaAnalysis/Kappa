@@ -15,8 +15,6 @@
 
 struct KDataElectron : KLepton
 {
-	KDataTrack track;
-
 	bool isEB, isEE;
 
 /* if needed, all these could be easily added in one byte as is done for muons:

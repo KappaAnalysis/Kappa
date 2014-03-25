@@ -66,9 +66,11 @@ const unsigned int KGenParticleChargeMask = (unsigned int)1 << KGenParticleCharg
 const unsigned int KGenParticleStatusMask = (unsigned int)3 << KGenParticleStatusPosition;
 const unsigned int KGenParticlePdgIdMask = ((unsigned int)1 << KGenParticleStatusPosition) - (unsigned int)1;
 
+#include "KTrack.h"
 struct KLepton : public KDataLV
 {
 	char charge;
+	KDataTrack track;
 };
 
 typedef std::vector<KLepton> KLeptons;
