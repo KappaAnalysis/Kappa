@@ -71,6 +71,8 @@ struct KLepton : public KDataLV
 	char charge;
 };
 
+typedef std::vector<KLepton> KLeptons;
+
 struct KGenParticle : public KDataLV
 {
 	unsigned int pdgid;
