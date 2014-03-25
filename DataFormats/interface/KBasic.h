@@ -66,6 +66,11 @@ const unsigned int KGenParticleChargeMask = (unsigned int)1 << KGenParticleCharg
 const unsigned int KGenParticleStatusMask = (unsigned int)3 << KGenParticleStatusPosition;
 const unsigned int KGenParticlePdgIdMask = ((unsigned int)1 << KGenParticleStatusPosition) - (unsigned int)1;
 
+struct KLepton : public KDataLV
+{
+	char charge;
+};
+
 struct KGenParticle : public KDataLV
 {
 	unsigned int pdgid;

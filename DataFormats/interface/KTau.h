@@ -11,11 +11,9 @@
 #include "KBasic.h"
 #include "KMetadata.h"
 
-struct KDataTau : KDataLV
+struct KDataTau : KLepton
 {
 	unsigned long long discr;
-
-	char charge;
 
 	bool hasID(const std::string& name, const KTauDiscriminatorMetadata * lumimetadata) const
 	{

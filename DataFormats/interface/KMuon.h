@@ -13,9 +13,8 @@
 
 #include <algorithm>
 
-struct KDataMuon : KDataLV
+struct KDataMuon : KLepton
 {
-	char charge;
 
 	KDataTrack track;
 	KDataTrack globalTrack;
