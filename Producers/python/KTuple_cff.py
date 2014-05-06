@@ -215,6 +215,17 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
+	LHE = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("source"),
+		blacklist = cms.vstring(),
+		
+		rename = cms.vstring("source => LHE"),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
+
 	PFCandidates = cms.PSet(kappaNoRename, kappaNoCut,
 		manual = cms.VInputTag(),
 
