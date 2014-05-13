@@ -114,8 +114,6 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 	# Configure Taus
 	process.load("Kappa.Producers.KTaus_cff")
 	process.kappaTuple.active += cms.vstring('PFTaus')	                ## produce/save KappaTaus
-	process.kappaTuple.KTaus.binaryDiscrBlacklist = cms.vstring("raw", "Raw")
-	process.kappaTuple.KTaus.floatDiscrWhitelist = cms.vstring("raw", "Raw")
 
 	## ------------------------------------------------------------------------
 	## KappaPFTaggedJets
