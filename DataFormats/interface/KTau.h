@@ -13,14 +13,23 @@
 
 struct KDataTau : KLepton
 {
-	unsigned long long discr;
+	unsigned long long binaryDiscriminators;
+	std::vector<float> floatDiscriminators;
 
 	bool hasID(const std::string& name, const KTauDiscriminatorMetadata * lumimetadata) const
 	{
-		for(size_t i = 0; i < lumimetadata->discriminatorNames.size(); ++i)
-			if(lumimetadata->discriminatorNames[i] == name)
-				return (discr & (1ull << i)) != 0;
+		for(size_t i = 0; i < lumimetadata->binaryDiscriminatorNames.size(); ++i)
+			if(lumimetadata->binaryDiscriminatorNames[i] == name)
+				return (binaryDiscriminators & (1ull << i)) != 0;
 		return false; // Named discriminator does not exist
+	}
+
+	float getDiscriminator(const std::string& name, const KTauDiscriminatorMetadata * lumimetadata) const
+	{
+		for(size_t i = 0; i < lumimetadata->floatDiscriminatorNames.size(); ++i)
+			if(lumimetadata->floatDiscriminatorNames[i] == name)
+				return floatDiscriminators[i];
+		return -999.0; // Named discriminator does not exist
 	}
 };
 typedef std::vector<KDataTau> KDataTaus;

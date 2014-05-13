@@ -30,7 +30,8 @@ struct KLumiMetadata
 
 struct KTauDiscriminatorMetadata
 {
-	std::vector<std::string> discriminatorNames;
+	std::vector<std::string> binaryDiscriminatorNames;
+	std::vector<std::string> floatDiscriminatorNames;
 };
 
 struct KMuonMetadata
