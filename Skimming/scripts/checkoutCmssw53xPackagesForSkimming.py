@@ -65,11 +65,8 @@ def checkoutPackages(args):
 		'cd ' + cmsswsrc,
 
 		# https://twiki.cern.ch/twiki/bin/view/CMS/GluonTag
-		"git clone git@github.com:amarini/QuarkGluonTagger.git",
-		"cd " + cmsswsrc + "QuarkGluonTagger",
-		"git checkout v1-2-3",
-		'cd ' + cmsswsrc,
-		
+		"git clone git://github.com/amarini/QuarkGluonTagger.git -b v1-2-3",
+
 		# PU Jet ID as used in TauTau and needed for MVA MET (does not work with git cms-cvs-history and does not compile with cvs co)
 		# https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideCMSDataAnalysisSchoolJetMetAnalysis#MET_Recipe
 		# https://twiki.cern.ch/twiki/bin/view/CMS/MVAMet
@@ -80,7 +77,7 @@ def checkoutPackages(args):
 		"git cms-merge-topic -u cms-analysis-tools:5_3_13_patch2-testNewTau",
 		"git cms-merge-topic -u cms-met:53X-MVaNoPuMET-20131217-01",
 
-		"git clone https://github.com/ajaykumar649/Jets_Short.git",
+		"git clone git://github.com/ajaykumar649/Jets_Short.git",
 		"cp -r Jets_Short/* " + cmsswsrc,
 		"rm -rf Jets_Short",
 
