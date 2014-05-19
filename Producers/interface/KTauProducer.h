@@ -68,7 +68,7 @@ public:
 
 				if (isCorrectType(desc.className()))
 				{
-					if (std::find(discrMetadataMap[names[i]]->binaryDiscriminatorNames.begin(), discrMetadataMap[names[i]]->binaryDiscriminatorNames.end(), moduleInstance) == discrMetadataMap[names[i]]->binaryDiscriminatorNames.end())
+					if (std::find(discrMetadataMap[names[i]]->binaryDiscriminatorNames.begin(), discrMetadataMap[names[i]]->binaryDiscriminatorNames.end(), moduleInstance) == discrMetadataMap[names[i]]->binaryDiscriminatorNames.end() && std::find(discrMetadataMap[names[i]]->floatDiscriminatorNames.begin(), discrMetadataMap[names[i]]->floatDiscriminatorNames.end(), moduleInstance) == discrMetadataMap[names[i]]->floatDiscriminatorNames.end())
 					{
 						if (KBaseProducer::regexMatch(moduleInstance, binaryDiscrWhitelist[names[i]], binaryDiscrBlacklist[names[i]]))
 						{
@@ -91,9 +91,6 @@ public:
 
 							if (this->verbosity > 0)
 								std::cout << "Float tau discriminator " << ": " << moduleInstance << " "<< desc.processName() << std::endl;
-
-							if (discrMetadataMap[names[i]]->binaryDiscriminatorNames.size()>32)
-								throw cms::Exception("Too many float tau discriminators selected!");
 						}
 					}
 				}
@@ -139,10 +136,10 @@ public:
 		// Charge:
 		out.charge = in.charge();
 
-		// Discriminator flags:
+		// Discriminators:
 		edm::Ref<std::vector<TTau> > tauRef(this->handle, this->nCursor);
 		out.binaryDiscriminators = 0;
-		out.floatDiscriminators = std::vector<float>(32);
+		out.floatDiscriminators = std::vector<float>(currentFloatDiscriminators.size());
 		
 		// handle binary discriminators
 		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
@@ -156,7 +153,6 @@ public:
 						  std::cout << "KTauProducer: moduleLabel: " << discr_module << " \n" << "              processName: " << process_name << " \n";
 
 			std::map<std::string, unsigned int>::const_iterator moduleInstance_iter = currentBinaryDiscriminatorMap.find(discr_moduleInstance);
-			
 			if(moduleInstance_iter != currentBinaryDiscriminatorMap.end())
 			{
 				// The discriminator does exist in our map so
@@ -178,6 +174,7 @@ public:
 				}
 			}
 
+			moduleInstance_iter = currentBinaryDiscriminatorMap.find(discr_moduleInstance);
 			if(moduleInstance_iter != currentFloatDiscriminatorMap.end())
 			{
 				// The discriminator does exist in our map so
