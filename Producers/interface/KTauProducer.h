@@ -62,33 +62,35 @@ public:
 			{
 				edm::BranchDescription desc = it->second;
 
-				const std::string& name = desc.moduleLabel();
+				const std::string& module = desc.moduleLabel();
+				const std::string& instance = desc.productInstanceName();
+				std::string moduleInstance(module + instance);
 
 				if (isCorrectType(desc.className()))
 				{
-					if (std::find(discrMetadataMap[names[i]]->binaryDiscriminatorNames.begin(), discrMetadataMap[names[i]]->binaryDiscriminatorNames.end(), name) == discrMetadataMap[names[i]]->binaryDiscriminatorNames.end())
+					if (std::find(discrMetadataMap[names[i]]->binaryDiscriminatorNames.begin(), discrMetadataMap[names[i]]->binaryDiscriminatorNames.end(), moduleInstance) == discrMetadataMap[names[i]]->binaryDiscriminatorNames.end())
 					{
-						if (KBaseProducer::regexMatch(name, binaryDiscrWhitelist[names[i]], binaryDiscrBlacklist[names[i]]))
+						if (KBaseProducer::regexMatch(moduleInstance, binaryDiscrWhitelist[names[i]], binaryDiscrBlacklist[names[i]]))
 						{
-							discrMetadataMap[names[i]]->binaryDiscriminatorNames.push_back(name);
+							discrMetadataMap[names[i]]->binaryDiscriminatorNames.push_back(moduleInstance);
 
-							binaryTauDiscriminatorBitMap[names[i]][name] = discrMetadataMap[names[i]]->binaryDiscriminatorNames.size() - 1;
+							binaryTauDiscriminatorBitMap[names[i]][moduleInstance] = discrMetadataMap[names[i]]->binaryDiscriminatorNames.size() - 1;
 
 							if (this->verbosity > 0)
-								std::cout << "Binary tau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+								std::cout << "Binary tau discriminator " << ": " << moduleInstance << " "<< desc.processName() << std::endl;
 
 							if (discrMetadataMap[names[i]]->binaryDiscriminatorNames.size()>64)
 								throw cms::Exception("Too many binary tau discriminators selected!");
 						}
 						
-						if (KBaseProducer::regexMatch(name, floatDiscrWhitelist[names[i]], floatDiscrBlacklist[names[i]]))
+						if (KBaseProducer::regexMatch(moduleInstance, floatDiscrWhitelist[names[i]], floatDiscrBlacklist[names[i]]))
 						{
-							discrMetadataMap[names[i]]->floatDiscriminatorNames.push_back(name);
+							discrMetadataMap[names[i]]->floatDiscriminatorNames.push_back(moduleInstance);
 
-							floatTauDiscriminatorBitMap[names[i]][name] = discrMetadataMap[names[i]]->floatDiscriminatorNames.size() - 1;
+							floatTauDiscriminatorBitMap[names[i]][moduleInstance] = discrMetadataMap[names[i]]->floatDiscriminatorNames.size() - 1;
 
 							if (this->verbosity > 0)
-								std::cout << "Float tau discriminator " << ": " << name << " "<< desc.processName() << std::endl;
+								std::cout << "Float tau discriminator " << ": " << moduleInstance << " "<< desc.processName() << std::endl;
 
 							if (discrMetadataMap[names[i]]->binaryDiscriminatorNames.size()>32)
 								throw cms::Exception("Too many float tau discriminators selected!");
@@ -108,8 +110,7 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Get tau discriminators from event
-		this->cEvent->getManyByType(currentBinaryTauDiscriminators);
-		this->cEvent->getManyByType(currentFloatTauDiscriminators);
+		this->cEvent->getManyByType(currentTauDiscriminators);
 
 		if (this->verbosity > 1)
 			std::cout << "switching to " << name << " in Tau producer\n";
@@ -144,15 +145,19 @@ public:
 		out.floatDiscriminators = std::vector<float>(32);
 		
 		// handle binary discriminators
-		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentBinaryTauDiscriminators.begin(); iter != currentBinaryTauDiscriminators.end(); ++iter)
+		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
 		{
-			std::string discr_name = iter->provenance()->moduleLabel();
+			std::string discr_module = iter->provenance()->moduleLabel();
+			std::string discr_instance = iter->provenance()->productInstanceName();
 			std::string process_name = iter->provenance()->processName();
+			std::string discr_moduleInstance(discr_module + discr_instance);
+			
 			if (this->verbosity > 1)
-						  std::cout << "KTauProducer: moduleLabel: " << discr_name << " \n" << "              processName: " << process_name << " \n";
+						  std::cout << "KTauProducer: moduleLabel: " << discr_module << " \n" << "              processName: " << process_name << " \n";
 
-			std::map<std::string, unsigned int>::const_iterator name_iter = currentBinaryDiscriminatorMap.find(discr_name);
-			if(name_iter != currentBinaryDiscriminatorMap.end())
+			std::map<std::string, unsigned int>::const_iterator moduleInstance_iter = currentBinaryDiscriminatorMap.find(discr_moduleInstance);
+			
+			if(moduleInstance_iter != currentBinaryDiscriminatorMap.end())
 			{
 				// The discriminator does exist in our map so
 				// we have an index in the discr bitfield
@@ -161,29 +166,19 @@ public:
 				// algorithm.
 				for(std::vector<std::string>::const_iterator use_iter = currentBinaryDiscriminators.begin(); use_iter != currentBinaryDiscriminators.end(); ++use_iter)
 				{
-					if(this->regexMatch(discr_name, *use_iter) && this->regexMatch(process_name,currentDiscrProcessName))
+					if(this->regexMatch(discr_moduleInstance, *use_iter) && this->regexMatch(process_name,currentDiscrProcessName))
 					{
 						if (this->verbosity > 5)
-							std::cout << "KTauProducer: access " << discr_name << " with id = " << (**iter).keyProduct().id() << " using tau with id = " << tauRef.id() << " \n";
+							std::cout << "KTauProducer: access " << discr_moduleInstance << " with id = " << (**iter).keyProduct().id() << " using tau with id = " << tauRef.id() << " \n";
 						// We have a match, so evaluate the discriminator
 						if( (**iter)[tauRef] > 0.5)
-							out.binaryDiscriminators |= (1ull << name_iter->second);
+							out.binaryDiscriminators |= (1ull << moduleInstance_iter->second);
 						break;
 					}
 				}
 			}
-		}
-		
-		// handle float discriminators
-		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentFloatTauDiscriminators.begin(); iter != currentFloatTauDiscriminators.end(); ++iter)
-		{
-			std::string discr_name = iter->provenance()->moduleLabel();
-			std::string process_name = iter->provenance()->processName();
-			if (this->verbosity > 1)
-						  std::cout << "KTauProducer: moduleLabel: " << discr_name << " \n" << "              processName: " << process_name << " \n";
 
-			std::map<std::string, unsigned int>::const_iterator name_iter = currentFloatDiscriminatorMap.find(discr_name);
-			if(name_iter != currentFloatDiscriminatorMap.end())
+			if(moduleInstance_iter != currentFloatDiscriminatorMap.end())
 			{
 				// The discriminator does exist in our map so
 				// we have an index in the discr bitfield
@@ -192,11 +187,11 @@ public:
 				// algorithm.
 				for(std::vector<std::string>::const_iterator use_iter = currentFloatDiscriminators.begin(); use_iter != currentFloatDiscriminators.end(); ++use_iter)
 				{
-					if(this->regexMatch(discr_name, *use_iter) && this->regexMatch(process_name,currentDiscrProcessName))
+					if(this->regexMatch(discr_moduleInstance, *use_iter) && this->regexMatch(process_name,currentDiscrProcessName))
 					{
 						if (this->verbosity > 5)
-							std::cout << "KTauProducer: access " << discr_name << " with id = " << (**iter).keyProduct().id() << " using tau with id = " << tauRef.id() << " \n";
-						out.floatDiscriminators[name_iter->second] = (**iter)[tauRef];
+							std::cout << "KTauProducer: access " << discr_moduleInstance << " with id = " << (**iter).keyProduct().id() << " using tau with id = " << tauRef.id() << " \n";
+						out.floatDiscriminators[moduleInstance_iter->second] = (**iter)[tauRef];
 						break;
 					}
 				}
@@ -209,18 +204,18 @@ public:
 
 		// preselect taus by given set of discriminators
 		// do not use regex matching here, as we do not want to apply any preselection by "accident"
-		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentBinaryTauDiscriminators.begin(); iter != currentBinaryTauDiscriminators.end(); ++iter)
+		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
 		{
 			if ( !this->regexMatch(iter->provenance()->processName(),currentDiscrProcessName) )
 				continue; // this tau discriminator does not belong to this tau
 
-			std::string discr_name = iter->provenance()->moduleLabel();
-			std::vector<std::string>::const_iterator name_iter = std::find(currentPreselDiscr.begin(),currentPreselDiscr.end(),discr_name);
+			std::string discr_module = iter->provenance()->moduleLabel();
+			std::vector<std::string>::const_iterator module_iter = std::find(currentPreselDiscr.begin(),currentPreselDiscr.end(),discr_module);
 
-			if( name_iter != currentPreselDiscr.end() ){
+			if( module_iter != currentPreselDiscr.end() ){
 				if ( (**iter)[tauRef] < 0.5 ){
 					if (this->verbosity > 1)
-						std::cout << "KTauProducer::acceptSingle : " << *name_iter << " caused that this tau is not saved \n";
+						std::cout << "KTauProducer::acceptSingle : " << *module_iter << " caused that this tau is not saved \n";
 
 					return false;
 				}
@@ -242,8 +237,7 @@ protected:
 private:
 	typedef TTauDiscriminator TauDiscriminator;
 
-	std::vector<edm::Handle<TauDiscriminator> > currentBinaryTauDiscriminators; // binary discriminators found in event
-	std::vector<edm::Handle<TauDiscriminator> > currentFloatTauDiscriminators; // float discriminators found in event
+	std::vector<edm::Handle<TauDiscriminator> > currentTauDiscriminators; // discriminators found in event
 
 	std::vector<std::string> currentPreselDiscr; // discriminators to use for tau preselection (based on PSet)
 	
