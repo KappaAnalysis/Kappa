@@ -185,8 +185,10 @@ std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
 
 std::ostream &operator<<(std::ostream &os, const KTauDiscriminatorMetadata &m)
 {
-	for (std::vector<std::string>::const_iterator it = m.discriminatorNames.begin(); it != m.discriminatorNames.end(); ++it)
-		os << "Tau discriminator: " << *it << std::endl;
+	for (std::vector<std::string>::const_iterator it = m.binaryDiscriminatorNames.begin(); it != m.binaryDiscriminatorNames.end(); ++it)
+		os << "Binary tau discriminator: " << *it << std::endl;
+	for (std::vector<std::string>::const_iterator it = m.floatDiscriminatorNames.begin(); it != m.floatDiscriminatorNames.end(); ++it)
+		os << "Float tau discriminator: " << *it << std::endl;
 	return os;
 }
 
