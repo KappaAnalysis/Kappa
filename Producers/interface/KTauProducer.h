@@ -174,7 +174,7 @@ public:
 				}
 			}
 
-			moduleInstance_iter = currentBinaryDiscriminatorMap.find(discr_moduleInstance);
+			moduleInstance_iter = currentFloatDiscriminatorMap.find(discr_moduleInstance);
 			if(moduleInstance_iter != currentFloatDiscriminatorMap.end())
 			{
 				// The discriminator does exist in our map so
