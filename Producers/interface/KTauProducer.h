@@ -109,6 +109,7 @@ public:
 	{
 		// Get tau discriminators from event
 		this->cEvent->getManyByType(currentBinaryTauDiscriminators);
+		this->cEvent->getManyByType(currentFloatTauDiscriminators);
 
 		if (this->verbosity > 1)
 			std::cout << "switching to " << name << " in Tau producer\n";
