@@ -32,6 +32,7 @@
 #include "../interface/KCaloTauProducer.h"
 #include "../interface/KFilterSummaryProducer.h"
 #include "../interface/KGenParticleProducer.h"
+#include "../interface/KLHEProducer.h"
 #include "../interface/KGenPhotonProducer.h"
 #include "../interface/KGenTauProducer.h"
 #include "../interface/KHCALNoiseSummaryProducer.h"
@@ -179,6 +180,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KCaloTauProducer>(active[i]);
 		addProducer<KFilterSummaryProducer>(active[i]);
 		addProducer<KGenParticleProducer>(active[i]);
+		addProducer<KLHEProducer>(active[i]);
 		addProducer<KGenPhotonProducer>(active[i]);
 		addProducer<KGenTauProducer>(active[i]);
 		addProducer<KHCALNoiseSummaryProducer>(active[i]);

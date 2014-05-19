@@ -20,9 +20,14 @@ git clone https://github.com/cms-analysis/RecoMET-METAnalyzers.git RecoMET/METAn
 git clone https://github.com/violatingcp/Jets_Short.git
 cp -r Jets_Short/* .
 rm -rf Jets_Short
-cp /afs/cern.ch/work/p/pharris/public/LowPtJets/*.py $CMSSW_BASE/src/RecoJets/JetProducers/python
 
 git clone https://github.com/amarini/QuarkGluonTagger.git && cd QuarkGluonTagger && git checkout v1-2-6 && cd ..
+
+
+git cms-addpkg EgammaAnalysis/ElectronTools
+cd EgammaAnalysis/ElectronTools/data/
+cat download.url | xargs wget
+
 
 cd ${CMSSW_BASE}
 

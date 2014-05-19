@@ -21,8 +21,17 @@ git clone https://github.com/violatingcp/Jets_Short.git
 cp -r Jets_Short/* .
 rm -rf Jets_Short
 cp /afs/cern.ch/work/p/pharris/public/LowPtJets/*.py $CMSSW_BASE/src/RecoJets/JetProducers/python
+sed -i 's/(full_53x_chs,cutbased)/(full_53x_chs,cutbased,full_53x_met)/g' $CMSSW_BASE/src/RecoJets/JetProducers/python/PileupJetID_cfi.py
+
+
 
 git clone https://github.com/amarini/QuarkGluonTagger.git && cd QuarkGluonTagger && git checkout v1-2-6 && cd ..
+
+
+git cms-addpkg EgammaAnalysis/ElectronTools
+cd EgammaAnalysis/ElectronTools/data/
+cat download.url | xargs wget
+
 
 cd ${CMSSW_BASE}
 
