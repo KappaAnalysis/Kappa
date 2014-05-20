@@ -65,15 +65,10 @@ public:
 		out.fbrem = in.fbrem();
 		out.eSuperClusterOverP = in.eSuperClusterOverP();
 		out.numberOfHits = in.gsfTrack()->trackerExpectedHitsInner().numberOfHits(); //number of missing hits 
-		out.dxy = in.gsfTrack()->dxy();
-		out.dz = in.gsfTrack()->dz();
 		
 		//supercluster
 		out.superclusterenergy = in.superCluster()->energy();
-		out.superclustereta = in.superCluster()->eta();
-		out.superclusterphi = in.superCluster()->phi();
 		out.superclusterposition = in.superCluster()->position();
-		
 
 		// Corrections
 		out.isEcalEnergyCorrected = in.isEcalEnergyCorrected();

@@ -55,13 +55,8 @@ Within the electron, the corresponding values are grouped into an attribute call
 	float numberOfHits;
 
 	//supercluster
-	float superclustereta;
-	float superclusterphi;
 	float superclusterenergy;
 	RMPoint superclusterposition;
-
-	float dxy;
-	float dz;
 
 	bool ecalDrivenSeed;
 	bool ecalDriven;
