@@ -12,6 +12,7 @@
 #include "KJetMET.h"
 
 #include <algorithm>
+#include "Math/GenVector/PositionVector3D.h"
 
 struct KDataElectron : KLepton
 {
@@ -43,10 +44,27 @@ Within the electron, the corresponding values are grouped into an attribute call
 	float ecalIso04;
 	float hcal1Iso04;
 	float hcal2Iso04;
+	
+	// https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification
+	float deltaEtaSuperClusterTrackAtVtx;
+	float deltaPhiSuperClusterTrackAtVtx;
+	float sigmaIetaIeta;
+	float hadronicOverEm;
+	float fbrem;
+	float eSuperClusterOverP;
+	float numberOfHits;
+
+	//supercluster
+	float superclustereta;
+	float superclusterphi;
+	float superclusterenergy;
+	RMPoint superclusterposition;
+
+	float dxy;
+	float dz;
 
 	bool ecalDrivenSeed;
 	bool ecalDriven;
-
 
 	bool isEcalEnergyCorrected;	//true if ecal energy has been corrected.
 	float ecalEnergy;					//the new corrected value, or the supercluster energy.

@@ -57,6 +57,24 @@ public:
 		out.hcal1Iso04 = in.dr04HcalDepth1TowerSumEt();
 		out.hcal2Iso04 = in.dr04HcalDepth2TowerSumEt();
 
+		//cutbased ID related stuff
+		out.deltaEtaSuperClusterTrackAtVtx = in.deltaEtaSuperClusterTrackAtVtx();
+		out.deltaPhiSuperClusterTrackAtVtx = in.deltaPhiSuperClusterTrackAtVtx();
+		out.sigmaIetaIeta = in.sigmaIetaIeta();
+		out.hadronicOverEm = in.hadronicOverEm();
+		out.fbrem = in.fbrem();
+		out.eSuperClusterOverP = in.eSuperClusterOverP();
+		out.numberOfHits = in.gsfTrack()->trackerExpectedHitsInner().numberOfHits(); //number of missing hits 
+		out.dxy = in.gsfTrack()->dxy();
+		out.dz = in.gsfTrack()->dz();
+		
+		//supercluster
+		out.superclusterenergy = in.superCluster()->energy();
+		out.superclustereta = in.superCluster()->eta();
+		out.superclusterphi = in.superCluster()->phi();
+		out.superclusterposition = in.superCluster()->position();
+		
+
 		// Corrections
 		out.isEcalEnergyCorrected = in.isEcalEnergyCorrected();
 		out.ecalEnergy = in.ecalEnergy();
