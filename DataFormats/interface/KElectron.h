@@ -16,6 +16,14 @@
 
 struct KDataElectron : KLepton
 {
+	/*
+	virtual ~KDataElectron() {};
+	
+	virtual bool isElectron() {
+		return true;
+	};
+	*/
+	
 	bool isEB, isEE;
 
 /* if needed, all these could be easily added in one byte as is done for muons:

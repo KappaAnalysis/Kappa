@@ -69,6 +69,23 @@ const unsigned int KGenParticlePdgIdMask = ((unsigned int)1 << KGenParticleStatu
 #include "KTrack.h"
 struct KLepton : public KDataLV
 {
+public:
+	/*
+	virtual ~KLepton() {};
+	
+	virtual bool isElectron() {
+		return false;
+	};
+	
+	virtual bool isMuon() {
+		return false;
+	};
+	
+	virtual bool isTau() {
+		return false;
+	};
+	*/
+
 	char charge;
 	KDataTrack track;
 };

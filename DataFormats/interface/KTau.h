@@ -13,6 +13,14 @@
 
 struct KDataTau : KLepton
 {
+	/*
+	virtual ~KDataTau() {};
+	
+	virtual bool isTau() {
+		return true;
+	};
+	*/
+	
 	unsigned long long binaryDiscriminators;
 	std::vector<float> floatDiscriminators;
 

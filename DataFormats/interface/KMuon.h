@@ -15,6 +15,14 @@
 
 struct KDataMuon : KLepton
 {
+	/*
+	virtual ~KDataMuon() {};
+	
+	virtual bool isMuon() {
+		return true;
+	};
+	*/
+	
 	KDataTrack globalTrack;
 	KDataTrack innerTrack;
 	KDataTrack outerTrack;
