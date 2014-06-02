@@ -75,7 +75,7 @@ public:
 		NONE  = 0,
 		ELECTRON = 1,
 		MUON = 2,
-		TAU  = 3,
+		TAU  = 3
 	};
 	Flavour flavour;
 
