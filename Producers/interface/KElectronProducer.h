@@ -27,7 +27,9 @@ public:
 	static const std::string getLabel() { return "Electrons"; }
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
-	{
+	{	
+		out.flavour = KLepton::ELECTRON;
+	
 		// Momentum:
 		copyP4(in, out.p4);
 

@@ -130,6 +130,8 @@ public:
 		const typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::SingleInputType &in,
 		typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::SingleOutputType &out)
 	{
+		out.flavour = KLepton::MUON;
+		
 		// Momentum:
 		copyP4(in, out.p4);
 

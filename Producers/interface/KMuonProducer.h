@@ -104,6 +104,8 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		out.flavour = KLepton::MUON;
+		
 		// Momentum:
 		copyP4(in, out.p4);
 

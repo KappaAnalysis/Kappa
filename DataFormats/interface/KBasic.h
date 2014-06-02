@@ -70,21 +70,14 @@ const unsigned int KGenParticlePdgIdMask = ((unsigned int)1 << KGenParticleStatu
 struct KLepton : public KDataLV
 {
 public:
-	/*
-	virtual ~KLepton() {};
-	
-	virtual bool isElectron() {
-		return false;
+	enum Flavour
+	{
+		NONE  = 0,
+		ELECTRON = 1,
+		MUON = 2,
+		TAU  = 3,
 	};
-	
-	virtual bool isMuon() {
-		return false;
-	};
-	
-	virtual bool isTau() {
-		return false;
-	};
-	*/
+	Flavour flavour;
 
 	char charge;
 	KDataTrack track;
