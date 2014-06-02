@@ -53,8 +53,31 @@ protected:
 			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
 				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track);
 		}
+
+		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); i++)
+		{
+			RMDataLV tmp;
+			copyP4(in.signalPFChargedHadrCands().at(i)->p4(), tmp); // signalPFChargedHadrCands
+			out.signalChargedHadrCands.push_back(tmp); // Vektoren sortieren...
+		}
+
+		for(size_t i = 0; i < in.signalPFNeutrHadrCands().size(); i++)
+		{
+			RMDataLV tmp;
+			copyP4(in.signalPFNeutrHadrCands().at(i)->p4(), tmp); // signalPFChargedHadrCands
+			out.signalNeutrHadrCands.push_back(tmp);
+		}
 		if(in.leadPFNeutralCand().isNonnull())
 			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralCand); // leading PFGamma candidate
+
+		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
+		{
+			RMDataLV tmp;
+			copyP4(in.signalPFGammaCands().at(i)->p4(), tmp); // signalPFChargedHadrCands
+			out.signalGammaCands.push_back(tmp);
+		}
+
+
 
 		out.nSignalTracks = in.signalTracks().size();
 	}
