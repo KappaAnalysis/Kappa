@@ -38,12 +38,12 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	## ------------------------------------------------------------------------
 	# General configuration
 
-	process.kappaTuple.active	 += cms.vstring('VertexSummary')	## save VertexSummary,
-	process.kappaTuple.active	 += cms.vstring('BeamSpot')		## save Beamspot,
+	process.kappaTuple.active += cms.vstring('VertexSummary')	## save VertexSummary,
+	process.kappaTuple.active += cms.vstring('BeamSpot')		## save Beamspot,
+	process.kappaTuple.active += cms.vstring('TriggerObjects')
 
 	if data:
 		process.kappaTuple.active+= cms.vstring('DataMetadata')		## produce Metadata for data,
-		process.kappaTuple.active+= cms.vstring('TriggerObjects')	## produce Metadata for data,
 	else:
 		process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
 		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
