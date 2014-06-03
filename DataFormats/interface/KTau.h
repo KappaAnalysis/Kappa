@@ -56,9 +56,9 @@ struct KDataPFTau : KDataTau
 	RMDataLV leadChargedHadrCand;
 	RMDataLV leadNeutralCand;
 
-	std::vector<RMDataLV> signalChargedHadrCands;
-	std::vector<RMDataLV> signalGammaCands;
-	std::vector<RMDataLV> signalNeutrHadrCands;
+	KPFCandidates signalChargedHadrCands;
+	KPFCandidates signalGammaCands;
+	KPFCandidates signalNeutrHadrCands;
 
 	KDataTrack track;
 

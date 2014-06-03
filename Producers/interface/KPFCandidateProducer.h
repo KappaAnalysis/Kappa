@@ -19,6 +19,11 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		KPFCandidateProducer::fillPFCandidate(in, out);
+	}
+
+	static void fillPFCandidate(const SingleInputType &in, SingleOutputType &out)
+	{
 		copyP4(in, out.p4);
 		out.pdgid = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
 		if (in.pdgId() < 0)

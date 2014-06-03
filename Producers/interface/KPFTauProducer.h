@@ -53,34 +53,39 @@ protected:
 			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
 				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track);
 		}
-
-		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); i++)
-		{
-			RMDataLV tmp;
-			copyP4(in.signalPFChargedHadrCands().at(i)->p4(), tmp); // signalPFChargedHadrCands
-			out.signalChargedHadrCands.push_back(tmp); // Vektoren sortieren...
-		}
-
-		for(size_t i = 0; i < in.signalPFNeutrHadrCands().size(); i++)
-		{
-			RMDataLV tmp;
-			copyP4(in.signalPFNeutrHadrCands().at(i)->p4(), tmp); // signalPFChargedHadrCands
-			out.signalNeutrHadrCands.push_back(tmp);
-		}
 		if(in.leadPFNeutralCand().isNonnull())
 			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralCand); // leading PFGamma candidate
 
+
+		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); i++)
+		{
+			KPFCandidate tmp;
+			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
+			out.signalChargedHadrCands.push_back(tmp);
+		}
+		std::sort(out.signalChargedHadrCands.begin(), out.signalChargedHadrCands.end(), sorter);
+
+		for(size_t i = 0; i < in.signalPFNeutrHadrCands().size(); i++)
+		{
+			KPFCandidate tmp;
+			KPFCandidateProducer::fillPFCandidate(*in.signalPFNeutrHadrCands().at(i), tmp);
+			out.signalNeutrHadrCands.push_back(tmp);
+		}
+		std::sort(out.signalNeutrHadrCands.begin(), out.signalNeutrHadrCands.end(), sorter);
+
 		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
 		{
-			RMDataLV tmp;
-			copyP4(in.signalPFGammaCands().at(i)->p4(), tmp); // signalPFChargedHadrCands
+			KPFCandidate tmp;
+			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
 			out.signalGammaCands.push_back(tmp);
 		}
-
+		std::sort(out.signalGammaCands.begin(), out.signalGammaCands.end(), sorter);
 
 
 		out.nSignalTracks = in.signalTracks().size();
 	}
+private:
+	KLVSorter<KPFCandidate> sorter;
 };
 
 #endif
