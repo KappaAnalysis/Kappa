@@ -69,6 +69,8 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		"^HLT_(Iso)?Mu[0-9]+(_eta2p1)?_(Loose|Medium|Tight)IsoPFTau[0-9]+(_Trk[0-9]_eta2p1)?_v[0-9]+$",
 		# tt
 		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk1_eta2p1_(Jet[0-9]+|Prong[0-9])?_v[0-9]+$",
+		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk5_eta2p1_(Jet[0-9]+|Prong[0-9])?_v[0-9]+$",
+		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk1_eta2p1_v[0-9]+$",
 		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk5_eta2p1_v[0-9]+$",
 		# specials (possible generalization: Mu15, L1ETM20, Photon20, Ele8)
 		"^HLT_Ele[0-9]+_CaloId(L|T|VT)_CaloIso(VL|T|VT)(_TrkIdT)?(_TrkIsoVT)?_(SC|Ele)[0-9](_Mass[0-9]+)?_v[0-9]+$",
