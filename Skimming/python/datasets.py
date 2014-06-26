@@ -674,10 +674,15 @@ datasets = {
 			8 : "/TTH_HToTauTau_M-140_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
-	##### Unpolarized VBF H->tautau #################################################
+	##### Unpolarized H->tautau #################################################
 	"TauPolarOff_VBF_HToTauTau_M_125_pythia" : {
 		"dataset" : {
 			8 : "/VBF_HToTauTau_M-125_8TeV-powheg-pythia6-tauola-tauPolarOff/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
+		},
+	},
+	"TauPolarOff_GluGlu_HToTauTau_M_125_pythia" : {
+		"dataset" : {
+			8 : "/GluGluToHToTauTau_M-125_8TeV-powheg-pythia6-tauPolarOff/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
 		},
 	},
 }
