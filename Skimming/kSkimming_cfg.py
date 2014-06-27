@@ -92,7 +92,8 @@ def getBaseConfig(globaltag= 'START53_V15A', testfile=cms.untracked.vstring(""),
 	process.load("Kappa.Producers.KPFCandidates_cff")
 	process.kappaTuple.active += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected 
 	process.kappaTuple.PFCandidates.whitelist = cms.vstring(                ## isolation used for electrons and muons.
-		"pfNoPileUpChargedHadrons",
+##		"pfNoPileUpChargedHadrons",    ## switch to pfAllChargedParticles
+		"pfAllChargedParticles",       ## same as pfNoPileUpChargedHadrons +pf_electrons + pf_muons
 		"pfNoPileUpNeutralHadrons",
 		"pfNoPileUpPhotons",
 		"pfPileUpChargedHadrons",
