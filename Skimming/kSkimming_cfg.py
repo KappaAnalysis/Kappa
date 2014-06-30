@@ -47,6 +47,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	else:
 		process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
 		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
+		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 
 	process.kappaTuple.Metadata.hltWhitelist = cms.vstring(			## HLT selection
 		# https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/blob/master/data/triggerTables-2011-2012.txt
