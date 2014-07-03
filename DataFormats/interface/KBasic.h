@@ -182,11 +182,9 @@ struct KDataHit
 };
 typedef std::vector<KDataHit> KDataHits;
 
-struct KPFCandidate : KDataLV
+struct KCandidate : KDataLV
 {
 	unsigned int pdgid;
-	double deltaP;
-	double ecalEnergy, hcalEnergy;
 
 	int pdgId() const
 	{
@@ -196,6 +194,14 @@ struct KPFCandidate : KDataLV
 	{
 		return (pdgid & KGenParticleChargeMask ? -1 : 1);
 	}
+};
+typedef std::vector<KCandidate> KCandidates;
+
+struct KPFCandidate : KCandidate
+{
+	double deltaP;
+	double ecalEnergy, hcalEnergy;
+
 };
 typedef std::vector<KPFCandidate> KPFCandidates;
 

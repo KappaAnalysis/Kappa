@@ -43,6 +43,7 @@
 #include "../interface/KMuonProducer.h"
 #include "../interface/KElectronProducer.h"
 #include "../interface/KPFCandidateProducer.h"
+#include "../interface/KCandidateProducer.h"
 #include "../interface/KPFJetProducer.h"
 #include "../interface/KPFMETProducer.h"
 #include "../interface/KPFTaggedJetProducer.h"
@@ -191,6 +192,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KMuonProducer>(active[i]);
 		addProducer<KElectronProducer>(active[i]);
 		addProducer<KPFCandidateProducer>(active[i]);
+		addProducer<KCandidateProducer>(active[i]);
 		addProducer<KPFJetProducer>(active[i]);
 		addProducer<KPFMETProducer>(active[i]);
 		addProducer<KPFTaggedJetProducer>(active[i]);

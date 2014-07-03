@@ -52,6 +52,8 @@
 	<class name="KMuonTriggerCandidates"/>
 	<class name="KPFCandidate"/>
 	<class name="KPFCandidates"/>
+	<class name="KCandidate"/>
+	<class name="KCandidates"/>
 	<class name="KTrackSummary"/>
 	<class name="KTriggerObjects"/>
 	<class name="KVertexSummary"/>
