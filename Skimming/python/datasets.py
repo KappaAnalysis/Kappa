@@ -685,6 +685,11 @@ datasets = {
 			8 : "/GluGluToHToTauTau_M-125_8TeV-powheg-pythia6-tauPolarOff/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
 		},
 	},
+	"TauPolarOff_DYJetsToLL_M_50_madgraph" : {
+		"dataset" : {
+			8 : "/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball-tauola-tauPolarOff/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
+		},
+	},
 }
 
 Data = [
