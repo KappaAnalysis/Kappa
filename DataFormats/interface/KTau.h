@@ -49,7 +49,7 @@ struct KDataPFTau : KDataTau
 {
 	float emFraction;
 
-	int nSignalChargedHadrCands, nSignalGammaCands, nSignalNeutrHadrCands, nSignalPiZeroCands, nSignalCands;
+	int nSignalChargedHadrCands, nSignalGammaCands, nSignalPiZeroCands, nSignalCands;
 	int nSignalTracks;
 
 	RMDataLV leadCand;
@@ -58,7 +58,7 @@ struct KDataPFTau : KDataTau
 
 	KPFCandidates signalChargedHadrCands;
 	KPFCandidates signalGammaCands;
-	KPFCandidates signalNeutrHadrCands;
+	KDataLVs signalPiZeroCands;
 
 	KDataTrack track;
 

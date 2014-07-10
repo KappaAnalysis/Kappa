@@ -41,7 +41,6 @@ protected:
 		out.emFraction = in.emFraction();
 		out.nSignalChargedHadrCands = in.signalPFChargedHadrCands().size();
 		out.nSignalGammaCands = in.signalPFGammaCands().size();
-		out.nSignalNeutrHadrCands = in.signalPFNeutrHadrCands().size();
 		out.nSignalPiZeroCands = in.signalPiZeroCandidates().size();
 		out.nSignalCands = in.signalPFCands().size();
 		out.hpsDecayMode = in.decayMode();
@@ -65,13 +64,13 @@ protected:
 		}
 		std::sort(out.signalChargedHadrCands.begin(), out.signalChargedHadrCands.end(), sorter);
 
-		for(size_t i = 0; i < in.signalPFNeutrHadrCands().size(); i++)
+		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); i++)
 		{
-			KPFCandidate tmp;
-			KPFCandidateProducer::fillPFCandidate(*in.signalPFNeutrHadrCands().at(i), tmp);
-			out.signalNeutrHadrCands.push_back(tmp);
+			KDataLV tmp;
+			copyP4(in.signalPiZeroCandidates()[i].p4(), tmp.p4);
+			out.signalPiZeroCands.push_back(tmp);
 		}
-		std::sort(out.signalNeutrHadrCands.begin(), out.signalNeutrHadrCands.end(), sorter);
+		std::sort(out.signalPiZeroCands.begin(), out.signalPiZeroCands.end(), KDataLVSorter);
 
 		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
 		{
@@ -86,6 +85,7 @@ protected:
 	}
 private:
 	KLVSorter<KPFCandidate> sorter;
+	KLVSorter<KDataLV> KDataLVSorter;
 };
 
 #endif
