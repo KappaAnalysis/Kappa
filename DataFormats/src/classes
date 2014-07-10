@@ -36,7 +36,6 @@ KL1Muon					KL1Muons
 KLV						KLVs
 KMuonTriggerCandidate	KMuonTriggerCandidates
 KPFCandidate			KPFCandidates
-KCandidate				KCandidates
 KTrackSummary
 KTriggerObjects
 KVertexSummary

@@ -68,8 +68,6 @@ namespace
 		KMuonTriggerCandidates dict_KMuonTriggerCandidates;
 		KPFCandidate dict_KPFCandidate;
 		KPFCandidates dict_KPFCandidates;
-		KCandidate dict_KCandidate;
-		KCandidates dict_KCandidates;
 		KTrackSummary dict_KTrackSummary;
 		KTriggerObjects dict_KTriggerObjects;
 		KVertexSummary dict_KVertexSummary;

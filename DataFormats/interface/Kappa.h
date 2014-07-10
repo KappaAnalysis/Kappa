@@ -73,8 +73,6 @@ REGISTER_NAME_OF_TYPE(KMuonTriggerCandidate,KMuonTriggerCandidate);
 REGISTER_NAME_OF_TYPE(KMuonTriggerCandidates,std::vector<KMuonTriggerCandidate>);
 REGISTER_NAME_OF_TYPE(KPFCandidate,KPFCandidate);
 REGISTER_NAME_OF_TYPE(KPFCandidates,std::vector<KPFCandidate>);
-REGISTER_NAME_OF_TYPE(KCandidate,KCandidate);
-REGISTER_NAME_OF_TYPE(KCandidates,std::vector<KCandidate>);
 REGISTER_NAME_OF_TYPE(KTrackSummary,KTrackSummary);
 REGISTER_NAME_OF_TYPE(KTriggerObjects,KTriggerObjects);
 REGISTER_NAME_OF_TYPE(KVertexSummary,KVertexSummary);
