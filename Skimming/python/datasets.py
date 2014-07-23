@@ -765,8 +765,8 @@ WJets = [
 Embedded = [
 	"DoubleMu_RHembedded_Run2012A_22Jan2013_muhad",
 	"DoubleMu_RHembedded_Run2012A_22Jan2013_RHembedded_muelec",
-	"DoubleMu_PFembedded_Run2012A_22Jan2013_muhad_8TeV",
-	"DoubleMu_PFembedded_Run2012A_22Jan2013_muelec_8TeV"
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_muhad",
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_muelec"
 ]
 
 SM_GluGluToHToTauTau = ["SM_GluGluToHToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
