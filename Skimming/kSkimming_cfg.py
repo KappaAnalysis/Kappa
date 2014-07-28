@@ -203,7 +203,9 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 if __name__ == "__main__":
 	if('@' in '@NICK@'): # run local skim by hand without replacements by grid-control
 		## test file for EKP
-		#testfile	= cms.untracked.vstring('file:/storage/8/dhaitz/testfiles/mc11.root')
+		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/pfEmbedded.root')
+		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/tauPlusX.root')
+		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/VBF-Htautau.root')
 		#testfile	= cms.untracked.vstring('file:/storage/6/berger/testfiles/data_2012C_AOD.root')
 		## test file for lxplus
 		testfile	= cms.untracked.vstring('root://eoscms//eos/cms/store/relval/CMSSW_5_3_6-START53_V14/RelValProdTTbar/AODSIM/v2/00000/76ED0FA6-1E2A-E211-B8F1-001A92971B72.root')
