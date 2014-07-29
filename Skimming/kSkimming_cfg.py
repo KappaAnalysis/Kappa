@@ -52,16 +52,17 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	process.kappaTuple.Metadata.hltWhitelist = cms.vstring(			## HLT selection
 		# https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/blob/master/data/triggerTables-2011-2012.txt
+		# can be tested at http://regexpal.com
 		# e
-		"^HLT_Ele[0-9]+_CaloIdVT_(CaloIsoT)?_TrkIdT_(TrkIsoT)?_v[0-9]+$",
+		"^HLT_Ele[0-9]+_CaloIdVT(_CaloIsoT)?_TrkIdT(_TrkIsoT)?_v[0-9]+$",
 		"^HLT_Ele[0-9]+_WP[0-9]+_v[0-9]+$",
 		# m
-		"^HLT_(Iso)?Mu[0-9]+_(eta2p1)?_v[0-9]+$",
+		"^HLT_(Iso)?Mu[0-9]+(_eta2p1)?_v[0-9]+$",
 		# ee
 		"^HLT_Ele[0-9]+_CaloId(L|T)(_TrkIdVL)?_CaloIsoVL(_TrkIdVL)?(_TrkIsoVL)?" +
 			"_Ele[0-9]+_CaloId(L|T)(_TrkIdVL)?_CaloIsoVL(_TrkIdVL)?(_TrkIsoVL)?_v[0-9]+$",
 		# mm
-		"^HLT_(Double)Mu[0-9]+(_(Mu|Jet)[0-9]+)?_v[0-9]+$",
+		"^HLT_(Double)?Mu[0-9]+(_(Mu|Jet)[0-9]+)?_v[0-9]+$",
 		# em
 		"^HLT_Mu[0-9]+_(Ele|Photon)[0-9]+_CaloId(L|T|VT)(_CaloIsoVL|_IsoT)?(_TrkIdVL_TrkIsoVL)?_v[0-9]+$",
 		# et
@@ -70,10 +71,8 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		# mt
 		"^HLT_(Iso)?Mu[0-9]+(_eta2p1)?_(Loose|Medium|Tight)IsoPFTau[0-9]+(_Trk[0-9]_eta2p1)?_v[0-9]+$",
 		# tt
-		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk1_eta2p1_(Jet[0-9]+|Prong[0-9])?_v[0-9]+$",
-		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk5_eta2p1_(Jet[0-9]+|Prong[0-9])?_v[0-9]+$",
-		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk1_eta2p1_v[0-9]+$",
-		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk5_eta2p1_v[0-9]+$",
+		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk(1|5)_eta2p1_(Jet[0-9]+|Prong[0-9])?_v[0-9]+$",
+		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk(1|5)(_eta2p1)?_v[0-9]+$",
 		# specials (possible generalization: Mu15, L1ETM20, Photon20, Ele8)
 		"^HLT_Ele[0-9]+_CaloId(L|T|VT)_CaloIso(VL|T|VT)(_TrkIdT)?(_TrkIsoVT)?_(SC|Ele)[0-9](_Mass[0-9]+)?_v[0-9]+$",
 		"^HLT_Ele8_v[0-9]+$",
