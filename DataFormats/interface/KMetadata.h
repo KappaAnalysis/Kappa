@@ -91,6 +91,7 @@ struct KEventMetadata
 	{
 		return (bitsHLT & (1ull << pos)) != 0;
 	}
+	float minVisPtFilterWeight; // weight necessary to correct embedded events
 };
 
 // Nice names for types

@@ -25,7 +25,8 @@ public:
 	KDataMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KMetadataProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
 		currentRun(0),
-		lumiSource(cfg.getParameter<edm::InputTag>("lumiSource")) {}
+		lumiSource(cfg.getParameter<edm::InputTag>("lumiSource")),
+		isEmbedded(cfg.getParameter<bool>("isEmbedded")) {}
 
 	static const std::string getLabel() { return "DataMetadata"; }
 
@@ -77,12 +78,22 @@ public:
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
+
+		// get extra information for pf embedded samples
+		if (isEmbedded)
+		{
+			edm::Handle<GenFilterInfo> hGenFilterInfo;
+			event.getByLabel(edm::InputTag("generator", "minVisPtFilter", "EmbeddedRECO"), hGenFilterInfo);
+			this->metaEvent->minVisPtFilterWeight = hGenFilterInfo->filterEfficiency();
+		}
+		else this->metaEvent->minVisPtFilterWeight = 1.0f;
 		return KMetadataProducer<Tmeta>::onEvent(event, setup);
 	}
 
 protected:
 	short currentRun;
 	edm::InputTag lumiSource;
+	bool isEmbedded;
 };
 
 #endif

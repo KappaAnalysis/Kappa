@@ -13,6 +13,8 @@
 #include <SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h>
 #include <SimDataFormats/GeneratorProducts/interface/HepMCProduct.h>
 
+#include "SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h"
+
 // MC data
 struct KGenMetadata_Product
 {
