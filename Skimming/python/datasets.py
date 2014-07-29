@@ -721,6 +721,22 @@ Data = [
 	"DoubleElectron_Run2012D_22Jan2013",
 ]
 
+DataTauPlusX = [
+	"TauPlusX_Run2011A_PromptReco_v4",
+	"TauPlusX_Run2011A_PromptReco_v6",
+	"TauPlusX_Run2011A_May10ReReco",
+	"TauPlusX_Run2011A_05Aug2011",
+	"TauPlusX_Run2011B_PromptReco",
+
+	"TauPlusX_Run2012A_22Jan2013",
+	"Tau_Run2012A_22Jan2013",
+	"TauPlusX_Run2012B_22Jan2013",
+	"TauParked_Run2012B_22Jan2013",
+	"TauPlusX_Run2012C_22Jan2013",
+	"TauPlusX_Run2012D_22Jan2013",
+	"TauParked_Run2012D_22Jan2013"
+]
+
 DYJets = [
 	"DYJetsToLL_M_50_madgraph",
 	"DY1JetsToLL_M_50_madgraph",
