@@ -90,11 +90,6 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		"hltL2Tau25eta2p1"
 		)
 
-
-
-
-
-
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
 	process.load("Kappa.Producers.KPFCandidates_cff")
@@ -107,20 +102,25 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		"pfPileUpChargedHadrons",
 		)
 
+	process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
+
 	## ------------------------------------------------------------------------
 	# Configure Muons
 	process.load("Kappa.Producers.KMuons_cff")
 	process.kappaTuple.active += cms.vstring('Muons')	                ## produce/save KappaMuons
-	
+	process.p *= process.makeKappaMuons
+
 	## ------------------------------------------------------------------------
 	# Configure Electrons
 	process.load("Kappa.Producers.KElectrons_cff")
 	process.kappaTuple.active += cms.vstring('Electrons')	                ## produce/save KappaElectrons,
+	process.p *= process.makeKappaElectrons
 
 	## ------------------------------------------------------------------------
 	# Configure Taus
 	process.load("Kappa.Producers.KTaus_cff")
 	process.kappaTuple.active += cms.vstring('PFTaus')	                ## produce/save KappaTaus
+	process.p *= process.makeKappaTaus
 
 	## ------------------------------------------------------------------------
 	## KappaPFTaggedJets
@@ -168,12 +168,6 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.kappaTuple.active += cms.vstring('JetArea')
 
 	## ------------------------------------------------------------------------
-	## MET
-	process.load("Kappa.Producers.KMET_cff")
-	process.kappaTuple.active += cms.vstring('MET')                         ## produce/save KappaMET
-	process.kappaTuple.active += cms.vstring('PFMET')                       ## produce/save KappaPFMET
-
-	## ------------------------------------------------------------------------
 	# Special settings for embedded samples
 	# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonTauReplacementWithPFlow
 	if isEmbedded:
@@ -189,23 +183,26 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
 		process.kappaTuple.isEmbedded = cms.bool(True)
 
-
-
-
-	## ------------------------------------------------------------------------
-	## And let it run
+	# Let Jets run
 	process.p *= (
-		process.makePFBRECO *
-		process.makePFCandidatesForDeltaBeta *
-		process.makeKappaMuons *
-		process.makeKappaElectrons *
 		process.makeKappaTaus *
 		process.makePFJets *
 		process.makePFJetsCHS *
 		process.makeQGTagging *
 		process.makeBTagging *
-		process.makePUJetID *
-		process.makeKappaMET *
+		process.makePUJetID
+	)
+
+	## ------------------------------------------------------------------------
+	## MET
+	process.load("Kappa.Producers.KMET_cff")
+	process.kappaTuple.active += cms.vstring('MET')                         ## produce/save KappaMET
+	process.kappaTuple.active += cms.vstring('PFMET')                       ## produce/save KappaPFMET
+	process.p *= process.makeKappaMET
+
+	## ------------------------------------------------------------------------
+	## And let it run
+	process.p *= (
 		process.kappaOut
 	)
 	## ------------------------------------------------------------------------
