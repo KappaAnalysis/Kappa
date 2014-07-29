@@ -15,7 +15,8 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		print "GT (overwritten):", process.GlobalTag.globaltag
 	data = datasetsHelper.isData(nickname)
 	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
-
+	isEmbedded = cms.bool(datasetsHelper.getIsEmbedded(nickname))
+	process.p = cms.Path ( )
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	process.kappaTuple.active										= cms.vstring('TreeMetadata')
@@ -27,7 +28,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		prodCampaignGlobalTag	= cms.string(datasetsHelper.getProductionCampaignGlobalTag(nickname, centerOfMassEnergy)),
 		runPeriod					= cms.string(datasetsHelper.getRunPeriod(nickname)),
 		kappaTag						= cms.string(kappaTag),
-		isEmbedded					= cms.bool(datasetsHelper.getIsEmbedded(nickname)),
+		isEmbedded					= isEmbedded,
 		jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname)),
 		centerOfMassEnergy		= cms.int32(centerOfMassEnergy),
 		puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy)),
@@ -89,8 +90,10 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		"hltL2Tau25eta2p1"
 		)
 
-	# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
-	process.kappaTuple.Metadata.overrideHLTCheck = cms.untracked.bool(datasetsHelper.getIsEmbedded(nickname))
+
+
+
+
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
@@ -171,8 +174,27 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.kappaTuple.active += cms.vstring('PFMET')                       ## produce/save KappaPFMET
 
 	## ------------------------------------------------------------------------
+	# Special settings for embedded samples
+	# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonTauReplacementWithPFlow
+	if isEmbedded:
+		process.load('RecoBTag/Configuration/RecoBTag_cff')
+		process.load('RecoJets/JetAssociationProducers/ak5JTA_cff')
+		process.ak5PFJetNewTracksAssociatorAtVertex.tracks = "tmfTracks"
+		process.ak5PFCHSNewJetTracksAssociatorAtVertex.tracks = "tmfTracks"
+		process.p *= process.btagging
+		# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
+		process.kappaTuple.Metadata.overrideHLTCheck = cms.untracked.bool(True)
+		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
+		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
+		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
+		process.kappaTuple.isEmbedded = cms.bool(True)
+
+
+
+
+	## ------------------------------------------------------------------------
 	## And let it run
-	process.p = cms.Path(
+	process.p *= (
 		process.makePFBRECO *
 		process.makePFCandidatesForDeltaBeta *
 		process.makeKappaMuons *
@@ -185,8 +207,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		process.makePUJetID *
 		process.makeKappaMET *
 		process.kappaOut
-		)
-
+	)
 	## ------------------------------------------------------------------------
 	## declare edm OutputModule (expects a path 'p'), uncommented if wanted
 
