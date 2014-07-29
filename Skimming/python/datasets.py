@@ -288,7 +288,7 @@ datasets = {
 	"ZZJetsToLLNN_madgraph_tauola" : {
 		"dataset" : {
 			7 : "/ZZJetsTo2L2Nu_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
-			8 : "/ZZJetsTo2L2Nu_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+			8 : "/ZZJetsTo2L2Nu_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v3/AODSIM",
 		},
 	},
 	"ZZJetsToLLQQ_madgraph_tauola" : {
