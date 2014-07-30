@@ -58,15 +58,15 @@ protected:
 	std::vector<int> listHLT;
 
 	void fillTriggerObject(const trigger::TriggerEvent &triggerEventHandle,
-		std::string name, std::vector<int> fwkIndices, std::map<size_t, size_t> &toFWK2Kappa,
+		std::string name, std::vector<int> const& fwkIndices, std::map<size_t, size_t> &toFWK2Kappa,
 		std::string &outputModuleName, std::vector<size_t> &outputIdxList,
 		std::string triggerName)
 	{
 		if (verbosity > 2)
 			std::cout << "KTriggerObjectProducer::fillTriggerObject : Processing " << name << "..." << std::endl;
-		if (! fwkIndices.empty())
+		for (std::vector<int>::const_iterator fwkIdx = fwkIndices.begin(); fwkIdx != fwkIndices.end(); ++fwkIdx)
 		{
-			const std::string currentModuleName = triggerEventHandle.filterTag(fwkIndices[0]).label();
+			const std::string currentModuleName = triggerEventHandle.filterTag(*fwkIdx).label();
 			if (outputModuleName == "") // Register L1L2 object
 			{
 				outputModuleName = currentModuleName;
@@ -88,7 +88,7 @@ protected:
 				}
 
 			// Write trigger obj indices
-			const trigger::Keys &keys = triggerEventHandle.filterKeys(fwkIndices[0]);
+			const trigger::Keys &keys = triggerEventHandle.filterKeys(*fwkIdx);
 			for (size_t iK = 0; iK < keys.size(); ++iK)
 			{
 				if (toFWK2Kappa.count(keys[iK]) == 0)
@@ -135,11 +135,15 @@ protected:
 						found = true;
 						if (verbosity > 1)
 							std::cout << "<" << moduleLabels[m] << "> ";
-						if (indicesL1L2.empty())
+						
+						if (regexMatch(moduleLabels[m], "^hltL1|^hltL2"))
+						{
 							indicesL1L2.push_back(iF);
+						}
 						else
-							if (indicesHLT.empty())
-								indicesHLT.push_back(iF);
+						{
+							indicesHLT.push_back(iF);
+						}
 					}
 				}
 				if ((verbosity > 1) && !found)
