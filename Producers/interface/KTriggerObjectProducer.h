@@ -58,16 +58,15 @@ protected:
 	std::vector<int> listHLT;
 
 	void fillTriggerObject(const trigger::TriggerEvent &triggerEventHandle,
-		std::string name, int fwkIdx, std::map<size_t, size_t> &toFWK2Kappa,
+		std::string name, std::vector<int> fwkIndices, std::map<size_t, size_t> &toFWK2Kappa,
 		std::string &outputModuleName, std::vector<size_t> &outputIdxList,
 		std::string triggerName)
 	{
-
 		if (verbosity > 2)
 			std::cout << "KTriggerObjectProducer::fillTriggerObject : Processing " << name << "..." << std::endl;
-		if (fwkIdx >= 0)
+		if (! fwkIndices.empty())
 		{
-			const std::string currentModuleName = triggerEventHandle.filterTag(fwkIdx).label();
+			const std::string currentModuleName = triggerEventHandle.filterTag(fwkIndices[0]).label();
 			if (outputModuleName == "") // Register L1L2 object
 			{
 				outputModuleName = currentModuleName;
@@ -89,7 +88,7 @@ protected:
 				}
 
 			// Write trigger obj indices
-			const trigger::Keys &keys = triggerEventHandle.filterKeys(fwkIdx);
+			const trigger::Keys &keys = triggerEventHandle.filterKeys(fwkIndices[0]);
 			for (size_t iK = 0; iK < keys.size(); ++iK)
 			{
 				if (toFWK2Kappa.count(keys[iK]) == 0)
@@ -124,22 +123,25 @@ protected:
 			const std::vector<std::string> &moduleLabels(hltConfig.moduleLabels(hltIdx));
 			if (verbosity > 0)
 				std::cout << "KTriggerObjectProducer::fillProduct : " << hltConfig.triggerName(hltIdx) << ": ";
-			int idxL1L2 = -1, idxHLT = -1;
+			std::vector<int> indicesL1L2;
+			std::vector<int> indicesHLT;
 			for (size_t m = 0; m < moduleLabels.size(); ++m)
 			{
 				bool found = false;
 				for (size_t iF = 0; iF < triggerEventHandle.sizeFilters(); ++iF)
+				{
 					if (moduleLabels[m] == triggerEventHandle.filterTag(iF).label())
 					{
 						found = true;
 						if (verbosity > 1)
 							std::cout << "<" << moduleLabels[m] << "> ";
-						if (idxL1L2 == -1)
-							idxL1L2 = iF;
+						if (indicesL1L2.empty())
+							indicesL1L2.push_back(iF);
 						else
-							if (idxHLT == -1)
-								idxHLT = iF;
+							if (indicesHLT.empty())
+								indicesHLT.push_back(iF);
 					}
+				}
 				if ((verbosity > 1) && !found)
 					std::cout << moduleLabels[m] << " ";
 			}
@@ -147,8 +149,8 @@ protected:
 				std::cout << std::endl;
 
 			// Fill L1L2 / HLT object
-			fillTriggerObject(triggerEventHandle, "L1L2", idxL1L2, toFWK2Kappa, trgInfos->toL1L2[i], out.toIdxL1L2[i], hltConfig.triggerName(hltIdx));
-			fillTriggerObject(triggerEventHandle, "HLT", idxHLT, toFWK2Kappa, trgInfos->toHLT[i], out.toIdxHLT[i], hltConfig.triggerName(hltIdx));
+			fillTriggerObject(triggerEventHandle, "L1L2", indicesL1L2, toFWK2Kappa, trgInfos->toL1L2[i], out.toIdxL1L2[i], hltConfig.triggerName(hltIdx));
+			fillTriggerObject(triggerEventHandle, "HLT", indicesHLT, toFWK2Kappa, trgInfos->toHLT[i], out.toIdxHLT[i], hltConfig.triggerName(hltIdx));
 		}
 
 		// Save used trigger objects
