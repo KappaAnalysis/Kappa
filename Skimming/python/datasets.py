@@ -201,23 +201,24 @@ datasets = {
 			8 : "/DY4JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
-	
-	"DYJetsToLL_M_10To50_madgraph" : {
-		"dataset" : {
-			7 : "/DYJetsToLL_M-10To50_TuneZ2_7TeV-madgraph/Fall11-PU_S6_START42_V14B-v1/AODSIM",
-			8 : "/DYJetsToLL_M-10To50filter_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
-		},
-	},
-	"DY1JetsToLL_M_10To50_madgraph" : {
-		"dataset" : {
-			8 : "/DY1JetsToLL_M-10To50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
-		},
-	},
-	"DY2JetsToLL_M_10To50_madgraph" : {
-		"dataset" : {
-			8 : "/DY2JetsToLL_TuneZ2star_M-10To50_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
-		},
-	},
+
+# Not used in the HTauTau Analysis	
+#	"DYJetsToLL_M_10To50_madgraph" : {
+#		"dataset" : {
+#			7 : "/DYJetsToLL_M-10To50_TuneZ2_7TeV-madgraph/Fall11-PU_S6_START42_V14B-v1/AODSIM",
+#			8 : "/DYJetsToLL_M-10To50filter_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+#		},
+#	},
+#	"DY1JetsToLL_M_10To50_madgraph" : {
+#		"dataset" : {
+#			8 : "/DY1JetsToLL_M-10To50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+#		},
+#	},
+#	"DY2JetsToLL_M_10To50_madgraph" : {
+#		"dataset" : {
+#			8 : "/DY2JetsToLL_TuneZ2star_M-10To50_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+#		},
+#	},
 	
 	"VBFZToLL_VBFNLO_pythia" : {
 		"dataset" : {
