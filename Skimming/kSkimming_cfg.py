@@ -15,7 +15,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		print "GT (overwritten):", process.GlobalTag.globaltag
 	data = datasetsHelper.isData(nickname)
 	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
-	isEmbedded = cms.bool(datasetsHelper.getIsEmbedded(nickname))
+	isEmbedded = datasetsHelper.getIsEmbedded(nickname)
 	process.p = cms.Path ( )
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
@@ -28,7 +28,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		prodCampaignGlobalTag	= cms.string(datasetsHelper.getProductionCampaignGlobalTag(nickname, centerOfMassEnergy)),
 		runPeriod					= cms.string(datasetsHelper.getRunPeriod(nickname)),
 		kappaTag						= cms.string(kappaTag),
-		isEmbedded					= isEmbedded,
+		isEmbedded					= cms.bool(isEmbedded),
 		jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname)),
 		centerOfMassEnergy		= cms.int32(centerOfMassEnergy),
 		puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy)),
