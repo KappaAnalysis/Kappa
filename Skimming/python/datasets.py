@@ -81,6 +81,30 @@ datasets = {
 			8 : "/TauPlusX/Run2012D-22Jan2013-v1/AOD",
 		},
 	},
+
+	"MuEG_Run2012A_22Jan2013" : {
+		"dataset" : {
+			8 : "/MuEG/Run2012A-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"MuEG_Run2012B_22Jan2013" : {
+		"dataset" : {
+			8 : "/MuEG/Run2012B-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"MuEG_Run2012C_22Jan2013" : {
+		"dataset" : {
+			8 : "/MuEG/Run2012C-22Jan2013-v1/AOD",
+		},
+	},
+	
+	"MuEG_Run2012D_22Jan2013" : {
+		"dataset" : {
+			8 : "/MuEG/Run2012D-22Jan2013-v1/AOD",
+		},
+	},
 	
 	"Tau_Run2012A_22Jan2013" : {
 		"dataset" : {
@@ -720,6 +744,11 @@ Data = [
 	"TauParked_Run2012D_22Jan2013",
 	"DoubleMuParked_Run2012D_22Jan2013",
 	"DoubleElectron_Run2012D_22Jan2013",
+
+	"MuEG_Run2012A_22Jan2013",
+	"MuEG_Run2012B_22Jan2013",
+	"MuEG_Run2012C_22Jan2013",
+	"MuEG_Run2012D_22Jan2013",
 ]
 
 DataTauPlusX = [
@@ -736,6 +765,13 @@ DataTauPlusX = [
 	"TauPlusX_Run2012C_22Jan2013",
 	"TauPlusX_Run2012D_22Jan2013",
 	"TauParked_Run2012D_22Jan2013"
+]
+
+DataMuEG = [
+	"MuEG_Run2012A_22Jan2013",
+	"MuEG_Run2012B_22Jan2013",
+	"MuEG_Run2012C_22Jan2013",
+	"MuEG_Run2012D_22Jan2013"
 ]
 
 DYJets = [
