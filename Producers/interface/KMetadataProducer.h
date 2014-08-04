@@ -129,8 +129,6 @@ public:
 		{
 			std::cout << "tagHLTResults is empty -> trying to determine the process name automatically:" << std::endl;
 
-			edm::Handle<trigger::TriggerEvent> tmpTriggerEventHLT;
-
 			const edm::ProcessHistory& processHistory(run.processHistory());
 			for (edm::ProcessHistory::const_iterator it = processHistory.begin(); it != processHistory.end(); ++it)
 			{
@@ -172,14 +170,16 @@ public:
 		for (size_t i = 0; i < KMetadataProducerBase::hltConfig.size(); ++i)
 		{
 			const std::string &name = KMetadataProducerBase::hltConfig.triggerName(i);
-			const int idx = KMetadataProducerBase::hltConfig.triggerIndex(name);
+			const int hltIdx = KMetadataProducerBase::hltConfig.triggerIndex(name);
+			
 			if (verbosity > 1)
-				std::cout << "KMetadataProducer::onRun : Trigger: " << idx << " = ";
+				std::cout << "KMetadataProducer::onRun : Trigger: " << hltIdx << " = ";
 			if (!regexMatch(name, svHLTWhitelist, svHLTBlacklist))
 				continue;
 			if (verbosity > 0 || printHltList)
-				std::cout << "KMetadataProducer::onRun :  => Adding trigger: " << name << " with ID: " << idx << " as " << counter
+				std::cout << "KMetadataProducer::onRun :  => Adding trigger: " << name << " with ID: " << hltIdx << " as " << counter
 					<< " with placeholder prescale 0" << std::endl;
+			
 			if (KMetadataProducerBase::hltKappa2FWK.size() < 64)
 			{
 				addHLT(hltIdx, name, 0/*, KMetadataProducerBase::hltConfig.saveTagsModules(i)*/);
