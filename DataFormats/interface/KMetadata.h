@@ -26,6 +26,7 @@ struct KLumiMetadata
 	unsigned int bitsUserFlags;
 	std::vector<unsigned int> hltPrescales;
 	std::vector<std::string> hltNames;
+	//std::vector<std::vector<std::string> > filterNames;
 };
 
 struct KTauDiscriminatorMetadata

@@ -104,12 +104,13 @@ public:
 
 	static const std::string getLabel() { return "Metadata"; }
 
-	inline void addHLT(const int idx, const std::string name, const int prescale)
+	inline void addHLT(const int idx, const std::string name, const int prescale/*, std::vector<std::string> filterNamesForHLT*/)
 	{
 		KMetadataProducerBase::hltKappa2FWK.push_back(idx);
 		hltNames.push_back(name);
 		selectedHLT.push_back(name);
 		hltPrescales.push_back(prescale);
+		//filterNames.push_back(filterNamesForHLT);
 	}
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
@@ -117,7 +118,8 @@ public:
 		KMetadataProducerBase::hltKappa2FWK.clear();
 		hltNames.clear();
 		hltPrescales.clear();
-		addHLT(0, "fail", 42);
+		//filterNames.clear();
+		addHLT(0, "fail", 42/*, std::vector<std::string>()*/);
 
 		// For running over GEN step only:
 		if (tagHLTResults.label() == "")
@@ -180,7 +182,7 @@ public:
 					<< " with placeholder prescale 0" << std::endl;
 			if (KMetadataProducerBase::hltKappa2FWK.size() < 64)
 			{
-				addHLT(idx, name, 0);
+				addHLT(hltIdx, name, 0/*, KMetadataProducerBase::hltConfig.saveTagsModules(i)*/);
 				counter++;
 			}
 			else
@@ -212,6 +214,7 @@ public:
 
 		metaLumi->hltNames = hltNames;
 		metaLumi->hltPrescales = hltPrescales;
+		//metaLumi->filterNames = filterNames;
 
 		return true;
 	}
@@ -362,6 +365,7 @@ protected:
 
 	std::vector<std::string> hltNames;
 	std::vector<unsigned int> hltPrescales;
+	//std::vector<std::vector<std::string> > filterNames;
 
 	typename Tmeta::typeLumi *metaLumi;
 	typename Tmeta::typeEvent *metaEvent;
