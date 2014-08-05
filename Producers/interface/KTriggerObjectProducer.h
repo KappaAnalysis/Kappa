@@ -64,6 +64,7 @@ protected:
 		{
 			if (i == 0)
 			{
+				trgInfos->nFiltersPerHLT.push_back(0);
 				continue;
 			}
 
@@ -81,10 +82,7 @@ protected:
 			{
 				trgInfos->toFilter.resize(trgInfos->getMaxFilterIndex(i) + 1);
 			}
-			if (out.toIdxFilter.empty() || out.toIdxFilter.size() < trgInfos->getMaxFilterIndex(i))
-			{
-				out.toIdxFilter.resize(trgInfos->getMaxFilterIndex(i) + 1);
-			}
+			out.toIdxFilter.resize(trgInfos->getMaxFilterIndex(i) + 1);
 			
 			// run over all filters for this trigger
 			for (size_t m = 0; m < saveTagsModules.size(); ++m)
@@ -100,7 +98,7 @@ protected:
 							std::cout << "<" << saveTagsModules[m] << "> ";
 						
 						// current index in output vectors
-						size_t currentIndex = trgInfos->getMaxFilterIndex(i) + m;
+						size_t currentIndex = trgInfos->getMinFilterIndex(i) + m;
 						
 						// register filter name in the meta data and check possible changes in names within lumi section
 						if (trgInfos->toFilter[currentIndex] == "") // Register L1L2 object
