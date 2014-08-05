@@ -224,15 +224,13 @@ typedef std::vector<KL1Muon> KL1Muons;
 struct KTriggerInfos
 {
 	std::string menu;
-	std::vector<std::string> toL1L2;
-	std::vector<std::string> toHLT;
+	std::vector<std::vector<std::string> > toFilter;
 };
 
 struct KTriggerObjects
 {
 	std::vector<KDataLV> trgObjects;
-	std::vector<std::vector<size_t> > toIdxL1L2;
-	std::vector<std::vector<size_t> > toIdxHLT;
+	std::vector<std::vector<std::vector<size_t> > > toIdxFilter;
 };
 
 #endif
