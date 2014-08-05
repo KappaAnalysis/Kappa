@@ -81,6 +81,7 @@ struct KEventMetadata
 	unsigned int nRun;
 	int nBX;
 	float randomNumber;
+	float minVisPtFilterWeight; // weight necessary to correct embedded events
 	bool hltFired (const std::string &name, const KLumiMetadata *lumimetadata) const
 	{
 		for (size_t i = 0; i < lumimetadata->hltNames.size(); ++i)
@@ -92,7 +93,6 @@ struct KEventMetadata
 	{
 		return (bitsHLT & (1ull << pos)) != 0;
 	}
-	float minVisPtFilterWeight; // weight necessary to correct embedded events
 };
 
 // Nice names for types
