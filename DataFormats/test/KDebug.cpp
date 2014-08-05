@@ -216,9 +216,9 @@ std::ostream &displayHLT(std::ostream &os, const KLumiMetadata &metaLumi, const 
 	return os;
 }
 
-std::ostream &displayTO(std::ostream &os, const size_t hltIdx, const size_t filterIdx, const KTriggerObjects *trgObj)
+std::ostream &displayTO(std::ostream &os, const size_t hltIdx, const KTriggerObjects *trgObj)
 {
-	for (size_t i = 0; i < trgObj->toIdxFilter[hltIdx][filterIdx].size(); ++i)
-		os << trgObj->trgObjects[trgObj->toIdxFilter[hltIdx][filterIdx][i]] << " ";
+	for (size_t i = 0; i < trgObj->toIdxFilter[hltIdx].size(); ++i)
+		os << trgObj->trgObjects[trgObj->toIdxFilter[hltIdx][i]] << " ";
 	return os << std::endl;
 }
