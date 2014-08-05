@@ -224,13 +224,40 @@ typedef std::vector<KL1Muon> KL1Muons;
 struct KTriggerInfos
 {
 	std::string menu;
-	std::vector<std::vector<std::string> > toFilter;
+	
+	// { hlt1:filter1, ..., hlt1:filterN1, hlt2:filter1, ..., hlt2:filterN2, ...}
+	std::vector<std::string> toFilter;
+	std::vector<int> nFiltersPerHLT;
+	
+	size_t getMinFilterIndex(size_t hltIndex)
+	{
+		assert(hltIndex < nFiltersPerHLT.size());
+		size_t minFilterIndex = 0;
+		for (size_t tmpHltIndex = 0; tmpHltIndex < hltIndex; ++tmpHltIndex)
+		{
+			minFilterIndex += nFiltersPerHLT[tmpHltIndex];
+		}
+		return minFilterIndex;
+	}
+	
+	size_t getMaxFilterIndex(size_t hltIndex)
+	{
+		assert(hltIndex < nFiltersPerHLT.size());
+		size_t maxFilterIndex = 0;
+		for (size_t tmpHltIndex = 0; tmpHltIndex <= hltIndex; ++tmpHltIndex)
+		{
+			maxFilterIndex += nFiltersPerHLT[tmpHltIndex];
+		}
+		return maxFilterIndex;
+	}
 };
 
 struct KTriggerObjects
 {
 	std::vector<KDataLV> trgObjects;
-	std::vector<std::vector<std::vector<size_t> > > toIdxFilter;
+	
+	// { hlt1:idxFilter1, ..., hlt1:idxFilterN1, hlt2:idxFilter1, ..., hlt2:idxFilterN2, ...}
+	std::vector<std::vector<int> > toIdxFilter;
 };
 
 #endif

@@ -42,78 +42,12 @@ public:
 	{
 		trgInfos->menu = KMetadataProducerBase::hltConfig.tableName();
 		trgInfos->toFilter.clear();
-		for (size_t i = 0; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
-		{
-			trgInfos->toFilter.push_back(std::vector<std::string>());
-		}
 		return true;
 	}
 
 protected:
 	KTriggerInfos *trgInfos;
 	KTriggerObjects *trgObjects;
-	std::vector<int> listL1L2;
-	std::vector<int> listHLT;
-
-	void fillTriggerObject(const trigger::TriggerEvent &triggerEventHandle,
-		std::string name, std::vector<int> const& fwkIndices, std::map<size_t, size_t> &toFWK2Kappa,
-		std::vector<std::string> outputModuleNames, std::vector<std::vector<size_t> > &outputIdxLists,
-		std::string triggerName)
-	{
-		if (verbosity > 2)
-			std::cout << "KTriggerObjectProducer::fillTriggerObject : Processing " << name << "..." << std::endl;
-		
-		for (size_t i = 0; i < fwkIndices.size(); ++i)
-		{
-			int fwkIdx = fwkIndices.at(i);
-			
-			// skip filters that have been found on run level but not on event level
-			if (fwkIdx < 0)
-			{
-				continue;
-			}
-			
-			std::string& outputModuleName = outputModuleNames.at(i);
-			std::vector<size_t>& outputIdxList = outputIdxLists.at(i);
-		
-			const std::string currentModuleName = triggerEventHandle.filterTag(fwkIdx).label();
-			if (outputModuleName == "") // Register L1L2 object
-			{
-				outputModuleName = currentModuleName;
-				if (verbosity > 0)
-					std::cout << "\t" << name << " object: " << outputModuleName << std::endl;
-			}
-			else
-			{
-				if (outputModuleName != currentModuleName) // Check existing entry
-				{
-					bool isPresent = (std::find(KMetadataProducerBase::svHLTFailToleranceList.begin(),
-										KMetadataProducerBase::svHLTFailToleranceList.end(), outputModuleName)
-										!= KMetadataProducerBase::svHLTFailToleranceList.end());
-					if(!isPresent) //Check if known problem that can be skipped
-					{
-						std::cout << std::endl << name << " index mismatch! "<< outputModuleName << " changed to " << currentModuleName << std::endl;
-						std::cout << "Try blacklisting the trigger " << triggerName << " or add the trigger objects to the hltFailToleranceList" << std::endl;
-						exit(1);
-					}
-				}
-			}
-
-			// Write trigger obj indices
-			const trigger::Keys &keys = triggerEventHandle.filterKeys(fwkIdx);
-			for (size_t iK = 0; iK < keys.size(); ++iK)
-			{
-				if (toFWK2Kappa.count(keys[iK]) == 0)
-					toFWK2Kappa.insert(std::make_pair(keys[iK], toFWK2Kappa.size()));
-				if (verbosity > 2)
-					std::cout << keys[iK] << "=>" << toFWK2Kappa[keys[iK]]
-						<< " (pt=" << triggerEventHandle.getObjects().at(keys[iK]).pt() << ") ";
-				outputIdxList.push_back(toFWK2Kappa[keys[iK]]);
-			}
-			if (verbosity > 2)
-				std::cout << std::endl;
-		}
-	}
 
 	virtual void fillProduct(const trigger::TriggerEvent &triggerEventHandle, KTriggerObjects &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
@@ -122,11 +56,12 @@ protected:
 			std::cout << "KTriggerObjectProducer::fillProduct : " << hltConfig.tableName() << std::endl;
 
 		std::map<size_t, size_t> toFWK2Kappa;
+		
+		out.toIdxFilter.clear();
 
 		// run over all triggers
 		for (size_t i = 0; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
 		{
-			out.toIdxFilter.push_back(std::vector<std::vector<size_t> >());
 			if (i == 0)
 			{
 				continue;
@@ -140,8 +75,16 @@ protected:
 			const std::vector<std::string>& saveTagsModules = KMetadataProducerBase::hltConfig.saveTagsModules(hltIdx);
 			//const std::vector<std::string>& saveTagsModules = KMetadataProducerBase::hltConfig.moduleLabels(hltIdx);
 			
-			// indices for filters of a given HLT
-			std::vector<int> fwkIndices(saveTagsModules.size(), -1);
+			// allocate memory
+			trgInfos->nFiltersPerHLT.push_back(saveTagsModules.size());
+			if (trgInfos->toFilter.empty() || trgInfos->toFilter.size() < trgInfos->getMaxFilterIndex(i))
+			{
+				trgInfos->toFilter.resize(trgInfos->getMaxFilterIndex(i) + 1);
+			}
+			if (out.toIdxFilter.empty() || out.toIdxFilter.size() < trgInfos->getMaxFilterIndex(i))
+			{
+				out.toIdxFilter.resize(trgInfos->getMaxFilterIndex(i) + 1);
+			}
 			
 			// run over all filters for this trigger
 			for (size_t m = 0; m < saveTagsModules.size(); ++m)
@@ -155,9 +98,45 @@ protected:
 						found = true;
 						if (verbosity > 1)
 							std::cout << "<" << saveTagsModules[m] << "> ";
-						fwkIndices[m] = iF;
-						trgInfos->toFilter[i].resize(saveTagsModules.size());
-						out.toIdxFilter[i].resize(saveTagsModules.size());
+						
+						// current index in output vectors
+						size_t currentIndex = trgInfos->getMaxFilterIndex(i) + m;
+						
+						// register filter name in the meta data and check possible changes in names within lumi section
+						if (trgInfos->toFilter[currentIndex] == "") // Register L1L2 object
+						{
+							trgInfos->toFilter[currentIndex] = saveTagsModules[m];
+							if (verbosity > 0)
+								std::cout << "\t" << name << " object: " << trgInfos->toFilter[currentIndex] << std::endl;
+						}
+						else if (trgInfos->toFilter[currentIndex] != saveTagsModules[m]) // Check existing entry
+						{
+							bool isPresent = (std::find(KMetadataProducerBase::svHLTFailToleranceList.begin(),
+												KMetadataProducerBase::svHLTFailToleranceList.end(), trgInfos->toFilter[currentIndex])
+												!= KMetadataProducerBase::svHLTFailToleranceList.end());
+							if(!isPresent) //Check if known problem that can be skipped
+							{
+								std::cout << std::endl << name << " index mismatch! "<< trgInfos->toFilter[currentIndex] << " changed to " << saveTagsModules[m] << std::endl;
+								std::cout << "Try blacklisting the trigger " << hltConfig.triggerName(hltIdx) << " or add the trigger objects to the hltFailToleranceList" << std::endl;
+								exit(1);
+							}
+						}
+						
+						// store reference indices to trigger objects for every event
+						const trigger::Keys &keys = triggerEventHandle.filterKeys(iF);
+						std::vector<int> toIdxFilter;
+						for (size_t iK = 0; iK < keys.size(); ++iK)
+						{
+							if (toFWK2Kappa.count(keys[iK]) == 0)
+								toFWK2Kappa.insert(std::make_pair(keys[iK], toFWK2Kappa.size()));
+							if (verbosity > 2)
+								std::cout << keys[iK] << "=>" << toFWK2Kappa[keys[iK]]
+									<< " (pt=" << triggerEventHandle.getObjects().at(keys[iK]).pt() << ") ";
+							toIdxFilter.push_back(toFWK2Kappa[keys[iK]]);
+						}
+						out.toIdxFilter[currentIndex] = toIdxFilter;
+						if (verbosity > 2)
+							std::cout << std::endl;
 					}
 				}
 				if ((verbosity > 1) && !found)
@@ -165,9 +144,6 @@ protected:
 			}
 			if (verbosity > 0)
 				std::cout << std::endl;
-
-			// Fill Filters
-			fillTriggerObject(triggerEventHandle, "Filters", fwkIndices, toFWK2Kappa, trgInfos->toFilter[i], out.toIdxFilter[i], hltConfig.triggerName(hltIdx));
 		}
 
 		// Save used trigger objects
@@ -179,12 +155,9 @@ protected:
 		}
 
 		KTrgObjSorter toSorter(out);
-		for (size_t i = 0; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
+		for (size_t i = 0; i < out.toIdxFilter.size(); ++i)
 		{
-			for (size_t j = 0; j < out.toIdxFilter[i].size(); ++j)
-			{
-				std::sort(out.toIdxFilter[i][j].begin(), out.toIdxFilter[i][j].end(), toSorter);
-			}
+			std::sort(out.toIdxFilter[i].begin(), out.toIdxFilter[i].end(), toSorter);
 		}
 	}
 
