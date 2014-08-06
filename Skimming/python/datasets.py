@@ -715,6 +715,28 @@ datasets = {
 			8 : "/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball-tauola-tauPolarOff/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
 		},
 	},
+        ##### BSM ggH->tautau #######################################################
+	"SUSYGluGluToHToTauTau_M-120_8TeV-pythia6-tauola" : {
+		"dataset" : {
+			8 : "/SUSYGluGluToHToTauTau_M-120_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SUSYGluGluToHToTauTau_M-300_8TeV-pythia6-tauola" : {
+		"dataset" : {
+			8 : "/SUSYGluGluToHToTauTau_M-300_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+        ##### BSM bbH->tautau #######################################################
+	"SUSYBBHToTauTau_M-120_8TeV-pythia6-tauola" : {
+		"dataset" : {
+			8 : "/SUSYBBHToTauTau_M-120_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SUSYBBHToTauTau_M-300_8TeV-pythia6-tauola" : {
+		"dataset" : {
+			8 : "/SUSYBBHToTauTau_M-300_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
 }
 
 Data = [
@@ -826,3 +848,5 @@ SM_GluGluToHToTauTau = ["SM_GluGluToHToTauTau_M_%d_powheg_pythia" % higgsMass fo
 SM_VBFHToTauTau = ["SM_VBFHToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
 SM_WH_ZH_TTH_HToTauTau = ["SM_WH_ZH_TTH_HToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
 SM_TTH_HToTauTau = ["SM_TTH_HToTauTau_M_%s_pythia" % higgsMass for higgsMass in ["110","115","120","122_5","125","127_5","130","135","140"]]
+SUSYGGHToTauTau = ["SUSYGluGluToHToTauTau_M-%s_8TeV-pythia6-tauola" % higgsMass for higgsMass in ["120","300"]]
+SUSYBBHToTauTau = ["SUSYBBHToTauTau_M-%s_8TeV-pythia6-tauola" % higgsMass for higgsMass in ["120","300"]]
