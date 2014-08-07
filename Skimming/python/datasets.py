@@ -160,6 +160,12 @@ datasets = {
 		},
 	},
 	
+	"DoubleElectron_Run2012B_22Jan2013" : {
+		"dataset" : {
+			8 : "/DoubleElectron/Run2012B-22Jan2013-v1/AOD",
+		},
+	},
+	
 	"DoubleElectron_Run2012C_22Jan2013" : {
 		"dataset" : {
 			8 : "/DoubleElectron/Run2012C-22Jan2013-v1/AOD",
@@ -758,6 +764,7 @@ Data = [
 	"TauPlusX_Run2012B_22Jan2013",
 	"TauParked_Run2012B_22Jan2013",
 	"DoubleMuParked_Run2012B_22Jan2013",
+	"DoubleElectron_Run2012B_22Jan2013",
 	"TauPlusX_Run2012C_22Jan2013",
 	"TauParked_Run2012C_22Jan2013",
 	"DoubleMuParked_Run2012C_22Jan2013",
