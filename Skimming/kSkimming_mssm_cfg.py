@@ -4,7 +4,7 @@ import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper as datasetsHelper
 
 def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring(""), maxevents=100, nickname = 'SM_VBFHToTauTau_M_90_powheg_pythia_8TeV', kappaTag = 'Kappa_1_0_0'):
-
+	print "getBaseConfig", globaltag, testfile, maxevents, nickname, kappaTag
 	from Kappa.Producers.KSkimming_template_cfg import process
 	process.source.fileNames      = testfile
 	process.maxEvents.input	      = maxevents				## number of events to be processed (-1 = all in file)
@@ -38,7 +38,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	# General configuration
-
+	print "general configuration"
 	process.kappaTuple.active += cms.vstring('VertexSummary')	## save VertexSummary,
 	process.kappaTuple.active += cms.vstring('BeamSpot')		## save Beamspot,
 	process.kappaTuple.active += cms.vstring('TriggerObjects')
@@ -97,6 +97,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
+	print "Configure PFCandidates and offline PV"
 	process.load("Kappa.Producers.KPFCandidates_cff")
 	process.kappaTuple.active += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected 
 	process.kappaTuple.PFCandidates.whitelist = cms.vstring(                ## isolation used for electrons and muons.
@@ -111,18 +112,21 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	# Configure Muons
+	print "Configure Muons"
 	process.load("Kappa.Producers.KMuons_cff")
 	process.kappaTuple.active += cms.vstring('Muons')	                ## produce/save KappaMuons
 	process.p *= process.makeKappaMuons
 
 	## ------------------------------------------------------------------------
 	# Configure Electrons
+	print "Configure Electrons"
 	process.load("Kappa.Producers.KElectrons_cff")
 	process.kappaTuple.active += cms.vstring('Electrons')	                ## produce/save KappaElectrons,
 	process.p *= process.makeKappaElectrons
 
 	## ------------------------------------------------------------------------
 	# Configure Taus
+	print "Configure Taus"
 	process.load("Kappa.Producers.KTaus_cff")
 	process.kappaTuple.active += cms.vstring('PFTaus')	                ## produce/save KappaTaus
 	process.kappaTuple.PFTaus.hpsPFTaus.binaryDiscrWhitelist = cms.vstring(
@@ -195,6 +199,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	## KappaPFTaggedJets
+	print "KappaPFTaggedJets"
 	process.load("Kappa.Producers.KPFTaggedJets_cff")
 	process.kappaTuple.active += cms.vstring('PFTaggedJets')           ## produce KappaPFTaggedJets
 	process.kappaTuple.PFTaggedJets = cms.PSet(
@@ -255,6 +260,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		process.kappaTuple.isEmbedded = cms.bool(True)
 
 	# Let Jets run
+	print "Let Jets run"
 	process.p *= (
 		process.makeKappaTaus *
 		process.makePFJets *
@@ -266,6 +272,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	## MET
+	print "MET"
 	process.load("Kappa.Producers.KMET_mssm_cff")
 	process.kappaTuple.active += cms.vstring('MET')                         ## produce/save KappaMET
 	process.kappaTuple.active += cms.vstring('PFMET')                       ## produce/save KappaPFMET
@@ -273,6 +280,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	## And let it run
+	print " And let it run"
 	process.p *= (
 		process.kappaOut
 	)
@@ -290,6 +298,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	return process
 
 if __name__ == "__main__":
+	print "starting?"
 	if('@' in '@NICK@'): # run local skim by hand without replacements by grid-control
 		## test file for EKP
 		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/pfEmbedded.root')
@@ -305,6 +314,7 @@ if __name__ == "__main__":
 
 	## for grid-control:
 	else:
+		print getBaseConfig('@GLOBALTAG@', nickname = '@NICK@', kappaTag = '@KAPPA_TAG@')
 		process = getBaseConfig('@GLOBALTAG@', nickname = '@NICK@', kappaTag = '@KAPPA_TAG@')
 
 
