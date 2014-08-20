@@ -76,7 +76,8 @@ def checkoutPackages(args):
 		"git cms-merge-topic -u cms-analysis-tools:5_3_14-updateSelectorUtils",
 		"git cms-merge-topic -u cms-analysis-tools:5_3_13_patch2-testNewTau",
 		"git cms-merge-topic -u cms-met:53X-MVaNoPuMET-20131217-01",
-		"git cms-merge-topic -u cms-tau-pog:CMSSW_5_3_X_tauID2014", #new recommendation with the same performance and new features (e.g. it is working in PFBRECO)
+		"git cms-merge-topic -u cms-tau-pog:CMSSW_5_3_X_boostedTaus_2013Dec17",
+		#"git cms-merge-topic -u cms-tau-pog:CMSSW_5_3_X_tauID2014", #new recommendation with the same performance and new features (e.g. it is working in PFBRECO)
 
 		"git clone git://github.com/ajaykumar649/Jets_Short.git",
 		"cp -r Jets_Short/* " + cmsswsrc,
