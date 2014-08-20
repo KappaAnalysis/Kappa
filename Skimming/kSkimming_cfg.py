@@ -93,6 +93,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		"hltL2Tau25eta2p1",
 		"hltL2Tau35eta2p1",
 		"hltL2fL1sMu16Eta2p1L1f0L2Filtered16Q",
+		"hltDiMuonGlb13Glb8DzFiltered0p2",
 		)
 
 	## ------------------------------------------------------------------------
