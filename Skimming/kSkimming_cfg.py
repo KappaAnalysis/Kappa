@@ -85,6 +85,10 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		#"^HLT_Mu[0-9]+_Photon[0-9]+_CaloIdVT_IsoT_v[0-9]+$",
 		#"^HLT_Ele[0-9]+_CaloId(L|T)(_TrkIdVL)?_CaloIsoVL(_TrkIdVL_TrkIsoVL)?(_TrkIsoVL)?(_Jet[0-9]+|)?_v[0-9]+$",
 		)
+	
+	process.kappaTuple.Metadata.hltBlacklist = cms.vstring(
+		"HLT_Mu13_Mu8", # v21 gives errors for the trigger objects
+		)
 
 	process.kappaTuple.Metadata.hltFailToleranceList = cms.vstring(
 		"hltDoubleL2Tau25eta2p1",
@@ -93,7 +97,6 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		"hltL2Tau25eta2p1",
 		"hltL2Tau35eta2p1",
 		"hltL2fL1sMu16Eta2p1L1f0L2Filtered16Q",
-		"hltDiMuonGlb13Glb8DzFiltered0p2",
 		)
 
 	## ------------------------------------------------------------------------
