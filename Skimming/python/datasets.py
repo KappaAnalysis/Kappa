@@ -197,12 +197,133 @@ datasets = {
 			8: "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
 		},
 	},
-
-	"DoubleMu_PFembedded_Run2012A_22Jan2013_muelec" : {
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_muhad" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_muhad" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_muhad" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_electau" : {
 		"dataset": {
 			8: "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
 		},
 	},
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_electau" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_electau" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_electau" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_muelec" : {
+		"dataset": {
+			8: "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_muelec" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_muelec" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_muelec" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_mumu" : {
+		"dataset": {
+			8: "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_mumu" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_mumu" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_mumu" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_hadhad" : {
+		"dataset": {
+			8: "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_hadhad" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_hadhad" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_hadhad" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+
+	"TTJetsPFembedded_madgraph_elechad" : {
+		"dataset": {
+			8: "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"TTJetsPFembedded_madgraph_muhad" : {
+		"dataset": {
+			8: "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"TTJetsPFembedded_madgraph_muelec" : {
+		"dataset": {
+			8: "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"TTJetsPFembedded_madgraph_mumu" : {
+		"dataset": {
+			8: "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau122_ptmu1_18mu2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+
+	"TTJetsPFembedded_madgraph_hadhad" : {
+		"dataset": {
+			8: "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+
+
+
 
 	##### DY + Jets (8 TeV) ####################################################
 	"DYJetsToLL_M_50_madgraph" : {
@@ -845,10 +966,27 @@ WJets = [
 ]
 
 Embedded = [
-	"DoubleMu_RHembedded_Run2012A_22Jan2013_muhad",
-	"DoubleMu_RHembedded_Run2012A_22Jan2013_RHembedded_muelec",
 	"DoubleMu_PFembedded_Run2012A_22Jan2013_muhad",
-	"DoubleMu_PFembedded_Run2012A_22Jan2013_muelec"
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_muhad",
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_muhad",
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_muhad",
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_electau",
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_electau",
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_electau",
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_electau",
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_muelec",
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_muelec",
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_muelec",
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_muelec",
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_mumu",
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_mumu",
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_mumu",
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_mumu",
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_hadhad",
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_hadhad",
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_hadhad",
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_hadhad"
+
 ]
 
 SM_GluGluToHToTauTau = ["SM_GluGluToHToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
