@@ -43,12 +43,13 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.kappaTuple.active += cms.vstring('BeamSpot')		## save Beamspot,
 	process.kappaTuple.active += cms.vstring('TriggerObjects')
 
-	if data:
-		process.kappaTuple.active+= cms.vstring('DataMetadata')		## produce Metadata for data,
-	else:
-		process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
-		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
-		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
+	if not isEmbedded:
+		if data:
+			process.kappaTuple.active+= cms.vstring('DataMetadata')		## produce Metadata for data,
+		else:
+			process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
+			process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
+			process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 
 	process.kappaTuple.Metadata.hltWhitelist = cms.vstring(			## HLT selection
 		# https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/blob/master/data/triggerTables-2011-2012.txt
@@ -196,10 +197,11 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		process.p *= process.btagging
 		# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
 		process.kappaTuple.Metadata.overrideHLTCheck = cms.untracked.bool(True)
+		process.kappaTuple.active+= cms.vstring('DataMetadata')
 		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
-		process.kappaTuple.isEmbedded = cms.bool(True)
+		process.kappaTuple.Metadata.isEmbedded = cms.bool(True)
 
 	# Let Jets run
 	process.p *= (
