@@ -58,6 +58,7 @@ protected:
 		std::map<size_t, size_t> toFWK2Kappa;
 		
 		out.toIdxFilter.clear();
+		trgInfos->nFiltersPerHLT.clear();
 
 		// run over all triggers
 		for (size_t i = 0; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
