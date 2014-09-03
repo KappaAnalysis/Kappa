@@ -843,9 +843,24 @@ datasets = {
 		},
 	},
         ##### BSM ggH->tautau #######################################################
+	"SUSYGluGluToHToTauTau_M-110_8TeV-pythia6-tauola" : {
+		"dataset" : {
+			8 : "/SUSYGluGluToHToTauTau_M-110_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
 	"SUSYGluGluToHToTauTau_M-120_8TeV-pythia6-tauola" : {
 		"dataset" : {
 			8 : "/SUSYGluGluToHToTauTau_M-120_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SUSYGluGluToHToTauTau_M-130_8TeV-pythia6-tauola" : {
+		"dataset" : {
+			8 : "/SUSYGluGluToHToTauTau_M-130_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SUSYGluGluToHToTauTau_M-140_8TeV-pythia6-tauola" : {
+		"dataset" : {
+			8 : "/SUSYGluGluToHToTauTau_M-140_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
 	"SUSYGluGluToHToTauTau_M-300_8TeV-pythia6-tauola" : {
@@ -854,9 +869,24 @@ datasets = {
 		},
 	},
         ##### BSM bbH->tautau #######################################################
+	"SUSYBBHToTauTau_M-110_8TeV-pythia6-tauola" : {
+		"dataset" : {
+			8 : "/SUSYBBHToTauTau_M-110_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
 	"SUSYBBHToTauTau_M-120_8TeV-pythia6-tauola" : {
 		"dataset" : {
 			8 : "/SUSYBBHToTauTau_M-120_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SUSYBBHToTauTau_M-130_8TeV-pythia6-tauola" : {
+		"dataset" : {
+			8 : "/SUSYBBHToTauTau_M-130_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+		},
+	},
+	"SUSYBBHToTauTau_M-140_8TeV-pythia6-tauola" : {
+		"dataset" : {
+			8 : "/SUSYBBHToTauTau_M-140_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
 		},
 	},
 	"SUSYBBHToTauTau_M-300_8TeV-pythia6-tauola" : {
