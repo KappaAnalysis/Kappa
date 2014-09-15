@@ -43,12 +43,13 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.kappaTuple.active += cms.vstring('BeamSpot')		## save Beamspot,
 	process.kappaTuple.active += cms.vstring('TriggerObjects')
 
-	if data:
-		process.kappaTuple.active+= cms.vstring('DataMetadata')		## produce Metadata for data,
-	else:
-		process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
-		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
-		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
+	if not isEmbedded:
+		if data:
+			process.kappaTuple.active+= cms.vstring('DataMetadata')		## produce Metadata for data,
+		else:
+			process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
+			process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
+			process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 
 	process.kappaTuple.Metadata.hltWhitelist = cms.vstring(			## HLT selection
 		# https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/blob/master/data/triggerTables-2011-2012.txt
@@ -97,6 +98,15 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		"hltL2Tau25eta2p1",
 		"hltL2Tau35eta2p1",
 		"hltL2fL1sMu16Eta2p1L1f0L2Filtered16Q",
+		"hltL1sL1DoubleEG137", # problematic in HLT_Mu17_Mu8_v21
+		"hltL1sL1Mu3p5EG12ORL1MuOpenEG12", # problematic in HLT_Ele22_eta2p1_WP90Rho_LooseIsoPFTau20_v7
+		"hltL3fL1sMu16Eta2p1L1f0L2f16QL3Filtered40Q", # problematic in HLT_Ele22_eta2p1_WP90Rho_LooseIsoPFTau20_v7
+		"hltL2fL1sMu16L1f0L2Filtered16Q", # problematic in HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v7
+		"hltL1sL1SingleMu7", # problematic in HLT_DoubleMediumIsoPFTau30_Trk1_eta2p1_Jet30_v5
+		"hltL1Mu3p5EG12L2Filtered12", # problematic in HLT_DoubleMediumIsoPFTau30_Trk1_eta2p1_Jet30_v5
+		"hltTripleL2Jets30eta3", # problematic in HLT_DoubleMediumIsoPFTau30_Trk1_eta2p1_v4
+		"hltDiMuonGlb17Glb8DzFiltered0p2", # problematic in HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v18
+		"hltL1sL1DoubleMu10MuOpenORDoubleMu103p5", # 
 		)
 
 	## ------------------------------------------------------------------------
@@ -187,10 +197,11 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		process.p *= process.btagging
 		# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
 		process.kappaTuple.Metadata.overrideHLTCheck = cms.untracked.bool(True)
+		process.kappaTuple.active+= cms.vstring('DataMetadata')
 		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
-		process.kappaTuple.isEmbedded = cms.bool(True)
+		process.kappaTuple.Metadata.isEmbedded = cms.bool(True)
 
 	# Let Jets run
 	process.p *= (
