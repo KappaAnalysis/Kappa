@@ -38,17 +38,17 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	# General configuration
-	print "general configuration"
 	process.kappaTuple.active += cms.vstring('VertexSummary')	## save VertexSummary,
 	process.kappaTuple.active += cms.vstring('BeamSpot')		## save Beamspot,
 	process.kappaTuple.active += cms.vstring('TriggerObjects')
 
-	if data:
-		process.kappaTuple.active+= cms.vstring('DataMetadata')		## produce Metadata for data,
-	else:
-		process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
-		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
-		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
+	if not isEmbedded:
+		if data:
+			process.kappaTuple.active+= cms.vstring('DataMetadata')		## produce Metadata for data,
+		else:
+			process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
+			process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
+			process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 
 	process.kappaTuple.Metadata.hltWhitelist = cms.vstring(			## HLT selection
 		# https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/blob/master/data/triggerTables-2011-2012.txt
@@ -86,6 +86,10 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		#"^HLT_Ele[0-9]+_CaloId(L|T)(_TrkIdVL)?_CaloIsoVL(_TrkIdVL_TrkIsoVL)?(_TrkIsoVL)?(_Jet[0-9]+|)?_v[0-9]+$",
 		)
 
+	process.kappaTuple.Metadata.hltBlacklist = cms.vstring(
+		"HLT_Mu13_Mu8", # v21 gives errors for the trigger objects
+		)
+
 	process.kappaTuple.Metadata.hltFailToleranceList = cms.vstring(
 		"hltDoubleL2Tau25eta2p1",
 		"hltDoubleL2Tau30eta2p1",
@@ -93,11 +97,19 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		"hltL2Tau25eta2p1",
 		"hltL2Tau35eta2p1",
 		"hltL2fL1sMu16Eta2p1L1f0L2Filtered16Q",
+		"hltL1sL1DoubleEG137", # problematic in HLT_Mu17_Mu8_v21
+		"hltL1sL1Mu3p5EG12ORL1MuOpenEG12", # problematic in HLT_Ele22_eta2p1_WP90Rho_LooseIsoPFTau20_v7
+		"hltL3fL1sMu16Eta2p1L1f0L2f16QL3Filtered40Q", # problematic in HLT_Ele22_eta2p1_WP90Rho_LooseIsoPFTau20_v7
+		"hltL2fL1sMu16L1f0L2Filtered16Q", # problematic in HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v7
+		"hltL1sL1SingleMu7", # problematic in HLT_DoubleMediumIsoPFTau30_Trk1_eta2p1_Jet30_v5
+		"hltL1Mu3p5EG12L2Filtered12", # problematic in HLT_DoubleMediumIsoPFTau30_Trk1_eta2p1_Jet30_v5
+		"hltTripleL2Jets30eta3", # problematic in HLT_DoubleMediumIsoPFTau30_Trk1_eta2p1_v4
+		"hltDiMuonGlb17Glb8DzFiltered0p2", # problematic in HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v18
+		"hltL1sL1DoubleMu10MuOpenORDoubleMu103p5", # 
 		)
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
-	print "Configure PFCandidates and offline PV"
 	process.load("Kappa.Producers.KPFCandidates_cff")
 	process.kappaTuple.active += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected 
 	process.kappaTuple.PFCandidates.whitelist = cms.vstring(                ## isolation used for electrons and muons.
@@ -112,21 +124,18 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	# Configure Muons
-	print "Configure Muons"
 	process.load("Kappa.Producers.KMuons_cff")
 	process.kappaTuple.active += cms.vstring('Muons')	                ## produce/save KappaMuons
 	process.p *= process.makeKappaMuons
 
 	## ------------------------------------------------------------------------
 	# Configure Electrons
-	print "Configure Electrons"
 	process.load("Kappa.Producers.KElectrons_cff")
 	process.kappaTuple.active += cms.vstring('Electrons')	                ## produce/save KappaElectrons,
 	process.p *= process.makeKappaElectrons
 
 	## ------------------------------------------------------------------------
 	# Configure Taus
-	print "Configure Taus"
 	process.load("Kappa.Producers.KTaus_cff")
 	process.kappaTuple.active += cms.vstring('PFTaus')	                ## produce/save KappaTaus
 	process.kappaTuple.PFTaus.hpsPFTaus.binaryDiscrWhitelist = cms.vstring(
@@ -199,7 +208,6 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	## KappaPFTaggedJets
-	print "KappaPFTaggedJets"
 	process.load("Kappa.Producers.KPFTaggedJets_cff")
 	process.kappaTuple.active += cms.vstring('PFTaggedJets')           ## produce KappaPFTaggedJets
 	process.kappaTuple.PFTaggedJets = cms.PSet(
@@ -254,13 +262,13 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		process.p *= process.btagging
 		# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
 		process.kappaTuple.Metadata.overrideHLTCheck = cms.untracked.bool(True)
+		process.kappaTuple.active+= cms.vstring('DataMetadata')
 		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
-		process.kappaTuple.isEmbedded = cms.bool(True)
+		process.kappaTuple.Metadata.isEmbedded = cms.bool(True)
 
 	# Let Jets run
-	print "Let Jets run"
 	process.p *= (
 		process.makeKappaTaus *
 		process.makePFJets *
@@ -272,7 +280,6 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	## MET
-	print "MET"
 	process.load("Kappa.Producers.KMET_mssm_cff")
 	process.kappaTuple.active += cms.vstring('MET')                         ## produce/save KappaMET
 	process.kappaTuple.active += cms.vstring('PFMET')                       ## produce/save KappaPFMET
@@ -280,7 +287,6 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	## And let it run
-	print " And let it run"
 	process.p *= (
 		process.kappaOut
 	)
@@ -298,7 +304,6 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	return process
 
 if __name__ == "__main__":
-	print "starting?"
 	if('@' in '@NICK@'): # run local skim by hand without replacements by grid-control
 		## test file for EKP
 		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/pfEmbedded.root')
@@ -309,7 +314,7 @@ if __name__ == "__main__":
 		#testfile	= cms.untracked.vstring('root://eoscms//eos/cms/store/relval/CMSSW_5_3_6-START53_V14/RelValProdTTbar/AODSIM/v2/00000/76ED0FA6-1E2A-E211-B8F1-001A92971B72.root')
 		## test file for RWTH
 		#testfile	= cms.untracked.vstring('file:/user/kargoll/testfiles/DYTauTau/DYTauTau_Summer12.root')		
-		testfile	= cms.untracked.vstring('file:/nfs/dust/cms/user/ffrensch/storage/SUSYGluGluToHToTauTau_M-120_8TeV-pythia6-tauola/test.root')
+		testfile	= cms.untracked.vstring('file:/nfs/dust/cms/user/ffrensch/storage/SUSYGluGluToHToTauTau_M-120_8TeV-pythia6-tauola.root')
 		process = getBaseConfig(testfile = testfile)
 
 	## for grid-control:
