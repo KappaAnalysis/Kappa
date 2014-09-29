@@ -90,6 +90,19 @@ def checkoutPackages(args):
 #################################################################################################################
 
 
+def fixes_forsl6():
+	commands = [
+		"cp /afs/desy.de/user/s/swayand/public/kappa_sl6_fix/CMSDAS12ThreejetTestAnalyzer.cc  RecoJets/JetAnalyzers/src/CMSDAS12ThreejetTestAnalyzer.cc",
+		"cp /afs/desy.de/user/s/swayand/public/kappa_sl6_fix/JetSubstructurePlotsExample.cc  RecoJets/JetAnalyzers/src/JetSubstructurePlotsExample.cc",
+		"cp /afs/desy.de/user/s/swayand/public/kappa_sl6_fix/myFastSimVal.cc  RecoJets/JetAnalyzers/src/myFastSimVal.cc",
+		"cp /afs/desy.de/user/s/swayand/public/kappa_sl6_fix/myJetAna.cc  RecoJets/JetAnalyzers/src/myJetAna.cc",
+		]
+	execCommands(commands)
+	return
+
+
+#################################################################################################################
+
 def main():
 	parser = OptionParser()
 	sysInformation = getSysInformation()
@@ -102,6 +115,7 @@ def main():
 	#args = parser.parse_args()
 	(options, args) = parser.parse_args()
 	checkoutPackages(args)
+	fixes_forsl6()
 
 #################################################################################################################
 if __name__ == "__main__":
