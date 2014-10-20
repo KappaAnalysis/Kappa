@@ -40,11 +40,12 @@ KTrackSummary
 KTriggerObjects
 KVertexSummary
 
-KTriggerInfos
+KElectronIdMetadata
 KFilterMetadata
 KTaggerMetadata
 KMuonMetadata
 KTauDiscriminatorMetadata
+KTriggerInfos
 
 #################################
 

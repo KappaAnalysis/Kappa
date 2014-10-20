@@ -12,6 +12,7 @@
 <use name="DataFormats/TrackReco"/>
 <use name="DataFormats/TrajectoryState"/>
 <use name="DataFormats/VertexReco"/>
+<use name="EgammaAnalysis/ElectronTools"/>
 <use name="FWCore/Framework"/>
 <use name="FWCore/ParameterSet"/>
 <use name="FWCore/PluginManager"/>

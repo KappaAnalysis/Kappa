@@ -11,14 +11,14 @@
 #include <vector>
 #include <string>
 
-/* RUN METADATA */
+/// RUN METADATA
 struct KProvenance
 {
 	std::vector<std::string> names;
 	std::vector<std::string> branches;
 };
 
-/* RUN + LUMI METADATA */
+/// RUN + LUMI METADATA
 struct KLumiMetadata
 {
 	unsigned int nLumi;
@@ -38,6 +38,11 @@ struct KTauDiscriminatorMetadata
 struct KMuonMetadata
 {
 	std::vector<std::string> hltNames;
+};
+
+struct KElectronIdMetadata
+{
+	std::vector<std::string> idNames;
 };
 
 struct KTaggerMetadata

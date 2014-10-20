@@ -16,74 +16,87 @@
 
 struct KDataElectron : KLepton
 {
-	/*
-	virtual ~KDataElectron() {};
-	
-	virtual bool isElectron() {
-		return true;
-	};
-	*/
-	
-	bool isEB, isEE;
+	/// Isolation variables
+	float trackIso03;   // dr03TkSumPt: track iso deposit with electron footprint removed (Delta R = 0.3)
+	float ecalIso03;    // dr03EcalRecHitSumEt: ecal iso deposit with electron footprint removed.
+	float hcal1Iso03;   // dr03HcalDepth1TowerSumEt: hcal depht 1 iso deposit with electron footprint removed.
+	float hcal2Iso03;   // dr03HcalDepth2TowerSumEt: hcal depht 2 iso deposit with electron footprint removed.
+	inline float hcalIso03() const { return hcal1Iso03 + hcal2Iso03; };  // dr03HcalTowerSumEt
 
-/* if needed, all these could be easily added in one byte as is done for muons:
-https://github.com/cms-sw/cmssw/blob/CMSSW_5_3_X/DataFormats/EgammaCandidates/interface/GsfElectron.h
-    bool isEB(): true if the electron is in ECAL Barrel.
-    bool isEE(): true if the electron is in ECAL Endcaps.
-    bool isEBEEGap(): true if the electron is in the crack between EB and EE.
-    bool isEBEtaGap(): true if the electron is in EB, and in the eta gaps between modules.
-    bool isEBPhiGap(): true if the electron is in EB, and in the phi gaps between modules.
-    bool isEEDeeGap(): true if the electron is in EE, and in the gaps between dees.
-    bool isEERingGap(): true if the electron is in EE, and in the gaps between rings.
-
-Within the electron, the corresponding values are grouped into an attribute called fiducialFlags_, of type FiducialFlags. One will see this attribute when TBrowsing an edm ROOT file. The global getter CMS.GsfElectron::fiducialFlags() gives direct access to the attribute. Also, a few more utility methods are combining some of the flags:
-
-    bool isEBGap(): true if isEBEtaGap() or isEBPhiGap().
-    bool isEEGap(): true if isEEDeeGap() or isEERingGap().
-    bool isGap(): true if isEBEEGap() or isEBGap() or isEEGap().
-*/
-
-	float trackIso03;		// dr03TkSumPt: track iso deposit with electron footprint removed.
-	float ecalIso03;		// dr03EcalRecHitSumEt: ecal iso deposit with electron footprint removed.
-	float hcal1Iso03;		// dr03HcalDepth1TowerSumEt: hcal depht 1 iso deposit with electron footprint removed.
-	float hcal2Iso03;		// dr03HcalDepth2TowerSumEt: hcal depht 2 iso deposit with electron footprint removed.
-
-	float trackIso04;
+	float trackIso04;   // same isolations with Delta R = 0.4
 	float ecalIso04;
 	float hcal1Iso04;
 	float hcal2Iso04;
-	
+	inline float hcalIso04() const { return hcal1Iso04 + hcal2Iso04; };
+
+    float pfIsoCh;      // PF isolation from PAT electrons isoVals
+    float pfIsoEm;
+    float pfIsoNh;
+
+	/// Identification
+	/// Variables for cutbased electron identification (cf. reco::GsfElectron)
 	// https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification
-	float deltaEtaSuperClusterTrackAtVtx;
-	float deltaPhiSuperClusterTrackAtVtx;
+	float deltaEtaSuperClusterTrackAtVtx;  // dEtaIn
+	float deltaPhiSuperClusterTrackAtVtx;  // dPhiIn
 	float sigmaIetaIeta;
 	float hadronicOverEm;
 	float fbrem;
 	float eSuperClusterOverP;
-	float numberOfHits;
-
-	//supercluster
-	float superclusterenergy;
-	RMPoint superclusterposition;
-
+	float superclusterEnergy;      //supercluster
+	RMPoint superclusterPosition;
 	bool ecalDrivenSeed;
 	bool ecalDriven;
-
-	bool isEcalEnergyCorrected;	//true if ecal energy has been corrected.
-	float ecalEnergy;					//the new corrected value, or the supercluster energy.
+	bool isEcalEnergyCorrected;    //true if ecal energy has been corrected. = isEcalScaleCorrected
+	float ecalEnergy;              //the new corrected value, or the supercluster energy.
 	float ecalEnergyError;
-	//bool isMomentumCorrected;	//true if E-p combination has been applied.
-	float trackMomentumError;		//track momentum error from gsf fit.
-	//float electronMomentumError;//the final electron momentum error.
-
-
-	float mva; // PF data
-	int status;
-	float idMvaTrigV0;
-	float idMvaTrigNoIPV0;
-	float idMvaNonTrigV0;
-
+	bool isMomentumCorrected;      //true if E-p combination has been applied.
+	float trackMomentumError;      //track momentum error from gsf fit.
+	float electronMomentumError;   //the final electron momentum error.
 	bool hasConversionMatch;
+	int status;
+	/// calculable quantities: p_in and 1/E - 1/p_in:
+	inline float trackMomentumAtVtxP() const { return ecalEnergy / eSuperClusterOverP; };
+	inline float invEMinusInvP() const { return (1.0f - eSuperClusterOverP) / ecalEnergy; };
+
+	/// cutbased isolation results
+	unsigned char cutbasedIDs;
+	inline bool cutbasedIdLoose()  const { return (cutbasedIDs & (1 << 0)); };
+	inline bool cutbasedIdMedium() const { return (cutbasedIDs & (1 << 1)); };
+	inline bool cutbasedIdTight()  const { return (cutbasedIDs & (1 << 2)); };
+	inline bool cutbasedIdVeto()   const { return (cutbasedIDs & (1 << 3)); };
+
+
+	// ECAL region: bits are set according to reco::GsfElectron::FiducialFlags
+	unsigned char fiducialFlags;  // container for all 7 bits
+	// accessor functions: must be in sync with KElectronProducer
+	inline bool isEB()        const { return (fiducialFlags & (1 << 0)); };    // is e in ECAL Barrel (EB)
+	inline bool isEE()        const { return (fiducialFlags & (1 << 1)); };    // is e in ECAL Endcaps (EE)
+	inline bool isEBEEGap()   const { return (fiducialFlags & (1 << 2)); };    // is e in the crack between EB and EE
+	inline bool isEBEtaGap()  const { return (fiducialFlags & (1 << 3)); };    // is e in EB and in the eta gaps between modules
+	inline bool isEBPhiGap()  const { return (fiducialFlags & (1 << 4)); };    // is e in EB and in the phi gaps between modules
+	inline bool isEEDeeGap()  const { return (fiducialFlags & (1 << 5)); };    // is e in EE and in the gaps between dees
+	inline bool isEERingGap() const { return (fiducialFlags & (1 << 6)); };    // is e in EE and in the gaps between rings
+	inline bool isEBGap()     const { return isEBEtaGap() || isEBPhiGap(); };  // is e in in any EB gap
+	inline bool isEEGap()     const { return isEEDeeGap() || isEERingGap(); }; // is e in any EE gap
+	inline bool isGap()       const { return isEBEEGap() || isEBGap() || isEEGap(); };  // is e in any gap
+
+	/// Configurable MVA IDs
+	/** Run2: https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
+	 *  Full instructions in Producer/interface/KElectrons_cff
+	 */
+	std::vector<float> electronIds;
+
+	float getId(const std::string &name, const KElectronIdMetadata *idMetadata) const
+	{
+		for (unsigned int i = 0; i < idMetadata->idNames.size(); ++i)
+		{
+			if (idMetadata->idNames[i] == name)
+				return electronIds[i];
+		}
+		std::cout << "ElectronId " << name << " not available!" << std::endl;
+		exit(1);
+	}
+
 };
 typedef std::vector<KDataElectron> KDataElectrons;
 

@@ -72,11 +72,12 @@ namespace
 		KTriggerObjects dict_KTriggerObjects;
 		KVertexSummary dict_KVertexSummary;
 
-		KTriggerInfos dict_KTriggerInfos;
+		KElectronIdMetadata dict_KElectronIdMetadata;
 		KFilterMetadata dict_KFilterMetadata;
 		KTaggerMetadata dict_KTaggerMetadata;
 		KMuonMetadata dict_KMuonMetadata;
 		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
+		KTriggerInfos dict_KTriggerInfos;
 
 		KProvenance dict_KProvenance;
 

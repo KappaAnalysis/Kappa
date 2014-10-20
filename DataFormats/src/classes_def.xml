@@ -56,11 +56,12 @@
 	<class name="KTriggerObjects"/>
 	<class name="KVertexSummary"/>
 
-	<class name="KTriggerInfos"/>
+	<class name="KElectronIdMetadata"/>
 	<class name="KFilterMetadata"/>
 	<class name="KTaggerMetadata"/>
 	<class name="KMuonMetadata"/>
 	<class name="KTauDiscriminatorMetadata"/>
+	<class name="KTriggerInfos"/>
 
 	<class name="KProvenance"/>
 
