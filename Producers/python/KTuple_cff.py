@@ -374,6 +374,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 		src = cms.InputTag("patElectrons"),
 		allConversions = cms.InputTag("allConversions"),
 		offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
+		vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
+		isoValInputTags = cms.VInputTag(cms.InputTag('elPFIsoValueCharged03PFIdPFIso'),
+						cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
+						cms.InputTag('elPFIsoValueNeutral03PFIdPFIso')),
+		rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
 		),
 	),
 

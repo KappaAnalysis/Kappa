@@ -156,6 +156,10 @@ public:
 
 		std::vector<edm::InputTag>  isoValInputTags_ = pset.getParameter<std::vector<edm::InputTag> >("isoValInputTags");
 		isoVals.resize(isoValInputTags_.size());
+		for (size_t j = 0; j < isoValInputTags_.size(); ++j)
+		{
+			cEvent->getByLabel(isoValInputTags_[j], isoVals[j]);
+		}
 
 		// Continue normally
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>::fillProduct(in, out, name, tag, pset);
