@@ -147,7 +147,7 @@
 #pragma link C++ struct KFilterSummary+;
 #pragma link C++ struct KFilterMetadata+;
 #pragma link C++ struct KTaggerMetadata+;
-
+#pragma link C++ struct KElectronIdMetadata+;
 #pragma link C++ struct KTriggerInfos+;
 
 #pragma link C++ class std::vector<std::vector<size_t> >+;
