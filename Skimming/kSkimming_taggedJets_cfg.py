@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.dirname(sys.argv[0])) + "/Kappa/")
 from Kappa.Producers.KSkimming_template_cfg import *
 
 ## test file for EKP
-process.source.fileNames     = cms.untracked.vstring('file:///storage/6/fcolombo/TTH_Inclusive_M-125_8TeV_pythia6_AODSIM_PU_S10_START53_V7A-v1_0009E1F7-FD09-E211-8955-001E673986B0.root')
+process.source.fileNames     = cms.untracked.vstring('file:///nfs/dust/cms/user/fcolombo/TTH_Inclusive_M-125_8TeV_pythia6_AODSIM_PU_S10_START53_V7A-v1_0009E1F7-FD09-E211-8955-001E673986B0.root')
 ## test file for lxplus
 #process.source.fileNames      = cms.untracked.vstring('')
 
@@ -25,8 +25,8 @@ process.kappaTuple.PFTaggedJets = cms.PSet(
                          "SoftElectronBJetTags", "SoftMuonBJetTags", "SoftMuonByIP3dBJetTags", "SoftMuonByPtBJetTags",
                          "SimpleSecondaryVertexBJetTags", 
                          "CombinedSecondaryVertexBJetTags", "CombinedSecondaryVertexMVABJetTags",
-                         "puJetIDFullLoose", "puJetIDFullMedium", "puJetIDFullTight",
-                         "puJetIDCutbasedLoose", "puJetIDCutbasedMedium", "puJetIDCutbasedTight" 
+                         "puJetIDFullDiscriminant", "puJetIDFullLoose", "puJetIDFullMedium", "puJetIDFullTight", 
+                         "puJetIDCutbasedDiscriminant", "puJetIDCutbasedLoose", "puJetIDCutbasedMedium", "puJetIDCutbasedTight"  
                      ),
                      AK5PFTaggedJets = cms.PSet(
                          src = cms.InputTag("ak5PFJets"),
