@@ -227,7 +227,7 @@ datasets = {
 			8: "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
 		},
 	},
-	"DoubleMu_PFembedded_Run2012A_22Jan2013_electau" : {
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_electau" : {
 		"dataset": {
 			8: "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
 		},
@@ -1003,7 +1003,7 @@ Embedded = [
 	"DoubleMu_PFembedded_Run2012A_22Jan2013_electau",
 	"DoubleMu_PFembedded_Run2012B_22Jan2013_electau",
 	"DoubleMu_PFembedded_Run2012C_22Jan2013_electau",
-	"DoubleMu_PFembedded_Run2012A_22Jan2013_electau",
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_electau",
 	"DoubleMu_PFembedded_Run2012A_22Jan2013_muelec",
 	"DoubleMu_PFembedded_Run2012B_22Jan2013_muelec",
 	"DoubleMu_PFembedded_Run2012C_22Jan2013_muelec",

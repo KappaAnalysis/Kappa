@@ -77,6 +77,10 @@ public:
 				cEvent->getByLabel(Btagger.label()+"CombinedSecondaryVertexMVABJetTags", CombinedSecondaryVertexMVABJetTags_Handle);
 			else if (tagger[i] == "puJetIDMET")
 				cEvent->getByLabel(PUJetID.label(), "metId", puJetIDMET_Handle);
+			else if (tagger[i] == "puJetIDFullDiscriminant")
+				cEvent->getByLabel(PUJetID.label(), PUJetID_full.label()+"Discriminant", puJetIDfullDiscriminant_Handle);
+			else if (tagger[i] == "puJetIDCutbasedDiscriminant")
+				cEvent->getByLabel(PUJetID.label(), "cutbasedDiscriminant", puJetIDcutbasedDiscriminant_Handle);
 			else if (tagger[i].find( "puJetIDFull") != std::string::npos)
 				cEvent->getByLabel(PUJetID.label(), PUJetID_full.label()+"Id", puJetIDfull_Handle);
 			else if (tagger[i].find( "puJetIDCutbased") != std::string::npos)
@@ -101,6 +105,8 @@ public:
 		tagmap_b["CombinedSecondaryVertexMVABJetTags"] = CombinedSecondaryVertexMVABJetTags_Handle;
 		tagmap_qg["QGlikelihood"] = QGTagsHandleLikelihood;
 		tagmap_qg["QGmlp"] = QGTagsHandleMLP;
+		tagmap_pu["puJetIDFullDiscriminant"] = puJetIDfullDiscriminant_Handle;
+		tagmap_pu["puJetIDCutbasedDiscriminant"] = puJetIDcutbasedDiscriminant_Handle;
 
 		// Continue normally
 		KBaseMultiLVProducer<reco::PFJetCollection, KDataPFTaggedJets>::fillProduct(in, out, name, tag, pset);
@@ -116,6 +122,8 @@ public:
 		{
 			if ( (tagger[i] == "QGlikelihood") || (tagger[i] == "QGmlp"))
 				out.taggers.push_back(getvalue( (*tagmap_qg[tagger[i]])[jetRef] ) );
+			else if ((tagger[i] == "puJetIDFullDiscriminant") || (tagger[i] == "puJetIDCutbasedDiscriminant"))
+				out.taggers.push_back(getsignedvalue( (*tagmap_pu[tagger[i]])[jetRef] ) );
 			else if (tagger[i] == "puJetIDFullLoose")
 				puJetID.push_back(( (*puJetIDfull_Handle)[jetRef] & (1 << 2) ) != 0);
 			else if (tagger[i] == "puJetIDFullMedium")
@@ -163,6 +171,7 @@ private:
 	KTaggerMetadata *names;
 
 	std::map< std::string, edm::Handle<edm::ValueMap<float>> > tagmap_qg;
+	std::map< std::string, edm::Handle<edm::ValueMap<float>> > tagmap_pu;
 	std::map< std::string, edm::Handle<reco::JetTagCollection> > tagmap_b;
 
 	edm::InputTag QGtagger;
@@ -188,10 +197,13 @@ private:
 	edm::Handle< edm::ValueMap<int> > puJetIDfull_Handle;
 	edm::Handle< edm::ValueMap<int> > puJetIDcutbased_Handle;
 	edm::Handle< edm::ValueMap<int> > puJetIDMET_Handle;
+	edm::Handle< edm::ValueMap<float> > puJetIDfullDiscriminant_Handle;
+	edm::Handle< edm::ValueMap<float> > puJetIDcutbasedDiscriminant_Handle;
 
 	static constexpr float default_for_not_defined_tagger_value = -999.;
 
 	float getvalue(const float value){ return (value<0.) ? default_for_not_defined_tagger_value : value; }
+	float getsignedvalue(const float value){ return value; }
 
 };
 
