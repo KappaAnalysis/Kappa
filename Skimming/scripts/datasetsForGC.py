@@ -26,6 +26,7 @@ gcConfigurations = {
 	"SM_GluGluToHToTauTau" : datasets.SM_GluGluToHToTauTau,
 	"SM_VBFHToTauTau" : datasets.SM_VBFHToTauTau,
 	"SM_WH_ZH_TTH_HToTauTau" : datasets.SM_WH_ZH_TTH_HToTauTau,
+	"TwoJetsInitialState" : datasets.TwoJetsInitialState
 }
 
 def createGcConfigs(outputDir, gcConfigs, period, addPeriodToNickname):
