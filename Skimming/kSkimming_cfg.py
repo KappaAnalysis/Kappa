@@ -91,24 +91,6 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		"HLT_Mu13_Mu8", # v21 gives errors for the trigger objects
 		)
 
-	process.kappaTuple.Metadata.hltFailToleranceList = cms.vstring(
-		"hltDoubleL2Tau25eta2p1",
-		"hltDoubleL2Tau30eta2p1",
-		"hltDoubleL2Tau35eta2p1",
-		"hltL2Tau25eta2p1",
-		"hltL2Tau35eta2p1",
-		"hltL2fL1sMu16Eta2p1L1f0L2Filtered16Q",
-		"hltL1sL1DoubleEG137", # problematic in HLT_Mu17_Mu8_v21
-		"hltL1sL1Mu3p5EG12ORL1MuOpenEG12", # problematic in HLT_Ele22_eta2p1_WP90Rho_LooseIsoPFTau20_v7
-		"hltL3fL1sMu16Eta2p1L1f0L2f16QL3Filtered40Q", # problematic in HLT_Ele22_eta2p1_WP90Rho_LooseIsoPFTau20_v7
-		"hltL2fL1sMu16L1f0L2Filtered16Q", # problematic in HLT_IsoMu17_eta2p1_LooseIsoPFTau20_v7
-		"hltL1sL1SingleMu7", # problematic in HLT_DoubleMediumIsoPFTau30_Trk1_eta2p1_Jet30_v5
-		"hltL1Mu3p5EG12L2Filtered12", # problematic in HLT_DoubleMediumIsoPFTau30_Trk1_eta2p1_Jet30_v5
-		"hltTripleL2Jets30eta3", # problematic in HLT_DoubleMediumIsoPFTau30_Trk1_eta2p1_v4
-		"hltDiMuonGlb17Glb8DzFiltered0p2", # problematic in HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_v18
-		"hltL1sL1DoubleMu10MuOpenORDoubleMu103p5", # 
-		)
-
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
 	process.load("Kappa.Producers.KPFCandidates_cff")
