@@ -190,7 +190,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		srcPVs = cms.InputTag("offlinePrimaryVertices"),
 	),
 
-	MET = cms.PSet(
+	BasicMET = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("reco(Calo|Gen)MET"),
@@ -203,7 +203,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	PFMET = cms.PSet(
+	MET = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFMET"),
@@ -251,7 +251,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	JetArea = cms.PSet(kappaNoCut,
+	PileupDensity = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("kt6PFJetsRho_rho", "kt6PFJets_rho"),
@@ -402,7 +402,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
-	PFJets = cms.PSet(kappaNoCut,
+	BasicJets = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_ak5PFJets.*"),
@@ -430,7 +430,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		)
 	),
 
-	PFTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+	Taus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		#shrinkingConePFTaus = cms.PSet(
 		#	src = cms.InputTag("shrinkingConePFTauProducer"),
 		#	discrWhitelist = cms.vstring("shrinkingConePFTau*"),

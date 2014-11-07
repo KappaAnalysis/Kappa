@@ -10,20 +10,20 @@
 #include "../../DataFormats/interface/KJetMET.h"
 #include "../../DataFormats/interface/KDebug.h"
 
-class KJetAreaProducer : public KBaseMultiProducer<double, KJetArea>
+class KPileupDensityProducer : public KBaseMultiProducer<double, KPileupDensity>
 {
 public:
-	KJetAreaProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<double, KJetArea>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KPileupDensityProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiProducer<double, KPileupDensity>(cfg, _event_tree, _run_tree, getLabel()) {}
 
-	static const std::string getLabel() { return "JetArea"; }
+	static const std::string getLabel() { return "PileupDensity"; }
 
 protected:
-	virtual void clearProduct(OutputType &output) { output.median = 0; output.sigma = 0; }
+	virtual void clearProduct(OutputType &output) { output.rho = 0; output.sigma = 0; }
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		out.median = in;
+		out.rho = in;
 
 		edm::InputTag tmpLabel(tag->label(), "sigma", tag->process());
 		edm::Handle<double> hSigma;

@@ -30,8 +30,8 @@ struct KL2MuonTrajectorySeedProducer_Product
 
 struct KL3MuonTrajectorySeedProducer_Product
 {
-	typedef std::vector<KDataTrack> type;
-	static const std::string id() { return "std::vector<KDataTrack>"; };
+	typedef std::vector<KTrack> type;
+	static const std::string id() { return "std::vector<KTrack>"; };
 	static const std::string producer() { return "KL3MuonTrajectorySeedProducer"; };
 };
 
@@ -83,7 +83,7 @@ protected:
 		for (std::vector<L3MuonTrajectorySeed>::const_iterator it = in.begin(); it != in.end(); ++it)
 		{
 			const reco::Track * l2track = it->l2Track().get();
-			KDataTrack tmpTrack;
+			KTrack tmpTrack;
 			KTrackProducer::fillTrack(*l2track, tmpTrack);
 			out.push_back(tmpTrack);
 		}

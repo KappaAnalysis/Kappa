@@ -15,7 +15,7 @@ public:
 
 	static const std::string getLabel() { return "VertexSummary"; }
 
-	virtual void clearProduct(OutputType &output) { output.pv = KDataVertex(); output.nVertices = 0; }
+	virtual void clearProduct(OutputType &output) { output.pv = KVertex(); output.nVertices = 0; }
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{

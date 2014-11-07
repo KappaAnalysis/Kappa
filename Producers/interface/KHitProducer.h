@@ -8,11 +8,11 @@
 #include "KBaseMultiLVProducer.h"
 #include <SimDataFormats/TrackingHit/interface/PSimHit.h>
 
-class KHitProducer : public KBaseMultiVectorProducer<edm::View<PSimHit>, KDataHits>
+class KHitProducer : public KBaseMultiVectorProducer<edm::View<PSimHit>, KHits>
 {
 public:
 	KHitProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiVectorProducer<edm::View<PSimHit>, KDataHits>(cfg, _event_tree, _run_tree, getLabel()) {}
+		KBaseMultiVectorProducer<edm::View<PSimHit>, KHits>(cfg, _event_tree, _run_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "Hits"; }
 

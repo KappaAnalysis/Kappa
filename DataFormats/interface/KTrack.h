@@ -15,7 +15,7 @@ enum KTrackQuality
 	TQ_Loose = 1 << 0, TQ_Tight = 1 << 1, TQ_HighPurity = 1 << 2, TQ_Confirmed = 1 << 3, TQ_GoodIterative = 1 << 4
 };
 
-struct KDataTrack : public KLV
+struct KTrack : public KLV
 {
 	RMPoint ref;	// reference point ("vertex")
 	char charge;
@@ -28,10 +28,10 @@ struct KDataTrack : public KLV
 	unsigned short nInnerHits, nLostInnerHits;
 	int quality;
 
-	double getTrackIsolation(std::vector<KDataTrack> *tracks, double isoCone = 0.3, double vetoCone = 0.01, double minPt = 1.5)
+	double getTrackIsolation(std::vector<KTrack> *tracks, double isoCone = 0.3, double vetoCone = 0.01, double minPt = 1.5)
 	{
 		double sum = 0.;
-		for (std::vector<KDataTrack>::iterator it = tracks->begin(); it != tracks->end(); it++)
+		for (std::vector<KTrack>::iterator it = tracks->begin(); it != tracks->end(); it++)
 		{
 			if (it->p4.pt() > minPt && ROOT::Math::VectorUtil::DeltaR(it->p4, p4) > vetoCone && ROOT::Math::VectorUtil::DeltaR(it->p4, p4) < isoCone)
 			{
@@ -45,7 +45,7 @@ struct KDataTrack : public KLV
 		return sum;
 	}
 
-	double getDxy(const KDataVertex * pv) const
+	double getDxy(const KVertex * pv) const
 	{
 		if (!pv)
 			return -1.;
@@ -55,7 +55,7 @@ struct KDataTrack : public KLV
 		) / sqrt(p4.Perp2());
 	}
 
-	double getDxy(const KDataBeamSpot *bs) const
+	double getDxy(const KBeamSpot *bs) const
 	{
 		if (!bs)
 			return -1.;
@@ -65,7 +65,7 @@ struct KDataTrack : public KLV
 		) / sqrt(p4.Perp2());
 	}
 
-	double getDz(const KDataVertex *pv) const
+	double getDz(const KVertex *pv) const
 	{
 		if (!pv)
 			return -1.;
@@ -75,7 +75,7 @@ struct KDataTrack : public KLV
 			) * p4.z() / p4.Perp2();
 	}
 
-	double getDz(const KDataBeamSpot *bs) const
+	double getDz(const KBeamSpot *bs) const
 	{
 		if (!bs)
 			return -1.;
@@ -91,7 +91,7 @@ struct KDataTrack : public KLV
 			1 - dxy/error(track)
 			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
 	*/
-	double getIP(const KDataVertex *pv, unsigned int mode = 0) const
+	double getIP(const KVertex *pv, unsigned int mode = 0) const
 	{
 		if (!pv)
 			return -10000.;
@@ -123,7 +123,7 @@ struct KDataTrack : public KLV
 			1 - dxy/error(track)
 			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
 	*/
-	double getIP(const KDataBeamSpot *bs, unsigned int mode = 0) const
+	double getIP(const KBeamSpot *bs, unsigned int mode = 0) const
 	{
 		if (!bs)
 			return -10000.;
@@ -150,9 +150,9 @@ struct KDataTrack : public KLV
 		return -10000.;
 	}
 };
-typedef std::vector<KDataTrack> KDataTracks;
+typedef std::vector<KTrack> KTracks;
 
-struct KMuonTriggerCandidate : public KDataTrack
+struct KMuonTriggerCandidate : public KTrack
 {
 	bool isoDecision;
 	float isoQuantity;

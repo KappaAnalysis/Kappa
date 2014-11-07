@@ -10,8 +10,8 @@
 // - reconstructed a1 candidate from 3 prongs, including covariance
 // - for muon leg: muon helix parameters with covariance
 
-#ifndef KAPPA_PFTAUPRODUCER_H
-#define KAPPA_PFTAUPRODUCER_H
+#ifndef KAPPA_TAUPRODUCER_H
+#define KAPPA_TAUPRODUCER_H
 
 #include "KMetadataProducer.h"
 #include "KTauProducer.h"
@@ -19,13 +19,13 @@
 #include <DataFormats/TauReco/interface/PFTau.h>
 #include <DataFormats/TauReco/interface/PFTauDiscriminator.h>
 
-class KPFTauProducer : public KTauProducer<reco::PFTau, reco::PFTauDiscriminator, KDataPFTaus>
+class KTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>
 {
 public:
-	KPFTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KTauProducer<reco::PFTau, reco::PFTauDiscriminator, KDataPFTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {}
+	KTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {}
 
-	static const std::string getLabel() { return "PFTaus"; }
+	static const std::string getLabel() { return "Taus"; }
 
 	static int createRecoPFTauHash(const reco::PFTau tau)
 	{
@@ -43,10 +43,10 @@ protected:
 	}
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		// Fill fields of KDataTau via base class
-		KTauProducer<reco::PFTau, reco::PFTauDiscriminator, KDataPFTaus>::fillSingle(in, out);
+		// Fill fields of KBasicTau via base class
+		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>::fillSingle(in, out);
 
-		// Fill additional fields from KDataPFTau
+		// Fill additional fields from KTau
 		out.emFraction = in.emFraction();
 		out.nSignalChargedHadrCands = in.signalPFChargedHadrCands().size();
 		out.nSignalGammaCands = in.signalPFGammaCands().size();

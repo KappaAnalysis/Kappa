@@ -29,11 +29,11 @@
 #include <TrackingTools/Records/interface/TransientTrackRecord.h>
 #include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 
-class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KDataMuons>
+class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>
 {
 public:
 	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Muon>, KDataMuons>(cfg, _event_tree, _lumi_tree, getLabel()),
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>(cfg, _event_tree, _lumi_tree, getLabel()),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")),
@@ -80,7 +80,7 @@ public:
 				std::cout << "KMuonProducer::onLumi : muon trigger object: " << (muonMetadata->hltNames.size() - 1) << " = " << filterName << "\n";
 		}
 
-		return KBaseMultiLVProducer<edm::View<reco::Muon>, KDataMuons>::onLumi(lumiBlock, setup);
+		return KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>::onLumi(lumiBlock, setup);
 	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
@@ -99,7 +99,7 @@ public:
 		pfIsoVetoMinPt = pset.getParameter<double>("pfIsoVetoMinPt");
 
 		// Continue normally
-		KBaseMultiLVProducer<edm::View<reco::Muon>, KDataMuons>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

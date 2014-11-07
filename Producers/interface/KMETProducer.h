@@ -3,21 +3,21 @@
  *   Fred Stober <stober@cern.ch>
  */
 
-#ifndef KAPPA_METPRODUCER_H
-#define KAPPA_METPRODUCER_H
+#ifndef KAPPA_BASICMETPRODUCER_H
+#define KAPPA_BASICMETPRODUCER_H
 
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/MET.h>
 
-class KMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KDataMET>
+class KBasicMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KBasicMET>
 {
 public:
-	KMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::MET>, KDataMET>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KBasicMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiProducer<edm::View<reco::MET>, KBasicMET>(cfg, _event_tree, _run_tree, getLabel()) {}
 
-	static const std::string getLabel() { return "MET"; }
+	static const std::string getLabel() { return "BasicMET"; }
 
 protected:
 	virtual void clearProduct(OutputType &output) { output.p4.SetCoordinates(0, 0, 0, 0); output.sumEt = -1; }
@@ -38,7 +38,7 @@ protected:
 		}
 		else
 			if (verbosity > 1)
-				std::cout << "KMETProducer::fillProduct : Found " << in.size() << " MET objects!" << std::endl;
+				std::cout << "KBasicMETProducer::fillProduct : Found " << in.size() << " MET objects!" << std::endl;
 	}
 };
 

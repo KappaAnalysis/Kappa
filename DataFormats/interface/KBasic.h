@@ -19,7 +19,7 @@ struct KLV
 };
 typedef std::vector<KLV> KLVs;
 
-struct KDataVertex
+struct KVertex
 {
 	RMPoint position;
 	bool fake;
@@ -29,7 +29,7 @@ struct KDataVertex
 
 	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
 };
-typedef std::vector<KDataVertex> KDataVertices;
+typedef std::vector<KVertex> KVertices;
 
 struct KUnbiasedDiTauPV
 {
@@ -40,11 +40,11 @@ typedef std::vector<KUnbiasedDiTauPV> KUnbiasedDiTauPVs;
 
 struct KVertexSummary
 {
-	KDataVertex pv;
+	KVertex pv;
 	unsigned int nVertices;
 };
 
-struct KDataBeamSpot
+struct KBeamSpot
 {
 	RMPoint position;
 	char type;
@@ -57,7 +57,7 @@ struct KDataBeamSpot
 
 	ROOT::Math::SMatrix<double, 7, 7, ROOT::Math::MatRepSym<double, 7> > covariance;
 };
-typedef std::vector<KDataBeamSpot> KDataBeamSpots;
+typedef std::vector<KBeamSpot> KBeamSpots;
 
 // pdgid = [charge:1][status:3][id:...]
 const unsigned int KGenParticleStatusPosition = 28;
@@ -80,7 +80,7 @@ public:
 	Flavour flavour;
 
 	char charge;
-	KDataTrack track;
+	KTrack track;
 };
 
 typedef std::vector<KLepton> KLeptons;
@@ -176,11 +176,11 @@ struct KGenPhoton : public KLV
 };
 typedef std::vector<KGenPhoton> KGenPhotons;
 
-struct KDataHit
+struct KHit
 {
 	double theta, phi, pAbs, energyLoss;
 };
-typedef std::vector<KDataHit> KDataHits;
+typedef std::vector<KHit> KHits;
 
 struct KPFCandidate : KLV
 {

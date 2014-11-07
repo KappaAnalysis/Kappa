@@ -13,7 +13,7 @@ process.source.fileNames     = cms.untracked.vstring('file:///nfs/dust/cms/user/
 
 process.maxEvents.input       = 100                             ## number of events to be processed (-1 = all in file)
 process.kappaTuple.outputFile = 'kappaTuple_taggedJets.root'    ## name of output file
-process.kappaTuple.active     = cms.vstring('PFTaggedJets')     ## produce KappaPFTaggedJets
+process.kappaTuple.active     = cms.vstring('Jets')     ## produce KappaPFTaggedJets
 process.kappaTuple.verbose    = cms.int32(0)                    ## verbosity level
 process.kappaTuple.PFTaggedJets = cms.PSet(
                      process.kappaNoCut,

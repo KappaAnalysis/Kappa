@@ -11,11 +11,11 @@
 #include "KGenParticleProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 
-class KGenTauProducer : public KBasicGenParticleProducer<KDataGenTaus>
+class KGenTauProducer : public KBasicGenParticleProducer<KGenTaus>
 {
 public:
 	KGenTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBasicGenParticleProducer<KDataGenTaus>(cfg, _event_tree, _run_tree, getLabel()) {}
+		KBasicGenParticleProducer<KGenTaus>(cfg, _event_tree, _run_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "GenTaus"; }
 
@@ -30,12 +30,12 @@ protected:
 		const int particles = 15; // tau pdg ID
 		selectParticles(&particles, &particles + 1);
 
-		KBasicGenParticleProducer<KDataGenTaus>::fillProduct(in, out, name, tag, pset);
+		KBasicGenParticleProducer<KGenTaus>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		KBasicGenParticleProducer<KDataGenTaus>::fillSingle(in, out);
+		KBasicGenParticleProducer<KGenTaus>::fillSingle(in, out);
 
 		DecayInfo info;
 		walkDecayTree(in, info);
@@ -73,14 +73,14 @@ protected:
 		// Just for the sake of completeness... note that we filter descendant
 		// taus anyway in acceptSingle
 		if(in.mother() && abs(in.mother()->pdgId()) == 15)
-			out.decayMode |= KDataGenTau::DescendantMask;
+			out.decayMode |= KGenTau::DescendantMask;
 
 		out.vertex = in.vertex();
 	}
 
 	virtual bool acceptSingle(const SingleInputType& in)
 	{
-		if(!KBasicGenParticleProducer<KDataGenTaus>::acceptSingle(in))
+		if(!KBasicGenParticleProducer<KGenTaus>::acceptSingle(in))
 			return false;
 
 		// Reject decendant taus as all relevant information is contained in the

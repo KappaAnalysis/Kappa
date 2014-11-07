@@ -5,21 +5,21 @@
  *   Manuel Zeise <zeise@cern.ch>
  */
 
-#ifndef KAPPA_PFMETPRODUCER_H
-#define KAPPA_PFMETPRODUCER_H
+#ifndef KAPPA_METPRODUCER_H
+#define KAPPA_METPRODUCER_H
 
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/PFMET.h>
 
-class KPFMETProducer : public KBaseMultiProducer<edm::View<reco::PFMET>, KDataPFMET>
+class KMETProducer : public KBaseMultiProducer<edm::View<reco::PFMET>, KMET>
 {
 public:
-	KPFMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::PFMET>, KDataPFMET>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiProducer<edm::View<reco::PFMET>, KMET>(cfg, _event_tree, _run_tree, getLabel()) {}
 
-	static const std::string getLabel() { return "PFMET"; }
+	static const std::string getLabel() { return "MET"; }
 
 protected:
 	virtual void clearProduct(OutputType &output) { output.p4.SetCoordinates(0, 0, 0, 0); output.sumEt = -1; }
@@ -52,7 +52,7 @@ protected:
 		}
 		else
 			if (verbosity > 1)
-				std::cout << "KPFMETProducer::fillProduct : Found " << in.size() << " PFMET objects!" << std::endl;
+				std::cout << "KMETProducer::fillProduct : Found " << in.size() << " PFMET objects!" << std::endl;
 	}
 };
 

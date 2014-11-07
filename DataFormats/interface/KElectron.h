@@ -14,7 +14,7 @@
 #include <algorithm>
 #include "Math/GenVector/PositionVector3D.h"
 
-struct KDataElectron : KLepton
+struct KElectron : KLepton
 {
 	/// Isolation variables
 	float trackIso03;   // dr03TkSumPt: track iso deposit with electron footprint removed (Delta R = 0.3)
@@ -98,6 +98,6 @@ struct KDataElectron : KLepton
 	}
 
 };
-typedef std::vector<KDataElectron> KDataElectrons;
+typedef std::vector<KElectron> KElectrons;
 
 #endif

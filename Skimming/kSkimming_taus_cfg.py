@@ -15,7 +15,7 @@ process.source.fileNames     = cms.untracked.vstring('file:/user/kargoll/testfil
 
 process.maxEvents.input       = 100                                                                  ## number of events to be processed (-1 = all in file)
 process.kappaTuple.outputFile = 'kappaTuple_taus.root'                                               ## name of output file
-process.kappaTuple.active     = cms.vstring('PFTaus')                                                ## produce KappaTaus
+process.kappaTuple.active     = cms.vstring('Taus')                                                ## produce KappaTaus
 process.kappaTuple.verbose    = cms.int32(0)                                                         ## verbosity level
 #process.kappaTuple.Metadata.hltWhitelist = cms.vstring(                                             ## HLT preselection
 #    # matches 'HLT_Mu17_Mu8_v7' etc.

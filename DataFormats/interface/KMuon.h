@@ -13,20 +13,20 @@
 
 #include <algorithm>
 
-struct KDataMuon : KLepton
+struct KMuon : KLepton
 {
 	/*
-	virtual ~KDataMuon() {};
+	virtual ~KMuon() {};
 	
 	virtual bool isMuon() {
 		return true;
 	};
 	*/
 	
-	KDataTrack globalTrack;
-	KDataTrack innerTrack;
-	KDataTrack outerTrack;
-	KDataTrack bestTrack;
+	KTrack globalTrack;
+	KTrack innerTrack;
+	KTrack outerTrack;
+	KTrack bestTrack;
 
 	/// type of the muon: bits are set according to reco::Muon::type_;
 	unsigned char type;
@@ -73,15 +73,15 @@ struct KDataMuon : KLepton
 		return false; // given HLT does not exist
 	}
 
-	double puSubtractedPFIso04(const KJetArea* jetArea) const
+	double puSubtractedPFIso04(const KPileupDensity* puRho) const
 	{
 		// jetArea == NULL --> no PU subtraction
-		if(jetArea == NULL) return pfIso04;
+		if(puRho == NULL) return pfIso04;
 
 		static const double coneSize = 0.4;
-		return std::max(0.0, pfIso04 - jetArea->median * coneSize * coneSize * 3.14159);
+		return std::max(0.0, pfIso04 - puRho->rho * coneSize * coneSize * 3.14159);
 	}
 };
-typedef std::vector<KDataMuon> KDataMuons;
+typedef std::vector<KMuon> KMuons;
 
 #endif

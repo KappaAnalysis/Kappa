@@ -11,11 +11,11 @@
 #include <DataFormats/JetReco/interface/CaloJet.h>
 #include <DataFormats/JetReco/interface/JetID.h>
 
-class KCaloJetProducer : public KBaseMultiLVProducer<reco::CaloJetCollection, KDataJets>
+class KCaloJetProducer : public KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJets>
 {
 public:
 	KCaloJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::CaloJetCollection, KDataJets>(cfg, _event_tree, _run_tree, getLabel()) {}
+		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJets>(cfg, _event_tree, _run_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "CaloJets"; }
 
@@ -28,7 +28,7 @@ public:
 			cEvent->getByLabel(tagJetID, hJetID);
 
 		// Continue normally
-		KBaseMultiLVProducer<reco::CaloJetCollection, KDataJets>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJets>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

@@ -12,11 +12,11 @@
 #include <DataFormats/METReco/interface/HcalNoiseRBX.h>
 #include <DataFormats/TrackReco/interface/Track.h>
 
-class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KDataTracks>
+class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KTracks>
 {
 public:
 	KTrackProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Track>, KDataTracks>(cfg, _event_tree, _run_tree, getLabel()) {}
+		KBaseMultiLVProducer<edm::View<reco::Track>, KTracks>(cfg, _event_tree, _run_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "Tracks"; }
 

@@ -4,8 +4,8 @@
  *   Manuel Zeise <zeise@cern.ch>
  */
 
-#ifndef KAPPA_TAUPRODUCER_H
-#define KAPPA_TAUPRODUCER_H
+#ifndef KAPPA_BASICTAUPRODUCER_H
+#define KAPPA_BASICTAUPRODUCER_H
 
 #include "KBaseMultiLVProducer.h"
 
@@ -15,10 +15,10 @@ template<typename TTau, typename TTauDiscriminator, typename TProduct>
 // respectively, since they have std::vector somewhere hardcoded in their
 // inheritance hierarchy. If we changed that to edm::View then
 // cEvent->getManyByType does not find any discriminators anymore.
-class KTauProducer : public KBaseMultiLVProducer<std::vector<TTau>, TProduct>
+class KBasicTauProducer : public KBaseMultiLVProducer<std::vector<TTau>, TProduct>
 {
 public:
-	KTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName) :
+	KBasicTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName) :
 		KBaseMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _lumi_tree, producerName)
 	{
 		const edm::ParameterSet &psBase = this->psBase;
@@ -110,7 +110,7 @@ public:
 		this->cEvent->getManyByType(currentTauDiscriminators);
 
 		if (this->verbosity > 1)
-			std::cout << "switching to " << name << " in Tau producer\n";
+			std::cout << "switching to " << name << " in BasicTau producer\n";
 
 		// Get tau discriminators to use for this event
 		currentPreselDiscr = preselectionDiscr[name];
@@ -152,7 +152,7 @@ public:
 			std::string discr_moduleInstance(discr_module + discr_instance);
 			
 			if (this->verbosity > 1)
-						  std::cout << "KTauProducer: moduleLabel: " << discr_module << " \n" << "              processName: " << process_name << " \n";
+						  std::cout << "KBasicTauProducer: moduleLabel: " << discr_module << " \n" << "              processName: " << process_name << " \n";
 
 			std::map<std::string, unsigned int>::const_iterator moduleInstance_iter = currentBinaryDiscriminatorMap.find(discr_moduleInstance);
 			if(moduleInstance_iter != currentBinaryDiscriminatorMap.end())
@@ -167,7 +167,7 @@ public:
 					if(this->regexMatch(discr_moduleInstance, *use_iter) && this->regexMatch(process_name,currentDiscrProcessName))
 					{
 						if (this->verbosity > 5)
-							std::cout << "KTauProducer: access " << discr_moduleInstance << " with id = " << (**iter).keyProduct().id() << " using tau with id = " << tauRef.id() << " \n";
+							std::cout << "KBasicTauProducer: access " << discr_moduleInstance << " with id = " << (**iter).keyProduct().id() << " using tau with id = " << tauRef.id() << " \n";
 						// We have a match, so evaluate the discriminator
 						if( (**iter)[tauRef] > 0.5)
 							out.binaryDiscriminators |= (1ull << moduleInstance_iter->second);
@@ -189,7 +189,7 @@ public:
 					if(this->regexMatch(discr_moduleInstance, *use_iter) && this->regexMatch(process_name,currentDiscrProcessName))
 					{
 						if (this->verbosity > 5)
-							std::cout << "KTauProducer: access " << discr_moduleInstance << " with id = " << (**iter).keyProduct().id() << " using tau with id = " << tauRef.id() << " \n";
+							std::cout << "KBasicTauProducer: access " << discr_moduleInstance << " with id = " << (**iter).keyProduct().id() << " using tau with id = " << tauRef.id() << " \n";
 						out.floatDiscriminators[moduleInstance_iter->second] = (**iter)[tauRef];
 						break;
 					}
@@ -214,7 +214,7 @@ public:
 			if( module_iter != currentPreselDiscr.end() ){
 				if ( (**iter)[tauRef] < 0.5 ){
 					if (this->verbosity > 1)
-						std::cout << "KTauProducer::acceptSingle : " << *module_iter << " caused that this tau is not saved \n";
+						std::cout << "KBasicTauProducer::acceptSingle : " << *module_iter << " caused that this tau is not saved \n";
 
 					return false;
 				}

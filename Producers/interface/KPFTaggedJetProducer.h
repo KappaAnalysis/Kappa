@@ -1,5 +1,5 @@
-#ifndef KAPPA_PFTAGGEDJETPRODUCER_H
-#define KAPPA_PFTAGGEDJETPRODUCER_H
+#ifndef KAPPA_JETPRODUCER_H
+#define KAPPA_JETPRODUCER_H
 
 #include "KPFJetProducer.h"
 #include "KBaseMultiProducer.h"
@@ -7,11 +7,11 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/BTauReco/interface/JetTag.h>
 
-class KPFTaggedJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KDataPFTaggedJets>
+class KJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KJets>
 {
 public:
-	KPFTaggedJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KDataPFTaggedJets>(cfg, _event_tree, _run_tree, getLabel()),
+	KJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiLVProducer<reco::PFJetCollection, KJets>(cfg, _event_tree, _run_tree, getLabel()),
 		 tagger(cfg.getParameter<std::vector<std::string> >("taggers"))
 {
 		names = new KTaggerMetadata;
@@ -33,10 +33,10 @@ public:
 			else
 				names->taggernames.push_back(tagger[i]);
 		}
-		return KBaseMultiLVProducer<reco::PFJetCollection, KDataPFTaggedJets>::onLumi(lumiBlock, setup);
+		return KBaseMultiLVProducer<reco::PFJetCollection, KJets>::onLumi(lumiBlock, setup);
 	}
 
-	static const std::string getLabel() { return "PFTaggedJets"; }
+	static const std::string getLabel() { return "Jets"; }
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
@@ -109,7 +109,7 @@ public:
 		tagmap_pu["puJetIDCutbasedDiscriminant"] = puJetIDcutbasedDiscriminant_Handle;
 
 		// Continue normally
-		KBaseMultiLVProducer<reco::PFJetCollection, KDataPFTaggedJets>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<reco::PFJetCollection, KJets>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)

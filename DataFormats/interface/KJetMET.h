@@ -13,16 +13,16 @@
 #include "KBasic.h"
 #include "KMetadata.h"
 
-struct KDataJet : public KLV
+struct KCaloJet : public KLV
 {
 	double area;
 	double fHPD, fRBX;
 	double fEM, fHO;
 	int nConst, n90Hits;
 };
-typedef std::vector<KDataJet> KDataJets;
+typedef std::vector<KCaloJet> KCaloJets;
 
-struct KDataPFJet : public KLV
+struct KBasicJet : public KLV
 {
 	double area;
 	float neutralEMFraction, chargedEMFraction;
@@ -32,9 +32,9 @@ struct KDataPFJet : public KLV
 
 	int nConst, nCharged;
 };
-typedef std::vector<KDataPFJet> KDataPFJets;
+typedef std::vector<KBasicJet> KBasicJets;
 
-struct KDataPFTaggedJet : public KDataPFJet
+struct KJet : public KBasicJet
 {
     std::vector<float> taggers;
     unsigned int puJetID;
@@ -63,16 +63,16 @@ struct KDataPFTaggedJet : public KDataPFJet
 
 };
 
-typedef std::vector<KDataPFTaggedJet> KDataPFTaggedJets;
+typedef std::vector<KJet> KJets;
 
-struct KDataMET : public KLV
+struct KBasicMET : public KLV
 {
 	double sumEt;
 
 	ROOT::Math::SMatrix<double, 2, 2, ROOT::Math::MatRepSym<double, 2> > significance;
 };
 
-struct KDataPFMET : public KDataMET
+struct KMET : public KBasicMET
 {
 	double chargedEMEtFraction, chargedHadEtFraction;
 	double neutralEMEtFraction, neutralHadEtFraction;
@@ -97,10 +97,10 @@ struct KHCALNoiseSummary
 	int numIsolatedNoiseChannels;
 };
 
-#define KAPPA_FEATURE_JETAREA
-struct KJetArea
+struct KPileupDensity
 {
-	float median, sigma;
+	double rho;
+	double sigma;
 };
 
 #endif

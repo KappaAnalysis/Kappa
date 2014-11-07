@@ -60,72 +60,73 @@
 #pragma link C++ class std::vector<KLeptons>+;
 #pragma link C++ typedef KLeptons;
 
-#pragma link C++ struct KDataMET+;
-#pragma link C++ struct KDataPFMET+;
+#pragma link C++ struct KBasicMET+;
+#pragma link C++ struct KMET+;
 
-#pragma link C++ struct KDataTrack+;
-#pragma link C++ class std::vector<KDataTrack>+;
-#pragma link C++ typedef KDataTracks;
+#pragma link C++ struct KTrack+;
+#pragma link C++ class std::vector<KTrack>+;
+#pragma link C++ typedef KTracks;
 
 #pragma link C++ struct KTrackSummary+;
 
-#pragma link C++ struct KDataJet+;
-#pragma link C++ class std::vector<KDataJet>+;
-#pragma link C++ typedef KDataJets;
+#pragma link C++ struct KCaloJet+;
+#pragma link C++ class std::vector<KCaloJet>+;
+#pragma link C++ typedef KCaloJets;
 
-#pragma link C++ struct KDataPFJet+;
-#pragma link C++ class std::vector<KDataPFJet>+;
-#pragma link C++ typedef KDataPFJets;
+#pragma link C++ struct KBasicJet+;
+#pragma link C++ class std::vector<KBasicJet>+;
+#pragma link C++ typedef KBasicJets;
 
-#pragma link C++ struct KDataPFTaggedJet+;
-#pragma link C++ class std::vector<KDataPFTaggedJet>+;
-#pragma link C++ typedef KDataPFTaggedJets;
+#pragma link C++ struct KJet+;
+#pragma link C++ class std::vector<KJet>+;
+#pragma link C++ typedef KJets;
 
-#pragma link C++ struct KDataMuon+;
-#pragma link C++ class std::vector<KDataMuon>+;
-#pragma link C++ typedef KDataMuons;
+#pragma link C++ struct KMuon+;
+#pragma link C++ class std::vector<KMuon>+;
+#pragma link C++ typedef KMuons;
 
-#pragma link C++ struct KDataElectron+;
-#pragma link C++ class std::vector<KDataElectron>+;
-#pragma link C++ typedef KDataElectrons;
+#pragma link C++ struct KElectron+;
+#pragma link C++ class std::vector<KElectron>+;
+#pragma link C++ typedef KElectrons;
 
 #pragma link C++ struct KTauDiscriminatorMetadata+;
 #pragma link C++ struct KMuonMetadata+;
 
-#pragma link C++ struct KDataTau+;
-#pragma link C++ class std::vector<KDataTau>+;
-#pragma link C++ typedef KDataTaus;
+#pragma link C++ struct KBasicTau+;
+#pragma link C++ class std::vector<KBasicTau>+;
+#pragma link C++ typedef KBasicTaus;
 
-#pragma link C++ struct KDataCaloTau+;
-#pragma link C++ class std::vector<KDataCaloTau>+;
-#pragma link C++ typedef KDataCaloTaus;
+#pragma link C++ struct KCaloTau+;
+#pragma link C++ class std::vector<KCaloTau>+;
+#pragma link C++ typedef KCaloTaus;
 
-#pragma link C++ struct KDataPFTau+;
-#pragma link C++ class std::vector<KDataPFTau>+;
-#pragma link C++ typedef KDataPFTaus;
+#pragma link C++ struct KTau+;
+#pragma link C++ class std::vector<KTau>+;
+#pragma link C++ typedef KTaus;
 
-#pragma link C++ struct KDataGenTau+;
-#pragma link C++ class std::vector<KDataGenTau>+;
-#pragma link C++ typedef KDataGenTaus;
 #pragma link C++ struct KUnbiasedDiTauPV;
 
-#pragma link C++ struct KDataVertex+;
-#pragma link C++ class std::vector<KDataVertex>+;
-#pragma link C++ typedef KDataVertices;
+#pragma link C++ struct KGenTau+;
+#pragma link C++ class std::vector<KGenTau>+;
+#pragma link C++ typedef KGenTaus;
+
+#pragma link C++ struct KVertex+;
+#pragma link C++ class std::vector<KVertex>+;
+#pragma link C++ typedef KVertices;
 
 #pragma link C++ struct KVertexSummary+;
 
-#pragma link C++ struct KDataBeamSpot+;
-#pragma link C++ class std::vector<KDataBeamSpot>+;
-#pragma link C++ typedef KDataBeamSpots;
+#pragma link C++ struct KBeamSpot+;
+#pragma link C++ class std::vector<KBeamSpot>+;
+#pragma link C++ typedef KBeamSpots;
 
 #pragma link C++ struct KGenParticle+;
 #pragma link C++ class std::vector<KGenParticle>+;
 #pragma link C++ typedef KGenParticles;
 
-#pragma link C++ struct KDataHit+;
-#pragma link C++ class std::vector<KDataHit>+;
-#pragma link C++ typedef KDataHits;
+#pragma link C++ struct KHit+;
+#pragma link C++ class std::vector<KHit>+;
+#pragma link C++ typedef KHits;
 
 #pragma link C++ struct KL1Muon+;
 #pragma link C++ class std::vector<KL1Muon>+;
@@ -139,7 +140,7 @@
 #pragma link C++ class std::vector<KGenPhoton>+;
 #pragma link C++ typedef KGenPhotons;
 
-#pragma link C++ struct KJetArea+;
+#pragma link C++ struct KPileupDensity+;
 #pragma link C++ struct KHCALNoiseSummary+;
 #pragma link C++ struct KFilterSummary+;
 #pragma link C++ struct KFilterMetadata+;

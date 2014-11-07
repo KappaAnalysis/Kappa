@@ -11,11 +11,11 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 
-class KBeamSpotProducer : public KBaseMultiProducer<reco::BeamSpot, KDataBeamSpot>
+class KBeamSpotProducer : public KBaseMultiProducer<reco::BeamSpot, KBeamSpot>
 {
 public:
 	KBeamSpotProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<reco::BeamSpot, KDataBeamSpot>(cfg, _event_tree, _run_tree, getLabel()) {}
+		KBaseMultiProducer<reco::BeamSpot, KBeamSpot>(cfg, _event_tree, _run_tree, getLabel()) {}
 	virtual ~KBeamSpotProducer() {};
 
 	static const std::string getLabel() { return "BeamSpot"; }

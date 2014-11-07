@@ -74,7 +74,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
     process.kappatuple.profile = cms.bool(True)
     process.kappatuple.active = cms.vstring(
         'LV', 'Muons', 'TrackSummary', 'VertexSummary', 'BeamSpot',
-        'PFMET', 'PFJets',
+        'MET', 'BasicJets',
     )
     if data:
         additional_actives = ['DataMetadata']

@@ -11,10 +11,10 @@
 #include "KBasic.h"
 #include "KMetadata.h"
 
-struct KDataTau : KLepton
+struct KBasicTau : KLepton
 {
 	/*
-	virtual ~KDataTau() {};
+	virtual ~KBasicTau() {};
 	
 	virtual bool isTau() {
 		return true;
@@ -40,12 +40,12 @@ struct KDataTau : KLepton
 		return -999.0; // Named discriminator does not exist
 	}
 };
-typedef std::vector<KDataTau> KDataTaus;
+typedef std::vector<KBasicTau> KBasicTaus;
 
-struct KDataCaloTau : KDataTau {};
-typedef std::vector<KDataCaloTau> KDataCaloTaus;
+struct KCaloTau : KBasicTau {};
+typedef std::vector<KCaloTau> KCaloTaus;
 
-struct KDataPFTau : KDataTau
+struct KTau : KBasicTau
 {
 	float emFraction;
 
@@ -60,15 +60,15 @@ struct KDataPFTau : KDataTau
 	KPFCandidates signalGammaCands;
 	KLVs signalPiZeroCands;
 
-	KDataTrack track;
+	KTrack track;
 
 	//bool longLived
 	int hpsDecayMode; // hadronic decay mode as identified by HPS algorithm
 	int tauKey;
 };
-typedef std::vector<KDataPFTau> KDataPFTaus;
+typedef std::vector<KTau> KTaus;
 
-struct KDataGenTau : KGenParticle
+struct KGenTau : KGenParticle
 {
 	KLV visible;		// momenta of visible particles
 	unsigned char decayMode;
@@ -93,6 +93,6 @@ struct KDataGenTau : KGenParticle
 
 	bool isDescendant() const { return (decayMode & DescendantMask) != 0; }
 };
-typedef std::vector<KDataGenTau> KDataGenTaus;
+typedef std::vector<KGenTau> KGenTaus;
 
 #endif

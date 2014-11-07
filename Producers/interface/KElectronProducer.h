@@ -19,11 +19,11 @@
 //#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
 
-class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>
+class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>
 {
 public:
 	KElectronProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>(cfg, _event_tree, _lumi_tree, getLabel()),
+		KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>(cfg, _event_tree, _lumi_tree, getLabel()),
 		 namesOfIds(cfg.getParameter<std::vector<std::string> >("ids"))
 {
 		names = new KElectronIdMetadata;
@@ -38,7 +38,7 @@ public:
 		{
 			names->idNames.push_back(*id);
 		}
-		return KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>::onLumi(lumiBlock, setup);
+		return KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::onLumi(lumiBlock, setup);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
@@ -163,7 +163,7 @@ public:
 		}
 
 		// Continue normally
-		KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::fillProduct(in, out, name, tag, pset);
 
 	}
 private:

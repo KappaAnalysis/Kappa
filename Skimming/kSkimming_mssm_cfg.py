@@ -137,7 +137,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	## ------------------------------------------------------------------------
 	# Configure Taus
 	process.load("Kappa.Producers.KTaus_cff")
-	process.kappaTuple.active += cms.vstring('PFTaus')	                ## produce/save KappaTaus
+	process.kappaTuple.active += cms.vstring('Taus')	                ## produce/save KappaTaus
 	process.kappaTuple.PFTaus.hpsPFTaus.binaryDiscrWhitelist = cms.vstring(
 		"hpsPFTauDiscriminationByDecayModeFinding",
 		"hpsPFTauDiscriminationByDecayModeFindingOldDMs",
@@ -209,7 +209,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	## ------------------------------------------------------------------------
 	## KappaPFTaggedJets
 	process.load("Kappa.Producers.KPFTaggedJets_cff")
-	process.kappaTuple.active += cms.vstring('PFTaggedJets')           ## produce KappaPFTaggedJets
+	process.kappaTuple.active += cms.vstring('Jets')           ## produce KappaPFTaggedJets
 	process.kappaTuple.PFTaggedJets = cms.PSet(
 		process.kappaNoCut,
 		process.kappaNoRegEx,
@@ -281,8 +281,8 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	## ------------------------------------------------------------------------
 	## MET
 	process.load("Kappa.Producers.KMET_mssm_cff")
-	process.kappaTuple.active += cms.vstring('MET')                         ## produce/save KappaMET
-	process.kappaTuple.active += cms.vstring('PFMET')                       ## produce/save KappaPFMET
+	process.kappaTuple.active += cms.vstring('BasicMET')                         ## produce/save KappaMET
+	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
 	process.p *= process.makeKappaMET
 
 	## ------------------------------------------------------------------------

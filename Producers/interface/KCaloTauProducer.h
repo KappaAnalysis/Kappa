@@ -12,11 +12,11 @@
 #include <DataFormats/TauReco/interface/CaloTau.h>
 #include <DataFormats/TauReco/interface/CaloTauDiscriminator.h>
 
-class KCaloTauProducer : public KTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, KDataCaloTaus>
+class KCaloTauProducer : public KBasicTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, KCaloTaus>
 {
 public:
 	KCaloTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, KDataCaloTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {}
+		KBasicTauProducer<reco::CaloTau, reco::CaloTauDiscriminator, KCaloTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "CaloTaus"; }
 

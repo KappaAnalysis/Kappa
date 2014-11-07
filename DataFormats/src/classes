@@ -10,33 +10,33 @@ RMDLV
 
 #################################
 
-KDataBeamSpot			KDataBeamSpots
-KDataCaloTau			KDataCaloTaus
-KDataGenTau				KDataGenTaus
-KDataHit				KDataHits
-KDataJet				KDataJets
-KLV						KLVs
-KLepton					KLeptons
-KDataMET
-KDataMuon				KDataMuons
-KDataElectron			KDataElectrons
-KDataPFJet				KDataPFJets
-KDataPFMET
-KDataPFTaggedJet		KDataPFTaggedJets
-KDataPFTau				KDataPFTaus
-KDataTau				KDataTaus
-KDataTrack				KDataTracks
-KDataVertex				KDataVertices
+KBasicJet				KBasicJets
+KBasicMET
+KBasicTau				KBasicTaus
+KBeamSpot				KBeamSpots
+KCaloJet				KCaloJets
+KCaloTau				KCaloTaus
+KElectron				KElectrons
 KFilterSummary
 KGenParticle			KGenParticles
 KGenPhoton				KGenPhotons
+KGenTau					KGenTaus
 KHCALNoiseSummary
-KJetArea
+KHit					KHits
+KJet					KJets
+KPileupDensity
 KL1Muon					KL1Muons
+KLV						KLVs
+KLepton					KLeptons
+KMET
+KMuon					KMuons
 KMuonTriggerCandidate	KMuonTriggerCandidates
 KPFCandidate			KPFCandidates
+KTau					KTaus
+KTrack					KTracks
 KTrackSummary
 KTriggerObjects
+KVertex					KVertices
 KVertexSummary
 
 KElectronIdMetadata

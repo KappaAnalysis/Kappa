@@ -15,19 +15,19 @@ std::ostream &operator<<(std::ostream &os, const KLV &lv)
 		<< lv.p4.phi() << ", E=" << lv.p4.E()  << ", m=" << lv.p4.M() << ")";
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataBeamSpot &bs)
+std::ostream &operator<<(std::ostream &os, const KBeamSpot &bs)
 {
 	return os << bs.position << " betaStar=" << bs.betaStar;
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataMET &met)
+std::ostream &operator<<(std::ostream &os, const KBasicMET &met)
 {
 	return os << static_cast<const KLV>(met) << " sumEt=" << met.sumEt;
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataPFMET &met)
+std::ostream &operator<<(std::ostream &os, const KMET &met)
 {
-	os << static_cast<const KDataMET>(met) << std::endl;
+	os << static_cast<const KBasicMET>(met) << std::endl;
 	os << "\tCharged (em,had): " << met.chargedEMEtFraction << ", " << met.chargedHadEtFraction << std::endl;
 	os << "\tNeutral (em,had): " << met.neutralEMEtFraction << ", " << met.neutralHadEtFraction << std::endl;
 	os << "\tMuonF=" << met.muonEtFraction << " type6F=" << met.type6EtFraction << " type7F=" << met.type7EtFraction;
@@ -45,12 +45,12 @@ std::ostream &operator<<(std::ostream &os, const KGenParticle &p)
 		<< " status=" << p.status() << " pdgid=" << p.pdgId() << " charge=" << p.charge();
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataElectron &e)
+std::ostream &operator<<(std::ostream &os, const KElectron &e)
 {
 	return os << static_cast<const KLV>(e);
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
+std::ostream &operator<<(std::ostream &os, const KCaloJet &jet)
 {
 	os << static_cast<const KLV>(jet) << std::endl;
 	os << "\t#Const=" << jet.nConst << " n90Hits=" << jet.n90Hits << std::endl;
@@ -58,7 +58,7 @@ std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
 	return os << "\tfEM=" << jet.fEM << " fHO=" << jet.fHO << " area=" << jet.area;
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataPFJet &jet)
+std::ostream &operator<<(std::ostream &os, const KBasicJet &jet)
 {
 	os << static_cast<const KLV>(jet) << std::endl;
 	os << "\tCharged (em,had): " << jet.chargedEMFraction << ", " << jet.chargedHadFraction << std::endl;
@@ -66,33 +66,33 @@ std::ostream &operator<<(std::ostream &os, const KDataPFJet &jet)
 	return os << "\t#Const=" << jet.nConst << " #Charged=" << jet.nCharged << " area=" << jet.area;
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataPFTaggedJet &jet)
+std::ostream &operator<<(std::ostream &os, const KJet &jet)
 {
-	os << static_cast<const KDataPFJet>(jet) << std::endl;
+	os << static_cast<const KBasicJet>(jet) << std::endl;
 	os << "taggers: " << std::endl;
     for (size_t i = 0; i < jet.taggers.size(); ++i)
         os << jet.taggers[i] << " " << std::endl;
 	return os << "\tpuJetId: " << jet.puJetID << std::endl;
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataTau &tau)
+std::ostream &operator<<(std::ostream &os, const KBasicTau &tau)
 {
 	return os << static_cast<const KLV>(tau) << " charge=" << tau.charge;
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau)
+std::ostream &operator<<(std::ostream &os, const KCaloTau &tau)
 {
 	return os << static_cast<const KLV>(tau) << " charge=" << tau.charge;
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau)
+std::ostream &operator<<(std::ostream &os, const KGenTau &tau)
 {
 	return os << static_cast<const KGenParticle>(tau)
 		<< " visible=" << static_cast<const KLV>(tau.visible)
 		<< " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataVertex &vertex)
+std::ostream &operator<<(std::ostream &os, const KVertex &vertex)
 {
 	return os << vertex.position
 		<< " #Tracks=" << vertex.nTracks << " fake=" << vertex.fake
@@ -111,12 +111,12 @@ std::ostream &operator<<(std::ostream &os, const KUnbiasedDiTauPV &pvs)
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const KJetArea &ja)
+std::ostream &operator<<(std::ostream &os, const KPileupDensity &pu)
 {
-	return os << "median=" << ja.median << " sigma=" << ja.sigma;
+	return os << "rho=" << pu.rho << " sigma=" << pu.sigma;
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataHit &hit)
+std::ostream &operator<<(std::ostream &os, const KHit &hit)
 {
 	return os << "theta=" << hit.theta << " phi=" << hit.phi
 		<< " pAbs=" << hit.pAbs << " Eloss=" << hit.energyLoss;
