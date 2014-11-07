@@ -1,7 +1,7 @@
 #ifndef KAPPA_JETPRODUCER_H
 #define KAPPA_JETPRODUCER_H
 
-#include "KPFJetProducer.h"
+#include "KBasicJetProducer.h"
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KJetMET.h"
 #include "../../DataFormats/interface/KDebug.h"

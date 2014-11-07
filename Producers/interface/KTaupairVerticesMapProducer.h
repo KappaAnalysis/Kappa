@@ -7,6 +7,7 @@
 
 #include "KBaseMultiProducer.h"
 #include "KVertexProducer.h"
+#include "KTauProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/VertexReco/interface/Vertex.h>
