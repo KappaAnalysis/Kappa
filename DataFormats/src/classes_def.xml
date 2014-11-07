@@ -1,9 +1,9 @@
 <lcgdict>
-	<class name="RMDataLV_Store"/>
-	<class name="RMDataLV"/>
+	<class name="RMFLV_Store"/>
+	<class name="RMFLV"/>
 
-	<class name="RMLV_Store"/>
-	<class name="RMLV"/>
+	<class name="RMDLV_Store"/>
+	<class name="RMDLV"/>
 
 	<class name="KDataBeamSpot"/>
 	<class name="KDataBeamSpots"/>

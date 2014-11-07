@@ -30,7 +30,7 @@ protected:
 	
 		if (in.numberOfMothers() > 0)
 		{
-			out.mother.p4 = RMDataLV();
+			out.mother.p4 = RMFLV();
 			
 			if (in.pdgId() == 111)
 			{

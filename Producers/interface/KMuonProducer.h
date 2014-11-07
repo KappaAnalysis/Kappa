@@ -193,7 +193,7 @@ private:
 
 	std::map<std::string, int> muonTriggerObjectBitMap;
 
-	unsigned long long getHLTInfo(const RMDataLV p4)
+	unsigned long long getHLTInfo(const RMFLV p4)
 	{
 		if (!triggerEventHandle.isValid())
 			return 0;
@@ -212,7 +212,7 @@ private:
 			for (size_t iK = 0; iK < keys.size(); ++iK)
 			{
 				trigger::TriggerObject triggerObject(triggerEventHandle->getObjects().at(keys[iK]));
-				RMDataLV tmpP4(triggerObject.pt(), triggerObject.eta(), triggerObject.phi(), triggerObject.mass());
+				RMFLV tmpP4(triggerObject.pt(), triggerObject.eta(), triggerObject.phi(), triggerObject.mass());
 
 				if ((ROOT::Math::VectorUtil::DeltaR(p4, tmpP4) < hltMaxdR) && (std::abs(p4.pt() - tmpP4.pt()) / tmpP4.pt() < hltMaxdPt_Pt))
 				{

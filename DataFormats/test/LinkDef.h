@@ -19,14 +19,14 @@
 
 #pragma link C++ class ROOT::Math::PtEtaPhiM4D<float>+;
 #pragma link C++ class ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> >+;
-#pragma link C++ typedef RMDataLV_Store;
-#pragma link C++ typedef RMDataLV;
+#pragma link C++ typedef RMFLV_Store;
+#pragma link C++ typedef RMFLV;
 
 // Already defined by ROOT:
 //#pragma link C++ class ROOT::Math::PtEtaPhiM4D<double>+;
 //#pragma link C++ class ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >+;
-#pragma link C++ typedef RMLV_Store;
-#pragma link C++ typedef RMLV;
+#pragma link C++ typedef RMDLV_Store;
+#pragma link C++ typedef RMDLV;
 
 #pragma link C++ class ROOT::Math::Cartesian3D<float>+;
 #pragma link C++ class ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float> >+;

@@ -15,7 +15,7 @@
 
 struct KLV
 {
-	RMDataLV p4;
+	RMFLV p4;
 };
 typedef std::vector<KLV> KLVs;
 

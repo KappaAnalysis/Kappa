@@ -15,11 +15,11 @@ namespace
 {
 	struct dictionary
 	{
-		RMDataLV_Store dict_RMDataLV_Store;
-		RMDataLV dict_RMDataLV;
+		RMFLV_Store dict_RMFLV_Store;
+		RMFLV dict_RMFLV;
 
-		RMLV_Store dict_RMLV_Store;
-		RMLV dict_RMLV;
+		RMDLV_Store dict_RMDLV_Store;
+		RMDLV dict_RMDLV;
 
 		KDataBeamSpot dict_KDataBeamSpot;
 		KDataBeamSpots dict_KDataBeamSpots;

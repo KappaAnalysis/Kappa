@@ -98,7 +98,7 @@ private:
 		// first level of the decay chain
 		DecayInfo(): p4_vis(0,0,0,0), mode(Hadronic), n_charged(0) {}
 
-		RMLV p4_vis;
+		RMDLV p4_vis;
 		enum { Electronic, Muonic, Hadronic } mode;
 		unsigned int n_charged;
 	};
@@ -108,13 +108,13 @@ private:
 		//for(int i = 0; i < level; ++i) printf(" ");
 		//printf("PDG %d\tstatus %d", in.pdgId(), in.status());
 
-		RMLV p4(0,0,0,0);
+		RMDLV p4(0,0,0,0);
 		if(in.numberOfDaughters() == 0)
 		{
 			//printf("\n");
 			if(in.status() == 1 && !isNeutrino(in.pdgId()))
 			{
-				RMLV p4;
+				RMDLV p4;
 				copyP4(in.p4(), p4);
 				info.p4_vis += p4;
 
