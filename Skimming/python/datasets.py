@@ -295,6 +295,29 @@ datasets = {
 		},
 	},
 
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_elecelec" : {
+		"dataset": {
+			8: "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER ",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_elecelec" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER ",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_elecelec" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
+		},
+	},
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_elecelec" : {
+		"dataset": {
+			8: "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER ",
+		},
+	},
+
+
+
 	"TTJetsPFembedded_madgraph_elechad" : {
 		"dataset": {
 			8: "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER",
@@ -1047,7 +1070,11 @@ Embedded = [
 	"DoubleMu_PFembedded_Run2012A_22Jan2013_hadhad",
 	"DoubleMu_PFembedded_Run2012B_22Jan2013_hadhad",
 	"DoubleMu_PFembedded_Run2012C_22Jan2013_hadhad",
-	"DoubleMu_PFembedded_Run2012D_22Jan2013_hadhad"
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_hadhad",
+	"DoubleMu_PFembedded_Run2012A_22Jan2013_elecelec",
+	"DoubleMu_PFembedded_Run2012B_22Jan2013_elecelec",
+	"DoubleMu_PFembedded_Run2012C_22Jan2013_elecelec",
+	"DoubleMu_PFembedded_Run2012D_22Jan2013_elecelec",
 
 ]
 
