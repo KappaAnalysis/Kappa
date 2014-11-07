@@ -18,11 +18,6 @@ template<typename T> std::ostream &operator<<(std::ostream &os, const KLVWrap<T>
 		<< lv.p4.phi() << ", E=" << lv.p4.E()  << ", m=" << lv.p4.M() << ")";
 }
 
-std::ostream &operator<<(std::ostream &os, const KLV &lv)
-{
-	return os << KLVWrap<KLV::KInternalLV>(lv.p4);
-}
-
 std::ostream &operator<<(std::ostream &os, const KDataLV &lv)
 {
 	return os << KLVWrap<KDataLV::KInternalLV>(lv.p4);

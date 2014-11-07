@@ -67,8 +67,6 @@ REGISTER_NAME_OF_TYPE(KHCALNoiseSummary,KHCALNoiseSummary);
 REGISTER_NAME_OF_TYPE(KJetArea,KJetArea);
 REGISTER_NAME_OF_TYPE(KL1Muon,KL1Muon);
 REGISTER_NAME_OF_TYPE(KL1Muons,std::vector<KL1Muon>);
-REGISTER_NAME_OF_TYPE(KLV,KLV);
-REGISTER_NAME_OF_TYPE(KLVs,std::vector<KLV>);
 REGISTER_NAME_OF_TYPE(KMuonTriggerCandidate,KMuonTriggerCandidate);
 REGISTER_NAME_OF_TYPE(KMuonTriggerCandidates,std::vector<KMuonTriggerCandidate>);
 REGISTER_NAME_OF_TYPE(KPFCandidate,KPFCandidate);

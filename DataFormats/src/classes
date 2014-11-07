@@ -33,7 +33,6 @@ KGenPhoton				KGenPhotons
 KHCALNoiseSummary
 KJetArea
 KL1Muon					KL1Muons
-KLV						KLVs
 KMuonTriggerCandidate	KMuonTriggerCandidates
 KPFCandidate			KPFCandidates
 KTrackSummary

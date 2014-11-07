@@ -46,8 +46,6 @@
 	<class name="KJetArea"/>
 	<class name="KL1Muon"/>
 	<class name="KL1Muons"/>
-	<class name="KLV"/>
-	<class name="KLVs"/>
 	<class name="KMuonTriggerCandidate"/>
 	<class name="KMuonTriggerCandidates"/>
 	<class name="KPFCandidate"/>

@@ -62,8 +62,6 @@ namespace
 		KJetArea dict_KJetArea;
 		KL1Muon dict_KL1Muon;
 		KL1Muons dict_KL1Muons;
-		KLV dict_KLV;
-		KLVs dict_KLVs;
 		KMuonTriggerCandidate dict_KMuonTriggerCandidate;
 		KMuonTriggerCandidates dict_KMuonTriggerCandidates;
 		KPFCandidate dict_KPFCandidate;

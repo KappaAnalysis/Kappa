@@ -13,13 +13,6 @@
 #include <Math/SMatrix.h>
 #include <map>
 
-struct KLV
-{
-	typedef RMLV KInternalLV;
-	RMLV p4;
-};
-typedef std::vector<KLV> KLVs;
-
 struct KDataLV
 {
 	typedef RMDataLV KInternalLV;
