@@ -842,6 +842,38 @@ datasets = {
 			8 : "/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball-tauola-tauPolarOff/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
 		},
 	},
+	##### Two Jets in initial state #################################################
+	"SM_VBFH0PToTauTau_M_125_JHUGen" : {
+		"dataset" : {
+			8 : "/VBFHiggs0PToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
+		},
+	},
+	"SM_VBFH0PHToTauTau_M_125_JHUGen" : {
+		"dataset" : {
+			8 : "/VBFHiggs0PHToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
+		},
+	},
+	"SM_VBFHMf05ph0ToTauTau_M_125_JHUGen" : {
+		"dataset" : {
+			8 : "/VBFHiggs0Mf05ph0ToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
+		},
+	},
+	"SM_VBFH0MToTauTau_M_125_JHUGen" : {
+		"dataset" : {
+			8 : "/VBFHiggs0MToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
+		},
+	},
+
+	"SM_JJH0PToTauTau_M_125_JHUGen" : {
+		"dataset" : {
+			8 : "/JJHiggs0PToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
+		},
+	},
+	"SM_JJH0MToTauTau_M_125_JHUGen" : {
+		"dataset" : {
+			8 : "/JJHiggs0MToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
+		},
+	},
         ##### BSM ggH->tautau #######################################################
 	"SUSYGluGluToHToTauTau_M-110_8TeV-pythia6-tauola" : {
 		"dataset" : {
@@ -1017,6 +1049,15 @@ Embedded = [
 	"DoubleMu_PFembedded_Run2012C_22Jan2013_hadhad",
 	"DoubleMu_PFembedded_Run2012D_22Jan2013_hadhad"
 
+]
+
+TwoJetsInitialState = [
+	"SM_VBFH0PToTauTau_M_125_JHUGen",
+	"SM_VBFH0PHToTauTau_M_125_JHUGen",
+	"SM_VBFHMf05ph0ToTauTau_M_125_JHUGen",
+	"SM_VBFH0MToTauTau_M_125_JHUGen",
+	"SM_JJH0PToTauTau_M_125_JHUGen",
+	"SM_JJH0MToTauTau_M_125_JHUGen"
 ]
 
 SM_GluGluToHToTauTau = ["SM_GluGluToHToTauTau_M_%d_powheg_pythia" % higgsMass for higgsMass in range(90, 161, 5)]
