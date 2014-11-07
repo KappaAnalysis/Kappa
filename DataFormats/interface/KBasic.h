@@ -13,12 +13,12 @@
 #include <Math/SMatrix.h>
 #include <map>
 
-struct KDataLV
+struct KLV
 {
 	typedef RMDataLV KInternalLV;
 	RMDataLV p4;
 };
-typedef std::vector<KDataLV> KDataLVs;
+typedef std::vector<KLV> KLVs;
 
 struct KDataVertex
 {
@@ -68,7 +68,7 @@ const unsigned int KGenParticleStatusMask = (unsigned int)3 << KGenParticleStatu
 const unsigned int KGenParticlePdgIdMask = ((unsigned int)1 << KGenParticleStatusPosition) - (unsigned int)1;
 
 #include "KTrack.h"
-struct KLepton : public KDataLV
+struct KLepton : public KLV
 {
 public:
 	enum Flavour
@@ -86,7 +86,7 @@ public:
 
 typedef std::vector<KLepton> KLeptons;
 
-struct KGenParticle : public KDataLV
+struct KGenParticle : public KLV
 {
 	unsigned int pdgid;
 	std::vector<unsigned int> daughterIndices;
@@ -168,7 +168,7 @@ struct KGenParticle : public KDataLV
 };
 typedef std::vector<KGenParticle> KGenParticles;
 
-struct KGenPhoton : public KDataLV
+struct KGenPhoton : public KLV
 {
 	RMDataLV mother;
 	char type;
@@ -183,7 +183,7 @@ struct KDataHit
 };
 typedef std::vector<KDataHit> KDataHits;
 
-struct KPFCandidate : KDataLV
+struct KPFCandidate : KLV
 {
 	unsigned int pdgid;
 	double deltaP;
@@ -200,7 +200,7 @@ struct KPFCandidate : KDataLV
 };
 typedef std::vector<KPFCandidate> KPFCandidates;
 
-struct KL1Muon : KDataLV
+struct KL1Muon : KLV
 {
 	// bit    meaning
 	// 0-2    quality
@@ -255,7 +255,7 @@ struct KTriggerInfos
 
 struct KTriggerObjects
 {
-	std::vector<KDataLV> trgObjects;
+	std::vector<KLV> trgObjects;
 	
 	// { hlt1:idxFilter1, ..., hlt1:idxFilterN1, hlt2:idxFilter1, ..., hlt2:idxFilterN2, ...}
 	std::vector<std::vector<int> > toIdxFilter;

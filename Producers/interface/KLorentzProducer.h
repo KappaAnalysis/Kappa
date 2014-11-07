@@ -10,11 +10,11 @@
 #include <DataFormats/METReco/interface/HcalNoiseRBX.h>
 #include <DataFormats/TrackReco/interface/Track.h>
 
-class KLorentzProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, KDataLVs>
+class KLorentzProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, KLVs>
 {
 public:
 	KLorentzProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Candidate>, KDataLVs>(cfg, _event_tree, _run_tree, getLabel()) {}
+		KBaseMultiLVProducer<edm::View<reco::Candidate>, KLVs>(cfg, _event_tree, _run_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "LV"; }
 

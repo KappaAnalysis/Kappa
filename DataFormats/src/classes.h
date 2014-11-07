@@ -31,8 +31,8 @@ namespace
 		KDataHits dict_KDataHits;
 		KDataJet dict_KDataJet;
 		KDataJets dict_KDataJets;
-		KDataLV dict_KDataLV;
-		KDataLVs dict_KDataLVs;
+		KLV dict_KLV;
+		KLVs dict_KLVs;
 		KLepton dict_KLepton;
 		KLeptons dict_KLeptons;
 		KDataMET dict_KDataMET;

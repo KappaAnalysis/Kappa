@@ -52,9 +52,9 @@
 /* DATATYPES                                                */
 /************************************************************/
 
-#pragma link C++ struct KDataLV+;
-#pragma link C++ class std::vector<KDataLV>+;
-#pragma link C++ typedef KDataLVs;
+#pragma link C++ struct KLV+;
+#pragma link C++ class std::vector<KLV>+;
+#pragma link C++ typedef KLVs;
 
 #pragma link C++ struct KLepton+;
 #pragma link C++ class std::vector<KLeptons>+;

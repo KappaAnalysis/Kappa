@@ -12,11 +12,11 @@
 #include <DataFormats/VertexReco/interface/Vertex.h>
 #include <DataFormats/VertexReco/interface/VertexFwd.h>
 
-class KTowerProducer : public KBaseMultiLVProducer<CaloTowerCollection, KDataLVs>
+class KTowerProducer : public KBaseMultiLVProducer<CaloTowerCollection, KLVs>
 {
 public:
 	KTowerProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<CaloTowerCollection, KDataLVs>(cfg, _event_tree, _run_tree, getLabel()),
+		KBaseMultiLVProducer<CaloTowerCollection, KLVs>(cfg, _event_tree, _run_tree, getLabel()),
 		srcPVs(cfg.getParameter<edm::InputTag>("srcPVs")) {}
 
 	static const std::string getLabel() { return "Tower"; }
@@ -35,7 +35,7 @@ protected:
 		else
 			vertex = reco::Jet::Point(0, 0, 0);
 
-		KBaseMultiVectorProducer<CaloTowerCollection, KDataLVs>::fillProduct(in, out, name, tag, pset);
+		KBaseMultiVectorProducer<CaloTowerCollection, KLVs>::fillProduct(in, out, name, tag, pset);
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
@@ -46,7 +46,7 @@ protected:
 
 private:
 	reco::Jet::Point vertex;
-	KLVSorter<KDataLV> towersorter_pt;
+	KLVSorter<KLV> towersorter_pt;
 };
 
 #endif

@@ -13,7 +13,7 @@
 #include "KBasic.h"
 #include "KMetadata.h"
 
-struct KDataJet : public KDataLV
+struct KDataJet : public KLV
 {
 	double area;
 	double fHPD, fRBX;
@@ -22,7 +22,7 @@ struct KDataJet : public KDataLV
 };
 typedef std::vector<KDataJet> KDataJets;
 
-struct KDataPFJet : public KDataLV
+struct KDataPFJet : public KLV
 {
 	double area;
 	float neutralEMFraction, chargedEMFraction;
@@ -65,7 +65,7 @@ struct KDataPFTaggedJet : public KDataPFJet
 
 typedef std::vector<KDataPFTaggedJet> KDataPFTaggedJets;
 
-struct KDataMET : public KDataLV
+struct KDataMET : public KLV
 {
 	double sumEt;
 

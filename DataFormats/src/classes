@@ -15,7 +15,7 @@ KDataCaloTau			KDataCaloTaus
 KDataGenTau				KDataGenTaus
 KDataHit				KDataHits
 KDataJet				KDataJets
-KDataLV					KDataLVs
+KLV						KLVs
 KLepton					KLeptons
 KDataMET
 KDataMuon				KDataMuons

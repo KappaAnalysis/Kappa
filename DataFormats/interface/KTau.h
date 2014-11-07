@@ -58,7 +58,7 @@ struct KDataPFTau : KDataTau
 
 	KPFCandidates signalChargedHadrCands;
 	KPFCandidates signalGammaCands;
-	KDataLVs signalPiZeroCands;
+	KLVs signalPiZeroCands;
 
 	KDataTrack track;
 

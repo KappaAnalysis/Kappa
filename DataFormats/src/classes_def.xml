@@ -15,8 +15,8 @@
 	<class name="KDataHits"/>
 	<class name="KDataJet"/>
 	<class name="KDataJets"/>
-	<class name="KDataLV"/>
-	<class name="KDataLVs"/>
+	<class name="KLV"/>
+	<class name="KLVs"/>
 	<class name="KLepton"/>
 	<class name="KLeptons"/>
 	<class name="KDataMET"/>

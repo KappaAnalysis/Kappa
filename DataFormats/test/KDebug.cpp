@@ -18,9 +18,9 @@ template<typename T> std::ostream &operator<<(std::ostream &os, const KLVWrap<T>
 		<< lv.p4.phi() << ", E=" << lv.p4.E()  << ", m=" << lv.p4.M() << ")";
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataLV &lv)
+std::ostream &operator<<(std::ostream &os, const KLV &lv)
 {
-	return os << KLVWrap<KDataLV::KInternalLV>(lv.p4);
+	return os << KLVWrap<KLV::KInternalLV>(lv.p4);
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataBeamSpot &bs)
@@ -30,7 +30,7 @@ std::ostream &operator<<(std::ostream &os, const KDataBeamSpot &bs)
 
 std::ostream &operator<<(std::ostream &os, const KDataMET &met)
 {
-	return os << static_cast<const KDataLV>(met) << " sumEt=" << met.sumEt;
+	return os << static_cast<const KLV>(met) << " sumEt=" << met.sumEt;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataPFMET &met)
@@ -49,18 +49,18 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 
 std::ostream &operator<<(std::ostream &os, const KGenParticle &p)
 {
-	return os << KLVWrap<KDataLV::KInternalLV>(p.p4)
+	return os << KLVWrap<KLV::KInternalLV>(p.p4)
 		<< " status=" << p.status() << " pdgid=" << p.pdgId() << " charge=" << p.charge();
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataElectron &e)
 {
-	return os << KLVWrap<KDataLV::KInternalLV>(e.p4);
+	return os << KLVWrap<KLV::KInternalLV>(e.p4);
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
 {
-	os << static_cast<const KDataLV>(jet) << std::endl;
+	os << static_cast<const KLV>(jet) << std::endl;
 	os << "\t#Const=" << jet.nConst << " n90Hits=" << jet.n90Hits << std::endl;
 	os << "\tfHPD=" << jet.fHPD << " fRBX=" << jet.fRBX << std::endl;
 	return os << "\tfEM=" << jet.fEM << " fHO=" << jet.fHO << " area=" << jet.area;
@@ -68,7 +68,7 @@ std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
 
 std::ostream &operator<<(std::ostream &os, const KDataPFJet &jet)
 {
-	os << static_cast<const KDataLV>(jet) << std::endl;
+	os << static_cast<const KLV>(jet) << std::endl;
 	os << "\tCharged (em,had): " << jet.chargedEMFraction << ", " << jet.chargedHadFraction << std::endl;
 	os << "\tNeutral (em,had): " << jet.neutralEMFraction << ", " << jet.neutralHadFraction << std::endl;
 	return os << "\t#Const=" << jet.nConst << " #Charged=" << jet.nCharged << " area=" << jet.area;
@@ -85,18 +85,18 @@ std::ostream &operator<<(std::ostream &os, const KDataPFTaggedJet &jet)
 
 std::ostream &operator<<(std::ostream &os, const KDataTau &tau)
 {
-	return os << static_cast<const KDataLV>(tau) << " charge=" << tau.charge;
+	return os << static_cast<const KLV>(tau) << " charge=" << tau.charge;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau)
 {
-	return os << static_cast<const KDataLV>(tau) << " charge=" << tau.charge;
+	return os << static_cast<const KLV>(tau) << " charge=" << tau.charge;
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau)
 {
 	return os << static_cast<const KGenParticle>(tau)
-		<< " p4_vis=" << KLVWrap<KDataLV::KInternalLV>(tau.p4_vis)
+		<< " p4_vis=" << KLVWrap<KLV::KInternalLV>(tau.p4_vis)
 		<< " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
 }
 
@@ -132,7 +132,7 @@ std::ostream &operator<<(std::ostream &os, const KDataHit &hit)
 
 std::ostream &operator<<(std::ostream &os, const KPFCandidate &cand)
 {
-	return os << static_cast<const KDataLV>(cand)
+	return os << static_cast<const KLV>(cand)
 		<< " charge=" << cand.charge() << " pdgid=" << cand.pdgId()
 		<< " deltaP=" << cand.deltaP
 		<< " Eecal=" << cand.ecalEnergy << " Ehcal=" << cand.hcalEnergy;

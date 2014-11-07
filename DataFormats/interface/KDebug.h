@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Kappa.h"
 
-std::ostream &operator<<(std::ostream &os, const KDataLV &lv);
+std::ostream &operator<<(std::ostream &os, const KLV &lv);
 std::ostream &operator<<(std::ostream &os, const KDataBeamSpot &bs);
 std::ostream &operator<<(std::ostream &os, const KDataMET &met);
 std::ostream &operator<<(std::ostream &os, const KDataPFMET &met);

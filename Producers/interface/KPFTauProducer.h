@@ -71,15 +71,15 @@ protected:
 			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
 			out.signalChargedHadrCands.push_back(tmp);
 		}
-		std::sort(out.signalChargedHadrCands.begin(), out.signalChargedHadrCands.end(), sorter);
+		std::sort(out.signalChargedHadrCands.begin(), out.signalChargedHadrCands.end(), PFSorter);
 
 		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); i++)
 		{
-			KDataLV tmp;
+			KLV tmp;
 			copyP4(in.signalPiZeroCandidates()[i].p4(), tmp.p4);
 			out.signalPiZeroCands.push_back(tmp);
 		}
-		std::sort(out.signalPiZeroCands.begin(), out.signalPiZeroCands.end(), KDataLVSorter);
+		std::sort(out.signalPiZeroCands.begin(), out.signalPiZeroCands.end(), LVSorter);
 
 		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
 		{
@@ -87,14 +87,14 @@ protected:
 			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
 			out.signalGammaCands.push_back(tmp);
 		}
-		std::sort(out.signalGammaCands.begin(), out.signalGammaCands.end(), sorter);
+		std::sort(out.signalGammaCands.begin(), out.signalGammaCands.end(), PFSorter);
 
 		out.tauKey = createRecoPFTauHash(in);
 		out.nSignalTracks = in.signalTracks().size();
 	}
 private:
-	KLVSorter<KPFCandidate> sorter;
-	KLVSorter<KDataLV> KDataLVSorter;
+	KLVSorter<KPFCandidate> PFSorter;
+	KLVSorter<KLV> LVSorter;
 };
 
 #endif
