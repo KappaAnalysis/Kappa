@@ -15,7 +15,6 @@
 
 struct KLV
 {
-	typedef RMDataLV KInternalLV;
 	RMDataLV p4;
 };
 typedef std::vector<KLV> KLVs;
@@ -170,7 +169,7 @@ typedef std::vector<KGenParticle> KGenParticles;
 
 struct KGenPhoton : public KLV
 {
-	RMDataLV mother;
+	KLV mother;
 	char type;
 	bool isPhoton() const { return (type == 1); }
 	bool isPi0() const { return (type == 2); }

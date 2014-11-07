@@ -52,9 +52,9 @@ struct KDataPFTau : KDataTau
 	int nSignalChargedHadrCands, nSignalGammaCands, nSignalPiZeroCands, nSignalCands;
 	int nSignalTracks;
 
-	RMDataLV leadCand;
-	RMDataLV leadChargedHadrCand;
-	RMDataLV leadNeutralCand;
+	KLV leadCand;
+	KLV leadChargedHadrCand;
+	KLV leadNeutralCand;
 
 	KPFCandidates signalChargedHadrCands;
 	KPFCandidates signalGammaCands;
@@ -70,7 +70,7 @@ typedef std::vector<KDataPFTau> KDataPFTaus;
 
 struct KDataGenTau : KGenParticle
 {
-	RMDataLV p4_vis;		// momenta of visible particles
+	KLV visible;		// momenta of visible particles
 	unsigned char decayMode;
 	//  0 - undefined
 	//	1 - electron

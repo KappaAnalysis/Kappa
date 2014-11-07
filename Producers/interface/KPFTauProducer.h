@@ -55,14 +55,14 @@ protected:
 		out.hpsDecayMode = in.decayMode();
 
 		if(in.leadPFCand().isNonnull())
-			copyP4(in.leadPFCand()->p4(), out.leadCand);
+			copyP4(in.leadPFCand()->p4(), out.leadCand.p4);
 		if(in.leadPFChargedHadrCand().isNonnull()){
-			copyP4(in.leadPFChargedHadrCand()->p4(), out.leadChargedHadrCand);
+			copyP4(in.leadPFChargedHadrCand()->p4(), out.leadChargedHadrCand.p4);
 			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
 				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track);
 		}
 		if(in.leadPFNeutralCand().isNonnull())
-			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralCand); // leading PFGamma candidate
+			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralCand.p4); // leading PFGamma candidate
 
 
 		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); i++)

@@ -9,18 +9,10 @@
 #include "../interface/KDebug.h"
 #include <bitset>
 
-// Need thin wrapper class for ostream operator overloading
-// - overkill here, but simplifies vector output later
-template<typename T> struct KLVWrap { KLVWrap(const T &_p4) : p4(_p4) {}; const T &p4; };
-template<typename T> std::ostream &operator<<(std::ostream &os, const KLVWrap<T> &lv)
+std::ostream &operator<<(std::ostream &os, const KLV &lv)
 {
 	return os << "(pt=" << lv.p4.pt() << ", eta=" << lv.p4.eta() << ", phi="
 		<< lv.p4.phi() << ", E=" << lv.p4.E()  << ", m=" << lv.p4.M() << ")";
-}
-
-std::ostream &operator<<(std::ostream &os, const KLV &lv)
-{
-	return os << KLVWrap<KLV::KInternalLV>(lv.p4);
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataBeamSpot &bs)
@@ -49,13 +41,13 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 
 std::ostream &operator<<(std::ostream &os, const KGenParticle &p)
 {
-	return os << KLVWrap<KLV::KInternalLV>(p.p4)
+	return os << static_cast<const KLV>(p)
 		<< " status=" << p.status() << " pdgid=" << p.pdgId() << " charge=" << p.charge();
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataElectron &e)
 {
-	return os << KLVWrap<KLV::KInternalLV>(e.p4);
+	return os << static_cast<const KLV>(e);
 }
 
 std::ostream &operator<<(std::ostream &os, const KDataJet &jet)
@@ -96,7 +88,7 @@ std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau)
 std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau)
 {
 	return os << static_cast<const KGenParticle>(tau)
-		<< " p4_vis=" << KLVWrap<KLV::KInternalLV>(tau.p4_vis)
+		<< " visible=" << static_cast<const KLV>(tau.visible)
 		<< " decayMode=" << tau.decayMode << " vertex=" << tau.vertex;
 }
 

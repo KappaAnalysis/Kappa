@@ -40,7 +40,7 @@ protected:
 		DecayInfo info;
 		walkDecayTree(in, info);
 
-		out.p4_vis = info.p4_vis;
+		out.visible.p4 = info.p4_vis;
 
 		switch(info.mode)
 		{

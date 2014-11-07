@@ -30,7 +30,7 @@ protected:
 	
 		if (in.numberOfMothers() > 0)
 		{
-			out.mother = RMDataLV();
+			out.mother.p4 = RMDataLV();
 			
 			if (in.pdgId() == 111)
 			{
@@ -44,7 +44,7 @@ protected:
 					{
 						if (this->verbosity > 2)
 							std::cout << "KGenPhotonProducer::fillSingle : corresponding lepton found: "<< tmpID << "\n";
-						copyP4(ancestors.front()->p4(), out.mother);
+						copyP4(ancestors.front()->p4(), out.mother.p4);
 					}
 					else
 						for (size_t idx = 0; idx < ancestors.front()->numberOfMothers(); idx++)
@@ -53,14 +53,14 @@ protected:
 				}
 			}
 			else
-				copyP4(in.mother(0)->p4(), out.mother);
+				copyP4(in.mother(0)->p4(), out.mother.p4);
 		}
 
 		if (this->verbosity > 2)
 		{
 			std::cout << "KGenPhotonProducer::fillSingle :child:             " << out.p4 << "\t" << in.pdgId() << "\n";
 			std::cout << "KGenPhotonProducer::fillSingle :mother:            " << in.mother(0)->polarP4() << "\t" << in.mother(0)->pdgId()<< "\n";
-			std::cout << "KGenPhotonProducer::fillSingle :associated mother: " << out.mother << "\n";
+			std::cout << "KGenPhotonProducer::fillSingle :associated mother: " << out.mother.p4 << "\n";
 
 			std::cout << "KGenPhotonProducer::fillSingle :isPhoton? " << out.isPhoton() << "\n";
 			std::cout << "KGenPhotonProducer::fillSingle :   isPi0? " << out.isPi0() << "\n";
