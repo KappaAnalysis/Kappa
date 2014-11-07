@@ -127,13 +127,13 @@ public:
 		*/
 /*
 		bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
-		*tmpGsfElectron, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_em, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+		*tmpGsfElectron, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_em, iso_nh, rhoIso);
 		bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
-		*tmpGsfElectron, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_em, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+		*tmpGsfElectron, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_em, iso_nh, rhoIso);
 		bool cutbasedIDtight = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::TIGHT,
-		*tmpGsfElectron, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_em, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+		*tmpGsfElectron, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_em, iso_nh, rhoIso);
 		bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
-		*tmpGsfElectron, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_em, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+		*tmpGsfElectron, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_em, iso_nh, rhoIso);
 
 		out.cutbasedIDs = cutbasedIDloose;
 		out.cutbasedIDs |= cutbasedIDmedium << 1;
