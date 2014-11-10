@@ -7,6 +7,7 @@
 #include "KJetMET.h"
 #include "KLorentzVector.h"
 #include "KMuon.h"
+#include "KParticle.h"
 #include "KTau.h"
 #include "KTrack.h"
 
@@ -63,6 +64,8 @@ REGISTER_NAME_OF_TYPE(KMuon,KMuon);
 REGISTER_NAME_OF_TYPE(KMuons,std::vector<KMuon>);
 REGISTER_NAME_OF_TYPE(KMuonTriggerCandidate,KMuonTriggerCandidate);
 REGISTER_NAME_OF_TYPE(KMuonTriggerCandidates,std::vector<KMuonTriggerCandidate>);
+REGISTER_NAME_OF_TYPE(KParticle,KParticle);
+REGISTER_NAME_OF_TYPE(KParticles,std::vector<KParticle>);
 REGISTER_NAME_OF_TYPE(KPFCandidate,KPFCandidate);
 REGISTER_NAME_OF_TYPE(KPFCandidates,std::vector<KPFCandidate>);
 REGISTER_NAME_OF_TYPE(KTau,KTau);

@@ -24,9 +24,9 @@ public:
 	static void fillCandidate(const SingleInputType &in, SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
-		out.pdgid = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
+		out.particleinfo = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
 		if (in.pdgId() < 0)
-			out.pdgid |= KGenParticleChargeMask;
+			out.particleinfo |= KParticleSignMask;
 	}
 
 };

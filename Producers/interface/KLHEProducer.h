@@ -38,9 +38,9 @@ protected:
 
 			// particle id and status
 			unsigned int id = (in.hepeup().IDUP[i] < 0) ? -in.hepeup().IDUP[i] : in.hepeup().IDUP[i];
-			p.pdgid = id | ((in.hepeup().ISTUP[i] % 4) << KGenParticleStatusPosition);
+			p.particleinfo = id | ((in.hepeup().ISTUP[i] % 4) << KParticleStatusPosition);
 			if (in.hepeup().IDUP[i] < 0)
-				p.pdgid |= KGenParticleChargeMask;
+				p.particleinfo |= KParticleSignMask;
 
 			if (in.hepeup().IDUP[i] != p.pdgId())
 				std::cout << "The pdgId is not skimmed correctly! "

@@ -42,6 +42,8 @@
 	<class name="KMuons"/>
 	<class name="KMuonTriggerCandidate"/>
 	<class name="KMuonTriggerCandidates"/>
+	<class name="KParticle"/>
+	<class name="KParticles"/>
 	<class name="KPFCandidate"/>
 	<class name="KPFCandidates"/>
 	<class name="KTau"/>

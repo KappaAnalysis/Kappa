@@ -8,6 +8,7 @@
 #include "../interface/KJetMET.h"
 #include "../interface/KLorentzVector.h"
 #include "../interface/KMuon.h"
+#include "../interface/KParticle.h"
 #include "../interface/KTau.h"
 #include "../interface/KTrack.h"
 
@@ -58,6 +59,8 @@ namespace
 		KMuons dict_KMuons;
 		KMuonTriggerCandidate dict_KMuonTriggerCandidate;
 		KMuonTriggerCandidates dict_KMuonTriggerCandidates;
+		KParticle dict_KParticle;
+		KParticles dict_KParticles;
 		KPFCandidate dict_KPFCandidate;
 		KPFCandidates dict_KPFCandidates;
 		KTau dict_KTau;

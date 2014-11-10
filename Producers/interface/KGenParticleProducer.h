@@ -46,9 +46,9 @@ protected:
 		}
 
 		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
-		out.pdgid = id | ((in.status() % 4) << KGenParticleStatusPosition);
+		out.particleinfo = id | ((in.status() % 4) << KParticleStatusPosition);
 		if (in.pdgId() < 0)
-			out.pdgid |= KGenParticleChargeMask;
+			out.particleinfo |= KParticleSignMask;
 		out.daughterIndices = daughters;
 
 		if (in.pdgId() != out.pdgId())

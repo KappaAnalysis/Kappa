@@ -20,24 +20,6 @@ struct KLV
 typedef std::vector<KLV> KLVs;
 
 
-struct KVertex
-{
-	RMPoint position;
-	bool fake;
-
-	unsigned int nTracks;
-	float chi2, nDOF;
-
-	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
-};
-typedef std::vector<KVertex> KVertices;
-
-struct KVertexSummary
-{
-	KVertex pv;
-	unsigned int nVertices;
-};
-
 struct KBeamSpot
 {
 	RMPoint position;
@@ -53,94 +35,25 @@ struct KBeamSpot
 };
 typedef std::vector<KBeamSpot> KBeamSpots;
 
-// pdgid = [charge:1][status:3][id:...]
-const unsigned int KGenParticleStatusPosition = 28;
-const unsigned int KGenParticleChargePosition = 31;
-const unsigned int KGenParticleChargeMask = (unsigned int)1 << KGenParticleChargePosition;
-const unsigned int KGenParticleStatusMask = (unsigned int)3 << KGenParticleStatusPosition;
-const unsigned int KGenParticlePdgIdMask = ((unsigned int)1 << KGenParticleStatusPosition) - (unsigned int)1;
 
-struct KGenParticle : public KLV
+struct KVertex
 {
-	unsigned int pdgid;
-	std::vector<unsigned int> daughterIndices;
+	RMPoint position;
+	bool fake;
 
-	// return daughter i; checks if i<numberOfDaughters; returns -1 in case i is out of bounds
-	unsigned int daughterIndex(unsigned int i)
-	{
-		if (i<daughterIndices.size())
-		{
-			return daughterIndices.at(i);
-		}
-		else
-		{
-			return -1;
-		}
-	}
-	/// return the number of daughters
-	int numberOfDaughters()
-	{
-		return daughterIndices.size();
-	}
-	int status() const
-	{
-		return (pdgid & KGenParticleStatusMask) >> KGenParticleStatusPosition;
-	}
-	int pdgId() const
-	{
-		return (pdgid & KGenParticleChargeMask ? -1 : 1) * (pdgid & KGenParticlePdgIdMask);
-	}
-	int sign() const
-	{
-		return (pdgid & KGenParticleChargeMask ? -1 : 1);
-	}
+	unsigned int nTracks;
+	float chi2, nDOF;
 
-	// particle charge multiplied by 3
-	// e.g. 2 for up-quark, -3 for electron
-	// valid for quarks, leptons, bosons, diquarks, mesons and baryons
-	// no special, technicolor, SUSY, Kaluza-Klein particles, R-hadrons and pentaquarks
-	int chargeTimesThree() const
-	{
-		int pdg = std::abs(pdgId());
-		int had = pdg % 10000 / 10;  // quark content of hadrons (digits 2-4)
-
-		if (pdg == 0)
-			return 0;
-		// quark
-		if (pdg < 9)
-			return (-3 * (pdg % 2) + 2) * sign();
-		// lepton
-		if (pdg > 10 && pdg < 19)
-			return -3 * (pdg % 2) * sign();
-		// boson
-		if (pdg > 20 && pdg < 40)
-			return (pdg == 24 || pdg == 34 || pdg == 37) ? 3 * sign() : 0;
-		// meson
-		if (had < 100)
-		{
-			int q1 = -3 * (had / 10 % 2) + 2;
-			int q2 = -3 * (had % 2) + 2;
-			return (q1 - q2) * sign();
-		}
-		// baryon
-		else
-		{
-			int q1 = had / 100;
-			int q2 = had / 10 % 10;
-			int q3 = had % 10;
-			q1 = (q1 == 0) ? 0 : -3 * (q1 % 2) + 2;
-			q2 = (q2 == 0) ? 0 : -3 * (q2 % 2) + 2;
-			q3 = (q3 == 0) ? 0 : -3 * (q3 % 2) + 2;
-			return (q1 + q2 + q3) * sign();
-		}
-	}
-	// particle charge
-	double charge() const
-	{
-		return chargeTimesThree() / 3.;
-	}
+	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
 };
-typedef std::vector<KGenParticle> KGenParticles;
+typedef std::vector<KVertex> KVertices;
+
+
+struct KVertexSummary
+{
+	KVertex pv;
+	unsigned int nVertices;
+};
 
 
 struct KTaupairVerticesMap
@@ -151,59 +64,12 @@ struct KTaupairVerticesMap
 typedef std::vector<KTaupairVerticesMap> KTaupairVerticesMaps;
 
 
-struct KGenPhoton : public KLV
-{
-	KLV mother;
-	char type;
-	bool isPhoton() const { return (type == 1); }
-	bool isPi0() const { return (type == 2); }
-};
-typedef std::vector<KGenPhoton> KGenPhotons;
-
 struct KHit
 {
 	double theta, phi, pAbs, energyLoss;
 };
 typedef std::vector<KHit> KHits;
 
-struct KPFCandidate : KLV
-{
-	unsigned int pdgid;
-	double deltaP;
-	double ecalEnergy, hcalEnergy;
-
-	int pdgId() const
-	{
-		return (pdgid & KGenParticleChargeMask ? -1 : 1) * (pdgid & KGenParticlePdgIdMask);
-	}
-	int charge() const
-	{
-		return (pdgid & KGenParticleChargeMask ? -1 : 1);
-	}
-};
-typedef std::vector<KPFCandidate> KPFCandidates;
-
-struct KL1Muon : KLV
-{
-	// bit    meaning
-	// 0-2    quality
-	// 3      isForward
-	// 4      isRPC
-	// 5      isMip
-	// 6      isIsolated
-	// 7-10   bx (15 = value of bx>=14)
-	// 11-13  detector
-	unsigned short state; // bit map
-
-	int quality() const { return (state & ( 7 )); };
-	bool isForward() const { return (state & (1 << 3)); };
-	bool isRPC() const { return (state & (1 << 4)); };
-	bool isMip() const { return (state & (1 << 5)); };
-	bool isIsolated() const { return (state & (1 << 6)); };
-	int bx() const { return ((state & (15 << 7)) >> 7) - 7; };
-	int detector() const { return ((state & (7 << 11)) >> 11);};
-};
-typedef std::vector<KL1Muon> KL1Muons;
 
 struct KTriggerObjectMetadata
 {
