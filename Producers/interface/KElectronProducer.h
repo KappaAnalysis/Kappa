@@ -16,7 +16,7 @@
 #include <RecoEgamma/EgammaTools/interface/ConversionTools.h>
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 #include "EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h"
-#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
+//#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
 
 class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>
@@ -106,7 +106,7 @@ public:
 
 		const reco::GsfElectron* tmpGsfElectron = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
 		out.hasConversionMatch = ConversionTools::hasMatchedConversion(*tmpGsfElectron, hConversions, BeamSpot->position(), true, 2.0, 1e-6, 0);
-
+		/*
 		const reco::BeamSpot &tmpbeamSpot = *(BeamSpot.product());
 		// we need the Ref
 		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
@@ -120,12 +120,12 @@ public:
 		out.pfIsoCh = iso_ch;
 		out.pfIsoEm = iso_em;
 		out.pfIsoNh = iso_nh;
-
+*/
 		// cutbased ID
 		/** defined in
 		EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h
 		*/
-
+/*
 		bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
 		*tmpGsfElectron, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_em, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 		bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
@@ -139,6 +139,7 @@ public:
 		out.cutbasedIDs |= cutbasedIDmedium << 1;
 		out.cutbasedIDs |= cutbasedIDtight << 2 ;
 		out.cutbasedIDs |= cutbasedIDveto << 3;
+*/
 	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
