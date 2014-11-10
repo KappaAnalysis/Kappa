@@ -14,6 +14,11 @@
 #include <algorithm>
 #include "Math/GenVector/PositionVector3D.h"
 
+struct KElectronMetadata
+{
+	std::vector<std::string> idNames;
+};
+
 struct KElectron : KLepton
 {
 	/// Isolation variables

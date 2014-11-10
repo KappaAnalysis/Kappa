@@ -13,6 +13,11 @@
 
 #include <algorithm>
 
+struct KMuonMetadata
+{
+	std::vector<std::string> hltNames;
+};
+
 struct KMuon : KLepton
 {
 	/*

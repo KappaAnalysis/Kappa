@@ -29,27 +29,6 @@ struct KLumiInfo
 	//std::vector<std::vector<std::string> > filterNames;
 };
 
-struct KTauMetadata
-{
-	std::vector<std::string> binaryDiscriminatorNames;
-	std::vector<std::string> floatDiscriminatorNames;
-};
-
-struct KMuonMetadata
-{
-	std::vector<std::string> hltNames;
-};
-
-struct KElectronMetadata
-{
-	std::vector<std::string> idNames;
-};
-
-struct KJetMetadata
-{
-	std::vector<std::string> taggernames;
-	std::vector<std::string> pujetidnames;
-};
 
 struct KGenLumiInfo : public KLumiInfo
 {
@@ -130,46 +109,5 @@ struct KGenEventInfo : public KEventInfo
 	unsigned char numPUInteractionsP2;	// bx = +2
 };
 
-struct KFilterMetadata
-{
-	std::vector<std::string> filternames;
-};
-
-struct KFilterSummary
-{
-	unsigned long presence;
-	unsigned long decision;
-
-	inline bool passedFilters() const
-	{
-		return (decision & presence) == presence;
-	}
-
-	inline bool passedFilter(const size_t pos) const
-	{
-		return (decision & presence & (1ul << pos)) == (presence & (1ul << pos));
-	}
-
-	inline bool passedFilters(const unsigned long bitmask) const
-	{
-		return (decision & presence & bitmask) == (bitmask & presence);
-	}
-
-	bool passedFilter(const std::string &name, const KFilterMetadata *filtermetadata) const
-	{
-		for (size_t i = 0; i < filtermetadata->filternames.size(); ++i)
-			if (filtermetadata->filternames[i] == name)
-				return (decision & presence & (1ul << i)) == (presence & (1ul << i));
-		return false; // Filter does not exist
-	}
-
-	bool passedFilters(const std::vector<std::string> &names, const KFilterMetadata *filtermetadata) const
-	{
-		for (std::vector<std::string>::const_iterator name = names.begin(); name != names.end(); name++)
-			if (!passedFilter(*name, filtermetadata))
-				return false;
-		return true; // all filters passed
-	}
-};
 
 #endif

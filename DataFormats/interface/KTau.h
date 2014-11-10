@@ -11,6 +11,12 @@
 #include "KBasic.h"
 #include "KInfo.h"
 
+struct KTauMetadata
+{
+	std::vector<std::string> binaryDiscriminatorNames;
+	std::vector<std::string> floatDiscriminatorNames;
+};
+
 struct KBasicTau : KLepton
 {
 	/*

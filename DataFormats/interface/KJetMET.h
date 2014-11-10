@@ -34,6 +34,12 @@ struct KBasicJet : public KLV
 };
 typedef std::vector<KBasicJet> KBasicJets;
 
+struct KJetMetadata
+{
+	std::vector<std::string> taggernames;
+	std::vector<std::string> pujetidnames;
+};
+
 struct KJet : public KBasicJet
 {
     std::vector<float> taggers;
