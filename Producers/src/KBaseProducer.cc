@@ -134,7 +134,7 @@ KBaseProducerWP::KBaseProducerWP(const edm::ParameterSet &cfg,
 	TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName) : psBase(cfg)
 {
 	provenance = new KProvenance();
-	_lumi_tree->Bronch(("Provenance_" + producerName).c_str(), "KProvenance", &provenance);
+	_lumi_tree->Bronch(("provenance_" + producerName).c_str(), "KProvenance", &provenance);
 }
 
 void KBaseProducerWP::addProvenance(std::string oldName, std::string newName)

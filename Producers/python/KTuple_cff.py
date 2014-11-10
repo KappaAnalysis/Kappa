@@ -134,7 +134,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		whitelist = cms.vstring("offlinePrimaryVertices"),
 		blacklist = cms.vstring("Vertices(QG|WithBS)"),
 
-		rename = cms.vstring("$ => Summary"),
+		rename = cms.vstring("goodOfflinePrimaryVertices => primaryVertices","$ => Summary"),
 		rename_whitelist = cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
@@ -170,7 +170,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		rename = cms.vstring(
 			"JetPlusTrack(.*) => $1JPT",
-			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8",
+			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1ak)(?2kt)(?3sc)(?4ic)(?5ic)(?6ak)(?7ca)$8",
 			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
 		),
 		rename_whitelist= cms.vstring(),
@@ -197,7 +197,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring("recoPFMET"),
 
 		rename = cms.vstring(
-			"(gen)?(ht)?met => (?1Gen:Calo)MET(?2HT)",
+			"(gen)?(ht)?met => (?1gen:calo)met(?2Ht)",
 		),
 		rename_whitelist = cms.vstring("^(Calo|Gen)MET(Calo|True)?$"),
 		rename_blacklist = cms.vstring(),
@@ -209,7 +209,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		whitelist = cms.vstring("recoPFMET"),
 		blacklist = cms.vstring(),
 
-		rename = cms.vstring("pfMet => PFMET"),
+		rename = cms.vstring("pfMet => met"),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
@@ -409,7 +409,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG"),
 
 		rename = cms.vstring(
-			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8"
+			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1ak)(?2kt)(?3sc)(?4ic)(?5ic)(?6ak)(?7ca)$8"
 		),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
@@ -440,7 +440,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		#	src = cms.InputTag("fixedConePFTauProducer"),
 		#	discr = cms.vstring("fixedConePFTau*")
 		#),
-		hpsPFTaus = cms.PSet(
+		taus = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
 			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
 			binaryDiscrWhitelist = cms.vstring("hpsPFTau.*"),
