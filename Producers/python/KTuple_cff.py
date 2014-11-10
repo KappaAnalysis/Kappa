@@ -422,14 +422,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		)
 	),
 
-	CaloTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
-		caloRecoTaus = cms.PSet(
-			src = cms.InputTag("caloRecoTauProducer"),
-			discrWhitelist = cms.vstring("caloRecoTau*"),
-			discrBlacklist = cms.vstring(".*PFlow$"),
-		)
-	),
-
 	Taus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		#shrinkingConePFTaus = cms.PSet(
 		#	src = cms.InputTag("shrinkingConePFTauProducer"),

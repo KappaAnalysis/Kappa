@@ -48,8 +48,6 @@ struct KBasicTau : KLepton
 };
 typedef std::vector<KBasicTau> KBasicTaus;
 
-struct KCaloTau : KBasicTau {};
-typedef std::vector<KCaloTau> KCaloTaus;
 
 struct KTau : KBasicTau
 {

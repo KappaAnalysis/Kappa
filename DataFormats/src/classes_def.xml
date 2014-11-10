@@ -14,8 +14,6 @@
 	<class name="KBeamSpots"/>
 	<class name="KCaloJet"/>
 	<class name="KCaloJets"/>
-	<class name="KCaloTau"/>
-	<class name="KCaloTaus"/>
 	<class name="KElectron"/>
 	<class name="KElectrons"/>
 	<class name="KFilterSummary"/>

@@ -80,11 +80,6 @@ std::ostream &operator<<(std::ostream &os, const KBasicTau &tau)
 	return os << static_cast<const KLV>(tau) << " charge=" << tau.charge;
 }
 
-std::ostream &operator<<(std::ostream &os, const KCaloTau &tau)
-{
-	return os << static_cast<const KLV>(tau) << " charge=" << tau.charge;
-}
-
 std::ostream &operator<<(std::ostream &os, const KGenTau &tau)
 {
 	return os << static_cast<const KGenParticle>(tau)

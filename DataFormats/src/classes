@@ -15,7 +15,6 @@ KBasicMET
 KBasicTau				KBasicTaus
 KBeamSpot				KBeamSpots
 KCaloJet				KCaloJets
-KCaloTau				KCaloTaus
 KElectron				KElectrons
 KFilterSummary
 KGenParticle			KGenParticles

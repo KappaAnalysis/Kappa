@@ -31,8 +31,6 @@ namespace
 		KBeamSpots dict_KBeamSpots;
 		KCaloJet dict_KCaloJet;
 		KCaloJets dict_KCaloJets;
-		KCaloTau dict_KCaloTau;
-		KCaloTaus dict_KCaloTaus;
 		KElectron dict_KElectron;
 		KElectrons dict_KElectrons;
 		KFilterSummary dict_KFilterSummary;

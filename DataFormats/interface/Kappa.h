@@ -36,8 +36,6 @@ REGISTER_NAME_OF_TYPE(KBeamSpot,KBeamSpot);
 REGISTER_NAME_OF_TYPE(KBeamSpots,std::vector<KBeamSpot>);
 REGISTER_NAME_OF_TYPE(KCaloJet,KCaloJet);
 REGISTER_NAME_OF_TYPE(KCaloJets,std::vector<KCaloJet>);
-REGISTER_NAME_OF_TYPE(KCaloTau,KCaloTau);
-REGISTER_NAME_OF_TYPE(KCaloTaus,std::vector<KCaloTau>);
 REGISTER_NAME_OF_TYPE(KElectron,KElectron);
 REGISTER_NAME_OF_TYPE(KElectrons,std::vector<KElectron>);
 REGISTER_NAME_OF_TYPE(KFilterSummary,KFilterSummary);

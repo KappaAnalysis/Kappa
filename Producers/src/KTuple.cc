@@ -30,7 +30,6 @@
 
 #include "../interface/KBeamSpotProducer.h"
 #include "../interface/KCaloJetProducer.h"
-#include "../interface/KCaloTauProducer.h"
 #include "../interface/KFilterSummaryProducer.h"
 #include "../interface/KGenParticleProducer.h"
 #include "../interface/KLHEProducer.h"
@@ -192,7 +191,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 
 		addProducer<KBeamSpotProducer>(active[i]);
 		addProducer<KCaloJetProducer>(active[i]);
-		addProducer<KCaloTauProducer>(active[i]);
 		addProducer<KFilterSummaryProducer>(active[i]);
 		addProducer<KGenParticleProducer>(active[i]);
 		addProducer<KLHEProducer>(active[i]);

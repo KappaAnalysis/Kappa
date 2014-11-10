@@ -96,10 +96,6 @@
 #pragma link C++ class std::vector<KBasicTau>+;
 #pragma link C++ typedef KBasicTaus;
 
-#pragma link C++ struct KCaloTau+;
-#pragma link C++ class std::vector<KCaloTau>+;
-#pragma link C++ typedef KCaloTaus;
-
 #pragma link C++ struct KTau+;
 #pragma link C++ class std::vector<KTau>+;
 #pragma link C++ typedef KTaus;
