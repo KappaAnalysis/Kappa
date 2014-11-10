@@ -8,8 +8,8 @@
 #define KAPPA_INFO_H
 
 #include <map>
-#include <vector>
 #include <string>
+#include <vector>
 
 /// RUN METADATA
 struct KProvenance

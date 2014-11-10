@@ -7,11 +7,9 @@
 #ifndef KAPPA_MUON_H
 #define KAPPA_MUON_H
 
-#include "KTrack.h"
-#include "KInfo.h"
-#include "KJetMET.h"
-
 #include <algorithm>
+#include "KTrack.h"
+
 
 struct KMuonMetadata
 {

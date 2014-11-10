@@ -8,8 +8,8 @@
 #ifndef KAPPA_TAU_H
 #define KAPPA_TAU_H
 
-#include "KBasic.h"
-#include "KInfo.h"
+#include "KTrack.h"
+
 
 struct KTauMetadata
 {

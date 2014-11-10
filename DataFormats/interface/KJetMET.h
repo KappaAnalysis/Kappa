@@ -6,12 +6,11 @@
  *   Thomas Hauth <Thomas.Hauth@cern.ch>
  */
 
-#ifndef KAPPA_JET_H
-#define KAPPA_JET_H
+#ifndef KAPPA_JETMET_H
+#define KAPPA_JETMET_H
 
-#include <Math/SMatrix.h>
 #include "KBasic.h"
-#include "KInfo.h"
+
 
 struct KCaloJet : public KLV
 {

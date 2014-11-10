@@ -5,10 +5,8 @@
 #ifndef KAPPA_LORENTZVECTOR_H
 #define KAPPA_LORENTZVECTOR_H
 
-#include <Math/PtEtaPhiE4D.h>
 #include <Math/PtEtaPhiM4D.h>
 #include <Math/LorentzVector.h>
-
 #include <Math/Point3D.h>
 #include <Math/MatrixRepresentationsStatic.h>
 

@@ -8,11 +8,7 @@
 #define KAPPA_ELECTRON_H
 
 #include "KTrack.h"
-#include "KInfo.h"
-#include "KJetMET.h"
 
-#include <algorithm>
-#include "Math/GenVector/PositionVector3D.h"
 
 struct KElectronMetadata
 {
