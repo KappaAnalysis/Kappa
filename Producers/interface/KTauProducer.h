@@ -13,11 +13,10 @@
 #ifndef KAPPA_TAUPRODUCER_H
 #define KAPPA_TAUPRODUCER_H
 
-#include "KMetadataProducer.h"
-#include "KBasicTauProducer.h"
-
 #include <DataFormats/TauReco/interface/PFTau.h>
 #include <DataFormats/TauReco/interface/PFTauDiscriminator.h>
+
+#include "KBasicTauProducer.h"
 
 class KTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>
 {

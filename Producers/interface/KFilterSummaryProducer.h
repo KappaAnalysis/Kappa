@@ -6,7 +6,7 @@
 #define KAPPA_FILTERSUMMARYPRODUCER_H
 
 #include "KBaseMatchingProducer.h"
-#include "../../DataFormats/interface/KMetadata.h"
+#include "../../DataFormats/interface/KInfo.h"
 #include <FWCore/Utilities/interface/InputTag.h>
 
 class KFilterSummaryProducer : public KBaseMatchingProducer<KFilterSummary>

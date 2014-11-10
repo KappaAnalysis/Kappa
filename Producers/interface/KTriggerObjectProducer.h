@@ -7,7 +7,6 @@
 #define KAPPA_TRIGGEROBJECTPRODUCER_H
 
 #include "KBaseMultiProducer.h"
-#include "KMetadataProducer.h"
 #include <FWCore/ParameterSet/interface/ParameterSet.h>
 #include <FWCore/Utilities/interface/InputTag.h>
 #include <DataFormats/MuonReco/interface/Muon.h>

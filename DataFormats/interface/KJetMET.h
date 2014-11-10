@@ -11,7 +11,7 @@
 
 #include <Math/SMatrix.h>
 #include "KBasic.h"
-#include "KMetadata.h"
+#include "KInfo.h"
 
 struct KCaloJet : public KLV
 {

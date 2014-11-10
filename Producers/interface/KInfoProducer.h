@@ -12,7 +12,7 @@
 #include <algorithm>
 
 #include "KBaseProducer.h"
-#include "../../DataFormats/interface/KMetadata.h"
+#include "../../DataFormats/interface/KInfo.h"
 
 #include <FWCore/Framework/interface/ConstProductRegistry.h>
 #include <FWCore/MessageLogger/interface/ELseverityLevel.h>

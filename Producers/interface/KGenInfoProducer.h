@@ -7,13 +7,14 @@
 #ifndef KAPPA_GENINFOPRODUCER_H
 #define KAPPA_GENINFOPRODUCER_H
 
-#include "KMetadataProducer.h"
 #include <SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h>
 #include <SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h>
 #include <SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h>
 #include <SimDataFormats/GeneratorProducts/interface/HepMCProduct.h>
+#include <SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h>
 
-#include "SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h"
+#include "KInfoProducer.h"
+
 
 // MC data
 struct KGenInfo_Product

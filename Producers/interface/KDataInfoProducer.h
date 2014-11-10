@@ -6,8 +6,9 @@
 #ifndef KAPPA_DATAINFOPRODUCER_H
 #define KAPPA_DATAINFOPRODUCER_H
 
-#include "KMetadataProducer.h"
 #include <DataFormats/Luminosity/interface/LumiSummary.h>
+#include "KInfoProducer.h"
+
 
 // MC data
 struct KDataInfo_Product

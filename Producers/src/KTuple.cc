@@ -23,10 +23,10 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include <TFile.h>
 
-#include "../interface/KMetadataProducer.h"
-#include "../interface/KGenMetadataProducer.h"
-#include "../interface/KDataMetadataProducer.h"
-#include "../interface/KTreeMetadataProducer.h"
+#include "../interface/KInfoProducer.h"
+#include "../interface/KGenInfoProducer.h"
+#include "../interface/KDataInfoProducer.h"
+#include "../interface/KTreeInfoProducer.h"
 
 #include "../interface/KBeamSpotProducer.h"
 #include "../interface/KCaloJetProducer.h"

@@ -9,7 +9,7 @@
 #define KAPPA_TAU_H
 
 #include "KBasic.h"
-#include "KMetadata.h"
+#include "KInfo.h"
 
 struct KBasicTau : KLepton
 {

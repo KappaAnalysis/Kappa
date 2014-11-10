@@ -6,7 +6,6 @@
 #ifndef KAPPA_CALOTAUPRODUCER_H
 #define KAPPA_CALOTAUPRODUCER_H
 
-#include "KMetadataProducer.h"
 #include "KBasicTauProducer.h"
 
 #include <DataFormats/TauReco/interface/CaloTau.h>

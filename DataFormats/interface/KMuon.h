@@ -8,7 +8,7 @@
 #define KAPPA_MUON_H
 
 #include "KTrack.h"
-#include "KMetadata.h"
+#include "KInfo.h"
 #include "KJetMET.h"
 
 #include <algorithm>

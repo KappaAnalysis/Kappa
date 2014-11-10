@@ -4,9 +4,9 @@
 #define G__DICTIONARY
 #include "../interface/KBasic.h"
 #include "../interface/KElectron.h"
+#include "../interface/KInfo.h"
 #include "../interface/KJetMET.h"
 #include "../interface/KLorentzVector.h"
-#include "../interface/KMetadata.h"
 #include "../interface/KMuon.h"
 #include "../interface/KTau.h"
 #include "../interface/KTrack.h"
