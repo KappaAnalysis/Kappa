@@ -50,11 +50,11 @@ KTriggerObjectMetadata
 
 KProvenance
 
-KLumiMetadata
-KGenLumiMetadata
-KDataLumiMetadata
+KLumiInfo
+KGenLumiInfo
+KDataLumiInfo
 
-KEventMetadata
-KGenEventMetadata
+KEventInfo
+KGenEventInfo
 
 #################################

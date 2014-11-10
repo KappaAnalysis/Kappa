@@ -83,10 +83,10 @@ REGISTER_NAME_OF_TYPE(KMuonMetadata,KMuonMetadata);
 REGISTER_NAME_OF_TYPE(KTauMetadata,KTauMetadata);
 REGISTER_NAME_OF_TYPE(KTriggerObjectMetadata,KTriggerObjectMetadata);
 REGISTER_NAME_OF_TYPE(KProvenance,KProvenance);
-REGISTER_NAME_OF_TYPE(KLumiMetadata,KLumiMetadata);
-REGISTER_NAME_OF_TYPE(KGenLumiMetadata,KGenLumiMetadata);
-REGISTER_NAME_OF_TYPE(KDataLumiMetadata,KDataLumiMetadata);
-REGISTER_NAME_OF_TYPE(KEventMetadata,KEventMetadata);
-REGISTER_NAME_OF_TYPE(KGenEventMetadata,KGenEventMetadata);
+REGISTER_NAME_OF_TYPE(KLumiInfo,KLumiInfo);
+REGISTER_NAME_OF_TYPE(KGenLumiInfo,KGenLumiInfo);
+REGISTER_NAME_OF_TYPE(KDataLumiInfo,KDataLumiInfo);
+REGISTER_NAME_OF_TYPE(KEventInfo,KEventInfo);
+REGISTER_NAME_OF_TYPE(KGenEventInfo,KGenEventInfo);
 
 #endif

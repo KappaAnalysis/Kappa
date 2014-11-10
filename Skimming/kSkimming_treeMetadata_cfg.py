@@ -24,8 +24,8 @@ globaltag = ""
 
 
 
-process.kappaTuple.active										= cms.vstring('TreeMetadata')
-process.kappaTuple.TreeMetadata.parameters = cms.PSet(
+process.kappaTuple.active										= cms.vstring('TreeInfo')
+process.kappaTuple.TreeInfo.parameters = cms.PSet(
 															dataset						= cms.string(datasetsHelper.getDatasetName(nickname)),
 															generator					= cms.string(datasetsHelper.getGenerator(nickname)),
 															productionProcess			= cms.string(datasetsHelper.getProcess(nickname)),

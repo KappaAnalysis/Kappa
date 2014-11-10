@@ -25,14 +25,14 @@ std::ostream &operator<<(std::ostream &os, const KHit &hit);
 std::ostream &operator<<(std::ostream &os, const KPFCandidate &cand);
 std::ostream &operator<<(std::ostream &os, const KFilterSummary &filter);
 std::ostream &operator<<(std::ostream &os, const KProvenance &p);
-std::ostream &operator<<(std::ostream &os, const KLumiMetadata &m);
-std::ostream &operator<<(std::ostream &os, const KGenLumiMetadata &m);
-std::ostream &operator<<(std::ostream &os, const KDataLumiMetadata &m);
-std::ostream &operator<<(std::ostream &os, const KEventMetadata &m);
+std::ostream &operator<<(std::ostream &os, const KLumiInfo &m);
+std::ostream &operator<<(std::ostream &os, const KGenLumiInfo &m);
+std::ostream &operator<<(std::ostream &os, const KDataLumiInfo &m);
+std::ostream &operator<<(std::ostream &os, const KEventInfo &m);
 std::ostream &operator<<(std::ostream &os, const KTauMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KMuonMetadata &m);
-std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m);
-std::ostream &displayHLT(std::ostream &os, const KLumiMetadata &metaLumi, const KEventMetadata &metaEvent);
+std::ostream &operator<<(std::ostream &os, const KGenEventInfo &m);
+std::ostream &displayHLT(std::ostream &os, const KLumiInfo &metaLumi, const KEventInfo &metaEvent);
 std::ostream &displayTO(std::ostream &os, const size_t hltIdx, const KTriggerObjects *trgObj);
 
 #include "KDebug.hxx"

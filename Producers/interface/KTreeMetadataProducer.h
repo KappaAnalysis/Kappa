@@ -11,10 +11,10 @@
 #include <bitset>
 #include <TMath.h>
 
-class KTreeMetadataProducer: public KBaseProducer
+class KTreeInfoProducer: public KBaseProducer
 {
 public:
-	KTreeMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree)
+	KTreeInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree)
 	{
 	
 		std::vector<TList*> label;
@@ -52,7 +52,7 @@ public:
 	}
 	std::vector<TObjString*> tstring;
 
-	static const std::string getLabel() { return "TreeMetadata"; }
+	static const std::string getLabel() { return "TreeInfo"; }
 
 	inline std::string getString(bool input) { if(input == true) return "True"; else return "False"; }
 	inline std::string getString(int input) { return static_cast<std::ostringstream*>( &(std::ostringstream() << input) )->str(); }

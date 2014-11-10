@@ -40,7 +40,7 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		toMetadata->menu = KMetadataProducerBase::hltConfig.tableName();
+		toMetadata->menu = KInfoProducerBase::hltConfig.tableName();
 		toMetadata->toFilter.clear();
 		return true;
 	}
@@ -51,7 +51,7 @@ protected:
 
 	virtual void fillProduct(const trigger::TriggerEvent &triggerEventHandle, KTriggerObjects &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		HLTConfigProvider &hltConfig(KMetadataProducerBase::hltConfig);
+		HLTConfigProvider &hltConfig(KInfoProducerBase::hltConfig);
 		if (verbosity > 0)
 			std::cout << "KTriggerObjectProducer::fillProduct : " << hltConfig.tableName() << std::endl;
 
@@ -61,7 +61,7 @@ protected:
 		toMetadata->nFiltersPerHLT.clear();
 
 		// run over all triggers
-		for (size_t i = 0; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
+		for (size_t i = 0; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
 		{
 			if (i == 0)
 			{
@@ -70,12 +70,12 @@ protected:
 			}
 
 			// get HLT index
-			size_t hltIdx = KMetadataProducerBase::hltKappa2FWK[i];
+			size_t hltIdx = KInfoProducerBase::hltKappa2FWK[i];
 			if (verbosity > 0)
 				std::cout << "KTriggerObjectProducer::fillProduct : " << hltConfig.triggerName(hltIdx) << ": ";
 			
-			const std::vector<std::string>& saveTagsModules = KMetadataProducerBase::hltConfig.saveTagsModules(hltIdx);
-			//const std::vector<std::string>& saveTagsModules = KMetadataProducerBase::hltConfig.moduleLabels(hltIdx);
+			const std::vector<std::string>& saveTagsModules = KInfoProducerBase::hltConfig.saveTagsModules(hltIdx);
+			//const std::vector<std::string>& saveTagsModules = KInfoProducerBase::hltConfig.moduleLabels(hltIdx);
 			
 			// allocate memory
 			toMetadata->nFiltersPerHLT.push_back(saveTagsModules.size());
@@ -110,9 +110,9 @@ protected:
 						}
 						else if (toMetadata->toFilter[currentIndex] != saveTagsModules[m]) // Check existing entry
 						{
-							bool isPresent = (std::find(KMetadataProducerBase::svHLTFailToleranceList.begin(),
-												KMetadataProducerBase::svHLTFailToleranceList.end(), toMetadata->toFilter[currentIndex])
-												!= KMetadataProducerBase::svHLTFailToleranceList.end());
+							bool isPresent = (std::find(KInfoProducerBase::svHLTFailToleranceList.begin(),
+												KInfoProducerBase::svHLTFailToleranceList.end(), toMetadata->toFilter[currentIndex])
+												!= KInfoProducerBase::svHLTFailToleranceList.end());
 							if(!isPresent) //Check if known problem that can be skipped
 							{
 								std::cout << std::endl << name << " index mismatch! "<< toMetadata->toFilter[currentIndex] << " changed to " << saveTagsModules[m] << std::endl;

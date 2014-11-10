@@ -27,10 +27,10 @@ kappaNoRegEx = cms.PSet(kappaNoRename,
 
 kappaTupleDefaultsBlock = cms.PSet(
 	verbose = cms.int32(0),
-	active = cms.vstring("Metadata"),
+	active = cms.vstring("Info"),
 	profile = cms.bool(False),
 
-	Metadata = cms.PSet(
+	Info = cms.PSet(
 		forceLumi = cms.int32(-1),
 		forceXSec = cms.double(1),
 		ignoreExtXSec = cms.bool(False),
@@ -67,7 +67,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		printErrorsAndWarnings = cms.bool(False),
 	),
 
-	TreeMetadata = cms.PSet(),
+	TreeInfo = cms.PSet(),
 
 	HCALNoiseSummary = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),

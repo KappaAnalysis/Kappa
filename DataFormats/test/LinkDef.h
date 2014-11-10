@@ -165,12 +165,12 @@
 
 // Already defined by ROOT:
 //#pragma link C++ class std::map<std::string, int>+;
-#pragma link C++ struct KLumiMetadata+;
-#pragma link C++ struct KGenLumiMetadata+;
-#pragma link C++ struct KDataLumiMetadata+;
+#pragma link C++ struct KLumiInfo+;
+#pragma link C++ struct KGenLumiInfo+;
+#pragma link C++ struct KDataLumiInfo+;
 
-#pragma link C++ struct KEventMetadata+;
-#pragma link C++ struct KGenEventMetadata+;
+#pragma link C++ struct KEventInfo+;
+#pragma link C++ struct KGenEventInfo+;
 
 /************************************************************/
 

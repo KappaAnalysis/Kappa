@@ -66,7 +66,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		printErrorsAndWarnings = cms.bool(False),
 	),
 
-	TreeMetadata = cms.PSet(),
+	TreeInfo = cms.PSet(),
 
 	HCALNoiseSummary = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),

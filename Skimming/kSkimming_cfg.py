@@ -20,8 +20,8 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.p = cms.Path ( )
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
-	process.kappaTuple.active										= cms.vstring('TreeMetadata')
-	process.kappaTuple.TreeMetadata.parameters = cms.PSet(
+	process.kappaTuple.active										= cms.vstring('TreeInfo')
+	process.kappaTuple.TreeInfo.parameters = cms.PSet(
 		dataset						= cms.string(datasetsHelper.getDatasetName(nickname)),
 		generator					= cms.string(datasetsHelper.getGenerator(nickname)),
 		productionProcess			= cms.string(datasetsHelper.getProcess(nickname)),
@@ -46,13 +46,13 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	if not isEmbedded:
 		if data:
-			process.kappaTuple.active+= cms.vstring('DataMetadata')		## produce Metadata for data,
+			process.kappaTuple.active+= cms.vstring('DataInfo')		## produce Metadata for data,
 		else:
-			process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
+			process.kappaTuple.active+= cms.vstring('GenInfo')		## produce Metadata for MC,
 			process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 			process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 
-	process.kappaTuple.Metadata.hltWhitelist = cms.vstring(			## HLT selection
+	process.kappaTuple.Info.hltWhitelist = cms.vstring(			## HLT selection
 		# https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/blob/master/data/triggerTables-2011-2012.txt
 		# https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorkingSummer2013
 		# can be tested at http://regexpal.com
@@ -88,7 +88,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		#"^HLT_Ele[0-9]+_CaloId(L|T)(_TrkIdVL)?_CaloIsoVL(_TrkIdVL_TrkIsoVL)?(_TrkIsoVL)?(_Jet[0-9]+|)?_v[0-9]+$",
 		)
 	
-	process.kappaTuple.Metadata.hltBlacklist = cms.vstring(
+	process.kappaTuple.Info.hltBlacklist = cms.vstring(
 		"HLT_Mu13_Mu8", # v21 gives errors for the trigger objects
 		)
 
@@ -181,12 +181,12 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		process.ak5PFCHSNewJetTracksAssociatorAtVertex.tracks = "tmfTracks"
 		process.p *= process.btagging
 		# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
-		process.kappaTuple.Metadata.overrideHLTCheck = cms.untracked.bool(True)
-		process.kappaTuple.active+= cms.vstring('DataMetadata')
+		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
+		process.kappaTuple.active+= cms.vstring('DataInfo')
 		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
-		process.kappaTuple.Metadata.isEmbedded = cms.bool(True)
+		process.kappaTuple.Info.isEmbedded = cms.bool(True)
 
 	# Let Jets run
 	process.p *= (

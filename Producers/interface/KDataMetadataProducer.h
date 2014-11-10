@@ -3,42 +3,42 @@
  *   Manuel Zeise <zeise@cern.ch>
  */
 
-#ifndef KAPPA_DATAMETADATAPRODUCER_H
-#define KAPPA_DATAMETADATAPRODUCER_H
+#ifndef KAPPA_DATAINFOPRODUCER_H
+#define KAPPA_DATAINFOPRODUCER_H
 
 #include "KMetadataProducer.h"
 #include <DataFormats/Luminosity/interface/LumiSummary.h>
 
 // MC data
-struct KDataMetadata_Product
+struct KDataInfo_Product
 {
-	typedef KDataLumiMetadata typeLumi;
-	typedef KEventMetadata typeEvent;
-	static const std::string idLumi() { return "KDataLumiMetadata"; };
-	static const std::string idEvent() { return "KEventMetadata"; };
+	typedef KDataLumiInfo typeLumi;
+	typedef KEventInfo typeEvent;
+	static const std::string idLumi() { return "KDataLumiInfo"; };
+	static const std::string idEvent() { return "KEventInfo"; };
 };
 
 template<typename Tmeta>
-class KDataMetadataProducer : public KMetadataProducer<Tmeta>
+class KDataInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KDataMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KMetadataProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+	KDataInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
 		currentRun(0),
 		lumiSource(cfg.getParameter<edm::InputTag>("lumiSource")),
 		isEmbedded(cfg.getParameter<bool>("isEmbedded")) {}
 
-	static const std::string getLabel() { return "DataMetadata"; }
+	static const std::string getLabel() { return "DataInfo"; }
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
 		currentRun = run.run();
-		return KMetadataProducer<Tmeta>::onRun(run, setup);
+		return KInfoProducer<Tmeta>::onRun(run, setup);
 	}
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		// Fill data related infos
-		if (!KMetadataProducer<Tmeta>::onLumi(lumiBlock, setup))
+		if (!KInfoProducer<Tmeta>::onLumi(lumiBlock, setup))
 			return false;
 
 		// Read luminosity infos
@@ -61,7 +61,7 @@ public:
 						connect=cms.string('frontier://LumiProd/CMS_LUMI_PROD'),
 					)
 			*/
-			edm::LogWarning("KDataMetadataProducer") << "Warning: No edm lumi information found! All lumi values are set to zero.";
+			edm::LogWarning("KDataInfoProducer") << "Warning: No edm lumi information found! All lumi values are set to zero.";
 			this->metaLumi->avgInsDelLumi = 0.0f;
 			this->metaLumi->avgInsDelLumiErr = 0.0f;
 			this->metaLumi->avgInsRecLumi = 0.0f;
@@ -87,7 +87,7 @@ public:
 			this->metaEvent->minVisPtFilterWeight = hGenFilterInfo->filterEfficiency();
 		}
 		else this->metaEvent->minVisPtFilterWeight = 1.0f;
-		return KMetadataProducer<Tmeta>::onEvent(event, setup);
+		return KInfoProducer<Tmeta>::onEvent(event, setup);
 	}
 
 protected:

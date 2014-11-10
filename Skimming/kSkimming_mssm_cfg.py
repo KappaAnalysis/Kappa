@@ -19,8 +19,8 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.p = cms.Path ( )
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
-	process.kappaTuple.active										= cms.vstring('TreeMetadata')
-	process.kappaTuple.TreeMetadata.parameters = cms.PSet(
+	process.kappaTuple.active										= cms.vstring('TreeInfo')
+	process.kappaTuple.TreeInfo.parameters = cms.PSet(
 		dataset						= cms.string(datasetsHelper.getDatasetName(nickname)),
 		generator					= cms.string(datasetsHelper.getGenerator(nickname)),
 		productionProcess			= cms.string(datasetsHelper.getProcess(nickname)),

@@ -148,31 +148,31 @@ std::ostream &operator<<(std::ostream &os, const KProvenance &p)
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const KLumiMetadata &m)
+std::ostream &operator<<(std::ostream &os, const KLumiInfo &m)
 {
 	os << "Run: " << m.nRun << " " << m.nLumi << std::endl;
 	os << "HLT names "; displayVector(os, m.hltNames);
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const KGenLumiMetadata &m)
+std::ostream &operator<<(std::ostream &os, const KGenLumiInfo &m)
 {
-	os << static_cast<const KLumiMetadata>(m) << std::endl;
+	os << static_cast<const KLumiInfo>(m) << std::endl;
 	return os
 		<< "ext. xSec: " << m.xSectionExt << " "
 		<< "int. xSec: " << m.xSectionInt;
 }
 
-std::ostream &operator<<(std::ostream &os, const KDataLumiMetadata &m)
+std::ostream &operator<<(std::ostream &os, const KDataLumiInfo &m)
 {
-	os << static_cast<const KLumiMetadata>(m) << std::endl;
+	os << static_cast<const KLumiInfo>(m) << std::endl;
 	return os
 		<< "Delivered=" << m.avgInsDelLumi << "+/-" << m.avgInsDelLumiErr << std::endl
 		<< "Recorded=" << m.avgInsRecLumi << "+/-" << m.avgInsRecLumiErr << std::endl
 		<< "deadtime=" << m.deadFrac << " length=" << m.lumiSectionLength << " quality=" << m.lumiSecQual;
 }
 
-std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
+std::ostream &operator<<(std::ostream &os, const KEventInfo &m)
 {
 	return os << "Event ID = " << m.nRun << ":" << m.nLumi << ":" << m.nBX << ":" << m.nEvent;
 }
@@ -193,15 +193,15 @@ std::ostream &operator<<(std::ostream &os, const KMuonMetadata &m)
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const KGenEventMetadata &m)
+std::ostream &operator<<(std::ostream &os, const KGenEventInfo &m)
 {
-	os << static_cast<const KEventMetadata>(m) << std::endl;
+	os << static_cast<const KEventInfo>(m) << std::endl;
 	return os
 		<< "Weight: " << m.weight
 		<< "#PU: " << m.numPUInteractionsTruth;
 }
 
-std::ostream &displayHLT(std::ostream &os, const KLumiMetadata &metaLumi, const KEventMetadata &metaEvent)
+std::ostream &displayHLT(std::ostream &os, const KLumiInfo &metaLumi, const KEventInfo &metaEvent)
 {
 	for (size_t hltIdx = 0; hltIdx < metaLumi.hltNames.size(); ++hltIdx)
 		if (metaEvent.bitsHLT & ((unsigned long long)1 << hltIdx))

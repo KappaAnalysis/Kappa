@@ -65,11 +65,11 @@
 
 	<class name="KProvenance"/>
 
-	<class name="KLumiMetadata"/>
-	<class name="KGenLumiMetadata"/>
-	<class name="KDataLumiMetadata"/>
+	<class name="KLumiInfo"/>
+	<class name="KGenLumiInfo"/>
+	<class name="KDataLumiInfo"/>
 
-	<class name="KEventMetadata"/>
-	<class name="KGenEventMetadata"/>
+	<class name="KEventInfo"/>
+	<class name="KGenEventInfo"/>
 
 </lcgdict>

@@ -4,8 +4,8 @@
  *   Manuel Zeise <zeise@cern.ch>
  */
 
-#ifndef KAPPA_GENMETADATAPRODUCER_H
-#define KAPPA_GENMETADATAPRODUCER_H
+#ifndef KAPPA_GENINFOPRODUCER_H
+#define KAPPA_GENINFOPRODUCER_H
 
 #include "KMetadataProducer.h"
 #include <SimDataFormats/GeneratorProducts/interface/GenRunInfoProduct.h>
@@ -16,31 +16,31 @@
 #include "SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h"
 
 // MC data
-struct KGenMetadata_Product
+struct KGenInfo_Product
 {
-	typedef KGenLumiMetadata typeLumi;
-	typedef KGenEventMetadata typeEvent;
-	static const std::string idLumi() { return "KGenLumiMetadata"; };
-	static const std::string idEvent() { return "KGenEventMetadata"; };
+	typedef KGenLumiInfo typeLumi;
+	typedef KGenEventInfo typeEvent;
+	static const std::string idLumi() { return "KGenLumiInfo"; };
+	static const std::string idEvent() { return "KGenEventInfo"; };
 };
 
 template<typename Tmeta>
-class KGenMetadataProducer : public KMetadataProducer<Tmeta>
+class KGenInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KGenMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KMetadataProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+	KGenInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
 		ignoreExtXSec(cfg.getParameter<bool>("ignoreExtXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
 		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource")) {}
 
-	static const std::string getLabel() { return "GenMetadata"; }
+	static const std::string getLabel() { return "GenInfo"; }
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		// Fill data related infos
-		if (!KMetadataProducer<Tmeta>::onLumi(lumiBlock, setup))
+		if (!KInfoProducer<Tmeta>::onLumi(lumiBlock, setup))
 			return false;
 		if (forceLumi > 0)
 			this->metaLumi->nLumi = forceLumi;
@@ -63,7 +63,7 @@ public:
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		// Fill data related infos
-		if (!KMetadataProducer<Tmeta>::onEvent(event, setup))
+		if (!KInfoProducer<Tmeta>::onEvent(event, setup))
 			return false;
 		if (forceLumi > 0)
 			this->metaEvent->nLumi = forceLumi;
@@ -125,21 +125,21 @@ protected:
 };
 
 template<typename Tmeta>
-class KHepMCMetadataProducer : public KMetadataProducer<Tmeta>
+class KHepMCInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KHepMCMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KMetadataProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+	KHepMCInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
 		forceXSec(cfg.getParameter<double>("forceXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")) {}
 
-	static const std::string getLabel() { return "HepMCMetadata"; }
+	static const std::string getLabel() { return "HepMCInfo"; }
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		// Fill data related infos
-		if (!KMetadataProducer<Tmeta>::onLumi(lumiBlock, setup))
+		if (!KInfoProducer<Tmeta>::onLumi(lumiBlock, setup))
 			return false;
 		if (forceLumi > 0)
 			this->metaLumi->nLumi = forceLumi;
@@ -152,7 +152,7 @@ public:
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		// Fill data related infos
-		if (!KMetadataProducer<Tmeta>::onEvent(event, setup))
+		if (!KInfoProducer<Tmeta>::onEvent(event, setup))
 			return false;
 		if (forceLumi > 0)
 			this->metaEvent->nLumi = forceLumi;

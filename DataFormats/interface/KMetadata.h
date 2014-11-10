@@ -4,8 +4,8 @@
  *   Manuel Zeise <zeise@cern.ch>
  */
 
-#ifndef KAPPA_METADATA_H
-#define KAPPA_METADATA_H
+#ifndef KAPPA_INFO_H
+#define KAPPA_INFO_H
 
 #include <map>
 #include <vector>
@@ -19,7 +19,7 @@ struct KProvenance
 };
 
 /// RUN + LUMI METADATA
-struct KLumiMetadata
+struct KLumiInfo
 {
 	unsigned int nLumi;
 	unsigned int nRun;
@@ -51,14 +51,14 @@ struct KJetMetadata
 	std::vector<std::string> pujetidnames;
 };
 
-struct KGenLumiMetadata : public KLumiMetadata
+struct KGenLumiInfo : public KLumiInfo
 {
 	double filterEff;
 	double xSectionExt;
 	double xSectionInt;
 };
 
-struct KDataLumiMetadata : public KLumiMetadata
+struct KDataLumiInfo : public KLumiInfo
 {
 	float avgInsDelLumi;
 	float avgInsDelLumiErr;
@@ -76,7 +76,7 @@ struct KDataLumiMetadata : public KLumiMetadata
 };
 
 /* EVENT METADATA */
-struct KEventMetadata
+struct KEventInfo
 {
 	unsigned long long bitsL1;
 	unsigned long long bitsHLT;
@@ -87,10 +87,10 @@ struct KEventMetadata
 	int nBX;
 	float randomNumber;
 	float minVisPtFilterWeight; // weight necessary to correct embedded events
-	bool hltFired (const std::string &name, const KLumiMetadata *lumimetadata) const
+	bool hltFired (const std::string &name, const KLumiInfo *lumiinfo) const
 	{
-		for (size_t i = 0; i < lumimetadata->hltNames.size(); ++i)
-			if (lumimetadata->hltNames[i] == name)
+		for (size_t i = 0; i < lumiinfo->hltNames.size(); ++i)
+			if (lumiinfo->hltNames[i] == name)
 				return (bitsHLT & (1ull << i)) != 0;
 		return false; // Named HLT does not exist
 	}
@@ -117,7 +117,7 @@ const unsigned int KEFRecoWarnings = 1 << 4;
 // List of user flags for luminosity sections (KLumiFlag...)
 const unsigned int KLFPrescaleError = 1 << 0;
 
-struct KGenEventMetadata : public KEventMetadata
+struct KGenEventInfo : public KEventInfo
 {
 	double weight;
 	double binValue;

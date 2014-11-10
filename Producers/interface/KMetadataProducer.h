@@ -5,8 +5,8 @@
  *   Manuel Zeise <zeise@cern.ch>
  */
 
-#ifndef KAPPA_METADATAPRODUCER_H
-#define KAPPA_METADATAPRODUCER_H
+#ifndef KAPPA_INFOPRODUCER_H
+#define KAPPA_INFOPRODUCER_H
 
 #include <vector>
 #include <algorithm>
@@ -41,21 +41,21 @@
 #define NEWHLT
 
 // real data
-struct KMetadata_Product
+struct KInfo_Product
 {
-	typedef KLumiMetadata typeLumi;
-	typedef KEventMetadata typeEvent;
-	static const std::string idLumi() { return "KLumiMetadata"; };
-	static const std::string idEvent() { return "KEventMetadata"; };
+	typedef KLumiInfo typeLumi;
+	typedef KEventInfo typeEvent;
+	static const std::string idLumi() { return "KLumiInfo"; };
+	static const std::string idEvent() { return "KEventInfo"; };
 };
 
-class KMetadataProducerBase : public KBaseProducerWP
+class KInfoProducerBase : public KBaseProducerWP
 {
 public:
-	KMetadataProducerBase(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseProducerWP(cfg, _event_tree, _lumi_tree, "KMetadata") {}
+	KInfoProducerBase(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KBaseProducerWP(cfg, _event_tree, _lumi_tree, "KInfo") {}
 
-	virtual ~KMetadataProducerBase() {};
+	virtual ~KInfoProducerBase() {};
 
 	static HLTConfigProvider hltConfig;
 	static std::vector<size_t> hltKappa2FWK;
@@ -63,19 +63,19 @@ public:
 	static std::vector<std::string> svHLTFailToleranceList;
 };
 
-HLTConfigProvider KMetadataProducerBase::hltConfig;
-std::vector<size_t> KMetadataProducerBase::hltKappa2FWK;
-std::vector<std::string> KMetadataProducerBase::selectedHLT;
-std::vector<std::string> KMetadataProducerBase::svHLTFailToleranceList;
+HLTConfigProvider KInfoProducerBase::hltConfig;
+std::vector<size_t> KInfoProducerBase::hltKappa2FWK;
+std::vector<std::string> KInfoProducerBase::selectedHLT;
+std::vector<std::string> KInfoProducerBase::svHLTFailToleranceList;
 
 TRandom3 randomGenerator = TRandom3();
 
 template<typename Tmeta>
-class KMetadataProducer : public KMetadataProducerBase
+class KInfoProducer : public KInfoProducerBase
 {
 public:
-	KMetadataProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KMetadataProducerBase(cfg, _event_tree, _lumi_tree),
+	KInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+		KInfoProducerBase(cfg, _event_tree, _lumi_tree),
 		tauDiscrProcessName(cfg.getUntrackedParameter<std::string>("tauDiscrProcessName", "")),
 		tagL1Results(cfg.getParameter<edm::InputTag>("l1Source")),
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
@@ -90,9 +90,9 @@ public:
 		overrideHLTCheck(cfg.getUntrackedParameter<bool>("overrideHLTCheck", false))
 	{
 		metaLumi = new typename Tmeta::typeLumi();
-		_lumi_tree->Bronch("KLumiMetadata", Tmeta::idLumi().c_str(), &metaLumi);
+		_lumi_tree->Bronch("lumiInfo", Tmeta::idLumi().c_str(), &metaLumi);
 		metaEvent = new typename Tmeta::typeEvent();
-		_event_tree->Bronch("KEventMetadata", Tmeta::idEvent().c_str(), &metaEvent);
+		_event_tree->Bronch("eventInfo", Tmeta::idEvent().c_str(), &metaEvent);
 
 		std::vector<std::string> list = cfg.getParameter<std::vector<std::string> >("hltFailToleranceList");
 		for (size_t i = 0; i < list.size(); ++i)
@@ -100,13 +100,13 @@ public:
 			svHLTFailToleranceList.push_back(list[i]);
 		}
 	}
-	virtual ~KMetadataProducer() {};
+	virtual ~KInfoProducer() {};
 
-	static const std::string getLabel() { return "Metadata"; }
+	static const std::string getLabel() { return "Info"; }
 
 	inline void addHLT(const int idx, const std::string name, const int prescale/*, std::vector<std::string> filterNamesForHLT*/)
 	{
-		KMetadataProducerBase::hltKappa2FWK.push_back(idx);
+		KInfoProducerBase::hltKappa2FWK.push_back(idx);
 		hltNames.push_back(name);
 		selectedHLT.push_back(name);
 		hltPrescales.push_back(prescale);
@@ -115,7 +115,7 @@ public:
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		KMetadataProducerBase::hltKappa2FWK.clear();
+		KInfoProducerBase::hltKappa2FWK.clear();
 		hltNames.clear();
 		hltPrescales.clear();
 		//filterNames.clear();
@@ -163,10 +163,10 @@ public:
 		}
 		bool hltSetupChanged = false;
 #ifdef NEWHLT
-		if (!KMetadataProducerBase::hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
+		if (!KInfoProducerBase::hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
 #else
-		if (!KMetadataProducerBase::hltConfig.init(tagHLTResults.process()))
+		if (!KInfoProducerBase::hltConfig.init(tagHLTResults.process()))
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
 #endif
 
@@ -174,22 +174,22 @@ public:
 			std::cout << "HLT setup has changed." << std::endl;
 
 		int counter = 1;
-		for (size_t i = 0; i < KMetadataProducerBase::hltConfig.size(); ++i)
+		for (size_t i = 0; i < KInfoProducerBase::hltConfig.size(); ++i)
 		{
-			const std::string &name = KMetadataProducerBase::hltConfig.triggerName(i);
-			const int hltIdx = KMetadataProducerBase::hltConfig.triggerIndex(name);
+			const std::string &name = KInfoProducerBase::hltConfig.triggerName(i);
+			const int hltIdx = KInfoProducerBase::hltConfig.triggerIndex(name);
 			
 			if (verbosity > 1)
-				std::cout << "KMetadataProducer::onRun : Trigger: " << hltIdx << " = ";
+				std::cout << "KInfoProducer::onRun : Trigger: " << hltIdx << " = ";
 			if (!regexMatch(name, svHLTWhitelist, svHLTBlacklist))
 				continue;
 			if (verbosity > 0 || printHltList)
-				std::cout << "KMetadataProducer::onRun :  => Adding trigger: " << name << " with ID: " << hltIdx << " as " << counter
+				std::cout << "KInfoProducer::onRun :  => Adding trigger: " << name << " with ID: " << hltIdx << " as " << counter
 					<< " with placeholder prescale 0" << std::endl;
 			
-			if (KMetadataProducerBase::hltKappa2FWK.size() < 64)
+			if (KInfoProducerBase::hltKappa2FWK.size() < 64)
 			{
-				addHLT(hltIdx, name, 0/*, KMetadataProducerBase::hltConfig.saveTagsModules(i)*/);
+				addHLT(hltIdx, name, 0/*, KInfoProducerBase::hltConfig.saveTagsModules(i)*/);
 				counter++;
 			}
 			else
@@ -207,7 +207,7 @@ public:
 			}
 		}
 		if (verbosity > 0)
-			std::cout << "KMetadataProducer::onRun : Accepted number of trigger streams: " << counter - 1 << std::endl;
+			std::cout << "KInfoProducer::onRun : Accepted number of trigger streams: " << counter - 1 << std::endl;
 
 		return true;
 	}
@@ -249,9 +249,9 @@ public:
 			event.getByLabel(tagHLTResults, hTriggerResults);
 
 			bool hltFAIL = false;
-			for (size_t i = 1; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
+			for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
 			{
-				const size_t idx = KMetadataProducerBase::hltKappa2FWK[i];
+				const size_t idx = KInfoProducerBase::hltKappa2FWK[i];
 				if (hTriggerResults->accept(idx))
 					metaEvent->bitsHLT |= ((unsigned long long)1 << i);
 				hltFAIL = hltFAIL || hTriggerResults->error(idx);
@@ -260,12 +260,12 @@ public:
 				metaEvent->bitsHLT |= 1;
 
 			// set and check trigger prescales
-			for (size_t i = 1; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
+			for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
 			{
 				const std::string &name = metaLumi->hltNames[i];
 				unsigned int prescale = 0;
 #ifdef NEWHLT
-				std::pair<int, int> prescale_L1_HLT = KMetadataProducerBase::hltConfig.prescaleValues(event, setup, name);
+				std::pair<int, int> prescale_L1_HLT = KInfoProducerBase::hltConfig.prescaleValues(event, setup, name);
 				if (prescale_L1_HLT.first < 0 || prescale_L1_HLT.second < 0)
 					prescale = 0;
 				else
@@ -274,21 +274,21 @@ public:
 				if (metaLumi->hltPrescales[i] == 0)
 				{
 					if (verbosity > 0 || printHltList)
-						std::cout << "KMetadataProducer::onEvent :  => Adding prescale for trigger: '" << name
+						std::cout << "KInfoProducer::onEvent :  => Adding prescale for trigger: '" << name
 							<< " with value: " << prescale << std::endl;
 					metaLumi->hltPrescales[i] = prescale;
 				}
 				if (metaLumi->hltPrescales[i] != prescale)
 				{
 					if (this->verbosity > 0)
-						std::cout << "KMetadataProducer::onEvent :  !!!!!!!!!!! the prescale of " << name << " has changed with respect to the beginning of the luminosity section from " << metaLumi->hltPrescales[i] << " to " << prescale << std::endl;
+						std::cout << "KInfoProducer::onEvent :  !!!!!!!!!!! the prescale of " << name << " has changed with respect to the beginning of the luminosity section from " << metaLumi->hltPrescales[i] << " to " << prescale << std::endl;
 					triggerPrescaleError = true;
 				}
 			}
 		}
 		else
 		{
-			for (size_t i = 1; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
+			for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
 				metaLumi->hltPrescales[i] = 1;
 		}
 

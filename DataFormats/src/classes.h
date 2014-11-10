@@ -81,12 +81,12 @@ namespace
 
 		KProvenance dict_KProvenance;
 
-		KLumiMetadata dict_KLumiMetadata;
-		KGenLumiMetadata dict_KGenLumiMetadata;
-		KDataLumiMetadata dict_KDataLumiMetadata;
+		KLumiInfo dict_KLumiInfo;
+		KGenLumiInfo dict_KGenLumiInfo;
+		KDataLumiInfo dict_KDataLumiInfo;
 
-		KEventMetadata dict_KEventMetadata;
-		KGenEventMetadata dict_KGenEventMetadata;
+		KEventInfo dict_KEventInfo;
+		KGenEventInfo dict_KGenEventInfo;
 
 	};
 }

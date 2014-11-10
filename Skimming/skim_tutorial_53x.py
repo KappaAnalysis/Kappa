@@ -77,20 +77,20 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
         'MET', 'BasicJets',
     )
     if data:
-        additional_actives = ['DataMetadata']
+        additional_actives = ['DataInfo']
     else:
-        additional_actives = ['GenMetadata', 'GenParticles']
+        additional_actives = ['GenInfo', 'GenParticles']
     for active in additional_actives:
         process.kappatuple.active.append(active)
 
     # custom whitelist, otherwise the HLT trigger bits are not sufficient!
-    process.kappatuple.Metadata.hltWhitelist = cms.vstring(
+    process.kappatuple.Info.hltWhitelist = cms.vstring(
         # matches 'HLT_Mu17_Mu8_v7' etc.
         "^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
         # matches 'HLT_DoubleMu7_v8' etc.
         "^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
     )
-    process.kappatuple.Metadata.tauDiscrProcessName = cms.untracked.string("XXXXXXXXX")
+    process.kappatuple.Info.tauDiscrProcessName = cms.untracked.string("XXXXXXXXX")
     process.kappatuple.GenParticles.genParticles.selectedStatus = cms.int32(31)
 
     process.pathKappa = cms.Path(

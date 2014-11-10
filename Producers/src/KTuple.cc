@@ -165,13 +165,13 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 	{
 		std::cout << "Init producer " << active[i] << std::endl;
 
-		if (addProducer<KMetadataProducer<KMetadata_Product> >(active[i], "Metadata"))
+		if (addProducer<KInfoProducer<KInfo_Product> >(active[i], "Info"))
 			break;
-		if (addProducer<KDataMetadataProducer<KDataMetadata_Product> >(active[i], "Metadata"))
+		if (addProducer<KDataInfoProducer<KDataInfo_Product> >(active[i], "Info"))
 			break;
-		if (addProducer<KGenMetadataProducer<KGenMetadata_Product> >(active[i], "Metadata"))
+		if (addProducer<KGenInfoProducer<KGenInfo_Product> >(active[i], "Info"))
 			break;
-		if (addProducer<KHepMCMetadataProducer<KGenMetadata_Product> >(active[i], "Metadata"))
+		if (addProducer<KHepMCInfoProducer<KGenInfo_Product> >(active[i], "Info"))
 			break;
 	}
 
@@ -179,13 +179,13 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 	for (size_t i = 0; i < active.size(); ++i)
 	{
 		std::cout << "Init producer " << active[i] << std::endl;
-		if (active[i] == "Metadata")
+		if (active[i] == "Info")
 			continue;
-		else if (active[i] == "DataMetadata")
+		else if (active[i] == "DataInfo")
 			continue;
-		else if (active[i] == "GenMetadata")
+		else if (active[i] == "GenInfo")
 			continue;
-		else if (active[i] == "HepMCMetadata")
+		else if (active[i] == "HepMCInfo")
 			continue;
 
 		size_t nProducers = producers.size();
@@ -217,7 +217,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KTriggerObjectProducer>(active[i]);
 		addProducer<KVertexProducer>(active[i]);
 		addProducer<KVertexSummaryProducer>(active[i]);
-		addProducer<KTreeMetadataProducer >(active[i]);
+		addProducer<KTreeInfoProducer >(active[i]);
 /* are these still used?
 		else if (active[i] == "L1Muons")
 			addProducer<KL1MuonProducer>(psConfig, active[i]);
