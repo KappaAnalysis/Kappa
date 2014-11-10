@@ -19,6 +19,7 @@ struct KLV
 };
 typedef std::vector<KLV> KLVs;
 
+
 struct KVertex
 {
 	RMPoint position;
@@ -58,25 +59,6 @@ const unsigned int KGenParticleChargePosition = 31;
 const unsigned int KGenParticleChargeMask = (unsigned int)1 << KGenParticleChargePosition;
 const unsigned int KGenParticleStatusMask = (unsigned int)3 << KGenParticleStatusPosition;
 const unsigned int KGenParticlePdgIdMask = ((unsigned int)1 << KGenParticleStatusPosition) - (unsigned int)1;
-
-#include "KTrack.h"
-struct KLepton : public KLV
-{
-public:
-	enum Flavour
-	{
-		NONE  = 0,
-		ELECTRON = 1,
-		MUON = 2,
-		TAU  = 3
-	};
-	Flavour flavour;
-
-	char charge;
-	KTrack track;
-};
-
-typedef std::vector<KLepton> KLeptons;
 
 struct KGenParticle : public KLV
 {

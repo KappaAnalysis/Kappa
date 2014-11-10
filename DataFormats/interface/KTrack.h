@@ -166,4 +166,22 @@ struct KTrackSummary
 	unsigned int nTracksHQ;
 };
 
+struct KLepton : public KLV
+{
+public:
+	enum Flavour
+	{
+		NONE  = 0,
+		ELECTRON = 1,
+		MUON = 2,
+		TAU  = 3
+	};
+	Flavour flavour;
+
+	char charge;
+	KTrack track;
+};
+
+typedef std::vector<KLepton> KLeptons;
+
 #endif
