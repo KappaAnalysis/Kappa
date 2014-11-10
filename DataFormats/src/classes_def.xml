@@ -56,12 +56,12 @@
 	<class name="KTaupairVerticesMap"/>
 	<class name="KTaupairVerticesMaps"/>
 
-	<class name="KElectronIdMetadata"/>
+	<class name="KElectronMetadata"/>
 	<class name="KFilterMetadata"/>
-	<class name="KTaggerMetadata"/>
+	<class name="KJetMetadata"/>
 	<class name="KMuonMetadata"/>
-	<class name="KTauDiscriminatorMetadata"/>
-	<class name="KTriggerInfos"/>
+	<class name="KTauMetadata"/>
+	<class name="KTriggerObjectMetadata"/>
 
 	<class name="KProvenance"/>
 

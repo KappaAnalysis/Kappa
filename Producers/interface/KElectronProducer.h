@@ -26,8 +26,8 @@ public:
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>(cfg, _event_tree, _lumi_tree, getLabel()),
 		 namesOfIds(cfg.getParameter<std::vector<std::string> >("ids"))
 {
-		names = new KElectronIdMetadata;
-		_lumi_tree->Bronch("KElectronIdMetadata", "KElectronIdMetadata", &names);
+		names = new KElectronMetadata;
+		_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &names);
 }
 
 	static const std::string getLabel() { return "Electrons"; }
@@ -168,7 +168,7 @@ public:
 	}
 private:
 	std::vector<std::string> namesOfIds;
-	KElectronIdMetadata *names;
+	KElectronMetadata *names;
 
 	std::vector< edm::Handle< edm::ValueMap<double> > > isoVals;
 	edm::Handle<reco::ConversionCollection> hConversions;

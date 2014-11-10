@@ -86,7 +86,7 @@ struct KElectron : KLepton
 	 */
 	std::vector<float> electronIds;
 
-	float getId(const std::string &name, const KElectronIdMetadata *idMetadata) const
+	float getId(const std::string &name, const KElectronMetadata *idMetadata) const
 	{
 		for (unsigned int i = 0; i < idMetadata->idNames.size(); ++i)
 		{

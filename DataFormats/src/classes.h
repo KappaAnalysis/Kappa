@@ -72,12 +72,12 @@ namespace
 		KTaupairVerticesMap dict_KTaupairVerticesMap;
 		KTaupairVerticesMaps dict_KTaupairVerticesMaps;
 
-		KElectronIdMetadata dict_KElectronIdMetadata;
+		KElectronMetadata dict_KElectronMetadata;
 		KFilterMetadata dict_KFilterMetadata;
-		KTaggerMetadata dict_KTaggerMetadata;
+		KJetMetadata dict_KJetMetadata;
 		KMuonMetadata dict_KMuonMetadata;
-		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
-		KTriggerInfos dict_KTriggerInfos;
+		KTauMetadata dict_KTauMetadata;
+		KTriggerObjectMetadata dict_KTriggerObjectMetadata;
 
 		KProvenance dict_KProvenance;
 

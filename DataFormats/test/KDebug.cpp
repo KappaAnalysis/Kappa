@@ -177,7 +177,7 @@ std::ostream &operator<<(std::ostream &os, const KEventMetadata &m)
 	return os << "Event ID = " << m.nRun << ":" << m.nLumi << ":" << m.nBX << ":" << m.nEvent;
 }
 
-std::ostream &operator<<(std::ostream &os, const KTauDiscriminatorMetadata &m)
+std::ostream &operator<<(std::ostream &os, const KTauMetadata &m)
 {
 	for (std::vector<std::string>::const_iterator it = m.binaryDiscriminatorNames.begin(); it != m.binaryDiscriminatorNames.end(); ++it)
 		os << "Binary tau discriminator: " << *it << std::endl;

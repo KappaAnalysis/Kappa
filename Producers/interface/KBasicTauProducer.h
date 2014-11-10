@@ -31,8 +31,8 @@ public:
 
 			binaryTauDiscriminatorBitMap[names[i]] = std::map<std::string, unsigned int>();
 			floatTauDiscriminatorBitMap[names[i]] = std::map<std::string, unsigned int>();
-			discrMetadataMap[names[i]] = new KTauDiscriminatorMetadata();
-			_lumi_tree->Bronch(names[i].c_str(), "KTauDiscriminatorMetadata", &discrMetadataMap[names[i]]);
+			discrMetadataMap[names[i]] = new KTauMetadata();
+			_lumi_tree->Bronch(names[i].c_str(), "KTauMetadata", &discrMetadataMap[names[i]]);
 
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
 
@@ -227,7 +227,7 @@ public:
 protected:
 	std::map<std::string, std::vector<std::string> > preselectionDiscr;
 	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist;
-	std::map<std::string, KTauDiscriminatorMetadata *> discrMetadataMap;
+	std::map<std::string, KTauMetadata *> discrMetadataMap;
 	std::map<std::string, std::string > tauDiscrProcessName;
 	std::map<std::string, std::map<std::string, unsigned int> > binaryTauDiscriminatorBitMap;
 	std::map<std::string, std::map<std::string, unsigned int> > floatTauDiscriminatorBitMap;

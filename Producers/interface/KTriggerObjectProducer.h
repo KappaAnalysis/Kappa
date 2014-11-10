@@ -29,9 +29,9 @@ public:
 	KTriggerObjectProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjects>(cfg, _event_tree, _run_tree, getLabel(), true)
 	{
-		trgInfos = new KTriggerInfos;
-		_run_tree->Bronch("KTriggerInfos", "KTriggerInfos", &trgInfos);
-		this->registerBronch("KTriggerObjects", "KTriggerObjects", this->psBase,
+		toMetadata = new KTriggerObjectMetadata;
+		_run_tree->Bronch("triggerObjectMetadata", "KTriggerObjectMetadata", &toMetadata);
+		this->registerBronch("triggerObjects", "KTriggerObjects", this->psBase,
 			cfg.getParameter<edm::InputTag>("hltTag"));
 	}
 
@@ -40,13 +40,13 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		trgInfos->menu = KMetadataProducerBase::hltConfig.tableName();
-		trgInfos->toFilter.clear();
+		toMetadata->menu = KMetadataProducerBase::hltConfig.tableName();
+		toMetadata->toFilter.clear();
 		return true;
 	}
 
 protected:
-	KTriggerInfos *trgInfos;
+	KTriggerObjectMetadata *toMetadata;
 	KTriggerObjects *trgObjects;
 
 	virtual void fillProduct(const trigger::TriggerEvent &triggerEventHandle, KTriggerObjects &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
@@ -58,14 +58,14 @@ protected:
 		std::map<size_t, size_t> toFWK2Kappa;
 		
 		out.toIdxFilter.clear();
-		trgInfos->nFiltersPerHLT.clear();
+		toMetadata->nFiltersPerHLT.clear();
 
 		// run over all triggers
 		for (size_t i = 0; i < KMetadataProducerBase::hltKappa2FWK.size(); ++i)
 		{
 			if (i == 0)
 			{
-				trgInfos->nFiltersPerHLT.push_back(0);
+				toMetadata->nFiltersPerHLT.push_back(0);
 				continue;
 			}
 
@@ -78,12 +78,12 @@ protected:
 			//const std::vector<std::string>& saveTagsModules = KMetadataProducerBase::hltConfig.moduleLabels(hltIdx);
 			
 			// allocate memory
-			trgInfos->nFiltersPerHLT.push_back(saveTagsModules.size());
-			if (trgInfos->toFilter.empty() || trgInfos->toFilter.size() < trgInfos->getMaxFilterIndex(i))
+			toMetadata->nFiltersPerHLT.push_back(saveTagsModules.size());
+			if (toMetadata->toFilter.empty() || toMetadata->toFilter.size() < toMetadata->getMaxFilterIndex(i))
 			{
-				trgInfos->toFilter.resize(trgInfos->getMaxFilterIndex(i) + 1);
+				toMetadata->toFilter.resize(toMetadata->getMaxFilterIndex(i) + 1);
 			}
-			out.toIdxFilter.resize(trgInfos->getMaxFilterIndex(i) + 1);
+			out.toIdxFilter.resize(toMetadata->getMaxFilterIndex(i) + 1);
 			
 			// run over all filters for this trigger
 			for (size_t m = 0; m < saveTagsModules.size(); ++m)
@@ -99,23 +99,23 @@ protected:
 							std::cout << "<" << saveTagsModules[m] << "> ";
 						
 						// current index in output vectors
-						size_t currentIndex = trgInfos->getMinFilterIndex(i) + m;
+						size_t currentIndex = toMetadata->getMinFilterIndex(i) + m;
 						
 						// register filter name in the meta data and check possible changes in names within lumi section
-						if (trgInfos->toFilter[currentIndex] == "") // Register L1L2 object
+						if (toMetadata->toFilter[currentIndex] == "") // Register L1L2 object
 						{
-							trgInfos->toFilter[currentIndex] = saveTagsModules[m];
+							toMetadata->toFilter[currentIndex] = saveTagsModules[m];
 							if (verbosity > 0)
-								std::cout << "\t" << name << " object: " << trgInfos->toFilter[currentIndex] << std::endl;
+								std::cout << "\t" << name << " object: " << toMetadata->toFilter[currentIndex] << std::endl;
 						}
-						else if (trgInfos->toFilter[currentIndex] != saveTagsModules[m]) // Check existing entry
+						else if (toMetadata->toFilter[currentIndex] != saveTagsModules[m]) // Check existing entry
 						{
 							bool isPresent = (std::find(KMetadataProducerBase::svHLTFailToleranceList.begin(),
-												KMetadataProducerBase::svHLTFailToleranceList.end(), trgInfos->toFilter[currentIndex])
+												KMetadataProducerBase::svHLTFailToleranceList.end(), toMetadata->toFilter[currentIndex])
 												!= KMetadataProducerBase::svHLTFailToleranceList.end());
 							if(!isPresent) //Check if known problem that can be skipped
 							{
-								std::cout << std::endl << name << " index mismatch! "<< trgInfos->toFilter[currentIndex] << " changed to " << saveTagsModules[m] << std::endl;
+								std::cout << std::endl << name << " index mismatch! "<< toMetadata->toFilter[currentIndex] << " changed to " << saveTagsModules[m] << std::endl;
 								std::cout << "Try blacklisting the trigger " << hltConfig.triggerName(hltIdx) << " or add the trigger objects to the hltFailToleranceList" << std::endl;
 								exit(1);
 							}

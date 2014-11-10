@@ -46,7 +46,7 @@ public:
 		selectedMuonTriggerObjects.resize(tempIt - selectedMuonTriggerObjects.begin());
 
 		muonMetadata = new KMuonMetadata();
-		_lumi_tree->Bronch("KMuonMetadata", "KMuonMetadata", &muonMetadata);
+		_lumi_tree->Bronch("muonMetadata", "KMuonMetadata", &muonMetadata);
 
 	}
 

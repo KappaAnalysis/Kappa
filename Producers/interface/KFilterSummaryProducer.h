@@ -16,7 +16,7 @@ public:
 		KBaseMatchingProducer<KFilterSummary>(cfg, _event_tree, _lumi_tree, getLabel())
 	{
 		names = new KFilterMetadata;
-		_lumi_tree->Bronch("KFilterMetadata", "KFilterMetadata", &names);
+		_lumi_tree->Bronch("filterMetadata", "KFilterMetadata", &names);
 	}
 
 	static const std::string getLabel() { return "FilterSummary"; }

@@ -24,7 +24,7 @@ struct KBasicTau : KLepton
 	unsigned long long binaryDiscriminators;
 	std::vector<float> floatDiscriminators;
 
-	bool hasID(const std::string& name, const KTauDiscriminatorMetadata * lumimetadata) const
+	bool hasID(const std::string& name, const KTauMetadata * lumimetadata) const
 	{
 		for(size_t i = 0; i < lumimetadata->binaryDiscriminatorNames.size(); ++i)
 			if(lumimetadata->binaryDiscriminatorNames[i] == name)
@@ -32,7 +32,7 @@ struct KBasicTau : KLepton
 		return false; // Named discriminator does not exist
 	}
 
-	float getDiscriminator(const std::string& name, const KTauDiscriminatorMetadata * lumimetadata) const
+	float getDiscriminator(const std::string& name, const KTauMetadata * lumimetadata) const
 	{
 		for(size_t i = 0; i < lumimetadata->floatDiscriminatorNames.size(); ++i)
 			if(lumimetadata->floatDiscriminatorNames[i] == name)

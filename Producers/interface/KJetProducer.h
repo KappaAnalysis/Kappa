@@ -14,8 +14,8 @@ public:
 		KBaseMultiLVProducer<reco::PFJetCollection, KJets>(cfg, _event_tree, _run_tree, getLabel()),
 		 tagger(cfg.getParameter<std::vector<std::string> >("taggers"))
 {
-		names = new KTaggerMetadata;
-		_run_tree->Bronch("KTaggerMetadata", "KTaggerMetadata", &names);
+		names = new KJetMetadata;
+		_run_tree->Bronch("jetMetadata", "KJetMetadata", &names);
 }
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
@@ -168,7 +168,7 @@ public:
 private:
 	std::vector<std::string> tagger;
 
-	KTaggerMetadata *names;
+	KJetMetadata *names;
 
 	std::map< std::string, edm::Handle<edm::ValueMap<float>> > tagmap_qg;
 	std::map< std::string, edm::Handle<edm::ValueMap<float>> > tagmap_pu;

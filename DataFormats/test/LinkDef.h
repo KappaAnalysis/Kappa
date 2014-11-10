@@ -89,7 +89,7 @@
 #pragma link C++ class std::vector<KElectron>+;
 #pragma link C++ typedef KElectrons;
 
-#pragma link C++ struct KTauDiscriminatorMetadata+;
+#pragma link C++ struct KTauMetadata+;
 #pragma link C++ struct KMuonMetadata+;
 
 #pragma link C++ struct KBasicTau+;
@@ -146,9 +146,9 @@
 #pragma link C++ struct KHCALNoiseSummary+;
 #pragma link C++ struct KFilterSummary+;
 #pragma link C++ struct KFilterMetadata+;
-#pragma link C++ struct KTaggerMetadata+;
-#pragma link C++ struct KElectronIdMetadata+;
-#pragma link C++ struct KTriggerInfos+;
+#pragma link C++ struct KJetMetadata+;
+#pragma link C++ struct KElectronMetadata+;
+#pragma link C++ struct KTriggerObjectMetadata+;
 
 #pragma link C++ class std::vector<std::vector<size_t> >+;
 #pragma link C++ struct KTriggerObjects+;

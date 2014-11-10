@@ -223,7 +223,7 @@ struct KL1Muon : KLV
 };
 typedef std::vector<KL1Muon> KL1Muons;
 
-struct KTriggerInfos
+struct KTriggerObjectMetadata
 {
 	std::string menu;
 	

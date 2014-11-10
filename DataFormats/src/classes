@@ -40,12 +40,12 @@ KVertex					KVertices
 KVertexSummary
 KTaupairVerticesMap		KTaupairVerticesMaps
 
-KElectronIdMetadata
+KElectronMetadata
 KFilterMetadata
-KTaggerMetadata
+KJetMetadata
 KMuonMetadata
-KTauDiscriminatorMetadata
-KTriggerInfos
+KTauMetadata
+KTriggerObjectMetadata
 #################################
 
 KProvenance

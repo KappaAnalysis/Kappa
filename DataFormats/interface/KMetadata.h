@@ -29,7 +29,7 @@ struct KLumiMetadata
 	//std::vector<std::vector<std::string> > filterNames;
 };
 
-struct KTauDiscriminatorMetadata
+struct KTauMetadata
 {
 	std::vector<std::string> binaryDiscriminatorNames;
 	std::vector<std::string> floatDiscriminatorNames;
@@ -40,12 +40,12 @@ struct KMuonMetadata
 	std::vector<std::string> hltNames;
 };
 
-struct KElectronIdMetadata
+struct KElectronMetadata
 {
 	std::vector<std::string> idNames;
 };
 
-struct KTaggerMetadata
+struct KJetMetadata
 {
 	std::vector<std::string> taggernames;
 	std::vector<std::string> pujetidnames;

@@ -39,7 +39,7 @@ struct KJet : public KBasicJet
     std::vector<float> taggers;
     unsigned int puJetID;
 
-    float getTagger(const std::string &name, const KTaggerMetadata *taggermetadata) const
+    float getTagger(const std::string &name, const KJetMetadata *taggermetadata) const
     {
  		for (unsigned int i = 0; i < taggermetadata->taggernames.size(); ++i)
         {
@@ -50,7 +50,7 @@ struct KJet : public KBasicJet
 		exit(1);
     }
 
-    bool getpuJetID(const std::string &name, const KTaggerMetadata *taggermetadata) const
+    bool getpuJetID(const std::string &name, const KJetMetadata *taggermetadata) const
     {
 		for (unsigned int i = 0; i < taggermetadata->pujetidnames.size(); ++i)
         {
