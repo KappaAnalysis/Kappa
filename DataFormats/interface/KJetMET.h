@@ -77,19 +77,19 @@ struct KJet : public KBasicJet
 };
 typedef std::vector<KJet> KJets;
 
+
 struct KBasicMET : public KLV
 {
 	double sumEt;
-
 	ROOT::Math::SMatrix<double, 2, 2, ROOT::Math::MatRepSym<double, 2> > significance;
 };
 
 struct KMET : public KBasicMET
 {
-	double chargedEMEtFraction, chargedHadEtFraction;
-	double neutralEMEtFraction, neutralHadEtFraction;
-	double muonEtFraction;
-	double type6EtFraction, type7EtFraction;
+	float photonFraction, electronFraction;
+	float neutralHadronFraction, chargedHadronFraction;
+	float muonFraction;
+	float hfHadronFraction, hfEMFraction;
 };
 
 struct KHCALNoiseSummary

@@ -31,13 +31,14 @@ protected:
 			copyP4(in.at(0), out.p4);
 			out.sumEt = in.at(0).sumEt();
 
-			out.chargedEMEtFraction = in.at(0).ChargedEMEtFraction();
-			out.chargedHadEtFraction = in.at(0).ChargedHadEtFraction();
-			out.muonEtFraction = in.at(0).MuonEtFraction();
-			out.neutralEMEtFraction = in.at(0).NeutralEMEtFraction();
-			out.neutralHadEtFraction = in.at(0).NeutralHadEtFraction();
-			out.type6EtFraction = in.at(0).Type6EtFraction();
-			out.type7EtFraction = in.at(0).Type7EtFraction();
+			out.photonFraction = in.at(0).photonEtFraction();
+			out.neutralHadronFraction = in.at(0).neutralHadronEtFraction();
+			out.electronFraction = in.at(0).electronEtFraction();
+			out.chargedHadronFraction = in.at(0).chargedHadronEtFraction();
+			out.muonFraction = in.at(0).muonEtFraction();
+			out.hfHadronFraction = in.at(0).HFHadronEtFraction();
+			out.hfEMFraction = in.at(0).HFEMEtFraction();
+
 
 			TMatrixD mat = in.at(0).getSignificanceMatrix();
 			if (mat(0,1) != mat(1,0))

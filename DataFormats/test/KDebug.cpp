@@ -28,9 +28,9 @@ std::ostream &operator<<(std::ostream &os, const KBasicMET &met)
 std::ostream &operator<<(std::ostream &os, const KMET &met)
 {
 	os << static_cast<const KBasicMET>(met) << std::endl;
-	os << "\tCharged (em,had): " << met.chargedEMEtFraction << ", " << met.chargedHadEtFraction << std::endl;
-	os << "\tNeutral (em,had): " << met.neutralEMEtFraction << ", " << met.neutralHadEtFraction << std::endl;
-	os << "\tMuonF=" << met.muonEtFraction << " type6F=" << met.type6EtFraction << " type7F=" << met.type7EtFraction;
+	os << "\tCHF=" << met.chargedHadronFraction << " NHF=" << met.neutralHadronFraction << std::endl;
+	os << "\teF=" << met.electronFraction << " photF=" << met.photonFraction << " muF=" << met.muonFraction << std::endl;
+	os << "\tHFHadF=" << met.hfHadronFraction << " HFEMF=" << met.hfEMFraction;
 	return os;
 }
 
