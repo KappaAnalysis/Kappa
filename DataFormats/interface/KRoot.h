@@ -2,8 +2,8 @@
  *   Fred Stober <stober@cern.ch>
  */
 
-#ifndef KAPPA_LORENTZVECTOR_H
-#define KAPPA_LORENTZVECTOR_H
+#ifndef KAPPA_ROOT_H
+#define KAPPA_ROOT_H
 
 #include <Math/PtEtaPhiM4D.h>
 #include <Math/LorentzVector.h>
