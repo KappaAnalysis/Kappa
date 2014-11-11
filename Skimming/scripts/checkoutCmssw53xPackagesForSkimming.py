@@ -68,14 +68,18 @@ def checkoutPackages(args):
 		"git clone git://github.com/amarini/QuarkGluonTagger.git -b v1-2-3",
 
 		# PU Jet ID as used in TauTau and needed for MVA MET (does not work with git cms-cvs-history and does not compile with cvs co)
-		# https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideCMSDataAnalysisSchoolJetMetAnalysis#MET_Recipe
-		# https://twiki.cern.ch/twiki/bin/view/CMS/MVAMet
+		# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#CMSSW_5_3_22_patch1_requires_slc
 
+
+		#PAT Recipe (https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePATReleaseNotes52X)
 		"git cms-addpkg PhysicsTools/PatAlgos",
-		"git cms-merge-topic -u TaiSakuma:53X-met-131120-01",
-		"git cms-merge-topic -u cms-analysis-tools:5_3_14-updateSelectorUtils",
-		"git cms-merge-topic -u cms-analysis-tools:5_3_13_patch2-testNewTau",
-		"git cms-merge-topic -u cms-met:53X-MVaNoPuMET-20131217-01",
+		"git cms-merge-topic -u cms-analysis-tools:5_3_16_patch1-testNewTau",
+
+		#MET Recipe (https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMETRecipe53X)
+		"git cms-merge-topic -u TaiSakuma:53X-met-140217-01",
+
+		#MVA & No-PU MET Recipe
+		"git-cms-merge-topic -u cms-met:53X-MVaNoPuMET-20140606-01",
 
 		"git clone git://github.com/ajaykumar649/Jets_Short.git",
 		"cp -r Jets_Short/* " + cmsswsrc,
