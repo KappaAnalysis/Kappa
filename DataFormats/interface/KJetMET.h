@@ -28,13 +28,13 @@ typedef std::vector<KCaloJet> KCaloJets;
 
 struct KBasicJet : public KLV
 {
-	double area;
-	float neutralEMFraction, chargedEMFraction;
-	float neutralHadFraction, chargedHadFraction;
-	float muonFraction, photonFraction, electronFraction;
-	float HFHadFraction, HFEMFraction;
+	float area;
 
-	int nConst, nCharged;
+	float neutralHadronFraction, chargedHadronFraction;
+	float muonFraction, photonFraction, electronFraction;
+	float hfHadronFraction, hfEMFraction;
+
+	int nConstituents, nCharged;
 };
 typedef std::vector<KBasicJet> KBasicJets;
 

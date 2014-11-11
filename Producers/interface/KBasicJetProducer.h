@@ -25,17 +25,15 @@ public:
 		copyP4(in, out.p4);
 
 		out.area = in.jetArea();
-		out.nConst = in.nConstituents();
+		out.nConstituents = in.nConstituents();
 		out.nCharged = in.chargedMultiplicity();
-		out.neutralEMFraction = in.neutralEmEnergyFraction();
-		out.chargedEMFraction = in.chargedEmEnergyFraction();
-		out.neutralHadFraction = in.neutralHadronEnergyFraction();
-		out.chargedHadFraction = in.chargedHadronEnergyFraction();
+		out.neutralHadronFraction = in.neutralHadronEnergyFraction();
+		out.chargedHadronFraction = in.chargedHadronEnergyFraction();
 		out.muonFraction = in.muonEnergyFraction();
 		out.photonFraction = in.photonEnergyFraction();
 		out.electronFraction = in.electronEnergyFraction();
-		out.HFHadFraction = in.HFHadronEnergyFraction();
-		out.HFEMFraction = in.HFEMEnergyFraction();
+		out.hfHadronFraction = in.HFHadronEnergyFraction();
+		out.hfEMFraction = in.HFEMEnergyFraction();
 	}
 };
 

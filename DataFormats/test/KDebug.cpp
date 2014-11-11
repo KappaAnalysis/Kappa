@@ -61,9 +61,10 @@ std::ostream &operator<<(std::ostream &os, const KCaloJet &jet)
 std::ostream &operator<<(std::ostream &os, const KBasicJet &jet)
 {
 	os << static_cast<const KLV>(jet) << std::endl;
-	os << "\tCharged (em,had): " << jet.chargedEMFraction << ", " << jet.chargedHadFraction << std::endl;
-	os << "\tNeutral (em,had): " << jet.neutralEMFraction << ", " << jet.neutralHadFraction << std::endl;
-	return os << "\t#Const=" << jet.nConst << " #Charged=" << jet.nCharged << " area=" << jet.area;
+	os << "\tCHF=" << jet.chargedHadronFraction << " NHF=" << jet.neutralHadronFraction << std::endl;
+	os << "\teF=" << jet.electronFraction << " photF=" << jet.photonFraction << " muF=" << jet.muonFraction << std::endl;
+	os << "\tHFHadF=" << jet.hfHadronFraction << " HFEMF=" << jet.hfEMFraction << std::endl;
+	return os << "\tnConst=" << jet.nConstituents << " nCharged=" << jet.nCharged << " area=" << jet.area;
 }
 
 std::ostream &operator<<(std::ostream &os, const KJet &jet)
