@@ -14,10 +14,15 @@
 
 struct KCaloJet : public KLV
 {
-	double area;
-	double fHPD, fRBX;
-	double fEM, fHO;
-	int nConst, n90Hits;
+	float area;          //< jet area
+
+	float fEM;           //< energy fraction in the ECAL
+	float fHO;           //< energy fraction in HO
+	float fHPD;          //< energy fraction from dominant hybrid photo diode
+	float fRBX;          //< energy fraction from dominant readout box
+
+	short nConstituents; //< number of constituents (calo towers)
+	short n90Hits;       //< number of hits 90% of the jet energy
 };
 typedef std::vector<KCaloJet> KCaloJets;
 

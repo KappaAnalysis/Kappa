@@ -53,7 +53,7 @@ std::ostream &operator<<(std::ostream &os, const KElectron &e)
 std::ostream &operator<<(std::ostream &os, const KCaloJet &jet)
 {
 	os << static_cast<const KLV>(jet) << std::endl;
-	os << "\t#Const=" << jet.nConst << " n90Hits=" << jet.n90Hits << std::endl;
+	os << "\tnConstituents=" << jet.nConstituents << " n90Hits=" << jet.n90Hits << std::endl;
 	os << "\tfHPD=" << jet.fHPD << " fRBX=" << jet.fRBX << std::endl;
 	return os << "\tfEM=" << jet.fEM << " fHO=" << jet.fHO << " area=" << jet.area;
 }

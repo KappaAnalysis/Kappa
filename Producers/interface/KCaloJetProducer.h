@@ -36,7 +36,7 @@ public:
 		copyP4(in, out.p4);
 		out.area = in.jetArea();
 		out.fEM = in.emEnergyFraction();
-		out.nConst = in.getJetConstituents().size();
+		out.nConstituents = in.getJetConstituents().size();
 
 		// Jet ID variables
 		out.n90Hits = -2;
@@ -48,11 +48,8 @@ public:
 			edm::RefToBase<reco::Jet> jetRef(edm::Ref<reco::CaloJetCollection>(handle, this->nCursor));
 			const reco::JetID &jetID = (*hJetID)[jetRef];
 			out.n90Hits = (int)(jetID.n90Hits);
-			// energy fraction from dominant hybrid photo diode
 			out.fHPD = jetID.fHPD;
-			// energy fraction from dominant readout box
 			out.fRBX = jetID.fRBX;
-			// energy fraction in HO
 			out.fHO = jetID.fHO;
 		}
 	}
