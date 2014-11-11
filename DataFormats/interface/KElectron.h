@@ -15,7 +15,7 @@ struct KElectronMetadata
 	std::vector<std::string> idNames;
 };
 
-struct KElectron : KLepton
+struct KElectron : public KLepton
 {
 	/// Isolation variables
 	float trackIso03;   // dr03TkSumPt: track iso deposit with electron footprint removed (Delta R = 0.3)

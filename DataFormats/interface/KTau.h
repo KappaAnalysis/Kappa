@@ -17,7 +17,7 @@ struct KTauMetadata
 	std::vector<std::string> floatDiscriminatorNames;
 };
 
-struct KBasicTau : KLepton
+struct KBasicTau : public KLepton
 {
 	/*
 	virtual ~KBasicTau() {};
@@ -49,7 +49,7 @@ struct KBasicTau : KLepton
 typedef std::vector<KBasicTau> KBasicTaus;
 
 
-struct KTau : KBasicTau
+struct KTau : public KBasicTau
 {
 	float emFraction;
 

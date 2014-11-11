@@ -16,7 +16,7 @@ struct KMuonMetadata
 	std::vector<std::string> hltNames;
 };
 
-struct KMuon : KLepton
+struct KMuon : public KLepton
 {
 	/*
 	virtual ~KMuon() {};
@@ -88,7 +88,7 @@ struct KMuon : KLepton
 typedef std::vector<KMuon> KMuons;
 
 
-struct KL1Muon : KLV
+struct KL1Muon : public KLV
 {
 	// bit    meaning
 	// 0-2    quality
