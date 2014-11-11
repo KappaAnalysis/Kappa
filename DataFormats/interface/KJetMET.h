@@ -40,39 +40,41 @@ typedef std::vector<KBasicJet> KBasicJets;
 
 struct KJetMetadata
 {
-	std::vector<std::string> taggernames;
-	std::vector<std::string> pujetidnames;
+	std::vector<std::string> tagNames;
+	std::vector<std::string> idNames;
 };
 
 struct KJet : public KBasicJet
 {
-    std::vector<float> taggers;
-    unsigned int puJetID;
+	std::vector<float> tags;
+	unsigned int binaryIds;
 
-    float getTagger(const std::string &name, const KJetMetadata *taggermetadata) const
-    {
- 		for (unsigned int i = 0; i < taggermetadata->taggernames.size(); ++i)
-        {
-            if (taggermetadata->taggernames[i] == name)
-				return taggers[i];
+	float getTag(const std::string& name, const KJetMetadata *jetmetadata, bool check = true) const
+	{
+		for (unsigned int i = 0; i < jetmetadata->tagNames.size(); ++i)
+		{
+			if (jetmetadata->tagNames[i] == name)
+				return tags[i];
 		}
-		std::cout << "Tagger " << name << " not available!" << std::endl;
+		if (!check)
+			return -999.;
+		std::cout << "Tag \"" << name << "\" not available!" << std::endl;
 		exit(1);
-    }
+	}
 
-    bool getpuJetID(const std::string &name, const KJetMetadata *taggermetadata) const
-    {
-		for (unsigned int i = 0; i < taggermetadata->pujetidnames.size(); ++i)
-        {
-            if (taggermetadata->pujetidnames[i] == name)
-                return puJetID & (1 << i);
-        }
-		std::cout << "PUJetID " << name << " not available!" << std::endl;
+	bool getId(const std::string& name, const KJetMetadata *jetmetadata, bool check = true) const
+	{
+		for (unsigned int i = 0; i < jetmetadata->idNames.size(); ++i)
+		{
+			if (jetmetadata->idNames[i] == name)
+				return binaryIds & (1 << i);
+		}
+		if (!check)
+			return false;
+		std::cout << "Binary ID \"" << name << "\" not available!" << std::endl;
 		exit(1);
-    }
-
+	}
 };
-
 typedef std::vector<KJet> KJets;
 
 struct KBasicMET : public KLV

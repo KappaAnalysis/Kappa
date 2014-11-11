@@ -29,9 +29,9 @@ public:
 				|| (tagger[i] == "puJetIDCutbasedMedium")
 				|| (tagger[i] == "puJetIDCutbasedTight")
 				|| (tagger[i] == "puJetIDMET") )
-				names->pujetidnames.push_back(tagger[i]);
+				names->idNames.push_back(tagger[i]);
 			else
-				names->taggernames.push_back(tagger[i]);
+				names->tagNames.push_back(tagger[i]);
 		}
 		return KBaseMultiLVProducer<reco::PFJetCollection, KJets>::onLumi(lumiBlock, setup);
 	}
@@ -121,9 +121,9 @@ public:
 		for (size_t i = 0; i < tagger.size(); ++i)
 		{
 			if ( (tagger[i] == "QGlikelihood") || (tagger[i] == "QGmlp"))
-				out.taggers.push_back(getvalue( (*tagmap_qg[tagger[i]])[jetRef] ) );
+				out.tags.push_back(getvalue( (*tagmap_qg[tagger[i]])[jetRef] ) );
 			else if ((tagger[i] == "puJetIDFullDiscriminant") || (tagger[i] == "puJetIDCutbasedDiscriminant"))
-				out.taggers.push_back(getsignedvalue( (*tagmap_pu[tagger[i]])[jetRef] ) );
+				out.tags.push_back(getsignedvalue( (*tagmap_pu[tagger[i]])[jetRef] ) );
 			else if (tagger[i] == "puJetIDFullLoose")
 				puJetID.push_back(( (*puJetIDfull_Handle)[jetRef] & (1 << 2) ) != 0);
 			else if (tagger[i] == "puJetIDFullMedium")
@@ -141,12 +141,12 @@ public:
 			else
 			{
 				const reco::JetTagCollection & tags = *(tagmap_b[tagger[i]].product());
-				out.taggers.push_back(getvalue( tags[this->nCursor].second ) );
+				out.tags.push_back(getvalue( tags[this->nCursor].second ) );
 			}
 		}
 
 		for (unsigned int i = 0; i < puJetID.size(); ++i)
-			out.puJetID |= puJetID[i] << i;		
+			out.binaryIds |= puJetID[i] << i;
 
 		// PF variables:
 		copyP4(in, out.p4);

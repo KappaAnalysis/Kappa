@@ -70,10 +70,10 @@ std::ostream &operator<<(std::ostream &os, const KBasicJet &jet)
 std::ostream &operator<<(std::ostream &os, const KJet &jet)
 {
 	os << static_cast<const KBasicJet>(jet) << std::endl;
-	os << "taggers: " << std::endl;
-    for (size_t i = 0; i < jet.taggers.size(); ++i)
-        os << jet.taggers[i] << " " << std::endl;
-	return os << "\tpuJetId: " << jet.puJetID << std::endl;
+	os << "tags: " << std::endl;
+    for (size_t i = 0; i < jet.tags.size(); ++i)
+        os << jet.tags[i] << " " << std::endl;
+	return os << "\tIDs: " << std::bitset<8>(jet.binaryIds) << std::endl;
 }
 
 std::ostream &operator<<(std::ostream &os, const KBasicTau &tau)
