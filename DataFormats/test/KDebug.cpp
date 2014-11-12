@@ -107,7 +107,7 @@ std::ostream &operator<<(std::ostream &os, const KVertexSummary &vs)
 std::ostream &operator<<(std::ostream &os, const KTaupairVerticesMap &pvs)
 {
 	for(size_t i = 0; i < pvs.diTauKey.size(); ++i)
-		os << "diTauKey=" << pvs.diTauKey[i] << " Vertex:" << pvs.refittedVertices[i] << std::endl;
+		os << "diTauKey=" << pvs.diTauKey[i] << " Vertex:" << pvs.vertices[i] << std::endl;
 	return os;
 }
 

@@ -55,7 +55,7 @@ public:
 			KVertex tmpVertex;
 			out.diTauKey.push_back(0);
 			KVertexProducer::fillVertex(in, tmpVertex);
-			out.refittedVertices.push_back( tmpVertex);
+			out.vertices.push_back( tmpVertex);
 		}
 
 		std::vector<const reco::Track*> recoTracks;
@@ -76,7 +76,7 @@ public:
 					KVertex tmpVertex;
 					KVertexProducer::fillVertex(vertex->second, tmpVertex);
 					out.diTauKey.push_back(vertex->first);
-					out.refittedVertices.push_back(tmpVertex);
+					out.vertices.push_back(tmpVertex);
 				}
 			}
 		}

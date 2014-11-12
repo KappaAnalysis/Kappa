@@ -5,19 +5,19 @@
 #include "Kappa.h"
 
 std::ostream &operator<<(std::ostream &os, const KLV &lv);
-std::ostream &operator<<(std::ostream &os, const KDataBeamSpot &bs);
-std::ostream &operator<<(std::ostream &os, const KDataMET &met);
-std::ostream &operator<<(std::ostream &os, const KDataPFMET &met);
+std::ostream &operator<<(std::ostream &os, const KBeamSpot &bs);
+std::ostream &operator<<(std::ostream &os, const KBasicMET &met);
+std::ostream &operator<<(std::ostream &os, const KMET &met);
 std::ostream &operator<<(std::ostream &os, const KTrackSummary &s);
 std::ostream &operator<<(std::ostream &os, const KGenParticle &p);
-std::ostream &operator<<(std::ostream &os, const KDataElectron &e);
-std::ostream &operator<<(std::ostream &os, const KDataJet &jet);
-std::ostream &operator<<(std::ostream &os, const KDataPFJet &jet);
-std::ostream &operator<<(std::ostream &os, const KDataPFTaggedJet &jet);
-std::ostream &operator<<(std::ostream &os, const KDataTau &tau);
-std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau);
-std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau);
-std::ostream &operator<<(std::ostream &os, const KDataVertex &vertex);
+std::ostream &operator<<(std::ostream &os, const KElectron &e);
+std::ostream &operator<<(std::ostream &os, const KCaloJet &jet);
+std::ostream &operator<<(std::ostream &os, const KBasicJet &jet);
+std::ostream &operator<<(std::ostream &os, const KJet &jet);
+std::ostream &operator<<(std::ostream &os, const KBasicTau &tau);
+std::ostream &operator<<(std::ostream &os, const KCaloTau &tau);
+std::ostream &operator<<(std::ostream &os, const KGenTau &tau);
+std::ostream &operator<<(std::ostream &os, const KVertex &vertex);
 std::ostream &operator<<(std::ostream &os, const KVertexSummary &vs);
 std::ostream &operator<<(std::ostream &os, const KTaupairVerticesMap &pvs);
 std::ostream &operator<<(std::ostream &os, const KPileupDensity &pu);

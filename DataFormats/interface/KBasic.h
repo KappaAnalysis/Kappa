@@ -163,8 +163,8 @@ typedef std::vector<KGenParticle> KGenParticles;
 
 struct KTaupairVerticesMap
 {
-	std::vector<KVertex> refittedVertices;
 	std::vector<int> diTauKey;
+	std::vector<KVertex> vertices;
 };
 typedef std::vector<KTaupairVerticesMap> KTaupairVerticesMaps;
 
