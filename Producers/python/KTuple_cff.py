@@ -138,6 +138,16 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
+	UnbiasedDiTauPVs = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+		rename = cms.vstring("$ => UnbiasedRefit"),
+		whitelist = cms.vstring("offlinePrimaryVertices"),
+		blacklist = cms.vstring(),
+		rename_whitelist = cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
+
+
 	BeamSpot = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),
 

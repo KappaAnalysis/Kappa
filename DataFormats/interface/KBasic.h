@@ -11,6 +11,7 @@
 #include "KLorentzVector.h"
 #include <vector>
 #include <Math/SMatrix.h>
+#include <map>
 
 struct KLV
 {
@@ -37,6 +38,12 @@ struct KDataVertex
 	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
 };
 typedef std::vector<KDataVertex> KDataVertices;
+
+struct KUnbiasedDiTauPV
+{
+	std::map<int, KDataVertex> refittedVertices;
+};
+typedef std::vector<KUnbiasedDiTauPV> KUnbiasedDiTauPVs;
 
 struct KVertexSummary
 {
