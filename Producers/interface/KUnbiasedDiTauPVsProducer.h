@@ -30,7 +30,7 @@ public:
 		return true;
 	}
 
-	int createRecoPFTauHash(const reco::PFTau tau)
+	inline int createRecoPFTauHash(const reco::PFTau tau)
 	{
 		return ( std::hash<double>()(tau.leadPFCand()->px()) ^
 		         std::hash<double>()(tau.leadPFCand()->py()) ^ 
@@ -43,24 +43,36 @@ protected:
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
+		this->deltaRThreshold = pset.getParameter<int>("deltaRThreshold");
+		this->beamSpotSource = pset.getParameter<edm::InputTag>("offlineBeamSpot");
+		this->pfTauCollection = pset.getParameter<std::string>("tauCollection");
+		this->fitMethod = pset.getParameter<int>("fitMethod");
+		assert((this->fitMethod == 1) || (this->fitMethod == 0));
 		std::cout << "Event" << std::endl;
 		edm::Handle<reco::BeamSpot> beamSpotHandle;
 		this->cEvent->getByLabel("offlineBeamSpot", beamSpotHandle);
-		_beamSpot = *beamSpotHandle;
+		beamSpot = *beamSpotHandle;
 
 		// Continue normally
 		KBaseMultiVectorProducer<edm::View<reco::Vertex>, std::vector<KUnbiasedDiTauPV> >::fillProduct(in, out, name, tag, pset);
 	}
 
+
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		std::vector<const reco::Track*> recoTracks = getTrackRefs(in);
+		std::vector<const reco::Track*> recoTracks;
+		getTrackRefs(recoTracks, in);
 
-		std::vector<reco::PFTau> commonTaus = getCommonTaus(recoTracks);
+		std::vector<reco::PFTau> commonTaus;
+		if (getCommonTaus(commonTaus, recoTracks) == 0)
+			return;
 		//get the tau Tracks that are contained in the transientTracks
-		std::vector<std::pair<reco::PFTau, reco::PFTau>> diTauPairs = getDiTauPairs(commonTaus);
-
-		std::map<int, reco::Vertex> refittedVertices = getRefittedVertices(diTauPairs, in);
+		std::vector<std::pair<reco::PFTau, reco::PFTau>> diTauPairs;
+		if (getDiTauPairs(diTauPairs, commonTaus) == 0)
+			return;
+		std::cout << "Di-Tau pairs: " << diTauPairs.size() << std::endl;
+		std::map<int, reco::Vertex> refittedVertices;
+		getRefittedVertices(refittedVertices, diTauPairs, in);
 		std::cout << "map empty: " << refittedVertices.empty() << std::endl;
 		std::cout << "map size: " << refittedVertices.size() << std::endl;
 
@@ -74,36 +86,41 @@ protected:
 		}
 	}
 
+private:
 
-
-	std::map<int, reco::Vertex> getRefittedVertices(const std::vector<std::pair<reco::PFTau, reco::PFTau>> diTauPairs, const SingleInputType &in)
+	void getRefittedVertices(std::map<int, reco::Vertex> &refittedVertices, 
+	                         const std::vector<std::pair<reco::PFTau, reco::PFTau>> &diTauPairs, 
+	                         const SingleInputType &in)
 	{
-		std::map<int, reco::Vertex> refittedVertices;
-		//get the inputs
-		//loop over diTauPairs
+		std::cout << " hier1" << std::endl;
 		for(size_t i = 0; i < diTauPairs.size(); ++i)
 		{
-			std::vector<const reco::Track*> recoTracks = getTrackRefs(in);
-			recoTracks = removeTauTracks(diTauPairs[i].first, recoTracks);
-			recoTracks = removeTauTracks(diTauPairs[i].second, recoTracks);
+		std::cout << " hier2" << i << std::endl;
+			std::vector<const reco::Track*> recoTracks;
+			getTrackRefs(recoTracks, in);
+			removeTauTracks(diTauPairs[i].first, recoTracks);
+			removeTauTracks(diTauPairs[i].second, recoTracks);
 			std::vector<const reco::Track*> cleanedRecoTracks;
+		std::cout << " hier3" << std::endl;
 			for(size_t j = 0; j < recoTracks.size(); ++j)
 			{
+		std::cout << " hier4 " << j << std::endl;
 				if(recoTracks[j] != NULL)
 				{
 					cleanedRecoTracks.push_back(recoTracks[j]);
 				}
 			}
 
-			std::vector<reco::TransientTrack> transientTracks = getTransientTracks(cleanedRecoTracks);
-			bool includeBeamspot = false;
-			// perform the fit
+		std::cout << " hier5" << std::endl;
+			std::vector<reco::TransientTrack> transientTracks;
+			getTransientTracks(transientTracks, cleanedRecoTracks);
 			AdaptiveVertexFitter theFitter;
 			TransientVertex refittedTransientVertex;
-			if(includeBeamspot)
+		std::cout << " hier6" << std::endl;
+			if(fitMethod == 0)
 			{
-				refittedTransientVertex = theFitter.vertex(transientTracks, _beamSpot);  // if you want the beam constraint
-			}else
+				refittedTransientVertex = theFitter.vertex(transientTracks, beamSpot);  // if you want the beam constraint
+			}else if(fitMethod == 0)
 			{
 				refittedTransientVertex = theFitter.vertex(transientTracks);  // if you don't want the beam constraint
 			}
@@ -114,43 +131,48 @@ protected:
 			    //"\t isValid = " << in.isValid() << myVertex.isValid() << 
 			    //"\t chi2 = " << (in.normalizedChi2() - myVertex.normalisedChiSquared())/in.normalizedChi2() << 
 		    	//std::endl;
+		std::cout << " hier7" << std::endl;
 			int key1 = createRecoPFTauHash(diTauPairs[i].first);
 			int key2 = createRecoPFTauHash(diTauPairs[i].second);
 			int diTauKey = key1 ^ key2;
+		std::cout << " hier8" << key1 << " " << key2 << std::endl;
 			// converte Transient->reco
 			reco::Vertex refittedVertex = reco::Vertex(refittedTransientVertex);
 			refittedVertices.insert( std::pair<int, reco::Vertex>(diTauKey, refittedVertex ));
 		}
-		return refittedVertices;
+		return;
 	}
 
 
-	std::vector<const reco::Track*> removeTauTracks(const reco::PFTau tau, std::vector<const reco::Track*> recoTracks)
+	void removeTauTracks(const reco::PFTau tau, std::vector<const reco::Track*> &recoTracks)
 	{
-		double deltaRThreshold = 0.0001;
+		std::cout << " hiera" << std::endl;
 		const reco::PFCandidateRefVector tauPFCHD = tau.signalPFChargedHadrCands();
 		for(reco::PFCandidateRefVector::const_iterator chargedHadronCand = tauPFCHD.begin();
 			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
 		{
+			std::cout << " hiera2" << std::endl;
 			for(size_t i = 0; i < recoTracks.size(); ++i)
 			{
-				if (reco::deltaR((**chargedHadronCand), *recoTracks[i]) < deltaRThreshold)
+				std::cout << " hiera3" << std::endlvoid		if( recoTracks[i] == NULL)
+					continue;
+				if (reco::deltaR((**chargedHadronCand), *recoTracks[i]) < this->deltaRThreshold)
 				{
+				std::cout << " hiera4" << std::endl;
 					recoTracks[i] = NULL;
+				std::cout << " hiera51" << std::endl;
 				}
 			}
 		}
-		return recoTracks;
+		std::cout << " hiera6" << std::endl;
 	}
 
-	std::vector<reco::PFTau> getCommonTaus(const std::vector<const reco::Track*> recoTracks)
+	int getCommonTaus(std::vector<reco::PFTau> &commonTaus, const std::vector<const reco::Track*> recoTracks)
 	{
 
 		edm::Handle<std::vector<reco::PFTau>> tauHandle;
-		this->cEvent->getByLabel("hpsPFTauProducer", tauHandle);// ToDo: Umstellen auf vorgefilterte Collection
+		this->cEvent->getByLabel(this->pfTauCollection, tauHandle);// ToDo: Umstellen auf vorgefilterte Collection
 		std::cout << "taus: " << tauHandle->size() << std::endl;
-		double deltaRThreshold = 0.0001;
-		std::vector<reco::PFTau> commonTaus;
 		// check wich tau is from the current PV
 		for(std::vector<reco::PFTau>::const_iterator tau = tauHandle->begin();
 		    tau != tauHandle->end(); ++tau)
@@ -171,30 +193,26 @@ protected:
 				{
 					//std::cout << "recoTracks:" << recoTracks[i]->charge() << ";   ";
 					//std::cout << reco::deltaR((**chargedHadronCand), *recoTracks[i])<< std::endl;
-					if (reco::deltaR((**chargedHadronCand), *recoTracks[i]) < deltaRThreshold)
+					if (reco::deltaR((**chargedHadronCand), *recoTracks[i]) < this->deltaRThreshold)
 					{
 						commonTracks++;
 					}
-			//		if (*chargedHadronCand == recoTracks[i])
-			//			std::cout << "found common Track!" << std::endl;
 				}
 			}
-			// if all charged pf candidates are from the PV, select this tau
 			std::cout << "Found " << commonTracks << " out of " << tauPFCHD.size() << std::endl;
 			if( commonTracks == tauPFCHD.size() )
 			{
 				commonTaus.push_back(*tau);
 			}
 		}
-
-	return commonTaus;
+		std::cout << "common taus: " << commonTaus.size() << std::endl;
+	return commonTaus.size();
 	}
 
 
-
-	std::vector<std::pair<reco::PFTau, reco::PFTau>> getDiTauPairs(const std::vector<reco::PFTau> commonTaus)
+	int getDiTauPairs(std::vector<std::pair<reco::PFTau, reco::PFTau>> &diTauPairs, 
+	                  const std::vector<reco::PFTau> commonTaus)
 	{
-		std::vector<std::pair<reco::PFTau, reco::PFTau>> diTauPairs;
 		for(size_t i = 0; i < commonTaus.size()-1; ++i)
 		{
 			for(size_t j = i + 1; j < commonTaus.size(); ++j)
@@ -206,38 +224,35 @@ protected:
 			std::cout << "Tau" << i << " has charge " << commonTaus[i].charge() <<std::endl;
 			}
 		}
-	return diTauPairs;
+	return diTauPairs.size();
 	}
 
-	std::vector<const reco::Track*> getTrackRefs(const SingleInputType &in)
+
+	inline void getTrackRefs(std::vector<const reco::Track*> &trackRefs, const SingleInputType &in)
 	{
-		std::vector<const reco::Track*> trackRefs;
-		
 		for (reco::Vertex::trackRef_iterator track = in.tracks_begin();
 		    track != in.tracks_end(); ++track)
-		{
-			reco::TrackRef recoTrackRef = track->castTo<reco::TrackRef>();
-			const reco::Track *recoTrack = recoTrackRef.get();
-			trackRefs.push_back(recoTrack);
-
-		}
-		return trackRefs;
+			trackRefs.push_back(track->castTo<reco::TrackRef>().get());
 	}
 
-	std::vector<reco::TransientTrack> getTransientTracks(const std::vector<const reco::Track*> &trackRefs)
+
+	void getTransientTracks(std::vector<reco::TransientTrack> &transientTracks, const std::vector<const reco::Track*> &trackRefs)
 	{
-		std::vector<reco::TransientTrack> transientTracks;
 		for(size_t i = 0; i < trackRefs.size(); ++i)
 		{
 			reco::TransientTrack transientTrack = this->theB->build(trackRefs[i]); 
-			transientTrack.setBeamSpot(_beamSpot);
+			transientTrack.setBeamSpot(beamSpot);
 			transientTracks.push_back(transientTrack);
 		}
-		return transientTracks;
 	}
 
+
 	edm::ESHandle<TransientTrackBuilder> theB;
-	reco::BeamSpot _beamSpot;
+	reco::BeamSpot beamSpot;
+	edm::InputTag beamSpotSource;
+	std::string pfTauCollection;
+	double deltaRThreshold;
+	int fitMethod;
 };
 
 #endif
