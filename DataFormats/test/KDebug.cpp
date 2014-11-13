@@ -117,6 +117,13 @@ std::ostream &operator<<(std::ostream &os, const KVertexSummary &vs)
 	return os << vs.pv << " #Vertices=" << vs.nVertices;
 }
 
+std::ostream &operator<<(std::ostream &os, const KUnbiasedDiTauPV &pvs)
+{
+	for(size_t i = 0; i < pvs.diTauKey.size(); ++i)
+		os << "diTauKey=" << pvs.diTauKey[i] << " Vertex:" << pvs.refittedVertices[i] << std::endl;
+	return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const KJetArea &ja)
 {
 	return os << "median=" << ja.median << " sigma=" << ja.sigma;

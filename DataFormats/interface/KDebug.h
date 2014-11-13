@@ -20,6 +20,7 @@ std::ostream &operator<<(std::ostream &os, const KDataCaloTau &tau);
 std::ostream &operator<<(std::ostream &os, const KDataGenTau &tau);
 std::ostream &operator<<(std::ostream &os, const KDataVertex &vertex);
 std::ostream &operator<<(std::ostream &os, const KVertexSummary &vs);
+std::ostream &operator<<(std::ostream &os, const KUnbiasedDiTauPV &pvs);
 std::ostream &operator<<(std::ostream &os, const KJetArea &ja);
 std::ostream &operator<<(std::ostream &os, const KDataHit &hit);
 std::ostream &operator<<(std::ostream &os, const KPFCandidate &cand);
