@@ -149,7 +149,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 		deltaRThreshold = cms.double(0.0001),
 		beamSpotSource = cms.InputTag("offlineBeamSpot"),
 		src = cms.InputTag("hpsPFTauProducer"),
-		fitMethod = cms.int32(1),
+		fitMethod = cms.int32(0),
+		includeOrginalPV = cms.bool(True),
 	),
 
 

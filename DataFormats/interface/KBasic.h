@@ -41,7 +41,8 @@ typedef std::vector<KDataVertex> KDataVertices;
 
 struct KUnbiasedDiTauPV
 {
-	std::map<int, KDataVertex> refittedVertices;
+	std::vector<KDataVertex> refittedVertices;
+	std::vector<int> diTauKey;
 };
 typedef std::vector<KUnbiasedDiTauPV> KUnbiasedDiTauPVs;
 

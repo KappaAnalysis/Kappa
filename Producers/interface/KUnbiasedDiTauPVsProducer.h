@@ -37,8 +37,8 @@ public:
 		this->beamSpotSource = pset.getParameter<edm::InputTag>("beamSpotSource");
 		this->pfTauCollection = pset.getParameter<edm::InputTag>("src");
 		this->fitMethod = pset.getParameter<int>("fitMethod");
+		this->includeOriginalPV = pset.getParameter<bool>("includeOrginalPV");
 		assert((this->fitMethod == 1) || (this->fitMethod == 0));
-		std::cout << "Event" << std::endl;
 		edm::Handle<reco::BeamSpot> beamSpotHandle;
 		this->cEvent->getByLabel(this->beamSpotSource, beamSpotHandle);
 		beamSpot = *beamSpotHandle;
@@ -50,29 +50,35 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		std::vector<const reco::Track*> recoTracks;
-		getTrackRefs(recoTracks, in);
-
-		std::vector<reco::PFTau> commonTaus;
-		if (getCommonTaus(commonTaus, recoTracks) == 0)
-			return;
-		//get the tau Tracks that are contained in the transientTracks
-		std::vector<std::pair<reco::PFTau, reco::PFTau>> diTauPairs;
-		if (getDiTauPairs(diTauPairs, commonTaus) == 0)
-			return;
-		std::cout << "Di-Tau pairs: " << diTauPairs.size() << std::endl;
-		std::map<int, reco::Vertex> refittedVertices;
-		getRefittedVertices(refittedVertices, diTauPairs, in);
-		std::cout << "map empty: " << refittedVertices.empty() << std::endl;
-		std::cout << "map size: " << refittedVertices.size() << std::endl;
-
-		// iterate over refittedVertices and write <int, KDataVertex>
-		for(std::map<int, reco::Vertex>::iterator vertex = refittedVertices.begin();
-		    vertex != refittedVertices.end(); ++vertex)
+		if(this->includeOriginalPV)
 		{
 			KDataVertex tmpVertex;
-			KVertexProducer::fillVertex(vertex->second, tmpVertex);
-			out.refittedVertices.insert( std::pair<int, KDataVertex>(vertex->first, tmpVertex));
+			out.diTauKey.push_back( 0 );
+			KVertexProducer::fillVertex(in, tmpVertex);
+			out.refittedVertices.push_back( tmpVertex);
+		}
+
+		std::vector<const reco::Track*> recoTracks;
+		getTrackRefs(recoTracks, in);
+		std::vector<reco::PFTau> commonTaus;
+
+		if( getCommonTaus(commonTaus, recoTracks) >= 2)
+		{
+			std::vector<std::pair<reco::PFTau, reco::PFTau>> diTauPairs;
+			if (getDiTauPairs(diTauPairs, commonTaus) >= 1)
+			{
+				std::map<int, reco::Vertex> refittedVertices;
+				getRefittedVertices(refittedVertices, diTauPairs, in);
+
+				for(std::map<int, reco::Vertex>::iterator vertex = refittedVertices.begin();
+		    		vertex != refittedVertices.end(); ++vertex)
+				{
+					KDataVertex tmpVertex;
+					KVertexProducer::fillVertex(vertex->second, tmpVertex);
+					out.diTauKey.push_back( vertex->first );
+					out.refittedVertices.push_back( tmpVertex);
+				}
+			}
 		}
 	}
 
@@ -82,16 +88,13 @@ private:
 	                         const std::vector<std::pair<reco::PFTau, reco::PFTau>> &diTauPairs, 
 	                         const SingleInputType &in)
 	{
-		std::cout << " hier1" << std::endl;
 		for(size_t i = 0; i < diTauPairs.size(); ++i)
 		{
-		std::cout << " hier2" << i << std::endl;
 			std::vector<const reco::Track*> recoTracks;
 			getTrackRefs(recoTracks, in);
 			removeTauTracks(diTauPairs[i].first, recoTracks);
 			removeTauTracks(diTauPairs[i].second, recoTracks);
 			std::vector<const reco::Track*> cleanedRecoTracks;
-		std::cout << " hier3" << std::endl;
 			for(size_t j = 0; j < recoTracks.size(); ++j)
 			{
 				if(recoTracks[j] != NULL)
@@ -100,26 +103,17 @@ private:
 				}
 			}
 
-		std::cout << " hier5" << std::endl;
 			std::vector<reco::TransientTrack> transientTracks;
 			getTransientTracks(transientTracks, cleanedRecoTracks);
 			AdaptiveVertexFitter theFitter;
 			TransientVertex refittedTransientVertex;
-		std::cout << " hier6" << std::endl;
 			if(fitMethod == 0)
 			{
 				refittedTransientVertex = theFitter.vertex(transientTracks, beamSpot);  // if you want the beam constraint
-			}else if(fitMethod == 0)
+			}else if(fitMethod == 1)
 			{
 				refittedTransientVertex = theFitter.vertex(transientTracks);  // if you don't want the beam constraint
 			}
-			//std::cout << "Vertex has " << transientTracks.size() << " Tracks" 
-			 //   "\t dX = " << (in.position().x() - myVertex.position().x())/in.position().x() << 
-			  //  "\t dY = " << (in.position().y() - myVertex.position().y())/in.position().y() << 
-			    //"\t dZ = " << (in.position().z() - myVertex.position().z())/in.position().z() << 
-			    //"\t isValid = " << in.isValid() << myVertex.isValid() << 
-			    //"\t chi2 = " << (in.normalizedChi2() - myVertex.normalisedChiSquared())/in.normalizedChi2() << 
-		    	//std::endl;
 			int key1 = KPFTauProducer::createRecoPFTauHash(diTauPairs[i].first);
 			int key2 = KPFTauProducer::createRecoPFTauHash(diTauPairs[i].second);
 			int diTauKey = key1 ^ key2;
@@ -133,12 +127,10 @@ private:
 
 	const void removeTauTracks(const reco::PFTau tau, std::vector<const reco::Track*> &recoTracks)
 	{
-		std::cout << " hiera" << std::endl;
 		const reco::PFCandidateRefVector tauPFCHD = tau.signalPFChargedHadrCands();
 		for(reco::PFCandidateRefVector::const_iterator chargedHadronCand = tauPFCHD.begin();
 			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
 		{
-			std::cout << " hiera2" << std::endl;
 			for(size_t i = 0; i < recoTracks.size(); ++i)
 			{
 				if( recoTracks[i] == NULL)
@@ -149,7 +141,6 @@ private:
 				}
 			}
 		}
-		std::cout << " hiera6" << std::endl;
 	}
 
 	const int getCommonTaus(std::vector<reco::PFTau> &commonTaus, const std::vector<const reco::Track*> recoTracks)
@@ -157,12 +148,10 @@ private:
 
 		edm::Handle<std::vector<reco::PFTau>> tauHandle;
 		this->cEvent->getByLabel(this->pfTauCollection, tauHandle);
-		std::cout << "taus: " << tauHandle->size() << std::endl;
 		// check wich tau is from the current PV
 		for(std::vector<reco::PFTau>::const_iterator tau = tauHandle->begin();
 		    tau != tauHandle->end(); ++tau)
 		{
-			std::cout << "new tau" << std::endl;
 			if( tau->charge() == 0) //don't consider "neutral taus" to speed things up
 			{
 				continue;
@@ -182,7 +171,7 @@ private:
 			if( commonTracks == tauPFCHD.size() )
 				commonTaus.push_back(*tau);
 		}
-	return commonTaus.size();
+		return commonTaus.size();
 	}
 
 
@@ -202,7 +191,7 @@ private:
 				}
 			}
 		}
-	return diTauPairs.size();
+		return diTauPairs.size();
 	}
 
 
@@ -231,6 +220,7 @@ private:
 	edm::InputTag pfTauCollection;
 	double deltaRThreshold;
 	int fitMethod;
+	bool includeOriginalPV;
 };
 
 #endif
