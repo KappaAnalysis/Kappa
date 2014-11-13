@@ -145,6 +145,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 		rename_whitelist = cms.vstring(),
 		rename_blacklist = cms.vstring(),
+
+		deltaRThreshold = cms.double(0.0001),
+		beamSpotSource = cms.InputTag("offlineBeamSpot"),
+		src = cms.InputTag("hpsPFTauProducer"),
+		fitMethod = cms.int32(1),
 	),
 
 

@@ -27,7 +27,7 @@ public:
 
 	static const std::string getLabel() { return "PFTaus"; }
 
-	int createRecoPFTauHash(const reco::PFTau tau)
+	static int createRecoPFTauHash(const reco::PFTau tau)
 	{
 		return ( std::hash<double>()(tau.leadPFCand()->px()) ^
 		         std::hash<double>()(tau.leadPFCand()->py()) ^

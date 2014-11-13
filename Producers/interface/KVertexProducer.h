@@ -19,18 +19,6 @@ public:
 
 	static const std::string getLabel() { return "Vertex"; }
 
-	// Static method for filling a vertex in other producers
-	static void fillVertex(const reco::Vertex &in, KDataVertex *out)
-	{
-		out->position = in.position();
-		out->fake = in.isFake();
-		out->nTracks = in.tracksSize();
-
-		out->chi2 = in.chi2();
-		out->nDOF = in.ndof();
-		out->covariance = in.covariance();
-	}
-	
 	static void fillVertex(const SingleInputType &in, SingleOutputType &out)
 	{
 		out.position = in.position();
