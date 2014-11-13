@@ -111,6 +111,7 @@
 #pragma link C++ struct KDataGenTau+;
 #pragma link C++ class std::vector<KDataGenTau>+;
 #pragma link C++ typedef KDataGenTaus;
+#pragma link C++ struct KUnbiasedDiTauPV;
 
 #pragma link C++ struct KDataVertex+;
 #pragma link C++ class std::vector<KDataVertex>+;

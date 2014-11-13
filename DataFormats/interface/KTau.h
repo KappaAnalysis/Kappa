@@ -64,6 +64,7 @@ struct KDataPFTau : KDataTau
 
 	//bool longLived
 	int hpsDecayMode; // hadronic decay mode as identified by HPS algorithm
+	int tauKey;
 };
 typedef std::vector<KDataPFTau> KDataPFTaus;
 
