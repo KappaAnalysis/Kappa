@@ -106,8 +106,8 @@ struct KTriggerObjectMetadata
 
 struct KTriggerObjects
 {
-	std::vector<KLV> trgObjects;
-	
+	KLVs trgObjects;
+
 	// { hlt1:idxFilter1, ..., hlt1:idxFilterN1, hlt2:idxFilter1, ..., hlt2:idxFilterN2, ...}
 	std::vector<std::vector<int> > toIdxFilter;
 };
