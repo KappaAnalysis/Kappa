@@ -127,12 +127,15 @@ public:
 
 		if (tagHLTResults.process() == "")
 		{
-			std::cout << "tagHLTResults is empty -> trying to determine the process name automatically:" << std::endl;
+			if (verbosity > 0)
+				std::cout << "tagHLTResults is empty" << std::endl
+					<< " -> trying to determine the process name automatically: ";
 
 			const edm::ProcessHistory& processHistory(run.processHistory());
 			for (edm::ProcessHistory::const_iterator it = processHistory.begin(); it != processHistory.end(); ++it)
 			{
-				std::cout << "\t" << it->processName();
+				if (verbosity > 0)
+					std::cout << it->processName();
 				edm::ProcessConfiguration processConfiguration;
 				if (processHistory.getConfigurationForProcess(it->processName(), processConfiguration))
 				{
@@ -142,14 +145,18 @@ public:
 						if (processPSet.exists("hltTriggerSummaryAOD"))
 						{
 							tagHLTResults = edm::InputTag(tagHLTResults.label(), "", it->processName());
-							std::cout << "*";
+							if (verbosity > 0)
+								std::cout << "*";
 						}
 					}
 				}
-				std::cout << std::endl;
+				if (verbosity > 0)
+					std::cout << " ";
 			}
-			std::cout << "* process with hltTriggerSummaryAOD" << std::endl;
-			std::cout << "selected:" << tagHLTResults << std::endl;
+			if (verbosity > 0)
+				std::cout << std::endl;
+			std::cout << "Taking trigger from process " << tagHLTResults.process()
+				<< " (label = " << tagHLTResults.label() << ")" << std::endl;
 			this->addProvenance(tagHLTResults.process(), "");
 			if (tagHLTResults.process() == "")
 				return true;
@@ -163,8 +170,8 @@ public:
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
 #endif
 
-		if (hltSetupChanged)
-			std::cout << "HLT setup has changed..." << std::endl;
+		if (verbosity > 0 && hltSetupChanged)
+			std::cout << "HLT setup has changed." << std::endl;
 
 		int counter = 1;
 		for (size_t i = 0; i < KMetadataProducerBase::hltConfig.size(); ++i)

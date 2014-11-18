@@ -109,6 +109,8 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 	psConfig(_psConfig)
 {
 	ROOTContextSentinel ctx;
+	std::cout << "Start Kappa producer KTuple" << std::endl;
+
 	std::string outputFile = psConfig.getParameter<std::string>("outputFile");
 	if (outputFile == "")
 	{
@@ -216,12 +218,12 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 */
 		if (producers.size() > nProducers + 1)
 		{
-			std::cout << "MULTIPLE PRODUCER CREATED!!! " << active[i] << std::endl;
+			std::cout << "Multiple producers '" << active[i] << "' created!" << std::endl;
 			exit(1);
 		}
 		else if (producers.size() != nProducers + 1)
 		{
-			std::cout << "UNKNOWN PRODUCER!!! " << active[i] << std::endl;
+			std::cout << "Unknown producer '" << active[i] << "'!" << std::endl;
 			exit(1);
 		}
 	}

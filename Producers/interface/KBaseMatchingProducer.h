@@ -77,20 +77,23 @@ private:
 
 	bool addPSetRequests(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		std::cout << "Requesting entries: ";
+		if (verbosity > 0)
+			std::cout << "Requesting entries: ";
 
 		const edm::ParameterSet &psBase = this->psBase;
 		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
 
 		for (size_t i = 0; i < names.size(); ++i)
 		{
-			std::cout << "\"" << names[i] << "\" ";
+			if (verbosity > 0)
+				std::cout << "\"" << names[i] << "\" ";
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
 			// Notify about match
 			if (!onMatchingInput(names[i], names[i], pset, pset.getParameter<edm::InputTag>("src")))
 				return false;
 		}
-		std::cout << std::endl;
+		if (verbosity > 0)
+			std::cout << std::endl;
 
 		return true;
 	}
