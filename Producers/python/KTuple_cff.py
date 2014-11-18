@@ -28,6 +28,7 @@ kappaNoRegEx = cms.PSet(kappaNoRename,
 kappaTupleDefaultsBlock = cms.PSet(
 	verbose = cms.int32(0),
 	active = cms.vstring("Metadata"),
+	profile = cms.bool(False),
 
 	Metadata = cms.PSet(
 		forceLumi = cms.int32(-1),

@@ -7,6 +7,7 @@
  */
 
 #include <memory>
+#include <chrono>  // if the compiler does not support this, just comment out every line with std::chrono
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
@@ -77,6 +78,10 @@ protected:
 	const edm::ParameterSet &psConfig;
 
 	bool first;
+	bool doProfile;
+	std::chrono::high_resolution_clock::time_point t1, t2;
+	double fillRuntime;
+	long nRuns, nLumis, nEvents, nFirsts;
 	std::vector<KBaseProducer*> producers;
 	TTree *event_tree, *lumi_tree;
 	TFile *file;
@@ -89,6 +94,10 @@ protected:
 			if (sName == "")
 				sName = sActive;
 			producers.push_back(new Tprod(psConfig.getParameter<edm::ParameterSet>(sName), event_tree, lumi_tree));
+			producers.back()->runRuntime = 0;
+			producers.back()->lumiRuntime = 0;
+			producers.back()->firstRuntime = 0;
+			producers.back()->eventRuntime = 0;
 			return true;
 		}
 		return false;
@@ -106,7 +115,7 @@ private:
 };
 
 KTuple::KTuple(const edm::ParameterSet &_psConfig) :
-	psConfig(_psConfig)
+	psConfig(_psConfig), doProfile(true), fillRuntime(0), nRuns(0), nLumis(0), nEvents(0), nFirsts(0)
 {
 	ROOTContextSentinel ctx;
 	std::cout << "Start Kappa producer KTuple" << std::endl;
@@ -130,6 +139,9 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 	KBaseProducer::verbosity = std::max(KBaseProducer::verbosity, psConfig.getParameter<int>("verbose"));
 
 	std::vector<std::string> active = psConfig.getParameter<std::vector<std::string> >("active");
+	doProfile = psConfig.getParameter<bool>("profile");
+	if (doProfile)
+		std::cout << "Profiling is turned on." << std::endl;
 
 	// Make sure there are no duplicates
 	bool have_duplicates = false;
@@ -233,8 +245,32 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 KTuple::~KTuple()
 {
 	ROOTContextSentinel ctx;
+	std::vector<std::string> active = psConfig.getParameter<std::vector<std::string> >("active");
+	if (doProfile)  // profiling header
+	{
+		std::cout.precision(3);
+		std::cout << std::endl << std::fixed << std::right
+			<< "Kappa timing information (times in ms) ---------------------------------------" << std::endl
+			<< "KProducer     : time per run | time per lumi | time 1st event | time per event" << std::endl
+			<< "No. of entries:"
+			<< std::setw(13) << nRuns
+			<< std::setw(16) << nLumis
+			<< std::setw(17) << nFirsts
+			<< std::setw(17) << nEvents << std::endl
+			<< "Fill tree     :                                                 " << fillRuntime << std::endl;
+	}
 	for (unsigned int i = 0; i < producers.size(); ++i)
+	{
+		if (doProfile)  // profiling per producer
+			std::cout << std::left << std::setw(14) << active[i] << ":" << std::right
+				<< std::setw(13) << (producers[i]->runRuntime   / nRuns   * 1000)
+				<< std::setw(16) << (producers[i]->lumiRuntime  / nLumis  * 1000)
+				<< std::setw(17) << (producers[i]->firstRuntime / nFirsts * 1000)
+				<< std::setw(17) << (producers[i]->eventRuntime / nEvents * 1000) << std::endl;
 		delete producers[i];
+	}
+	if (doProfile)
+		t1 = std::chrono::high_resolution_clock::now();
 	if (file != 0)
 	{
 		file->cd();
@@ -243,20 +279,48 @@ KTuple::~KTuple()
 		event_tree->Write();
 		file->Close();
 	}
+	if (doProfile)
+	{
+		t2 = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		std::cout << "Write file    : " << time_span.count() << std::endl;
+	}
 }
 
 void KTuple::beginRun(edm::Run const &run, edm::EventSetup const &setup)
 {
 	ROOTContextSentinel ctx;
+	nRuns++;
 	for (unsigned int i = 0; i < producers.size(); ++i)
+	{
+		if (doProfile)
+			t1 = std::chrono::high_resolution_clock::now();
 		producers[i]->onRun(run, setup);
+		if (doProfile)
+		{
+			t2 = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+			producers[i]->runRuntime += time_span.count();
+		}
+	}
 }
 
 void KTuple::beginLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 {
 	ROOTContextSentinel ctx;
+	nLumis++;
 	for (unsigned int i = 0; i < producers.size(); ++i)
+	{
+		if (doProfile)
+			t1 = std::chrono::high_resolution_clock::now();
 		producers[i]->onLumi(lumiBlock, setup);
+		if (doProfile)
+		{
+			t2 = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+			producers[i]->lumiRuntime += time_span.count();
+		}
+	}
 }
 
 void KTuple::analyze(const edm::Event &event, const edm::EventSetup &setup)
@@ -264,15 +328,46 @@ void KTuple::analyze(const edm::Event &event, const edm::EventSetup &setup)
 	ROOTContextSentinel ctx;
 	if (first)
 	{
+		nFirsts++;
 		for (unsigned int i = 0; i < producers.size(); ++i)
+		{
+			if (doProfile)
+				t1 = std::chrono::high_resolution_clock::now();
 			producers[i]->onFirstEvent(event, setup);
+			if (doProfile)
+			{
+				t2 = std::chrono::high_resolution_clock::now();
+				std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+				producers[i]->firstRuntime += time_span.count();
+			}
+		}
 		first = false;
 	}
+	nEvents++;
 	for (unsigned int i = 0; i < producers.size(); ++i)
+	{
+		if (doProfile)
+			t1 = std::chrono::high_resolution_clock::now();
 		producers[i]->onEvent(event, setup);
+		if (doProfile)
+		{
+			t2 = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+			producers[i]->eventRuntime += time_span.count();
+		}
+	}
+	if (doProfile)
+		t1 = std::chrono::high_resolution_clock::now();
 	event_tree->Fill();
+	if (doProfile)
+	{
+		t2 = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+		fillRuntime += time_span.count();
+	}
 	if (KBaseProducer::verbosity > 0)
 		std::cout << std::endl;
+
 }
 
 void KTuple::endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)

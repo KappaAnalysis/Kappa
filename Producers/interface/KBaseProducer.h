@@ -34,6 +34,10 @@ protected:
 
 public:
 	static int verbosity;
+	double runRuntime;
+	double firstRuntime;
+	double eventRuntime;
+	double lumiRuntime;
 };
 
 // Producer with provenance
