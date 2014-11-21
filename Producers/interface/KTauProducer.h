@@ -40,6 +40,7 @@ protected:
 	{
 		return className == "reco::PFTauDiscriminator";
 	}
+
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		// Fill fields of KBasicTau via base class
@@ -47,49 +48,30 @@ protected:
 
 		// Fill additional fields from KTau
 		out.tauKey = createRecoPFTauHash(in);
-		out.emFraction = in.emFraction();
-		out.nSignalChargedHadrCands = in.signalPFChargedHadrCands().size();
-		out.nSignalGammaCands = in.signalPFGammaCands().size();
-		out.nSignalPiZeroCands = in.signalPiZeroCandidates().size();
-		out.nSignalCands = in.signalPFCands().size();
-		out.hpsDecayMode = in.decayMode();
-
-		if(in.leadPFCand().isNonnull())
-			copyP4(in.leadPFCand()->p4(), out.leadCand.p4);
-		if(in.leadPFChargedHadrCand().isNonnull()){
-			copyP4(in.leadPFChargedHadrCand()->p4(), out.leadChargedHadrCand.p4);
-			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
-				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track);
-		}
-		if(in.leadPFNeutralCand().isNonnull())
-			copyP4(in.leadPFNeutralCand()->p4(), out.leadNeutralCand.p4); // leading PFGamma candidate
-
 
 		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); i++)
 		{
 			KPFCandidate tmp;
 			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
-			out.signalChargedHadrCands.push_back(tmp);
+			out.chargedHadronCandidates.push_back(tmp);
 		}
-		std::sort(out.signalChargedHadrCands.begin(), out.signalChargedHadrCands.end(), PFSorter);
+		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), PFSorter);
 
 		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); i++)
 		{
 			KLV tmp;
 			copyP4(in.signalPiZeroCandidates()[i].p4(), tmp.p4);
-			out.signalPiZeroCands.push_back(tmp);
+			out.piZeroCandidates.push_back(tmp);
 		}
-		std::sort(out.signalPiZeroCands.begin(), out.signalPiZeroCands.end(), LVSorter);
+		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), LVSorter);
 
 		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
 		{
 			KPFCandidate tmp;
 			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
-			out.signalGammaCands.push_back(tmp);
+			out.gammaCandidates.push_back(tmp);
 		}
-		std::sort(out.signalGammaCands.begin(), out.signalGammaCands.end(), PFSorter);
-
-		out.nSignalTracks = in.signalTracks().size();
+		std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), PFSorter);
 	}
 private:
 	KLVSorter<KPFCandidate> PFSorter;

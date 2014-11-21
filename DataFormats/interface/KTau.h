@@ -52,27 +52,23 @@ struct KBasicTau : public KLepton
 typedef std::vector<KBasicTau> KBasicTaus;
 
 
+/// Kappa Tau data format
+/** copy from DataFormats/TauReco/interface/PFTau.h */
 struct KTau : public KBasicTau
 {
-	float emFraction;
+	/// four-vectors and full PFCandidates
+	KLVs piZeroCandidates;
+	KPFCandidates chargedHadronCandidates;
+	KPFCandidates gammaCandidates;
 
-	int nSignalChargedHadrCands, nSignalGammaCands, nSignalPiZeroCands, nSignalCands;
-	int nSignalTracks;
-
-	KLV leadCand;
-	KLV leadChargedHadrCand;
-	KLV leadNeutralCand;
-
-	KPFCandidates signalChargedHadrCands;
-	KPFCandidates signalGammaCands;
-	KLVs signalPiZeroCands;
-
-	KTrack track;
-
-	//bool longLived
-	int hpsDecayMode; // hadronic decay mode as identified by HPS algorithm
 	int tauKey;
+
+	inline int nCandidates()
+	{
+		return chargedHadronCandidates.size() + gammaCandidates.size();
+	}
 };
 typedef std::vector<KTau> KTaus;
+
 
 #endif
