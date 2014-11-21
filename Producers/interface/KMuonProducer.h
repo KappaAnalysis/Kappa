@@ -42,7 +42,8 @@ public:
 		propagatorToMuonSystem(cfg)
 	{
 		std::sort(selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
-		std::vector<std::string>::iterator tempIt = std::unique (selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
+		std::vector<std::string>::iterator tempIt = std::unique(
+			selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
 		selectedMuonTriggerObjects.resize(tempIt - selectedMuonTriggerObjects.begin());
 
 		muonMetadata = new KMuonMetadata();
@@ -98,10 +99,14 @@ public:
 		pfIsoVetoCone = pset.getParameter<double>("pfIsoVetoCone");
 		pfIsoVetoMinPt = pset.getParameter<double>("pfIsoVetoMinPt");
 
+		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
+		cEvent->getByLabel(VertexCollectionSource, VertexHandle);
+
 		// Continue normally
 		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>::fillProduct(in, out, name, tag, pset);
 	}
 
+	/// fill muon from DataFormats/MuonReco/interface/Muon.h
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		out.flavour = KLepton::MUON;
@@ -114,57 +119,18 @@ public:
 			KTrackProducer::fillTrack(*in.track(), out.track);
 		if (in.globalTrack().isNonnull())
 			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack);
-		if (in.innerTrack().isNonnull())
-			KTrackProducer::fillTrack(*in.innerTrack(), out.innerTrack);
-		if (in.outerTrack().isNonnull())
-			KTrackProducer::fillTrack(*in.outerTrack(), out.outerTrack);
-		if (in.bestTrack())
-			KTrackProducer::fillTrack(*in.bestTrack(), out.bestTrack);
 
-
-		// Charge, ...
-		out.charge = in.charge();
-		out.nChambers = in.numberOfChambers();
-		out.nMatches = in.numberOfMatches();
-		out.caloComp = in.caloCompatibility();
-		out.segComp = muon::segmentCompatibility(in);
-
-		assert(in.type() <= 255);
-		out.type = in.type();
-
-		// muon ID selection, described in AN-2008/098
-		// http://cms-service-sdtweb.web.cern.ch/cms-service-sdtweb/doxygen/CMSSW_3_3_6/doc/html/dd/de0/MuonSelectors_8cc-source.html#l00005
-		std::bitset<32> tmpBits;
-		for (size_t i = 0; i < 16; ++i)
-			tmpBits.set(i, muon::isGoodMuon(in, (muon::SelectionType)i));
-		out.isGoodMuon = (unsigned int)tmpBits.to_ulong();
-
-		// Isolation
-		edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
-		reco::IsoDeposit muonIsoDepositPF = (*isoDepsPF)[muonref];
-
-		reco::isodeposit::Direction dir = reco::isodeposit::Direction(in.eta(), in.phi());
-		reco::isodeposit::ConeVeto pf_cone_veto(dir, pfIsoVetoCone);
-		reco::isodeposit::ThresholdVeto pf_threshold_veto(pfIsoVetoMinPt);
-
-		std::vector<reco::isodeposit::AbsVeto*> vetosPF;
-		vetosPF.push_back(&pf_cone_veto);
-		vetosPF.push_back(&pf_threshold_veto);
-
-		out.ecalIso03				= in.isolationR03().emEt;
-		out.hcalIso03				= in.isolationR03().hadEt;
-		out.trackIso03				= in.isolationR03().sumPt;
-
-		out.pfIso04				= muonIsoDepositPF.depositWithin(0.4, vetosPF);
-
-		out.ecalIso05				= in.isolationR05().emEt;
-		out.hcalIso05				= in.isolationR05().hadEt;
-		out.trackIso05				= in.isolationR05().sumPt;
-
+		edm::View<reco::Vertex> vertices = *VertexHandle;
+		reco::Vertex vtx = vertices.at(0);
+		if (in.muonBestTrack().isNonnull()) // && &vtx != NULL) TODO
+		{
+			/// ID var from the bestTrack which is not saved entirely
+			out.dxy = 0; //dxy from vertex using IPTools like PAT
+			out.dz = in.bestTrack()->dz(vtx.position());
+		}
+		// propagated values of eta and phi
 		out.eta_propagated = -1000.;
 		out.phi_propagated = -1000.;
-
-		// propagated values
 		if (in.innerTrack().isNonnull() && !noPropagation)
 		{
 			TrajectoryStateOnSurface prop = propagatorToMuonSystem.extrapolate(in);
@@ -175,7 +141,79 @@ public:
 			}
 		}
 
+		// Charge, muon system information
+		assert(in.charge() == 1 || in.charge() == -1);
+		out.leptonInfo |= (in.charge() > 0) ? KLeptonChargeMask : 0;
+		out.nChambers = in.numberOfChambers();
+		out.nMatches = in.numberOfMatches();
+		out.nMatchedStations = in.numberOfMatchedStations();
+		out.caloCompatibility = muon::caloCompatibility(in);
+		out.segmentCompatibility = muon::segmentCompatibility(in);
+
+		assert(in.type() < 256);
+		out.type = in.type();
+
+		// muon ID selection
+		// DataFormats/MuonReco/src/MuonSelectors.cc
+		std::bitset<32> tmpBits;
+		for (size_t i = 0; i < 16; ++i)
+			tmpBits.set(i, muon::isGoodMuon(in, (muon::SelectionType) i));
+		out.isGoodMuonBits = (unsigned int) tmpBits.to_ulong();
+
+		/// Isolation
+		// source?
+		edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
+		reco::IsoDeposit muonIsoDepositPF = (*isoDepsPF)[muonref];
+		reco::isodeposit::Direction dir = reco::isodeposit::Direction(in.eta(), in.phi());
+		reco::isodeposit::ConeVeto pf_cone_veto(dir, pfIsoVetoCone);
+		reco::isodeposit::ThresholdVeto pf_threshold_veto(pfIsoVetoMinPt);
+
+		std::vector<reco::isodeposit::AbsVeto*> vetosPF;
+		vetosPF.push_back(&pf_cone_veto);
+		vetosPF.push_back(&pf_threshold_veto);
+
+		/// isolation results
+		out.trackIso03 = in.isolationR03().sumPt;
+		out.pfIso03    = muonIsoDepositPF.depositWithin(0.3, vetosPF);
+		//out.pfIso04    = muonIsoDepositPF.depositWithin(0.4, vetosPF);
+
+		/// isolation variables for pfIso04
+		/// DataFormats/MuonReco/interface/MuonPFIsolation.h
+		out.sumChargedHadronPt   = in.pfIsolationR04().sumChargedHadronPt;
+		out.sumChargedParticlePt = in.pfIsolationR04().sumChargedParticlePt;
+		out.sumNeutralHadronEt   = in.pfIsolationR04().sumNeutralHadronEt;
+		out.sumPhotonEt          = in.pfIsolationR04().sumPhotonEt;
+		out.sumPUPt              = in.pfIsolationR04().sumPUPt;
+		out.sumNeutralHadronEtHighThreshold = in.pfIsolationR04().sumNeutralHadronEtHighThreshold;
+		out.sumPhotonEtHighThreshold        = in.pfIsolationR04().sumPhotonEtHighThreshold;
+
+		/// highpt ID variables
+		/** needed variables according to
+		    https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#New_HighPT_Version_recommended
+		    not in new CMSSW versions
+
+		reco::TrackRef cktTrack = muon::improvedMuonBestTrack(const reco::Muon & recoMu, muon::improvedTuneP);
+		dxy_high = cktTrack->db...
+		dz_high = 0;
+		pt_high = cktTrack->pt();
+		pte_high = cktTrack->ptError();
+		*/
+
 		out.hltMatch = getHLTInfo(out.p4);
+
+		/// precomputed muon IDs
+		/** https://hypernews.cern.ch/HyperNews/CMS/get/muon/868.html
+		    https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#Baseline_muon_selections_for_201
+			DataFormats/MuonReco/src/MuonSelectors.cc
+			automatically use muon::improvedTuneP default as in CMSSW
+			last update: 2014-10-03
+		*/
+		out.ids = KLeptonId::ANY;
+		out.ids |= (muon::isLooseMuon(in)      << KLeptonId::LOOSE);
+		out.ids |= (muon::isTightMuon(in, vtx) << KLeptonId::TIGHT);
+		out.ids |= (muon::isSoftMuon(in, vtx)  << KLeptonId::SOFT);
+		out.ids |= (muon::isHighPtMuon(in, vtx, reco::improvedTuneP) << KLeptonId::HIGHPT); // a
+		assert((out.ids & 148) == 0); // 148 = 0b10010100, these bits should be zero
 	}
 
 private:
@@ -185,10 +223,9 @@ private:
 	std::vector<std::string> selectedMuonTriggerObjects;
 	bool noPropagation;
 	PropagateToMuon propagatorToMuonSystem;
-	edm::Handle< edm::ValueMap<reco::IsoDeposit> > isoDepsPF;
-
-	edm::Handle< trigger::TriggerEvent > triggerEventHandle;
-
+	edm::Handle<edm::ValueMap<reco::IsoDeposit> > isoDepsPF;
+	edm::Handle<trigger::TriggerEvent> triggerEventHandle;
+	edm::Handle<edm::View<reco::Vertex> > VertexHandle;
 	KMuonMetadata *muonMetadata;
 
 	std::map<std::string, int> muonTriggerObjectBitMap;

@@ -50,71 +50,68 @@ struct KMuonMetadata
 
 struct KMuon : public KLepton
 {
-	/*
-	virtual ~KMuon() {};
-	
-	virtual bool isMuon() {
-		return true;
-	};
-	*/
-	
+	/// global track in addition to KLepton track == innerTrack, no outer or best track
 	KTrack globalTrack;
-	KTrack innerTrack;
-	KTrack outerTrack;
-	KTrack bestTrack;
 
-	/// type of the muon: bits are set according to reco::Muon::type_;
-	unsigned char type;
+	/// ID variables
+	unsigned long isGoodMuonBits; //< isGoodMuon bitmask, used by soft ID
+	unsigned char type;           //< type of the muon: bits are set according to reco::Muon::type_ (used by various IDs)
 
-	inline bool isTrackerMuon() const    { return (type & (1 << 2)); };
-	inline bool isCaloMuon() const       { return (type & (1 << 4)); };
-	inline bool isStandAloneMuon() const { return (type & (1 << 3)); };
-	inline bool isGlobalMuon() const     { return (type & (1 << 1)); };
-	inline bool isPFMuon() const         { return (type & (1 << 5)); };
+	/// ID var from track: nValidPixelHits, nTrackerLayers
+	/// ID var from globalTrack: normalizedChi2=chi2/nDOF, nValidMuonHits
+	/// ID var from the bestTrack which is not saved entirely:
+	float dxy; //< dxy from vertex using IPTools like PAT
+	float dz;  //< dz from vertex using bestTrack->dz(vtx)
 
-	float hcalIso03;		///< hcal isolation as given by muon.isolationR03().hadEt
-	float ecalIso03;		///< ecal isolation as given by muon.isolationR03().emEt
+	/// muon system information
+	short nMatchedStations;
+	// unused variables
+	short nChambers, nMatches;
+	float caloCompatibility, segmentCompatibility;
+
+	/// isolation results
 	float trackIso03;		///< tracker isolation as given by muon.isolationR03().sumPt
+	float pfIso03;			///< PF isolation R = 0.3
+	// deleted: hcalIso03, ecalIso03 and all 05
 
-	float pfIso04;			///< PF isolation
-
-	float hcalIso05;
-	float ecalIso05;
-	float trackIso05;
-
-	unsigned int isGoodMuon;	///< bitmask
-
-	float caloComp, segComp;
-
-	int nChambers;
-	int nMatches;
-
-	unsigned long long hltMatch;
+	/// additional isolation variables for PF isolation which are not stored in a KLepton
+	/// DataFormats/MuonReco/interface/MuonPFIsolation.h
+	float sumChargedParticlePt;
+	float sumNeutralHadronEtHighThreshold;
+	float sumPhotonEtHighThreshold;
 
 	/// \f$\eta\f$ and \f$\phi\f$ after the propagation to the muon system, this quantity
 	/// is necessary for the matching to L1 trigger objects
 	float eta_propagated, phi_propagated;
 
-	/// returns whether a given HLT fired
-	/** the information is read from the metadata
-		@param name Name of the HLT
-		@param muonMetadata reference to the meta data object
-	*/
-	bool hltFired(const std::string& name, const KMuonMetadata* muonMetadata) const
+	unsigned long long hltMatch;
+
+	/// accessor functions to CMSSW muon bitsets
+	inline bool isGoodMuon(KGoodMuon::KGoodMuonType bit) const { return (isGoodMuonBits & (1 << bit)); };
+	inline bool isGlobalMuon() const     { return (type & (1 << 1)); };
+	inline bool isTrackerMuon() const    { return (type & (1 << 2)); };
+	inline bool isStandAloneMuon() const { return (type & (1 << 3)); };
+	inline bool isCaloMuon() const       { return (type & (1 << 4)); };
+	inline bool isPFMuon() const         { return (type & (1 << 5)); };
+	inline bool isRPCMuon() const        { return (type & (1 << 6)); };
+
+	double pfIso04high(const double puFraction=0.5) const
 	{
-		std::vector<std::string>::const_iterator itSearch = std::lower_bound(muonMetadata->hltNames.begin(), muonMetadata->hltNames.end(), name);
-		if (itSearch != muonMetadata->hltNames.end())
-			return (hltMatch & (1ull << (itSearch - muonMetadata->hltNames.begin()))) != 0;
-		return false; // given HLT does not exist
+		return sumChargedHadronPt + std::max(0.0,
+			sumNeutralHadronEtHighThreshold + sumPhotonEtHighThreshold - puFraction * sumPUPt);
 	}
 
-	double puSubtractedPFIso04(const KPileupDensity* puRho) const
+	/// returns whether a given HLT fired
+	/** the information is read from the metadata
+		@param hltName Name of the HLT
+		@param meta reference to the muon meta data object
+	*/
+	bool hltFired(const std::string& hltName, const KMuonMetadata* meta) const
 	{
-		// jetArea == NULL --> no PU subtraction
-		if(puRho == NULL) return pfIso04;
-
-		static const double coneSize = 0.4;
-		return std::max(0.0, pfIso04 - puRho->rho * coneSize * coneSize * 3.14159);
+		std::vector<std::string>::const_iterator itSearch = std::lower_bound(meta->hltNames.begin(), meta->hltNames.end(), hltName);
+		if (itSearch != meta->hltNames.end())
+			return (hltMatch & (1ull << (itSearch - meta->hltNames.begin()))) != 0;
+		return false; // given HLT does not exist
 	}
 };
 typedef std::vector<KMuon> KMuons;
