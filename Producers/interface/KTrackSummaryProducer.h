@@ -16,14 +16,19 @@ public:
 
 	static const std::string getLabel() { return "TrackSummary"; }
 
-	virtual void clearProduct(OutputType &output) { output.nTracks = 0; output.nTracksHQ = 0; }
+	virtual void clearProduct(OutputType &output)
+	{
+		output.nTracks = 0;
+		output.nTracksHQ = 0; 
+	}
+
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		out.nTracks = in.size();
 		InputType::const_iterator lvit;
 		for (lvit = in.begin(); lvit < in.end(); ++lvit)
-			if (lvit->qualityMask() & TQ_HighPurity)
+			if (lvit->qualityMask() & KTrackQuality::highPurity)
 				++out.nTracksHQ;
 	}
 };

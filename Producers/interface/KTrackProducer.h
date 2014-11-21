@@ -41,21 +41,16 @@ public:
 		out.charge = in.charge();
 		out.chi2 = in.chi2();
 		out.nDOF = in.ndof();
-		out.quality = in.qualityMask();
+		out.qualityBits = in.qualityMask();
 		out.errDxy = in.dxyError();
 		out.errDz = in.dzError();
 
 		out.nValidPixelHits = in.hitPattern().numberOfValidPixelHits();
 		out.nValidStripHits = in.hitPattern().numberOfValidStripHits();
 		out.nValidMuonHits = in.hitPattern().numberOfValidMuonHits();
-		out.nLostMuonHits = in.hitPattern().numberOfLostMuonHits();
-		out.nBadMuonHits = in.hitPattern().numberOfBadMuonHits();
-		out.nValidHits = in.hitPattern().numberOfValidHits();
 		out.nLostHits = in.hitPattern().numberOfLostHits();
 		out.nPixelLayers = in.hitPattern().pixelLayersWithMeasurement();
 		out.nStripLayers = in.hitPattern().trackerLayersWithMeasurement();
-		out.nInnerHits = in.trackerExpectedHitsInner().numberOfHits();
-		out.nLostInnerHits = in.trackerExpectedHitsInner().numberOfLostHits();
 	}
 };
 

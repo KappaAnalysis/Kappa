@@ -7,44 +7,61 @@
 #ifndef KAPPA_TRACK_H
 #define KAPPA_TRACK_H
 
-#include <Math/GenVector/VectorUtil.h>
 #include "KBasic.h"
 
-enum KTrackQuality
-{
-	TQ_Loose = 1 << 0, TQ_Tight = 1 << 1, TQ_HighPurity = 1 << 2, TQ_Confirmed = 1 << 3, TQ_GoodIterative = 1 << 4
-};
+#include <Math/GenVector/VectorUtil.h>
 
+/** Data format definition for KTracks and KLeptons
+    
+ */
+
+/// TrackBase::TrackQuality
+/// from DataFormats/TrackReco/interface/TrackBase.h
+namespace KTrackQuality {
+
+enum KTrackQualityType
+{
+	undefQuality = -1, loose = 0, tight = 1, highPurity = 2, confirmed = 3, goodIterative = 4,
+	looseSetWithPV = 5, highPuritySetWithPV = 6, qualitySize = 7
+};
+}
+
+/// Kappa Track data format
+/** copy from DataFormats/TrackReco/interface/TrackBase.h
+    copy from DataFormats/TrackReco/interface/Track.h */
 struct KTrack : public KLV
 {
-	RMPoint ref;	// reference point ("vertex")
+	/// reference point (formerly known as "vertex", not the PV)
+	RMPoint ref;
+
+	/// charge and fit quality
 	char charge;
 	float chi2, nDOF;
 	float errPt, errEta, errPhi, errDxy, errDz;
-	unsigned short nPixelLayers, nStripLayers;
-	unsigned short nValidPixelHits, nValidStripHits;
-	unsigned short nValidMuonHits, nLostMuonHits, nBadMuonHits;
-	unsigned short nValidHits, nLostHits;
-	unsigned short nInnerHits, nLostInnerHits;
-	int quality;
 
-	double getTrackIsolation(std::vector<KTrack> *tracks, double isoCone = 0.3, double vetoCone = 0.01, double minPt = 1.5)
+	/// number of hits or tracker layers in detector components (used for lepton IDs)
+	/// DataFormats/TrackReco/interface/HitPattern.h (numberOf...)
+	/// layers and hits for pixel, strip tracker and muon system
+	unsigned short nValidPixelHits;  //< number of valid hits in the pixel detector (for tight muID)
+	unsigned short nValidStripHits;  //< number of valid hits in the strip detector
+	unsigned short nValidMuonHits;   //< number of valid hits in the muon system (for tight muID)
+
+	unsigned short nLostHits;
+	unsigned short nPixelLayers, nStripLayers; // for soft/tight muID as trackerLayers
+	/// functions for combinations
+	inline unsigned short nValidHits() const { return nValidPixelHits + nValidStripHits + nValidMuonHits; };
+	inline unsigned short nValidTrackerHits() const { return nValidPixelHits + nValidStripHits; };
+	inline unsigned short nTrackerLayers() const { return nPixelLayers + nStripLayers; };
+
+	/// quality bitset
+	unsigned char qualityBits; // for soft muID
+	inline bool quality(KTrackQuality::KTrackQualityType bit) const
 	{
-		double sum = 0.;
-		for (std::vector<KTrack>::iterator it = tracks->begin(); it != tracks->end(); it++)
-		{
-			if (it->p4.pt() > minPt && ROOT::Math::VectorUtil::DeltaR(it->p4, p4) > vetoCone && ROOT::Math::VectorUtil::DeltaR(it->p4, p4) < isoCone)
-			{
-				// "real" track isolation takes only tracks near the studied track into account
-				// (but there is even more magic why one needs isodeposits)
-				//if ( std::abs(it->ref.z() - ref.z()) > 0.2 || sqrt( (it->ref.x() - ref.x() )*(it->ref.x() - ref.x() ) + (it->ref.y() - ref.y())*(it->ref.y() - ref.y()) + (it->ref.z() - ref.z())*(it->ref.z() - ref.z()) ) > 0.1 )
-				//	continue;
-				sum += it->p4.pt();
-			}
-		}
-		return sum;
-	}
+		if (bit < 0) return false;
+		return (qualityBits & (1 << bit));
+	};
 
+	/// distances to primary vertex, beamspot and interaction point
 	double getDxy(const KVertex * pv) const
 	{
 		if (!pv)
@@ -157,7 +174,6 @@ struct KMuonTriggerCandidate : public KTrack
 	bool isoDecision;
 	float isoQuantity;
 };
-
 typedef std::vector<KMuonTriggerCandidate> KMuonTriggerCandidates;
 
 const unsigned char KLeptonFlavourMask = 3;
