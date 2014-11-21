@@ -8,6 +8,7 @@
 #define KAPPA_BASICTAUPRODUCER_H
 
 #include "KBaseMultiLVProducer.h"
+#include "../../DataFormats/interface/KTrack.h"
 
 template<typename TTau, typename TTauDiscriminator, typename TProduct>
 // Note: We need to use std::vector here, not edm::View, because otherwise
@@ -31,8 +32,8 @@ public:
 
 			binaryTauDiscriminatorBitMap[names[i]] = std::map<std::string, unsigned int>();
 			floatTauDiscriminatorBitMap[names[i]] = std::map<std::string, unsigned int>();
-			discrMetadataMap[names[i]] = new KTauMetadata();
-			_lumi_tree->Bronch(names[i].c_str(), "KTauMetadata", &discrMetadataMap[names[i]]);
+			discriminatorMap[names[i]] = new KTauMetadata();
+			_lumi_tree->Bronch(names[i].c_str(), "KTauMetadata", &discriminatorMap[names[i]]);
 
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
 
@@ -52,8 +53,8 @@ public:
 
 		for (size_t i = 0; i < names.size(); ++i)
 		{
-			discrMetadataMap[names[i]]->binaryDiscriminatorNames.clear();
-			discrMetadataMap[names[i]]->floatDiscriminatorNames.clear();
+			discriminatorMap[names[i]]->binaryDiscriminatorNames.clear();
+			discriminatorMap[names[i]]->floatDiscriminatorNames.clear();
 			binaryTauDiscriminatorBitMap[names[i]].clear();
 			floatTauDiscriminatorBitMap[names[i]].clear();
 
@@ -68,26 +69,31 @@ public:
 
 				if (isCorrectType(desc.className()))
 				{
-					if (std::find(discrMetadataMap[names[i]]->binaryDiscriminatorNames.begin(), discrMetadataMap[names[i]]->binaryDiscriminatorNames.end(), moduleInstance) == discrMetadataMap[names[i]]->binaryDiscriminatorNames.end() && std::find(discrMetadataMap[names[i]]->floatDiscriminatorNames.begin(), discrMetadataMap[names[i]]->floatDiscriminatorNames.end(), moduleInstance) == discrMetadataMap[names[i]]->floatDiscriminatorNames.end())
+					if (std::find(discriminatorMap[names[i]]->binaryDiscriminatorNames.begin(),
+					              discriminatorMap[names[i]]->binaryDiscriminatorNames.end(),
+					              moduleInstance) == discriminatorMap[names[i]]->binaryDiscriminatorNames.end() &&
+					    std::find(discriminatorMap[names[i]]->floatDiscriminatorNames.begin(),
+					              discriminatorMap[names[i]]->floatDiscriminatorNames.end(),
+					              moduleInstance) == discriminatorMap[names[i]]->floatDiscriminatorNames.end())
 					{
 						if (KBaseProducer::regexMatch(moduleInstance, binaryDiscrWhitelist[names[i]], binaryDiscrBlacklist[names[i]]))
 						{
-							discrMetadataMap[names[i]]->binaryDiscriminatorNames.push_back(moduleInstance);
+							discriminatorMap[names[i]]->binaryDiscriminatorNames.push_back(moduleInstance);
 
-							binaryTauDiscriminatorBitMap[names[i]][moduleInstance] = discrMetadataMap[names[i]]->binaryDiscriminatorNames.size() - 1;
+							binaryTauDiscriminatorBitMap[names[i]][moduleInstance] = discriminatorMap[names[i]]->binaryDiscriminatorNames.size() - 1;
 
 							if (this->verbosity > 0)
 								std::cout << "Binary tau discriminator " << ": " << moduleInstance << " "<< desc.processName() << std::endl;
 
-							if (discrMetadataMap[names[i]]->binaryDiscriminatorNames.size()>64)
+							if (discriminatorMap[names[i]]->binaryDiscriminatorNames.size()>64)
 								throw cms::Exception("Too many binary tau discriminators selected!");
 						}
 						
 						if (KBaseProducer::regexMatch(moduleInstance, floatDiscrWhitelist[names[i]], floatDiscrBlacklist[names[i]]))
 						{
-							discrMetadataMap[names[i]]->floatDiscriminatorNames.push_back(moduleInstance);
+							discriminatorMap[names[i]]->floatDiscriminatorNames.push_back(moduleInstance);
 
-							floatTauDiscriminatorBitMap[names[i]][moduleInstance] = discrMetadataMap[names[i]]->floatDiscriminatorNames.size() - 1;
+							floatTauDiscriminatorBitMap[names[i]][moduleInstance] = discriminatorMap[names[i]]->floatDiscriminatorNames.size() - 1;
 
 							if (this->verbosity > 0)
 								std::cout << "Float tau discriminator " << ": " << moduleInstance << " "<< desc.processName() << std::endl;
@@ -116,10 +122,10 @@ public:
 		currentPreselDiscr = preselectionDiscr[name];
 		currentDiscrProcessName = tauDiscrProcessName[name];
 		
-		currentBinaryDiscriminators = discrMetadataMap[name]->binaryDiscriminatorNames;
+		currentBinaryDiscriminators = discriminatorMap[name]->binaryDiscriminatorNames;
 		currentBinaryDiscriminatorMap = binaryTauDiscriminatorBitMap[name];
 		
-		currentFloatDiscriminators = discrMetadataMap[name]->floatDiscriminatorNames;
+		currentFloatDiscriminators = discriminatorMap[name]->floatDiscriminatorNames;
 		currentFloatDiscriminatorMap = floatTauDiscriminatorBitMap[name];
 
 		// Continue normally
@@ -137,6 +143,8 @@ public:
 
 		// Charge:
 		out.charge = in.charge();
+		out.emFraction = in.emFraction();
+		out.decayMode = in.decayMode();
 
 		// Discriminators:
 		edm::Ref<std::vector<TTau> > tauRef(this->handle, this->nCursor);
@@ -227,7 +235,7 @@ public:
 protected:
 	std::map<std::string, std::vector<std::string> > preselectionDiscr;
 	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist;
-	std::map<std::string, KTauMetadata *> discrMetadataMap;
+	std::map<std::string, KTauMetadata *> discriminatorMap;
 	std::map<std::string, std::string > tauDiscrProcessName;
 	std::map<std::string, std::map<std::string, unsigned int> > binaryTauDiscriminatorBitMap;
 	std::map<std::string, std::map<std::string, unsigned int> > floatTauDiscriminatorBitMap;

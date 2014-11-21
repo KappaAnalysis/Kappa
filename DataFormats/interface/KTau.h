@@ -17,31 +17,34 @@ struct KTauMetadata
 	std::vector<std::string> floatDiscriminatorNames;
 };
 
+/// Basic tau data format
+/** This contains the tau discriminators, the decay mode and the em-fraction
+    copy from DataFormats/TauReco/interface/PFTau.h
+ */
 struct KBasicTau : public KLepton
 {
-	/*
-	virtual ~KBasicTau() {};
-	
-	virtual bool isTau() {
-		return true;
-	};
-	*/
-	
+	int decayMode;     //< hadronic decay mode as identified by HPS algorithm
+	float emFraction;  //< electromagnetic energy fraction
+
+	/// container for tau discriminators with binary values
 	unsigned long long binaryDiscriminators;
+	/// container for tau discriminators with real (float) values
 	std::vector<float> floatDiscriminators;
 
-	bool hasID(const std::string& name, const KTauMetadata * lumimetadata) const
+	/// function to access tau discriminators with binary values
+	bool getId(const std::string& name, const KTauMetadata* meta) const
 	{
-		for(size_t i = 0; i < lumimetadata->binaryDiscriminatorNames.size(); ++i)
-			if(lumimetadata->binaryDiscriminatorNames[i] == name)
+		for(size_t i = 0; i < meta->binaryDiscriminatorNames.size(); ++i)
+			if(meta->binaryDiscriminatorNames[i] == name)
 				return (binaryDiscriminators & (1ull << i)) != 0;
 		return false; // Named discriminator does not exist
 	}
 
-	float getDiscriminator(const std::string& name, const KTauMetadata * lumimetadata) const
+	/// function to access tau discriminators with real values
+	float getDiscriminator(const std::string& name, const KTauMetadata* meta) const
 	{
-		for(size_t i = 0; i < lumimetadata->floatDiscriminatorNames.size(); ++i)
-			if(lumimetadata->floatDiscriminatorNames[i] == name)
+		for(size_t i = 0; i < meta->floatDiscriminatorNames.size(); ++i)
+			if (meta->floatDiscriminatorNames[i] == name)
 				return floatDiscriminators[i];
 		return -999.0; // Named discriminator does not exist
 	}
