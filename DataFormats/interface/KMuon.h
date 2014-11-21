@@ -7,9 +7,41 @@
 #ifndef KAPPA_MUON_H
 #define KAPPA_MUON_H
 
-#include <algorithm>
 #include "KTrack.h"
+#include <algorithm>
 
+/// isGoodMuon from DataFormats/MuonReco/interface/MuonSelectors.h
+namespace KGoodMuon {
+
+enum KGoodMuonType
+{
+	All = 0,                      //< dummy options - always true
+	AllGlobalMuons = 1,           //< checks isGlobalMuon flag
+	AllStandAloneMuons = 2,       //< checks isStandAloneMuon flag
+	AllTrackerMuons = 3,          //< checks isTrackerMuon flag
+	TrackerMuonArbitrated = 4,    //< resolve ambiguity of sharing segments
+	AllArbitrated = 5,            //< all muons with the tracker muon arbitrated
+	GlobalMuonPromptTight = 6,    //< global muons with tighter fit requirements
+	TMLastStationLoose = 7,       //< penetration depth loose selector
+	TMLastStationTight = 8,       //< penetration depth tight selector
+	TM2DCompatibilityLoose = 9,   //< likelihood based loose selector
+	TM2DCompatibilityTight = 10,  //< likelihood based tight selector
+	TMOneStationLoose = 11,       //< require one well matched segment
+	TMOneStationTight = 12,       //< require one well matched segment
+	TMLastStationOptimizedLowPtLoose = 13, //< combination of TMLastStation and TMOneStation
+	TMLastStationOptimizedLowPtTight = 14, //< combination of TMLastStation and TMOneStation
+	GMTkChiCompatibility = 15,    //< require tk stub have good chi2 relative to glb track
+	GMStaChiCompatibility = 16,   //< require sta stub have good chi2 compatibility relative to glb track
+	GMTkKinkTight = 17,           //< require a small kink value in the tracker stub
+	TMLastStationAngLoose = 18,   //< TMLastStationLoose with additional angular cuts
+	TMLastStationAngTight = 19,   //< TMLastStationTight with additional angular cuts
+	TMOneStationAngLoose = 20,    //< TMOneStationLoose with additional angular cuts
+	TMOneStationAngTight = 21,    //< TMOneStationTight with additional angular cuts
+	TMLastStationOptimizedBarrelLowPtLoose = 22, //< combination of TMLastStation and TMOneStation but with low pT optimization in barrel only
+	TMLastStationOptimizedBarrelLowPtTight = 23, //< combination of TMLastStation and TMOneStation but with low pT optimization in barrel only
+	RPCMuLoose = 24               //< checks isRPCMuon flag (require two well matched hits in different RPC layers)
+};
+}
 
 struct KMuonMetadata
 {
