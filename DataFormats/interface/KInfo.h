@@ -11,11 +11,13 @@
 #include <string>
 #include <vector>
 
-/// RUN METADATA
+// RUN METADATA
+
+/// Provenance information to trace back the branch content to the corresponding EDM product
 struct KProvenance
 {
-	std::vector<std::string> names;
-	std::vector<std::string> branches;
+	std::vector<std::string> names;         //< product names of the objects in EDM
+	std::vector<std::string> branches;      //< branch names in the Events tree in the same ordering
 };
 
 // RUN + LUMI METADATA
@@ -24,35 +26,36 @@ const unsigned int KLFPrescaleError = 1 << 0;
 
 struct KLumiInfo
 {
-	unsigned int nLumi;
-	unsigned int nRun;
-	unsigned int bitsUserFlags;
-	std::vector<unsigned int> hltPrescales;
-	std::vector<std::string> hltNames;
-	//std::vector<std::vector<std::string> > filterNames;
+	unsigned int nLumi;                     //< lumi section number
+	unsigned int nRun;                      //< run number
+	unsigned int bitsUserFlags;             //< contains a flag for prescale errors
+	std::vector<unsigned int> hltPrescales; //< prescales for the triggers in hltNames
+	std::vector<std::string> hltNames;      //< names of the HLT triggers
 };
 
 
 struct KGenLumiInfo : public KLumiInfo
 {
-	double filterEff;
-	double xSectionExt;
-	double xSectionInt;
+	double filterEff;              //< generator filter efficiency
+	double xSectionExt;            //< external process cross section
+	double xSectionInt;            //< internal process cross section
 };
 
 struct KDataLumiInfo : public KLumiInfo
 {
-	float avgInsDelLumi;
-	float avgInsDelLumiErr;
-	float avgInsRecLumi;
-	float avgInsRecLumiErr;
-	float deadFrac;
-	float lumiSectionLength;
-	short lumiSecQual;
-	unsigned short nFill; // fill number
+	float avgInsDelLumi;           //< average of the instantaneous delivered luminosity
+	float avgInsDelLumiErr;        //< error on the average of the instantaneous delivered luminosity
+	float avgInsRecLumi;           //< average of the instantaneous recorded luminosity
+	float avgInsRecLumiErr;        //< error on the average of the instantaneous recorded luminosity
+	float deadFrac;                //< dead fraction
+	float lumiSectionLength;       //< length of the lumi-section in seconds
+	short lumiSecQual;             //<
+	unsigned short nFill;          //< fill number
 
+	/// get the integrated luminosity of this lumi-section in pb\f$^{-1}\f$
 	double getLumi() const
 	{
+		// 10: , 1e6: conversion in pb
 		return avgInsRecLumi * lumiSectionLength / 10.0 / 1e6;
 	}
 };
@@ -67,15 +70,16 @@ const unsigned int KEFRecoWarnings = 1 << 4;
 
 struct KEventInfo
 {
-	unsigned long long bitsL1;
-	unsigned long long bitsHLT;
-	unsigned int bitsUserFlags;
-	unsigned int nEvent;
-	unsigned int nLumi;
-	unsigned int nRun;
-	int nBX;
-	float randomNumber;
-	float minVisPtFilterWeight; // weight necessary to correct embedded events
+	unsigned long long bitsL1;     //< trigger bits for the L1 trigger
+	unsigned long long bitsHLT;    //< trigger bits for the HLT trigger according to hltNames
+	unsigned int nEvent;           //< event number
+	unsigned int nLumi;            //< lumi-section number
+	unsigned int nRun;             //< run number
+	int nBX;                       //< bunch crossing number
+	unsigned int bitsUserFlags;    //<
+	float randomNumber;            //< random number per event for deterministic sample splittings
+	float minVisPtFilterWeight;    //< weight necessary to correct embedded events
+
 	bool hltFired (const std::string &name, const KLumiInfo *lumiinfo) const
 	{
 		for (size_t i = 0; i < lumiinfo->hltNames.size(); ++i)

@@ -26,11 +26,9 @@ protected:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		out.position = in.position();
-
 		out.type = in.type();
 
 		out.betaStar = in.betaStar();
-
 		out.beamWidthX = in.BeamWidthX();
 		out.beamWidthY = in.BeamWidthY();
 		out.emittanceX = in.emittanceX();

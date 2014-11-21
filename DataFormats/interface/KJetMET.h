@@ -40,14 +40,14 @@ typedef std::vector<KBasicJet> KBasicJets;
 
 struct KJetMetadata
 {
-	std::vector<std::string> tagNames;
-	std::vector<std::string> idNames;
+	std::vector<std::string> tagNames;  //< names of the float value taggers
+	std::vector<std::string> idNames;   //< names of the binary value IDs
 };
 
 struct KJet : public KBasicJet
 {
-	std::vector<float> tags;
-	unsigned int binaryIds;
+	std::vector<float> tags;            //< float value tags (b-tag, etc.)
+	unsigned int binaryIds;             //< binary value tags (PU jet ID, etc.)
 
 	float getTag(const std::string& name, const KJetMetadata *jetmetadata, bool check = true) const
 	{
@@ -97,15 +97,15 @@ struct KHCALNoiseSummary
 	bool hasBadRBXTS4TS5;
 	float isolatedNoiseSumE;
 	float isolatedNoiseSumEt;
+	float min25GeVHitTime;
+	float minE2Over10TS;
+	float minRBXEMF;
 	float max25GeVHitTime;
 	float maxE2Over10TS;
 	int maxHPDHits;
 	int maxHPDNoOtherHits;
 	int maxRBXHits;
 	int maxZeros;
-	float min25GeVHitTime;
-	float minE2Over10TS;
-	float minRBXEMF;
 	int numIsolatedNoiseChannels;
 };
 

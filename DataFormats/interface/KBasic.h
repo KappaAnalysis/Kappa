@@ -24,14 +24,15 @@ typedef std::vector<KLV> KLVs;
 
 struct KBeamSpot
 {
-	RMPoint position;
-	char type;
+	RMPoint position;              //< position of the beam spot
+	char type;                     //< type of beam (usually unknown): Unknown=-1, Fake=0, LHC=1, Tracker=2
 
-	double betaStar;
+	double betaStar;               //< beta* (always 0 in AOD)
+	double beamWidthX, beamWidthY; //< beam width in x and y direction
+	double emittanceX, emittanceY; //< beam emittance in x and y (always 0)
 
-	double beamWidthX, beamWidthY, emittanceX, emittanceY;
-
-	double dxdz, dydz, sigmaZ;
+	double dxdz, dydz;             //< slopes dx/dz and dy/dz for beam spot position extrapolation
+	double sigmaZ;                 //< sigma in z direction
 
 	ROOT::Math::SMatrix<double, 7, 7, ROOT::Math::MatRepSym<double, 7> > covariance;
 };

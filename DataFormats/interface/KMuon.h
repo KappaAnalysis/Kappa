@@ -45,7 +45,7 @@ enum KGoodMuonType
 
 struct KMuonMetadata
 {
-	std::vector<std::string> hltNames;
+	std::vector<std::string> hltNames;  //< names of available HLT paths
 };
 
 struct KMuon : public KLepton

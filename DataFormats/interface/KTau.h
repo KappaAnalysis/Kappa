@@ -10,11 +10,10 @@
 
 #include "KTrack.h"
 
-
 struct KTauMetadata
 {
-	std::vector<std::string> binaryDiscriminatorNames;
-	std::vector<std::string> floatDiscriminatorNames;
+	std::vector<std::string> binaryDiscriminatorNames; //< names of tau discriminators with binary values
+	std::vector<std::string> floatDiscriminatorNames;  //< names of tau discriminators with real (float) values
 };
 
 /// Basic tau data format

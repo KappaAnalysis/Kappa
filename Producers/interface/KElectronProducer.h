@@ -10,8 +10,6 @@
 #include "KBaseMultiLVProducer.h"
 
 #include <DataFormats/PatCandidates/interface/Electron.h>
-#include <bitset>
-#include <TMath.h>
 #include <RecoEgamma/EgammaTools/interface/ConversionTools.h>
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 #include "EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h"

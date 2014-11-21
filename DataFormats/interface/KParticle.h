@@ -12,28 +12,36 @@ const unsigned int KParticleCustomMask =  (unsigned int)15 << KParticleStatusPos
 const unsigned int KParticleStatusMask =  (unsigned int)7 << KParticleStatusPosition;
 const unsigned int KParticlePdgIdMask  = ((unsigned int)1 << KParticleStatusPosition) - (unsigned int)1;
 
+
 /// Particle base class for generator particles or candidates
 struct KParticle : public KLV
 {
-	unsigned int particleinfo;
+	/// bitset containing the status and the signed PDG-ID
+	unsigned int particleinfo; 
 
-	int status() const
-	{
-		return (particleinfo & KParticleStatusMask) >> KParticleStatusPosition;
-	}
-	int pdgId() const
-	{
-		return (particleinfo & KParticleSignMask ? -1 : 1) * (particleinfo & KParticlePdgIdMask);
-	}
+	/// sign of the PDG-ID (particles: +1, anti-particles: -1)
 	int sign() const
 	{
 		return (particleinfo & KParticleSignMask ? -1 : 1);
 	}
 
+	/// Monte-Carlo generator status, cf. [KParticle](md_docs_objects.html#obj-particle)
+	int status() const
+	{
+		return (particleinfo & KParticleStatusMask) >> KParticleStatusPosition;
+	}
+
+	/// PDG-ID of the particle (signed)
+	int pdgId() const
+	{
+		return sign() * (particleinfo & KParticlePdgIdMask);
+	}
+
 	/// particle charge multiplied by 3 (for integer comparisons)
-	// e.g. 2 for up-quark, -3 for electron
-	// valid for quarks, leptons, bosons, diquarks, mesons and baryons
-	// no special, technicolor, SUSY, Kaluza-Klein particles, R-hadrons and pentaquarks
+	/** e.g. 2 for up-quark, -3 for electron
+	    valid for quarks, leptons, bosons, diquarks, mesons and baryons
+	    not valid for special, technicolor, SUSY, Kaluza-Klein particles, R-hadrons and pentaquarks
+	*/
 	int chargeTimesThree() const
 	{
 		int pdg = std::abs(pdgId());
@@ -91,12 +99,10 @@ struct KGenParticle : public KParticle
 	}
 
 	/// return index of daughter i
-	/** checks if i<numberOfDaughters
-	    returns -1 in case i is out of bounds
-	 */
+	/** returns -1 in case i >= numberOfDaughters */
 	unsigned int daughterIndex(unsigned int i) const
 	{
-		if (i<daughterIndices.size())
+		if (i < daughterIndices.size())
 			return daughterIndices.at(i);
 		else
 			return -1;
@@ -104,6 +110,8 @@ struct KGenParticle : public KParticle
 };
 typedef std::vector<KGenParticle> KGenParticles;
 
+
+/// Generator photon
 struct KGenPhoton : public KLV
 {
 	KLV mother;
@@ -113,10 +121,12 @@ struct KGenPhoton : public KLV
 };
 typedef std::vector<KGenPhoton> KGenPhotons;
 
+
+/// Generator tau
 struct KGenTau : public KGenParticle
 {
-	KLV visible;		// momenta of visible particles
-	RMPoint vertex;
+	KLV visible;              //< momentum four-vector of visible particles
+	RMPoint vertex;           //< vertex
 
 	/// decay mode
 	/** bit definition:
@@ -124,12 +134,12 @@ struct KGenTau : public KGenParticle
 	1 - electron
 	2 - muon
 	>2 - hadronic
-	     3 - 1prong
-	     4 - 3prong
-	     5 - >3prong
+	    3 - 1prong
+	    4 - 3prong
+	    5 - >3prong
 	most significant bit (1<<7):
-		0 = tau
-		1 = descendant of a tau
+	    0 - tau
+	    1 - descendant of a tau
 	*/
 	unsigned char decayMode;
 
@@ -138,6 +148,9 @@ struct KGenTau : public KGenParticle
 	bool isElectronicDecay() const { return (decayMode & ~DescendantMask) == 1; }
 	bool isMuonicDecay() const { return (decayMode & ~DescendantMask) == 2; }
 	bool isHadronicDecay() const { return (decayMode & ~DescendantMask) > 2; }
+	bool is1Prong() const { return (decayMode & DescendantMask) == 3; }
+	bool is3Prong() const { return (decayMode & DescendantMask) == 4; }
+	bool isXProng() const { return (decayMode & DescendantMask) == 5; }
 	bool isDescendant() const { return (decayMode & DescendantMask) != 0; }
 };
 typedef std::vector<KGenTau> KGenTaus;
@@ -146,8 +159,9 @@ typedef std::vector<KGenTau> KGenTaus;
 /// Particle-Flow Candidate
 struct KPFCandidate : public KParticle
 {
-	double deltaP;
-	double ecalEnergy, hcalEnergy;
+	double deltaP;            //< momentum difference?
+	double ecalEnergy;        //< energy deposited in ECAL
+	double hcalEnergy;        //< energy deposited in HCAL
 };
 typedef std::vector<KPFCandidate> KPFCandidates;
 
