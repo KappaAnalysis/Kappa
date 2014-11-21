@@ -77,7 +77,7 @@ std::ostream &operator<<(std::ostream &os, const KJet &jet)
 
 std::ostream &operator<<(std::ostream &os, const KBasicTau &tau)
 {
-	return os << static_cast<const KLV>(tau) << " charge=" << tau.charge;
+	return os << static_cast<const KLV>(tau) << " charge=" << tau.charge();
 }
 
 std::ostream &operator<<(std::ostream &os, const KGenTau &tau)

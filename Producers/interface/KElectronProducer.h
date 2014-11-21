@@ -88,17 +88,26 @@ if (!trh.isValid())
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
-	{	
-		out.flavour = KLepton::ELECTRON;
-	
-		// Momentum:
+	{
+		// momentum:
 		copyP4(in, out.p4);
 
-		// Charge, ...
-		out.charge = in.charge();
+		// charge and flavour (lepton type)
+		assert(in.charge() == 1 || in.charge() == -1);
+		out.leptonInfo = KLeptonFlavour::ELECTRON;
+		if (in.charge() > 0)
+			out.leptonInfo |= KLeptonChargeMask;
+		if (in.isPF())
+			out.leptonInfo |= KLeptonPFMask;
 
 		// electron track
-		KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
+		if (in.gsfTrack().isNonnull())
+			KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
+		else if (in.gsfTrack().isNonnull())
+		{
+			KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
+			out.leptonInfo |= KLeptonAlternativeTrackMask;
+		}
 
 		// ECAL region: bits are set according to reco::GsfElectron::FiducialFlags
 		// the last bit is set to show that this bitset is filled.

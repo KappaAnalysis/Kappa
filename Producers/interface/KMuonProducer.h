@@ -109,12 +109,12 @@ public:
 	/// fill muon from DataFormats/MuonReco/interface/Muon.h
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		out.flavour = KLepton::MUON;
+		out.leptonInfo = KLeptonFlavour::MUON;
 		
-		// Momentum:
+		/// momentum:
 		copyP4(in, out.p4);
 
-		// Tracks
+		/// Tracks and track extracted information
 		if (in.track().isNonnull())
 			KTrackProducer::fillTrack(*in.track(), out.track);
 		if (in.globalTrack().isNonnull())

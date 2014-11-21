@@ -136,13 +136,27 @@ public:
 		const typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::SingleInputType &in,
 		typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::SingleOutputType &out)
 	{
-		out.flavour = KLepton::MUON;
-		
-		// Momentum:
+		// momentum:
 		copyP4(in, out.p4);
 
-		// Charge:
-		out.charge = in.charge();
+		// charge and flavour (lepton type)
+		out.leptonInfo = KLeptonFlavour::TAU;
+		assert(in.charge() == 1 || in.charge() == -1);
+		if (in.charge() > 0)
+			out.leptonInfo |= KLeptonChargeMask;
+		out.leptonInfo |= KLeptonPFMask;
+
+		if (in.leadPFChargedHadrCand().isNonnull())
+		{
+			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
+				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track);
+			else if (in.leadPFChargedHadrCand()->gsfTrackRef().isNonnull())
+			{
+				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track);
+				out.leptonInfo |= KLeptonAlternativeTrackMask;
+			}
+		}
+
 		out.emFraction = in.emFraction();
 		out.decayMode = in.decayMode();
 
