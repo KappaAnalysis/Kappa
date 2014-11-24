@@ -82,11 +82,11 @@ public:
 		//metaEvent->alphaQED = hEventInfo->alphaQED();
 
 		// Get PU infos
-		this->metaEvent->numPUInteractionsM2 = 0;
-		this->metaEvent->numPUInteractionsM1 = 0;
-		this->metaEvent->numPUInteractions0 = 0;
-		this->metaEvent->numPUInteractionsP1 = 0;
-		this->metaEvent->numPUInteractionsP2 = 0;
+		this->metaEvent->nPUm2 = 0;
+		this->metaEvent->nPUm1 = 0;
+		this->metaEvent->nPU   = 0;
+		this->metaEvent->nPUp1 = 0;
+		this->metaEvent->nPUp2 = 0;
 		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
 		if (event.getByLabel(puInfoSource, puHandles) && puHandles.isValid())
 		{
@@ -94,18 +94,17 @@ public:
 			{
 				unsigned char nPU = (unsigned char)std::min(255, it->getPU_NumInteractions());
 				if (it->getBunchCrossing() == -2)
-					this->metaEvent->numPUInteractionsM2 = nPU;
+					this->metaEvent->nPUm2 = nPU;
 				else if (it->getBunchCrossing() == -1)
-					this->metaEvent->numPUInteractionsM1 = nPU;
+					this->metaEvent->nPUm1 = nPU;
 				else if (it->getBunchCrossing() == 0)
-					this->metaEvent->numPUInteractions0 = nPU;
+					this->metaEvent->nPU = nPU;
 				else if (it->getBunchCrossing() == 1)
-					this->metaEvent->numPUInteractionsP1 = nPU;
+					this->metaEvent->nPUp1 = nPU;
 				else if (it->getBunchCrossing() == 2)
-					this->metaEvent->numPUInteractionsP2 = nPU;
+					this->metaEvent->nPUp2 = nPU;
 
-				// remove the following line to compile with CMSSW 4.2.7 or earlier
-				this->metaEvent->numPUInteractionsTruth = it->getTrueNumInteractions();
+				this->metaEvent->nPUMean = it->getTrueNumInteractions();  // remove this line to compile with CMSSW 4.2.7 or earlier
 			}
 		}
 		else
@@ -113,7 +112,7 @@ public:
 			// in some versions of CMSSW it's not a vector:
 			edm::Handle<PileupSummaryInfo> puHandle;
 			if (event.getByLabel(puInfoSource, puHandle) && puHandle.isValid())
-				this->metaEvent->numPUInteractions0 = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
+				this->metaEvent->nPU = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
 		}
 
 		return true;
@@ -172,11 +171,11 @@ public:
 		//metaEvent->alphaQED = hEventInfo->alphaQED();
 
 		// Get PU infos
-		this->metaEvent->numPUInteractionsM2 = 0;
-		this->metaEvent->numPUInteractionsM1 = 0;
-		this->metaEvent->numPUInteractions0 = 0;
-		this->metaEvent->numPUInteractionsP1 = 0;
-		this->metaEvent->numPUInteractionsP2 = 0;
+		this->metaEvent->nPUm2 = 0;
+		this->metaEvent->nPUm1 = 0;
+		this->metaEvent->nPU   = 0;
+		this->metaEvent->nPUp1 = 0;
+		this->metaEvent->nPUp2 = 0;
 
 		return true;
 	}

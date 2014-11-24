@@ -105,15 +105,15 @@ typedef int bx_id;
 
 struct KGenEventInfo : public KEventInfo
 {
-	double weight;
-	double binValue;
-	double alphaQCD;
-	float numPUInteractionsTruth;	// "true" number of PU interactions
-	unsigned char numPUInteractionsM2;	// bx = -2
-	unsigned char numPUInteractionsM1;	// bx = -1
-	unsigned char numPUInteractions0;	// bx =  0
-	unsigned char numPUInteractionsP1;	// bx = +1
-	unsigned char numPUInteractionsP2;	// bx = +2
+	double weight;                      //< Monte-Carlo weight of the event
+	double binValue;                    //< ?
+	double alphaQCD;                    //< value of alpha_S for this event
+	float nPUMean;        //< mean ("true") number of PU interactions
+	unsigned char nPUm2;  // bx = -2
+	unsigned char nPUm1;  // bx = -1
+	unsigned char nPU;    // bx =  0
+	unsigned char nPUp1;  // bx = +1
+	unsigned char nPUp2;  // bx = +2
 };
 
 
