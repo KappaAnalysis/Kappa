@@ -18,7 +18,10 @@ struct KProvenance
 	std::vector<std::string> branches;
 };
 
-/// RUN + LUMI METADATA
+// RUN + LUMI METADATA
+// List of user flags for luminosity sections (KLumiFlag...)
+const unsigned int KLFPrescaleError = 1 << 0;
+
 struct KLumiInfo
 {
 	unsigned int nLumi;
@@ -54,7 +57,14 @@ struct KDataLumiInfo : public KLumiInfo
 	}
 };
 
-/* EVENT METADATA */
+/// EVENT METADATA
+// List of user flags for events (KEventFlag...)
+const unsigned int KEFPhysicsDeclared = 1 << 0;
+const unsigned int KEFHCALLooseNoise = 1 << 1;
+const unsigned int KEFHCALTightNoise = 1 << 2;
+const unsigned int KEFRecoErrors = 1 << 3;
+const unsigned int KEFRecoWarnings = 1 << 4;
+
 struct KEventInfo
 {
 	unsigned long long bitsL1;
@@ -73,9 +83,15 @@ struct KEventInfo
 				return (bitsHLT & (1ull << i)) != 0;
 		return false; // Named HLT does not exist
 	}
+
 	inline bool hltFired (const size_t pos) const
 	{
 		return (bitsHLT & (1ull << pos)) != 0;
+	}
+
+	inline bool userFlag(const unsigned int mask) const
+	{
+		return (bitsUserFlags & mask) != 0;
 	}
 };
 
@@ -86,15 +102,6 @@ typedef unsigned int run_id;
 typedef unsigned short fill_id;
 typedef int bx_id;
 
-// List of user flags for events (KEventFlag...)
-const unsigned int KEFPhysicsDeclared = 1 << 0;
-const unsigned int KEFHCALLooseNoise = 1 << 1;
-const unsigned int KEFHCALTightNoise = 1 << 2;
-const unsigned int KEFRecoErrors = 1 << 3;
-const unsigned int KEFRecoWarnings = 1 << 4;
-
-// List of user flags for luminosity sections (KLumiFlag...)
-const unsigned int KLFPrescaleError = 1 << 0;
 
 struct KGenEventInfo : public KEventInfo
 {
