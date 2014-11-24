@@ -138,6 +138,22 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
+	UnbiasedDiTauPVs = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+		rename = cms.vstring("$ => UnbiasedRefit"),
+		whitelist = cms.vstring("offlinePrimaryVertices"),
+		blacklist = cms.vstring(),
+		rename_whitelist = cms.vstring(),
+		rename_blacklist = cms.vstring(),
+
+		deltaRThreshold = cms.double(0.0001),
+		beamSpotSource = cms.InputTag("offlineBeamSpot"),
+		src = cms.InputTag("hpsPFTauProducer"),
+		fitMethod = cms.int32(0),
+		includeOrginalPV = cms.bool(True),
+	),
+
+
 	BeamSpot = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),
 

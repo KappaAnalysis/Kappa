@@ -27,6 +27,15 @@ public:
 
 	static const std::string getLabel() { return "PFTaus"; }
 
+	static int createRecoPFTauHash(const reco::PFTau tau)
+	{
+		return ( std::hash<double>()(tau.leadPFCand()->px()) ^
+		         std::hash<double>()(tau.leadPFCand()->py()) ^
+		         std::hash<double>()(tau.leadPFCand()->pz()) ^
+		         std::hash<bool>()(tau.leadPFCand()->charge()) );
+	}
+
+
 protected:
 	virtual bool isCorrectType(std::string className)
 	{
@@ -80,7 +89,7 @@ protected:
 		}
 		std::sort(out.signalGammaCands.begin(), out.signalGammaCands.end(), sorter);
 
-
+		out.tauKey = createRecoPFTauHash(in);
 		out.nSignalTracks = in.signalTracks().size();
 	}
 private:

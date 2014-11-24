@@ -19,7 +19,6 @@ public:
 
 	static const std::string getLabel() { return "Vertex"; }
 
-	// Static method for filling a vertex in other producers
 	static void fillVertex(const SingleInputType &in, SingleOutputType &out)
 	{
 		out.position = in.position();

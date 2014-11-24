@@ -26,6 +26,9 @@
 <use name="RecoMuon/Records"/>
 <use name="TrackingTools/KalmanUpdators"/>
 <use name="RecoEgamma/EgammaTools"/>
+<use name="RecoVertex/AdaptiveVertexFit"/>
+<use name="RecoVertex/LinearizationPointFinders"/>
+<use name="RecoVertex/KalmanVertexFit"/>
 
 <use name="root"/>
 <use name="rootcore"/>

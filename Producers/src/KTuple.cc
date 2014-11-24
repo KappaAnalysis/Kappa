@@ -47,6 +47,7 @@
 #include "../interface/KPFMETProducer.h"
 #include "../interface/KPFTaggedJetProducer.h"
 #include "../interface/KPFTauProducer.h"
+#include "../interface/KUnbiasedDiTauPVsProducer.h"
 #include "../interface/KTowerProducer.h"
 #include "../interface/KTrackProducer.h"
 #include "../interface/KTrackSummaryProducer.h"
@@ -195,6 +196,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KPFMETProducer>(active[i]);
 		addProducer<KPFTaggedJetProducer>(active[i]);
 		addProducer<KPFTauProducer>(active[i]);
+		addProducer<KUnbiasedDiTauPVsProducer>(active[i]);
 		addProducer<KTowerProducer>(active[i]);
 		addProducer<KTrackProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);

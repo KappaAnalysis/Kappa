@@ -78,6 +78,8 @@ namespace
 		KMuonMetadata dict_KMuonMetadata;
 		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
 		KTriggerInfos dict_KTriggerInfos;
+		KUnbiasedDiTauPV dict_KUnbiasedDiTauPV;
+		KUnbiasedDiTauPVs dict_KUnbiasedDiTauPVs;
 
 		KProvenance dict_KProvenance;
 

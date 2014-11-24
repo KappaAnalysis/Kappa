@@ -82,6 +82,8 @@ REGISTER_NAME_OF_TYPE(KTaggerMetadata,KTaggerMetadata);
 REGISTER_NAME_OF_TYPE(KMuonMetadata,KMuonMetadata);
 REGISTER_NAME_OF_TYPE(KTauDiscriminatorMetadata,KTauDiscriminatorMetadata);
 REGISTER_NAME_OF_TYPE(KTriggerInfos,KTriggerInfos);
+REGISTER_NAME_OF_TYPE(KUnbiasedDiTauPV,KUnbiasedDiTauPV);
+REGISTER_NAME_OF_TYPE(KUnbiasedDiTauPVs,std::vector<KUnbiasedDiTauPV>);
 REGISTER_NAME_OF_TYPE(KProvenance,KProvenance);
 REGISTER_NAME_OF_TYPE(KLumiMetadata,KLumiMetadata);
 REGISTER_NAME_OF_TYPE(KGenLumiMetadata,KGenLumiMetadata);

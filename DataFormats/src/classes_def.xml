@@ -62,6 +62,8 @@
 	<class name="KMuonMetadata"/>
 	<class name="KTauDiscriminatorMetadata"/>
 	<class name="KTriggerInfos"/>
+	<class name="KUnbiasedDiTauPV"/>
+	<class name="KUnbiasedDiTauPVs"/>
 
 	<class name="KProvenance"/>
 
