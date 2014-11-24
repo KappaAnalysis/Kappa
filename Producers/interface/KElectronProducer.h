@@ -27,7 +27,7 @@ public:
 		 namesOfIds(cfg.getParameter<std::vector<std::string> >("IDs"))
 {
 		names = new KElectronIdMetadata;
-		_lumi_tree->Bronch("electronIdMetadata", "KElectronIdMetadata", &names);
+		_lumi_tree->Bronch("KElectronIdMetadata", "KElectronIdMetadata", &names);
 }
 
 	static const std::string getLabel() { return "Electrons"; }
