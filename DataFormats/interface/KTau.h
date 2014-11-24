@@ -8,7 +8,7 @@
 #ifndef KAPPA_TAU_H
 #define KAPPA_TAU_H
 
-#include "KTrack.h"
+#include "KLepton.h"
 
 struct KTauMetadata
 {

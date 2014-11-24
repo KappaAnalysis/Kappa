@@ -7,7 +7,7 @@
 #ifndef KAPPA_ELECTRON_H
 #define KAPPA_ELECTRON_H
 
-#include "KTrack.h"
+#include "KLepton.h"
 
 
 struct KElectronMetadata

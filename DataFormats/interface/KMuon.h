@@ -7,7 +7,7 @@
 #ifndef KAPPA_MUON_H
 #define KAPPA_MUON_H
 
-#include "KTrack.h"
+#include "KLepton.h"
 #include <algorithm>
 
 /// isGoodMuon from DataFormats/MuonReco/interface/MuonSelectors.h

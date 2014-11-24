@@ -5,6 +5,7 @@
 #include "KElectron.h"
 #include "KInfo.h"
 #include "KJetMET.h"
+#include "KLepton.h"
 #include "KMuon.h"
 #include "KParticle.h"
 #include "KRoot.h"
