@@ -22,7 +22,7 @@ public:
 	static void fillVertex(const SingleInputType &in, SingleOutputType &out)
 	{
 		out.position = in.position();
-		out.fake = in.isFake();
+		out.valid = in.isValid();
 		out.nTracks = in.tracksSize();
 
 		out.chi2 = in.chi2();

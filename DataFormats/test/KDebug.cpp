@@ -91,7 +91,7 @@ std::ostream &operator<<(std::ostream &os, const KGenTau &tau)
 std::ostream &operator<<(std::ostream &os, const KVertex &vertex)
 {
 	return os << vertex.position
-		<< " #Tracks=" << vertex.nTracks << " fake=" << vertex.fake
+		<< " #Tracks=" << vertex.nTracks << " valid=" << vertex.valid
 		<< " chi2=" << vertex.chi2 << " DOF=" << vertex.nDOF;
 }
 

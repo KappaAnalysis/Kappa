@@ -41,12 +41,14 @@ typedef std::vector<KBeamSpot> KBeamSpots;
 struct KVertex
 {
 	RMPoint position;
-	bool fake;
-
+	bool valid;
 	unsigned int nTracks;
-	float chi2, nDOF;
+	float chi2;
+	float nDOF;
 
-	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;
+	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;  //< covariance matrix
+
+	inline bool fake() const { return (chi2 == 0 && nDOF == 0 && nTracks == 0); };
 };
 typedef std::vector<KVertex> KVertices;
 
