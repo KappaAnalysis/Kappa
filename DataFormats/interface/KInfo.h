@@ -72,7 +72,7 @@ struct KEventInfo
 {
 	unsigned long long bitsL1;     //< trigger bits for the L1 trigger
 	unsigned long long bitsHLT;    //< trigger bits for the HLT trigger according to hltNames
-	unsigned int nEvent;           //< event number
+	unsigned long long nEvent;     //< event number
 	unsigned int nLumi;            //< lumi-section number
 	unsigned int nRun;             //< run number
 	int nBX;                       //< bunch crossing number
@@ -100,7 +100,7 @@ struct KEventInfo
 };
 
 // Nice names for types
-typedef unsigned int event_id;
+typedef unsigned long long event_id;
 typedef unsigned int lumi_id;
 typedef unsigned int run_id;
 typedef unsigned short fill_id;
