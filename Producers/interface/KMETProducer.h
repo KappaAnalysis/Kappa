@@ -39,11 +39,13 @@ protected:
 			out.hfHadronFraction = in.at(0).HFHadronEtFraction();
 			out.hfEMFraction = in.at(0).HFEMEtFraction();
 
-
+#if CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2
+			TMatrixD mat;
+#else
 			TMatrixD mat = in.at(0).getSignificanceMatrix();
+#endif
 			if (mat(0,1) != mat(1,0))
 				std::cout << "Matrix is not symmetric: " << mat(0,1) << " != " << mat(1,0) << std::endl;
-			//assert(mat(0,1) == mat(1,0));
 			out.significance(0,0) = mat(0,0);
 			out.significance(0,1) = mat(0,1);
 			if (out.significance(1,0) != mat(1,0))

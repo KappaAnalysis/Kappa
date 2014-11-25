@@ -29,7 +29,11 @@ protected:
 			copyP4(in.at(0), out.p4);
 			out.sumEt = in.at(0).sumEt();
 
+#if CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2
+			TMatrixD mat;
+#else
 			TMatrixD mat = in.at(0).getSignificanceMatrix();
+#endif
 			assert(mat(0,1) == mat(1,0));
 			out.significance(0,0) = mat(0,0);
 			out.significance(0,1) = mat(0,1);
