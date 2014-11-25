@@ -353,6 +353,7 @@ datasets = {
 		"dataset" : {
 			7 : "/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+            13: "/DYJetsToLL_M-50_13TeV-madgraph-pythia8-tauola_v2/Spring14dr-PU_S14_POSTLS170_V6-v1/AODSIM",
 		},
 	},
 	"DY1JetsToLL_M_50_madgraph" : {
