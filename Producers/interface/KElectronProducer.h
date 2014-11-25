@@ -13,7 +13,9 @@
 #include <RecoEgamma/EgammaTools/interface/ConversionTools.h>
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 #include "EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h"
-//#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
+#if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
+	#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
+#endif
 
 
 class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>
@@ -168,15 +170,25 @@ if (!trh.isValid())
 			// ElectronTools/interface/ElectronEffectiveArea.h: ElectronEffectiveAreaTarget::kEleEAData2011,kEleEASummer11MC,kEleEAFall11MC,kEleEAData2012
 			if (doCutbasedIds)
 			{
+#if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
 				bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);//, ElectronEffectiveArea::kEleEAData2012);
+				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 				bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);//, ElectronEffectiveArea::kEleEAData2012);
+				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 				bool cutbasedIDtight = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::TIGHT,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);//, ElectronEffectiveArea::kEleEAData2012);
+				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 				bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);//, ElectronEffectiveArea::kEleEAData2012);
-
+				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+#else
+				bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
+				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
+				bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
+				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
+				bool cutbasedIDtight = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::TIGHT,
+				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
+				bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
+				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
+#endif
 				out.ids = 1 << KLeptonId::ANY;  //< mark it as filled
 				out.ids |= cutbasedIDloose << KLeptonId::LOOSE;
 				out.ids |= cutbasedIDmedium << KLeptonId::MEDIUM;

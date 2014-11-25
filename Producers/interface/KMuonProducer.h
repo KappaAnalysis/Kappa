@@ -212,7 +212,11 @@ public:
 		out.ids |= (muon::isLooseMuon(in)      << KLeptonId::LOOSE);
 		out.ids |= (muon::isTightMuon(in, vtx) << KLeptonId::TIGHT);
 		out.ids |= (muon::isSoftMuon(in, vtx)  << KLeptonId::SOFT);
-		out.ids |= (muon::isHighPtMuon(in, vtx, reco::improvedTuneP) << KLeptonId::HIGHPT); // a
+#if CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION < 15
+		out.ids |= (muon::isHighPtMuon(in, vtx, reco::improvedTuneP) << KLeptonId::HIGHPT);
+#else
+		out.ids |= (muon::isHighPtMuon(in, vtx) << KLeptonId::HIGHPT);
+#endif
 		assert((out.ids & 148) == 0); // 148 = 0b10010100, these bits should be zero
 	}
 
