@@ -270,6 +270,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			#srcMuonIsolationHcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","hcal"),
 			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
 			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
+			vertexcollection = cms.InputTag("offlinePrimaryVertices"),
 			# Cuts for PF isolation
 			pfIsoVetoCone = cms.double(0.01),
 			pfIsoVetoMinPt = cms.double(0.5),
