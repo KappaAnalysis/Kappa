@@ -31,13 +31,6 @@ struct KVertex
 };
 typedef std::vector<KVertex> KVertices;
 
-struct KUnbiasedDiTauPV
-{
-	std::vector<KDataVertex> refittedVertices;
-	std::vector<int> diTauKey;
-};
-typedef std::vector<KUnbiasedDiTauPV> KUnbiasedDiTauPVs;
-
 struct KVertexSummary
 {
 	KVertex pv;
@@ -166,6 +159,15 @@ struct KGenParticle : public KLV
 	}
 };
 typedef std::vector<KGenParticle> KGenParticles;
+
+
+struct KTaupairVerticesMap
+{
+	std::vector<KVertex> refittedVertices;
+	std::vector<int> diTauKey;
+};
+typedef std::vector<KTaupairVerticesMap> KTaupairVerticesMaps;
+
 
 struct KGenPhoton : public KLV
 {

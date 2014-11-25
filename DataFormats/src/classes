@@ -38,6 +38,7 @@ KTrackSummary
 KTriggerObjects
 KVertex					KVertices
 KVertexSummary
+KTaupairVerticesMap		KTaupairVerticesMaps
 
 KElectronIdMetadata
 KFilterMetadata
@@ -45,7 +46,6 @@ KTaggerMetadata
 KMuonMetadata
 KTauDiscriminatorMetadata
 KTriggerInfos
-KUnbiasedDiTauPV		KUnbiasedDiTauPVs
 #################################
 
 KProvenance

@@ -69,15 +69,17 @@ namespace
 		KTrackSummary dict_KTrackSummary;
 		KTriggerObjects dict_KTriggerObjects;
 		KVertexSummary dict_KVertexSummary;
+		KTaupairVerticesMap dict_KTaupairVerticesMap;
+		KTaupairVerticesMaps dict_KTaupairVerticesMaps;
 
 		KElectronIdMetadata dict_KElectronIdMetadata;
 		KFilterMetadata dict_KFilterMetadata;
 		KTaggerMetadata dict_KTaggerMetadata;
 		KMuonMetadata dict_KMuonMetadata;
-		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
-		KTriggerInfos dict_KTriggerInfos;
 		KUnbiasedDiTauPV dict_KUnbiasedDiTauPV;
 		KUnbiasedDiTauPVs dict_KUnbiasedDiTauPVs;
+		KTauDiscriminatorMetadata dict_KTauDiscriminatorMetadata;
+		KTriggerInfo dict_KTriggerInfo;
 
 		KProvenance dict_KProvenance;
 

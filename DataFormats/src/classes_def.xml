@@ -53,6 +53,8 @@
 	<class name="KTrackSummary"/>
 	<class name="KTriggerObjects"/>
 	<class name="KVertexSummary"/>
+	<class name="KTaupairVerticesMap"/>
+	<class name="KTaupairVerticesMaps"/>
 
 	<class name="KElectronIdMetadata"/>
 	<class name="KFilterMetadata"/>
@@ -60,8 +62,6 @@
 	<class name="KMuonMetadata"/>
 	<class name="KTauDiscriminatorMetadata"/>
 	<class name="KTriggerInfos"/>
-	<class name="KUnbiasedDiTauPV"/>
-	<class name="KUnbiasedDiTauPVs"/>
 
 	<class name="KProvenance"/>
 

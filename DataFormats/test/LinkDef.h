@@ -104,7 +104,9 @@
 #pragma link C++ class std::vector<KTau>+;
 #pragma link C++ typedef KTaus;
 
-#pragma link C++ struct KUnbiasedDiTauPV;
+#pragma link C++ struct KTaupairVerticesMap+;
+#pragma link C++ class std::vector<KTaupairVerticesMap>+;
+#pragma link C++ typedef KTaupairVerticesMaps;
 
 #pragma link C++ struct KGenTau+;
 #pragma link C++ class std::vector<KGenTau>+;

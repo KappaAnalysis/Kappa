@@ -139,7 +139,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	UnbiasedDiTauPVs = cms.PSet(kappaNoCut,
+	TaupairVerticesMap = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 		rename = cms.vstring("$ => UnbiasedRefit"),
 		whitelist = cms.vstring("offlinePrimaryVertices"),

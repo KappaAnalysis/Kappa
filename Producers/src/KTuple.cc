@@ -210,7 +210,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KMETProducer>(active[i]);
 		addProducer<KJetProducer>(active[i]);
 		addProducer<KTauProducer>(active[i]);
-		addProducer<KUnbiasedDiTauPVsProducer>(active[i]);
+		addProducer<KTaupairVerticesMapProducer>(active[i]);
 		addProducer<KTowerProducer>(active[i]);
 		addProducer<KTrackProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);

@@ -15,13 +15,13 @@
 #include "RecoVertex/AdaptiveVertexFit/interface/AdaptiveVertexFitter.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
-class KUnbiasedDiTauPVsProducer : public KBaseMultiVectorProducer<edm::View<reco::Vertex>, std::vector<KUnbiasedDiTauPV>>
+class KTaupairVerticesMapProducer : public KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>
 {
 public:
-	KUnbiasedDiTauPVsProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiVectorProducer<edm::View<reco::Vertex>, std::vector<KUnbiasedDiTauPV> >(cfg, _event_tree, _run_tree, getLabel()) {}
+	KTaupairVerticesMapProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>(cfg, _event_tree, _run_tree, getLabel()) {}
 
-	static const std::string getLabel() { return "UnbiasedDiTauPVs"; }
+	static const std::string getLabel() { return "TaupairVerticesMap"; }
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
@@ -44,7 +44,7 @@ public:
 		beamSpot = *beamSpotHandle;
 
 		// Continue normally
-		KBaseMultiVectorProducer<edm::View<reco::Vertex>, std::vector<KUnbiasedDiTauPV> >::fillProduct(in, out, name, tag, pset);
+		KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>::fillProduct(in, out, name, tag, pset);
 	}
 
 
@@ -52,8 +52,8 @@ public:
 	{
 		if(this->includeOriginalPV)
 		{
-			KDataVertex tmpVertex;
-			out.diTauKey.push_back( 0 );
+			KVertex tmpVertex;
+			out.diTauKey.push_back(0);
 			KVertexProducer::fillVertex(in, tmpVertex);
 			out.refittedVertices.push_back( tmpVertex);
 		}
@@ -75,8 +75,8 @@ public:
 				{
 					KVertex tmpVertex;
 					KVertexProducer::fillVertex(vertex->second, tmpVertex);
-					out.diTauKey.push_back( vertex->first );
-					out.refittedVertices.push_back( tmpVertex);
+					out.diTauKey.push_back(vertex->first);
+					out.refittedVertices.push_back(tmpVertex);
 				}
 			}
 		}
