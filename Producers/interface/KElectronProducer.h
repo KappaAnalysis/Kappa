@@ -24,7 +24,7 @@ class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, 
 public:
 	KElectronProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KDataElectrons>(cfg, _event_tree, _lumi_tree, getLabel()),
-		 namesOfIds(cfg.getParameter<std::vector<std::string> >("IDs"))
+		 namesOfIds(cfg.getParameter<std::vector<std::string> >("ids"))
 {
 		names = new KElectronIdMetadata;
 		_lumi_tree->Bronch("KElectronIdMetadata", "KElectronIdMetadata", &names);

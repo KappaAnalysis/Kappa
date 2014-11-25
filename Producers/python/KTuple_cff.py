@@ -386,18 +386,17 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	Electrons = cms.PSet(kappaNoCut,
 		kappaNoRegEx,
-		IDs = cms.vstring("mvaTrigV0",
-						  "mvaTrigNoIPV0",
-						  "mvaNonTrigV0"),
+		ids = cms.vstring(),
 		electrons = cms.PSet(
-		src = cms.InputTag("patElectrons"),
-		allConversions = cms.InputTag("allConversions"),
-		offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
-		vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
-		isoValInputTags = cms.VInputTag(cms.InputTag('elPFIsoValueCharged03PFIdPFIso'),
-						cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
-						cms.InputTag('elPFIsoValueNeutral03PFIdPFIso')),
-		rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
+			src = cms.InputTag("patElectrons"),
+			allConversions = cms.InputTag("allConversions"),
+			offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
+			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
+			isoValInputTags = cms.VInputTag(
+				cms.InputTag('elPFIsoValueCharged03PFIdPFIso'),
+				cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
+				cms.InputTag('elPFIsoValueNeutral03PFIdPFIso')),
+			rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
 		),
 	),
 
