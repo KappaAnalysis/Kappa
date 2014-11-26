@@ -227,10 +227,10 @@ if __name__ == "__main__":
 		## test file for EKP
 		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/pfEmbedded.root')
 		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/tauPlusX.root')
-		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/VBF-Htautau.root')
+		testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/VBF-Htautau.root')
 		#testfile	= cms.untracked.vstring('file:/storage/6/berger/testfiles/data_2012C_AOD.root')
 		## test file for lxplus
-		testfile	= cms.untracked.vstring('root://eoscms//eos/cms/store/relval/CMSSW_5_3_6-START53_V14/RelValProdTTbar/AODSIM/v2/00000/76ED0FA6-1E2A-E211-B8F1-001A92971B72.root')
+		#testfile	= cms.untracked.vstring('root://eoscms//eos/cms/store/relval/CMSSW_5_3_6-START53_V14/RelValProdTTbar/AODSIM/v2/00000/76ED0FA6-1E2A-E211-B8F1-001A92971B72.root')
 		## test file for NAF
 		#testfile	= cms.untracked.vstring('file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_8TeV_powheg_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_004B56D8-AAED-E111-AB70-1CC1DE1CEDB2.root')
 		## test file for RWTH
