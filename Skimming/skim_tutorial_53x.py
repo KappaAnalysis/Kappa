@@ -71,6 +71,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
         outputFile=cms.string("skim_" + datatype + ".root"),
     )
     process.kappatuple.verbose = cms.int32(0)
+    process.kappatuple.profile = cms.bool(True)
     process.kappatuple.active = cms.vstring(
         'LV', 'Muons', 'TrackSummary', 'VertexSummary', 'BeamSpot',
         'PFMET', 'PFJets',

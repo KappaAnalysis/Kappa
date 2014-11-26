@@ -10,6 +10,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.maxEvents.input	      = maxevents				## number of events to be processed (-1 = all in file)
 	process.kappaTuple.outputFile = 'kappaTuple.root'			## name of output file
 	process.kappaTuple.verbose    = cms.int32(0)				## verbosity level
+	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
