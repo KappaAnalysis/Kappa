@@ -122,6 +122,10 @@
 #pragma link C++ class std::vector<KGenParticle>+;
 #pragma link C++ typedef KGenParticles;
 
+#pragma link C++ struct KParticle+;
+#pragma link C++ class std::vector<KParticle>+;
+#pragma link C++ typedef KParticles;
+
 #pragma link C++ struct KHit+;
 #pragma link C++ class std::vector<KHit>+;
 #pragma link C++ typedef KHits;
