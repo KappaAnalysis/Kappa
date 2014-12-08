@@ -71,6 +71,8 @@ struct KMuon : public KLepton
 
 	/// isolation results
 	float trackIso;         //< tracker isolation as given by muon.isolationR03().sumPt
+	float hcalIso;          //< hcal detector based isolation as given by muon.isolationR03().hadEt
+	float ecalIso;          //< ecal detector basedisolation as given by muon.isolationR03().emEt
 	float pfIso03;          //< PF isolation R = 0.3
 	// deleted: hcalIso03, ecalIso03 and all 05
 
