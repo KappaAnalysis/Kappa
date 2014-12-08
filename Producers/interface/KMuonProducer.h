@@ -173,7 +173,7 @@ public:
 		vetosPF.push_back(&pf_threshold_veto);
 
 		/// isolation results
-		out.trackIso03 = in.isolationR03().sumPt;
+		out.trackIso = in.isolationR03().sumPt;
 		out.pfIso03    = muonIsoDepositPF.depositWithin(0.3, vetosPF);
 		//out.pfIso04    = muonIsoDepositPF.depositWithin(0.4, vetosPF);
 

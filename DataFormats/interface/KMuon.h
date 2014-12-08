@@ -70,8 +70,8 @@ struct KMuon : public KLepton
 	float caloCompatibility, segmentCompatibility;
 
 	/// isolation results
-	float trackIso03;		///< tracker isolation as given by muon.isolationR03().sumPt
-	float pfIso03;			///< PF isolation R = 0.3
+	float trackIso;         //< tracker isolation as given by muon.isolationR03().sumPt
+	float pfIso03;          //< PF isolation R = 0.3
 	// deleted: hcalIso03, ecalIso03 and all 05
 
 	/// additional isolation variables for PF isolation which are not stored in a KLepton
