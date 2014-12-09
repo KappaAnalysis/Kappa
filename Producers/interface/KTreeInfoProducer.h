@@ -8,8 +8,6 @@
 #ifndef KAPPA_TREE_METADATAPRODUCER_H
 #define KAPPA_TREE_METADATAPRODUCER_H
 
-#include <bitset>
-#include <TMath.h>
 
 class KTreeInfoProducer: public KBaseProducer
 {
@@ -17,15 +15,19 @@ public:
 	KTreeInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree)
 	{
 	
-		std::vector<TList*> label;
+		TList* keys = new TList();
+		keys->SetName("keys");
+		
+		TList* values = new TList();
+		values->SetName("values");
+		
 		edm::ParameterSet parameterSet(cfg.getParameterSet("parameters"));
 		const std::vector<std::string> parameterNames(parameterSet.getParameterNames());
 		for (std::vector<std::string>::const_iterator iParam = parameterNames.begin(), iEnd = parameterNames.end(); iParam != iEnd; ++iParam)
 		{
-			label.push_back( new TList() );
-			label.back()->SetName(iParam->c_str());
+			keys->Add(new TObjString(iParam->c_str()));
+			
 			std::string parameterValue;
-
 			if(parameterSet.existsAs<std::string>(*iParam))
 			{
 				parameterValue = getString(parameterSet.getParameter<std::string>(*iParam));
@@ -38,19 +40,12 @@ public:
 			{
 				parameterValue = getString(parameterSet.getParameter<bool>(*iParam));
 			}
-
-			tstring.push_back( new TObjString(parameterValue.c_str() ) );
-			label.back()->Add(tstring.back());
-
+			values->Add(new TObjString(parameterValue.c_str()));
 		}
-
-		for(unsigned int i = 0; i < label.size(); i++)
-			{
-			_lumi_tree->GetUserInfo()->Add(label[i]);
-			}
-
+		
+		_lumi_tree->GetUserInfo()->Add(keys);
+		_lumi_tree->GetUserInfo()->Add(values);
 	}
-	std::vector<TObjString*> tstring;
 
 	static const std::string getLabel() { return "TreeInfo"; }
 
