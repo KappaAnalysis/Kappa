@@ -209,12 +209,12 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.p *= process.makeKappaMET
 	#"""
 	
-	# add python config to TreeMetadata
-	process.kappaTuple.TreeMetadata.parameters.config = cms.string(process.dumpPython())
+	# add python config to TreeInfo
+	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
 	
-	# add repository revisions to TreeMetadata
+	# add repository revisions to TreeInfo
 	for repo, rev in tools.get_repository_revisions().iteritems():
-		setattr(process.kappaTuple.TreeMetadata.parameters, repo, cms.string(rev))
+		setattr(process.kappaTuple.TreeInfo.parameters, repo, cms.string(rev))
 	
 
 	## ------------------------------------------------------------------------
