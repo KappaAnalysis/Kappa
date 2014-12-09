@@ -2,6 +2,8 @@ import os
 import sys
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper as datasetsHelper
+import Kappa.Skimming.tools as tools
+
 
 def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring(""), maxevents=100, nickname = 'SM_VBFHToTauTau_M_90_powheg_pythia_8TeV', kappaTag = 'Kappa_1_0_0'):
 
@@ -17,6 +19,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	data = datasetsHelper.isData(nickname)
 	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
 	isEmbedded = datasetsHelper.getIsEmbedded(nickname)
+	
 	process.p = cms.Path ( )
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
@@ -204,6 +207,15 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.kappaTuple.active += cms.vstring('BasicMET')                         ## produce/save KappaMET
 	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
 	process.p *= process.makeKappaMET
+	#"""
+	
+	# add python config to TreeMetadata
+	process.kappaTuple.TreeMetadata.parameters.config = cms.string(process.dumpPython())
+	
+	# add repository revisions to TreeMetadata
+	for repo, rev in tools.get_repository_revisions().iteritems():
+		setattr(process.kappaTuple.TreeMetadata.parameters, repo, cms.string(rev))
+	
 
 	## ------------------------------------------------------------------------
 	## And let it run
@@ -241,6 +253,4 @@ if __name__ == "__main__":
 	## for grid-control:
 	else:
 		process = getBaseConfig('@GLOBALTAG@', nickname = '@NICK@', kappaTag = '@KAPPA_TAG@')
-
-
 
