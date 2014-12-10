@@ -40,22 +40,21 @@ protected:
 			out.hfEMFraction = in.at(0).HFEMEtFraction();
 
 #if CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2
-			TMatrixD mat;
+			reco::METCovMatrix mat = in.at(0).getSignificanceMatrix();
 #else
 			TMatrixD mat = in.at(0).getSignificanceMatrix();
 #endif
 			if (mat(0,1) != mat(1,0))
-				std::cout << "Matrix is not symmetric: " << mat(0,1) << " != " << mat(1,0) << std::endl;
+				std::cout << "KMETProducer::fillProduct: Matrix is not symmetric: " << mat(0,1) << " != " << mat(1,0) << std::endl;
 			out.significance(0,0) = mat(0,0);
 			out.significance(0,1) = mat(0,1);
 			if (out.significance(1,0) != mat(1,0))
-				std::cout << "Significance matrix is not identical to input:"
+				std::cout << "KMETProducer::fillProduct: Significance matrix is not identical to input:"
 					<< out.significance(1,0) << " != " << mat(1,0) << std::endl;
 			out.significance(1,1) = mat(1,1);
 		}
-		else
-			if (verbosity > 1)
-				std::cout << "KMETProducer::fillProduct : Found " << in.size() << " PFMET objects!" << std::endl;
+		else if (verbosity > 1)
+			std::cout << "KMETProducer::fillProduct: Found " << in.size() << " PFMET objects!" << std::endl;
 	}
 };
 
