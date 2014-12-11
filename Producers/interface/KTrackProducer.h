@@ -48,11 +48,6 @@ public:
 		out.nValidPixelHits = in.hitPattern().numberOfValidPixelHits();
 		out.nValidStripHits = in.hitPattern().numberOfValidStripHits();
 		out.nValidMuonHits = in.hitPattern().numberOfValidMuonHits();
-#if CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2
-		out.nLostHits = in.hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
-#else
-		out.nLostHits = in.hitPattern().numberOfLostHits();
-#endif
 		out.nPixelLayers = in.hitPattern().pixelLayersWithMeasurement();
 		out.nStripLayers = in.hitPattern().stripLayersWithMeasurement();
 	}

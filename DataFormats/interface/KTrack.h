@@ -45,8 +45,6 @@ struct KTrack : public KLV
 	unsigned short nValidPixelHits;  //< number of valid hits in the pixel detector (for tight muID)
 	unsigned short nValidStripHits;  //< number of valid hits in the strip detector
 	unsigned short nValidMuonHits;   //< number of valid hits in the muon system (for tight muID)
-
-	unsigned short nLostHits;
 	unsigned short nPixelLayers, nStripLayers; // for soft/tight muID as trackerLayers
 	/// functions for combinations
 	inline unsigned short nValidHits() const { return nValidPixelHits + nValidStripHits + nValidMuonHits; };
