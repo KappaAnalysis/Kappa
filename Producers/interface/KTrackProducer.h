@@ -54,7 +54,7 @@ public:
 		out.nLostHits = in.hitPattern().numberOfLostHits();
 #endif
 		out.nPixelLayers = in.hitPattern().pixelLayersWithMeasurement();
-		out.nStripLayers = in.hitPattern().trackerLayersWithMeasurement();
+		out.nStripLayers = in.hitPattern().stripLayersWithMeasurement();
 	}
 };
 
