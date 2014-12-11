@@ -30,19 +30,21 @@ protected:
 			out.sumEt = in.at(0).sumEt();
 
 #if CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2
-			TMatrixD mat;
+			reco::METCovMatrix mat = in.at(0).getSignificanceMatrix();
 #else
 			TMatrixD mat = in.at(0).getSignificanceMatrix();
 #endif
-			assert(mat(0,1) == mat(1,0));
+			if (mat(0,1) != mat(1,0))
+				std::cout << "KBasicMETProducer::fillProduct: Matrix is not symmetric: " << mat(0,1) << " != " << mat(1,0) << std::endl;
 			out.significance(0,0) = mat(0,0);
 			out.significance(0,1) = mat(0,1);
-			assert(out.significance(1,0) == mat(1,0));
+			if (out.significance(1,0) != mat(1,0))
+				std::cout << "KBasicMETProducer::fillProduct: Significance matrix is not identical to input:"
+					<< out.significance(1,0) << " != " << mat(1,0) << std::endl;
 			out.significance(1,1) = mat(1,1);
 		}
-		else
-			if (verbosity > 1)
-				std::cout << "KBasicMETProducer::fillProduct : Found " << in.size() << " MET objects!" << std::endl;
+		else if (verbosity > 1)
+			std::cout << "KBasicMETProducer::fillProduct: Found " << in.size() << " PFMET objects!" << std::endl;
 	}
 };
 
