@@ -9,6 +9,7 @@
 #define KAPPA_METPRODUCER_H
 
 #include "KBaseMultiProducer.h"
+#include "KBasicMETProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/PFMET.h>
@@ -28,9 +29,10 @@ protected:
 	{
 		if (in.size() == 1)
 		{
-			copyP4(in.at(0), out.p4);
-			out.sumEt = in.at(0).sumEt();
+			// fill properties of basic MET
+			KBasicMETProducer::fillMET<InputType>(in, out);
 
+			// additional PF properties
 			out.photonFraction = in.at(0).photonEtFraction();
 			out.neutralHadronFraction = in.at(0).neutralHadronEtFraction();
 			out.electronFraction = in.at(0).electronEtFraction();
@@ -38,20 +40,6 @@ protected:
 			out.muonFraction = in.at(0).muonEtFraction();
 			out.hfHadronFraction = in.at(0).HFHadronEtFraction();
 			out.hfEMFraction = in.at(0).HFEMEtFraction();
-
-#if CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2
-			reco::METCovMatrix mat = in.at(0).getSignificanceMatrix();
-#else
-			TMatrixD mat = in.at(0).getSignificanceMatrix();
-#endif
-			if (mat(0,1) != mat(1,0))
-				std::cout << "KMETProducer::fillProduct: Matrix is not symmetric: " << mat(0,1) << " != " << mat(1,0) << std::endl;
-			out.significance(0,0) = mat(0,0);
-			out.significance(0,1) = mat(0,1);
-			if (out.significance(1,0) != mat(1,0))
-				std::cout << "KMETProducer::fillProduct: Significance matrix is not identical to input:"
-					<< out.significance(1,0) << " != " << mat(1,0) << std::endl;
-			out.significance(1,1) = mat(1,1);
 		}
 		else if (verbosity > 1)
 			std::cout << "KMETProducer::fillProduct: Found " << in.size() << " PFMET objects!" << std::endl;
