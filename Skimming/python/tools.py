@@ -1,6 +1,10 @@
 
 # -*- coding: utf-8 -*-
 
+import os
+import subprocess
+import sys
+
 
 def flattenList(listOfLists):
 	"""
