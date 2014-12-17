@@ -128,12 +128,8 @@ private:
 
 	const void removeTauTracks(const reco::PFTau tau, std::vector<const reco::Track*> &recoTracks)
 	{
-#if CMSSW_MAJOR_VERSION >= 7
-		std::cout << "KBasicTauProducer: getCommonTaus does not run with CMSSW 7!" << std::flush << std::endl;
-		assert(false);
-#else
-		const reco::PFCandidateRefVector tauPFCHD = tau.signalPFChargedHadrCands();
-		for(reco::PFCandidateRefVector::const_iterator chargedHadronCand = tauPFCHD.begin();
+		const std::vector<edm::Ptr<reco::PFCandidate> > tauPFCHD = tau.signalPFChargedHadrCands();
+		for(std::vector<edm::Ptr<reco::PFCandidate> >::const_iterator chargedHadronCand = tauPFCHD.begin();
 			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
 		{
 			for(size_t i = 0; i < recoTracks.size(); ++i)
@@ -146,16 +142,10 @@ private:
 				}
 			}
 		}
-#endif
 	}
 
 	const int getCommonTaus(std::vector<reco::PFTau> &commonTaus, const std::vector<const reco::Track*> recoTracks)
 	{
-#if CMSSW_MAJOR_VERSION >= 7
-		std::cout << "KBasicTauProducer: getCommonTaus does not run with CMSSW 7!" << std::flush << std::endl;
-		assert(false);
-		return 0; // this if can be removed if it compiles with CMSSW 7
-#else
 		edm::Handle<std::vector<reco::PFTau>> tauHandle;
 		this->cEvent->getByLabel(this->pfTauCollection, tauHandle);
 		// check wich tau is from the current PV
@@ -166,10 +156,10 @@ private:
 			{
 				continue;
 			}
-			const reco::PFCandidateRefVector tauPFCHD = tau->signalPFChargedHadrCands();
+			const std::vector<edm::Ptr<reco::PFCandidate> > tauPFCHD = tau->signalPFChargedHadrCands();
 			// if all chargedHadronCands of a tau have tracks in common with the PV, take this tau and add it to lists
 			unsigned int commonTracks = 0;
-			for(reco::PFCandidateRefVector::const_iterator chargedHadronCand = tauPFCHD.begin();
+			for(std::vector<edm::Ptr<reco::PFCandidate> >::const_iterator chargedHadronCand = tauPFCHD.begin();
 			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
 			{
 				for(size_t i = 0; i < recoTracks.size(); ++i)
@@ -182,7 +172,6 @@ private:
 				commonTaus.push_back(*tau);
 		}
 		return commonTaus.size();
-#endif
 	}
 
 
