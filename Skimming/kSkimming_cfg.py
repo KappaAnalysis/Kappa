@@ -202,11 +202,10 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	## MET
-	process.load("Kappa.Producers.KMET_cff")
+	#process.load("Kappa.Producers.KMET_cff")
 	process.kappaTuple.active += cms.vstring('BasicMET')                         ## produce/save KappaMET
 	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
-	process.p *= process.makeKappaMET
-	#"""
+	#process.p *= process.makeKappaMET
 	
 	# add python config to TreeInfo
 	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
