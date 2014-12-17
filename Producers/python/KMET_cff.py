@@ -17,16 +17,19 @@ from RecoMET.METPUSubtraction.noPileUpPFMET_cff import *
 ## calibrated jets and Type1 MET corrections as input for mvaMET producer
 ##  - NOTE: use "ak5PFL1FastL2L3" for MC / "ak5PFL1FastL2L3Residual" for
 ##    data
-from JetMETCorrections.Configuration.DefaultJEC_cff import *
-from JetMETCorrections.Configuration.JetCorrectionServicesAllAlgos_cff import *
+
+## the following two statements have been deactivated to prevent Kappa from crashing
+#from JetMETCorrections.Configuration.DefaultJEC_cff import *
+#from JetMETCorrections.Configuration.JetCorrectionServicesAllAlgos_cff import *
 
 mvaMETJets = cms.EDProducer('PFJetCorrectionProducer',
     src = cms.InputTag('ak5PFJets'),
     correctors = cms.vstring("ak5PFL1FastL2L3")
     )
 
-from JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff import *
-from JetMETCorrections.Type1MET.correctedMet_cff import *
+# the following two statements have been widely restricted and deactivated since they caused Kappa to crash
+from JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff import corrPfMetType1
+#from JetMETCorrections.Type1MET.correctedMet_cff import *
 
 corrPfMetType1.jetCorrLabel = "ak5PFL1FastL2L3" 
 
