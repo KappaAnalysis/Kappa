@@ -1,0 +1,115 @@
+CURRENT:
+========
+                      KGenTauProducer <-\
+                                         *- KGenParticleProducer <-\
+  KBaseProducer    KGenPhotonProducer <-/                           |/-> KPFCandidateProducer
+        |                                                           |/-> KPFTaggedJetProducer
+        v                                /-> KDataMetadataProducer  |/-> KPFJetProducer
+ KBaseProducerWP --> KMetadataProducer -*                           |/-> KCaloJetProducer
+        |                                \-> KGenMetadataProducer   |/-> KTowerProducer
+        |                                                           |/-> KTrackProducer
+        v                   KCaloTauProducer <-\                    |/-> KMuonProducer
+KBaseMatchingProducer                           *-- KTauProducer <-\|/-> KElectronProducer
+        |                     KPFTauProducer <-/                    |/-> KLorentzProducer
+        v                                                           |
+KBaseMultiProducer --*--> KBaseMultiVectorProducer --*--> KBaseMultiLVProducer
+                     |                               |
+                     |\-> KMETProducer               |\-> KVertexProducer
+                     |\-> KPFMETProducer             |
+                     |\-> KBeamSpotProducer           \-> KHitProducer
+                     |\-> KVertexSummaryProducer
+                     |\-> KFilterSummaryProducer
+                     |\-> KHCALNoiseSummaryProducer
+                     |\-> KTrackSummaryProducer
+                     |\-> KJetAreaProducer
+                      \-> KTriggerObjectProducer
+
+TODO:
+========
+ * Redo verbose limits ...
+ * using PSet::augment to provide per output object configuration (Must use untracked parameters?)
+ * New classes: KGenJet
+ * Review taus
+ * sanity checks (script): namingscheme, used producers, needed dataformats,
+ * make script for class hierarchy and include hierarchy
+ * add cutbasedIdCustom for highest bit
+ * Infos in objects
+ * dxy and dz in Muons (IPTools)
+ * Order: constructor getLabel ...
+ * sort as in presentation: Basic PerEvent Summaries LVs / Metadata Infos Provenance
+ * Producers: Basic(hierarchy) + Objects (alphabetic)
+ 
+Questions:
+ * Reason for bronch: 
+
+Change list in commit 
+ Electrons: 
+Muons: new ID
+Taus
+Jets:
+
+Important changes:
+Object renaming of used objects Taus Jets
+muon nStripLayers
+
+
+Tools:
+skimsize.py
+rot.py
+
+CMSSW-Versions: 5_3_16, 7
+
+miniAOD
+/RelValZEE_13/CMSSW_7_0_9_patch2-PU25ns_PLS170_V7AN2-v1/MINIAODSIM
+
+
+
+Remove entire objects
+
+Reihenfolge:
+copyright
+ifndef
+include: "Kappa" <ROOT/CMSSW> <default>
+/** doxy comment */
+
+///
+class
+typedef
+
+
+
+doxygen:
+ - Allgemein: Authors, CMSSW Skimming
+ - dataformat intro, hierarchy, class listing
+   - per class: intro (reco-type, twikis) mit links
+ - producer intro, hierarchy, class listing
+   - per class: intro (reco-type)
+ - Configurations:
+   - configs (required, recommended)
+
+
+
+Changes in Kappa 2.0
+- Renaming of Producers
+    - KTauProducer -> KBasicTauProducer
+    - KPFTauProducer -> KTauProducer
+- Deletion of Producers
+    - KCandidateProducer
+- Moving data format defintions
+    - K*Metadata to their event class
+- Renaming of Dataformats
+    - KDataJet -> KCaloJet
+    - KTau -> KBasicTau
+    - KPFTau -> KTau
+    - KData* -> K*
+    - K*Metadata -> K*Infos (if it is not metadata)
+- Deletion of Dataformats
+    - original KLV
+    - KCaloTau
+- New data formats
+    - KParticle (as base for KGenParticle and KPFCandidate)
+    - KPhoton (if someone needs Photons in future)
+- Changes in data formats (only major changes and physically relevant changes)
+
+- Documentation (Doxygen)
+
