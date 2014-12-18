@@ -88,7 +88,6 @@ struct KBasicMET : public KLV
 struct KMET : public KBasicMET
 {
 	float photonFraction, electronFraction;
-	float neutralEMFraction, chargedEMFraction;
 	float neutralHadronFraction, chargedHadronFraction;
 	float muonFraction;
 	float hfHadronFraction, hfEMFraction;
