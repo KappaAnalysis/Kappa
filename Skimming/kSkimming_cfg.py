@@ -112,6 +112,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	# Configure Muons
 	process.load("Kappa.Producers.KMuons_cff")
 	process.kappaTuple.active += cms.vstring('Muons')	                ## produce/save KappaMuons
+	process.kappaTuple.Muons.minPt = cms.double(8.0)
 	process.p *= process.makeKappaMuons
 
 	## ------------------------------------------------------------------------
@@ -121,12 +122,14 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV0",
 	                                               "mvaTrigNoIPV0",
 	                                               "mvaNonTrigV0")
+	process.kappaTuple.Electrons.minPt = cms.double(8.0)
 	process.p *= process.makeKappaElectrons
 
 	## ------------------------------------------------------------------------
 	# Configure Taus
 	process.load("Kappa.Producers.KTaus_cff")
 	process.kappaTuple.active += cms.vstring('Taus')	                ## produce/save KappaTaus
+	process.kappaTuple.Taus.minPt = cms.double(8.0)
 	process.p *= process.makeKappaTaus
 
 	## ------------------------------------------------------------------------
@@ -174,6 +177,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 			PUJetID_full = cms.InputTag("full"),
 			),
 		)
+	process.kappaTuple.Jets.minPt = cms.double(10.0)
 	process.kappaTuple.active += cms.vstring('PileupDensity')
 
 	## ------------------------------------------------------------------------
