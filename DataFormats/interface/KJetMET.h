@@ -30,7 +30,6 @@ struct KBasicJet : public KLV
 {
 	float area;
 
-	float neutralEMFraction, chargedEMFraction;
 	float neutralHadronFraction, chargedHadronFraction;
 	float muonFraction, photonFraction, electronFraction;
 	float hfHadronFraction, hfEMFraction;
