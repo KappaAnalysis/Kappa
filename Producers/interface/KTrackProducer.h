@@ -50,6 +50,7 @@ public:
 		out.nValidMuonHits = in.hitPattern().numberOfValidMuonHits();
 		out.nPixelLayers = in.hitPattern().pixelLayersWithMeasurement();
 		out.nStripLayers = in.hitPattern().stripLayersWithMeasurement();
+		out.nInnerHits = in.trackerExpectedHitsInner().numberOfHits();
 	}
 };
 
