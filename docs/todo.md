@@ -1,6 +1,23 @@
 Todo list {#todo}
 =================
 
+## Important
+
+1. to be fixed in the C++ code:
+    - dz, dxy in KMuon is not filled correctly (IPTools) http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/struct_k_muon.html#a62be02f7980e717c78fee69e0457389a -> fix it
+2. to be fixed/checked in the configuration
+    - is the JetID, JetPUID, btag, electron MVA-ID, tau discriminators configured correctly?
+    - configure pt thresholds as agreed upon in a meeting (~ 8GeV Leptons, 10 GeV Jets)
+    - use snippet by Andrew to select genParticles (only ME + tau decay chain)
+    - remove 'PFCandidates' from active (most important point for smaller skims)
+3. test the code:
+    - check all variables before and after the skimming changes with some events
+    - do a comparison with Artus (advantage: can compare in the same ntuple output format value by value)
+    - check the lepton isolation values and their usability for delta beta corrections
+
+
+## Other todos
+
 Frage:
 - was ist binValue?
 - warum TBronch
@@ -28,7 +45,7 @@ List:
 - install for skimming
 - usage for analysis
   - see KappaTools
-- dB in Track (IPTools)
+
 - No producer for?
 - clean up Producer headers
 - remove template from BasicTau
@@ -39,7 +56,6 @@ List:
 - Kappa tag from git
 - Profile: off, auto, on (auto=if cmssw w
 - no ints? short or long?
-
 - Recipe: QG, PUJetID, JetID, MVAMET
 - Kappa Tag
 - list of files that can be run if present
@@ -64,7 +80,6 @@ List:
 ../../Producers/interface/KTreeMetadataProducer.h:#define KAPPA_TREE_METADATAPRODUCER_H
 - classes + UP in test -> py
 - Jet producer must derive from BasicJet producer!
-
 - get json
 - reweighting
 - 
@@ -75,9 +90,7 @@ List:
 [CMSSW LXR]()
 [grid-control]()
 [CSA14](https://twiki.cern.ch/twiki/bin/viewauth/CMS/CSA14)
-
 [SCRAM](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideScram)
-
 [EDM](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideEDMGetDataFromEvent)
 
 
