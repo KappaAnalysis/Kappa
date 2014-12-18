@@ -154,6 +154,8 @@ public:
 		out.area = in.jetArea();
 		out.nConstituents = in.nConstituents();
 		out.nCharged = in.chargedMultiplicity();
+		out.neutralEMFraction = in.neutralEmEnergyFraction();
+		out.chargedEMFraction = in.chargedEmEnergyFraction();
 		out.neutralHadronFraction = in.neutralHadronEnergyFraction();
 		out.chargedHadronFraction = in.chargedHadronEnergyFraction();
 		out.muonFraction = in.muonEnergyFraction();
