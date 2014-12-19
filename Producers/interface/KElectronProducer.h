@@ -64,8 +64,12 @@ public:
 		{
 			cEvent->getByLabel(isoValInputTags_[j], isoVals[j]);
 			if (isoVals[j].failedToGet())
+			{
 				doPfIsolation = false;
+			}
 		}
+		
+		cEvent->getByLabel(pset.getParameter<edm::InputTag>("rhoIsoInputTag"), rhoIso_h);
 		//std::cout << "Do iso " << doPfIsolation << std::endl << std::flush;
 /*art::Handle<StepPointMCCollection> stepsHandle;
     event.getByLabel("g4run","tracker",stepsHandle);
@@ -153,7 +157,7 @@ if (!trh.isValid())
 			const reco::BeamSpot &tmpbeamSpot = *(BeamSpot.product());
 			// we need the Ref, cf. example EgammaAnalysis/ElectronTools/src/EGammaCutBasedEleIdAnalyzer.cc
 			edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
-
+			
 			// isolation values (PF is used for IDs later)
 			double iso_ch = (*(isoVals)[0])[pe];
 			double iso_ph = (*(isoVals)[1])[pe];

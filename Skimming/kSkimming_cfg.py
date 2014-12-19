@@ -124,6 +124,34 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	                                               "mvaNonTrigV0")
 	process.kappaTuple.Electrons.minPt = cms.double(8.0)
 	process.p *= process.makeKappaElectrons
+	
+	## for electron iso
+	from CommonTools.ParticleFlow.Tools.pfIsolation import setupPFElectronIso #, setupPFMuonIso
+	process.eleIsoSequence = setupPFElectronIso(process, 'patElectrons')
+	
+	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_cfg.py#L418-L448
+	process.eleIsoSequence.remove(process.elPFIsoValueCharged03NoPFIdPFIso)
+	process.eleIsoSequence.remove(process.elPFIsoValueChargedAll03NoPFIdPFIso)
+	process.eleIsoSequence.remove(process.elPFIsoValueGamma03NoPFIdPFIso)
+	process.eleIsoSequence.remove(process.elPFIsoValueNeutral03NoPFIdPFIso)
+	process.eleIsoSequence.remove(process.elPFIsoValuePU03NoPFIdPFIso)
+	process.eleIsoSequence.remove(process.elPFIsoValueCharged04NoPFIdPFIso)
+	process.eleIsoSequence.remove(process.elPFIsoValueChargedAll04NoPFIdPFIso)
+	process.eleIsoSequence.remove(process.elPFIsoValueGamma04NoPFIdPFIso)
+	process.eleIsoSequence.remove(process.elPFIsoValueNeutral04NoPFIdPFIso)
+	process.eleIsoSequence.remove(process.elPFIsoValuePU04NoPFIdPFIso)
+	process.elPFIsoValueGamma04PFIdPFIso.deposits[0].vetos      = cms.vstring('EcalEndcaps:ConeVeto(0.08)','EcalBarrel:ConeVeto(0.08)')
+	process.elPFIsoValueNeutral04PFIdPFIso.deposits[0].vetos    = cms.vstring()
+	process.elPFIsoValuePU04PFIdPFIso.deposits[0].vetos         = cms.vstring()
+	process.elPFIsoValueCharged04PFIdPFIso.deposits[0].vetos    = cms.vstring('EcalEndcaps:ConeVeto(0.015)')
+	process.elPFIsoValueChargedAll04PFIdPFIso.deposits[0].vetos = cms.vstring('EcalEndcaps:ConeVeto(0.015)','EcalBarrel:ConeVeto(0.01)')
+	process.pfiso = cms.Sequence(process.pfParticleSelectionSequence + process.eleIsoSequence)
+
+	# rho for electron iso
+	from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
+	process.kt6PFJetsForIsolation = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
+	process.kt6PFJetsForIsolation.Rho_EtaMax = cms.double(2.5)
+	process.p *= (process.pfiso * process.kt6PFJetsForIsolation)
 
 	## ------------------------------------------------------------------------
 	# Configure Taus

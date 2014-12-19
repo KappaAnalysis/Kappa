@@ -84,6 +84,9 @@ def checkoutPackages(args):
 		"git clone git://github.com/ajaykumar649/Jets_Short.git",
 		"cp -r Jets_Short/* " + cmsswsrc,
 		"rm -rf Jets_Short",
+		
+		# PF isolation
+		"git-cms-addpkg CommonTools/ParticleFlow",
 
 		#Check out Kappa
 		"git clone https://ekptrac.physik.uni-karlsruhe.de/git/Kappa",
