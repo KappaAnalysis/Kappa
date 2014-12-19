@@ -53,7 +53,23 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 			process.kappaTuple.active+= cms.vstring('GenInfo')		## produce Metadata for MC,
 			process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 			process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
-
+	
+	# prune GenParticles
+	if not data and not isEmbedded:
+		process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+		process.prunedGenParticles = cms.EDProducer("GenParticlePruner",
+			src = cms.InputTag("genParticles", "", "SIM"),
+			select = cms.vstring(
+				"drop  *",
+				"keep status == 3",  # all status 3
+				"keep++ abs(pdgId) == 23", # Z
+				"keep++ abs(pdgId) == 24", # W
+				"keep++ abs(pdgId) == 25", # H
+				"keep abs(pdgId) == 11 || abs(pdgId) == 13",  # charged leptons
+				"keep++ abs(pdgId) == 15"  # keep full tau decay chain
+			)
+		)
+	
 	process.kappaTuple.Info.hltWhitelist = cms.vstring(			## HLT selection
 		# https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/blob/master/data/triggerTables-2011-2012.txt
 		# https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorkingSummer2013
@@ -107,7 +123,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		)
 
 	process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
-
+	
 	## ------------------------------------------------------------------------
 	# Configure Muons
 	process.load("Kappa.Producers.KMuons_cff")
