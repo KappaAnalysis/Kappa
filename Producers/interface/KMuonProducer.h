@@ -125,7 +125,7 @@ public:
 		if (in.muonBestTrack().isNonnull()) // && &vtx != NULL) TODO
 		{
 			/// ID var from the bestTrack which is not saved entirely
-			out.dxy = 0; //dxy from vertex using IPTools like PAT
+			out.dxy = in.bestTrack()->dxy(vtx.position()); //dxy from vertex should be using IPTools (e.g. like PAT)
 			out.dz = in.bestTrack()->dz(vtx.position());
 		}
 		// propagated values of eta and phi
