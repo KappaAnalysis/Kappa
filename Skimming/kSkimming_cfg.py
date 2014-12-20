@@ -113,7 +113,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
 	process.load("Kappa.Producers.KPFCandidates_cff")
-	process.kappaTuple.active += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected 
+	#process.kappaTuple.active += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected
 	process.kappaTuple.PFCandidates.whitelist = cms.vstring(                ## isolation used for electrons and muons.
 ##		"pfNoPileUpChargedHadrons",    ## switch to pfAllChargedParticles
 		"pfAllChargedParticles",       ## same as pfNoPileUpChargedHadrons +pf_electrons + pf_muons
