@@ -7,6 +7,7 @@ import FWCore.ParameterSet.Config as cms
 ##    KPFCandidates_cff.py
 from RecoJets.JetProducers.ak5PFJets_cfi import ak5PFJets
 
+from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
 goodOfflinePrimaryVertices = cms.EDFilter("PrimaryVertexObjectFilter",
     filterParams = pvSelector.clone( minNdof = cms.double(4.0), maxZ = cms.double(24.0) ),
     src=cms.InputTag('offlinePrimaryVertices')
@@ -278,12 +279,14 @@ ak5PFCHSPuJetMva = pileupJetIdProducerChs.clone(
 
 ## run this to create ak5PF jets from goodOfflinePrimaryVertices collection 
 makePFJets = cms.Sequence(
+	goodOfflinePrimaryVertices *
     ak5PFJets
     )
 
 ## run this to create ak5PF CHS jets from goodOfflinePrimaryVertices
 ## collection 
 makePFJetsCHS = cms.Sequence(
+	goodOfflinePrimaryVertices *
     ak5PFJetsCHS
     )
 
