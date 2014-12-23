@@ -134,7 +134,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		whitelist = cms.vstring("offlinePrimaryVertices"),
 		blacklist = cms.vstring("Vertices(QG|WithBS)"),
 
-		rename = cms.vstring("goodOfflinePrimaryVertices => primaryVertices","$ => Summary"),
+		rename = cms.vstring("$ => Summary"),
 		rename_whitelist = cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
