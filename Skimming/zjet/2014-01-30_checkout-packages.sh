@@ -14,7 +14,7 @@ git cms-merge-topic -u cms-analysis-tools:5_3_13_patch2-testNewTau
 git cms-merge-topic -u cms-met:53X-MVaNoPuMET-20131217-01
 
 git cms-addpkg RecoMET/METFilters
-git clone https://${USER}@ekptrac.physik.uni-karlsruhe.de/git/Kappa && cd Kappa && git checkout newtagging && cd ..
+git clone https://github.com/KappaAnalysis/Kappa.git && cd Kappa && git checkout newtagging && cd ..
 git clone https://github.com/cms-analysis/RecoMET-METAnalyzers.git RecoMET/METAnalyzers
 
 git clone https://github.com/violatingcp/Jets_Short.git

@@ -2,7 +2,7 @@
 
 cd ${CMSSW_BASE}/src
 git cms-addpkg RecoMET/METFilters
-git clone https://${USER}@ekptrac.physik.uni-karlsruhe.de/git/Kappa && cd Kappa && git checkout newtagging && cd ..
+git clone https://github.com/KappaAnalysis/Kappa.git && cd Kappa && git checkout newtagging && cd ..
 git clone https://github.com/cms-analysis/RecoMET-METAnalyzers.git RecoMET/METAnalyzers
 
 git clone https://github.com/amarini/QuarkGluonTagger.git && cd QuarkGluonTagger && git checkout v1-2-6 && cd ..
