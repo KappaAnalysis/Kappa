@@ -93,6 +93,7 @@ protected:
 		{
 			if (sName == "")
 				sName = sActive;
+			std::cout << "Init producer " << sActive << " using config from " << sName << std::endl;
 			producers.push_back(new Tprod(psConfig.getParameter<edm::ParameterSet>(sName), event_tree, lumi_tree));
 			producers.back()->runRuntime = 0;
 			producers.back()->lumiRuntime = 0;
@@ -163,8 +164,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 	// Create metadata producer
 	for (size_t i = 0; i < active.size(); ++i)
 	{
-		std::cout << "Init producer " << active[i] << std::endl;
-
 		if (addProducer<KInfoProducer<KInfo_Product> >(active[i], "Info"))
 			break;
 		if (addProducer<KDataInfoProducer<KDataInfo_Product> >(active[i], "Info"))
@@ -178,7 +177,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 	// Create all active producers
 	for (size_t i = 0; i < active.size(); ++i)
 	{
-		std::cout << "Init producer " << active[i] << std::endl;
 		if (active[i] == "Info")
 			continue;
 		else if (active[i] == "DataInfo")
