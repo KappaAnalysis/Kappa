@@ -59,6 +59,9 @@ check skim (KappaTools)
 - diff skims
 - look at distributions
 
+What Kappa does is best summarized in this image:
+
+![Kappa workflow](http://www-ekp.physik.uni-karlsruhe.de/~berger/files/kappa.svg "The Kappa workflow")
 
 Documentation
 =============
