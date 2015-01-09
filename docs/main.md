@@ -42,7 +42,15 @@ The output looks similar to:
     Begin processing the 1st record. Run 1, Event 100000, LumiSection 2500 at 01-Jan-2015 00:01:00 CET
 
 
+Usage and options
+-----------------
 
+The Kappa-CMSSW EDProducer has a few options:
+
+- `verbose` (int): Level of verbosity (default: 0)
+- `profile` (bool): Enables profiling (default: False)
+- `outputFile` (str): Name of the Kappa output file, (e.g. `"kappa.root"`)
+- `active` (list): List of object names that should be written out (e.g. `['Electrons']`)
 
 check skim (KappaTools)
 
@@ -98,7 +106,7 @@ of a data format of the Events tree. In most cases this information can be store
 Naming scheme {#main-naming}
 ============================
 
-- K*<Object>* for all physical objects (e.g. KJet)
+- K<Object> for all physical objects (e.g. KJet)
 - in case there are different versions for one object the object for the
   standard use case is called in the most simple way K<Object>.
   More complicated objects can be named "KExtended<Object>".
