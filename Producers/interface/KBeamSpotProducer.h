@@ -8,7 +8,6 @@
 
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
-#include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 
 class KBeamSpotProducer : public KBaseMultiProducer<reco::BeamSpot, KBeamSpot>
