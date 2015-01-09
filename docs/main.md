@@ -201,8 +201,65 @@ or in the [change log](https://ekptrac.physik.uni-karlsruhe.de/trac/Kappa/timeli
 - Add Minimal Kappa config
 - Sort Skimming folder
 
+
+
+## Important files to look at
+
+### [DataFormats](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats)
+Data formats for objects that can be skimmed with Kappa
+   * [DataFormats/interface](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/interface)
+   * the file names and class names tell you the object it defines according to the [naming scheme](#main-naming)
+   * these are the variables and functions you can use in the analysis
+       * many classes come with functions that can combine information of the variables
+   * [DataFormats/src/classes.UP](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/src/classes.UP)
+       * be sure to run classes.UP whenever you change the data format to keep the information for dictionaries in sync
+   * [DataFormats/test/KDebug.cpp](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/test/KDebug.cpp)
+       * add debug information for all added or changed objects here
+       * this will enable you to print out debug info later in the analysis: `cout << muon;`
+
+### [Producers](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers)
+
+The actual code that runs while skimming
+   * [Producers/interface/README](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers/interface/README) (todo: get this up-to-date, perhaps graphically)
+      * classes hierarchy of Producers, you should know this when writing producers
+      * WP = with provenance
+      * some objects exist once per event (KBaseMultiProducers produce them; like beam spot, MET)
+      * some objects can exist multiple times per event (KBaseMultiVectorProducers produce them; like primary vertices or hits)
+      * some objects can exist multiple times and are Lorentz vectors (KBaseMultiLVProducers produce them; like muons, jets, taus, etc.)
+   * [Producers/python/KTuple_cff.py](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers/python/KTuple_cff.py)
+      * default settings for Kappa and its Producers
+      * all those can be changed in your skim config
+   * [Producers/src/KTuple.cc](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers/src/KTuple.cc)
+      * the EDAnalyzer, this is the starting point of processing with Kappa
+
+### [Skimming](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Skimming)
+Configuration files. Most of them are outdated – be careful and look at the CMSSW versions and the modification date.
+
+Here, the default settings are overwritten for special analyses and use cases.
+   * [Skimming/skim_tutorial_53x.py](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Skimming/skim_tutorial_53x.py)
+       * an example config that should run with 5.3.9, it needs some extra packages that should be listed here or in this config, to be done)
+
+## Adding/Changing Objects
+
+### Changing the way some existing object is filled
+Just change the producer and recompile.
+
+### Changing the content of an existing object
+Recompiling regenerates the dictionaries and makes the new definition available.
+
+### Adding a new object
+To add a new object to Kappa, it needs:
+  * a data format in [DataFormats/interface](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/interface) (header only, please stick to the [naming scheme](#main-naming).)
+      * if it can occur multiple times, a typedef for a std::vector by appending 's' (plural).
+  * a producer in [Producers](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers) (it makes sense to look at a similar object first)
+  * a default config in [Producers/python/KTuple_cff.py](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers/python/KTuple_cff.py)
+  * debug output in [DataFormats/test/KDebug.cpp](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/test/KDebug.cpp)
+  * an entry in [DataFormats/src/classes](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/src/classes)
+      * run [DataFormats/src/classes.UP](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/src/classes.UP) afterwards (from within its directory)
+  * the corresponding lines in [DataFormats/test/LinkDef.h](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/test/LinkDef.h)
+  * the documentation in [docs/objects.md](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/docs/objects.md)
+
 ________________________________________________________________________________
-This file is written in [Markdown].
 
 [KIT]:      http://www.ekp.kit.edu "Institut für Experimentelle Kernphysik"
 [code]:     https://ekptrac.physik.uni-karlsruhe.de/trac/Kappa "Trac on ekptrac"
@@ -211,5 +268,4 @@ This file is written in [Markdown].
 [Workbook]: https://twiki.cern.ch/twiki/bin/viewauth/CMS/OnlineWB "CMS Workbook"
 [Doxygen]:  http://www.stack.nl/~dimitri/doxygen/index.html "Doxygen"
 [Markdown]: http://daringfireball.net/projects/markdown "Markdown"
-
 
