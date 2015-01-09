@@ -259,6 +259,12 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.p *= process.makeKappaMET
 	#"""
 	
+	process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
+	process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
+	process.p *= (process.tauGenJets+process.tauGenJetsSelectorAllHadrons)
+	process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
+	process.kappaTuple.active += cms.vstring('GenJets')
+	
 	# add python config to TreeInfo
 	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
 	

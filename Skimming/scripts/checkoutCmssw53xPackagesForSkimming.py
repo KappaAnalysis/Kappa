@@ -88,6 +88,9 @@ def checkoutPackages(args):
 		# PF isolation
 		"git-cms-addpkg CommonTools/ParticleFlow",
 
+		# Tau Jets
+		"git cms-addpkg PhysicsTools/JetMCAlgos",
+
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git",
 		#"scram b -j 4"
