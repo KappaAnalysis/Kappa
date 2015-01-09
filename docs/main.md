@@ -19,7 +19,7 @@ setup CMSSW
 
 checkout Kappa
 
-    git clone -b dictchanges https://ekptrac.physik.uni-karlsruhe.de/git/Kappa
+    git clone -b dictchanges https://github.com/KappaAnalysis/Kappa.git
 
 compile
 
@@ -265,7 +265,7 @@ To add a new object to Kappa, it needs:
 ________________________________________________________________________________
 
 [KIT]:      http://www.ekp.kit.edu "Institut für Experimentelle Kernphysik"
-[code]:     https://ekptrac.physik.uni-karlsruhe.de/trac/Kappa "Trac on ekptrac"
+[code]:     https://github.com/KappaAnalysis/Kappa.git "github"
 [CMSSW]:    https://github.com/cms-sw/cmssw "CMSSW on github"
 [CMS Wiki]: https://twiki.cern.ch/twiki/bin/viewauth/CMS/WebHome "CMS twiki"
 [Workbook]: https://twiki.cern.ch/twiki/bin/viewauth/CMS/OnlineWB "CMS Workbook"
