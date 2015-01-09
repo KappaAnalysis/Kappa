@@ -3,7 +3,8 @@
 κappa is the Karlsruhe Package for Physics Analysis.
 It is a skimming framework constructed to extract the relevant data
 from EDM data sets (RECO, AOD, MINIAOD) and store it in a well-defined
-and compact ROOT data format.
+and compact ROOT data format. This full documentation is found
+[here](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/ "Kappa Doxygen").
 
 
 Installation
