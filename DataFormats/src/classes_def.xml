@@ -17,6 +17,8 @@
 	<class name="KElectron"/>
 	<class name="KElectrons"/>
 	<class name="KFilterSummary"/>
+	<class name="KGenJet"/>
+	<class name="KGenJets"/>
 	<class name="KGenParticle"/>
 	<class name="KGenParticles"/>
 	<class name="KGenPhoton"/>

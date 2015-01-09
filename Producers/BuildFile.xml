@@ -20,6 +20,7 @@
 <use name="SimDataFormats/GeneratorProducts" />
 <use name="PhysicsTools/UtilAlgos" />
 <use name="PhysicsTools/IsolationAlgos" />
+<use name="PhysicsTools/JetMCUtils" />
 <use name="TrackingTools/Records"/>
 <use name="HLTriggerOffline/Muon"/>
 <use name="RecoMuon/DetLayers"/>

@@ -416,6 +416,21 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
+	GenJets = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("reco.*Jets_.*Jet"),
+		blacklist = cms.vstring("Castor", "BasicJet"),
+
+		rename = cms.vstring(
+			"JetPlusTrack(.*) => $1JPT",
+			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1ak)(?2kt)(?3sc)(?4ic)(?5ic)(?6ak)(?7ca)$8",
+			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
+		),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(".*CaloJets", ".*PFJets", ".*JPTJets"),
+	),
+
 	GenTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		genTaus = cms.PSet(
 			src = cms.InputTag("genParticles"),

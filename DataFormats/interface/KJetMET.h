@@ -77,6 +77,11 @@ struct KJet : public KBasicJet
 };
 typedef std::vector<KJet> KJets;
 
+struct KGenJet : public KLV
+{
+	int genTauDecayMode;
+};
+typedef std::vector<KGenJet> KGenJets;
 
 struct KBasicMET : public KLV
 {

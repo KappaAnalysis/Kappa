@@ -40,6 +40,8 @@ REGISTER_NAME_OF_TYPE(KCaloJets,std::vector<KCaloJet>);
 REGISTER_NAME_OF_TYPE(KElectron,KElectron);
 REGISTER_NAME_OF_TYPE(KElectrons,std::vector<KElectron>);
 REGISTER_NAME_OF_TYPE(KFilterSummary,KFilterSummary);
+REGISTER_NAME_OF_TYPE(KGenJet,KGenJet);
+REGISTER_NAME_OF_TYPE(KGenJets,std::vector<KGenJet>);
 REGISTER_NAME_OF_TYPE(KGenParticle,KGenParticle);
 REGISTER_NAME_OF_TYPE(KGenParticles,std::vector<KGenParticle>);
 REGISTER_NAME_OF_TYPE(KGenPhoton,KGenPhoton);

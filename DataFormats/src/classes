@@ -17,6 +17,7 @@ KBeamSpot				KBeamSpots
 KCaloJet				KCaloJets
 KElectron				KElectrons
 KFilterSummary
+KGenJet					KGenJets
 KGenParticle			KGenParticles
 KGenPhoton				KGenPhotons
 KGenTau					KGenTaus

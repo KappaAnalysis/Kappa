@@ -81,6 +81,10 @@
 #pragma link C++ class std::vector<KJet>+;
 #pragma link C++ typedef KJets;
 
+#pragma link C++ struct KGenJet+;
+#pragma link C++ class std::vector<KGenJet>+;
+#pragma link C++ typedef KGenJets;
+
 #pragma link C++ struct KMuon+;
 #pragma link C++ class std::vector<KMuon>+;
 #pragma link C++ typedef KMuons;

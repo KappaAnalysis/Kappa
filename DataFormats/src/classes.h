@@ -35,6 +35,8 @@ namespace
 		KElectron dict_KElectron;
 		KElectrons dict_KElectrons;
 		KFilterSummary dict_KFilterSummary;
+		KGenJet dict_KGenJet;
+		KGenJets dict_KGenJets;
 		KGenParticle dict_KGenParticle;
 		KGenParticles dict_KGenParticles;
 		KGenPhoton dict_KGenPhoton;
