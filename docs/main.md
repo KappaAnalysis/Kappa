@@ -12,7 +12,7 @@ Installation
 
 Skimming:
 
-setup CMSSW
+setup CMSSW (tested versions: 5.3.14, 5.3.23, 7.0.9, 7.2.2):
 
     cmsrel CMSSW_5_3_14
     cd CMSSW_5_3_14/src
@@ -139,6 +139,7 @@ Repository management
     - (1) major version: only in rare cases of major changes
     - (2) minor version: in case the data format has changed
     - (3) revision: any other case that needs a tag
+
   Using `git describe` returns a unique identifier for the current commit
   in the form *last tag*-*commits since then*-*short commit hash*.
 
