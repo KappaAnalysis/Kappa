@@ -39,7 +39,8 @@ public:
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")),
 		selectedMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
 		noPropagation(cfg.getParameter<bool>("noPropagation")),
-		propagatorToMuonSystem(cfg)
+		propagatorToMuonSystem(cfg),
+		doPfIsolation(true)
 	{
 		std::sort(selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
 		std::vector<std::string>::iterator tempIt = std::unique(
@@ -96,11 +97,22 @@ public:
 		if (tagHLTrigger.label() != "")
 			cEvent->getByLabel(tagHLTrigger, triggerEventHandle);
 
+		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
+		cEvent->getByLabel(VertexCollectionSource, VertexHandle);
+
 		pfIsoVetoCone = pset.getParameter<double>("pfIsoVetoCone");
 		pfIsoVetoMinPt = pset.getParameter<double>("pfIsoVetoMinPt");
 
-		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
-		cEvent->getByLabel(VertexCollectionSource, VertexHandle);
+		std::vector<edm::InputTag>  isoValInputTags_ = pset.getParameter<std::vector<edm::InputTag> >("isoValInputTags");
+		isoVals.resize(isoValInputTags_.size());
+		for (size_t j = 0; j < isoValInputTags_.size(); ++j)
+		{
+			cEvent->getByLabel(isoValInputTags_[j], isoVals[j]);
+			if (isoVals[j].failedToGet())
+			{
+				doPfIsolation = false;
+			}
+		}
 
 		// Continue normally
 		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>::fillProduct(in, out, name, tag, pset);
@@ -161,6 +173,36 @@ public:
 		out.isGoodMuonBits = (unsigned int) tmpBits.to_ulong();
 
 		/// Isolation
+		if (doPfIsolation)
+		{
+			// code copied from KElectronProducer
+			// we need the Ref, cf. example EgammaAnalysis/ElectronTools/src/EGammaCutBasedEleIdAnalyzer.cc
+			edm::Ref<edm::View<reco::Muon>> m(this->handle, this->nCursor);
+			
+			// isolation values (PF is used for IDs later)
+			double iso_ch = (*(isoVals)[0])[m];
+			double iso_ph = (*(isoVals)[1])[m];
+			double iso_nh = (*(isoVals)[2])[m];
+			double iso_pu = (*(isoVals)[3])[m];
+
+			out.sumChargedHadronPt = iso_ch;
+			out.sumNeutralHadronEt = iso_nh;
+			out.sumPhotonEt = iso_ph;
+			out.sumPUPt = iso_pu;
+		}
+		else
+		{
+			/// isolation variables for pfIso04
+			/// DataFormats/MuonReco/interface/MuonPFIsolation.h
+			out.sumChargedHadronPt   = in.pfIsolationR04().sumChargedHadronPt;
+			out.sumChargedParticlePt = in.pfIsolationR04().sumChargedParticlePt;
+			out.sumNeutralHadronEt   = in.pfIsolationR04().sumNeutralHadronEt;
+			out.sumPhotonEt          = in.pfIsolationR04().sumPhotonEt;
+			out.sumPUPt              = in.pfIsolationR04().sumPUPt;
+			out.sumNeutralHadronEtHighThreshold = in.pfIsolationR04().sumNeutralHadronEtHighThreshold;
+			out.sumPhotonEtHighThreshold        = in.pfIsolationR04().sumPhotonEtHighThreshold;
+		}
+		
 		// source?
 		edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
 		reco::IsoDeposit muonIsoDepositPF = (*isoDepsPF)[muonref];
@@ -177,15 +219,6 @@ public:
 		out.pfIso03    = muonIsoDepositPF.depositWithin(0.3, vetosPF);
 		//out.pfIso04    = muonIsoDepositPF.depositWithin(0.4, vetosPF);
 
-		/// isolation variables for pfIso04
-		/// DataFormats/MuonReco/interface/MuonPFIsolation.h
-		out.sumChargedHadronPt   = in.pfIsolationR04().sumChargedHadronPt;
-		out.sumChargedParticlePt = in.pfIsolationR04().sumChargedParticlePt;
-		out.sumNeutralHadronEt   = in.pfIsolationR04().sumNeutralHadronEt;
-		out.sumPhotonEt          = in.pfIsolationR04().sumPhotonEt;
-		out.sumPUPt              = in.pfIsolationR04().sumPUPt;
-		out.sumNeutralHadronEtHighThreshold = in.pfIsolationR04().sumNeutralHadronEtHighThreshold;
-		out.sumPhotonEtHighThreshold        = in.pfIsolationR04().sumPhotonEtHighThreshold;
 
 		/// highpt ID variables
 		/** needed variables according to
@@ -231,6 +264,9 @@ private:
 	edm::Handle<trigger::TriggerEvent> triggerEventHandle;
 	edm::Handle<edm::View<reco::Vertex> > VertexHandle;
 	KMuonMetadata *muonMetadata;
+	
+	std::vector<edm::Handle<edm::ValueMap<double> > > isoVals;
+	bool doPfIsolation;
 
 	std::map<std::string, int> muonTriggerObjectBitMap;
 
