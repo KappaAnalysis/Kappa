@@ -195,17 +195,21 @@ or in the [change log](https://github.com/KappaAnalysis/Kappa/compare/71f3f8e...
   KGenParticle, KGenPhoton, KGenTau, KPFCandidate,  
 
   - KParticle (new)
-  - KBeamSpot (
-  - KTrack
-  - KLepton
-  - KElectron, KElectronMetadata
-  - KMuon, KMuonMetadata
-  - KBasicTau
-  - KTau, KTauMetadata
-  - KCaloJet
-  - KBasicJet
-  - KJet, KJetMetadata
-  - KMET
+  - [KGenEventInfo](https://github.com/KappaAnalysis/Kappa/commit/26b6863) 
+  - [KEventInfo](https://github.com/KappaAnalysis/Kappa/commit/2738bb3)
+  - [KVertex](https://github.com/KappaAnalysis/Kappa/commit/06f30d4)
+  - [KTriggerObject](https://github.com/KappaAnalysis/Kappa/commit/4be2b0f)
+  - [KParticle](https://github.com/KappaAnalysis/Kappa/commit/41df988)
+  - [KMET](https://github.com/KappaAnalysis/Kappa/commit/845b3e3)
+  - [KJets](https://github.com/KappaAnalysis/Kappa/commit/0ba7640)
+  - [KBasicJet](https://github.com/KappaAnalysis/Kappa/commit/ab8740d)
+  - [KCaloJet](https://github.com/KappaAnalysis/Kappa/commit/93d17b3)
+  - [KTrack](https://github.com/KappaAnalysis/Kappa/commit/395bd6a)
+  - [KLepton](https://github.com/KappaAnalysis/Kappa/commit/4e91541)
+  - [KTau](https://github.com/KappaAnalysis/Kappa/commit/be117c2)
+  - [KBasicTau](https://github.com/KappaAnalysis/Kappa/commit/feb768d)
+  - [KMuon](https://github.com/KappaAnalysis/Kappa/commit/4173b91)
+  - [KElectron](https://github.com/KappaAnalysis/Kappa/commit/b33bbd2)
   - Documentation of all dataformats
 
 
