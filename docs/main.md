@@ -43,13 +43,12 @@ The output looks similar to:
     Begin processing the 1st record. Run 1, Event 100000, LumiSection 2500 at 01-Jan-2015 00:01:00 CET
 
 
-Usage and options
------------------
+# Usage and options {#main-options}
 
 The Kappa-CMSSW EDProducer has a few options:
 
 - `verbose` (int): Level of verbosity (default: 0)
-- `profile` (bool): Enables profiling (default: False)
+- `profile` (bool): Enables profiling, i.e. a short timing summary (time per event, per lumisection, etc. for each producer) at the end of the log output (default: False)
 - `outputFile` (str): Name of the Kappa output file, (e.g. `"kappa.root"`)
 - `active` (list): List of object names that should be written out (e.g. `['Electrons']`)
 
