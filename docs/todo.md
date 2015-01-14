@@ -119,3 +119,10 @@ Reduce number of objects
 - Jets: pt > 10 GeV
 - PFCandidates pt > 10 GeV, DR(lepton) < 0.5
 
+More things:
+- checktools
+- list of mandatory skim configs
+  - valid commit = make + scram + all mandatory skim configs
+- valid for data + mc
+- check skim size before/after
+- new isolation and IDs (delta beta, no ecal hcal)
