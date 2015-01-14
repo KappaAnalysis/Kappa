@@ -154,6 +154,7 @@ public:
 
 		if (doPfIsolation)
 		{
+			// in analogy to https://github.com/cms-analysis/EgammaAnalysis-ElectronTools/blob/master/src/EGammaCutBasedEleIdAnalyzer.cc
 			const reco::BeamSpot &tmpbeamSpot = *(BeamSpot.product());
 			// we need the Ref, cf. example EgammaAnalysis/ElectronTools/src/EGammaCutBasedEleIdAnalyzer.cc
 			edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
