@@ -12,8 +12,8 @@
 
 struct KTauMetadata
 {
-	std::vector<std::string> binaryDiscriminatorNames; //< names of tau discriminators with binary values
-	std::vector<std::string> floatDiscriminatorNames;  //< names of tau discriminators with real (float) values
+	std::vector<std::string> binaryDiscriminatorNames; ///< names of tau discriminators with binary values
+	std::vector<std::string> floatDiscriminatorNames;  ///< names of tau discriminators with real (float) values
 };
 
 /// Basic tau data format
@@ -22,8 +22,8 @@ struct KTauMetadata
  */
 struct KBasicTau : public KLepton
 {
-	int decayMode;     //< hadronic decay mode as identified by HPS algorithm
-	float emFraction;  //< electromagnetic energy fraction
+	int decayMode;     ///< hadronic decay mode as identified by HPS algorithm
+	float emFraction;  ///< electromagnetic energy fraction
 
 	/// container for tau discriminators with binary values
 	unsigned long long binaryDiscriminators;

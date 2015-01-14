@@ -24,15 +24,15 @@ typedef std::vector<KLV> KLVs;
 
 struct KBeamSpot
 {
-	RMPoint position;              //< position of the beam spot
-	char type;                     //< type of beam (usually unknown): Unknown=-1, Fake=0, LHC=1, Tracker=2
+	RMPoint position;              ///< position of the beam spot
+	char type;                     ///< type of beam (usually unknown): Unknown=-1, Fake=0, LHC=1, Tracker=2
 
-	double betaStar;               //< beta* (always 0 in AOD)
-	double beamWidthX, beamWidthY; //< beam width in x and y direction
-	double emittanceX, emittanceY; //< beam emittance in x and y (always 0)
+	double betaStar;               ///< beta* (always 0 in AOD)
+	double beamWidthX, beamWidthY; ///< beam width in x and y direction
+	double emittanceX, emittanceY; ///< beam emittance in x and y (always 0)
 
-	double dxdz, dydz;             //< slopes dx/dz and dy/dz for beam spot position extrapolation
-	double sigmaZ;                 //< sigma in z direction
+	double dxdz, dydz;             ///< slopes dx/dz and dy/dz for beam spot position extrapolation
+	double sigmaZ;                 ///< sigma in z direction
 
 	ROOT::Math::SMatrix<double, 7, 7, ROOT::Math::MatRepSym<double, 7> > covariance;
 };
@@ -80,7 +80,7 @@ struct KTriggerObjectMetadata
 {
 	std::string menu;
 	
-	// { hlt1:filter1, ..., hlt1:filterN1, hlt2:filter1, ..., hlt2:filterN2, ...}
+	/// { hlt1:filter1, ..., hlt1:filterN1, hlt2:filter1, ..., hlt2:filterN2, ...}
 	std::vector<std::string> toFilter;
 	std::vector<int> nFiltersPerHLT;
 	
@@ -111,7 +111,7 @@ struct KTriggerObjects
 {
 	KLVs trgObjects;
 
-	// { hlt1:idxFilter1, ..., hlt1:idxFilterN1, hlt2:idxFilter1, ..., hlt2:idxFilterN2, ...}
+	/// { hlt1:idxFilter1, ..., hlt1:idxFilterN1, hlt2:idxFilter1, ..., hlt2:idxFilterN2, ...}
 	std::vector<std::vector<int> > toIdxFilter;
 };
 
