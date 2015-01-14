@@ -141,11 +141,12 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.kappaTuple.Electrons.minPt = cms.double(8.0)
 	process.p *= process.makeKappaElectrons
 	
-	## for electron iso
-	from CommonTools.ParticleFlow.Tools.pfIsolation import setupPFElectronIso #, setupPFMuonIso
-	process.eleIsoSequence = setupPFElectronIso(process, 'patElectrons')
-	
+	## for electron/muon iso
 	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_cfg.py#L418-L448
+	from CommonTools.ParticleFlow.Tools.pfIsolation import setupPFElectronIso, setupPFMuonIso
+	process.eleIsoSequence = setupPFElectronIso(process, 'patElectrons')
+	process.muIsoSequence = setupPFMuonIso(process, 'muons')
+	
 	process.eleIsoSequence.remove(process.elPFIsoValueCharged03NoPFIdPFIso)
 	process.eleIsoSequence.remove(process.elPFIsoValueChargedAll03NoPFIdPFIso)
 	process.eleIsoSequence.remove(process.elPFIsoValueGamma03NoPFIdPFIso)
@@ -161,7 +162,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.elPFIsoValuePU04PFIdPFIso.deposits[0].vetos         = cms.vstring()
 	process.elPFIsoValueCharged04PFIdPFIso.deposits[0].vetos    = cms.vstring('EcalEndcaps:ConeVeto(0.015)')
 	process.elPFIsoValueChargedAll04PFIdPFIso.deposits[0].vetos = cms.vstring('EcalEndcaps:ConeVeto(0.015)','EcalBarrel:ConeVeto(0.01)')
-	process.pfiso = cms.Sequence(process.pfParticleSelectionSequence + process.eleIsoSequence)
+	process.pfiso = cms.Sequence(process.pfParticleSelectionSequence + process.eleIsoSequence + process.muIsoSequence)
 
 	# rho for electron iso
 	from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
