@@ -29,8 +29,8 @@ public:
 		doCutbasedIds(true),
 		doMvaIds(true)
 {
-		electronMetadata = new KElectronMetadata;
-		_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
+	electronMetadata = new KElectronMetadata;
+	_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
 		
 }
 
@@ -71,20 +71,20 @@ public:
 		
 		cEvent->getByLabel(pset.getParameter<edm::InputTag>("rhoIsoInputTag"), rhoIso_h);
 		//std::cout << "Do iso " << doPfIsolation << std::endl << std::flush;
-/*art::Handle<StepPointMCCollection> stepsHandle;
-    event.getByLabel("g4run","tracker",stepsHandle);
-    StepPointMCCollection const& steps(*stepsHandle);
-    */
+		/*art::Handle<StepPointMCCollection> stepsHandle;
+		event.getByLabel("g4run","tracker",stepsHandle);
+		StepPointMCCollection const& steps(*stepsHandle);
+		*/
 		/*try {
 			iEvent.getByLabel(l1GTReadoutRecTag_,L1GTRR);
 		} catch (...) {;}
 		if ( L1GTRR.isValid() ) { // exists
 		
 		edm::Handle<edm::TriggerResults> trh;
-try {iEvent.getByLabel(triggerInputTag_,trh);} 
-catch( cms::Exception& ex ) { LogWarning("HWWTreeDumper") << "Trigger results: " << triggerInputTag_ << " not found"; }
-if (!trh.isValid())
-		throw cms::Exception("ProductNotValid") << "TriggerResults product not valid";
+		try {iEvent.getByLabel(triggerInputTag_,trh);}
+			catch( cms::Exception& ex ) { LogWarning("HWWTreeDumper") << "Trigger results: " << triggerInputTag_ << " not found"; }
+		if (!trh.isValid())
+			throw cms::Exception("ProductNotValid") << "TriggerResults product not valid";
 		*/
 
 		// Continue with main product: PAT-electrons
