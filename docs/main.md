@@ -20,7 +20,7 @@ setup CMSSW
 
 checkout Kappa
 
-    git clone -b dictchanges https://github.com/KappaAnalysis/Kappa.git
+    git clone https://github.com/KappaAnalysis/Kappa.git
 
 compile
 
@@ -120,13 +120,35 @@ Naming scheme {#main-naming}
 - K<Object>Metadata for objects stored in lumi tree containing
   information about the corresponding object in the event tree
 
+Repository management
+---------------------
+
+- **Branches**:
+  These branches should be used for most development work:
+  - *master*: The stable default version that is recommended for general use
+  - *dictchanges*: Commits that change the data format in a backwards incompatible way
+  - *development*: Other changes that do not touch the data format
+  
+  While the merges or commits to the master branch must be thoroughly checked,
+  commits pushed to dictchanges or development must compile and should
+  be checked to produce reasonable results.
+
+- **Tags**:
+  Each new version that is used in a real skim (not every commit on master)
+  should get a tag of the form: `Kappa_1_2_3`
+  The numbers are increased in this cases:
+    - (1) major version: only in rare cases of major changes
+    - (2) minor version: in case the data format has changed
+    - (3) revision: any other case that needs a tag
+  Using `git describe` returns a unique identifier for the current commit
+  in the form *last tag*-*commits since then*-*short commit hash*.
 
 Changes in Kappa 2.0 {#main-changes}
 ====================================
 
 The changes can be seen using this command:
-``git log 39aeb59..electronunification``
-or in the [change log](https://ekptrac.physik.uni-karlsruhe.de/trac/Kappa/timeline).
+``git log --oneline 71f3f8e..333adc6``
+or in the [change log](https://github.com/KappaAnalysis/Kappa/compare/71f3f8e...333adc6).
 
 - **Changes in Lorentz vector definitions**:
 
@@ -144,9 +166,7 @@ or in the [change log](https://ekptrac.physik.uni-karlsruhe.de/trac/Kappa/timeli
 - **Renaming, moving and removing data format classes and producers**:
 
   Many classes and files are renamed. This is done to consolidate the
-  naming following a consistent [naming scheme](#main-naming):
-  - 
-  
+  naming following a consistent [naming scheme](#main-naming).  
   These are the commits containing the changes:
   - Rename data format classes and producers ([dbe9b1c]())
   - Update with classes.UP ([91a9b28]())
