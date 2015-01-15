@@ -425,7 +425,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("reco.*Jets_.*Jet"),
-		blacklist = cms.vstring("Castor", "BasicJet"),
+		blacklist = cms.vstring("Castor", "BasicJet","recoTrackJets_*TrackJets.*"),
 
 		rename = cms.vstring(
 			"JetPlusTrack(.*) => $1JPT",
