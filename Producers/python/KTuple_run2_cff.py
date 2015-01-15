@@ -27,9 +27,10 @@ kappaNoRegEx = cms.PSet(kappaNoRename,
 
 kappaTupleDefaultsBlock = cms.PSet(
 	verbose = cms.int32(0),
-	active = cms.vstring("Metadata"),
+	active = cms.vstring("Info"),
+	profile = cms.bool(False),
 
-	Metadata = cms.PSet(
+	Info = cms.PSet(
 		forceLumi = cms.int32(-1),
 		forceXSec = cms.double(1),
 		ignoreExtXSec = cms.bool(False),
@@ -138,6 +139,22 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
+	#TaupairVerticesMap = cms.PSet(kappaNoCut,
+	#	manual = cms.VInputTag(),
+	#	rename = cms.vstring("$ => UnbiasedRefit"),
+	#	whitelist = cms.vstring("offlinePrimaryVertices"),
+	#	blacklist = cms.vstring(),
+	#	rename_whitelist = cms.vstring(),
+	#	rename_blacklist = cms.vstring(),
+	#
+	#	deltaRThreshold = cms.double(0.0001),
+	#	beamSpotSource = cms.InputTag("offlineBeamSpot"),
+	#	src = cms.InputTag("hpsPFTauProducer"),
+	#	fitMethod = cms.int32(0),
+	#	includeOrginalPV = cms.bool(True),
+	#),
+
+
 	BeamSpot = cms.PSet(kappaNoRename,
 		manual = cms.VInputTag(),
 
@@ -153,7 +170,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		rename = cms.vstring(
 			"JetPlusTrack(.*) => $1JPT",
-			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8",
+			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1ak)(?2kt)(?3sc)(?4ic)(?5ic)(?6ak)(?7ca)$8",
 			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
 		),
 		rename_whitelist= cms.vstring(),
@@ -173,26 +190,26 @@ kappaTupleDefaultsBlock = cms.PSet(
 		srcPVs = cms.InputTag("offlinePrimaryVertices"),
 	),
 
-	MET = cms.PSet(
+	BasicMET = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("reco(Calo|Gen)MET"),
 		blacklist = cms.vstring("recoPFMET"),
 
 		rename = cms.vstring(
-			"(gen)?(ht)?met => (?1Gen:Calo)MET(?2HT)",
+			"(gen)?(ht)?met => (?1gen:calo)met(?2Ht)",
 		),
 		rename_whitelist = cms.vstring("^(Calo|Gen)MET(Calo|True)?$"),
 		rename_blacklist = cms.vstring(),
 	),
 
-	PFMET = cms.PSet(
+	MET = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFMET"),
 		blacklist = cms.vstring(),
 
-		rename = cms.vstring("pfMet => PFMET"),
+		rename = cms.vstring("pfMet => met"),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
@@ -234,7 +251,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	JetArea = cms.PSet(kappaNoCut,
+	PileupDensity = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("kt6PFJetsRho_rho", "kt6PFJets_rho"),
@@ -254,6 +271,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			#srcMuonIsolationHcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","hcal"),
 			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
 			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
+			vertexcollection = cms.InputTag("offlinePrimaryVertices"),
 			# Cuts for PF isolation
 			pfIsoVetoCone = cms.double(0.01),
 			pfIsoVetoMinPt = cms.double(0.5),
@@ -370,33 +388,45 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	Electrons = cms.PSet(kappaNoCut,
 		kappaNoRegEx,
-		IDs = cms.vstring("mvaTrigV050nsCSA14",
-						  "mvaTrigV025nsCSA14",
-						  "mvaNonTrigV050nsCSA14",
-						  "mvaNonTrigV025nsCSA14"),
+		ids = cms.vstring(),
 		electrons = cms.PSet(
-		src = cms.InputTag("patElectrons"),
-		allConversions = cms.InputTag("allConversions"),
-		offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
-		vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
-		isoValInputTags = cms.VInputTag(cms.InputTag('elPFIsoValueCharged03PFIdPFIso'),
-						cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
-						cms.InputTag('elPFIsoValueNeutral03PFIdPFIso')),
-		rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
+			src = cms.InputTag("patElectrons"),
+			allConversions = cms.InputTag("allConversions"),
+			offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
+			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
+			isoValInputTags = cms.VInputTag(cms.InputTag('elPFIsoValueCharged03PFIdPFIso'),
+				cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
+				cms.InputTag('elPFIsoValueNeutral03PFIdPFIso')),
+			rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
 		),
 	),
 
-	PFJets = cms.PSet(kappaNoCut,
+	BasicJets = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("recoPFJets_ak5PFJets.*"),
 		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG"),
 
 		rename = cms.vstring(
-			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1AK)(?2KT)(?3SC)(?4IC)(?5IC)(?6AK)(?7CA)$8"
+			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1ak)(?2kt)(?3sc)(?4ic)(?5ic)(?6ak)(?7ca)$8"
 		),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
+	),
+
+	GenJets = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("reco.*Jets_.*Jet"),
+		blacklist = cms.vstring("Castor", "BasicJet"),
+
+		rename = cms.vstring(
+			"JetPlusTrack(.*) => $1JPT",
+			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1ak)(?2kt)(?3sc)(?4ic)(?5ic)(?6ak)(?7ca)$8",
+			"((L2)(L3)?|(ZSP)(Jet)?)CorJet(..[0-9]*)(PF)?(JPT)?(Calo)? => $6(?3L3:(?2L2))(?4L0)(?7PF)(?8JPT)Jets",
+		),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(".*CaloJets", ".*PFJets", ".*JPTJets"),
 	),
 
 	GenTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
@@ -414,7 +444,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		)
 	),
 
-	PFTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+	Taus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		#shrinkingConePFTaus = cms.PSet(
 		#	src = cms.InputTag("shrinkingConePFTauProducer"),
 		#	discrWhitelist = cms.vstring("shrinkingConePFTau*"),
@@ -424,7 +454,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		#	src = cms.InputTag("fixedConePFTauProducer"),
 		#	discr = cms.vstring("fixedConePFTau*")
 		#),
-		hpsPFTaus = cms.PSet(
+		taus = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
 			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
 			binaryDiscrWhitelist = cms.vstring("hpsPFTau.*"),

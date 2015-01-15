@@ -1,27 +1,29 @@
-import os
-import sys
+
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper as datasetsHelper
+import Kappa.Skimming.tools as tools
+
 
 def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring(""), maxevents=100, nickname = 'SM_VBFHToTauTau_M_90_powheg_pythia_8TeV', kappaTag = 'Kappa_1_0_0'):
 
 	from Kappa.Producers.KSkimming_template_run2_cfg import process
-
 	process.source.fileNames      = testfile
 	process.maxEvents.input	      = maxevents				## number of events to be processed (-1 = all in file)
 	process.kappaTuple.outputFile = 'kappaTuple.root'			## name of output file
 	process.kappaTuple.verbose    = cms.int32(0)				## verbosity level
+	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
 	data = datasetsHelper.isData(nickname)
 	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
 	isEmbedded = datasetsHelper.getIsEmbedded(nickname)
+	
 	process.p = cms.Path ( )
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
-	process.kappaTuple.active										= cms.vstring('TreeMetadata')
-	process.kappaTuple.TreeMetadata.parameters = cms.PSet(
+	process.kappaTuple.active										= cms.vstring('TreeInfo')
+	process.kappaTuple.TreeInfo.parameters = cms.PSet(
 		dataset						= cms.string(datasetsHelper.getDatasetName(nickname)),
 		generator					= cms.string(datasetsHelper.getGenerator(nickname)),
 		productionProcess			= cms.string(datasetsHelper.getProcess(nickname)),
@@ -46,13 +48,29 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 
 	if not isEmbedded:
 		if data:
-			process.kappaTuple.active+= cms.vstring('DataMetadata')		## produce Metadata for data,
+			process.kappaTuple.active+= cms.vstring('DataInfo')		## produce Metadata for data,
 		else:
-			process.kappaTuple.active+= cms.vstring('GenMetadata')		## produce Metadata for MC,
+			process.kappaTuple.active+= cms.vstring('GenInfo')		## produce Metadata for MC,
 			process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 			process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
-
-	process.kappaTuple.Metadata.hltWhitelist = cms.vstring(			## HLT selection
+	
+	# prune GenParticles
+	if not data and not isEmbedded:
+		process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
+		process.prunedGenParticles = cms.EDProducer("GenParticlePruner",
+			src = cms.InputTag("genParticles", "", "SIM"),
+			select = cms.vstring(
+				"drop  *",
+				"keep status == 3",  # all status 3
+				"keep++ abs(pdgId) == 23", # Z
+				"keep++ abs(pdgId) == 24", # W
+				"keep++ abs(pdgId) == 25", # H
+				"keep abs(pdgId) == 11 || abs(pdgId) == 13",  # charged leptons
+				"keep++ abs(pdgId) == 15"  # keep full tau decay chain
+			)
+		)
+	
+	process.kappaTuple.Info.hltWhitelist = cms.vstring(			## HLT selection
 		# https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/blob/master/data/triggerTables-2011-2012.txt
 		# https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorkingSummer2013
 		# can be tested at http://regexpal.com
@@ -87,8 +105,8 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 		#"^HLT_Mu[0-9]+_Photon[0-9]+_CaloIdVT_IsoT_v[0-9]+$",
 		#"^HLT_Ele[0-9]+_CaloId(L|T)(_TrkIdVL)?_CaloIsoVL(_TrkIdVL_TrkIsoVL)?(_TrkIsoVL)?(_Jet[0-9]+|)?_v[0-9]+$",
 		)
-
-	process.kappaTuple.Metadata.hltBlacklist = cms.vstring(
+	
+	process.kappaTuple.Info.hltBlacklist = cms.vstring(
 		"HLT_Mu13_Mu8", # v21 gives errors for the trigger objects
 		)
 
@@ -118,30 +136,66 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 		)
 
 	process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
-	## ------------------------------------------------------------------------
-	# Configure Electrons
-	process.load("Kappa.Producers.KElectrons_run2_cff")
-	process.kappaTuple.active += cms.vstring('Electrons')	                ## produce/save KappaElectrons,
-	process.p *= process.makeKappaElectrons
-
+	
 	## ------------------------------------------------------------------------
 	# Configure Muons
 	process.load("Kappa.Producers.KMuons_cff")
 	process.kappaTuple.active += cms.vstring('Muons')	                ## produce/save KappaMuons
+	process.kappaTuple.Muons.minPt = cms.double(8.0)
 	process.p *= process.makeKappaMuons
-	process.p *= process.makeKappaMuons
+
+	## ------------------------------------------------------------------------
+	# Configure Electrons
+	process.load("Kappa.Producers.KElectrons_run2_cff")
+	process.kappaTuple.active += cms.vstring('Electrons')	                ## produce/save KappaElectrons,
+	process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV050nsCSA14",
+						  "mvaTrigV025nsCSA14",
+						  "mvaNonTrigV050nsCSA14",
+						  "mvaNonTrigV025nsCSA14")
+	process.kappaTuple.Electrons.minPt = cms.double(8.0)
+	process.p *= process.makeKappaElectrons
+	
+	#Check if Working in CMSSW_7
+	### for electron iso
+	#from CommonTools.ParticleFlow.Tools.pfIsolation import setupPFElectronIso #, setupPFMuonIso
+	#process.eleIsoSequence = setupPFElectronIso(process, 'patElectrons')
+	#	
+	## https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_cfg.py#L418-L448
+	#process.eleIsoSequence.remove(process.elPFIsoValueCharged03NoPFIdPFIso)
+	#process.eleIsoSequence.remove(process.elPFIsoValueChargedAll03NoPFIdPFIso)
+	#process.eleIsoSequence.remove(process.elPFIsoValueGamma03NoPFIdPFIso)
+	#process.eleIsoSequence.remove(process.elPFIsoValueNeutral03NoPFIdPFIso)
+	#process.eleIsoSequence.remove(process.elPFIsoValuePU03NoPFIdPFIso)
+	#process.eleIsoSequence.remove(process.elPFIsoValueCharged04NoPFIdPFIso)
+	#process.eleIsoSequence.remove(process.elPFIsoValueChargedAll04NoPFIdPFIso)
+	#process.eleIsoSequence.remove(process.elPFIsoValueGamma04NoPFIdPFIso)
+	#process.eleIsoSequence.remove(process.elPFIsoValueNeutral04NoPFIdPFIso)
+	#process.eleIsoSequence.remove(process.elPFIsoValuePU04NoPFIdPFIso)
+	#process.elPFIsoValueGamma04PFIdPFIso.deposits[0].vetos      = cms.vstring('EcalEndcaps:ConeVeto(0.08)','EcalBarrel:ConeVeto(0.08)')
+	#process.elPFIsoValueNeutral04PFIdPFIso.deposits[0].vetos    = cms.vstring()
+	#process.elPFIsoValuePU04PFIdPFIso.deposits[0].vetos         = cms.vstring()
+	#process.elPFIsoValueCharged04PFIdPFIso.deposits[0].vetos    = cms.vstring('EcalEndcaps:ConeVeto(0.015)')
+	#process.elPFIsoValueChargedAll04PFIdPFIso.deposits[0].vetos = cms.vstring('EcalEndcaps:ConeVeto(0.015)','EcalBarrel:ConeVeto(0.01)')
+	#process.pfiso = cms.Sequence(process.pfParticleSelectionSequence + process.eleIsoSequence)
+	#
+	## rho for electron iso
+	#from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
+	#process.kt6PFJetsForIsolation = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
+	#process.kt6PFJetsForIsolation.Rho_EtaMax = cms.double(2.5)
+	#process.p *= (process.pfiso * process.kt6PFJetsForIsolation)
 
 	## ------------------------------------------------------------------------
 	# Configure Taus
 	process.load("Kappa.Producers.KTaus_run2_cff")
-	process.kappaTuple.active += cms.vstring('PFTaus')	                ## produce/save KappaTaus
+	process.kappaTuple.active += cms.vstring('Taus')	                ## produce/save KappaTaus
+	process.kappaTuple.Taus.minPt = cms.double(8.0)
 	process.p *= process.makeKappaTaus
 
 	## ------------------------------------------------------------------------
 	## KappaPFTaggedJets  - not yet supported in CMSSW_7
 	#process.load("Kappa.Producers.KPFTaggedJets_cff")
-	#process.kappaTuple.active += cms.vstring('PFTaggedJets')           ## produce KappaPFTaggedJets
-	#process.kappaTuple.PFTaggedJets = cms.PSet(
+	#process.kappaTuple.active += cms.vstring('Jets')           ## produce KappaPFTaggedJets
+	#process.kappaTuple.Jets = cms.PSet(
 	#	process.kappaNoCut,
 	#	process.kappaNoRegEx,
 	#	taggers = cms.vstring(
@@ -182,7 +236,8 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	#		PUJetID_full = cms.InputTag("full"),
 	#		),
 	#	)
-	#process.kappaTuple.active += cms.vstring('JetArea')
+	#process.kappaTuple.Jets.minPt = cms.double(10.0)
+	#process.kappaTuple.active += cms.vstring('PileupDensity')
 
 	## ------------------------------------------------------------------------
 	# Special settings for embedded samples
@@ -194,13 +249,14 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 		#process.ak5PFCHSNewJetTracksAssociatorAtVertex.tracks = "tmfTracks"
 		#process.p *= process.btagging
 		# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
-		process.kappaTuple.Metadata.overrideHLTCheck = cms.untracked.bool(True)
-		process.kappaTuple.active+= cms.vstring('DataMetadata')
+		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
+		process.kappaTuple.active+= cms.vstring('DataInfo')
 		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
-		process.kappaTuple.Metadata.isEmbedded = cms.bool(True)
+		process.kappaTuple.Info.isEmbedded = cms.bool(True)
 
+	#Check if working
 	# Let Jets run
 	#process.p *= (
 	#	process.makeKappaTaus *
@@ -214,9 +270,24 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	## ------------------------------------------------------------------------
 	## MET - not yet supported in CMSSW_7
 	#process.load("Kappa.Producers.KMET_cff")
-	#process.kappaTuple.active += cms.vstring('MET')                         ## produce/save KappaMET
-	#process.kappaTuple.active += cms.vstring('PFMET')                       ## produce/save KappaPFMET
+	#process.kappaTuple.active += cms.vstring('BasicMET')                         ## produce/save KappaMET
+	#process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
 	#process.p *= process.makeKappaMET
+	
+	#Check if working and needed in CMSSW_7
+	#process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
+	#process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
+	#process.p *= (process.tauGenJets+process.tauGenJetsSelectorAllHadrons)
+	#process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
+	#process.kappaTuple.active += cms.vstring('GenJets')
+	#
+	## add python config to TreeInfo
+	#process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
+	#	
+	## add repository revisions to TreeInfo
+	#for repo, rev in tools.get_repository_revisions().iteritems():
+	#		setattr(process.kappaTuple.TreeInfo.parameters, repo, cms.string(rev))
+	
 
 	## ------------------------------------------------------------------------
 	## And let it run
@@ -257,6 +328,4 @@ if __name__ == "__main__":
 	## for grid-control:
 	else:
 		process = getBaseConfig('@GLOBALTAG@', nickname = '@NICK@', kappaTag = '@KAPPA_TAG@')
-
-
 
