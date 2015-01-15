@@ -294,21 +294,21 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	return process
 
 if __name__ == "__main__":
-	if('@' in '@NICK@'): # run local skim by hand without replacements by grid-control
-		## test file for EKP
-		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/pfEmbedded.root')
-		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/tauPlusX.root')
-		testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/VBF-Htautau.root')
-		#testfile	= cms.untracked.vstring('file:/storage/6/berger/testfiles/data_2012C_AOD.root')
-		## test file for lxplus
-		#testfile	= cms.untracked.vstring('root://eoscms//eos/cms/store/relval/CMSSW_5_3_6-START53_V14/RelValProdTTbar/AODSIM/v2/00000/76ED0FA6-1E2A-E211-B8F1-001A92971B72.root')
-		## test file for NAF
-		#testfile	= cms.untracked.vstring('file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_8TeV_powheg_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_004B56D8-AAED-E111-AB70-1CC1DE1CEDB2.root')
-		## test file for RWTH
-		#testfile	= cms.untracked.vstring('file:/user/kargoll/testfiles/DYTauTau/DYTauTau_Summer12.root')
-		process = getBaseConfig(testfile = testfile)
+	if("@" in "@NICK@"): # run local skim by hand without replacements by grid-control
 
+		# TauPlusX_Run2012B_22Jan2013_8TeV
+		#process = getBaseConfig(globaltag="FT_53_V21_AN4::All", nickname="TauPlusX_Run2012B_22Jan2013_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/data/Run2012B/TauPlusX/AOD/22Jan2013-v1/20000/0040CF04-8E74-E211-AD0C-00266CFFA344.root"))
+		
+		# DoubleMu_PFembedded_Run2012A_22Jan2013_mt_8TeV
+		#process = getBaseConfig(globaltag="FT_53_V21_AN4::All", nickname="DoubleMu_PFembedded_Run2012A_22Jan2013_mt_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/results/higgs/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/DoubleMu/USER/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/0000/00F5125E-A3E4-E211-A54D-0023AEFDE638.root"))
+
+		# DYJetsToLL_M_50_madgraph_8TeV
+		process = getBaseConfig(globaltag="START53_V15A::All", nickname="DYJetsToLL_M_50_madgraph_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/Summer12_DR53X/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/AODSIM/PU_S10_START53_V7A-v1/0000/00037C53-AAD1-E111-B1BE-003048D45F38.root"))
+		
+		# SM_VBFHToTauTau_M_125_powheg_pythia_8TeV
+		#process = getBaseConfig(globaltag="START53_V15A::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/Summer12_DR53X/VBF_HToTauTau_M-125_8TeV-powheg-pythia6/AODSIM/PU_S10_START53_V7A-v1/0000/004B56D8-AAED-E111-AB70-1CC1DE1CEDB2.root"))
+		
 	## for grid-control:
 	else:
-		process = getBaseConfig('@GLOBALTAG@', nickname = '@NICK@', kappaTag = '@KAPPA_TAG@')
+		process = getBaseConfig("@GLOBALTAG@", nickname="@NICK@", kappaTag="@KAPPA_TAG@")
 
