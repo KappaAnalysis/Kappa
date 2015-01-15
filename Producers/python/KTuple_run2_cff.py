@@ -139,20 +139,20 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	#TaupairVerticesMap = cms.PSet(kappaNoCut,
-	#	manual = cms.VInputTag(),
-	#	rename = cms.vstring("$ => UnbiasedRefit"),
-	#	whitelist = cms.vstring("offlinePrimaryVertices"),
-	#	blacklist = cms.vstring(),
-	#	rename_whitelist = cms.vstring(),
-	#	rename_blacklist = cms.vstring(),
-	#
-	#	deltaRThreshold = cms.double(0.0001),
-	#	beamSpotSource = cms.InputTag("offlineBeamSpot"),
-	#	src = cms.InputTag("hpsPFTauProducer"),
-	#	fitMethod = cms.int32(0),
-	#	includeOrginalPV = cms.bool(True),
-	#),
+	TaupairVerticesMap = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+		rename = cms.vstring("$ => UnbiasedRefit"),
+		whitelist = cms.vstring("offlinePrimaryVertices"),
+		blacklist = cms.vstring(),
+		rename_whitelist = cms.vstring(),
+		rename_blacklist = cms.vstring(),
+
+		deltaRThreshold = cms.double(0.0001),
+		beamSpotSource = cms.InputTag("offlineBeamSpot"),
+		src = cms.InputTag("hpsPFTauProducer"),
+		fitMethod = cms.int32(0),
+		includeOrginalPV = cms.bool(True),
+	),
 
 
 	BeamSpot = cms.PSet(kappaNoRename,
@@ -272,6 +272,11 @@ kappaTupleDefaultsBlock = cms.PSet(
 			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
 			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
 			vertexcollection = cms.InputTag("offlinePrimaryVertices"),
+			isoValInputTags = cms.VInputTag(
+				cms.InputTag('muPFIsoValueChargedAll04PFIso'),
+				cms.InputTag('muPFIsoValueGamma04PFIso'),
+				cms.InputTag('muPFIsoValueNeutral04PFIso'),
+				cms.InputTag('muPFIsoValuePU04PFIso')),
 			# Cuts for PF isolation
 			pfIsoVetoCone = cms.double(0.01),
 			pfIsoVetoMinPt = cms.double(0.5),
@@ -433,14 +438,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		genTaus = cms.PSet(
 			src = cms.InputTag("genParticles"),
 			selectedStatus = cms.int32(0)       # select, if (1<<status & selectedStatus) or selectedStatus==0
-		)
-	),
-
-	CaloTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
-		caloRecoTaus = cms.PSet(
-			src = cms.InputTag("caloRecoTauProducer"),
-			discrWhitelist = cms.vstring("caloRecoTau*"),
-			discrBlacklist = cms.vstring(".*PFlow$"),
 		)
 	),
 

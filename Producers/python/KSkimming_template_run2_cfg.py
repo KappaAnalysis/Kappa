@@ -9,7 +9,7 @@ process.MessageLogger.default = cms.untracked.PSet(
 	#suppressError = cms.untracked.vstring("electronIdMVAProducer")
 )
 
-process.MessageLogger.cerr.FwkReport.reportEvery = 10
+process.MessageLogger.cerr.FwkReport.reportEvery = 50
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
