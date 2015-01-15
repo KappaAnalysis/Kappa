@@ -45,12 +45,17 @@ public:
 		out.errDxy = in.dxyError();
 		out.errDz = in.dzError();
 
+		// hit pattern information
 		out.nValidPixelHits = in.hitPattern().numberOfValidPixelHits();
 		out.nValidStripHits = in.hitPattern().numberOfValidStripHits();
 		out.nValidMuonHits = in.hitPattern().numberOfValidMuonHits();
 		out.nPixelLayers = in.hitPattern().pixelLayersWithMeasurement();
 		out.nStripLayers = in.hitPattern().stripLayersWithMeasurement();
+#if CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2
+		out.nInnerHits = in.hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
+#else
 		out.nInnerHits = in.trackerExpectedHitsInner().numberOfHits();
+#endif
 	}
 };
 
