@@ -30,7 +30,6 @@ public:
 	{
 #if CMSSW_MAJOR_VERSION >= 7
 		std::cout << "KBasicTauProducer: This hashing does not run with CMSSW 7!" << std::flush << std::endl;
-		assert(false);
 		return 0;
 #else
 		return ( std::hash<double>()(tau.leadPFCand()->px()) ^
