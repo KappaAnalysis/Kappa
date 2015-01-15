@@ -55,7 +55,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 			process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
 	
 	# prune GenParticles
-	if not data and not isEmbedded:
+	if not data:
 		process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
 		process.prunedGenParticles = cms.EDProducer("GenParticlePruner",
 			src = cms.InputTag("genParticles", "", "SIM"),
@@ -260,11 +260,12 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.p *= process.makeKappaMET
 	#"""
 	
-	process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
-	process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
-	process.p *= (process.tauGenJets+process.tauGenJetsSelectorAllHadrons)
-	process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
-	process.kappaTuple.active += cms.vstring('GenJets')
+	if not data:
+		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
+		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
+		process.p *= (process.tauGenJets+process.tauGenJetsSelectorAllHadrons)
+		process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
+		process.kappaTuple.active += cms.vstring('GenJets')
 	
 	# add python config to TreeInfo
 	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
