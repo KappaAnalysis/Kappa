@@ -78,6 +78,7 @@ protected:
 	const edm::ParameterSet &psConfig;
 
 	bool first;
+	std::vector<std::string> active;
 	bool doProfile;
 	std::chrono::high_resolution_clock::time_point t1, t2;
 	double fillRuntime;
@@ -139,7 +140,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 
 	KBaseProducer::verbosity = std::max(KBaseProducer::verbosity, psConfig.getParameter<int>("verbose"));
 
-	std::vector<std::string> active = psConfig.getParameter<std::vector<std::string> >("active");
+	active = psConfig.getParameter<std::vector<std::string> >("active");
 	doProfile = psConfig.getParameter<bool>("profile");
 	if (doProfile)
 		std::cout << "Profiling is turned on." << std::endl;
@@ -243,7 +244,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 KTuple::~KTuple()
 {
 	ROOTContextSentinel ctx;
-	std::vector<std::string> active = psConfig.getParameter<std::vector<std::string> >("active");
 	if (doProfile)  // profiling header
 	{
 		std::cout.precision(3);
