@@ -54,7 +54,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
     process.pfMuonIso = cms.Path(process.pfmuIsoDepositPFCandidates)
 
     # Electrons ---------------------------------------------------------------
-    process.load("Kappa.Producers.KElectrons_cff")
+    process.load("Kappa.Skimming.KElectrons_cff")
     process.electrons = cms.Path(
         process.makeKappaElectrons)
 

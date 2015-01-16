@@ -49,7 +49,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
     process.MessageLogger.cerr.FwkReport.reportEvery = 40
 
     # Electrons ---------------------------------------------------------------
-    process.load("Kappa.Producers.KElectrons_cff")
+    process.load("Kappa.Skimming.KElectrons_cff")
     process.electrons = cms.Path(
     	process.makeKappaElectrons
 	)

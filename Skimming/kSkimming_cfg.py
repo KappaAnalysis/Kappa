@@ -6,7 +6,7 @@ import Kappa.Skimming.tools as tools
 
 def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring(""), maxevents=100, nickname = 'SM_VBFHToTauTau_M_90_powheg_pythia_8TeV', kappaTag = 'Kappa_1_0_0'):
 
-	from Kappa.Producers.KSkimming_template_cfg import process
+	from Kappa.Skimming.KSkimming_template_cfg import process
 	process.source.fileNames      = testfile
 	process.maxEvents.input	      = maxevents				## number of events to be processed (-1 = all in file)
 	process.kappaTuple.outputFile = 'kappaTuple.root'			## name of output file
@@ -112,7 +112,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
-	process.load("Kappa.Producers.KPFCandidates_cff")
+	process.load("Kappa.Skimming.KPFCandidates_cff")
 	#process.kappaTuple.active += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected
 	process.kappaTuple.PFCandidates.whitelist = cms.vstring(                ## isolation used for electrons and muons.
 ##		"pfNoPileUpChargedHadrons",    ## switch to pfAllChargedParticles
@@ -126,14 +126,14 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	
 	## ------------------------------------------------------------------------
 	# Configure Muons
-	process.load("Kappa.Producers.KMuons_cff")
+	process.load("Kappa.Skimming.KMuons_cff")
 	process.kappaTuple.active += cms.vstring('Muons')	                ## produce/save KappaMuons
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
 	process.p *= process.makeKappaMuons
 
 	## ------------------------------------------------------------------------
 	# Configure Electrons
-	process.load("Kappa.Producers.KElectrons_cff")
+	process.load("Kappa.Skimming.KElectrons_cff")
 	process.kappaTuple.active += cms.vstring('Electrons')	                ## produce/save KappaElectrons,
 	process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV0",
 	                                               "mvaTrigNoIPV0",
@@ -172,14 +172,14 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	# Configure Taus
-	process.load("Kappa.Producers.KTaus_cff")
+	process.load("Kappa.Skimming.KTaus_cff")
 	process.kappaTuple.active += cms.vstring('Taus')	                ## produce/save KappaTaus
 	process.kappaTuple.Taus.minPt = cms.double(8.0)
 	process.p *= process.makeKappaTaus
 
 	## ------------------------------------------------------------------------
 	## KappaPFTaggedJets
-	process.load("Kappa.Producers.KPFTaggedJets_cff")
+	process.load("Kappa.Skimming.KPFTaggedJets_cff")
 	process.kappaTuple.active += cms.vstring('Jets')           ## produce KappaPFTaggedJets
 	process.kappaTuple.Jets = cms.PSet(
 		process.kappaNoCut,
@@ -254,7 +254,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 
 	## ------------------------------------------------------------------------
 	## MET
-	process.load("Kappa.Producers.KMET_cff")
+	process.load("Kappa.Skimming.KMET_cff")
 	process.kappaTuple.active += cms.vstring('BasicMET')                         ## produce/save KappaMET
 	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
 	process.p *= process.makeKappaMET
