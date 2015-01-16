@@ -8,7 +8,6 @@
 
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
-#include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/MET.h>
 
 class KBasicMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KBasicMET>
@@ -18,6 +17,7 @@ public:
 		KBaseMultiProducer<edm::View<reco::MET>, KBasicMET>(cfg, _event_tree, _run_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "BasicMET"; }
+
 	template<typename Tin>
 	static void fillMET(const Tin &in, OutputType &out)
 	{

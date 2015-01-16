@@ -31,7 +31,6 @@ public:
 {
 	electronMetadata = new KElectronMetadata;
 	_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
-		
 }
 
 	static const std::string getLabel() { return "Electrons"; }
@@ -70,7 +69,6 @@ public:
 		}
 		
 		cEvent->getByLabel(pset.getParameter<edm::InputTag>("rhoIsoInputTag"), rhoIso_h);
-		//std::cout << "Do iso " << doPfIsolation << std::endl << std::flush;
 		/*art::Handle<StepPointMCCollection> stepsHandle;
 		event.getByLabel("g4run","tracker",stepsHandle);
 		StepPointMCCollection const& steps(*stepsHandle);
@@ -136,11 +134,7 @@ public:
 		const reco::GsfElectron* eGSF = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
 		out.electronType = 0;
 		out.electronType |= in.isEcalEnergyCorrected() << KElectronType::ecalEnergyCorrected;
-		//out.electronType |= in.isMomentumCorrected()   << KElectronType::momentumCorrected;
 		out.electronType |= in.ecalDriven()          << KElectronType::ecalDriven;
-		//out.electronType |= in.trackerDriven()       << KElectronType::trackerDriven;
-		//out.electronType |= in.cutPreselected()      << KElectronType::cutPreselected;
-		//out.electronType |= in.mvaPreselected()      << KElectronType::mvaPreselected;
 		out.electronType |= in.ecalDrivenSeed()        << KElectronType::ecalDrivenSeed;
 		out.electronType |= ConversionTools::hasMatchedConversion(
 			*eGSF, hConversions, BeamSpot->position(), true, 2.0, 1e-6, 0)
@@ -177,24 +171,24 @@ public:
 			{
 #if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
 				bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 				bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 				bool cutbasedIDtight = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::TIGHT,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 				bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 #else
 				bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
+					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
 				bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
+					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
 				bool cutbasedIDtight = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::TIGHT,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
+					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
 				bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
-				*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
+					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
 #endif
-				out.ids = 1 << KLeptonId::ANY;  //< mark it as filled
+				out.ids = 1 << KLeptonId::ANY;  // mark it as filled
 				out.ids |= cutbasedIDloose << KLeptonId::LOOSE;
 				out.ids |= cutbasedIDmedium << KLeptonId::MEDIUM;
 				out.ids |= cutbasedIDtight << KLeptonId::TIGHT;

@@ -8,8 +8,6 @@
 #define KAPPA_TRACKPRODUCER_H
 
 #include "KBaseMultiLVProducer.h"
-#include <DataFormats/JetReco/interface/CaloJet.h>
-#include <DataFormats/METReco/interface/HcalNoiseRBX.h>
 #include <DataFormats/TrackReco/interface/Track.h>
 
 class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KTracks>

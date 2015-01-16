@@ -36,6 +36,7 @@ public:
 		currentRun = run.run();
 		return KInfoProducer<Tmeta>::onRun(run, setup);
 	}
+
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		// Fill data related infos
@@ -73,7 +74,6 @@ public:
 		}
 
 		this->metaLumi->nFill = currentRun;
-
 		return true;
 	}
 
