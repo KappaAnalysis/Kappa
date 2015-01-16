@@ -10,10 +10,6 @@ Todo list {#todo}
     - configure pt thresholds as agreed upon in a meeting (~ 8GeV Leptons, 10 GeV Jets)
     - use snippet by Andrew to select genParticles (only ME + tau decay chain)
     - remove 'PFCandidates' from active (most important point for smaller skims)
-3. test the code:
-    - check all variables before and after the skimming changes with some events
-    - do a comparison with Artus (advantage: can compare in the same ntuple output format value by value)
-    - check the lepton isolation values and their usability for delta beta corrections
 
 
 ## Other todos
@@ -26,13 +22,6 @@ Frage:
 List:
 - renaming IDs/Ids
 - Make debug output reflect new data format
-- check everything:
-  - Muon ID vars Iso vars rest
-  - Tau  ID vars Iso vars rest
-  - Ele  ID vars Iso vars rest
-  - Jets ID vars Iso?? rest
-  - MET
-  - Track
 
 - versions:
   - CMSSW 5.3.14 (old)
@@ -57,7 +46,6 @@ List:
 - Profile: off, auto, on (auto=if cmssw w
 - no ints? short or long?
 - Recipe: QG, PUJetID, JetID, MVAMET
-- Kappa Tag
 - list of files that can be run if present
 - hltNames: Electron
 - unified status scheme following HepMC: 0-4+11->7
@@ -98,7 +86,6 @@ List:
 Jets
 ----
 pt > 5 GeV for Jet studies
-Tagged
 
 Reduce to 2 tags: qg, b and PUIDs
 
@@ -108,16 +95,6 @@ PFCandidates
 pt > 10 GeV?
 Only within DR 0.5
 
-
-GenParticles
-------------
-
-Reduce number of objects
-------------------------
-- Electrons: pt > 10 GeV saves
-- Muons: pt > 10 GeV
-- Jets: pt > 10 GeV
-- PFCandidates pt > 10 GeV, DR(lepton) < 0.5
 
 More things:
 - checktools
