@@ -32,7 +32,10 @@ print "GT from autoCond:", process.GlobalTag.globaltag
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
 ## Kappa interface
-process.load('Kappa.Producers.KTuple_run2_cff')
+process.load('Kappa.Producers.KTuple_cff')
+process.kappaTupleDefaultsBlock.Electrons.electrons.isoValInputTags = cms.VInputTag(cms.InputTag('elPFIsoValueCharged03PFIdPFIso'),
+				cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
+				cms.InputTag('elPFIsoValueNeutral03PFIdPFIso'))
 process.kappaTuple = cms.EDAnalyzer('KTuple', process.kappaTupleDefaultsBlock,
                                     outputFile = cms.string("kappaTuple_template.root"))
 process.kappaOut   = cms.Sequence(process.kappaTuple)
