@@ -42,6 +42,13 @@ The output looks similar to:
     Taking trigger from process HLT (label = TriggerResults)
     Begin processing the 1st record. Run 1, Event 100000, LumiSection 2500 at 01-Jan-2015 00:01:00 CET
 
+There are a few cave-ats for different CMSSW versions:
+
+- 3.5.14: nothing known
+- 5.3.23: nothing known
+- 7.0.9: nothing known
+- 7.2.2: use the development branch
+
 
 # Usage and options {#main-options}
 
@@ -62,6 +69,25 @@ check skim (KappaTools)
 What Kappa does is best summarized in this image:
 
 ![Kappa workflow](http://www-ekp.physik.uni-karlsruhe.de/~berger/files/kappa.svg "The Kappa workflow")
+
+# Usage in the analysis
+
+Checkout:
+
+    git clone https://github.com/KappaAnalysis/Kappa.git
+    git clone https://github.com/KappaAnalysis/KappaTools.git
+
+Compile:
+
+    make -C Kappa/DataFormats/test
+    make -C KappaTools
+
+More detailed descriptions for the use of Kappa in an analysis are given
+that are based on Kappa:
+[Artus](https://github.com/artus-analysis/Artus),
+[KIT Higgs Analysis](https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau),
+[Excalibur](https://github.com/dhaitz/Excalibur).
+
 
 Documentation
 =============

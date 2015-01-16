@@ -27,14 +27,14 @@ List:
   - CMSSW 5.3.14 (old)
   - CMSSW 5.3.22 (new 2012)
   - CMSSW 7.0.7_patch1  (CSA)
-  - CMSSW 7.XX (Phsy14)
+  - CMSSW 7.2.2 (Phsy14)
   - MiniAOD
 - Rewrite TauProducer
 - add scripts to KappaTools
 - install for skimming
 - usage for analysis
   - see KappaTools
-
+- check recipe
 - No producer for?
 - clean up Producer headers
 - remove template from BasicTau
@@ -52,7 +52,6 @@ List:
 - KLeptonProducer
 - CMSSW Jet ID als configurable binary ID
 - Handles everywhere!
-- automatic eIDs
 
 ## Documentation
 - add todos
