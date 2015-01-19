@@ -1,6 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
-# this configuration loads a hepmc file and converts it to kappa skimmed file
+# This configuration loads a hepmc file and converts it to kappa skimmed file
+# !!! This file does not run properly !!!
 
 process = cms.Process('HepMCtoKappaSkim')
 
@@ -65,18 +66,13 @@ process.kappatuple = cms.EDAnalyzer('KTuple',
 )
 process.kappatuple.verbose = cms.int32(0)
 process.kappatuple.active = cms.vstring('Metadata', 'LV')
-process.kappatuple.Metadata.l1Source = cms.InputTag("")
-process.kappatuple.Metadata.hltSource = cms.InputTag("")
-process.kappatuple.Metadata.noiseHCAL = cms.InputTag("")
-process.kappatuple.Metadata.hlTrigger = cms.InputTag("")
-process.kappatuple.Metadata.muonTriggerObjects = cms.vstring()
+process.kappatuple.Info.l1Source = cms.InputTag("")
+process.kappatuple.Info.hltSource = cms.InputTag("")
+process.kappatuple.Info.noiseHCAL = cms.InputTag("")
+process.kappatuple.Info.hlTrigger = cms.InputTag("")
+process.kappatuple.Info.muonTriggerObjects = cms.vstring()
 # workaround for error in HepMC loader
-process.kappatuple.Metadata.overrideHLTCheck = cms.untracked.bool(True)
-# select all particles
-#process.kappatuple.GenParticles.genParticles.selectedStatus = cms.int32(31)
-#del process.kappatuple.GenParticles.genStableMuons
-#process.kappatuple.Metadata.pileUpInfoSource = cms.InputTag("")
-#-------------------------------------------------------------------------------
+process.kappatuple.Info.overrideHLTCheck = cms.untracked.bool(True)
 
 # Process schedule -------------------------------------------------------------
 process.pathDAT = cms.Path(process.kappatuple)
