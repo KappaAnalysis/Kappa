@@ -223,8 +223,8 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	process.kappaTuple.Taus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
 
 	## ------------------------------------------------------------------------
-	## KappaPFTaggedJets
-	process.load("Kappa.Skimming.KPFTaggedJets_cff")
+	## KappaJets
+	process.load("Kappa.Skimming.KJets_cff")
 	process.kappaTuple.active += cms.vstring('Jets')
 	process.kappaTuple.Jets = cms.PSet(
 		process.kappaNoCut,
