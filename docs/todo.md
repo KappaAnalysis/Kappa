@@ -102,3 +102,11 @@ More things:
 - valid for data + mc
 - check skim size before/after
 - new isolation and IDs (delta beta, no ecal hcal)
+- what is kappaNick?
+- wie geht update_authors?
+- where to host docs?
+- required packages: comment in KXXX_cff.py if os.path.exists('PhysicsTools/PatAlgos'): print "Needed"
+- sort archive
+- reduce examples to: (1) minimal, (2) configured, (3) with checkouts=full, (4-5) evtl. noch extras 
+- filename list, check, first available taken, order: ekp (default, users), naf (default, users), xrootd
+- check for commit: compiles in all versions, runs in all versions with all versions, test outputs
