@@ -107,6 +107,14 @@ More things:
 - where to host docs?
 - required packages: comment in KXXX_cff.py if os.path.exists('PhysicsTools/PatAlgos'): print "Needed"
 - sort archive
-- reduce examples to: (1) minimal, (2) configured, (3) with checkouts=full, (4-5) evtl. noch extras 
+- reduce examples to: (1) minimal, (2) configured, (3) using KXX_cff, (4) with checkouts=full, (4-5) evtl. noch extras 
 - filename list, check, first available taken, order: ekp (default, users), naf (default, users), xrootd
 - check for commit: compiles in all versions, runs in all versions with all versions, test outputs
+
+
+Checks:
+CMSSW version  config
+5.3.14         1,2,3,4,Higgs,zjet
+5.3.22_patch1  1,2,3,4,
+7.0.7          1,2,3,4,
+7.2.2          1,2,3,4,
