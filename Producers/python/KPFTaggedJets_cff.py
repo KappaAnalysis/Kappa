@@ -10,14 +10,14 @@ from RecoJets.JetProducers.ak5PFJets_cfi import ak5PFJets
 ak5PFJets.srcPVs = cms.InputTag('goodOfflinePrimaryVertices')
 ak5PFJetsCHS = ak5PFJets.clone( src = cms.InputTag('pfNoPileUp') )
 
-## ------------------------------------------------------------------------
-## Gluon tagging
-##  - https://twiki.cern.ch/twiki/bin/viewauth/CMS/GluonTag
-from QuarkGluonTagger.EightTeV.QGTagger_RecoJets_cff import *
+### ------------------------------------------------------------------------
+### Gluon tagging
+###  - https://twiki.cern.ch/twiki/bin/viewauth/CMS/GluonTag
+##from QuarkGluonTagger.EightTeV.QGTagger_RecoJets_cff import *
 
-QGTagger.srcJets     = cms.InputTag('ak5PFJets')
-AK5PFJetsQGTagger    = QGTagger.clone()
-AK5PFJetsCHSQGTagger = QGTagger.clone( srcJets = cms.InputTag('ak5PFJetsCHS'), useCHS = cms.untracked.bool(True) )
+##QGTagger.srcJets     = cms.InputTag('ak5PFJets')
+##AK5PFJetsQGTagger    = QGTagger.clone()
+##AK5PFJetsCHSQGTagger = QGTagger.clone( srcJets = cms.InputTag('ak5PFJetsCHS'), useCHS = cms.untracked.bool(True) )
 
 ## ------------------------------------------------------------------------
 ## B-tagging (for ak5 jets)
@@ -236,13 +236,42 @@ ak5PFCHSJetBtagging = cms.Sequence(
 
 ## ------------------------------------------------------------------------
 ## Pile-Up Jet ID
-from RecoJets.JetProducers.PileupJetID_cfi import *
+from RecoJets.JetProducers.PileupJetIDCutParams_cfi import full_5x_wp, full_5x_chs_wp
+from RecoJets.JetProducers.puJetIDAlgo_cff import full_53x, full_53x_chs
+
+full_53x = full_53x.clone(
+    label = cms.string("full")
+    )
+
+full_53x_chs = full_53x_chs.clone(
+    label = cms.string("full")
+    )
+
+pileupJetIdProducer = cms.EDProducer('PileupJetIdProducer',
+                         produceJetIds = cms.bool(True),
+                         jetids = cms.InputTag(""),
+                         runMvas = cms.bool(True),
+                         jets = cms.InputTag("ak5PFJets"),
+                         vertexes = cms.InputTag("offlinePrimaryVertices"),
+                         algos = cms.VPSet(cms.VPSet(full_53x)),                                     
+                         rho     = cms.InputTag("fixedGridRhoFastjetAll"), ## TODO: change to "kt6PFJets"
+                         jec     = cms.string("AK5PF"),
+                         applyJec = cms.bool(True),
+                         inputIsCorrected = cms.bool(False),                                     
+                         residualsFromTxt = cms.bool(False),
+                         residualsTxt     = cms.FileInPath("RecoJets/JetProducers/BuildFile.xml"),
+    )
+
+pileupJetIdProducerChs = pileupJetIdProducer.clone(
+                         algos = cms.VPSet(cms.VPSet(full_53x_chs)),
+                         jec     = cms.string("AK5PFchs"),
+    )
 
 ak5PFPuJetId = pileupJetIdProducer.clone(
     jets = cms.InputTag("ak5PFJets"),
     applyJec = cms.bool(True),
     inputIsCorrected = cms.bool(False),
-    residualsTxt     = cms.FileInPath("RecoMET/METPUSubtraction/data/dummy.txt"),
+    residualsTxt     = cms.FileInPath("RecoJets/JetProducers/BuildFile.xml"),
     )
 
 ak5PFPuJetMva = pileupJetIdProducer.clone(
@@ -250,14 +279,14 @@ ak5PFPuJetMva = pileupJetIdProducer.clone(
     jetids = cms.InputTag("ak5PFPuJetId"),
     applyJec = cms.bool(True),
     inputIsCorrected = cms.bool(False),
-    residualsTxt     = cms.FileInPath("RecoMET/METPUSubtraction/data/dummy.txt"),
+    residualsTxt     = cms.FileInPath("RecoJets/JetProducers/BuildFile.xml"),
     )
 
 ak5PFCHSPuJetId = pileupJetIdProducerChs.clone(
     jets = cms.InputTag("ak5PFJetsCHS"),
     applyJec = cms.bool(True),
     inputIsCorrected = cms.bool(False),
-    residualsTxt     = cms.FileInPath("RecoMET/METPUSubtraction/data/dummy.txt"),
+    residualsTxt     = cms.FileInPath("RecoJets/JetProducers/BuildFile.xml"),
     )
 
 ak5PFCHSPuJetMva = pileupJetIdProducerChs.clone(
@@ -265,7 +294,7 @@ ak5PFCHSPuJetMva = pileupJetIdProducerChs.clone(
     jetids = cms.InputTag("ak5PFCHSPuJetId"),
     applyJec = cms.bool(True),
     inputIsCorrected = cms.bool(False),
-    residualsTxt     = cms.FileInPath("RecoMET/METPUSubtraction/data/dummy.txt"),
+    residualsTxt     = cms.FileInPath("RecoJets/JetProducers/BuildFile.xml"),
     )
 
 ## ------------------------------------------------------------------------
@@ -282,12 +311,12 @@ makePFJetsCHS = cms.Sequence(
     ak5PFJetsCHS
     )
 
-## run this to create Quark-Gluon tag
-makeQGTagging = cms.Sequence(
-    QuarkGluonTagger *
-    AK5PFJetsQGTagger *
-    AK5PFJetsCHSQGTagger
-    )
+### run this to create Quark-Gluon tag
+##makeQGTagging = cms.Sequence(
+    ##QuarkGluonTagger *
+    ##AK5PFJetsQGTagger *
+    ##AK5PFJetsCHSQGTagger
+    ##)
 
 ## run this to create b-tags
 makeBTagging = cms.Sequence(

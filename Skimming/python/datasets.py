@@ -661,6 +661,7 @@ datasets = {
 		"dataset" : {
 			7 : "/VBF_HToTauTau_M-125_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/VBF_HToTauTau_M-125_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+			13: "/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/Phys14DR-PU40bx25_PHYS14_25_V1-v1/AODSIM",
 		},
 	},
 	"SM_VBFHToTauTau_M_130_powheg_pythia" : {

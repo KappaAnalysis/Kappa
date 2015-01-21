@@ -4,7 +4,7 @@ import Kappa.Skimming.datasetsHelper as datasetsHelper
 import Kappa.Skimming.tools as tools
 
 
-def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring(""), maxevents=100, nickname = 'SM_VBFHToTauTau_M_90_powheg_pythia_8TeV', kappaTag = 'Kappa_1_0_0'):
+def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring(""), maxevents=100, nickname = 'SM_VBFHToTauTau_M_90_powheg_pythia_8TeV', kappaTag = 'Kappa_1_0_0'):
 
 	from Kappa.Producers.KSkimming_template_run2_cfg import process
 	process.source.fileNames      = testfile
@@ -110,11 +110,6 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 		"HLT_Mu13_Mu8", # v21 gives errors for the trigger objects
 		)
 
-	# Reduced number of Tau discriminators
-	# The blacklist is to some degree arbitrary to get below 64 binaty tau discriminators
-	# - they may need to be changed as soon as 'official' discriminators for TauID 2014 will be published
-	process.kappaTuple.Taus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
-
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
 	# PFCandidates ------------------------------------------------------------
@@ -124,9 +119,9 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	process.pfPileUpIso.PFCandidates = cms.InputTag("particleFlowPtrs")
 	process.pfNoPileUp.bottomCollection = cms.InputTag("particleFlowPtrs")
 	process.pfNoPileUpIso.bottomCollection = cms.InputTag("particleFlowPtrs")
+	process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag("ak5PFJets")
 
-	#process.pathPFCandidates = cms.Path(process.makeKappaPFCandidates * process.makePFCandidatesForDeltaBeta)
-	process.kappaTuple.active += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected
+	#process.kappaTuple.active += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected
 	process.kappaTuple.PFCandidates.whitelist = cms.vstring(                ## isolation used for electrons and muons.
 ##		"pfNoPileUpChargedHadrons",    ## switch to pfAllChargedParticles
 		"pfAllChargedParticles",       ## same as pfNoPileUpChargedHadrons +pf_electrons + pf_muons
@@ -135,54 +130,85 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 		"pfPileUpChargedHadrons",
 		)
 
-	process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
-	
+	#process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
+	process.p *= ( process.makeKappaPFCandidates)
+
 	## ------------------------------------------------------------------------
 	# Configure Muons
 	process.load("Kappa.Producers.KMuons_cff")
 	process.kappaTuple.active += cms.vstring('Muons')	                ## produce/save KappaMuons
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
 	process.p *= process.makeKappaMuons
+	
+	## for muon iso
+	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L430-L460
+	process.load("CommonTools.ParticleFlow.Isolation.pfMuonIsolation_cff")
+	process.muPFIsoValueCharged04PFIso = process.muPFIsoValueCharged04.clone()
+	process.muPFIsoValueChargedAll04PFIso = process.muPFIsoValueChargedAll04.clone()
+	process.muPFIsoValueGamma04PFIso = process.muPFIsoValueGamma04.clone()
+	process.muPFIsoValueNeutral04PFIso = process.muPFIsoValueNeutral04.clone()
+	process.muPFIsoValuePU04PFIso = process.muPFIsoValuePU04.clone()
+	
+	process.muonPFIsolationValuesSequence = cms.Sequence(
+		process.muPFIsoValueCharged04PFIso+
+		process.muPFIsoValueChargedAll04PFIso+
+		process.muPFIsoValueGamma04PFIso+
+		process.muPFIsoValueNeutral04PFIso+
+		process.muPFIsoValuePU04PFIso
+	)
+	process.muPFIsoDepositCharged.src = cms.InputTag("muons")
+	process.muPFIsoDepositChargedAll.src = cms.InputTag("muons")
+	process.muPFIsoDepositNeutral.src = cms.InputTag("muons")
+	process.muPFIsoDepositGamma.src = cms.InputTag("muons")
+	process.muPFIsoDepositPU.src = cms.InputTag("muons")
 
 	## ------------------------------------------------------------------------
 	# Configure Electrons
 	process.load("Kappa.Producers.KElectrons_run2_cff")
 	process.kappaTuple.active += cms.vstring('Electrons')	                ## produce/save KappaElectrons,
-	process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV050nsCSA14",
-						  "mvaTrigV025nsCSA14",
-						  "mvaNonTrigV050nsCSA14",
-						  "mvaNonTrigV025nsCSA14")
+	#process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV050nsCSA14",
+						  #"mvaTrigV025nsCSA14",
+						  #"mvaNonTrigV050nsCSA14",
+						  #"mvaNonTrigV025nsCSA14")
 	process.kappaTuple.Electrons.minPt = cms.double(8.0)
 	process.p *= process.makeKappaElectrons
 	
-	#Check if Working in CMSSW_7
-	### for electron iso
-	#from CommonTools.ParticleFlow.Tools.pfIsolation import setupPFElectronIso #, setupPFMuonIso
-	#process.eleIsoSequence = setupPFElectronIso(process, 'patElectrons')
-	#	
-	## https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_cfg.py#L418-L448
-	#process.eleIsoSequence.remove(process.elPFIsoValueCharged03NoPFIdPFIso)
-	#process.eleIsoSequence.remove(process.elPFIsoValueChargedAll03NoPFIdPFIso)
-	#process.eleIsoSequence.remove(process.elPFIsoValueGamma03NoPFIdPFIso)
-	#process.eleIsoSequence.remove(process.elPFIsoValueNeutral03NoPFIdPFIso)
-	#process.eleIsoSequence.remove(process.elPFIsoValuePU03NoPFIdPFIso)
-	#process.eleIsoSequence.remove(process.elPFIsoValueCharged04NoPFIdPFIso)
-	#process.eleIsoSequence.remove(process.elPFIsoValueChargedAll04NoPFIdPFIso)
-	#process.eleIsoSequence.remove(process.elPFIsoValueGamma04NoPFIdPFIso)
-	#process.eleIsoSequence.remove(process.elPFIsoValueNeutral04NoPFIdPFIso)
-	#process.eleIsoSequence.remove(process.elPFIsoValuePU04NoPFIdPFIso)
-	#process.elPFIsoValueGamma04PFIdPFIso.deposits[0].vetos      = cms.vstring('EcalEndcaps:ConeVeto(0.08)','EcalBarrel:ConeVeto(0.08)')
-	#process.elPFIsoValueNeutral04PFIdPFIso.deposits[0].vetos    = cms.vstring()
-	#process.elPFIsoValuePU04PFIdPFIso.deposits[0].vetos         = cms.vstring()
-	#process.elPFIsoValueCharged04PFIdPFIso.deposits[0].vetos    = cms.vstring('EcalEndcaps:ConeVeto(0.015)')
-	#process.elPFIsoValueChargedAll04PFIdPFIso.deposits[0].vetos = cms.vstring('EcalEndcaps:ConeVeto(0.015)','EcalBarrel:ConeVeto(0.01)')
-	#process.pfiso = cms.Sequence(process.pfParticleSelectionSequence + process.eleIsoSequence)
-	#
-	## rho for electron iso
-	#from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
-	#process.kt6PFJetsForIsolation = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
-	#process.kt6PFJetsForIsolation.Rho_EtaMax = cms.double(2.5)
-	#process.p *= (process.pfiso * process.kt6PFJetsForIsolation)
+	## for electron iso
+	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L349-L384
+	process.load("CommonTools.ParticleFlow.Isolation.pfElectronIsolation_cff")
+	process.elPFIsoValueCharged04PFIdPFIso = process.elPFIsoValueCharged04PFId.clone()
+	process.elPFIsoValueChargedAll04PFIdPFIso = process.elPFIsoValueChargedAll04PFId.clone()
+	process.elPFIsoValueGamma04PFIdPFIso = process.elPFIsoValueGamma04PFId.clone()
+	process.elPFIsoValueNeutral04PFIdPFIso = process.elPFIsoValueNeutral04PFId.clone()
+	process.elPFIsoValuePU04PFIdPFIso = process.elPFIsoValuePU04PFId.clone()
+	
+	process.elPFIsoValueGamma04PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.08)','EcalBarrel:ConeVeto(0.08)'))
+	process.elPFIsoValueNeutral04PFIdPFIso.deposits[0].vetos = (cms.vstring())
+	process.elPFIsoValuePU04PFIdPFIso.deposits[0].vetos = (cms.vstring())
+	process.elPFIsoValueCharged04PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.015)'))
+	process.elPFIsoValueChargedAll04PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.015)','EcalBarrel:ConeVeto(0.01)'))
+	
+	process.electronPFIsolationValuesSequence = cms.Sequence(
+		process.elPFIsoValueCharged04PFIdPFIso+
+		process.elPFIsoValueChargedAll04PFIdPFIso+
+		process.elPFIsoValueGamma04PFIdPFIso+
+		process.elPFIsoValueNeutral04PFIdPFIso+
+		process.elPFIsoValuePU04PFIdPFIso
+	)
+	process.elPFIsoDepositCharged.src = cms.InputTag("patElectrons")
+	process.elPFIsoDepositChargedAll.src = cms.InputTag("patElectrons")
+	process.elPFIsoDepositNeutral.src = cms.InputTag("patElectrons")
+	process.elPFIsoDepositGamma.src = cms.InputTag("patElectrons")
+	process.elPFIsoDepositPU.src = cms.InputTag("patElectrons")
+
+	# electron/muon PF iso sequence
+	process.pfiso = cms.Sequence(
+		process.muonPFIsolationDepositsSequence +
+		process.muonPFIsolationValuesSequence +
+		process.electronPFIsolationDepositsSequence +
+		process.electronPFIsolationValuesSequence
+	)
+	process.p *= (process.pfiso)
 
 	## ------------------------------------------------------------------------
 	# Configure Taus
@@ -191,53 +217,60 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	process.kappaTuple.Taus.minPt = cms.double(8.0)
 	process.p *= process.makeKappaTaus
 
+	# Reduced number of Tau discriminators
+	# The blacklist is to some degree arbitrary to get below 64 binaty tau discriminators
+	# - they may need to be changed as soon as 'official' discriminators for TauID 2014 will be published
+	process.kappaTuple.Taus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
+
 	## ------------------------------------------------------------------------
-	## KappaPFTaggedJets  - not yet supported in CMSSW_7
-	#process.load("Kappa.Producers.KPFTaggedJets_cff")
-	#process.kappaTuple.active += cms.vstring('Jets')           ## produce KappaPFTaggedJets
-	#process.kappaTuple.Jets = cms.PSet(
-	#	process.kappaNoCut,
-	#	process.kappaNoRegEx,
-	#	taggers = cms.vstring(
+	## KappaPFTaggedJets
+	process.load("Kappa.Producers.KPFTaggedJets_cff")
+	process.kappaTuple.active += cms.vstring('Jets')           ## produce KappaPFTaggedJets
+	process.kappaTuple.Jets = cms.PSet(
+		process.kappaNoCut,
+		process.kappaNoRegEx,
+		taggers = cms.vstring(
 	#		"QGlikelihood",
 	#		"QGmlp",
-	#		"TrackCountingHighEffBJetTags",
-	#		"TrackCountingHighPurBJetTags",
-	#		"JetProbabilityBJetTags",
-	#		"JetBProbabilityBJetTags",
-	#		"SoftElectronBJetTags",
-	#		"SoftMuonBJetTags",
-	#		"SoftMuonByIP3dBJetTags",
-	#		"SoftMuonByPtBJetTags",
-	#		"SimpleSecondaryVertexBJetTags",
-	#		"CombinedSecondaryVertexBJetTags",
-	#		"CombinedSecondaryVertexMVABJetTags",
-	#		"puJetIDFullDiscriminant",
-	#		"puJetIDFullLoose",
-	#		"puJetIDFullMedium",
-	#		"puJetIDFullTight",
-	#		"puJetIDCutbasedDiscriminant",
-	#		"puJetIDCutbasedLoose",
-	#		"puJetIDCutbasedMedium",
-	#		"puJetIDCutbasedTight"
-	#		),
-	#	AK5PFTaggedJets = cms.PSet(
-	#		src = cms.InputTag("ak5PFJets"),
-	#		QGtagger = cms.InputTag("AK5PFJetsQGTagger"),
-	#		Btagger  = cms.InputTag("ak5PF"),
-	#		PUJetID  = cms.InputTag("ak5PFPuJetMva"),
-	#		PUJetID_full = cms.InputTag("full"),
-	#		),
-	#	AK5PFTaggedJetsCHS = cms.PSet(
-	#		src = cms.InputTag("ak5PFJetsCHS"),
-	#		QGtagger = cms.InputTag("AK5PFJetsCHSQGTagger"),
-	#		Btagger  = cms.InputTag("ak5PFCHS"),
-	#		PUJetID  = cms.InputTag("ak5PFCHSPuJetMva"),
-	#		PUJetID_full = cms.InputTag("full"),
-	#		),
-	#	)
-	#process.kappaTuple.Jets.minPt = cms.double(10.0)
-	#process.kappaTuple.active += cms.vstring('PileupDensity')
+			"TrackCountingHighEffBJetTags",
+			"TrackCountingHighPurBJetTags",
+			"JetProbabilityBJetTags",
+			"JetBProbabilityBJetTags",
+			"SoftElectronBJetTags",
+			"SoftMuonBJetTags",
+			"SoftMuonByIP3dBJetTags",
+			"SoftMuonByPtBJetTags",
+			"SimpleSecondaryVertexBJetTags",
+			"CombinedSecondaryVertexBJetTags",
+			"CombinedSecondaryVertexMVABJetTags",
+			"puJetIDFullDiscriminant",
+			"puJetIDFullLoose",
+			"puJetIDFullMedium",
+			"puJetIDFullTight",
+			#"puJetIDCutbasedDiscriminant",
+			#"puJetIDCutbasedLoose",
+			#"puJetIDCutbasedMedium",
+			#"puJetIDCutbasedTight"
+			),
+		AK5PFTaggedJets = cms.PSet(
+			src = cms.InputTag("ak5PFJets"),
+			#QGtagger = cms.InputTag("AK5PFJetsQGTagger"),
+			QGtagger = cms.InputTag(""),
+			Btagger  = cms.InputTag("ak5PF"),
+			PUJetID  = cms.InputTag("ak5PFPuJetMva"),
+			PUJetID_full = cms.InputTag("full"),
+			),
+		AK5PFTaggedJetsCHS = cms.PSet(
+			src = cms.InputTag("ak5PFJetsCHS"),
+			#QGtagger = cms.InputTag("AK5PFJetsCHSQGTagger"),
+			QGtagger = cms.InputTag(""),
+			Btagger  = cms.InputTag("ak5PFCHS"),
+			PUJetID  = cms.InputTag("ak5PFCHSPuJetMva"),
+			PUJetID_full = cms.InputTag("full"),
+			),
+		)
+	process.kappaTuple.Jets.minPt = cms.double(10.0)
+	process.kappaTuple.active += cms.vstring('PileupDensity')
 
 	## ------------------------------------------------------------------------
 	# Special settings for embedded samples
@@ -258,14 +291,13 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 
 	#Check if working
 	# Let Jets run
-	#process.p *= (
-	#	process.makeKappaTaus *
-	#	process.makePFJets *
-	#	process.makePFJetsCHS *
+	process.p *= (
+		process.makePFJets *
+		process.makePFJetsCHS *
 	#	process.makeQGTagging *
-	#	process.makeBTagging *
-	#	process.makePUJetID
-	#)
+		process.makeBTagging *
+		process.makePUJetID
+	)
 
 	## ------------------------------------------------------------------------
 	## MET - not yet supported in CMSSW_7
@@ -298,34 +330,34 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	## declare edm OutputModule (expects a path 'p'), uncommented if wanted
 
 	#process.edmOut = cms.OutputModule(
-	#	"PoolOutputModule",
-	#	fileName = cms.untracked.string('dump.root'),				## name of output file
-	#	SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),	## save only events passing the full path
-	#	outputCommands = cms.untracked.vstring('drop *', 'keep *_*_*_KAPPA')	## save each edm object that has been produced by process KAPPA
-	#	)
+		#"PoolOutputModule",
+		#fileName = cms.untracked.string('dump.root'),				## name of output file
+		#SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),	## save only events passing the full path
+		#outputCommands = cms.untracked.vstring('drop *', 'keep *_*_*_KAPPA')	## save each edm object that has been produced by process KAPPA
+		#)
 	#process.ep = cms.EndPath(process.edmOut)
 
 	return process
 
 if __name__ == "__main__":
-	if('@' in '@NICK@'): # run local skim by hand without replacements by grid-control
-		## test file for EKP
-		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/pfEmbedded.root')
-		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/tauPlusX.root')
-		#testfile	= cms.untracked.vstring('file:/storage/a/friese/aod/VBF-Htautau.root')
-		#testfile	= cms.untracked.vstring('file:/storage/6/berger/testfiles/data_2012C_AOD.root')
-		## test file for lxplus
-		#testfile	= cms.untracked.vstring('root://eoscms//eos/cms/store/relval/CMSSW_5_3_6-START53_V14/RelValProdTTbar/AODSIM/v2/00000/76ED0FA6-1E2A-E211-B8F1-001A92971B72.root')
-		## test file for NAF
-		#testfile	= cms.untracked.vstring('file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_8TeV_powheg_pythia6_Summer12_DR53X-PU_S10_START53_V7A-v1_004B56D8-AAED-E111-AB70-1CC1DE1CEDB2.root')
-		## test file for RWTH
-		#testfile	= cms.untracked.vstring('file:/user/kargoll/testfiles/DYTauTau/DYTauTau_Summer12.root')
-		## testcile for CMSSW_7
-		testfile = cms.untracked.vstring('root://xrootd.unl.edu//store/mc/Spring14dr/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/AODSIM/PU20bx25_POSTLS170_V5-v1/00000/3862FA33-C1CC-E311-89D1-00266CF9AEA4.root')
+	if("@" in "@NICK@"): # run local skim by hand without replacements by grid-control
 
-		process = getBaseConfig(testfile = testfile)
+		# TauPlusX_Run2012B_22Jan2013_8TeV
+		#process = getBaseConfig(globaltag="FT_53_V21_AN4::All", nickname="TauPlusX_Run2012B_22Jan2013_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/data/Run2012B/TauPlusX/AOD/22Jan2013-v1/20000/0040CF04-8E74-E211-AD0C-00266CFFA344.root"))
+		
+		# DoubleMu_PFembedded_Run2012A_22Jan2013_mt_8TeV
+		#process = getBaseConfig(globaltag="FT_53_V21_AN4::All", nickname="DoubleMu_PFembedded_Run2012A_22Jan2013_mt_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/results/higgs/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/DoubleMu/USER/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/0000/00F5125E-A3E4-E211-A54D-0023AEFDE638.root"))
+
+		# DYJetsToLL_M_50_madgraph_8TeV
+		#process = getBaseConfig(globaltag="START53_V15A::All", nickname="DYJetsToLL_M_50_madgraph_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/Summer12_DR53X/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/AODSIM/PU_S10_START53_V7A-v1/0000/00037C53-AAD1-E111-B1BE-003048D45F38.root"))
+		
+		# SM_VBFHToTauTau_M_125_powheg_pythia_8TeV
+		#process = getBaseConfig(globaltag="START53_V15A::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/Summer12_DR53X/VBF_HToTauTau_M-125_8TeV-powheg-pythia6/AODSIM/PU_S10_START53_V7A-v1/0000/004B56D8-AAED-E111-AB70-1CC1DE1CEDB2.root"))
+
+		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV
+		process = getBaseConfig(globaltag="START72_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_PU40bx25_PHYS14_25_V1-v1_00E63918-3A70-E411-A246-7845C4FC35F3.root"))
 
 	## for grid-control:
 	else:
-		process = getBaseConfig('@GLOBALTAG@', nickname = '@NICK@', kappaTag = '@KAPPA_TAG@')
+		process = getBaseConfig("@GLOBALTAG@", nickname="@NICK@", kappaTag="@KAPPA_TAG@")
 
