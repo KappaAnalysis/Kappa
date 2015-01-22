@@ -178,9 +178,9 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	process.p *= process.makeKappaTaus
 
 	## ------------------------------------------------------------------------
-	## KappaPFTaggedJets
-	process.load("Kappa.Skimming.Jets_cff")
-	process.kappaTuple.active += cms.vstring('Jets')           ## produce KappaPFTaggedJets
+	## Kappa Jets
+	process.load("Kappa.Skimming.KJets_cff")
+	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
 	process.kappaTuple.Jets = cms.PSet(
 		process.kappaNoCut,
 		process.kappaNoRegEx,
@@ -223,7 +223,6 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 			),
 		)
 	process.kappaTuple.Jets.minPt = cms.double(10.0)
-	process.kappaTuple.active += cms.vstring('PileupDensity')
 
 	## ------------------------------------------------------------------------
 	# Special settings for embedded samples
