@@ -1,3 +1,7 @@
+#-# Copyright (c) 2013 - All Rights Reserved
+#-#   Fred Stober <stober@cern.ch>
+#-#   Joram Berger <joram.berger@cern.ch>
+
 import FWCore.ParameterSet.Config as cms
 
 # This configuration loads a hepmc file and converts it to kappa skimmed file

@@ -1,3 +1,7 @@
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Dominik Haitz <dhaitz@ekp.uni-karlsruhe.de>
+#-#   Joram Berger <joram.berger@cern.ch>
+
 import FWCore.ParameterSet.Config as cms
 
 

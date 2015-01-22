@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
+#-#   Thomas Mueller <tmuller@cern.ch>
 
 import optparse
 import os

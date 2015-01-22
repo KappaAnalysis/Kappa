@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
+#-#   Stefan Wayand <stefan.wayand@gmail.com>
+#-#   Thomas Mueller <tmuller@cern.ch>
 
 # checkout script for cmssw53x for skimming
 # todo: implement logger

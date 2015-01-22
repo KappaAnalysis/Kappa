@@ -1,3 +1,6 @@
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Dominik Haitz <dhaitz@ekp.uni-karlsruhe.de>
+
 import FWCore.ParameterSet.Config as cms
 
 

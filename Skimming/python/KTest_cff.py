@@ -1,3 +1,9 @@
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Bastian Kargoll <bastian.kargoll@cern.ch>
+#-#   Joram Berger <joram.berger@cern.ch>
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
+#-#   Roger Wolf <roger.wolf@cern.ch>
+
 import FWCore.ParameterSet.Config as cms
 
 ## ------------------------------------------------------------------------

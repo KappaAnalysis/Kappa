@@ -1,3 +1,7 @@
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Fabio Colombo <fabio.colombo@cern.ch>
+#-#   Joram Berger <joram.berger@cern.ch>
+
 import FWCore.ParameterSet.Config as cms
 
 ## ------------------------------------------------------------------------

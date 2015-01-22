@@ -1,3 +1,6 @@
+#-# Copyright (c) 2013 - All Rights Reserved
+#-#   Joram Berger <joram.berger@cern.ch>
+
 import FWCore.ParameterSet.Config as cms
 
 

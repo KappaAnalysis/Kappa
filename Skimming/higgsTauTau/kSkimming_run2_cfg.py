@@ -1,3 +1,12 @@
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Benjamin Treiber <benjamin.treiber@gmail.com>
+#-#   Fabio Colombo <fabio.colombo@cern.ch>
+#-#   Joram Berger <joram.berger@cern.ch>
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
+#-#   Roger Wolf <roger.wolf@cern.ch>
+#-#   Stefan Wayand <stefan.wayand@gmail.com>
+#-#   Thomas Mueller <tmuller@cern.ch>
+#-#   Yasmin Anstruther <yasmin.anstruther@kit.edu>
 
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper as datasetsHelper

@@ -1,5 +1,8 @@
-
 # -*- coding: utf-8 -*-
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Fabio Colombo <fabio.colombo@cern.ch>
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
+
 from Kappa.Skimming.datasets import *
 
 def getProcess(nickname):

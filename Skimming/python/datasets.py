@@ -1,6 +1,10 @@
-
 # -*- coding: utf-8 -*-
-
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Claudia Pistone <pistone@physik.rwth-aachen.de>
+#-#   Fabio Colombo <fabio.colombo@cern.ch>
+#-#   Felix <felix.frensch2@kit.edu>
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
+#-#   Thomas Mueller <tmuller@cern.ch>
 
 # https://cmsweb.cern.ch/das/request?input=...
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Joram Berger <joram.berger@cern.ch>
 
 import operator
 import re
