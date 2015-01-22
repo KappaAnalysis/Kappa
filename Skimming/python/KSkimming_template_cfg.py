@@ -26,13 +26,16 @@ process.load("Configuration.Geometry.GeometryIdeal_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
 from Configuration.AlCa.autoCond import autoCond
-process.GlobalTag.globaltag = cms.string( autoCond[ 'startup' ] )
+process.GlobalTag.globaltag = cms.string(autoCond['startup'])
 # print the global tag until it is clear whether this auto global tag is fine
 print "GT from autoCond:", process.GlobalTag.globaltag
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
-## Kappa interface 
+## Kappa
 process.load('Kappa.Producers.KTuple_cff')
-process.kappaTuple = cms.EDAnalyzer('KTuple', process.kappaTupleDefaultsBlock,
-                                    outputFile = cms.string("kappaTuple_template.root"))
-process.kappaOut   = cms.Sequence(process.kappaTuple)
+process.kappaTuple = cms.EDAnalyzer('KTuple',
+    process.kappaTupleDefaultsBlock,
+    outputFile = cms.string("kappaTuple_template.root"),
+)
+process.kappaTuple.active = cms.vstring()
+process.kappaOut = cms.Sequence(process.kappaTuple)
