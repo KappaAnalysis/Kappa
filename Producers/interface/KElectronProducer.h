@@ -1,8 +1,9 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
- *   Fred Stober <stober@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2013 - All Rights Reserved
+//-  * Benjamin Treiber <benjamin.treiber@gmail.com>
+//-  * Dominik Haitz <dhaitz@ekp.uni-karlsruhe.de>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Raphael Friese <Raphael.Friese@cern.ch>
+//-  * Thomas Mueller <tmuller@cern.ch>
 
 #ifndef KAPPA_ELECTRONPRODUCER_H
 #define KAPPA_ELECTRONPRODUCER_H

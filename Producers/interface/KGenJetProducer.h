@@ -1,3 +1,5 @@
+//- Copyright (c) 2015 - All Rights Reserved
+//-  * Thomas Mueller <tmuller@cern.ch>
 
 #ifndef KAPPA_GENJETPRODUCER_H
 #define KAPPA_GENJETPRODUCER_H

@@ -1,8 +1,9 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Danilo Piparo <danilo.piparo@cern.ch>
- *   Fred Stober <stober@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Danilo Piparo <danilo.piparo@cern.ch>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
+//-  * Thomas Mueller <tmuller@cern.ch>
 
 #ifndef KAPPA_TRACKPRODUCER_H
 #define KAPPA_TRACKPRODUCER_H

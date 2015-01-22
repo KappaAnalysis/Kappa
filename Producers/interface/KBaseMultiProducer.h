@@ -1,6 +1,5 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Fred Stober <stober@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Fred Stober <stober@cern.ch>
 
 #ifndef KAPPA_MULTIPRODUCER_H
 #define KAPPA_MULTIPRODUCER_H

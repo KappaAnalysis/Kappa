@@ -1,3 +1,6 @@
+//- Copyright (c) 2013 - All Rights Reserved
+//-  * Joram Berger <joram.berger@cern.ch>
+
 // test the charge function of GenParticles
 // compile with
 // g++ testGenParticleCharges.cc $(root-config --cflags) $(root-config --ldflags --libs) -o testcharge

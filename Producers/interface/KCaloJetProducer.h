@@ -1,8 +1,9 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
- *   Danilo Piparo <danilo.piparo@cern.ch>
- *   Fred Stober <stober@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+//-  * Danilo Piparo <danilo.piparo@cern.ch>
+//-  * Dominik Haitz <dhaitz@ekp.uni-karlsruhe.de>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
 
 #ifndef KAPPA_CALOJETPRODUCER_H
 #define KAPPA_CALOJETPRODUCER_H

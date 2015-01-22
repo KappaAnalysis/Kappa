@@ -1,7 +1,11 @@
-/* Copyright (c) 2011 - All Rights Reserved
- *   Fred Stober <stober@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2011 - All Rights Reserved
+//-  * Bastian Kargoll <bastian.kargoll@cern.ch>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Georg Sieber <sieber@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
+//-  * Raphael Friese <Raphael.Friese@cern.ch>
+//-  * Thomas Mueller <tmuller@cern.ch>
 
 #ifndef KAPPA_TRIGGEROBJECTPRODUCER_H
 #define KAPPA_TRIGGEROBJECTPRODUCER_H

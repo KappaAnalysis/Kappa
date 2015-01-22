@@ -1,7 +1,10 @@
-/* Copyright (c) 2012 - All Rights Reserved
- *   Joram Berger <joram.berger@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
+//-  * Raphael Friese <Raphael.Friese@cern.ch>
+//-  * Roger Wolf <roger.wolf@cern.ch>
 
 #ifndef KAPPA_PARTONPRODUCER_H
 #define KAPPA_PARTONPRODUCER_H

@@ -1,8 +1,11 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
- *   Fred Stober <stober@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+//-  * Bastian Kargoll <bastian.kargoll@cern.ch>
+//-  * Benjamin Treiber <benjamin.treiber@gmail.com>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
+//-  * Thomas Mueller <tmuller@cern.ch>
 
 // todo: input needed for global mu+tau_h(3prong) event fit:
 // - primary vertex refitted without tracks that belong to tau candidate

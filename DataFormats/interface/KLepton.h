@@ -1,8 +1,5 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Fred Stober <stober@cern.ch>
- *   Joram Berger <joram.berger@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2014 - All Rights Reserved
+//-  * Joram Berger <joram.berger@cern.ch>
 
 #ifndef KAPPA_LEPTON_H
 #define KAPPA_LEPTON_H

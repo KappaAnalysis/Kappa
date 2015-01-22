@@ -1,7 +1,8 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Fred Stober <stober@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Bastian Kargoll <bastian.kargoll@cern.ch>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
+//-  * Raphael Friese <Raphael.Friese@cern.ch>
 
 #ifndef KAPPA_MULTILVPRODUCER_H
 #define KAPPA_MULTILVPRODUCER_H

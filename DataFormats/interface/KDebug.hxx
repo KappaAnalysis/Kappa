@@ -1,6 +1,5 @@
-/* Copyright (c) 2011 - All Rights Reserved
- *   Fred Stober <stober@cern.ch>
- */
+//- Copyright (c) 2011 - All Rights Reserved
+//-  * Fred Stober <stober@cern.ch>
 
 template<typename T>
 void displayVector(std::ostream &os, const T &v, size_t n = 0)

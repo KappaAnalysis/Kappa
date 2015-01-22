@@ -1,9 +1,16 @@
-# Copyright (c) 2010 - All Rights Reserved
-#   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
-#   Fred Stober <stober@cern.ch>
-#   Joram Berger <joram.berger@cern.ch>
-#   Manuel Zeise <zeise@cern.ch>
-#
+#-# Copyright (c) 2010 - All Rights Reserved
+#-#   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+#-#   Bastian Kargoll <bastian.kargoll@cern.ch>
+#-#   Benjamin Treiber <benjamin.treiber@gmail.com>
+#-#   Dominik Haitz <dhaitz@ekp.uni-karlsruhe.de>
+#-#   Fabio Colombo <fabio.colombo@cern.ch>
+#-#   Fred Stober <stober@cern.ch>
+#-#   Georg Sieber <sieber@cern.ch>
+#-#   Joram Berger <joram.berger@cern.ch>
+#-#   Manuel Zeise <zeise@cern.ch>
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
+#-#   Roger Wolf <roger.wolf@cern.ch>
+#-#   Thomas Mueller <tmuller@cern.ch>
 
 import FWCore.ParameterSet.Config as cms
 

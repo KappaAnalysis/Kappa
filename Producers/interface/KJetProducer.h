@@ -1,3 +1,9 @@
+//- Copyright (c) 2013 - All Rights Reserved
+//-  * Dominik Haitz <dhaitz@ekp.uni-karlsruhe.de>
+//-  * Fabio Colombo <fabio.colombo@cern.ch>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+
 #ifndef KAPPA_JETPRODUCER_H
 #define KAPPA_JETPRODUCER_H
 

@@ -1,9 +1,7 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
- *   Fred Stober <stober@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- *   Raphael Friese <raphael.friese@cern.ch>
- */
+//- Copyright (c) 2014 - All Rights Reserved
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Raphael Friese <Raphael.Friese@cern.ch>
+//-  * Thomas Mueller <tmuller@cern.ch>
 
 #ifndef KAPPA_TREE_METADATAPRODUCER_H
 #define KAPPA_TREE_METADATAPRODUCER_H

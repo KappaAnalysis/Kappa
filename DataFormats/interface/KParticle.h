@@ -1,3 +1,6 @@
+//- Copyright (c) 2014 - All Rights Reserved
+//-  * Joram Berger <joram.berger@cern.ch>
+
 #ifndef KAPPA_PARTICLE_H
 #define KAPPA_PARTICLE_H
 

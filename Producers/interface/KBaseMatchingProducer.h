@@ -1,6 +1,7 @@
-/* Copyright (c) 2012 - All Rights Reserved
- *   Joram Berger <joram.berger@cern.ch>
- */
+//- Copyright (c) 2012 - All Rights Reserved
+//-  * Bastian Kargoll <bastian.kargoll@cern.ch>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
 
 #ifndef KAPPA_MATCHINGPRODUCER_H
 #define KAPPA_MATCHINGPRODUCER_H

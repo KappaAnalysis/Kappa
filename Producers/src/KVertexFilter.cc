@@ -1,3 +1,6 @@
+//- Copyright (c) 2014 - All Rights Reserved
+//-  * Roger Wolf <roger.wolf@cern.ch>
+
 #include <FWCore/Framework/interface/MakerMacros.h>
 
 #include <CommonTools/UtilAlgos/interface/AnySelector.h>

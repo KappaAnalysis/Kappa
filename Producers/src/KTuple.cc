@@ -1,10 +1,13 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
- *   Danilo Piparo <danilo.piparo@cern.ch>
- *   Fred Stober <stober@cern.ch>
- *   Joram Berger <joram.berger@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+//-  * Danilo Piparo <danilo.piparo@cern.ch>
+//-  * Dominik Haitz <dhaitz@ekp.uni-karlsruhe.de>
+//-  * Fabio Colombo <fabio.colombo@cern.ch>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
+//-  * Raphael Friese <Raphael.Friese@cern.ch>
+//-  * Thomas Mueller <tmuller@cern.ch>
 
 #include <memory>
 #include <chrono>  // if the compiler does not support this, just comment out every line with std::chrono

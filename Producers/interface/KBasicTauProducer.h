@@ -1,8 +1,10 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
- *   Fred Stober <stober@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+//-  * Bastian Kargoll <bastian.kargoll@cern.ch>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
+//-  * Thomas Mueller <tmuller@cern.ch>
 
 #ifndef KAPPA_BASICTAUPRODUCER_H
 #define KAPPA_BASICTAUPRODUCER_H

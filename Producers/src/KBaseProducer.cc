@@ -1,7 +1,8 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Fred Stober <stober@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Bastian Kargoll <bastian.kargoll@cern.ch>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
 
 #include "../interface/KBaseProducer.h"
 #include <TTree.h>

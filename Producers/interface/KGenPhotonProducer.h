@@ -1,6 +1,8 @@
-/* Copyright (c) 2011 - All Rights Reserved
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2011 - All Rights Reserved
+//-  * Bastian Kargoll <bastian.kargoll@cern.ch>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
 
 #ifndef KAPPA_GENPHOTONPRODUCER_H
 #define KAPPA_GENPHOTONPRODUCER_H

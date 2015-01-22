@@ -1,8 +1,10 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Fred Stober <stober@cern.ch>
- *   Joram Berger <joram.berger@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Dominik Haitz <dhaitz@ekp.uni-karlsruhe.de>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
+//-  * Raphael Friese <Raphael.Friese@cern.ch>
+//-  * Thomas Mueller <tmuller@cern.ch>
 
 #ifndef KAPPA_INFO_H
 #define KAPPA_INFO_H

@@ -1,6 +1,6 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Raphael Friese <raphael.friese@cern.ch>
- */
+//- Copyright (c) 2014 - All Rights Reserved
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Raphael Friese <Raphael.Friese@cern.ch>
 
 #ifndef KAPPA_UNBIASEDDITAUPVPRODUCER_H
 #define KAPPA_UNBIASEDDITAUPVPRODUCER_H

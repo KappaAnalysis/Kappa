@@ -1,10 +1,10 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
- *   Fred Stober <stober@cern.ch>
- *   Joram Berger <joram.berger@cern.ch>
- *   Manuel Zeise <zeise@cern.ch>
- *   Thomas Hauth <Thomas.Hauth@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+//-  * Fabio Colombo <fabio.colombo@cern.ch>
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
+//-  * Manuel Zeise <zeise@cern.ch>
+//-  * Thomas Hauth <Thomas.Hauth@cern.ch>
 
 #ifndef KAPPA_BASICJETPRODUCER_H
 #define KAPPA_BASICJETPRODUCER_H

@@ -1,6 +1,6 @@
-/* Copyright (c) 2012 - All Rights Reserved
- *   Joram Berger <joram.berger@cern.ch>
- */
+//- Copyright (c) 2012 - All Rights Reserved
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
 
 #ifndef KAPPA_FILTERSUMMARYPRODUCER_H
 #define KAPPA_FILTERSUMMARYPRODUCER_H

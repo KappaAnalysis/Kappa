@@ -1,6 +1,6 @@
-/* Copyright (c) 2010 - All Rights Reserved
- *   Fred Stober <stober@cern.ch>
- */
+//- Copyright (c) 2010 - All Rights Reserved
+//-  * Fred Stober <stober@cern.ch>
+//-  * Joram Berger <joram.berger@cern.ch>
 
 #ifndef KAPPA_HITPRODUCER_H
 #define KAPPA_HITPRODUCER_H
