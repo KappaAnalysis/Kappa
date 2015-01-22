@@ -6,7 +6,7 @@ import Kappa.Skimming.tools as tools
 
 def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring(""), maxevents=100, nickname = 'SM_VBFHToTauTau_M_90_powheg_pythia_8TeV', kappaTag = 'Kappa_1_0_0'):
 
-	from Kappa.Skimming.KSkimming_template_run2_cfg import process
+	from Kappa.Skimming.KSkimming_template_cfg import process
 	process.source.fileNames      = testfile
 	process.maxEvents.input	      = maxevents				## number of events to be processed (-1 = all in file)
 	process.kappaTuple.outputFile = 'kappaTuple.root'			## name of output file

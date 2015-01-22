@@ -65,6 +65,13 @@ patElectrons.embedHighLevelSelection.pvSrc = "goodOfflinePrimaryVertices"
 ## run this to produce patElectrons w/o generator match or trigger match
 ## and with MVA electron ID
 
+process.kappaTuple.Electrons.electrons.isoValInputTags = cms.VInputTag(
+    cms.InputTag('elPFIsoValueCharged03PFIdPFIso'),
+    cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
+    cms.InputTag('elPFIsoValueNeutral03PFIdPFIso'),
+)
+
+
 makeKappaElectrons = cms.Sequence(
     #electronIdMVA *
     patElectrons

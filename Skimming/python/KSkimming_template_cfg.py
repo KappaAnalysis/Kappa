@@ -18,7 +18,7 @@ process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.source = cms.Source("PoolSource",
 	fileNames = cms.untracked.vstring()
 )
-## Maximal Number of Events
+## Maximal number of Events
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 ## Geometry and Detector Conditions (needed for a few patTuple production steps)
