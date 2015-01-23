@@ -3,7 +3,7 @@
 # the authors in git commits for each file separately.
 # This makes a clear attribution and makes it easier to find people to ask for help.
 # Usage in the Kappa folder:
-# . update_authors.sh
+# . update_authors.sh > AUTHORS
 # IMPORTANT: Do not commit the changes done by this script unless you have changed
 #            your git settings to name=root email=<root@github> !!!
 # Otherwise the script will never work again in future.
@@ -23,9 +23,11 @@ MAPSTRING="$MAPSTRING;s/stefan <stefan.wayand@gmail.com>/Stefan Wayand <stefan.w
 MAPSTRING="$MAPSTRING;s/Thomas Müller <tmueller@ekp.uni-karlsruhe.de>/Thomas Mueller <tmuller@cern.ch>/"
 MAPSTRING="$MAPSTRING;s/Georg <sieber@cern.ch>/Georg Sieber <sieber@cern.ch>/"
 
+# exit if tmp file exists:
+test -f tmp && echo "Please move your file 'tmp' as it will be overwritten!" >&2 && return
 
 # C++ files
-find | grep -e "\.h$" -e "\.hxx$" -e "\.cpp$" -e "\.cxx$" -e "\.cc$" | while read FILE; do
+find | grep -e "\.h$" -e "\.hxx$" -e "\.cpp$" -e "\.cxx$" -e "\.cc$" | grep -v "classes.h" | grep -v "Kappa.h" | grep -v "KDebug.h" | while read FILE; do
 (
 	CYEAR=$(git log --follow $FILE | grep Date | tail -n 1 | sed -e 's/.* ..:..:.. \(....\) .*/\1'/)
 cat << EOF
@@ -39,12 +41,14 @@ EOF
 echo
 cat $FILE | grep -v "//-" | sed '/./,$!d'
 ) > tmp
-mv tmp $FILE
+cat tmp > $FILE
 done
 
 # python files
 find | grep -e "\.py$" | while read FILE; do
 (
+cat $FILE | grep "#!"
+cat $FILE | grep "# -\*-"
 	CYEAR=$(git log --follow $FILE | grep Date | tail -n 1 | sed -e 's/.* ..:..:.. \(....\) .*/\1'/)
 cat << EOF
 #-# Copyright (c) $CYEAR - All Rights Reserved
@@ -55,9 +59,9 @@ EOF
 	done
 	) | sort | uniq
 echo
-cat $FILE | grep -v "#-#" | sed '/./,$!d'
+cat $FILE | grep -v "#!" | grep -v "# -\*-" | grep -v "#-#" | sed '/./,$!d'
 ) > tmp
-mv tmp $FILE
+cat tmp > $FILE
 done
 
 (
@@ -67,3 +71,5 @@ find | grep -e "\.h$" -e "\.hxx$" -e "\.cpp$" -e "\.cxx$" -e "\.cc$" | while rea
 	done
 done
 ) | sort | uniq
+
+rm tmp
