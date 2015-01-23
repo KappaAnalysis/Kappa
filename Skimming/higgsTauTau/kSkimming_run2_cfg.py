@@ -171,6 +171,11 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 						  #"mvaNonTrigV050nsCSA14",
 						  #"mvaNonTrigV025nsCSA14")
 	process.kappaTuple.Electrons.minPt = cms.double(8.0)
+	process.kappaTuple.Electrons.electrons.isoValInputTags = cms.VInputTag(
+            cms.InputTag('elPFIsoValueCharged03PFIdPFIso'),
+            cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
+            cms.InputTag('elPFIsoValueNeutral03PFIdPFIso'),
+	)
 	process.p *= process.makeKappaElectrons
 	
 	## for electron iso
