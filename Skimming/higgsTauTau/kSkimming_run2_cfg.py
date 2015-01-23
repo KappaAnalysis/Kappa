@@ -229,8 +229,8 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 
 	## ------------------------------------------------------------------------
 	## KappaJets
-	process.load("Kappa.Skimming.KJets_cff")
-	process.kappaTuple.active += cms.vstring('Jets')
+	process.load("Kappa.Skimming.KJets_run2_cff")
+	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
 	process.kappaTuple.Jets = cms.PSet(
 		process.kappaNoCut,
 		process.kappaNoRegEx,
@@ -275,7 +275,6 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 			),
 		)
 	process.kappaTuple.Jets.minPt = cms.double(10.0)
-	process.kappaTuple.active += cms.vstring('PileupDensity')
 
 	## ------------------------------------------------------------------------
 	# Special settings for embedded samples
@@ -305,8 +304,8 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	)
 
 	## ------------------------------------------------------------------------
-	## MET - not yet supported in CMSSW_7
-	#process.load("Kappa.Skimming.KMET_cff")
+	## MET
+	#process.load("Kappa.Skimming.KMET_run2_cff")
 	#process.kappaTuple.active += cms.vstring('BasicMET')                         ## produce/save KappaMET
 	#process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
 	#process.p *= process.makeKappaMET
@@ -360,7 +359,7 @@ if __name__ == "__main__":
 		#process = getBaseConfig(globaltag="START53_V15A::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/Summer12_DR53X/VBF_HToTauTau_M-125_8TeV-powheg-pythia6/AODSIM/PU_S10_START53_V7A-v1/0000/004B56D8-AAED-E111-AB70-1CC1DE1CEDB2.root"))
 
 		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV
-		process = getBaseConfig(globaltag="START72_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_PU40bx25_PHYS14_25_V1-v1_00E63918-3A70-E411-A246-7845C4FC35F3.root"))
+		process = getBaseConfig(globaltag="PHYS14_25_V2::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_PU40bx25_PHYS14_25_V1-v1_00E63918-3A70-E411-A246-7845C4FC35F3.root"))
 
 	## for grid-control:
 	else:
