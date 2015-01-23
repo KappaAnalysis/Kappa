@@ -1,6 +1,6 @@
-# Copyright (c) 2010 - All Rights Reserved
-#   Fred Stober <stober@cern.ch>
-#
+#-# Copyright (c) 2010 - All Rights Reserved
+#-#   Fred Stober <stober@cern.ch>
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
 
 def customise(process):
 	# Remove output modules

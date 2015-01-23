@@ -1,6 +1,8 @@
-# Copyright (c) 2012 - All Rights Reserved
-#   Manuel Zeise <zeise@cern.ch>
-#
+#-# Copyright (c) 2010 - All Rights Reserved
+#-#   Armin Burgmeier <burgmeier@ekp.uni-karlsruhe.de>
+#-#   Fred Stober <stober@cern.ch>
+#-#   Joram Berger <joram.berger@cern.ch>
+#-#   Manuel Zeise <zeise@cern.ch>
 
 import FWCore.ParameterSet.Config as cms
 

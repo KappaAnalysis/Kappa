@@ -1,3 +1,7 @@
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Bastian Kargoll <bastian.kargoll@cern.ch>
+#-#   Joram Berger <joram.berger@cern.ch>
+
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.dirname(sys.argv[0])) + "/Kappa/")

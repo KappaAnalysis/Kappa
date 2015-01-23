@@ -1,3 +1,7 @@
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Joram Berger <joram.berger@cern.ch>
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
+
 import os
 import sys
 import Kappa.Skimming.datasetsHelper as datasetsHelper

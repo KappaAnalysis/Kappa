@@ -1,6 +1,6 @@
-# Copyright (c) 2012 - All Rights Reserved
-#   Fred Stober <stober@cern.ch>
-#
+#-# Copyright (c) 2012 - All Rights Reserved
+#-#   Fred Stober <stober@cern.ch>
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
 
 import FWCore.ParameterSet.Config as cms
 

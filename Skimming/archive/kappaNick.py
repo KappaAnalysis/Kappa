@@ -1,6 +1,6 @@
-# Copyright (c) 2010 - All Rights Reserved
-#   Fred Stober <stober@cern.ch>
-#
+#-# Copyright (c) 2010 - All Rights Reserved
+#-#   Fred Stober <stober@cern.ch>
+#-#   Joram Berger <joram.berger@cern.ch>
 
 import re
 from grid_control import datasets, DatasetError

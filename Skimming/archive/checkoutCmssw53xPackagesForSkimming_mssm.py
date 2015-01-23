@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Felix <felix.frensch2@kit.edu>
+#-#   Joram Berger <joram.berger@cern.ch>
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
+#-#   Thomas Mueller <tmuller@cern.ch>
 
 # checkout script for cmssw53x for skimming
 # todo: implement logger

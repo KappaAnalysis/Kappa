@@ -1,3 +1,12 @@
+#-# Copyright (c) 2014 - All Rights Reserved
+#-#   Fabio Colombo <fabio.colombo@cern.ch>
+#-#   Felix <felix.frensch2@kit.edu>
+#-#   Joram Berger <joram.berger@cern.ch>
+#-#   Raphael Friese <Raphael.Friese@cern.ch>
+#-#   Roger Wolf <roger.wolf@cern.ch>
+#-#   Stefan Wayand <stefan.wayand@gmail.com>
+#-#   Thomas Mueller <tmuller@cern.ch>
+
 import os
 import sys
 import FWCore.ParameterSet.Config as cms
