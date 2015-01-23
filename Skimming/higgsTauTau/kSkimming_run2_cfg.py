@@ -302,6 +302,11 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
 		process.kappaTuple.Info.isEmbedded = cms.bool(True)
 
+	# add kt6PFJets, needed for the PileupDensity
+	from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
+	process.kt6PFJets = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
+	process.kt6PFJets.Rho_EtaMax = cms.double(2.5)
+
 	#Check if working
 	# Let Jets run
 	process.p *= (
@@ -309,7 +314,8 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 		process.makePFJetsCHS *
 	#	process.makeQGTagging *
 		process.makeBTagging *
-		process.makePUJetID
+		process.makePUJetID *
+		process.kt6PFJets
 	)
 
 	## ------------------------------------------------------------------------
