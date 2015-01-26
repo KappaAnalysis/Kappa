@@ -241,13 +241,64 @@ ak5PFCHSJetBtagging = cms.Sequence(
 ## ------------------------------------------------------------------------
 ## Pile-Up Jet ID
 from RecoJets.JetProducers.PileupJetIDCutParams_cfi import full_5x_wp, full_5x_chs_wp
-from RecoJets.JetProducers.puJetIDAlgo_cff import full_53x, full_53x_chs
 
-full_53x = full_53x.clone(
+full_53x = cms.PSet(
+    impactParTkThreshold = cms.double(1.) ,
+    cutBased = cms.bool(False),
+    tmvaWeights = cms.string("CondFormats/JetMETObjects/data/TMVAClassificationCategory_JetID_53X_Dec2012.weights.xml"),
+    tmvaMethod = cms.string("JetIDMVAHighPt"),
+    version = cms.int32(-1),
+    tmvaVariables = cms.vstring(
+        "nvtx",
+        "dZ",
+        "beta",
+        "betaStar",
+        "nCharged",
+        "nNeutrals",
+        "dR2Mean",
+        "ptD",
+        "frac01",
+        "frac02",
+        "frac03",
+        "frac04",
+        "frac05",
+    ),
+    tmvaSpectators = cms.vstring(
+        "jetPt",
+        "jetEta",
+        "jetPhi"
+    ),
+    JetIdParams = full_5x_wp,
     label = cms.string("full")
     )
 
-full_53x_chs = full_53x_chs.clone(
+full_53x_chs = cms.PSet(
+    impactParTkThreshold = cms.double(1.) ,
+    cutBased = cms.bool(False),
+    tmvaWeights = cms.string("CondFormats/JetMETObjects/data/TMVAClassificationCategory_JetID_53X_chs_Dec2012.weights.xml"),
+    tmvaMethod = cms.string("JetIDMVAHighPt"),
+    version = cms.int32(-1),
+    tmvaVariables = cms.vstring(
+        "nvtx",
+        "dZ",
+        "beta",
+        "betaStar",
+        "nCharged",
+        "nNeutrals",
+        "dR2Mean",
+        "ptD",
+        "frac01",
+        "frac02",
+        "frac03",
+        "frac04",
+        "frac05",
+    ),
+    tmvaSpectators = cms.vstring(
+        "jetPt",
+        "jetEta",
+        "jetPhi"
+    ),
+    JetIdParams = full_5x_chs_wp,
     label = cms.string("full")
     )
 
