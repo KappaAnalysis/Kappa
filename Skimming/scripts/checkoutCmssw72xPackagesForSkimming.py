@@ -68,6 +68,10 @@ def checkoutPackages(args):
 		# https://twiki.cern.ch/twiki/bin/view/CMS/GluonTag (not working in 72X)
 		#"git clone git://github.com/amarini/QuarkGluonTagger.git -b v1-2-3",
 
+		#MVA & No-PU MET Recipe
+		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#CMSSW_7_2_X_requires_slc6
+		"git-cms-merge-topic -u cms-met:72X-mvaMETForMiniAOD",
+
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git -b development",
 		#"scram b -j 4"

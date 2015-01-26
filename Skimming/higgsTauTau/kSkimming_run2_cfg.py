@@ -320,24 +320,24 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 
 	## ------------------------------------------------------------------------
 	## MET
-	#process.load("Kappa.Skimming.KMET_run2_cff")
-	#process.kappaTuple.active += cms.vstring('BasicMET')                         ## produce/save KappaMET
-	#process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
-	#process.p *= process.makeKappaMET
+	process.load("Kappa.Skimming.KMET_run2_cff")
+	process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
+	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
+	process.p *= process.makeKappaMET
 	
-	#Check if working and needed in CMSSW_7
-	#process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
-	#process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
-	#process.p *= (process.tauGenJets+process.tauGenJetsSelectorAllHadrons)
-	#process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
-	#process.kappaTuple.active += cms.vstring('GenJets')
-	#
-	## add python config to TreeInfo
-	#process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
-	#	
-	## add repository revisions to TreeInfo
-	#for repo, rev in tools.get_repository_revisions().iteritems():
-	#		setattr(process.kappaTuple.TreeInfo.parameters, repo, cms.string(rev))
+	if not data:
+		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
+		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
+		process.p *= (process.tauGenJets+process.tauGenJetsSelectorAllHadrons)
+		process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
+		process.kappaTuple.active += cms.vstring('GenJets')
+	
+	# add python config to TreeInfo
+	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
+		
+	# add repository revisions to TreeInfo
+	for repo, rev in tools.get_repository_revisions().iteritems():
+			setattr(process.kappaTuple.TreeInfo.parameters, repo, cms.string(rev))
 	
 
 	## ------------------------------------------------------------------------
