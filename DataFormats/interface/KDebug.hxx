@@ -6,11 +6,10 @@ void displayVector(std::ostream &os, const T &v, size_t n = 0)
 {
 	if (n == 0)
 	{
-		os << "Size: " << v.size() << std::endl;
+		os << "Size: " << v.size();
 		n = v.size();
 	}
 	n = std::min(n, v.size());
 	for (typename T::const_iterator it = v.begin(); (it != v.end()) && (n != 0); ++it, --n)
 		os << *it << " ";
-	os << std::endl;
 }
