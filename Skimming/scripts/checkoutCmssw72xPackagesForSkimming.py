@@ -63,6 +63,7 @@ def checkoutPackages(args):
 		# do the git cms-addpkg before starting with checking out cvs repositories
 
 		#Electron MVA Id package
+		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
 		"git cms-merge-topic HuguesBrun:trigElecIdInCommonIsoSelection720",
 
 		# https://twiki.cern.ch/twiki/bin/view/CMS/GluonTag (not working in 72X)

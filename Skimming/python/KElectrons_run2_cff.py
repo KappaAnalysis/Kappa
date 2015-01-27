@@ -21,6 +21,11 @@ import FWCore.ParameterSet.Config as cms
 
 from EgammaAnalysis.ElectronTools.electronIdMVAProducer_CSA14_cfi import *
 from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cff import *
+
+electronIDValueMapProducer.ebReducedRecHitCollection = cms.InputTag("reducedEcalRecHitsEB")
+electronIDValueMapProducer.eeReducedRecHitCollection = cms.InputTag("reducedEcalRecHitsEE")
+electronIDValueMapProducer.esReducedRecHitCollection = cms.InputTag("reducedEcalRecHitsES")
+
 electronIdMVA = cms.Sequence(
     egmGsfElectronIDSequence+
     mvaTrigV050nsCSA14+
@@ -45,10 +50,10 @@ patElectrons.electronIDSources = cms.PSet(
 	eidTight            = cms.InputTag("eidTight"           ),
 	eidRobustHighEnergy = cms.InputTag("eidRobustHighEnergy"),
 	## MVA based Id
-	#mvaTrigV050nsCSA14  = cms.InputTag("mvaTrigV050nsCSA14"          ),
-	#mvaTrigV025nsCSA14  = cms.InputTag("mvaTrigV025nsCSA14"          ),
-	#mvaNonTrigV050nsCSA14 = cms.InputTag("mvaNonTrigV050nsCSA14"     ),
-	#mvaNonTrigV025nsCSA14 = cms.InputTag("mvaNonTrigV025nsCSA14"     ),
+	mvaTrigV050nsCSA14  = cms.InputTag("mvaTrigV050nsCSA14"          ),
+	mvaTrigV025nsCSA14  = cms.InputTag("mvaTrigV025nsCSA14"          ),
+	mvaNonTrigV050nsCSA14 = cms.InputTag("mvaNonTrigV050nsCSA14"     ),
+	mvaNonTrigV025nsCSA14 = cms.InputTag("mvaNonTrigV025nsCSA14"     ),
 )
 patElectrons.addGenMatch                   = False
 patElectrons.embedGenMatch                 = False
@@ -73,6 +78,6 @@ patElectrons.embedHighLevelSelection.pvSrc = "goodOfflinePrimaryVertices"
 ## and with MVA electron ID
 
 makeKappaElectrons = cms.Sequence(
-    #electronIdMVA *
+    electronIdMVA *
     patElectrons
     )

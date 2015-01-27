@@ -175,10 +175,10 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	# Configure Electrons
 	process.load("Kappa.Skimming.KElectrons_run2_cff")
 	process.kappaTuple.active += cms.vstring('Electrons')	                ## produce/save KappaElectrons,
-	#process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV050nsCSA14",
-						  #"mvaTrigV025nsCSA14",
-						  #"mvaNonTrigV050nsCSA14",
-						  #"mvaNonTrigV025nsCSA14")
+	process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV050nsCSA14",
+						  "mvaTrigV025nsCSA14",
+						  "mvaNonTrigV050nsCSA14",
+						  "mvaNonTrigV025nsCSA14")
 	process.kappaTuple.Electrons.minPt = cms.double(8.0)
 	process.kappaTuple.Electrons.electrons.isoValInputTags = cms.VInputTag(
             cms.InputTag('elPFIsoValueCharged03PFIdPFIso'),
