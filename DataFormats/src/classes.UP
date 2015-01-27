@@ -27,7 +27,7 @@ def main(inputfile='classes.md', debugcpp='../test/KDebug.cpp'):
 			debuglines.append(line.replace('\n', ';'))
 
 	# open output files and write headers (debug must be first)
-	files = [DebugH(), KappaH(), LCGDict(), ClassesH(), LinkdefH()]
+	files = [DebugH(), DebugTest(), KappaH(), LCGDict(), ClassesH(), LinkdefH()]
 	for f in files:
 		f.file = open(f.filename, 'w')
 		if f.note:  # it is a C++ file that understands comments
@@ -66,10 +66,9 @@ def main(inputfile='classes.md', debugcpp='../test/KDebug.cpp'):
 			if not classes:
 				continue
 			if line[0] == '+':  # Kappa class
-				#	print classes[0], f.filename
-				#	f.write(f.typedefStr.format(single=classes[0]))
-				if classes[0][0] == 'K': # Kappa class
-					f.write(f.singleStr.format(single=classes[0], fmt='struct'))
+				if classes[0][0] == 'K':  # Kappa class
+					if classes[0] in classesWithDebugOutput or 'testDebug' not in f.filename:
+						f.write(f.singleStr.format(single=classes[0], fmt='struct'))
 				else:
 					f.write(f.singleStr.format(single=classes[0], fmt='typedef'))
 				if len(classes) == 2:  # vector Kappa class
@@ -78,7 +77,7 @@ def main(inputfile='classes.md', debugcpp='../test/KDebug.cpp'):
 					print "No debug output for: %s!" % classes[0]
 			if line[0] == '-' and 'linkdef' in f.filename.lower():
 				f.write(f.rootStr.format(single=classes[0], fmt='typedef'))
-			elif line[0] == '-' and 'interface' not in f.filename:
+			elif line[0] == '-' and 'interface' not in f.filename and 'testDebug' not in f.filename:
 				f.write(f.singleStr.format(single=classes[0], fmt='typedef'))
 
 	for f in files:
@@ -151,6 +150,24 @@ class DebugH(BaseFile):
 #include "Kappa.h"
 """
 	footer = '\n#include "KDebug.hxx"\n\n#endif'
+
+
+class DebugTest(BaseFile):
+	"""Standalone script to test the debug outputs of Kappa
+
+    compile with
+    g++ testDebug.cc $(root-config --cflags) $(root-config --ldflags --libs) -I../.. -o testdebug  -L../../lib -lKappa -lGenVector"""
+	filename = '../test/testDebug.cc'
+	header = """\
+#include "DataFormats/interface/KDebug.h"
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	cout << "Kappa object debug output:" << endl;"""
+	singleStr = '\tcout << "* {single}: " << {single}() << endl << endl;'
+	footer = '}'
 
 
 class LCGDict(BaseFile):
