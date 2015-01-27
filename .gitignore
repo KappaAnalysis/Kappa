@@ -11,3 +11,4 @@ work.*
 DataFormats/test/libKappa.h
 DataFormats/test/libKappa.cpp
 */python/__init__.py
+testcharge

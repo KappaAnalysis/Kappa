@@ -3,8 +3,8 @@
 
 // test the charge function of GenParticles
 // compile with
-// g++ testGenParticleCharges.cc $(root-config --cflags) $(root-config --ldflags --libs) -o testcharge
-#include "DataFormats/interface/KBasic.h"
+// g++ testGenParticleCharges.cc $(root-config --cflags) $(root-config --ldflags --libs) -I../.. -o testcharge
+#include "DataFormats/interface/KParticle.h"
 #include <iostream>
 
 using namespace std;
@@ -12,19 +12,19 @@ using namespace std;
 int getid(int pid)
 {
 	unsigned int id = (pid < 0) ? -pid : pid;
-	id = id | (3 << KGenParticleStatusPosition);
+	id = id | (3 << KParticleStatusPosition);
 	if (pid < 0)
-		id |= KGenParticleChargeMask;
+		id |= KParticleSignMask;
 	return id;
 }
 
 void test(int pdg, int truth = 0, string comment = "")
 {
-	KGenParticle p;
-	p.pdgid = getid(pdg);
+	KParticle p;
+	p.particleinfo = getid(pdg);
 	cout << std::setw(7) << std::fixed << std::setprecision(2) << p.pdgId()
 		 << ": c = " << std::setw(5) << p.charge()
-		 << ", c3 =" << std::setw(3) << p.chargeTimesThree();
+		 << ", c*3 =" << std::setw(3) << p.chargeTimesThree();
 	if (p.chargeTimesThree() != truth)
 		cout << " ERROR: should be: " << truth << " (" << (truth / 3.0) << ") " << comment;
 	cout << endl;
