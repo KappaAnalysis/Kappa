@@ -1,10 +1,10 @@
 <lcgdict>
-	<class name="RMFLV_Store"/>
 	<class name="RMFLV"/>
-
-	<class name="RMDLV_Store"/>
+	<class name="RMFLV_Store"/>
 	<class name="RMDLV"/>
-
+	<class name="RMDLV_Store"/>
+	<class name="KEventInfo"/>
+	<class name="KGenEventInfo"/>
 	<class name="KBasicJet"/>
 	<class name="KBasicJets"/>
 	<class name="KBasicMET"/>
@@ -16,7 +16,8 @@
 	<class name="KCaloJets"/>
 	<class name="KElectron"/>
 	<class name="KElectrons"/>
-	<class name="KFilterSummary"/>
+	<class name="KLV"/>
+	<class name="KLVs"/>
 	<class name="KGenJet"/>
 	<class name="KGenJets"/>
 	<class name="KGenParticle"/>
@@ -25,16 +26,12 @@
 	<class name="KGenPhotons"/>
 	<class name="KGenTau"/>
 	<class name="KGenTaus"/>
-	<class name="KHCALNoiseSummary"/>
 	<class name="KHit"/>
 	<class name="KHits"/>
 	<class name="KJet"/>
 	<class name="KJets"/>
-	<class name="KPileupDensity"/>
 	<class name="KL1Muon"/>
 	<class name="KL1Muons"/>
-	<class name="KLV"/>
-	<class name="KLVs"/>
 	<class name="KLepton"/>
 	<class name="KLeptons"/>
 	<class name="KMET"/>
@@ -46,32 +43,28 @@
 	<class name="KParticles"/>
 	<class name="KPFCandidate"/>
 	<class name="KPFCandidates"/>
+	<class name="KPileupDensity"/>
 	<class name="KTau"/>
 	<class name="KTaus"/>
+	<class name="KTaupairVerticesMap"/>
+	<class name="KTaupairVerticesMaps"/>
 	<class name="KTrack"/>
 	<class name="KTracks"/>
-	<class name="KTrackSummary"/>
 	<class name="KTriggerObjects"/>
 	<class name="KVertex"/>
 	<class name="KVertices"/>
+	<class name="KFilterSummary"/>
+	<class name="KHCALNoiseSummary"/>
+	<class name="KTrackSummary"/>
 	<class name="KVertexSummary"/>
-	<class name="KTaupairVerticesMap"/>
-	<class name="KTaupairVerticesMaps"/>
-
-	<class name="KElectronMetadata"/>
-	<class name="KFilterMetadata"/>
-	<class name="KJetMetadata"/>
-	<class name="KMuonMetadata"/>
-	<class name="KTauMetadata"/>
-	<class name="KTriggerObjectMetadata"/>
-
-	<class name="KProvenance"/>
-
 	<class name="KLumiInfo"/>
 	<class name="KGenLumiInfo"/>
 	<class name="KDataLumiInfo"/>
-
-	<class name="KEventInfo"/>
-	<class name="KGenEventInfo"/>
-
+	<class name="KElectronMetadata"/>
+	<class name="KFilterMetadata"/>
+	<class name="KMuonMetadata"/>
+	<class name="KJetMetadata"/>
+	<class name="KTauMetadata"/>
+	<class name="KTriggerObjectMetadata"/>
+	<class name="KProvenance"/>
 </lcgdict>
