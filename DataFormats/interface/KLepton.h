@@ -46,7 +46,7 @@ public:
 	/// lepton flavour according to KLeptonFlavour::Type
 	inline KLeptonFlavour::Type flavour() const { return KLeptonFlavour::Type(leptonInfo & KLeptonFlavourMask); };
 	/// lepton charge (+1 or -1)
-	inline char charge() const { return ((leptonInfo & KLeptonChargeMask) ? +1 : -1); };
+	inline int charge() const { return ((leptonInfo & KLeptonChargeMask) ? +1 : -1); };
 	/// whether the stored object is reconstructed using PF objects
 	inline bool isPF() const { return (leptonInfo & KLeptonPFMask); };
 	/// if the normal track is not available, the producer can fill the track information with a second option and set this flag
