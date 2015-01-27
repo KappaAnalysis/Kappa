@@ -79,6 +79,7 @@ struct KJet : public KBasicJet
 };
 typedef std::vector<KJet> KJets;
 
+/// This gen jet dataformat is a private one for tau POG studies and might not be stable in future
 struct KGenJet : public KLV
 {
 	int genTauDecayMode;
