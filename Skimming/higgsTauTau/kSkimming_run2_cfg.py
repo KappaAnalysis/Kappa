@@ -180,11 +180,6 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 						  "mvaNonTrigV050nsCSA14",
 						  "mvaNonTrigV025nsCSA14")
 	process.kappaTuple.Electrons.minPt = cms.double(8.0)
-	process.kappaTuple.Electrons.electrons.isoValInputTags = cms.VInputTag(
-            cms.InputTag('elPFIsoValueCharged03PFIdPFIso'),
-            cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
-            cms.InputTag('elPFIsoValueNeutral03PFIdPFIso'),
-	)
 	process.p *= process.makeKappaElectrons
 	
 	## for electron iso
@@ -222,7 +217,12 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 		process.electronPFIsolationDepositsSequence +
 		process.electronPFIsolationValuesSequence
 	)
-	process.p *= (process.pfiso)
+
+	# rho for electron iso
+        from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
+        process.kt6PFJetsForIsolation = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
+        process.kt6PFJetsForIsolation.Rho_EtaMax = cms.double(2.5)
+        process.p *= (process.pfiso * process.kt6PFJetsForIsolation)
 
 	## ------------------------------------------------------------------------
 	# Configure Taus
