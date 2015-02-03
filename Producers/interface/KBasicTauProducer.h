@@ -225,6 +225,9 @@ public:
 	{
 		edm::Ref<std::vector<TTau> > tauRef(this->handle, this->nCursor);
 
+		// propagate the selection on minPt/maxEta
+		bool acceptTau = KBaseMultiLVProducer<std::vector<TTau>, TProduct>::acceptSingle(in);
+		
 		// preselect taus by given set of discriminators
 		// do not use regex matching here, as we do not want to apply any preselection by "accident"
 		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
@@ -240,12 +243,12 @@ public:
 					if (this->verbosity > 1)
 						std::cout << "KBasicTauProducer::acceptSingle : " << *module_iter << " caused that this tau is not saved \n";
 
-					return false;
+					acceptTau = acceptTau && false;
 				}
 			}
 		}
 
-		return true;
+		return acceptTau;
 	}
 
 protected:
