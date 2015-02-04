@@ -71,8 +71,8 @@ std::ostream &operator<<(std::ostream &os, const KJet &jet)
 {
 	os << static_cast<const KBasicJet>(jet) << std::endl;
 	os << "tags: " << std::endl;
-    for (size_t i = 0; i < jet.tags.size(); ++i)
-        os << jet.tags[i] << " " << std::endl;
+	for (size_t i = 0; i < jet.tags.size(); ++i)
+		os << jet.tags[i] << " " << std::endl;
 	return os << "\tIDs: " << std::bitset<8>(jet.binaryIds) << std::endl;
 }
 

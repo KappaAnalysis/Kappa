@@ -1,0 +1,18 @@
+BasedOnStyle: webkit
+
+AccessModifierOffset: -4
+AlignTrailingComments: true
+AllowShortFunctionsOnASingleLine: Inline
+AlwaysBreakTemplateDeclarations: true
+BreakBeforeBraces: Allman
+BreakConstructorInitializersBeforeComma: false
+ColumnLimit: 0
+IndentWidth: 4
+MaxEmptyLinesToKeep: 1
+NamespaceIndentation: Inner
+PointerAlignment: Right
+Standard: Cpp03
+TabWidth: 4
+UseTab: ForIndentation
+ContinuationIndentWidth: 123
+BinPackParameters: true
