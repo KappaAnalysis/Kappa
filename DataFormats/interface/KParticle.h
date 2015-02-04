@@ -8,11 +8,11 @@
 
 /// particleinfo = [sign: 1 bit][custom: 4 bits][status: 3 bits][id: 24 bits]
 const unsigned int KParticleSignPosition   = 31;
-const unsigned int KParticleCustomPosition = 27;
+const unsigned int KParticleCustomPosition = 27;  // to be removed in favour of 7 bit status
 const unsigned int KParticleStatusPosition = 24;
 const unsigned int KParticleSignMask   =  (unsigned int)1 << KParticleSignPosition;
-const unsigned int KParticleCustomMask =  (unsigned int)15 << KParticleStatusPosition;
-const unsigned int KParticleStatusMask =  (unsigned int)7 << KParticleStatusPosition;
+const unsigned int KParticleCustomMask =  (unsigned int)15 << KParticleCustomPosition;  // to be removed
+const unsigned int KParticleStatusMask =  (unsigned int)127 << KParticleStatusPosition;
 const unsigned int KParticlePdgIdMask  = ((unsigned int)1 << KParticleStatusPosition) - (unsigned int)1;
 
 
