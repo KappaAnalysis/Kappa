@@ -46,7 +46,9 @@ protected:
 		}
 
 		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
-		out.particleinfo = id | ((in.status() % 4) << KParticleStatusPosition);
+		out.particleinfo = id | ((in.status() % 128) << KParticleStatusPosition);
+		if (in.status() >= 111)  // Pythia 8 maximum
+			out.particleinfo |= (127 << KParticleStatusPosition);
 		if (in.pdgId() < 0)
 			out.particleinfo |= KParticleSignMask;
 		out.daughterIndices = daughters;
