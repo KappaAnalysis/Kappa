@@ -1,6 +1,9 @@
 #-# Copyright (c) 2013 - All Rights Reserved
 #-#   Joram Berger <joram.berger@cern.ch>
 
+# Kappa test: CMSSW 5.3.22
+# Kappa test: scram arch slc6_amd64_gcc472
+
 import FWCore.ParameterSet.Config as cms
 
 

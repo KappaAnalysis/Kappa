@@ -8,6 +8,10 @@
 #-#   Thomas Mueller <tmuller@cern.ch>
 #-#   Yasmin Anstruther <yasmin.anstruther@kit.edu>
 
+# Kappa test: CMSSW 7.2.2
+# Kappa test: scram arch slc6_amd64_gcc481
+# Kappa test: checkout script scripts/checkoutCmssw72xPackagesForSkimming.py
+
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper as datasetsHelper
 import Kappa.Skimming.tools as tools

@@ -7,6 +7,10 @@
 #-#   Thomas Mueller <tmuller@cern.ch>
 #-#   Yasmin Anstruther <yasmin.anstruther@kit.edu>
 
+# Kappa test: CMSSW 5.3.22
+# Kappa test: scram arch slc6_amd64_gcc472
+# Kappa test: checkout script scripts/checkoutCmssw53xPackagesForSkimming.py
+
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper as datasetsHelper
 import Kappa.Skimming.tools as tools
@@ -43,8 +47,8 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname)),
 		centerOfMassEnergy		= cms.int32(centerOfMassEnergy),
 		puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy)),
-		isData						= cms.bool(data)
-		)
+		isData						= cms.bool(data),
+	)
 
 
 	## ------------------------------------------------------------------------
