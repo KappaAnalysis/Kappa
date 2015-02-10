@@ -241,10 +241,20 @@ public:
 		    https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#Baseline_muon_selections_for_201
 			DataFormats/MuonReco/src/MuonSelectors.cc
 			automatically use muon::improvedTuneP default as in CMSSW
-			last update: 2014-10-03
+		    Medium Id definition taken from:
+		    https://indico.cern.ch/event/357213/contribution/2/material/slides/0.pdf
+			last update: 2015-02-10
 		*/
+		bool goodGlb = in.isGlobalMuon() &&
+			       (in.globalTrack().isNonnull() ? (in.globalTrack()->normalizedChi2() < 3.) : 0 ) &&
+			       in.combinedQuality().chi2LocalPosition < 12. &&
+			       in.combinedQuality().trkKink < 20.;
+		bool isMediumMuon = (in.innerTrack().isNonnull() ? (in.innerTrack()->validFraction() >= 0.8) : 0 ) &&
+			       muon::segmentCompatibility(in) >= (goodGlb ? 0.303 : 0.451);
+
 		out.ids = KLeptonId::ANY;
 		out.ids |= (muon::isLooseMuon(in)      << KLeptonId::LOOSE);
+		out.ids |= (isMediumMuon               << KLeptonId::MEDIUM);
 		out.ids |= (muon::isTightMuon(in, vtx) << KLeptonId::TIGHT);
 		out.ids |= (muon::isSoftMuon(in, vtx)  << KLeptonId::SOFT);
 #if CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION < 15
@@ -252,7 +262,7 @@ public:
 #else
 		out.ids |= (muon::isHighPtMuon(in, vtx) << KLeptonId::HIGHPT);
 #endif
-		assert((out.ids & 148) == 0); // 148 = 0b10010100, these bits should be zero
+		assert((out.ids & 145) == 0); // 145 = 0b10010001, these bits should be zero
 	}
 
 private:

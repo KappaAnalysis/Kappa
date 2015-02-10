@@ -19,7 +19,7 @@ namespace KLeptonId { enum Type
 {
 	ANY    = 0,  //< returns true if the information for any ID was filled
 	LOOSE  = 1,  //< e/mu/tau loose ID
-	MEDIUM = 2,  //< e/tau medium ID
+	MEDIUM = 2,  //< e/mu/tau medium ID
 	TIGHT  = 3,  //< e/mu tight ID
 	VETO   = 4,  //< e veto ID
 	SOFT   = 5,  //< mu soft ID
@@ -56,7 +56,7 @@ public:
 	/// returns true if the ID is set and valid for this flavour
 	inline bool isAvailable() const { return (ids & (1 << KLeptonId::ANY)); };    // e, mu, tau
 	inline bool idLoose()     const { return (ids & (1 << KLeptonId::LOOSE)); };  // e, mu, tau
-	inline bool idMedium()    const { return (ids & (1 << KLeptonId::MEDIUM)); }; // e, (mu,) tau
+	inline bool idMedium()    const { return (ids & (1 << KLeptonId::MEDIUM)); }; // e, mu, tau
 	inline bool idTight()     const { return (ids & (1 << KLeptonId::TIGHT)); };  // e, mu, tau
 	inline bool idVeto()      const { return (ids & (1 << KLeptonId::VETO)   && (KLeptonFlavour::ELECTRON == (leptonInfo & KLeptonFlavourMask))); }; // e
 	inline bool idSoft()      const { return (ids & (1 << KLeptonId::SOFT)   && (KLeptonFlavour::MUON == (leptonInfo & KLeptonFlavourMask))); };     // mu
