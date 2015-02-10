@@ -62,6 +62,10 @@ def checkoutPackages(args):
 		'cd ' + cmsswsrc,
 		# do the git cms-addpkg before starting with checking out cvs repositories
 
+		#Electron cutBased Id package
+		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2
+		"git cms-merge-topic ikrav:egm_id_phys14",
+
 		#Electron MVA Id package
 		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
 		"git cms-merge-topic HuguesBrun:trigElecIdInCommonIsoSelection720",
@@ -69,9 +73,9 @@ def checkoutPackages(args):
 		# https://twiki.cern.ch/twiki/bin/view/CMS/GluonTag (not working in 72X)
 		#"git clone git://github.com/amarini/QuarkGluonTagger.git -b v1-2-3",
 
-		#MVA & No-PU MET Recipe
+		#MVA & No-PU MET Recipe (commented out: conflicts with electron Id stuff?)
 		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#CMSSW_7_2_X_requires_slc6
-		"git-cms-merge-topic -u cms-met:72X-mvaMETForMiniAOD",
+		#"git-cms-merge-topic -u cms-met:72X-mvaMETForMiniAOD",
 
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git -b development",

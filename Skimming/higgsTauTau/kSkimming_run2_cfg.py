@@ -175,13 +175,34 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	# Configure Electrons
 	process.load("Kappa.Skimming.KElectrons_run2_cff")
 	process.kappaTuple.active += cms.vstring('Electrons')	                ## produce/save KappaElectrons,
-	process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV050nsCSA14",
-						  "mvaTrigV025nsCSA14",
-						  "mvaNonTrigV050nsCSA14",
-						  "mvaNonTrigV025nsCSA14")
+	process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
+						       "cutBasedEleIdPHYS14Medium",
+						       "cutBasedEleIdPHYS14Tight",
+						       "cutBasedEleIdPHYS14Veto",
+						       "mvaTrigV050nsCSA14",
+						       "mvaTrigV025nsCSA14",
+						       "mvaNonTrigV050nsCSA14",
+						       "mvaNonTrigV025nsCSA14",
+						       "mvaNonTrigV025nsPHYS14")
 	process.kappaTuple.Electrons.minPt = cms.double(8.0)
-	process.p *= process.makeKappaElectrons
-	
+
+	## for the Run 2 cutBased Id
+	# https://github.com/ikrav/ElectronWork/blob/master/ElectronNtupler/test/runIdDemoPrePHYS14AOD.py#L29-L56
+	from PhysicsTools.SelectorUtils.tools.vid_id_tools import setupAllVIDIdsInModule, setupVIDElectronSelection 
+	from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
+	process.load("RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi")
+	process.egmGsfElectronIDSequence = cms.Sequence(process.egmGsfElectronIDs)
+	# Define which IDs we want to produce
+	# Each of these IDs contains all four standard cut-based ID working points 
+	my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_cff']
+	for idmod in my_id_modules:
+		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+
+	process.p *= (
+		process.egmGsfElectronIDSequence *
+		process.makeKappaElectrons
+	)
+
 	## for electron iso
 	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L349-L384
 	process.load("CommonTools.ParticleFlow.Isolation.pfElectronIsolation_cff")
@@ -320,10 +341,10 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 
 	## ------------------------------------------------------------------------
 	## MET
-	process.load("Kappa.Skimming.KMET_run2_cff")
-	process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
-	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
-	process.p *= process.makeKappaMET
+	#process.load("Kappa.Skimming.KMET_run2_cff")
+	#process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
+	#process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
+	#process.p *= process.makeKappaMET
 	
 	if not data:
 		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
@@ -374,7 +395,7 @@ if __name__ == "__main__":
 		#process = getBaseConfig(globaltag="START53_V15A::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/Summer12_DR53X/VBF_HToTauTau_M-125_8TeV-powheg-pythia6/AODSIM/PU_S10_START53_V7A-v1/0000/004B56D8-AAED-E111-AB70-1CC1DE1CEDB2.root"))
 
 		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV
-		process = getBaseConfig(globaltag="PHYS14_25_V2::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_PU40bx25_PHYS14_25_V1-v1_00E63918-3A70-E411-A246-7845C4FC35F3.root"))
+		process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_PU20bx25_tsg_PHYS14_25_V1-v2_0ACE16B2-5677-E411-87FF-7845C4FC3A40.root"))
 
 	## for grid-control:
 	else:
