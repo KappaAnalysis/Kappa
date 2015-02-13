@@ -41,13 +41,17 @@ public:
 		{
 			out.genTauDecayMode = 0;
 		}
-		else if (genTauDecayModeString == "oneProng1Pi0" || genTauDecayModeString == "oneProng2Pi0")
+		else if (genTauDecayModeString == "oneProng1Pi0")
 		{
 			out.genTauDecayMode = 1;
 		}
-		else if (genTauDecayModeString == "threeProng0Pi0")
+		else if (genTauDecayModeString == "oneProng2Pi0")
 		{
 			out.genTauDecayMode = 2;
+		}
+		else if (genTauDecayModeString == "threeProng0Pi0")
+		{
+			out.genTauDecayMode = 3;
 		}
 		else
 		{
