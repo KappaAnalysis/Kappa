@@ -256,6 +256,7 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	# The blacklist is to some degree arbitrary to get below 64 binaty tau discriminators
 	# - they may need to be changed as soon as 'official' discriminators for TauID 2014 will be published
 	process.kappaTuple.Taus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
+	process.kappaTuple.Taus.taus.preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFindingNewDMs")
 
 	## ------------------------------------------------------------------------
 	## KappaJets
