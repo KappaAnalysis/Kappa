@@ -24,11 +24,6 @@
      ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >+
    map used by provenance etc.:
      std::map<std::string, int>+;
-   matices (used by MET etc.):
-   (and accordingly for 3 and 7 dimensions instead of 2 for these classes):
-     ROOT::Math::RowOffsets<2>+
-     ROOT::Math::MatRepSym<double,2>+
-     ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepSym<double,2> >+
 */
 
 #pragma link C++ class ROOT::Math::PtEtaPhiM4D<float>+;
@@ -38,9 +33,20 @@
 #pragma link C++ class ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float> >+;
 #pragma link C++ class ROOT::Math::DisplacementVector3D<ROOT::Math::Cartesian3D<float>, ROOT::Math::DefaultCoordinateSystemTag>+;
 
+#pragma link C++ class ROOT::Math::RowOffsets<2>+;
+#pragma link C++ class ROOT::Math::MatRepSym<double,2>+;
 #pragma link C++ class ROOT::Math::SymMatrixOffsets<2>+;
+#pragma link C++ class ROOT::Math::SMatrix<double,2,2,ROOT::Math::MatRepSym<double,2> >+;
+
+#pragma link C++ class ROOT::Math::RowOffsets<3>+;
+#pragma link C++ class ROOT::Math::MatRepSym<double,3>+;
 #pragma link C++ class ROOT::Math::SymMatrixOffsets<3>+;
+#pragma link C++ class ROOT::Math::SMatrix<double,3,3,ROOT::Math::MatRepSym<double,3> >+;
+
+#pragma link C++ class ROOT::Math::RowOffsets<7>+;
+#pragma link C++ class ROOT::Math::MatRepSym<double,7>+;
 #pragma link C++ class ROOT::Math::SymMatrixOffsets<7>+;
+#pragma link C++ class ROOT::Math::SMatrix<double,7,7,ROOT::Math::MatRepSym<double,7> >+;
 
 #pragma link C++ class std::vector<std::vector<size_t> >+;
 
