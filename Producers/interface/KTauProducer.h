@@ -31,15 +31,10 @@ public:
 
 	static int createRecoPFTauHash(const reco::PFTau tau)
 	{
-#if CMSSW_MAJOR_VERSION >= 7
-		std::cout << "KBasicTauProducer: This hashing does not run with CMSSW 7!" << std::flush << std::endl;
-		return 0;
-#else
-		return ( std::hash<double>()(tau.leadPFCand()->px()) ^
-		         std::hash<double>()(tau.leadPFCand()->py()) ^
-		         std::hash<double>()(tau.leadPFCand()->pz()) ^
-		         std::hash<bool>()(tau.leadPFCand()->charge()) );
-#endif
+		return ( std::hash<double>()(tau.pt()) ^
+		         std::hash<double>()(tau.eta()) ^
+		         std::hash<double>()(tau.phi()) ^
+		         std::hash<bool>()(tau.charge()) );
 	}
 
 protected:
