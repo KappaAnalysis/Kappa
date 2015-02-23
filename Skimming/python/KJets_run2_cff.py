@@ -434,3 +434,9 @@ kappaTupleJets = cms.PSet(
 		PUJetID_full = cms.InputTag("full"),
 		),
 	)
+
+# add kt6PFJets, needed for the PileupDensity
+from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
+kt6PFJets = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
+kt6PFJets.Rho_EtaMax = cms.double(2.5)
+

@@ -18,17 +18,14 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	from Kappa.Skimming.KSkimming_template_cfg import process
 	process.source.fileNames      = testfile
 	process.maxEvents.input	      = maxevents				## number of events to be processed (-1 = all in file)
-	process.kappaTuple.outputFile = 'kappaTuple.root'			## name of output file
 	process.kappaTuple.verbose    = cms.int32(0)				## verbosity level
 	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
 	data = datasetsHelper.isData(nickname)
-	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
 	isEmbedded = datasetsHelper.getIsEmbedded(nickname)
 	
-	process.p = cms.Path ( )
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	process.kappaTuple.active = cms.vstring('TreeInfo')
@@ -152,12 +149,6 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	process.kappaTuple.Jets = process.kappaTupleJets
 	process.kappaTuple.Jets.minPt = cms.double(10.0)
 
-	## ------------------------------------------------------------------------
-
-	# add kt6PFJets, needed for the PileupDensity
-	from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
-	process.kt6PFJets = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
-	process.kt6PFJets.Rho_EtaMax = cms.double(2.5)
 
 	#Check if working
 	# Let Jets run

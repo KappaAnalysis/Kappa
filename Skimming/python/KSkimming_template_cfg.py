@@ -41,7 +41,9 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load('Kappa.Producers.KTuple_cff')
 process.kappaTuple = cms.EDAnalyzer('KTuple',
     process.kappaTupleDefaultsBlock,
-    outputFile = cms.string("kappaTuple_template.root"),
+    outputFile = cms.string("kappaTupleroot"),
 )
 process.kappaTuple.active = cms.vstring()
 process.kappaOut = cms.Sequence(process.kappaTuple)
+
+process.p = cms.Path ( )
