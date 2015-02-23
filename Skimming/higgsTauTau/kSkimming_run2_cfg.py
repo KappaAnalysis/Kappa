@@ -90,14 +90,7 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
 	# PFCandidates ------------------------------------------------------------
-	process.load("Kappa.Skimming.KPFCandidates_cff")
-	# Modifications for new particleFlow Pointers
-	process.pfPileUp.PFCandidates = cms.InputTag("particleFlowPtrs")
-	process.pfPileUpIso.PFCandidates = cms.InputTag("particleFlowPtrs")
-	process.pfNoPileUp.bottomCollection = cms.InputTag("particleFlowPtrs")
-	process.pfNoPileUpIso.bottomCollection = cms.InputTag("particleFlowPtrs")
-	process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag("ak5PFJets")
-
+	process.load("Kappa.Skimming.KPFCandidates_run2_cff")
 	#process.kappaTuple.active += cms.vstring('PFCandidates')		## save PFCandidates for deltaBeta corrected
 	process.kappaTuple.PFCandidates.whitelist = cms.vstring(                ## isolation used for electrons and muons.
 ##		"pfNoPileUpChargedHadrons",    ## switch to pfAllChargedParticles
