@@ -230,49 +230,7 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	## KappaJets
 	process.load("Kappa.Skimming.KJets_run2_cff")
 	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
-	process.kappaTuple.Jets = cms.PSet(
-		process.kappaNoCut,
-		process.kappaNoRegEx,
-		taggers = cms.vstring(
-	#		"QGlikelihood",
-	#		"QGmlp",
-			"TrackCountingHighEffBJetTags",
-			"TrackCountingHighPurBJetTags",
-			"JetProbabilityBJetTags",
-			"JetBProbabilityBJetTags",
-			"SoftElectronBJetTags",
-			"SoftMuonBJetTags",
-			"SoftMuonByIP3dBJetTags",
-			"SoftMuonByPtBJetTags",
-			"SimpleSecondaryVertexBJetTags",
-			"CombinedSecondaryVertexBJetTags",
-			"CombinedSecondaryVertexMVABJetTags",
-			"puJetIDFullDiscriminant",
-			"puJetIDFullLoose",
-			"puJetIDFullMedium",
-			"puJetIDFullTight",
-			#"puJetIDCutbasedDiscriminant",
-			#"puJetIDCutbasedLoose",
-			#"puJetIDCutbasedMedium",
-			#"puJetIDCutbasedTight"
-			),
-		AK5PFTaggedJets = cms.PSet(
-			src = cms.InputTag("ak5PFJets"),
-			#QGtagger = cms.InputTag("AK5PFJetsQGTagger"),
-			QGtagger = cms.InputTag(""),
-			Btagger  = cms.InputTag("ak5PF"),
-			PUJetID  = cms.InputTag("ak5PFPuJetMva"),
-			PUJetID_full = cms.InputTag("full"),
-			),
-		AK5PFTaggedJetsCHS = cms.PSet(
-			src = cms.InputTag("ak5PFJetsCHS"),
-			#QGtagger = cms.InputTag("AK5PFJetsCHSQGTagger"),
-			QGtagger = cms.InputTag(""),
-			Btagger  = cms.InputTag("ak5PFCHS"),
-			PUJetID  = cms.InputTag("ak5PFCHSPuJetMva"),
-			PUJetID_full = cms.InputTag("full"),
-			),
-		)
+	process.kappaTuple.Jets = process.kappaTupleJets
 	process.kappaTuple.Jets.minPt = cms.double(10.0)
 
 	## ------------------------------------------------------------------------
