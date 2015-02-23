@@ -21,3 +21,10 @@ muPFIsoDepositNeutral.src = cms.InputTag("muons")
 muPFIsoDepositGamma.src = cms.InputTag("muons")
 muPFIsoDepositPU.src = cms.InputTag("muons")
 
+pfMuonIso = cms.Sequence( 
+	muonPFIsolationDepositsSequence +
+	muonPFIsolationValuesSequence
+)
+
+makeKappaMuons *= pfMuonIso
+

@@ -113,9 +113,7 @@ elPFIsoDepositGamma.src = cms.InputTag("patElectrons")
 elPFIsoDepositPU.src = cms.InputTag("patElectrons")
 
 # electron/muon PF iso sequence
-pfiso = cms.Sequence(
-	#muonPFIsolationDepositsSequence +
-	#muonPFIsolationValuesSequence +
+pfElectronIso = cms.Sequence(
 	electronPFIsolationDepositsSequence +
 	electronPFIsolationValuesSequence
 )
@@ -134,7 +132,7 @@ makeKappaElectrons = cms.Sequence(
     egmGsfElectronIDSequence *
     electronIdMVA *
     patElectrons *
-    pfiso *
+    pfElectronIso *
     kt6PFJetsForIsolation
     )
 
