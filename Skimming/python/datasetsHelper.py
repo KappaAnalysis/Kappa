@@ -4,6 +4,28 @@
 #-#   Raphael Friese <Raphael.Friese@cern.ch>
 
 from Kappa.Skimming.datasets import *
+import FWCore.ParameterSet.Config as cms
+
+def getTreeInfo(nickname, globaltag, kappaTag):
+	centerOfMassEnergy = getCenterOfMassEnergy(nickname)
+	data = isData(nickname)
+	isEmbedded = getIsEmbedded(nickname)
+
+	return cms.PSet(
+		dataset               = cms.string(getDatasetName(nickname)),
+		generator             = cms.string(getGenerator(nickname)),
+		productionProcess     = cms.string(getProcess(nickname)),
+		globalTag             = cms.string(globaltag),
+		prodCampaignGlobalTag = cms.string(getProductionCampaignGlobalTag(nickname, centerOfMassEnergy)),
+		runPeriod             = cms.string(getRunPeriod(nickname)),
+		kappaTag              = cms.string(kappaTag),
+		isEmbedded            = cms.bool(isEmbedded),
+		jetMultiplicity       = cms.int32(getJetMultiplicity(nickname)),
+		centerOfMassEnergy    = cms.int32(centerOfMassEnergy),
+		puScenario            = cms.string(getPuScenario(nickname, centerOfMassEnergy)),
+		isData                = cms.bool(data)
+		)
+
 
 def getProcess(nickname):
 	for string in Data:

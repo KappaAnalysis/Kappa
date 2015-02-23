@@ -31,21 +31,8 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	process.p = cms.Path ( )
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
-	process.kappaTuple.active										= cms.vstring('TreeInfo')
-	process.kappaTuple.TreeInfo.parameters = cms.PSet(
-		dataset						= cms.string(datasetsHelper.getDatasetName(nickname)),
-		generator					= cms.string(datasetsHelper.getGenerator(nickname)),
-		productionProcess			= cms.string(datasetsHelper.getProcess(nickname)),
-		globalTag					= cms.string(globaltag),
-		prodCampaignGlobalTag	= cms.string(datasetsHelper.getProductionCampaignGlobalTag(nickname, centerOfMassEnergy)),
-		runPeriod					= cms.string(datasetsHelper.getRunPeriod(nickname)),
-		kappaTag						= cms.string(kappaTag),
-		isEmbedded					= cms.bool(isEmbedded),
-		jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname)),
-		centerOfMassEnergy		= cms.int32(centerOfMassEnergy),
-		puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy)),
-		isData						= cms.bool(data)
-		)
+	process.kappaTuple.active = cms.vstring('TreeInfo')
+	process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 
 
 	## ------------------------------------------------------------------------
@@ -55,10 +42,10 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	process.kappaTuple.active += cms.vstring('BeamSpot')		## save Beamspot,
 	process.kappaTuple.active += cms.vstring('TriggerObjects')
 
-	if not isEmbedded:
-		if data:
+	if not isEmbedded and data:
 			process.kappaTuple.active+= cms.vstring('DataInfo')		## produce Metadata for data,
-		else:
+
+	if not isEmbedded and not data:
 			process.kappaTuple.active+= cms.vstring('GenInfo')		## produce Metadata for MC,
 			process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
 			process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
@@ -79,45 +66,26 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 			)
 		)
 	
-	process.kappaTuple.Info.hltWhitelist = cms.vstring(			## HLT selection
-		# https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/blob/master/data/triggerTables-2011-2012.txt
-		# https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorkingSummer2013
-		# can be tested at http://regexpal.com
-		# e
-		"^HLT_Ele[0-9]+_CaloIdVT(_CaloIsoT)?_TrkIdT(_TrkIsoT)?_v[0-9]+$",
-		"^HLT_Ele[0-9]+_WP[0-9]+_v[0-9]+$",
-		# m
-		"^HLT_(Iso)?Mu[0-9]+(_eta2p1)?_v[0-9]+$",
-		# ee
-		"^HLT_Ele[0-9]+_CaloId(L|T)(_TrkIdVL)?_CaloIsoVL(_TrkIdVL)?(_TrkIsoVL)?" +
-			"_Ele[0-9]+_CaloId(L|T)(_TrkIdVL)?_CaloIsoVL(_TrkIdVL)?(_TrkIsoVL)?_v[0-9]+$",
-		"^HLT_Ele[0-9]+_Ele[0-9]+_CaloId(L|T)_CaloIsoVL(_TrkIdVL_TrkIsoVL)?_v[0-9]+$",
-		# mm
-		"^HLT_(Double)?Mu[0-9]+(_(Mu|Jet)[0-9]+)?_v[0-9]+$",
-		# em
-		"^HLT_Mu[0-9]+_(Ele|Photon)[0-9]+_CaloId(L|T|VT)(_CaloIsoVL|_IsoT)?(_TrkIdVL_TrkIsoVL)?_v[0-9]+$",
-		# et
-		"^HLT_Ele[0-9]+_CaloIdVT(_Calo(IsoRho|Iso)T)?_TrkIdT(_TrkIsoT)?_(Loose|Medium|Tight)IsoPFTau[0-9]+_v[0-9]+$",
-		"^HLT_Ele[0-9]+_eta2p1_WP[0-9]+(Rho|NoIso)_LooseIsoPFTau[0-9]+_v[0-9]+$",
-		# mt
-		"^HLT_(Iso)?Mu[0-9]+(_eta2p1)?_(Loose|Medium|Tight)IsoPFTau[0-9]+(_Trk[0-9]_eta2p1)?_v[0-9]+$",
-		# tt
-		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk(1|5)_eta2p1_(Jet[0-9]+|Prong[0-9])?_v[0-9]+$",
-		"^HLT_Double(Medium)?IsoPFTau[0-9]+_Trk(1|5)(_eta2p1)?_v[0-9]+$",
-		# specials (possible generalization: Mu15, L1ETM20, Photon20, Ele8)
-		"^HLT_Ele[0-9]+_CaloId(L|T|VT)_CaloIso(VL|T|VT)(_TrkIdT)?(_TrkIsoVT)?_(SC|Ele)[0-9](_Mass[0-9]+)?_v[0-9]+$",
-		"^HLT_Ele8_v[0-9]+$",
-		"^HLT_IsoMu15(_eta2p1)?_L1ETM20_v[0-9]+$",
-		"^HLT_Photon20_CaloIdVT_IsoT_Ele8_CaloIdL_CaloIsoVL_v[0-9]+$",
-		# specials for tag and probe and em fakerate studies could be added if enough bits are ensured
-		#"^HLT_Ele[0-9]+_CaloId(L|T|VT)_CaloIso(VL|T|VT)(_TrkIdT_TrkIso(T|VT))?_(SC|Ele)[0-9]+(_Mass[0-9]+)?_v[0-9]+$",
-		#"^HLT_Mu[0-9]+_Photon[0-9]+_CaloIdVT_IsoT_v[0-9]+$",
-		#"^HLT_Ele[0-9]+_CaloId(L|T)(_TrkIdVL)?_CaloIsoVL(_TrkIdVL_TrkIsoVL)?(_TrkIsoVL)?(_Jet[0-9]+|)?_v[0-9]+$",
-		)
+	# Special settings for embedded samples
+	# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonTauReplacementWithPFlow
+	if isEmbedded:
+		#process.load('RecoBTag/Configuration/RecoBTag_cff')
+		#process.load('RecoJets/JetAssociationProducers/ak5JTA_cff')
+		#process.ak5PFJetNewTracksAssociatorAtVertex.tracks = "tmfTracks"
+		#process.ak5PFCHSNewJetTracksAssociatorAtVertex.tracks = "tmfTracks"
+		#process.p *= process.btagging
+		# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
+		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
+		process.kappaTuple.active+= cms.vstring('DataInfo')
+		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
+		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
+		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
+
+	from Kappa.Skimming.hlt import hltBlacklist, hltWhitelist
+	 
+	process.kappaTuple.Info.hltWhitelist = hltWhitelist
 	
-	process.kappaTuple.Info.hltBlacklist = cms.vstring(
-		"HLT_Mu13_Mu8", # v21 gives errors for the trigger objects
-		)
+	process.kappaTuple.Info.hltBlacklist = hltBlacklist
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
@@ -308,21 +276,6 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	process.kappaTuple.Jets.minPt = cms.double(10.0)
 
 	## ------------------------------------------------------------------------
-	# Special settings for embedded samples
-	# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonTauReplacementWithPFlow
-	if isEmbedded:
-		#process.load('RecoBTag/Configuration/RecoBTag_cff')
-		#process.load('RecoJets/JetAssociationProducers/ak5JTA_cff')
-		#process.ak5PFJetNewTracksAssociatorAtVertex.tracks = "tmfTracks"
-		#process.ak5PFCHSNewJetTracksAssociatorAtVertex.tracks = "tmfTracks"
-		#process.p *= process.btagging
-		# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
-		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
-		process.kappaTuple.active+= cms.vstring('DataInfo')
-		process.kappaTuple.active+= cms.vstring('GenParticles')		## save GenParticles,
-		process.kappaTuple.active+= cms.vstring('GenTaus')				## save GenParticles,
-		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
-		process.kappaTuple.Info.isEmbedded = cms.bool(True)
 
 	# add kt6PFJets, needed for the PileupDensity
 	from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
