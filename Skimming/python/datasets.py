@@ -357,7 +357,8 @@ datasets = {
 		"dataset" : {
 			7 : "/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
-            13: "/DYJetsToLL_M-50_13TeV-madgraph-pythia8-tauola_v2/Spring14dr-PU_S14_POSTLS170_V6-v1/AODSIM",
+			#13: "/DYJetsToLL_M-50_13TeV-madgraph-pythia8-tauola_v2/Spring14dr-PU_S14_POSTLS170_V6-v1/AODSIM",
+			13: "/DYJetsToLL_M-50_13TeV-madgraph-pythia8/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
 		},
 	},
 	"DY1JetsToLL_M_50_madgraph" : {
@@ -410,6 +411,7 @@ datasets = {
 		"dataset" : {
 			7 : "/TTJets_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v2/AODSIM",
 			8 : "/TTJets_MassiveBinDECAY_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM",
+			13 : "/TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
 		},
 	},
 	"TTJetsToLL_madgraph_tauola" : {
@@ -431,12 +433,19 @@ datasets = {
 		"dataset" : {
 			7 : "/Tbar_TuneZ2_tW-channel-DR_7TeV-powheg-tauola/Fall11-PU_S6_START42_V14B-v2/AODSIM",
 			8 : "/Tbar_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+			13 : "/Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
 		},
 	},
 	"TW_powheg_tauola" : {
 		"dataset" : {
 			7 : "/T_TuneZ2_tW-channel-DR_7TeV-powheg-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/T_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+			13: "/T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
+		},
+	},
+	"TT_pythia_tauola" : {
+		"dataset" : {
+			13 : "/TT_Tune4C_13TeV-pythia8-tauola/Phys14DR-PU20bx25_tsg_PHYS14_25_V1-v1/MINIAODSIM",
 		},
 	},
 	
@@ -457,6 +466,7 @@ datasets = {
 		"dataset" : {
 			7 : "/WZJetsTo3LNu_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/WZJetsTo3LNu_TuneZ2_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+			13 : "/WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
 		},
 	},
 	"ZZJetsToLLLL_madgraph_tauola" : {
@@ -499,6 +509,7 @@ datasets = {
 		"dataset" : {
 			7 : "/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM",
+			13 : "/WJetsToLNu_13TeV-madgraph-pythia8-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM",
 		},
 	},
 	"W1JetsToLN_madgraph" : {
@@ -573,6 +584,7 @@ datasets = {
 		"dataset" : {
 			7 : "/GluGluToHToTauTau_M-125_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/GluGluToHToTauTau_M-125_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
+			13 : "/GluGluToHToTauTau_M-125_13TeV-powheg-pythia6/Phys14DR-PU20bx25_tsg_PHYS14_25_V1-v1/MINIAODSIM",
 		},
 	},
 	"SM_GluGluToHToTauTau_M_130_powheg_pythia" : {
@@ -665,7 +677,8 @@ datasets = {
 		"dataset" : {
 			7 : "/VBF_HToTauTau_M-125_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM",
 			8 : "/VBF_HToTauTau_M-125_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM",
-			13: "/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/Phys14DR-PU40bx25_PHYS14_25_V1-v1/AODSIM",
+			#13: "/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/Phys14DR-PU40bx25_PHYS14_25_V1-v1/AODSIM",
+			13 : "/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/Phys14DR-PU20bx25_tsg_PHYS14_25_V1-v2/MINIAODSIM",
 		},
 	},
 	"SM_VBFHToTauTau_M_130_powheg_pythia" : {
@@ -1099,3 +1112,21 @@ SM_WH_ZH_TTH_HToTauTau = ["SM_WH_ZH_TTH_HToTauTau_M_%d_powheg_pythia" % higgsMas
 SM_TTH_HToTauTau = ["SM_TTH_HToTauTau_M_%s_pythia" % higgsMass for higgsMass in ["110","115","120","122_5","125","127_5","130","135","140"]]
 SUSYGGHToTauTau = ["SUSYGluGluToHToTauTau_M-%s_8TeV-pythia6-tauola" % higgsMass for higgsMass in ["120","300"]]
 SUSYBBHToTauTau = ["SUSYBBHToTauTau_M-%s_8TeV-pythia6-tauola" % higgsMass for higgsMass in ["120","300"]]
+
+
+##### Run2  #######################################################
+
+## Preliminary samples for H2Taus
+#  https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorking2015#MC_samples
+
+Phys14 = [
+	"TTJets_madgraph_tauola",
+	"TbarW_powheg_tauola",
+	"TT_pythia_tauola",
+	"WZJetsToLLLN_madgraph_tauola",
+	"WJetsToLN_madgraph",
+	"TTJets_madgraph_tauola",
+	"DYJetsToLL_M_50_madgraph",
+	"SM_VBFHToTauTau_M_125_powheg_pythia",
+	"SM_GluGluToHToTauTau_M_125_powheg_pythia"
+]
