@@ -190,7 +190,7 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 	)
 	## ------------------------------------------------------------------------
 	## declare edm OutputModule (expects a path 'p'), uncommented if wanted
-
+	process.load("Kappa.Skimming.edmOut")
 	#process.edmOut = cms.OutputModule(
 		#"PoolOutputModule",
 		#fileName = cms.untracked.string('dump.root'),				## name of output file
