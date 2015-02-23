@@ -131,21 +131,10 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 						       "mvaNonTrigV025nsCSA14",
 						       "mvaNonTrigV025nsPHYS14")
 	process.kappaTuple.Electrons.minPt = cms.double(8.0)
-
-	## for the Run 2 cutBased Id
-	# https://github.com/ikrav/ElectronWork/blob/master/ElectronNtupler/test/runIdDemoPrePHYS14AOD.py#L29-L56
-	from PhysicsTools.SelectorUtils.tools.vid_id_tools import setupAllVIDIdsInModule, setupVIDElectronSelection 
-	from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
-	process.load("RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi")
-	process.egmGsfElectronIDSequence = cms.Sequence(process.egmGsfElectronIDs)
-	# Define which IDs we want to produce
-	# Each of these IDs contains all four standard cut-based ID working points 
-	my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_cff']
-	for idmod in my_id_modules:
-		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+	from Kappa.Skimming.KElectrons_run2_cff import setupElectrons
+	setupElectrons(process)
 
 	process.p *= (
-		process.egmGsfElectronIDSequence *
 		process.makeKappaElectrons
 	)
 

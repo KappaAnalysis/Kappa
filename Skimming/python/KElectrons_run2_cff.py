@@ -73,7 +73,26 @@ patElectrons.embedHighLevelSelection.pvSrc = "goodOfflinePrimaryVertices"
 ## run this to produce patElectrons w/o generator match or trigger match
 ## and with MVA electron ID
 
+## for the Run 2 cutBased Id
+# https://github.com/ikrav/ElectronWork/blob/master/ElectronNtupler/test/runIdDemoPrePHYS14AOD.py#L29-L56
+from PhysicsTools.SelectorUtils.tools.vid_id_tools import setupAllVIDIdsInModule, setupVIDElectronSelection
+from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
+from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi import *
+egmGsfElectronIDSequence = cms.Sequence(egmGsfElectronIDs)
+# Define which IDs we want to produce
+# Each of these IDs contains all four standard cut-based ID working points 
+
+def setupElectrons(process):
+	my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_cff']
+	for idmod in my_id_modules:
+		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+
+
+
+
 makeKappaElectrons = cms.Sequence(
+    egmGsfElectronIDSequence *
     electronIdMVA *
     patElectrons
     )
+
