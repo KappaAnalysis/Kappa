@@ -138,47 +138,6 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 		process.makeKappaElectrons
 	)
 
-	## for electron iso
-	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L349-L384
-	process.load("CommonTools.ParticleFlow.Isolation.pfElectronIsolation_cff")
-	process.elPFIsoValueCharged04PFIdPFIso = process.elPFIsoValueCharged04PFId.clone()
-	process.elPFIsoValueChargedAll04PFIdPFIso = process.elPFIsoValueChargedAll04PFId.clone()
-	process.elPFIsoValueGamma04PFIdPFIso = process.elPFIsoValueGamma04PFId.clone()
-	process.elPFIsoValueNeutral04PFIdPFIso = process.elPFIsoValueNeutral04PFId.clone()
-	process.elPFIsoValuePU04PFIdPFIso = process.elPFIsoValuePU04PFId.clone()
-	
-	process.elPFIsoValueGamma04PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.08)','EcalBarrel:ConeVeto(0.08)'))
-	process.elPFIsoValueNeutral04PFIdPFIso.deposits[0].vetos = (cms.vstring())
-	process.elPFIsoValuePU04PFIdPFIso.deposits[0].vetos = (cms.vstring())
-	process.elPFIsoValueCharged04PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.015)'))
-	process.elPFIsoValueChargedAll04PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.015)','EcalBarrel:ConeVeto(0.01)'))
-	
-	process.electronPFIsolationValuesSequence = cms.Sequence(
-		process.elPFIsoValueCharged04PFIdPFIso+
-		process.elPFIsoValueChargedAll04PFIdPFIso+
-		process.elPFIsoValueGamma04PFIdPFIso+
-		process.elPFIsoValueNeutral04PFIdPFIso+
-		process.elPFIsoValuePU04PFIdPFIso
-	)
-	process.elPFIsoDepositCharged.src = cms.InputTag("patElectrons")
-	process.elPFIsoDepositChargedAll.src = cms.InputTag("patElectrons")
-	process.elPFIsoDepositNeutral.src = cms.InputTag("patElectrons")
-	process.elPFIsoDepositGamma.src = cms.InputTag("patElectrons")
-	process.elPFIsoDepositPU.src = cms.InputTag("patElectrons")
-
-	# electron/muon PF iso sequence
-	process.pfiso = cms.Sequence(
-		process.muonPFIsolationDepositsSequence +
-		process.muonPFIsolationValuesSequence +
-		process.electronPFIsolationDepositsSequence +
-		process.electronPFIsolationValuesSequence
-	)
-
-	# rho for electron iso
-        from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
-        process.kt6PFJetsForIsolation = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
-        process.kt6PFJetsForIsolation.Rho_EtaMax = cms.double(2.5)
-        process.p *= (process.pfiso * process.kt6PFJetsForIsolation)
 
 	## ------------------------------------------------------------------------
 	# Configure Taus

@@ -68,10 +68,6 @@ patElectrons.embedTrack                    = False
 patElectrons.embedRecHits                  = False
 patElectrons.embedHighLevelSelection.pvSrc = "goodOfflinePrimaryVertices"
 
-## ------------------------------------------------------------------------
-## Definition of sequences
-## run this to produce patElectrons w/o generator match or trigger match
-## and with MVA electron ID
 
 ## for the Run 2 cutBased Id
 # https://github.com/ikrav/ElectronWork/blob/master/ElectronNtupler/test/runIdDemoPrePHYS14AOD.py#L29-L56
@@ -88,11 +84,57 @@ def setupElectrons(process):
 		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
 
+## for electron iso
+# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L349-L384
+from CommonTools.ParticleFlow.Isolation.pfElectronIsolation_cff import *
+elPFIsoValueCharged04PFIdPFIso = elPFIsoValueCharged04PFId.clone()
+elPFIsoValueChargedAll04PFIdPFIso = elPFIsoValueChargedAll04PFId.clone()
+elPFIsoValueGamma04PFIdPFIso = elPFIsoValueGamma04PFId.clone()
+elPFIsoValueNeutral04PFIdPFIso = elPFIsoValueNeutral04PFId.clone()
+elPFIsoValuePU04PFIdPFIso = elPFIsoValuePU04PFId.clone()
+
+elPFIsoValueGamma04PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.08)','EcalBarrel:ConeVeto(0.08)'))
+elPFIsoValueNeutral04PFIdPFIso.deposits[0].vetos = (cms.vstring())
+elPFIsoValuePU04PFIdPFIso.deposits[0].vetos = (cms.vstring())
+elPFIsoValueCharged04PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.015)'))
+elPFIsoValueChargedAll04PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.015)','EcalBarrel:ConeVeto(0.01)'))
+
+electronPFIsolationValuesSequence = cms.Sequence(
+	elPFIsoValueCharged04PFIdPFIso+
+	elPFIsoValueChargedAll04PFIdPFIso+
+	elPFIsoValueGamma04PFIdPFIso+
+	elPFIsoValueNeutral04PFIdPFIso+
+	elPFIsoValuePU04PFIdPFIso
+)
+elPFIsoDepositCharged.src = cms.InputTag("patElectrons")
+elPFIsoDepositChargedAll.src = cms.InputTag("patElectrons")
+elPFIsoDepositNeutral.src = cms.InputTag("patElectrons")
+elPFIsoDepositGamma.src = cms.InputTag("patElectrons")
+elPFIsoDepositPU.src = cms.InputTag("patElectrons")
+
+# electron/muon PF iso sequence
+pfiso = cms.Sequence(
+	#muonPFIsolationDepositsSequence +
+	#muonPFIsolationValuesSequence +
+	electronPFIsolationDepositsSequence +
+	electronPFIsolationValuesSequence
+)
+
+	# rho for electron iso
+from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
+kt6PFJetsForIsolation = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
+kt6PFJetsForIsolation.Rho_EtaMax = cms.double(2.5)
 
 
+## ------------------------------------------------------------------------
+## Definition of sequences
+## run this to produce patElectrons w/o generator match or trigger match
+## and with MVA electron ID
 makeKappaElectrons = cms.Sequence(
     egmGsfElectronIDSequence *
     electronIdMVA *
-    patElectrons
+    patElectrons *
+    pfiso *
+    kt6PFJetsForIsolation
     )
 
