@@ -112,33 +112,11 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 
 	## ------------------------------------------------------------------------
 	# Configure Muons
-	process.load("Kappa.Skimming.KMuons_cff")
+	process.load("Kappa.Skimming.KMuons_run2_cff")
 	process.kappaTuple.active += cms.vstring('Muons')	                ## produce/save KappaMuons
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
 	process.p *= process.makeKappaMuons
 	
-	## for muon iso
-	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L430-L460
-	process.load("CommonTools.ParticleFlow.Isolation.pfMuonIsolation_cff")
-	process.muPFIsoValueCharged04PFIso = process.muPFIsoValueCharged04.clone()
-	process.muPFIsoValueChargedAll04PFIso = process.muPFIsoValueChargedAll04.clone()
-	process.muPFIsoValueGamma04PFIso = process.muPFIsoValueGamma04.clone()
-	process.muPFIsoValueNeutral04PFIso = process.muPFIsoValueNeutral04.clone()
-	process.muPFIsoValuePU04PFIso = process.muPFIsoValuePU04.clone()
-	
-	process.muonPFIsolationValuesSequence = cms.Sequence(
-		process.muPFIsoValueCharged04PFIso+
-		process.muPFIsoValueChargedAll04PFIso+
-		process.muPFIsoValueGamma04PFIso+
-		process.muPFIsoValueNeutral04PFIso+
-		process.muPFIsoValuePU04PFIso
-	)
-	process.muPFIsoDepositCharged.src = cms.InputTag("muons")
-	process.muPFIsoDepositChargedAll.src = cms.InputTag("muons")
-	process.muPFIsoDepositNeutral.src = cms.InputTag("muons")
-	process.muPFIsoDepositGamma.src = cms.InputTag("muons")
-	process.muPFIsoDepositPU.src = cms.InputTag("muons")
-
 	## ------------------------------------------------------------------------
 	# Configure Electrons
 	process.load("Kappa.Skimming.KElectrons_run2_cff")
