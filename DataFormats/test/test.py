@@ -26,12 +26,10 @@ Naming:
 - config: CMSSW config equipped with 'Kappa test' statements
 - case: a test case (1 config, 1 CMSSW version, a series of tests)
 Hierarchy:
-main: choose application mode
-  run: run on one Kappa directory
-    testcases from configs
-
-
-
+- main: choose application mode
+  - run: run on one Kappa directory (or branch)
+    - testcases: one case from configs x CMSSW versions
+      - tests: single tests
 """
 
 import os
@@ -40,9 +38,10 @@ import glob
 import subprocess
 import copy
 import time
+import shutil
 
 groupConfigsToBeChecked = [
-    "Skimming/zjet/x.py", # does not exist, just testing error handling here
+    "Skimming/zjet/x.py",  # does not exist, just testing error handling here
     "Skimming/higgsTauTau/kSkimming_cfg.py",
     "Skimming/higgsTauTau/kSkimming_run2_cfg.py",
     "Skimming/zjet/2014-04-03_skim_53x_emu.py",
@@ -53,47 +52,59 @@ kappaPath = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
 
 def main(args):
+    global kappaPath
     # minimal argument parser
-    batchMode = ("-b" in args)
-    if "-b" in args:
-        args.remove("-b")
+    opt = {
+        'batchMode': ("-b" in args),
+        'dryRun': ("-d" in args),
+    }
+    for o in ['-b', '-d']:
+        if o in args:
+            args.remove(o)
     if "-h" in args:
         print "Usage: /path/to/script/test.py [config|branch names] [-b (batch mode=no questions)]"
-        exit()
-    #for i, a in zip(range(len(args)), args):
-    #    print "DEBUG: %4d: %s" % (i, a)
-    # run the tests
+        exit(0)
+
+    # check environment before running dangerous things
+    if '/Kappa' in os.path.abspath('.'):
+        print "This script should not be run within a Kappa folder as it creates new folders here."
+        exit(2)
+    if len(glob.glob('./*')):
+        print "This script should be run in an empty folder!"
+        exit(2)
+
+    # select the run mode and execute it
     results = []
     if len(args) == 1:
         print "Test all default configs in working directory"
-        results.append(run(kappaPath, batchMode=batchMode))
+        results.append(run(kappaPath, **opt))
     elif args[1][-3:] == '.py':
         print "Test these configs:", args[1:]
-        results.append(run(kappaPath, configs=args[1:], batchMode=batchMode))
+        results.append(run(kappaPath, configs=args[1:], **opt))
     else:
         print "Test all default configs in these branches:", ", ".join(args[1:])
         for b in args[1:]:
             print "Test branch '%s':" % b
-            #git clone -b {branch} Kappa
-            results.append(run(kappaPath, branch=b, batchMode=batchMode))
-    # print results (stdout + html)
-    for r in results:
-        print r
-    return
-    #printresult(duration=duration)
-    #NEW
-    # read configs
-    # create cases (branches * configs * versions)
+            cmd = ['git', 'clone', '-b', branch, 'https://github.com/KappaAnalysis/Kappa.git', 'Kappa_%s' % branch]
+            kappaPath = os.abspath('./Kappa_%s' % branch)
+            print " ".join(cmd)
+            subprocess.Popen(cmd).wait()
+            
+            results.append(run(kappaPath, branch=b, commit="Kappa", **opt))
+    allOK = all([case.result == 100 for branch in results for case in branch])
 
-
-
-    writeHTML(cases)
-    finalResult = {}
-    finalResult['result'] = sum([case.result < 4 for case in cases])
-    if not finalResult['result']:
+    # print results as html (stdout?)
+    html = writeHTML(results, allOK)
+    htmlfile = 'kappastatus.html'
+    with open(htmlfile, 'w') as f:
+        f.write(html)
+    if not allOK:
         sendMail()
+    print "HTML written to %s, Kappa status:%s ok." % (htmlfile, [' not', ''][allOK])
+    return not allOK
 
-def run(kappaPath, configs=None, branch=None, batchMode=False):
+def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryRun=False):
+    """The main test run function for one working directory or branch"""
     print "Collect configs from %s ..." % kappaPath
     configNames = collectConfigs(kappaPath, configs)
 
@@ -106,6 +117,8 @@ def run(kappaPath, configs=None, branch=None, batchMode=False):
     # make test cases from the configs (configs x CMSSW versions)
     cases = expandCases(configs)
     cases = sorted(cases, key=lambda k: k.name)
+    cases[0].branch = branch or kappaPath
+    cases[0].commit = commit
 
     if not printPreCheck(configs):
         # the program should always run up to here, fatal errors only afterwards
@@ -115,39 +128,39 @@ def run(kappaPath, configs=None, branch=None, batchMode=False):
             "[yes]\n" % len(cases))[:1] or 'y') != 'y'):
             exit()
 
-    print "\nConfigure %d cases ..." % len(cases)
+    print "\nConfigure %d cases:" % len(cases)
     tests = [
-        Arch(config), Env(config), Recipe(config), Scram(config),
-        Copy(config)
+        Arch(), Env(), Recipe(), Scram(), Copy(), Compile(),
+        Config(), CmsRun(), Output(), Compare(),
     ]
     for case, i in zip(sorted(cases), range(len(cases))):
-        print "- Case %d/%d: %s" % (i+1, len(cases), name)
+        print "- Case %d/%d: %s ..." % (i+1, len(cases), case.name),
+        case.tasks = copy.deepcopy(tests)
+        print ['failed', 'successful'][case.configure()]
 
-        case.configure()
-
-    print "\nCheck %d cases ..." % len(cases)
+    print "\nCheck %d cases:" % len(cases)
     for case, i in zip(sorted(cases), range(len(cases))):
-        print "- Case %d/%d: %s" % (i+1, len(cases), name)
-        case.preCheck()
+        print "- Case %d/%d: %s ..." % (i+1, len(cases), case.name),
+        print ['failed', 'successful'][case.check()]
 
-    print "\nWrite test script for %d cases ..." % len(cases)
+    print "\nWrite test script for %d cases:" % len(cases)
     for case, i in zip(sorted(cases), range(len(cases))):
-        print "- Case %d/%d: %s" % (i+1, len(cases), name)
+        print "- Case %d/%d: %s" % (i+1, len(cases), case.name)
         case.writeScript()
-
-    print "\nRun %d cases ..." % len(cases)
+    #return []
+    print "\nRun %d cases:" % len(cases)
     for case, i in zip(sorted(cases), range(len(cases))):
-        print "- Case %d/%d: %s" % (i+1, len(cases), name)
-        case.run()
+        print "- Case %d/%d: %s ..." % (i+1, len(cases), case.name),
+        sys.stdout.flush()
+        print ['failed', 'successful', 'untested'][case.run(dryRun) * case.retrieve()]
 
-    print "\nRetrieve results for %d cases ..." % len(cases)
+    print "\nRetrieve results for %d cases:" % len(cases)
     result = []
     for case, i in zip(sorted(cases), range(len(cases))):
-        print "- Case %d/%d: %s" % (i+1, len(cases), name)
+        print "- Case %d/%d: %s" % (i+1, len(cases), case.name)
         result.append(case.getResult())
         #result[name] = testCase(cases[name])
-    print "Done."
-    return result
+    return cases
 
 
 
@@ -222,6 +235,12 @@ def preCheck(name, case):
     """Does a quick check if all information is available to run the tests"""
     if not case['CMSSW'] or not case['scram arch']:
         print "- Warning: {cfg:30}: Missing CMSSW and/or scram arch: config can not be tested at all.".format(cfg=name)
+    elif len(case['CMSSW']) != len(case['scram arch']):
+        print "- Warning: {cfg:30}: Different number of CMSSW versions ({nV}) and architectures ({nA}) given!".format(
+                cfg=name, nV=len(case['CMSSW']), nA=len(case['scram arch']))
+    for arch, ver in zip(case['scram arch'], case['CMSSW']):
+        if not os.path.exists('/cvmfs/cms.cern.ch/%s/cms/cmssw/CMSSW_%s' % (arch, ver)):
+            print "- Warning: {cfg:30}: CMSSW {v} not available for scram arch {arch}!".format(cfg=name, v=niceVersion(ver), arch=arch)
     if case['compare'] is False:
         print "- Warning: {cfg:30}: Given compare file does not exist: no result comparision possible.".format(cfg=name)
     if case['checkout script']:
@@ -263,37 +282,48 @@ def expandCases(configs):
     """For all configs, create a test case for each CMSSW version"""
     cases = []
     for config in configs.values():
-        for i in range(len(config['CMSSW'])):
+        for ver, arch in zip(config['CMSSW'], config['scram arch']):
             case = TestCase(config)
-            case.name = config['cfgname'] + '_' + config['CMSSW'][i]
-            case.config['CMSSW'] = config['CMSSW'][i]
-            case.config['scram arch'] = config['scram arch'][i]
+            case.name = config['cfgname'] + '_' + ver
+            case.config['name'] = case.name
+            case.config['CMSSW'] = ver
+            case.config['scram arch'] = arch
             cases.append(case)
-            print case.config
-    print "CC", cases
+            #print case.config
     return cases
 
 
 class Test:
     """Base class of test tasks"""
     #shortDescription = "Test"
+    optional = False
     preCheck = False
     script = ""
     def __init__(self):
-        self.result = 0  # not run, failed, could not test due to requirements, can pass (not yet tested), optional (not selected), successful
+        self.result = 0  # 0init, 10configure 0error1success, 20check 0error1success, 30run 0error1success 40 retrievenot 0nolog1log, 90 finalfailed 99optional100success 
+        self.name = self.__class__.__name__
+    def __str__(self):
+        return self.name
     def boolResult(self):
         return bool(self.result > 3)
-    def configure(self):
-        return True
-    def run(self):
-        return 5
-    def preCheck(self):
+    def configure(self, config):
+        self.config = config
+        self.result = 11
         return True
     def check(self):
-        name = self.__class__.__name__
-        print name
-        with open('%s.log' % name) as f:
-            result = 'KAPPA TEST SUCCESSFUL' in f.read()
+        self.result = 21
+        return True
+    def getResult(self):
+        self.log = '%s_%s.txt' % (self.config['name'], self.name)
+        if os.path.exists(self.log):
+            with open(self.log) as f:
+                self.result = 90 + 10 * ('KAPPA TEST STEP SUCCESSFUL' in f.read())
+        elif self.optional:
+            self.result = 99
+        else:
+            self.result = 40
+        self.previous = 100
+        return self.result
 
 
 class TestCase(dict):
@@ -301,6 +331,7 @@ class TestCase(dict):
     def __init__(self, config, tasks=None):
         self.script = ""
         self.name = ""
+        self.log = ""
         self.config = copy.deepcopy(config)
         if tasks:
             self.tasks = copy.deepcopy(tasks)
@@ -310,95 +341,121 @@ class TestCase(dict):
     def __str__(self):
         s = "Testcase %s " % self.name
         if type(self.tasks) == list:
-            s += "(Tasks: " + ", ".join(self.tasks) + ")\n"
+            s += "(Tasks: " + ", ".join([str(t) for t in self.tasks]) + ")\n"
         return s + "  config: %s" % self.config
+    
+    def calculateResult(self, threshold=None):
+        minimum = min([t.result for t in self.tasks])
+        if threshold is None:
+            return minimum
+        return minimum >= threshold
 
     def configure(self):
-        result = True
+        """fill and rate missing entries in case dictionary"""
+        self.scriptname = self.name + "_testscript.sh"
+        self.version = niceVersion(self.config['CMSSW'])
+        if not self.config.get('checkout script', False):
+            self.config['checkout script'] = '# no checkout script'
+        if not self.config.get('output', False):
+            self.config['output'] = '# output name unknown'
+            self.config['no'] = '# '
+        else:
+            self.config['no'] = ''
+        result = {}
         if self.tasks:
             for task in self.tasks:
                 task.configure(self.config)
-    def preCheck(self):
+        self.result = self.calculateResult()
+        return self.result >= 11
+    def check(self):
         for task in self.tasks:
             task.check()
-    def writeScript(self):
-        print "DEBUG: CASE", case
-        self.script = "#!/bin/bash\ncd {case}\n"
+        self.result = self.calculateResult()
+        return self.result >= 21
+    def writeScript(self, debug=False):
+        self.script = "#!/bin/bash\nshopt -s expand_aliases\ncd {case}\n"
         for task in self.tasks:
-            self.script += "# {name}\n( {script} ) &> {name}.log".format(
-                name=task.__name__, script=task.script)
-        print self.script
-        with open(self.scriptame, 'w') as f:
-            f.write(script.format(kappa=kappaPath, **case))
-        with open(filename) as f:
-            for line in f:
-                print "   ", line[:-1]
-    def run(self):
-        print "running ...",
+            self.script += "\n# {name}\n"\
+                "echo \"KAPPA TEST TIME $(date +%s) $(date --rfc-3339=seconds)\" > {name}.log\n"\
+                "{script} &>> {name}.log && echo \"KAPPA TEST STEP SUCCESSFUL\" >> {name}.log\n"\
+                "echo \"KAPPA TEST TIME $(date +%s) $(date --rfc-3339=seconds)\" >> {name}.log\n".format(
+                name=task.name,
+                script=task.script.replace('\n', ' &>> %s.log\n' % task.name))
+        #print self.script
+        os.mkdir(self.name)
+        with open(self.scriptname, 'w') as f:
+            f.write(self.script.format(kappa=kappaPath, case=self.name, **self.config))
+        if debug:  # print script on output
+            with open(self.scriptname) as f:
+                for line in f:
+                    print "   ", line[:-1] if '\n' in line else line
+        self.result = 31
+        return self.result >= 31
+    def run(self, dryRun=False):
         startTime = time.time()
-        #subprocess.Popen(self.script)
-        time.sleep(1)
+        if dryRun:
+            os.mkdir(self.name + '/CMSSW_' + self.config['CMSSW'])
+            os.mkdir(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src')
+            for i in [t.name for t in self.tasks if not t.optional]:
+                with open(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src/' + i + '.log', 'w') as f:
+                    f.write("Test %s\nKAPPA TEST STEP SUCCESSFUL\n" % i)
+            time.sleep(0)
+        else:
+            self.scriptreturncode = subprocess.Popen(['bash', self.scriptname]).wait()
         self.runtime = time.time() - startTime
-        self.nicetime = "Time: %4d:%02d" % (int(duration/60), int(duration - int(duration/60) * 60))
-        print "done."
+        self.nicetime = "%4d:%02d" % (int(self.runtime/60), int(self.runtime - int(self.runtime/60) * 60))
+        return ((min([t.result for t in self.tasks]) > 40) + 2 * dryRun)
+    def retrieve(self):
+        if not os.path.exists(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src'):
+            return False  # no CMSSW folder created during test
+        # search for produced log files and copy them to the main folder
+        filelist = glob.glob('*_*/CMSSW_*/src/*.log') + glob.glob('*_*/*.log')
+        if not filelist:
+            print "No log files found!"
+        for f in filelist:
+            shutil.copy(f, self.name + '_' + f[f.rfind('/')+1:].replace('.log', '.txt'))
+        
+        self.log = self.name + '_Testcase.txt'
+        with open(self.log, 'w') as f:
+            f.write("Log file for test case '%s'\n" % self.name)
+            for task in self.tasks:
+                if os.path.exists('%s_%s.txt' % (self.name, task.name)):
+                    f.write("\nTest: %s\n" % task.name)
+                    f.write(open('%s_%s.txt' % (self.name, task.name)).read())
+                else:
+                    print "File not found:", '%s_%s.txt' % (self.name, task.name)
+        return True
     def getResult(self):
+        result = []
         for task in self.tasks:
-            result = min(result, task.run() + 10 * task.relevant)
-        self.result = result
-        return result
-        result = {
-            'env': False, 'scram': False, 'recipe': False, 'compile': False,
-            'python': False
-        }
-        for key in result:
-            with open('%s.log' % key) as log:
-                result[k] = ('successful' in log.read())
+            task.getResult()
+            print "  %s: %d" % (task.name, task.result)
+            result.append(task.result)
+        self.result = min(result)
+        if self.result == 99:
+            self.result = 100 # optional tests do not count for final result
+        print "  Result:", self.result
+        return self.result
 
 
-
-def configureCase(case):
-    """fill and rate missing entries in case dictionary"""
-    print "DEBUG: CASE", case
-    case['testscript'] = case['case'] + "/testscript.sh"
-    #return {}
-    script = ""
-    case['version'] = niceVersion(case['CMSSW'])
-    if not case.get('checkout script', False):
-        case['checkout script'] = '# no checkout script'
-    if not case.get('output', False):
-        case['output'] = '# output name unknown'
-        case['no'] = '# '
-    else:
-        case['no'] = ''
-    return case
-
-def scriptCase(case):
-    """create directory and test script from case dictionary"""
-    for test in case['tests']:
-        pass #script = script.replace("> {}".format(test),
-    #        ' &> ../../{}.log && echo "--- LOG: {} ---\nKAPPA TEST STEP SUCCESSFUL" &>> ../../{}.log'.format(log).replace('&>','asdf'))
-
-    os.mkdir(case['case'])
-    # write script
-
-
-
-
+### Single tests
 
 class Arch(Test):
     """Does the config file specify the scram arch needed for testing (required)"""
-    script = "export SCRAM_ARCH={scram arch}"\
-             "ls /cvmfs/cms.cern.ch/{scram arch}/cms/cmssw/CMSSW_{CMSSW}"
+    script = "export SCRAM_ARCH={scram arch}\n"\
+             "ls -d /cvmfs/cms.cern.ch/{scram arch}/cms/cmssw/CMSSW_{CMSSW}" # for the return code
 
 class Env(Test):
     """Return code of cmsrel and cmsenv"""
-    script = "source /cvmfs/cms.cern.ch/cmsset_default.sh &&"\
-             "cmsrel CMSSW_{CMSSW} &&"\
-             "cd CMSSW_{CMSSW}/src &&"\
-             "cmsenv"
+    script = "source /cvmfs/cms.cern.ch/cmsset_default.sh\n"\
+             "cmsrel CMSSW_{CMSSW}\n"\
+             "cd CMSSW_{CMSSW}/src\n"\
+             "cmsenv\n"\
+             "test ! -z \"$CMSSW_BASE\""
 
 class Recipe(Test):
     """Return code of the checkout recipe (if provided)"""
+    optional = True
     # complicated rm path to prevent accidental removal
     script = "{checkout script}\nrm -rf ../../../{case}/CMSSW_{CMSSW}/src/Kappa"
 
@@ -409,26 +466,34 @@ class Scram(Test):
 class Copy(Test):
     """The Kappa version to be tested is copied to src/"""
     # get your private Kappa to be tested
-    script = "rsync -r {kappa} ./"
+    script = "rsync -rP --exclude=.git --exclude=lib {kappa} ./"
 
 class Compile(Test):
     """Return code of scram b including Kappa"""
     script = "scram b -j 4"
 
-class Python(Test):
+class Config(Test):
     """CMSSW config file is valid (executed with python)"""
     script = "python {config}"
-
 
 class CmsRun(Test):
     """Return code of CMSSW"""
     script = "cmsRun {config}"
 
+class Output(Test):
+    """Does file exist"""
+    script = "test -f {output}"
+
+class Valid(Test):
+    """Is output file a valid ROOT file"""
+    script = "test -f {output}"
+
 class Compare(Test):
     """Whether the output file is identical to the given compare file"""
-    script = "compareFiles.py {output} {compare}"
+    script = "#compareFiles.py {output} {compare}"\
+             "echo Not tested"
 
-def writeHTML(branches):
+def writeHTML(branches, allOK):
     # header
     html = """\
 <!DOCTYPE html>
@@ -437,11 +502,14 @@ def writeHTML(branches):
 
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta charset="utf-8"/>
+<link rel="shortcut icon" type=image/x-icon" href="http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/img/Kappa.ico"/>
+<meta name="description" content="Result overview of the status of the Kappa framework"/>
+<title>Kappa test results</title>
 <style>
 body {
   margin: 0px;
-    font-family: "Ubuntu"
+    font-family: "Ubuntu";
 }
 h2 { padding: 20px 0px 0px 0px; }
 h3 {
@@ -474,10 +542,8 @@ div {
 div.result {
   width: 200px;
   text-align: center;
-  background-color: #449D44;
-  padding: 8px
   display: inline;
-    padding: 0.2em 0.6em 0.3em;
+    padding: 0.2em 1.0em 0.3em;
     font-size: 150%;
     font-weight: 700;
     color: #FFF;
@@ -485,6 +551,12 @@ div.result {
     white-space: nowrap;
     vertical-align: baseline;
     border-radius: 0.25em;
+}
+div.allgood {
+  background-color: #449D44;
+}
+div.allbad {
+  background-color: #C9302C;
 }
 
 a:focus, a:hover {
@@ -498,13 +570,15 @@ a {
     color: #337AB7;
     text-decoration: none;
 }
+table a { color: inherit; text-align: center; display:block;
+    text-decoration:none; }
+table a:hover { color: LightGray; text-decoration: none; }
 span a { color: white }
 h3 a { color: #3D578C }
 
 
 table, th, td {
     border: 0px none;
-    #border-collapse: collapse;
     padding: 4px;
 }
 
@@ -517,7 +591,6 @@ tr {
 td {
 	border: 0;
 	margin: 0px 0px;
-	#padding: 3px 0px;
 }
 table.legend, tr.legend, th.legend, td.legend, .legend > tr, .legend > td, .legend > th {
     border: 0px;
@@ -533,90 +606,110 @@ table#t01 tr:nth-child(even) {
 table#t01 tr:nth-child(odd) {
     background-color: #fff;
 }
-table#t01 th {  text-align:left;   border: 0px;}
-table#t01 td {    border: 0px;}
-#table#t01 th {
-#    color: white;
-#    background-color: black;
-#}
-td.fail { background: #C9302C; }
-td.success { background: #449D44; }
-td.acceptable { background: YellowGreen; }
-td.other {background: #CCC; }
-td.untestable { background: #EC971F; }
-</style>
-</head>
+table#t01 th { text-align:left;   border: 0px;}
+table#t01 td { border: 0px;}
 
-<body>
+td.fail { background: #C9302C; color: #C9302C; }
+td.success { background: #449D44; color: #449D44; }
+td.acceptable { background: YellowGreen; color: YellowGreen; }
+td.other {background: #CCC; color: #CCC; }
+td.untestable { background: #EC971F; color: #EC971F; }
+</style>
+<script>
+function timeAgo(time) {
+    var diff = (new Date() - new Date(time*1000)) / 1000;
+    diff = Math.floor(diff);
+    var sec = Math.floor(diff % 60);
+    var min = Math.floor(diff / 60 % 60);
+    var std = Math.floor(diff / 3600 % 24);
+    var day = Math.floor(diff / 24 / 3600);
+
+    var outstr = " ("
+           + (day > 0 ? day + "d " : "")
+           + (std > 0 ? std + "h " : "")
+           + min + "min ago)";
+    if (diff < 60) outstr = " (now)";
+    document.getElementById("timeago").innerHTML = outstr;
+
+    if (day > 7)
+        document.getElementById("timeago").style.color = "red";
+} 
+</script>
+</head>
+"""
+    # general info
+    runtime = sum([case.runtime for branch in branches for case in branch])
+    m, s = divmod(runtime, 60)
+    h, m = divmod(m, 60)
+    values = {
+        'runtime': "%d:%02d:%02d" % (h, m, s),
+        'status': ["not ok", "ok"][allOK],
+        'cls': ['allbad', 'allgood'][allOK],
+        'time': time.time(),
+        'date': time.strftime('%Y-%m-%d – %H:%M:%S'),
+    }
+    repo = "https://github.com/KappaAnalysis/Kappa"
+    
+    def getStatus(result, previous=100):
+        if result == 100:
+            return "success"
+        if result == 99:
+            return "acceptable"
+        return "fail"
+
+    html += """
+<body onload="timeAgo({time})">
  <div class="head"><h1>Kappa Test Results</h1></div>
  <div>
- <h2>General Information</h2>
- Date: 2015-01-06 - 12:00:12
- <p>Test run time: 20 min</p>
- <p>This page is a result of the <a href="https://github.com/KappaAnalysis/Kappa/blob/master/DataFormats/test/test.py">test.py</a> script,
- which is run daily to test <a href="https://github.com/KappaAnalysis/Kappa">Kappa</a>.</p>
+ <h2>General Information</h2> <p>Date: {date}<span id="timeago"></span>, run time: {runtime}</p>
+ <p>This page is a result of the <a href="https://github.com/KappaAnalysis/Kappa/blob/development/DataFormats/test/test.py">test.py</a> script,
+ which is run regularly to test <a href="https://github.com/KappaAnalysis/Kappa">Kappa</a>.</p>
 
- <div class="result">Kappa is ok</div>
-
- <h2>Tested Branches in Detail</h2>
- """
-    # general info
+ <div class="result {cls}">Kappa is {status}</div>
+ 
+ """.format(**values)
     # branches
-    html += "<h2>Tested Branches in Detail</h2>"
+    html += "<h2>Test Results in Detail</h2>"
     for branch in branches:
-        html += """ <h3>Branch: dictchanges</h3>
-  <p><span class="commit">Kappa_2_0_1-1-gbf126cb</span>
- <table>
-  <tr>
-    <th colspan="2">Test case</th>
-    <th colspan="4">Configuration</th>
-    <th colspan="6">System</th>
-    <th colspan="2">Run</th>
-    <th colspan="3">Output</th>
-    <th></th>
-    <th></th>
-  </tr>
-  <tr>
-    <th style="text-align:left">Config file</th> <th>Version</th>"""
-        for task in branch[0]:
-            html += "<th>{taskname}</th>"
-        html += "\n</tr>\n"
-        for case in b:
+        #  <!-- <tr>    <th colspan="2">Test case</th>    <th colspan="4">Configuration</th>    <th colspan="6">System</th>    <th colspan="2">Run</th>    <th colspan="3">Output</th>    <th></th>    <th></th>  </tr> -->
+        if len(branches) == 1 and branch[0].commit is None:  # workdir
+            html += " <h3>Working directory: {workdir}</h3>".format(
+                workdir=branch[0].branch)
+        else:  # real branch
+            html += """ <h3>Branch: <a href="{branchref}">{branchname}</a></h3>
+  <p><span class="commit"><a href="{commitref}">{commit}</a></span>""".format(
+        branchname=branch[0].branch,
+        commit=branch[0].commit,
+        branchref=repo + "/commits/" + branch[0].branch,
+        commitref=repo + "/commits/" + branch[0].commit,
+        )
+        html += "<table>\n  <tr>\n     <th style=\"text-align:left\">Config file</th> <th>Version</th>"
+        for task in branch[0].tasks:
+            html += "<th>{taskname}</th>".format(taskname=task.name)
+        html += "<th></th><th>Result</th>\n</tr>\n"
+        for case in branch:
             html += """<tr>
-    <td class="none">{config}</td>
-    <td class="none">{CMSSW}</td>"""
-            for task in case:
-                html += '<td class="{result}"></td>'
-            html += "</tr>\n"
+    <td class="none" title="{path}">{config}</td>
+    <td class="none" title="{scram}">{version}</td>""".format(
+        config=case.config['cfgname'],
+        version=niceVersion(case.config['CMSSW']),
+        path=case.config['config'],
+        scram=case.config['scram arch'],
+    )
+            for task in case.tasks:
+                html += '<td class="{status}"><a href="{log}">{result}</a></td>'.format(log=task.log, result=task.result, status=getStatus(task.result, task.previous))
+            html += '<td></td><td class="{status}"><a href="{log}">{result}</a></td></tr>\n'.format(log=case.log, result=case.result, status=getStatus(case.result))
+    html += "</table>\n"
 
     # legend
-    html = '<hr/>\n<h4>Legend</h4>\n<table class="legend"  id="t01">\n'
-    for task in cases[0].tasks:
-        html += "<tr><th>{name}</th><td>{doc}</td></tr>\n".format(task)
+    html += '<hr/>\n<h4>Legend</h4>\n<table class="legend"  id="t01">\n'
+    for task in branches[0][0].tasks:
+        html += "<tr><th>{name}</th><td>{doc}</td></tr>\n".format(name=task.name, doc=task.__doc__)
     html += "</table>\n"
     # footer
     html += "</div>\n</body>\n</html>\n"
     return html
 
-
-def printTestResult(result):
-    print "Step   Folders  Env  Recipe  Scram  Copy  Compile  Config  cmsRun  Output  Valid  Compare"
-    print """Result {names}
-    config: {config}
-    Version   recipe scram python cmsRun output root compare
-    {version} {recipe} {scram} {python} {cmsRun} {
-    """
-
-def printResult(case):
-    template = """{names}
-    config: {config}
-    Version   recipe scram python cmsRun output root compare
-    {version} {recipe} {scram} {python} {cmsRun} {
-    """
-    return template.format(**case)
-
-def bash(command):
-    print "    bash:", " ".join(command)
 
 def sendMail():
     import smtplib
@@ -628,13 +721,13 @@ the test script found issues in
 problems: http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/
 """)
     msg['Subject'] = 'Kappa test problems'
-    msg['From'] = 'joram.berger@cern.ch'
-    msg['To'] = 'joram.berger@cern.ch'
+    msg['From'] = 'test@kappa' 
+    msg['To'] = 'joram.berger@cern.ch'  # artus list?
 
     s = smtplib.SMTP('smarthost.kit.edu')
     #s.sendmail(msg['From'], msg['To'] , msg.as_string())
     s.quit()
-    print "Message sent to", msg['To']
+    print "Message sent to %s." % msg['To']
 
 if __name__ == "__main__":
     main(sys.argv)
