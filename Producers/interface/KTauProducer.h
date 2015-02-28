@@ -37,6 +37,33 @@ public:
 		         std::hash<bool>()(tau.charge()) );
 	}
 
+	static void fillTau(const SingleInputType &in, SingleOutputType &out)
+	{
+		// Fill additional fields from KTau
+		out.tauKey = createRecoPFTauHash(in);
+
+		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); i++)
+		{
+			KPFCandidate tmp;
+			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
+			out.chargedHadronCandidates.push_back(tmp);
+		}
+
+		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); i++)
+		{
+			KLV tmp;
+			copyP4(in.signalPiZeroCandidates()[i].p4(), tmp.p4);
+			out.piZeroCandidates.push_back(tmp);
+		}
+
+		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
+		{
+			KPFCandidate tmp;
+			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
+			out.gammaCandidates.push_back(tmp);
+		}
+	}
+
 protected:
 	virtual bool isCorrectType(std::string className)
 	{
@@ -47,32 +74,11 @@ protected:
 	{
 		// Fill fields of KBasicTau via base class
 		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>::fillSingle(in, out);
-
-		// Fill additional fields from KTau
-		out.tauKey = createRecoPFTauHash(in);
-
-		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); i++)
-		{
-			KPFCandidate tmp;
-			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
-			out.chargedHadronCandidates.push_back(tmp);
-		}
+		// Fill additional fields of KTau
+		KTauProducer::fillTau(in, out);
+		
 		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), PFSorter);
-
-		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); i++)
-		{
-			KLV tmp;
-			copyP4(in.signalPiZeroCandidates()[i].p4(), tmp.p4);
-			out.piZeroCandidates.push_back(tmp);
-		}
 		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), LVSorter);
-
-		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
-		{
-			KPFCandidate tmp;
-			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
-			out.gammaCandidates.push_back(tmp);
-		}
 		std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), PFSorter);
 	}
 private:
