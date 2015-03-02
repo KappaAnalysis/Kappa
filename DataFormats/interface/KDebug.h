@@ -28,6 +28,7 @@ std::ostream &operator<<(std::ostream &os, const KJet &jet);
 std::ostream &operator<<(std::ostream &os, const KLepton &lep);
 std::ostream &operator<<(std::ostream &os, const KBasicTau &tau);
 std::ostream &operator<<(std::ostream &os, const KTau &tau);
+std::ostream &operator<<(std::ostream &os, const KExtendedTau &tau);
 std::ostream &operator<<(std::ostream &os, const KGenTau &tau);
 std::ostream &operator<<(std::ostream &os, const KVertex &vertex);
 std::ostream &operator<<(std::ostream &os, const KVertexSummary &vs);

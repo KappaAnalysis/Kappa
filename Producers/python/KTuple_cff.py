@@ -471,6 +471,20 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
+	ExtendedTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+		taus = cms.PSet(
+			src = cms.InputTag("hpsPFTauProducer"),
+			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
+			binaryDiscrWhitelist = cms.vstring("hpsPFTau.*"),
+			binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", "raw", "Raw"),
+			floatDiscrWhitelist = cms.vstring("hpsPFTau.*raw.*", "hpsPFTau.*Raw.*"),
+			floatDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
+			tauDiscrProcessName = cms.string("KAPPA"),
+			barrelSuperClustersSource = cms.InputTag("particleFlowSuperClusterECAL:particleFlowSuperClusterECALBarrel"),
+			endcapSuperClustersSource = cms.InputTag("particleFlowSuperClusterECAL:particleFlowSuperClusterECALEndcapWithPreshower"),
+		),
+	),
+
 	L2MuonTrajectorySeed = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 		whitelist = cms.vstring("hltL2MuonSeeds"),

@@ -151,6 +151,10 @@
 #pragma link C++ class std::vector<KTau>+;
 #pragma link C++ typedef KTaus;
 
+#pragma link C++ struct KExtendedTau+;
+#pragma link C++ class std::vector<KExtendedTau>+;
+#pragma link C++ typedef KExtendedTaus;
+
 #pragma link C++ struct KTaupairVerticesMap+;
 #pragma link C++ class std::vector<KTaupairVerticesMap>+;
 #pragma link C++ typedef KTaupairVerticesMaps;

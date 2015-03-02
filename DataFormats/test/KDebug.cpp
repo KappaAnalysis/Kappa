@@ -180,6 +180,13 @@ std::ostream &operator<<(std::ostream &os, const KTau &tau)
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const KExtendedTau &tau)
+{
+	os << static_cast<const KBasicTau>(tau) << std::endl;
+	os << "\tnBarrelSuperClusters=" << tau.superClusterBarrelCandidates.size();
+	os << " nEndcapSuperClusters=" << tau.superClusterEndcapCandidates.size();
+	return os;
+}
 
 std::ostream &operator<<(std::ostream &os, const KGenTau &tau)
 {

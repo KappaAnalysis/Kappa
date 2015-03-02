@@ -72,4 +72,16 @@ struct KTau : public KBasicTau
 typedef std::vector<KTau> KTaus;
 
 
+/// Kappa extended Tau data format
+/** This contains additional tau quantities which are usually not needed in a
+    simple analysis skim, but are required for more detailed studies (e.g., TauPOG) 
+ */
+struct KExtendedTau : public KTau
+{
+	/// four-vectors
+	KLVs superClusterBarrelCandidates;
+	KLVs superClusterEndcapCandidates;
+};
+typedef std::vector<KExtendedTau> KExtendedTaus;
+
 #endif

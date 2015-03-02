@@ -39,6 +39,7 @@ int main() {
 	cout << "* KPFCandidate: " << KPFCandidate() << endl << endl;
 	cout << "* KPileupDensity: " << KPileupDensity() << endl << endl;
 	cout << "* KTau: " << KTau() << endl << endl;
+	cout << "* KExtendedTau: " << KExtendedTau() << endl << endl;
 	cout << "* KTaupairVerticesMap: " << KTaupairVerticesMap() << endl << endl;
 	cout << "* KTrack: " << KTrack() << endl << endl;
 	cout << "* KTriggerObjects: " << KTriggerObjects() << endl << endl;
