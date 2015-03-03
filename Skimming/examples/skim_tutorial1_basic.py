@@ -4,6 +4,7 @@
 # Kappa test: CMSSW 5.3.22
 # Kappa test: scram arch slc6_amd64_gcc472
 # Kappa test: checkout nix
+# Kappa test: output kappa_mc.root
 
 import FWCore.ParameterSet.Config as cms
 

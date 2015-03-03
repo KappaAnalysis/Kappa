@@ -10,6 +10,7 @@
 # Kappa test: CMSSW 5.3.22
 # Kappa test: scram arch slc6_amd64_gcc472
 # Kappa test: checkout script scripts/checkoutCmssw53xPackagesForSkimming.py
+# Kappa test: output kappaTuple.root
 
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper as datasetsHelper

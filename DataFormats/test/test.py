@@ -209,8 +209,8 @@ def parseConfigs(configs, kappaCommentIdentifier='Kappa test:'):
                             done = True
                     if not done:
                         print "- Warning: {cfg:30}: Unknown 'Kappa test' line: {line}".format(cfg=name, line=line.strip())
-                elif 'outputFile' in line:
-                    result[name]['output'] = line.split('=', 1)[1].split('root')[0].strip() + 'root'
+                elif 'outputFile' in line and (output not in result[name]):
+                    result[name]['output'] = line.split('=', 1)[1].split('root')[0].strip()[1:] + 'root'
         # fill missing items to have a complete dictionary
         if 'CMSSW' not in result[name]:
             result[name]['CMSSW'] = []
@@ -470,7 +470,7 @@ class Copy(Test):
 
 class Compile(Test):
     """Return code of scram b including Kappa"""
-    script = "scram b -j 4"
+    script = "scram b -j4"
 
 class Config(Test):
     """CMSSW config file is valid (executed with python)"""
@@ -490,7 +490,7 @@ class Valid(Test):
 
 class Compare(Test):
     """Whether the output file is identical to the given compare file"""
-    script = "#compareFiles.py {output} {compare}"\
+    script = "#compareFiles.py {output} {compare}\n"\
              "echo Not tested"
 
 def writeHTML(branches, allOK):
