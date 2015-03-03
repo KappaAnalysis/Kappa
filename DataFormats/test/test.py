@@ -379,12 +379,14 @@ class TestCase(dict):
     def writeScript(self, debug=False):
         self.script = "#!/bin/bash\nshopt -s expand_aliases\ncd {case}\n"
         for task in self.tasks:
+            task.log = '%s/%s_%s.txt' % (os.path.abspath('./'), self.name, task.name.lower())
             self.script += "\n# {name}\n"\
-                "echo \"KAPPA TEST TIME $(date +%s) $(date --rfc-3339=seconds)\" > {name}.log\n"\
-                "{script} &>> {name}.log && echo \"KAPPA TEST STEP SUCCESSFUL\" >> {name}.log\n"\
-                "echo \"KAPPA TEST TIME $(date +%s) $(date --rfc-3339=seconds)\" >> {name}.log\n".format(
+                "echo \"KAPPA TEST TIME $(date +%s) $(date --rfc-3339=seconds)\" > {log}\n"\
+                "{script} >> {log} 2>&1 && echo \"KAPPA TEST STEP SUCCESSFUL\" >> {log}\n"\
+                "echo \"KAPPA TEST TIME $(date +%s) $(date --rfc-3339=seconds)\" >> {log}\n".format(
+                log=task.log,
                 name=task.name,
-                script=task.script.replace('\n', ' &>> %s.log\n' % task.name))
+                script=task.script.replace('\n', ' >> %s 2>&1\n' % task.log))
         #print self.script
         os.mkdir(self.name)
         with open(self.scriptname, 'w') as f:
@@ -398,11 +400,14 @@ class TestCase(dict):
     def run(self, dryRun=False):
         startTime = time.time()
         if dryRun:
-            os.mkdir(self.name + '/CMSSW_' + self.config['CMSSW'])
-            os.mkdir(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src')
-            for i in [t.name for t in self.tasks if not t.optional]:
-                with open(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src/' + i + '.log', 'w') as f:
-                    f.write("Test %s\nKAPPA TEST STEP SUCCESSFUL\n" % i)
+            #os.mkdir(self.name + '/CMSSW_' + self.config['CMSSW'])
+            #os.mkdir(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src')
+            for task in self.tasks: # if not t.optional]:
+                print "Writing to", task.log
+                if not task.log:
+                    print task.log, "LOG", task.name, self.name
+                with open(task.log, 'w') as f:
+                    f.write("Test %s\nKAPPA TEST STEP SUCCESSFUL\n" % task.name)
             time.sleep(0)
         else:
             self.scriptreturncode = subprocess.Popen(['bash', self.scriptname]).wait()
@@ -410,24 +415,24 @@ class TestCase(dict):
         self.nicetime = "%4d:%02d" % (int(self.runtime/60), int(self.runtime - int(self.runtime/60) * 60))
         return ((min([t.result for t in self.tasks]) > 40) + 2 * dryRun)
     def retrieve(self):
-        if not os.path.exists(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src'):
-            return False  # no CMSSW folder created during test
-        # search for produced log files and copy them to the main folder
-        filelist = glob.glob('*_*/CMSSW_*/src/*.log') + glob.glob('*_*/*.log')
-        if not filelist:
-            print "No log files found!"
-        for f in filelist:
-            shutil.copy(f, self.name + '_' + f[f.rfind('/')+1:].replace('.log', '.txt'))
+        #if not os.path.exists(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src'):
+        #    return False  # no CMSSW folder created during test
+        ## search for produced log files and copy them to the main folder
+        #filelist = glob.glob('*_*/CMSSW_*/src/*.log') + glob.glob('*_*/*.log')
+        #if not filelist:
+        #    print "No log files found!"
+        #for f in filelist:
+        #ab    shutil.copy(f, self.name + '_' + f[f.rfind('/')+1:].replace('.log', '.txt'))
         
-        self.log = self.name + '_Testcase.txt'
+        self.log = self.name + '_log.txt'
         with open(self.log, 'w') as f:
             f.write("Log file for test case '%s'\n" % self.name)
             for task in self.tasks:
-                if os.path.exists('%s_%s.txt' % (self.name, task.name)):
+                if os.path.exists(task.log):
                     f.write("\nTest: %s\n" % task.name)
-                    f.write(open('%s_%s.txt' % (self.name, task.name)).read())
+                    f.write(open(task.log).read())
                 else:
-                    print "File not found:", '%s_%s.txt' % (self.name, task.name)
+                    print "File not found:", task.log
         return True
     def getResult(self):
         result = []
@@ -702,7 +707,7 @@ function timeAgo(time) {
         scram=case.config['scram arch'],
     )
             for task in case.tasks:
-                html += '<td class="{status}"><a href="{log}">{result}</a></td>'.format(log=task.log, result=task.result, status=getStatus(task.result, task.previous))
+                html += '<td class="{status}"><a href="{log}">{result}</a></td>'.format(log=os.path.basename(task.log), result=task.result, status=getStatus(task.result, task.previous))
             html += '<td></td><td class="{status}"><a href="{log}">{result}</a></td></tr>\n'.format(log=case.log, result=case.result, status=getStatus(case.result))
     html += "</table>\n"
 
