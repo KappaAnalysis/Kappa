@@ -344,6 +344,49 @@ To add a new object to Kappa, it needs:
   * the corresponding lines in [DataFormats/test/LinkDef.h](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/test/LinkDef.h)
   * the documentation in [docs/objects.md](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/docs/objects.md)
 
+
+### Kappa test suite
+
+The functionality of this framework is regularly checked by the
+[Kappa test script](https://github.com/KappaAnalysis/Kappa/tree/development/DataFormats/test/test.py)
+as described [here](https://indico.cern.ch/event/371827/contribution/0/material/slides/0.pdf "Indico Meeting").
+The results are presented on
+[this webpage](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/result.html "Kappa test result").
+
+In order to use this script, the tested CMSSW config file must be
+equipped with these python comments:
+
+    # Kappa test: CMSSW 7.4.4
+    # Kappa test: scram arch slc6_amd64_gcc481
+
+Further optional comments are:
+
+    # Kappa test: checkout script Skimming/scripts/scriptname.[py|sh]  (default: no script)
+    # Kappa test: output <output-filename>.root                        (default from code)
+    # Kappa test: compare <compare-file-name>.root                     (default: configname.root)
+
+You can call the test script by using one of these lines:
+
+    /path/to/Kappa/DataFormats/test/test.py config.py  # test a list of configs
+    /path/to/Kappa/DataFormats/test/test.py            # test default configs in your working directory
+    /path/to/Kappa/DataFormats/test/test.py master     # test default configs in a list of branches
+
+The available options are:
+
+    -h show help message
+    -d dry run without running the tests (creates dummy folders and logs)
+    -b batch mode without interactive questions
+
+Testing policy:
+
+- Commits to `master` and `dictchanges` must be checked and pass.
+  If you think your commit is too simple and does not require checking,
+  that is your responsibility.
+- Commits to `development` should be checked, but there are reasons to
+  commit work in progress which does not pass the tests. This should be
+  mentioned at least in the second paragraph of the commit message.
+- Commits to any other temporary development branch can be tested by the
+  user.
 ________________________________________________________________________________
 
 [KIT]:      http://www.ekp.kit.edu "Institut für Experimentelle Kernphysik"
