@@ -209,7 +209,7 @@ def parseConfigs(configs, kappaCommentIdentifier='Kappa test:'):
                             done = True
                     if not done:
                         print "- Warning: {cfg:30}: Unknown 'Kappa test' line: {line}".format(cfg=name, line=line.strip())
-                elif 'outputFile' in line and (output not in result[name]):
+                elif 'outputFile' in line and not result[name].get('output', False):
                     result[name]['output'] = line.split('=', 1)[1].split('root')[0].strip()[1:] + 'root'
         # fill missing items to have a complete dictionary
         if 'CMSSW' not in result[name]:
