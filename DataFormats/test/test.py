@@ -86,7 +86,7 @@ def main(args):
         for b in args[1:]:
             print "Test branch '%s':" % b
             cmd = ['git', 'clone', '-b', branch, 'https://github.com/KappaAnalysis/Kappa.git', 'Kappa_%s' % branch]
-            kappaPath = os.abspath('./Kappa_%s' % branch)
+            kappaPath = os.path.abspath('./Kappa_%s' % branch)
             print " ".join(cmd)
             subprocess.Popen(cmd).wait()
             
@@ -111,7 +111,7 @@ def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryR
     print "\nParse %d configs ..." % len(configNames)
     configs = parseConfigs(configNames)
 
-    print "\nTesting configs ..."
+    print "\nTesting %d configs ..." % len(configs)
     for name in sorted(configs):
         preCheck(name, configs[name])
     # make test cases from the configs (configs x CMSSW versions)
@@ -248,6 +248,8 @@ def preCheck(name, case):
         if not os.path.exists(path):
             print "- Warning: {cfg:30}: Given checkout script '{script}' does not exist: checkout will fail ({path}).".format(cfg=name, script=case['checkout script'], path=path)
             case['checkout script'] = False
+        else:
+            case['checkout script'] = path
 
 def printPreCheck(cases, length=78):
     """Print the results of preCheck in a nice table"""
@@ -314,14 +316,16 @@ class Test:
         self.result = 21
         return True
     def getResult(self):
-        self.log = '%s_%s.txt' % (self.config['name'], self.name)
         if os.path.exists(self.log):
             with open(self.log) as f:
                 self.result = 90 + 10 * ('KAPPA TEST STEP SUCCESSFUL' in f.read())
-        elif self.optional:
-            self.result = 99
         else:
             self.result = 40
+        print self.result, self.optional, self.config['checkout script'], self.name, self.config['name']
+        # hack to make checkout script optional if not given
+        if self.optional and self.config['checkout script'] and type(self.config['checkout script']) == str and self.config['checkout script'][0] == '#':
+            self.result = 99
+            print "optional", self.result
         self.previous = 100
         return self.result
 
@@ -451,17 +455,18 @@ class Env(Test):
              "cmsrel CMSSW_{CMSSW}\n"\
              "cd CMSSW_{CMSSW}/src\n"\
              "cmsenv\n"\
-             "test ! -z \"$CMSSW_BASE\""
+             "echo \"bla\"" # no idea yet for a good return code
 
 class Recipe(Test):
     """Return code of the checkout recipe (if provided)"""
     optional = True
-    # complicated rm path to prevent accidental removal
-    script = "{checkout script}\nrm -rf ../../../{case}/CMSSW_{CMSSW}/src/Kappa"
+    script = "{checkout script}"
 
 class Scram(Test):
     """The recipe (checkout script) compiles with scram)"""
-    script = "scram b -j8"
+    # complicated rm path to prevent accidental removal
+    script = "rm -rf ../../../{case}/CMSSW_{CMSSW}/src/Kappa\n"\
+             "scram b -j8"
 
 class Copy(Test):
     """The Kappa version to be tested is copied to src/"""
@@ -508,6 +513,7 @@ def writeHTML(branches, allOK):
 <title>Kappa test results</title>
 <style>
 body {
+  font-size: 10pt;
   margin: 0px;
     font-family: "Ubuntu";
 }
@@ -597,7 +603,6 @@ table.legend, tr.legend, th.legend, td.legend, .legend > tr, .legend > td, .lege
     border-collapse: collapse;
 }
 table#t01 {
-    font-size: small;
     border: 0px;
 }
 table#t01 tr:nth-child(even) {
