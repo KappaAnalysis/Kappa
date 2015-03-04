@@ -58,7 +58,8 @@ def main(args):
         'batchMode': ("-b" in args),
         'dryRun': ("-d" in args),
     }
-    for o in ['-b', '-d']:
+    sendMailOnFail = ("-s" in args)
+    for o in ['-b', '-d', '-s']:
         if o in args:
             args.remove(o)
     if "-h" in args:
@@ -95,10 +96,10 @@ def main(args):
 
     # print results as html (stdout?)
     html = writeHTML(results, allOK)
-    htmlfile = 'kappastatus.html'
+    htmlfile = 'result.html'
     with open(htmlfile, 'w') as f:
         f.write(html)
-    if not allOK:
+    if sendMailOnFail and not allOK:
         sendMail()
     print "HTML written to %s, Kappa status:%s ok." % (htmlfile, [' not', ''][allOK])
     return not allOK
@@ -725,17 +726,19 @@ def sendMail():
     import smtplib
     from email.mime.text import MIMEText as Message
 
-    msg = Message("""Kappa test results
+    msg = Message("""Dear Kappa developers,
 
-the test script found issues in
-problems: http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/
+the test script found problems in the current state of the Kappa repository.
+Please have a look at: http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/result.html
+
+Your friendly test script
 """)
     msg['Subject'] = 'Kappa test problems'
     msg['From'] = 'test@kappa' 
     msg['To'] = 'joram.berger@cern.ch'  # artus list?
 
     s = smtplib.SMTP('smarthost.kit.edu')
-    #s.sendmail(msg['From'], msg['To'] , msg.as_string())
+    s.sendmail(msg['From'], msg['To'] , msg.as_string())
     s.quit()
     print "Message sent to %s." % msg['To']
 
