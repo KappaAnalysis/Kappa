@@ -130,6 +130,20 @@ private:
 			// decay but just an intermediate generator step
 			walkDecayTree(*in.daughter(0), info, level);
 		}
+		else if(in.numberOfDaughters() == 2 && (
+				(abs(in.daughter(0)->pdgId()) == 22 && abs(in.daughter(1)->pdgId()) == 15) ||
+				(abs(in.daughter(0)->pdgId()) == 15 && abs(in.daughter(1)->pdgId()) == 22))
+			   )
+		{
+			//printf("\tone child, keeping level... ");
+			// Don't increase level since this does not seem to be a "real"
+			// decay but just an intermediate emission of a photon
+			// Don't follow photon decay path
+			if (abs(in.daughter(0)->pdgId()) == 15)
+				walkDecayTree(*in.daughter(0), info, level);
+			else
+				walkDecayTree(*in.daughter(1), info, level);
+		}
 		else
 		{
 			//printf("\t%d children, recurse...\n", in.numberOfDaughters());
