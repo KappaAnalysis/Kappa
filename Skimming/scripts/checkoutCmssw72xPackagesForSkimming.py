@@ -73,9 +73,12 @@ def checkoutPackages(args):
 		# https://twiki.cern.ch/twiki/bin/view/CMS/GluonTag (not working in 72X)
 		#"git clone git://github.com/amarini/QuarkGluonTagger.git -b v1-2-3",
 
-		#MVA & No-PU MET Recipe (commented out: conflicts with electron Id stuff?)
-		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#CMSSW_7_2_X_requires_slc6
-		#"git-cms-merge-topic -u cms-met:72X-mvaMETForMiniAOD",
+		#MVA & No-PU MET Recipe
+		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#CMSSW_7_2_X_requires_slc6_MiniAO
+		"git-cms-merge-topic -u cms-met:72X-13TeV-Training-30Jan15",
+		"cd " + cmsswsrc + "RecoMET/METPUSubtraction/",
+		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data",
+		'cd ' + cmsswsrc,
 
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git -b development",

@@ -346,10 +346,10 @@ def getBaseConfig(globaltag= 'START70_V7::All', testfile=cms.untracked.vstring("
 
 	## ------------------------------------------------------------------------
 	## MET
-	#process.load("Kappa.Skimming.KMET_run2_cff")
-	#process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
-	#process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
-	#process.p *= process.makeKappaMET
+	process.load("Kappa.Skimming.KMET_run2_cff")
+	process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
+	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
+	process.p *= process.makeKappaMET
 	
 	if not data:
 		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
