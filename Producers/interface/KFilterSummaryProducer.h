@@ -31,16 +31,23 @@ public:
 		for (size_t i = 0; i < tags.size(); ++i)
 		{
 			src = tags[i];
-
+			// Temporary Workaround:
+			// Many filters do not put the result in the event. Workaround to chain
+			// filter * dummyfilter in sequence and read result of dummyfilter if available.
+			// If product of dummyfilter not available, filter stopped the execution path => false.
+			bool result;
 			if (!event.getByLabel(src, handle))
 			{
 				std::cout << "Could not get main product! src = " << src.encode() << std::endl;
-				continue;
+				std::cout << "Continue and assume filter returned false." << std::endl;
+				result = false;
 			}
-
-			//bool conventionFail = src.encode().find("trackingPOG");
+			else
+			{
+				result= *handle;
+			}
 			summary->presence |= (1ul << i);
-			summary->decision |= (*handle << i);
+			summary->decision |= (result << i);
 		}
 		return true;
 	}
