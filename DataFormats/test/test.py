@@ -174,7 +174,7 @@ def collectConfigs(basePath, configList=None):
         if not os.path.exists(config):
             print "- Warning: No such config file:", config, "(skipped!)"
             configList.remove(config)
-    return configList
+    return [os.path.abspath(c) for c in configList]
 
 def collectVersions(cases):
     result = set()
