@@ -63,9 +63,10 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 	return os << "nTracks=" << s.nTracks << " (HQ=" << s.nTracksHQ << ")";
 }
 
-std::ostream &operator<<(std::ostream &os, const KTrackPair &s)
+std::ostream &operator<<(std::ostream &os, const KTrackPair &trackPair)
 {
-	return os << "nTracks=" << s.nTracks << " (HQ=" << s.nTracksHQ << ")";
+	return os << "dca3D = " << trackPair.dca3D << " +/- " << trackPair.dca3DError << ", "
+	          << "dca2D = " << trackPair.dca2D << " +/- " << trackPair.dca2DError;
 }
 
 std::ostream &operator<<(std::ostream &os, const KTrack &trk)

@@ -4,6 +4,8 @@
 #ifndef KAPPA_LEPTON_H
 #define KAPPA_LEPTON_H
 
+//#include <functional>
+
 #include "KTrack.h"
 
 namespace KLeptonFlavour { enum Type
@@ -83,6 +85,18 @@ public:
 		double area = radius * radius * 3.14159;
 		return std::max(0.0, pfIso(0.0) - std::max(rho * area, 0.0));
 	}
+	
+	/*
+	static int getHash(double pt, double eta, double phi, double mass, int charge)
+	{
+		return (std::hash<double>()(pt) ^ std::hash<double>()(eta) ^ std::hash<double>()(phi) ^ std::hash<double>()(mass) ^ std::hash<int>()(charge));
+	}
+	int getHash()
+	{
+		return KLepton::getHash(p4.Pt(), p4.Eta(), p4.Phi(), p4.mass(), charge());
+	}
+	*/
+	
 };
 typedef std::vector<KLepton> KLeptons;
 

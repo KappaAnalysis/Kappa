@@ -30,6 +30,7 @@
 <use name="RecoVertex/AdaptiveVertexFit"/>
 <use name="RecoVertex/LinearizationPointFinders"/>
 <use name="RecoVertex/KalmanVertexFit"/>
+<use name="RecoVertex/KinematicFitPrimitives"/>
 
 <use name="root"/>
 <use name="rootcore"/>
