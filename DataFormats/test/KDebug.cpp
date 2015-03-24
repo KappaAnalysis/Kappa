@@ -63,6 +63,11 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 	return os << "nTracks=" << s.nTracks << " (HQ=" << s.nTracksHQ << ")";
 }
 
+std::ostream &operator<<(std::ostream &os, const KTrackPair &s)
+{
+	return os << "nTracks=" << s.nTracks << " (HQ=" << s.nTracksHQ << ")";
+}
+
 std::ostream &operator<<(std::ostream &os, const KTrack &trk)
 {
 	os << static_cast<const KLV>(trk);
@@ -193,6 +198,11 @@ std::ostream &operator<<(std::ostream &os, const KGenTau &tau)
 	return os << static_cast<const KGenParticle>(tau)
 		<< " visible=" << static_cast<const KLV>(tau.visible)
 		<< " decayMode=" << int(tau.decayMode) << " vertex=" << tau.vertex;
+}
+
+std::ostream &operator<<(std::ostream &os, const KGenJet &jet)
+{
+	return os << static_cast<const KLV>(jet.p4);
 }
 
 std::ostream &operator<<(std::ostream &os, const KVertex &vertex)

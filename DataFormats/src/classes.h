@@ -82,6 +82,8 @@ namespace
 		KTaupairVerticesMaps dict_KTaupairVerticesMaps;
 		KTrack dict_KTrack;
 		KTracks dict_KTracks;
+		KTrackPair dict_KTrackPair;
+		KTrackPairs dict_KTrackPairs;
 		KTriggerObjects dict_KTriggerObjects;
 		KVertex dict_KVertex;
 		KVertices dict_KVertices;

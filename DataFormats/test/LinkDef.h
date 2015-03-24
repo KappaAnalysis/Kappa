@@ -163,6 +163,10 @@
 #pragma link C++ class std::vector<KTrack>+;
 #pragma link C++ typedef KTracks;
 
+#pragma link C++ struct KTrackPair+;
+#pragma link C++ class std::vector<KTrackPair>+;
+#pragma link C++ typedef KTrackPairs;
+
 #pragma link C++ struct KTriggerObjects+;
 
 #pragma link C++ struct KVertex+;

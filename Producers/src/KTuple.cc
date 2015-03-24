@@ -55,6 +55,7 @@
 #include "../interface/KExtendedTauProducer.h"
 #include "../interface/KTowerProducer.h"
 #include "../interface/KTrackProducer.h"
+#include "../interface/KTrackPairProducer.h"
 #include "../interface/KTrackSummaryProducer.h"
 #include "../interface/KTriggerObjectProducer.h"
 #include "../interface/KVertexProducer.h"
@@ -217,6 +218,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KTaupairVerticesMapProducer>(active[i]);
 		addProducer<KTowerProducer>(active[i]);
 		addProducer<KTrackProducer>(active[i]);
+		addProducer<KTrackPairProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);
 		addProducer<KTriggerObjectProducer>(active[i]);
 		addProducer<KVertexProducer>(active[i]);

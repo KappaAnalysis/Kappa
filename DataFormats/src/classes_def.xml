@@ -52,6 +52,8 @@
 	<class name="KTaupairVerticesMaps"/>
 	<class name="KTrack"/>
 	<class name="KTracks"/>
+	<class name="KTrackPair"/>
+	<class name="KTrackPairs"/>
 	<class name="KTriggerObjects"/>
 	<class name="KVertex"/>
 	<class name="KVertices"/>

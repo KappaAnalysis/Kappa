@@ -55,6 +55,7 @@ Plural forms are standard vectors of the classes with singular class names.
 + KExtendedTau           KExtendedTaus
 + KTaupairVerticesMap    KTaupairVerticesMaps
 + KTrack                 KTracks
++ KTrackPair             KTrackPairs
 + KTriggerObjects
 + KVertex                KVertices
 

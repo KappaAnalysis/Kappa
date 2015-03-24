@@ -186,4 +186,11 @@ struct KTrackSummary
 	unsigned int nTracksHQ;  //< number of high quality tracks in the event
 };
 
+struct KTrackPair
+{
+	unsigned int nTracks;    //< number of tracks in the event
+	unsigned int nTracksHQ;  //< number of high quality tracks in the event
+};
+typedef std::vector<KTrackPair> KTrackPairs;
+
 #endif

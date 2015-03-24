@@ -25,6 +25,7 @@ int main() {
 	cout << "* KCaloJet: " << KCaloJet() << endl << endl;
 	cout << "* KElectron: " << KElectron() << endl << endl;
 	cout << "* KLV: " << KLV() << endl << endl;
+	cout << "* KGenJet: " << KGenJet() << endl << endl;
 	cout << "* KGenParticle: " << KGenParticle() << endl << endl;
 	cout << "* KGenPhoton: " << KGenPhoton() << endl << endl;
 	cout << "* KGenTau: " << KGenTau() << endl << endl;
@@ -42,6 +43,7 @@ int main() {
 	cout << "* KExtendedTau: " << KExtendedTau() << endl << endl;
 	cout << "* KTaupairVerticesMap: " << KTaupairVerticesMap() << endl << endl;
 	cout << "* KTrack: " << KTrack() << endl << endl;
+	cout << "* KTrackPair: " << KTrackPair() << endl << endl;
 	cout << "* KTriggerObjects: " << KTriggerObjects() << endl << endl;
 	cout << "* KVertex: " << KVertex() << endl << endl;
 	cout << "* KFilterSummary: " << KFilterSummary() << endl << endl;
