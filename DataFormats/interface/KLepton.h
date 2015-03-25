@@ -4,7 +4,7 @@
 #ifndef KAPPA_LEPTON_H
 #define KAPPA_LEPTON_H
 
-//#include <functional>
+#include <boost/functional/hash.hpp>
 
 #include "KTrack.h"
 
@@ -86,16 +86,24 @@ public:
 		return std::max(0.0, pfIso(0.0) - std::max(rho * area, 0.0));
 	}
 	
-	/*
+	static int roundToSignificantDigits(double value, int nDigits)
+	{
+		int p = nDigits - (unsigned int)std::log10(value);
+		return int(std::floor(value * std::pow(10.0, p) + 0.5));
+	}
 	static int getHash(double pt, double eta, double phi, double mass, int charge)
 	{
-		return (std::hash<double>()(pt) ^ std::hash<double>()(eta) ^ std::hash<double>()(phi) ^ std::hash<double>()(mass) ^ std::hash<int>()(charge));
+		// needs to be boost::hash instead of std::hash which is only available since C++11 that is not used in CMSSW 53X
+		return (boost::hash<int>()(roundToSignificantDigits(pt, 4)) ^
+		        boost::hash<int>()(roundToSignificantDigits(eta, 4)) ^
+		        boost::hash<int>()(roundToSignificantDigits(phi, 4)) ^
+		        boost::hash<int>()(roundToSignificantDigits(mass, 4)) ^
+		        boost::hash<int>()(charge));
 	}
 	int getHash()
 	{
 		return KLepton::getHash(p4.Pt(), p4.Eta(), p4.Phi(), p4.mass(), charge());
 	}
-	*/
 	
 };
 typedef std::vector<KLepton> KLeptons;
