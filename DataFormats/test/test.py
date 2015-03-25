@@ -461,6 +461,7 @@ class Env(Test):
              "cmsrel CMSSW_{CMSSW}\n"\
              "cd CMSSW_{CMSSW}/src\n"\
              "cmsenv\n"\
+             "sed -i -e \"s@-fipa-pta@@g\" ../config/toolbox/{scram arch}/tools/selected/gcc-cxxcompiler.xml\n"\
              "echo \"bla\"" # no idea yet for a good return code
 
 class Recipe(Test):
