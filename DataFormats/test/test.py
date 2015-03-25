@@ -48,6 +48,7 @@ groupConfigsToBeChecked = [
 ]
 compareFilesPath = '/storage/6/berger/kappatest/'
 
+# get Kappa path relative to this script which is in DataFormats/test
 kappaPath = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
 
@@ -100,9 +101,10 @@ def main(args):
     with open(htmlfile, 'w') as f:
         f.write(html)
     if sendMailOnFail and not allOK:
-        sendMail()
+        sendMail(os.path.abspath('.'))
     print "HTML written to %s, Kappa status:%s ok." % (htmlfile, [' not', ''][allOK])
     return not allOK
+
 
 def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryRun=False):
     """The main test run function for one working directory or branch"""
@@ -148,7 +150,7 @@ def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryR
     for case, i in zip(sorted(cases), range(len(cases))):
         print "- Case %d/%d: %s" % (i+1, len(cases), case.name)
         case.writeScript()
-    #return []
+
     print "\nRun %d cases:" % len(cases)
     for case, i in zip(sorted(cases), range(len(cases))):
         print "- Case %d/%d: %s ..." % (i+1, len(cases), case.name),
@@ -160,7 +162,6 @@ def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryR
     for case, i in zip(sorted(cases), range(len(cases))):
         print "- Case %d/%d: %s" % (i+1, len(cases), case.name)
         result.append(case.getResult())
-        #result[name] = testCase(cases[name])
     return cases
 
 
@@ -723,7 +724,7 @@ function timeAgo(time) {
     return html
 
 
-def sendMail():
+def sendMail(testPaths):
     import smtplib
     from email.mime.text import MIMEText as Message
 
@@ -732,8 +733,10 @@ def sendMail():
 the test script found problems in the current state of the Kappa repository.
 Please have a look at: http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/result.html
 
+The test directory is %s
+
 Your friendly test script
-""")
+""" % testPaths)
     msg['Subject'] = 'Kappa test problems'
     msg['From'] = 'test@kappa' 
     msg['To'] = 'joram.berger@cern.ch'  # artus list?
