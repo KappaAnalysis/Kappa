@@ -472,7 +472,7 @@ class Env(Test):
              "cd CMSSW_{CMSSW}/src\n"\
              "cmsenv\n"\
              "sed -i -e \"s@-fipa-pta@@g\" ../config/toolbox/{scram arch}/tools/selected/gcc-cxxcompiler.xml\n"\
-             "echo \"bla\"" # no idea yet for a good return code
+             "test ! -z $CMSSW_BASE"
 
 class Recipe(Test):
     """Return code of the checkout recipe (if provided)"""
