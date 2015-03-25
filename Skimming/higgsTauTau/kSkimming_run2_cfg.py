@@ -12,6 +12,7 @@
 # Kappa test: scram arch slc6_amd64_gcc481
 # Kappa test: checkout script scripts/checkoutCmssw72xPackagesForSkimming.py
 
+import os
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper as datasetsHelper
 import Kappa.Skimming.tools as tools
@@ -403,7 +404,9 @@ if __name__ == "__main__":
 		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_PU20bx25_tsg_PHYS14_25_V1-v2_0ACE16B2-5677-E411-87FF-7845C4FC3A40.root"))
 
 		# Input file for test script
-		process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///storage/a/berger/kappatest/input/VBF_HToTauTau_M-125_13TeV_PHYS14.root"))
+		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
+		testPath = [p for p in testPaths if os.path.exists(p)][0]
+		process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_M-125_13TeV_PHYS14.root" % testPath))
 
 	## for grid-control:
 	else:

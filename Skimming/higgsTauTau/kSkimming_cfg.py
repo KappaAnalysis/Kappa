@@ -12,6 +12,7 @@
 # Kappa test: checkout script scripts/checkoutCmssw53xPackagesForSkimming.py
 # Kappa test: output kappaTuple.root
 
+import os
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper as datasetsHelper
 import Kappa.Skimming.tools as tools
@@ -31,8 +32,8 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	data = datasetsHelper.isData(nickname)
 	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
 	isEmbedded = datasetsHelper.getIsEmbedded(nickname)
-	
-	process.p = cms.Path ( )
+
+	process.p = cms.Path()
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	process.kappaTuple.active										= cms.vstring('TreeInfo')
@@ -321,8 +322,10 @@ if __name__ == "__main__":
 		#process = getBaseConfig(globaltag="START53_V15A::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/Summer12_DR53X/VBF_HToTauTau_M-125_8TeV-powheg-pythia6/AODSIM/PU_S10_START53_V7A-v1/0000/004B56D8-AAED-E111-AB70-1CC1DE1CEDB2.root"))
 
 		# DYJetsToLL for test script
-		process = getBaseConfig(globaltag="START53_V15A::All", nickname="DYJetsToLL_M_50_madgraph_8TeV", testfile=cms.untracked.vstring("file:///storage/a/berger/kappatest/input/DYJetsToLL_M-50_8TeV_Summer12.root"))
-		
+		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
+		testPath = [p for p in testPaths if os.path.exists(p)][0]
+		process = getBaseConfig(globaltag="START53_V15A::All", nickname="DYJetsToLL_M_50_madgraph_8TeV", testfile=cms.untracked.vstring("file://%s/DYJetsToLL_M-50_8TeV_Summer12.root" % testPath))
+
 	## for grid-control:
 	else:
 		process = getBaseConfig("@GLOBALTAG@", nickname="@NICK@", kappaTag="@KAPPA_TAG@")
