@@ -463,7 +463,11 @@ class Arch(Test):
 
 class Env(Test):
     """Return code of cmsrel and cmsenv"""
-    script = "source /cvmfs/cms.cern.ch/cmsset_default.sh\n"\
+    script = "echo \"NAF setup (will fail on EKP machines)\"\n"\
+             "module use -a /afs/desy.de/group/cms/modulefiles/\n"\
+             "module load cmssw\n"\
+             "echo \"EKP setup\"\n"\
+             "[[ $(hostname) == \"ekp\"* ]] && source /cvmfs/cms.cern.ch/cmsset_default.sh\n"\
              "cmsrel CMSSW_{CMSSW}\n"\
              "cd CMSSW_{CMSSW}/src\n"\
              "cmsenv\n"\
