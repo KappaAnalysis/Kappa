@@ -14,18 +14,18 @@
 #include "KBaseMultiProducer.h"
 
 
-class KTrackPairProducer : public KBaseMultiProducer<edm::View<reco::Track>, KTrackPairs>
+class KLeptonPairProducer : public KBaseMultiProducer<edm::View<reco::Track>, KLeptonPairs>
 {
 
 public:
-	KTrackPairProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::Track>, KTrackPairs>(cfg, _event_tree, _run_tree, getLabel()),
+	KLeptonPairProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiProducer<edm::View<reco::Track>, KLeptonPairs>(cfg, _event_tree, _run_tree, getLabel()),
 		electronsTag(cfg.getParameter<edm::InputTag>("electrons")),
 		muonsTag(cfg.getParameter<edm::InputTag>("muons"))
 	{
 	}
 
-	static const std::string getLabel() { return "TrackPair"; }
+	static const std::string getLabel() { return "LeptonPair"; }
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
@@ -56,10 +56,10 @@ public:
 		{
 			for (edm::View<pat::Electron>::const_iterator particle2 = particle1 + 1; particle2 < electrons->end(); ++particle2)
 			{
-				std::pair<KTrackPair, bool> trackPair = getTrackPair(particle1, particle2);
-				if (trackPair.second)
+				std::pair<KLeptonPair, bool> leptonPair = getLeptonPair(particle1, particle2);
+				if (leptonPair.second)
 				{
-					out.push_back(trackPair.first);
+					out.push_back(leptonPair.first);
 				}
 			}
 		}
@@ -69,10 +69,10 @@ public:
 		{
 			for (edm::View<reco::Muon>::const_iterator particle2 = particle1 + 1; particle2 < muons->end(); ++particle2)
 			{
-				std::pair<KTrackPair, bool> trackPair = getTrackPair(particle1, particle2);
-				if (trackPair.second)
+				std::pair<KLeptonPair, bool> leptonPair = getLeptonPair(particle1, particle2);
+				if (leptonPair.second)
 				{
-					out.push_back(trackPair.first);
+					out.push_back(leptonPair.first);
 				}
 			}
 		}
@@ -82,10 +82,10 @@ public:
 		{
 			for (edm::View<reco::Muon>::const_iterator particle2 = muons->begin(); particle2 < muons->end(); ++particle2)
 			{
-				std::pair<KTrackPair, bool> trackPair = getTrackPair(particle1, particle2);
-				if (trackPair.second)
+				std::pair<KLeptonPair, bool> leptonPair = getLeptonPair(particle1, particle2);
+				if (leptonPair.second)
 				{
-					out.push_back(trackPair.first);
+					out.push_back(leptonPair.first);
 				}
 			}
 		}
@@ -101,11 +101,16 @@ private:
 	edm::Handle<edm::View<reco::Muon> > muons;
 	
 	template<class T1, class T2>
-	std::pair<KTrackPair, bool> getTrackPair(T1 particle1, T2 particle2)
+	std::pair<KLeptonPair, bool> getLeptonPair(T1 particle1, T2 particle2)
 	{
 		KinematicParticleFactoryFromTransientTrack particleFactory;
 		
-		reco::TransientTrack transientTrack1 = this->transientTrackBuilder->build(KTrackPairProducer::getTrack(particle1));
+		const reco::Track* track1 = KLeptonPairProducer::getTrack(particle1);
+		if (track1 == 0)
+		{
+			return std::pair<KLeptonPair, bool>(KLeptonPair(), false);
+		}
+		reco::TransientTrack transientTrack1 = this->transientTrackBuilder->build(track1);
 		FreeTrajectoryState freeTrajectoryState1 = transientTrack1.impactPointTSCP().theState();
 		ParticleMass particleMass1 = particle1->mass();
 		float particleMassSigma1 = particleMass1 * 1.e-6;
@@ -113,7 +118,12 @@ private:
 		float ndf1 = 0.0; //initial ndf before kinematic fits.
 		RefCountedKinematicParticle kinParticle1 = particleFactory.particle(transientTrack1, particleMass1, chi1, ndf1, particleMassSigma1);
 		
-		reco::TransientTrack transientTrack2 = this->transientTrackBuilder->build(KTrackPairProducer::getTrack(particle2));
+		const reco::Track* track2 = KLeptonPairProducer::getTrack(particle2);
+		if (track2 == 0)
+		{
+			return std::pair<KLeptonPair, bool>(KLeptonPair(), false);
+		}
+		reco::TransientTrack transientTrack2 = this->transientTrackBuilder->build(track2);
 		FreeTrajectoryState freeTrajectoryState2 = transientTrack2.impactPointTSCP().theState();
 		ParticleMass particleMass2 = particle2->mass();
 		float particleMassSigma2 = particleMass2 * 1.e-6;
@@ -152,30 +162,42 @@ private:
 			double dca2D = ROOT::Math::Mag(transverseDcaVectorConverted);
 			double dca2DError = sqrt(ROOT::Math::Similarity(totCovConverted, transverseDcaVectorConverted)) / dca2D;
 			
-			KTrackPair trackPair;
-			trackPair.hashLepton1 = KLepton::getHash(particle1->pt(), particle1->eta(), particle1->phi(), particle1->mass(), particle1->charge());
-			trackPair.hashLepton2 = KLepton::getHash(particle2->pt(), particle2->eta(), particle2->phi(), particle2->mass(), particle2->charge());
-			trackPair.dca3D = dca3D;
-			trackPair.dca3DError = dca3DError;
-			trackPair.dca2D = dca2D;
-			trackPair.dca2DError = dca2DError;
-			//std::cout << "dca3D = " << trackPair.dca3D << " +/- " << trackPair.dca3DError << ", "
-			//          << "dca2D = " << trackPair.dca2D << " +/- " << trackPair.dca2DError << std::endl;
-			return std::pair<KTrackPair, bool>(trackPair, true);
+			KLeptonPair leptonPair;
+			leptonPair.hashLepton1 = KLepton::getHash(particle1->pt(), particle1->eta(), particle1->phi(), particle1->mass(), particle1->charge());
+			leptonPair.hashLepton2 = KLepton::getHash(particle2->pt(), particle2->eta(), particle2->phi(), particle2->mass(), particle2->charge());
+			leptonPair.dca3D = dca3D;
+			leptonPair.dca3DError = dca3DError;
+			leptonPair.dca2D = dca2D;
+			leptonPair.dca2DError = dca2DError;
+			//std::cout << "dca3D = " << leptonPair.dca3D << " +/- " << leptonPair.dca3DError << ", "
+			//          << "dca2D = " << leptonPair.dca2D << " +/- " << leptonPair.dca2DError << std::endl;
+			return std::pair<KLeptonPair, bool>(leptonPair, true);
 		}
 		else
 		{
-			return std::pair<KTrackPair, bool>(KTrackPair(), false);
+			return std::pair<KLeptonPair, bool>(KLeptonPair(), false);
 		}
 	}
 	
-	static reco::Track getTrack(edm::View<pat::Electron>::const_iterator particle)
+	static const reco::Track* getTrack(edm::View<pat::Electron>::const_iterator particle)
 	{
-		return *(particle->gsfTrack());
+		if (particle->gsfTrack().isNonnull())
+		{
+			return &(*(particle->gsfTrack()));
+		}
+		return 0;
 	}
-	static reco::Track getTrack(edm::View<reco::Muon>::const_iterator particle)
+	static const reco::Track* getTrack(edm::View<reco::Muon>::const_iterator particle)
 	{
-		return *(particle->innerTrack());
+		if (particle->innerTrack().isNonnull())
+		{
+			return &(*(particle->innerTrack()));
+		}
+		else if (particle->track().isNonnull())
+		{
+			return &(*(particle->track()));
+		}
+		return 0;
 	}
 };
 

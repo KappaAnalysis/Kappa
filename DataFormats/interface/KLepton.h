@@ -108,4 +108,16 @@ public:
 };
 typedef std::vector<KLepton> KLeptons;
 
+struct KLeptonPair
+{
+	int hashLepton1;
+	int hashLepton2;
+	
+	double dca3D;
+	double dca3DError;
+	double dca2D;
+	double dca2DError;
+};
+typedef std::vector<KLeptonPair> KLeptonPairs;
+
 #endif

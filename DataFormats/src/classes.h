@@ -64,6 +64,8 @@ namespace
 		KL1Muons dict_KL1Muons;
 		KLepton dict_KLepton;
 		KLeptons dict_KLeptons;
+		KLeptonPair dict_KLeptonPair;
+		KLeptonPairs dict_KLeptonPairs;
 		KMET dict_KMET;
 		KMuon dict_KMuon;
 		KMuons dict_KMuons;
@@ -82,8 +84,6 @@ namespace
 		KTaupairVerticesMaps dict_KTaupairVerticesMaps;
 		KTrack dict_KTrack;
 		KTracks dict_KTracks;
-		KTrackPair dict_KTrackPair;
-		KTrackPairs dict_KTrackPairs;
 		KTriggerObjects dict_KTriggerObjects;
 		KVertex dict_KVertex;
 		KVertices dict_KVertices;

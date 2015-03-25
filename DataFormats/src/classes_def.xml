@@ -34,6 +34,8 @@
 	<class name="KL1Muons"/>
 	<class name="KLepton"/>
 	<class name="KLeptons"/>
+	<class name="KLeptonPair"/>
+	<class name="KLeptonPairs"/>
 	<class name="KMET"/>
 	<class name="KMuon"/>
 	<class name="KMuons"/>
@@ -52,8 +54,6 @@
 	<class name="KTaupairVerticesMaps"/>
 	<class name="KTrack"/>
 	<class name="KTracks"/>
-	<class name="KTrackPair"/>
-	<class name="KTrackPairs"/>
 	<class name="KTriggerObjects"/>
 	<class name="KVertex"/>
 	<class name="KVertices"/>

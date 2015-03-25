@@ -33,6 +33,7 @@ int main() {
 	cout << "* KJet: " << KJet() << endl << endl;
 	cout << "* KL1Muon: " << KL1Muon() << endl << endl;
 	cout << "* KLepton: " << KLepton() << endl << endl;
+	cout << "* KLeptonPair: " << KLeptonPair() << endl << endl;
 	cout << "* KMET: " << KMET() << endl << endl;
 	cout << "* KMuon: " << KMuon() << endl << endl;
 	cout << "* KMuonTriggerCandidate: " << KMuonTriggerCandidate() << endl << endl;
@@ -43,7 +44,6 @@ int main() {
 	cout << "* KExtendedTau: " << KExtendedTau() << endl << endl;
 	cout << "* KTaupairVerticesMap: " << KTaupairVerticesMap() << endl << endl;
 	cout << "* KTrack: " << KTrack() << endl << endl;
-	cout << "* KTrackPair: " << KTrackPair() << endl << endl;
 	cout << "* KTriggerObjects: " << KTriggerObjects() << endl << endl;
 	cout << "* KVertex: " << KVertex() << endl << endl;
 	cout << "* KFilterSummary: " << KFilterSummary() << endl << endl;

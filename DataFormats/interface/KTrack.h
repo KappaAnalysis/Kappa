@@ -186,16 +186,4 @@ struct KTrackSummary
 	unsigned int nTracksHQ;  //< number of high quality tracks in the event
 };
 
-struct KTrackPair
-{
-	int hashLepton1;
-	int hashLepton2;
-	
-	double dca3D;
-	double dca3DError;
-	double dca2D;
-	double dca2DError;
-};
-typedef std::vector<KTrackPair> KTrackPairs;
-
 #endif

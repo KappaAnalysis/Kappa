@@ -117,20 +117,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
-	TrackPair = cms.PSet(kappaNoCut,
-		manual = cms.VInputTag(),
-		
-		electrons = cms.InputTag("patElectrons"),
-		muons = cms.InputTag("muons"),
-
-		whitelist = cms.vstring("recoTracks_generalTracks"),
-		blacklist = cms.vstring(),
-
-		rename = cms.vstring("$ => Pairs"),
-		rename_whitelist = cms.vstring(),
-		rename_blacklist = cms.vstring(),
-	),
-
 	TrackSummary = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
@@ -280,6 +266,20 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		rename = cms.vstring("kt6PFJetsRho => KT6AreaRho", "kt6PFJets => KT6Area"),
 		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
+
+	LeptonPair = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+		
+		electrons = cms.InputTag("patElectrons"),
+		muons = cms.InputTag("muons"),
+
+		whitelist = cms.vstring("recoTracks_generalTracks"),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring("generalTracks => leptonPairs"),
+		rename_whitelist = cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
 

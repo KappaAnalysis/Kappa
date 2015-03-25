@@ -63,12 +63,6 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 	return os << "nTracks=" << s.nTracks << " (HQ=" << s.nTracksHQ << ")";
 }
 
-std::ostream &operator<<(std::ostream &os, const KTrackPair &trackPair)
-{
-	return os << "dca3D = " << trackPair.dca3D << " +/- " << trackPair.dca3DError << ", "
-	          << "dca2D = " << trackPair.dca2D << " +/- " << trackPair.dca2DError;
-}
-
 std::ostream &operator<<(std::ostream &os, const KTrack &trk)
 {
 	os << static_cast<const KLV>(trk);
@@ -164,6 +158,12 @@ std::ostream &operator<<(std::ostream &os, const KLepton &lep)
 	os << "\tiso: pf(CH,NH,PH,PU)=(" << lep.sumChargedHadronPt << ", " << lep.sumNeutralHadronEt;
 	os << ", " << lep.sumPhotonEt << ", " << lep.sumPUPt << ")=" << lep.pfIso();
 	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const KLeptonPair &leptonPair)
+{
+	return os << "dca3D = " << leptonPair.dca3D << " +/- " << leptonPair.dca3DError << ", "
+	          << "dca2D = " << leptonPair.dca2D << " +/- " << leptonPair.dca2DError;
 }
 
 std::ostream &operator<<(std::ostream &os, const KBasicTau &tau)
