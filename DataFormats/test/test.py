@@ -380,6 +380,7 @@ class TestCase(dict):
         return self.result >= 21
     def writeScript(self, debug=False):
         self.script = "#!/bin/bash\nshopt -s expand_aliases\ncd {case}\n"
+        self.shortscript = "#!/bin/bash\nshopt -s expand_aliases\ncd {case}\n"
         for task in self.tasks:
             task.log = '%s/%s_%s.txt' % (os.path.abspath('./'), self.name, task.name.lower())
             self.script += "\n# {name}\n"\
@@ -389,10 +390,14 @@ class TestCase(dict):
                 log=task.log,
                 name=task.name,
                 script=task.script.replace('\n', ' >> %s 2>&1\n' % task.log))
+            self.shortscript += "\n# {name}\n{script}\n".format(
+                log=task.log, name=task.name, script=task.script)
         #print self.script
         os.mkdir(self.name)
         with open(self.scriptname, 'w') as f:
             f.write(self.script.format(kappa=kappaPath, case=self.name, **self.config))
+        with open(self.scriptname.replace('script', 'shortscript'), 'w') as f:
+            f.write(self.shortscript.format(kappa=kappaPath, case=self.name, **self.config))
         if debug:  # print script on output
             with open(self.scriptname) as f:
                 for line in f:
