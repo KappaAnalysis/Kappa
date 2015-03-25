@@ -12,6 +12,7 @@
 #include <RecoVertex/KinematicFitPrimitives/interface/KinematicParticleFactoryFromTransientTrack.h>
 
 #include "KBaseMultiProducer.h"
+#include "Kappa/DataFormats/interface/Hash.h"
 
 
 class KLeptonPairProducer : public KBaseMultiProducer<edm::View<reco::Track>, KLeptonPairs>
@@ -163,8 +164,8 @@ private:
 			double dca2DError = sqrt(ROOT::Math::Similarity(totCovConverted, transverseDcaVectorConverted)) / dca2D;
 			
 			KLeptonPair leptonPair;
-			leptonPair.hashLepton1 = KLepton::getHash(particle1->pt(), particle1->eta(), particle1->phi(), particle1->mass(), particle1->charge());
-			leptonPair.hashLepton2 = KLepton::getHash(particle2->pt(), particle2->eta(), particle2->phi(), particle2->mass(), particle2->charge());
+			leptonPair.hashLepton1 = getLVChargeHash(particle1->pt(), particle1->eta(), particle1->phi(), particle1->mass(), particle1->charge());
+			leptonPair.hashLepton2 = getLVChargeHash(particle2->pt(), particle2->eta(), particle2->phi(), particle2->mass(), particle2->charge());
 			leptonPair.dca3D = dca3D;
 			leptonPair.dca3DError = dca3DError;
 			leptonPair.dca2D = dca2D;

@@ -9,6 +9,7 @@
 #ifndef KDATAFORMAT_H
 #define KDATAFORMAT_H
 
+#include "Hash.h"
 #include "KBasic.h"
 #include "KElectron.h"
 #include "KInfo.h"

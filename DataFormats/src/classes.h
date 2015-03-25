@@ -14,6 +14,7 @@
 
 #define G__DICTIONARY
 
+#include "../interface/Hash.h"
 #include "../interface/KBasic.h"
 #include "../interface/KElectron.h"
 #include "../interface/KInfo.h"
