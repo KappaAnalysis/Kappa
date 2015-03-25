@@ -203,7 +203,7 @@ std::ostream &operator<<(std::ostream &os, const KGenTau &tau)
 
 std::ostream &operator<<(std::ostream &os, const KGenJet &jet)
 {
-	return os << static_cast<const KLV>(jet.p4);
+	return os << jet.p4;
 }
 
 std::ostream &operator<<(std::ostream &os, const KVertex &vertex)
