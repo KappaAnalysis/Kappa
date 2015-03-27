@@ -381,11 +381,13 @@ class TestCase(dict):
                 task.configure(self.config)
         self.result = self.calculateResult()
         return self.result >= 11
+
     def check(self):
         for task in self.tasks:
             task.check()
         self.result = self.calculateResult()
         return self.result >= 21
+
     def writeScript(self, debug=False):
         self.script = "#!/bin/bash\nshopt -s expand_aliases\ncd {case}\n"
         self.shortscript = "#!/bin/bash\nshopt -s expand_aliases\ncd {case}\n"
@@ -412,6 +414,7 @@ class TestCase(dict):
                     print "   ", line[:-1] if '\n' in line else line
         self.result = 31
         return self.result >= 31
+
     def run(self, dryRun=False):
         startTime = time.time()
         if dryRun:
@@ -429,16 +432,8 @@ class TestCase(dict):
         self.runtime = time.time() - startTime
         self.nicetime = "%4d:%02d" % (int(self.runtime/60), int(self.runtime - int(self.runtime/60) * 60))
         return ((min([t.result for t in self.tasks]) > 40) + 2 * dryRun)
+
     def retrieve(self):
-        #if not os.path.exists(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src'):
-        #    return False  # no CMSSW folder created during test
-        ## search for produced log files and copy them to the main folder
-        #filelist = glob.glob('*_*/CMSSW_*/src/*.log') + glob.glob('*_*/*.log')
-        #if not filelist:
-        #    print "No log files found!"
-        #for f in filelist:
-        #ab    shutil.copy(f, self.name + '_' + f[f.rfind('/')+1:].replace('.log', '.txt'))
-        
         self.log = self.name + '_log.txt'
         with open(self.log, 'w') as f:
             f.write("Log file for test case '%s'\n" % self.name)
@@ -449,6 +444,7 @@ class TestCase(dict):
                 else:
                     print "File not found:", task.log
         return True
+
     def getResult(self):
         result = []
         for task in self.tasks:
@@ -520,7 +516,7 @@ class Valid(Test):
 
 class Compare(Test):
     """Whether the output file is identical to the given compare file"""
-    script = "#compareFiles.py {output} {compare}\n"\
+    script = "compareFiles.py {output} {compare}\n"\
              "echo Not tested"
 
 def writeHTML(branches, allOK):
