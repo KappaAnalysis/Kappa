@@ -46,7 +46,15 @@ groupConfigsToBeChecked = [
     "Skimming/higgsTauTau/kSkimming_run2_cfg.py",
     "Skimming/zjet/2014-04-03_skim_53x_emu.py",
 ]
-compareFilesPath = '/storage/6/berger/kappatest/'
+compareFilesPaths = [
+    '/storage/6/berger/kappatest/output/',
+    '/nfs/dust/cms/user/jberger/kappatest/output/',
+]
+compareFilesPath = compareFilesPaths[0]
+for p in compareFilesPaths:
+    if os.path.exists(p):
+        compareFilesPath = p
+        break
 
 # get Kappa path relative to this script which is in DataFormats/test
 kappaPath = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
