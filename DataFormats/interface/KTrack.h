@@ -12,7 +12,7 @@
 #include <Math/GenVector/VectorUtil.h>
 
 /** Data format definition for KTracks and KLeptons
-    
+
  */
 
 /// TrackBase::TrackQuality
