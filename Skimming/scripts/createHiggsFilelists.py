@@ -11,7 +11,7 @@ import json
 import re
 from Kappa.Skimming.registerDatasetHelper import *
 import Kappa.Skimming.datasets2011 as datasets2011
-#from Kappa.Skimming.datasets2012 import *
+import Kappa.Skimming.datasets2012 as datasets2012
 #from Kappa.Skimming.datasets2013 import *
 
 
@@ -98,16 +98,18 @@ def main():
 	(options, args) = parser.parse_args()
 
 	customFilelist = options.campaign or options.scenario or options.energy or options.embedded or options.generator or options.data or options.process
-
+	querielist = []
 	if customFilelist:
-		query = createCustomFilelist(options.title, options.campaign, options.data, options.embedded, options.energy, options.generator, options.process, options.scenario)
+		querielist.append( createCustomFilelist(options.title, options.campaign, options.data, options.embedded, options.energy, options.generator, options.process, options.scenario))
 
 	else:
-		queries = datasets2011.queries
+		querielist.append( datasets2011.queries )
+		querielist.append( datasets2012.queries )
 
 	dict = load_database(dataset)
-	for query in queries.items():
-		writeFilelist(query, dict, options)
+	for queries in querielist:
+		for query in queries.items():
+			writeFilelist(query, dict, options)
 
 
 
