@@ -11,6 +11,7 @@
 # Kappa test: CMSSW 7.2.2
 # Kappa test: scram arch slc6_amd64_gcc481
 # Kappa test: checkout script scripts/checkoutCmssw72xPackagesForSkimming.py
+# Kappa test: output kappatuple.root
 
 import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
