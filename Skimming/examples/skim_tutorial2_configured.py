@@ -1,20 +1,15 @@
 #-# Copyright (c) 2013 - All Rights Reserved
 #-#   Joram Berger <joram.berger@cern.ch>
 
-# Kappa test: CMSSW 5.3.22
-# Kappa test: scram arch slc6_amd64_gcc472
-# Kappa test: output skim_data.root
+# Kappa test: CMSSW 5.3.22, 7.2.2
+# Kappa test: scram arch slc6_amd64_gcc472, slc6_amd64_gcc481
+# Kappa test: output kappa_mc.root
 
 import FWCore.ParameterSet.Config as cms
 
 
 def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
-    """Testing config for Z+Jet skims with Kappa
-
-       This is used in a cmssw config file via:
-       import skim_base
-       process = skim_base.getBaseConfig('START53_V12', "testfile.root")
-    """
+    """Testing config for skims with Kappa"""
     # Set the global tag and datatype for testing or by grid-control ---------
     data = (datatype == 'data')
     if data:
@@ -75,7 +70,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
     process.load('Kappa.Producers.KTuple_cff')
     process.kappatuple = cms.EDAnalyzer('KTuple',
         process.kappaTupleDefaultsBlock,
-        outputFile=cms.string("skim_" + datatype + ".root"),
+        outputFile=cms.string("kappa_" + datatype + ".root"),
     )
     process.kappatuple.verbose = cms.int32(0)
     process.kappatuple.profile = cms.bool(True)
@@ -84,21 +79,15 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
         'MET', 'BasicJets',
     )
     if data:
-        additional_actives = ['DataInfo']
+        process.kappatuple.active += ['DataInfo']
     else:
-        additional_actives = ['GenInfo', 'GenParticles']
-    for active in additional_actives:
-        process.kappatuple.active.append(active)
+        process.kappatuple.active += ['GenInfo', 'GenParticles']
 
     # custom whitelist, otherwise the HLT trigger bits are not sufficient!
     process.kappatuple.Info.hltWhitelist = cms.vstring(
-        # matches 'HLT_Mu17_Mu8_v7' etc.
-        "^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
-        # matches 'HLT_DoubleMu7_v8' etc.
-        "^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",
+        "^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",  # matches HLT_Mu17_Mu8_v*
+        "^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$",                      # matches HLT_DoubleMu7_v*
     )
-    process.kappatuple.Info.tauDiscrProcessName = cms.untracked.string("XXXXXXXXX")
-    process.kappatuple.GenParticles.genParticles.selectedStatus = cms.int32(31)
 
     process.pathKappa = cms.Path(
         process.goodMuons * process.twoGoodMuons * process.kappatuple
@@ -110,6 +99,4 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
 
 
 if __name__ == "__main__":
-    # for grid-control:
-    # process = getBaseConfig('@GLOBALTAG@', datatype='@TYPE@')
-    process = getBaseConfig('FT53_V21A_AN6', 'data')
+    process = getBaseConfig('@GLOBALTAG@', datatype='@TYPE@')  # for grid-control
