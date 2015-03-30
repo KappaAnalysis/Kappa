@@ -986,7 +986,7 @@
         "embedded": true, 
         "energy": "8", 
         "generator": "madgraph-tauola", 
-        "process": "TTJets", 
+        "process": "TTJets_FullLeptMGDecays", 
         "scenario": "Summer12_TTJets"
     }, 
     "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
@@ -1004,7 +1004,7 @@
         "embedded": true, 
         "energy": "8", 
         "generator": "madgraph-tauola", 
-        "process": "TTJets", 
+        "process": "TTJets_FullLeptMGDecays", 
         "scenario": "Summer12_TTJets"
     }, 
     "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
@@ -1013,7 +1013,7 @@
         "embedded": true, 
         "energy": "8", 
         "generator": "madgraph-tauola", 
-        "process": "TTJets", 
+        "process": "TTJets_FullLeptMGDecays", 
         "scenario": "Summer12_TTJets"
     }, 
     "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
@@ -1022,7 +1022,7 @@
         "embedded": true, 
         "energy": "8", 
         "generator": "madgraph-tauola", 
-        "process": "TTJets", 
+        "process": "TTJets_FullLeptMGDecays", 
         "scenario": "Summer12_TTJets"
     }, 
     "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v2/AODSIM": {
@@ -1031,7 +1031,7 @@
         "embedded": false, 
         "energy": "8", 
         "generator": "madgraph-tauola", 
-        "process": "TTJets", 
+        "process": "TTJets_FullLeptMGDecays", 
         "scenario": "PU_S10"
     }, 
     "/TTJets_HadronicMGDecays_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A_ext-v1/AODSIM": {
@@ -1040,7 +1040,7 @@
         "embedded": false, 
         "energy": "8", 
         "generator": "madgraph", 
-        "process": "TTJets", 
+        "process": "TTJets_HadronicMGDecays", 
         "scenario": "PU_S10"
     }, 
     "/TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM": {
@@ -1049,7 +1049,7 @@
         "embedded": false, 
         "energy": "13", 
         "generator": "madgraph-tauola", 
-        "process": "TTJets", 
+        "process": "TTJets_MSDecaysCKM", 
         "scenario": "PU20bx25"
     }, 
     "/TTJets_MassiveBinDECAY_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM": {
@@ -1058,7 +1058,7 @@
         "embedded": false, 
         "energy": "8", 
         "generator": "madgraph-tauola", 
-        "process": "TTJets", 
+        "process": "TTJets_MassiveBinDECAY", 
         "scenario": "PU_S10"
     }, 
     "/TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
@@ -1067,7 +1067,7 @@
         "embedded": false, 
         "energy": "8", 
         "generator": "madgraph-tauola", 
-        "process": "TTJets", 
+        "process": "TTJets_SemiLeptMGDecays", 
         "scenario": "PU_S10"
     }, 
     "/TTJets_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v2/AODSIM": {
@@ -1112,7 +1112,7 @@
         "embedded": false, 
         "energy": "8", 
         "generator": "powheg-tauola", 
-        "process": "T", 
+        "process": "T_tW", 
         "scenario": "PU_S10"
     }, 
     "/Tau/Run2012A-22Jan2013-v1/AOD": {
@@ -1596,9 +1596,9 @@
         "campaign": "Summer12_DR53X", 
         "data": false, 
         "embedded": false, 
-        "energy": "pythia", 
-        "generator": "_ZToLL_VBFNLO_pythia6", 
-        "process": "VBF", 
+        "energy": "8", 
+        "generator": "pythia6", 
+        "process": "VBF_ZToLL", 
         "scenario": "PU_S10_START53_V7C"
     }, 
     "/W1Jet_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
