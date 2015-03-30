@@ -1,0 +1,2117 @@
+{
+    "/DY1JetsToLL_M-10To50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "DY1JetsToLL_M10To50", 
+        "scenario": "PU_S10"
+    }, 
+    "/DY1JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "DY1JetsToLL_M50", 
+        "scenario": "PU_S10"
+    }, 
+    "/DY2JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "DY2JetsToLL_M50", 
+        "scenario": "PU_S10"
+    }, 
+    "/DY2JetsToLL_TuneZ2star_M-10To50_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "DY2JetsToLL_TuneZ2star_M10To50", 
+        "scenario": "PU_S10"
+    }, 
+    "/DY3JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "DY3JetsToLL_M50", 
+        "scenario": "PU_S10"
+    }, 
+    "/DY4JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "DY4JetsToLL_M50", 
+        "scenario": "PU_S10"
+    }, 
+    "/DYJetsToLL_M-10To50_TuneZ2_7TeV-madgraph/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph", 
+        "process": "DYJetsToLL_M10To50", 
+        "scenario": "PU_S6"
+    }, 
+    "/DYJetsToLL_M-10To50filter_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "DYJetsToLL_M10To50filter", 
+        "scenario": "PU_S10"
+    }, 
+    "/DYJetsToLL_M-50_13TeV-madgraph-pythia8-tauola_v2/Spring14dr-PU_S14_POSTLS170_V6-v1/AODSIM": {
+        "campaign": "Spring14dr", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "madgraph-pythia8-tauola_v2", 
+        "process": "DYJetsToLL_M50", 
+        "scenario": "PU"
+    }, 
+    "/DYJetsToLL_M-50_13TeV-madgraph-pythia8/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "madgraph-pythia8", 
+        "process": "DYJetsToLL_M50", 
+        "scenario": "PU20bx25"
+    }, 
+    "/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball-tauola-tauPolarOff/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tarball-tauola-tauPolarOff", 
+        "process": "DYJetsToLL_M50", 
+        "scenario": "PU_S10"
+    }, 
+    "/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tarball", 
+        "process": "DYJetsToLL_M50", 
+        "scenario": "PU_S10"
+    }, 
+    "/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "DYJetsToLL_TuneZ2_M50", 
+        "scenario": "PU_S6"
+    }, 
+    "/DoubleElectron/Run2011A-16Jan2012-v1/AOD": {
+        "campaign": "Run2011A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "", 
+        "process": "DoubleElectron", 
+        "scenario": "16Jan2012v1"
+    }, 
+    "/DoubleElectron/Run2012A-22Jan2013-v1/AOD": {
+        "campaign": "Run2012A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleElectron", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/DoubleElectron/Run2012B-22Jan2013-v1/AOD": {
+        "campaign": "Run2012B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleElectron", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/DoubleElectron/Run2012C-22Jan2013-v1/AOD": {
+        "campaign": "Run2012C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleElectron", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/DoubleElectron/Run2012D-22Jan2013-v1/AOD": {
+        "campaign": "Run2012D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleElectron", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/DoubleMu/Run2011A-16Jan2012-v1/AOD": {
+        "campaign": "Run2011A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "16Jan2012v1"
+    }, 
+    "/DoubleMu/Run2011B-16Jan2012-v1/AOD": {
+        "campaign": "Run2011B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "16Jan2012v1"
+    }, 
+    "/DoubleMu/Run2012A-22Jan2013-v1/AOD": {
+        "campaign": "Run2012A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_RHembedded_trans1_tau115_ptelec1_20had1_18_v1-f456bdbb960236e5c696adfe9b04eaae/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "Run2012A_22Jan2013_v1_RHembedded_trans1_tau115_ptelec1_20had1_18_v1f456bdbb960236e5c696adfe9b04eaae"
+    }, 
+    "/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_RHembedded_trans1_tau116_ptmu1_16had1_18_v1-f456bdbb960236e5c696adfe9b04eaae/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMu", 
+        "scenario": "Run2012A_22Jan2013_v1_RHembedded_trans1_tau116_ptmu1_16had1_18_v1f456bdbb960236e5c696adfe9b04eaae"
+    }, 
+    "/DoubleMuParked/Run2012B-22Jan2013-v1/AOD": {
+        "campaign": "Run2012B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/DoubleMuParked/Run2012C-22Jan2013-v1/AOD": {
+        "campaign": "Run2012C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/DoubleMuParked/Run2012D-22Jan2013-v1/AOD": {
+        "campaign": "Run2012D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012B_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012C_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuParked/StoreResults-Run2012D_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "DoubleMuParked", 
+        "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/GluGluToHToTauTau_M-100_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M100", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-100_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M100", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-105_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M105", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-105_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M105", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-110_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M110", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-110_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M110", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-115_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M115", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-115_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M115", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-120_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M120", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-120_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M120", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-125_13TeV-powheg-pythia6/Phys14DR-PU20bx25_tsg_PHYS14_25_V1-v1/MINIAODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M125", 
+        "scenario": "PU20bx25"
+    }, 
+    "/GluGluToHToTauTau_M-125_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M125", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-125_8TeV-powheg-pythia6-tauPolarOff/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6-tauPolarOff", 
+        "process": "GluGluToHToTauTau_M125", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-125_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M125", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-130_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M130", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-130_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M130", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-135_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M135", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-135_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M135", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-140_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M140", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-140_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M140", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-145_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M145", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-145_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M145", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-150_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M150", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-150_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M150", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-155_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M155", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-155_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M155", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-160_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M160", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-160_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M160", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-90_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M90", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-90_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M90", 
+        "scenario": "PU_S10"
+    }, 
+    "/GluGluToHToTauTau_M-95_7TeV-powheg-pythia6/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M95", 
+        "scenario": "PU_S6"
+    }, 
+    "/GluGluToHToTauTau_M-95_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "GluGluToHToTauTau_M95", 
+        "scenario": "PU_S10"
+    }, 
+    "/JJHiggs0MToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "JHUGenV4", 
+        "process": "JJHiggs0MToTauTau_M125p6", 
+        "scenario": "PU_S10"
+    }, 
+    "/JJHiggs0PToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "JHUGenV4", 
+        "process": "JJHiggs0PToTauTau_M125p6", 
+        "scenario": "PU_S10"
+    }, 
+    "/MuEG/Run2012A-22Jan2013-v1/AOD": {
+        "campaign": "Run2012A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "MuEG", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/MuEG/Run2012B-22Jan2013-v1/AOD": {
+        "campaign": "Run2012B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "MuEG", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/MuEG/Run2012C-22Jan2013-v1/AOD": {
+        "campaign": "Run2012C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "MuEG", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/MuEG/Run2012D-22Jan2013-v1/AOD": {
+        "campaign": "Run2012D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "MuEG", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/SUSYBBHToTauTau_M-110_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "SUSYBBHToTauTau_M110", 
+        "scenario": "PU_S10"
+    }, 
+    "/SUSYBBHToTauTau_M-120_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "SUSYBBHToTauTau_M120", 
+        "scenario": "PU_S10"
+    }, 
+    "/SUSYBBHToTauTau_M-130_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "SUSYBBHToTauTau_M130", 
+        "scenario": "PU_S10"
+    }, 
+    "/SUSYBBHToTauTau_M-140_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "SUSYBBHToTauTau_M140", 
+        "scenario": "PU_S10"
+    }, 
+    "/SUSYBBHToTauTau_M-300_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "SUSYBBHToTauTau_M300", 
+        "scenario": "PU_S10"
+    }, 
+    "/SUSYGluGluToHToTauTau_M-110_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "SUSYGluGluToHToTauTau_M110", 
+        "scenario": "PU_S10"
+    }, 
+    "/SUSYGluGluToHToTauTau_M-120_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "SUSYGluGluToHToTauTau_M120", 
+        "scenario": "PU_S10"
+    }, 
+    "/SUSYGluGluToHToTauTau_M-130_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "SUSYGluGluToHToTauTau_M130", 
+        "scenario": "PU_S10"
+    }, 
+    "/SUSYGluGluToHToTauTau_M-140_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "SUSYGluGluToHToTauTau_M140", 
+        "scenario": "PU_S10"
+    }, 
+    "/SUSYGluGluToHToTauTau_M-300_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "SUSYGluGluToHToTauTau_M300", 
+        "scenario": "PU_S10"
+    }, 
+    "/SingleMu/Run2011A-May10ReReco-v1/AOD": {
+        "campaign": "Run2011A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "", 
+        "process": "SingleMu", 
+        "scenario": "May10ReRecov1"
+    }, 
+    "/SingleMu/Run2011A-PromptReco-v4/AOD": {
+        "campaign": "Run2011A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "", 
+        "process": "SingleMu", 
+        "scenario": "PromptRecov4"
+    }, 
+    "/TTH_HToTauTau_M-110_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6", 
+        "process": "TTH_HToTauTau_M110", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTH_HToTauTau_M-115_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6", 
+        "process": "TTH_HToTauTau_M115", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTH_HToTauTau_M-120_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6", 
+        "process": "TTH_HToTauTau_M120", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTH_HToTauTau_M-122_5_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6", 
+        "process": "TTH_HToTauTau_M122", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTH_HToTauTau_M-125_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6", 
+        "process": "TTH_HToTauTau_M125", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTH_HToTauTau_M-127_5_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6", 
+        "process": "TTH_HToTauTau_M127", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTH_HToTauTau_M-130_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6", 
+        "process": "TTH_HToTauTau_M130", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTH_HToTauTau_M-135_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6", 
+        "process": "TTH_HToTauTau_M135", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTH_HToTauTau_M-140_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6", 
+        "process": "TTH_HToTauTau_M140", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": false, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "TTJets", 
+        "scenario": "Summer12_TTJets"
+    }, 
+    "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": false, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "TTJets", 
+        "scenario": "Summer12_TTJets"
+    }, 
+    "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau122_ptmu1_18mu2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": false, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "TTJets", 
+        "scenario": "Summer12_TTJets"
+    }, 
+    "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": false, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "TTJets", 
+        "scenario": "Summer12_TTJets"
+    }, 
+    "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
+        "campaign": "StoreResults", 
+        "data": false, 
+        "embedded": true, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "TTJets", 
+        "scenario": "Summer12_TTJets"
+    }, 
+    "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v2/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "TTJets", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTJets_HadronicMGDecays_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A_ext-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "TTJets", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTJets_MSDecaysCKM_central_Tune4C_13TeV-madgraph-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "madgraph-tauola", 
+        "process": "TTJets", 
+        "scenario": "PU20bx25"
+    }, 
+    "/TTJets_MassiveBinDECAY_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "TTJets", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTJets_SemiLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "TTJets", 
+        "scenario": "PU_S10"
+    }, 
+    "/TTJets_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v2/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "TTJets", 
+        "scenario": "PU_S6"
+    }, 
+    "/TT_Tune4C_13TeV-pythia8-tauola/Phys14DR-PU20bx25_tsg_PHYS14_25_V1-v1/MINIAODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "pythia8-tauola", 
+        "process": "TT", 
+        "scenario": "PU20bx25"
+    }, 
+    "/T_TuneZ2_tW-channel-DR_7TeV-powheg-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-tauola", 
+        "process": "T_tW", 
+        "scenario": "PU_S6"
+    }, 
+    "/T_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "CSA14-powheg-tauola", 
+        "process": "T_tW", 
+        "scenario": "PU20bx25"
+    }, 
+    "/T_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-tauola", 
+        "process": "T", 
+        "scenario": "PU_S10"
+    }, 
+    "/Tau/Run2012A-22Jan2013-v1/AOD": {
+        "campaign": "Run2012A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "Tau", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/TauParked/Run2012B-22Jan2013-v1/AOD": {
+        "campaign": "Run2012B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "TauParked", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/TauParked/Run2012C-22Jan2013-v1/AOD": {
+        "campaign": "Run2012C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "TauParked", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/TauParked/Run2012D-22Jan2013-v1/AOD": {
+        "campaign": "Run2012D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "TauParked", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/TauPlusX/Run2011A-05Aug2011-v1/AOD": {
+        "campaign": "Run2011A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "", 
+        "process": "TauPlusX", 
+        "scenario": "05Aug2011v1"
+    }, 
+    "/TauPlusX/Run2011A-May10ReReco-v1/AOD": {
+        "campaign": "Run2011A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "", 
+        "process": "TauPlusX", 
+        "scenario": "May10ReRecov1"
+    }, 
+    "/TauPlusX/Run2011A-PromptReco-v4/AOD": {
+        "campaign": "Run2011A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "", 
+        "process": "TauPlusX", 
+        "scenario": "PromptRecov4"
+    }, 
+    "/TauPlusX/Run2011A-PromptReco-v6/AOD": {
+        "campaign": "Run2011A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "", 
+        "process": "TauPlusX", 
+        "scenario": "PromptRecov6"
+    }, 
+    "/TauPlusX/Run2011B-PromptReco-v1/AOD": {
+        "campaign": "Run2011B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "", 
+        "process": "TauPlusX", 
+        "scenario": "PromptRecov1"
+    }, 
+    "/TauPlusX/Run2012A-22Jan2013-v1/AOD": {
+        "campaign": "Run2012A", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "TauPlusX", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/TauPlusX/Run2012B-22Jan2013-v1/AOD": {
+        "campaign": "Run2012B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "TauPlusX", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/TauPlusX/Run2012C-22Jan2013-v1/AOD": {
+        "campaign": "Run2012C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "TauPlusX", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/TauPlusX/Run2012D-22Jan2013-v1/AOD": {
+        "campaign": "Run2012D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "", 
+        "process": "TauPlusX", 
+        "scenario": "22Jan2013v1"
+    }, 
+    "/Tbar_TuneZ2_tW-channel-DR_7TeV-powheg-tauola/Fall11-PU_S6_START42_V14B-v2/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-tauola", 
+        "process": "Tbar", 
+        "scenario": "PU_S6"
+    }, 
+    "/Tbar_tW-channel-DR_Tune4C_13TeV-CSA14-powheg-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "CSA14-powheg-tauola", 
+        "process": "Tbar", 
+        "scenario": "PU20bx25"
+    }, 
+    "/Tbar_tW-channel-DR_TuneZ2star_8TeV-powheg-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-tauola", 
+        "process": "Tbar", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBFHToTauTau_M-100_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBFHToTauTau_M100", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBFHToTauTau_M-105_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBFHToTauTau_M105", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBFHToTauTau_M-90_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBFHToTauTau_M90", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBFHToTauTau_M-95_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBFHToTauTau_M95", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBFHiggs0MToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "JHUGenV4", 
+        "process": "VBFHiggs0MToTauTau_M125p6", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBFHiggs0Mf05ph0ToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "JHUGenV4", 
+        "process": "VBFHiggs0Mf05ph0ToTauTau_M125p6", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBFHiggs0PHToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "JHUGenV4", 
+        "process": "VBFHiggs0PHToTauTau_M125p6", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBFHiggs0PToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "JHUGenV4", 
+        "process": "VBFHiggs0PToTauTau_M125p6", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-100_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M100", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-105_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M105", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-110_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M110", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-110_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M110", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-115_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M115", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-115_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M115", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-120_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M120", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-120_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M120", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/Phys14DR-PU20bx25_tsg_PHYS14_25_V1-v2/MINIAODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M125", 
+        "scenario": "PU20bx25"
+    }, 
+    "/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/Phys14DR-PU40bx25_PHYS14_25_V1-v1/AODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M125", 
+        "scenario": "PU40bx25"
+    }, 
+    "/VBF_HToTauTau_M-125_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M125", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-125_8TeV-powheg-pythia6-tauola-tauPolarOff/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6-tauola-tauPolarOff", 
+        "process": "VBF_HToTauTau_M125", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-125_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M125", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-130_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M130", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-130_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M130", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-135_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M135", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-135_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M135", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-140_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M140", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-140_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M140", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-145_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M145", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-145_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M145", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-150_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M150", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-150_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M150", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-155_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M155", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-155_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M155", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-160_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M160", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-160_8TeV-powheg-pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M160", 
+        "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-90_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M90", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_HToTauTau_M-95_7TeV-powheg-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "powheg-pythia6-tauola", 
+        "process": "VBF_HToTauTau_M95", 
+        "scenario": "PU_S6"
+    }, 
+    "/VBF_ZToLL_VBFNLO_pythia6/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12_DR53X", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "pythia", 
+        "generator": "_ZToLL_VBFNLO_pythia6", 
+        "process": "VBF", 
+        "scenario": "PU_S10_START53_V7C"
+    }, 
+    "/W1Jet_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "W1Jet", 
+        "scenario": "PU_S6"
+    }, 
+    "/W1JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "W1JetsToLNu", 
+        "scenario": "PU_S10"
+    }, 
+    "/W2JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "W2JetsToLNu", 
+        "scenario": "PU_S10"
+    }, 
+    "/W2Jets_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "W2Jets", 
+        "scenario": "PU_S6"
+    }, 
+    "/W3JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "W3JetsToLNu", 
+        "scenario": "PU_S10"
+    }, 
+    "/W3Jets_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v2/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "W3Jets", 
+        "scenario": "PU_S6"
+    }, 
+    "/W4JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph", 
+        "process": "W4JetsToLNu", 
+        "scenario": "PU_S10"
+    }, 
+    "/W4Jets_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "W4Jets", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-100_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M100", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-100_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M100", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-105_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M105", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-105_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M105", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-110_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M110", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-110_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M110", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-115_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M115", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-115_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M115", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-120_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M120", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-120_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M120", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-125_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M125", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-125_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M125", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-130_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M130", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-130_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M130", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-135_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M135", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-135_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M135", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-140_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M140", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-140_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M140", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-145_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M145", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-145_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M145", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-150_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M150", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-150_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M150", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-155_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M155", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-155_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M155", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-160_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M160", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-160_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M160", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-90_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M90", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-90_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M90", 
+        "scenario": "PU_S10"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-95_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M95", 
+        "scenario": "PU_S6"
+    }, 
+    "/WH_ZH_TTH_HToTauTau_M-95_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6-tauola", 
+        "process": "WH_ZH_TTH_HToTauTau_M95", 
+        "scenario": "PU_S10"
+    }, 
+    "/WJetsToLNu_13TeV-madgraph-pythia8-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "madgraph-pythia8-tauola", 
+        "process": "WJetsToLNu", 
+        "scenario": "PU20bx25"
+    }, 
+    "/WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball/Summer12_DR53X-PU_S10_START53_V7A-v2/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tarball", 
+        "process": "WJetsToLNu", 
+        "scenario": "PU_S10"
+    }, 
+    "/WJetsToLNu_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "WJetsToLNu", 
+        "scenario": "PU_S6"
+    }, 
+    "/WWJetsTo2L2Nu_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "WWJetsTo2L2Nu", 
+        "scenario": "PU_S6"
+    }, 
+    "/WWJetsTo2L2Nu_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "WWJetsTo2L2Nu", 
+        "scenario": "PU_S10"
+    }, 
+    "/WW_TuneZ2star_8TeV_pythia6_tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6_tauola", 
+        "process": "WW", 
+        "scenario": "PU_S10"
+    }, 
+    "/WZJetsTo2L2Q_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "WZJetsTo2L2Q", 
+        "scenario": "PU_S6"
+    }, 
+    "/WZJetsTo2L2Q_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "WZJetsTo2L2Q", 
+        "scenario": "PU_S10"
+    }, 
+    "/WZJetsTo3LNu_Tune4C_13TeV-madgraph-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "generator": "madgraph-tauola", 
+        "process": "WZJetsTo3LNu", 
+        "scenario": "PU20bx25"
+    }, 
+    "/WZJetsTo3LNu_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "WZJetsTo3LNu", 
+        "scenario": "PU_S6"
+    }, 
+    "/WZJetsTo3LNu_TuneZ2_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "WZJetsTo3LNu", 
+        "scenario": "PU_S10"
+    }, 
+    "/WZ_TuneZ2star_8TeV_pythia6_tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6_tauola", 
+        "process": "WZ", 
+        "scenario": "PU_S10"
+    }, 
+    "/ZZJetsTo2L2Nu_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "ZZJetsTo2L2Nu", 
+        "scenario": "PU_S6"
+    }, 
+    "/ZZJetsTo2L2Nu_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v3/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "ZZJetsTo2L2Nu", 
+        "scenario": "PU_S10"
+    }, 
+    "/ZZJetsTo2L2Q_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "ZZJetsTo2L2Q", 
+        "scenario": "PU_S6"
+    }, 
+    "/ZZJetsTo2L2Q_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "ZZJetsTo2L2Q", 
+        "scenario": "PU_S10"
+    }, 
+    "/ZZJetsTo4L_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
+        "campaign": "Fall11", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "7", 
+        "generator": "madgraph-tauola", 
+        "process": "ZZJetsTo4L", 
+        "scenario": "PU_S6"
+    }, 
+    "/ZZJetsTo4L_TuneZ2star_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "madgraph-tauola", 
+        "process": "ZZJetsTo4L", 
+        "scenario": "PU_S10"
+    }, 
+    "/ZZ_TuneZ2star_8TeV_pythia6_tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
+        "campaign": "Summer12", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "8", 
+        "generator": "pythia6_tauola", 
+        "process": "ZZ", 
+        "scenario": "PU_S10"
+    }
+}

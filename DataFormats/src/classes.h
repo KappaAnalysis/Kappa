@@ -14,6 +14,7 @@
 
 #define G__DICTIONARY
 
+#include "../interface/Hash.h"
 #include "../interface/KBasic.h"
 #include "../interface/KElectron.h"
 #include "../interface/KInfo.h"
@@ -64,6 +65,8 @@ namespace
 		KL1Muons dict_KL1Muons;
 		KLepton dict_KLepton;
 		KLeptons dict_KLeptons;
+		KLeptonPair dict_KLeptonPair;
+		KLeptonPairs dict_KLeptonPairs;
 		KMET dict_KMET;
 		KMuon dict_KMuon;
 		KMuons dict_KMuons;
@@ -76,6 +79,8 @@ namespace
 		KPileupDensity dict_KPileupDensity;
 		KTau dict_KTau;
 		KTaus dict_KTaus;
+		KExtendedTau dict_KExtendedTau;
+		KExtendedTaus dict_KExtendedTaus;
 		KTaupairVerticesMap dict_KTaupairVerticesMap;
 		KTaupairVerticesMaps dict_KTaupairVerticesMaps;
 		KTrack dict_KTrack;

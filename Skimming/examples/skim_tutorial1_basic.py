@@ -1,6 +1,11 @@
 #-# Copyright (c) 2013 - All Rights Reserved
 #-#   Joram Berger <joram.berger@cern.ch>
 
+# Kappa test: CMSSW 5.3.22
+# Kappa test: scram arch slc6_amd64_gcc472
+# Kappa test: checkout nix
+# Kappa test: output kappa_mc.root
+
 import FWCore.ParameterSet.Config as cms
 
 
@@ -49,7 +54,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
         outputFile=cms.string("kappa_" + datatype + ".root"),
     )
     process.kappatuple.active = cms.vstring(
-        'LV', 'Muons', 'TrackSummary', 'VertexSummary', 'BeamSpot',
+        'LV', 'TrackSummary', 'VertexSummary', 'BeamSpot',
         'MET', 'BasicJets',
     )
     if data:

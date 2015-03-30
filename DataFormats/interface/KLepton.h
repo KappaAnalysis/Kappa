@@ -4,6 +4,7 @@
 #ifndef KAPPA_LEPTON_H
 #define KAPPA_LEPTON_H
 
+#include "Hash.h"
 #include "KTrack.h"
 
 namespace KLeptonFlavour { enum Type
@@ -83,7 +84,44 @@ public:
 		double area = radius * radius * 3.14159;
 		return std::max(0.0, pfIso(0.0) - std::max(rho * area, 0.0));
 	}
+	
+	int getHash() const
+	{
+		return getLVChargeHash(p4.Pt(), p4.Eta(), p4.Phi(), p4.mass(), charge());
+	}
+	
 };
 typedef std::vector<KLepton> KLeptons;
+
+struct KLeptonPair
+{
+	int hashLepton1;
+	int hashLepton2;
+	
+	double dca3D;
+	double dca3DError;
+	double dca2D;
+	double dca2DError;
+	
+	inline bool operator ==(std::pair<KLepton*, KLepton*> const& leptons) const
+	{
+		return (((leptons.first->getHash() == hashLepton1) && (leptons.second->getHash() == hashLepton2)) ||
+		        ((leptons.first->getHash() == hashLepton2) && (leptons.second->getHash() == hashLepton1)));
+	}
+	template<class KLeptonPairsIterator>
+	inline static KLeptonPairsIterator find(KLeptonPairsIterator const& first, KLeptonPairsIterator const& last,
+	                                        std::pair<KLepton*, KLepton*> const& leptons)
+	{
+		for (KLeptonPairsIterator leptonPair = first; leptonPair != last; ++leptonPair)
+		{
+			if (*leptonPair == leptons)
+			{
+				return leptonPair;
+			}
+		}
+		return last;
+	}
+};
+typedef std::vector<KLeptonPair> KLeptonPairs;
 
 #endif

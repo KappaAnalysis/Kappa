@@ -1,10 +1,12 @@
 <use name="root" />
 
 <flags GENREFLEX_ARGS="--" />
+<flags REM_CXXFLAGS="-fipa-pta"/>
 <use name="rootrflx" />
 <use name="rootmath" />
 
 <export>
 	<use name="rootrflx" />
 	<use name="rootmath" />
+	<lib name="1"/>
 </export>

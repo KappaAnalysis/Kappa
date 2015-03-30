@@ -210,6 +210,11 @@ The KBasicTau contains information about the taus (both particle and anti-partic
 Changes in Kappa 2:
 - 
 
+### LeptonPair {#obj-leptonpair}
+
+Contains quantites that are defined per lepton pair. The matching between the pair and the leptons is done via `leptonPair.hashLepton<[1|2]> == lepton.getHash()`.
+
+
 Jets and Missing Energy {#obj-jetmet}
 =====================================
 

@@ -127,6 +127,10 @@
 #pragma link C++ class std::vector<KLepton>+;
 #pragma link C++ typedef KLeptons;
 
+#pragma link C++ struct KLeptonPair+;
+#pragma link C++ class std::vector<KLeptonPair>+;
+#pragma link C++ typedef KLeptonPairs;
+
 #pragma link C++ struct KMET+;
 
 #pragma link C++ struct KMuon+;
@@ -150,6 +154,10 @@
 #pragma link C++ struct KTau+;
 #pragma link C++ class std::vector<KTau>+;
 #pragma link C++ typedef KTaus;
+
+#pragma link C++ struct KExtendedTau+;
+#pragma link C++ class std::vector<KExtendedTau>+;
+#pragma link C++ typedef KExtendedTaus;
 
 #pragma link C++ struct KTaupairVerticesMap+;
 #pragma link C++ class std::vector<KTaupairVerticesMap>+;

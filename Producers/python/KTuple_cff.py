@@ -269,6 +269,20 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
+	LeptonPair = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+		
+		electrons = cms.InputTag("patElectrons"),
+		muons = cms.InputTag("muons"),
+
+		whitelist = cms.vstring("recoTracks_generalTracks"),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring("generalTracks => leptonPairs"),
+		rename_whitelist = cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
+
 	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
@@ -468,6 +482,20 @@ kappaTupleDefaultsBlock = cms.PSet(
 			floatDiscrWhitelist = cms.vstring("hpsPFTau.*raw.*", "hpsPFTau.*Raw.*"),
 			floatDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
 			tauDiscrProcessName = cms.string("KAPPA"),
+		),
+	),
+
+	ExtendedTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+		taus = cms.PSet(
+			src = cms.InputTag("hpsPFTauProducer"),
+			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
+			binaryDiscrWhitelist = cms.vstring("hpsPFTau.*"),
+			binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", "raw", "Raw"),
+			floatDiscrWhitelist = cms.vstring("hpsPFTau.*raw.*", "hpsPFTau.*Raw.*"),
+			floatDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
+			tauDiscrProcessName = cms.string("KAPPA"),
+			barrelSuperClustersSource = cms.InputTag("particleFlowSuperClusterECAL:particleFlowSuperClusterECALBarrel"),
+			endcapSuperClustersSource = cms.InputTag("particleFlowSuperClusterECAL:particleFlowSuperClusterECALEndcapWithPreshower"),
 		),
 	),
 

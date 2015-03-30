@@ -25,6 +25,7 @@ int main() {
 	cout << "* KCaloJet: " << KCaloJet() << endl << endl;
 	cout << "* KElectron: " << KElectron() << endl << endl;
 	cout << "* KLV: " << KLV() << endl << endl;
+	cout << "* KGenJet: " << KGenJet() << endl << endl;
 	cout << "* KGenParticle: " << KGenParticle() << endl << endl;
 	cout << "* KGenPhoton: " << KGenPhoton() << endl << endl;
 	cout << "* KGenTau: " << KGenTau() << endl << endl;
@@ -32,6 +33,7 @@ int main() {
 	cout << "* KJet: " << KJet() << endl << endl;
 	cout << "* KL1Muon: " << KL1Muon() << endl << endl;
 	cout << "* KLepton: " << KLepton() << endl << endl;
+	cout << "* KLeptonPair: " << KLeptonPair() << endl << endl;
 	cout << "* KMET: " << KMET() << endl << endl;
 	cout << "* KMuon: " << KMuon() << endl << endl;
 	cout << "* KMuonTriggerCandidate: " << KMuonTriggerCandidate() << endl << endl;
@@ -39,6 +41,7 @@ int main() {
 	cout << "* KPFCandidate: " << KPFCandidate() << endl << endl;
 	cout << "* KPileupDensity: " << KPileupDensity() << endl << endl;
 	cout << "* KTau: " << KTau() << endl << endl;
+	cout << "* KExtendedTau: " << KExtendedTau() << endl << endl;
 	cout << "* KTaupairVerticesMap: " << KTaupairVerticesMap() << endl << endl;
 	cout << "* KTrack: " << KTrack() << endl << endl;
 	cout << "* KTriggerObjects: " << KTriggerObjects() << endl << endl;

@@ -7,6 +7,12 @@
 #-#   Thomas Mueller <tmuller@cern.ch>
 #-#   Yasmin Anstruther <yasmin.anstruther@kit.edu>
 
+# Kappa test: CMSSW 5.3.22
+# Kappa test: scram arch slc6_amd64_gcc472
+# Kappa test: checkout script scripts/checkoutCmssw53xPackagesForSkimming.py
+# Kappa test: output kappaTuple.root
+
+import os
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper as datasetsHelper
 import Kappa.Skimming.tools as tools
@@ -26,8 +32,8 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	data = datasetsHelper.isData(nickname)
 	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
 	isEmbedded = datasetsHelper.getIsEmbedded(nickname)
-	
-	process.p = cms.Path ( )
+
+	process.p = cms.Path()
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	process.kappaTuple.active										= cms.vstring('TreeInfo')
@@ -43,8 +49,8 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 		jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname)),
 		centerOfMassEnergy		= cms.int32(centerOfMassEnergy),
 		puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy)),
-		isData						= cms.bool(data)
-		)
+		isData						= cms.bool(data),
+	)
 
 
 	## ------------------------------------------------------------------------
@@ -310,11 +316,16 @@ if __name__ == "__main__":
 		#process = getBaseConfig(globaltag="FT_53_V21_AN4::All", nickname="DoubleMu_PFembedded_Run2012A_22Jan2013_mt_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/results/higgs/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/DoubleMu/USER/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/0000/00F5125E-A3E4-E211-A54D-0023AEFDE638.root"))
 
 		# DYJetsToLL_M_50_madgraph_8TeV
-		process = getBaseConfig(globaltag="START53_V15A::All", nickname="DYJetsToLL_M_50_madgraph_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/Summer12_DR53X/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/AODSIM/PU_S10_START53_V7A-v1/0000/00037C53-AAD1-E111-B1BE-003048D45F38.root"))
+		#process = getBaseConfig(globaltag="START53_V15A::All", nickname="DYJetsToLL_M_50_madgraph_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/Summer12_DR53X/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball/AODSIM/PU_S10_START53_V7A-v1/0000/00037C53-AAD1-E111-B1BE-003048D45F38.root"))
 		
 		# SM_VBFHToTauTau_M_125_powheg_pythia_8TeV
 		#process = getBaseConfig(globaltag="START53_V15A::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/Summer12_DR53X/VBF_HToTauTau_M-125_8TeV-powheg-pythia6/AODSIM/PU_S10_START53_V7A-v1/0000/004B56D8-AAED-E111-AB70-1CC1DE1CEDB2.root"))
-		
+
+		# DYJetsToLL for test script
+		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
+		testPath = [p for p in testPaths if os.path.exists(p)][0]
+		process = getBaseConfig(globaltag="START53_V15A::All", nickname="DYJetsToLL_M_50_madgraph_8TeV", testfile=cms.untracked.vstring("file://%s/DYJetsToLL_M-50_8TeV_Summer12.root" % testPath))
+
 	## for grid-control:
 	else:
 		process = getBaseConfig("@GLOBALTAG@", nickname="@NICK@", kappaTag="@KAPPA_TAG@")

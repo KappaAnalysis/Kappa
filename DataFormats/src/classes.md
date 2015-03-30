@@ -45,6 +45,7 @@ Plural forms are standard vectors of the classes with singular class names.
 + KJet                   KJets
 + KL1Muon                KL1Muons
 + KLepton                KLeptons
++ KLeptonPair            KLeptonPairs
 + KMET
 + KMuon                  KMuons
 + KMuonTriggerCandidate  KMuonTriggerCandidates
@@ -52,6 +53,7 @@ Plural forms are standard vectors of the classes with singular class names.
 + KPFCandidate           KPFCandidates
 + KPileupDensity
 + KTau                   KTaus
++ KExtendedTau           KExtendedTaus
 + KTaupairVerticesMap    KTaupairVerticesMaps
 + KTrack                 KTracks
 + KTriggerObjects

@@ -34,6 +34,8 @@
 	<class name="KL1Muons"/>
 	<class name="KLepton"/>
 	<class name="KLeptons"/>
+	<class name="KLeptonPair"/>
+	<class name="KLeptonPairs"/>
 	<class name="KMET"/>
 	<class name="KMuon"/>
 	<class name="KMuons"/>
@@ -46,6 +48,8 @@
 	<class name="KPileupDensity"/>
 	<class name="KTau"/>
 	<class name="KTaus"/>
+	<class name="KExtendedTau"/>
+	<class name="KExtendedTaus"/>
 	<class name="KTaupairVerticesMap"/>
 	<class name="KTaupairVerticesMaps"/>
 	<class name="KTrack"/>

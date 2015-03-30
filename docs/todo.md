@@ -14,11 +14,6 @@ Todo list {#todo}
 
 ## Other todos
 
-Frage:
-- was ist binValue?
-- warum TBronch
-- warum hxx und nicht in KDebug.cpp?
-
 List:
 - renaming IDs/Ids
 - Make debug output reflect new data format
@@ -51,7 +46,7 @@ List:
 - unified status scheme following HepMC: 0-4+11->7
 - KLeptonProducer
 - CMSSW Jet ID als configurable binary ID
-- Handles everywhere!
+- Handles everywhere! elIso wenn leer: nicht sonst: beschweren!
 
 ## Documentation
 - add todos

@@ -160,6 +160,12 @@ std::ostream &operator<<(std::ostream &os, const KLepton &lep)
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const KLeptonPair &leptonPair)
+{
+	return os << "dca3D = " << leptonPair.dca3D << " +/- " << leptonPair.dca3DError << ", "
+	          << "dca2D = " << leptonPair.dca2D << " +/- " << leptonPair.dca2DError;
+}
+
 std::ostream &operator<<(std::ostream &os, const KBasicTau &tau)
 {
 	os << static_cast<const KLepton>(tau) << std::endl;
@@ -180,12 +186,24 @@ std::ostream &operator<<(std::ostream &os, const KTau &tau)
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const KExtendedTau &tau)
+{
+	os << static_cast<const KBasicTau>(tau) << std::endl;
+	os << "\tnBarrelSuperClusters=" << tau.superClusterBarrelCandidates.size();
+	os << " nEndcapSuperClusters=" << tau.superClusterEndcapCandidates.size();
+	return os;
+}
 
 std::ostream &operator<<(std::ostream &os, const KGenTau &tau)
 {
 	return os << static_cast<const KGenParticle>(tau)
 		<< " visible=" << static_cast<const KLV>(tau.visible)
 		<< " decayMode=" << int(tau.decayMode) << " vertex=" << tau.vertex;
+}
+
+std::ostream &operator<<(std::ostream &os, const KGenJet &jet)
+{
+	return os << jet.p4;
 }
 
 std::ostream &operator<<(std::ostream &os, const KVertex &vertex)

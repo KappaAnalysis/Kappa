@@ -1,6 +1,10 @@
 #-# Copyright (c) 2013 - All Rights Reserved
 #-#   Joram Berger <joram.berger@cern.ch>
 
+# Kappa test: CMSSW 5.3.22
+# Kappa test: scram arch slc6_amd64_gcc472
+# Kappa test: output skim_data.root
+
 import FWCore.ParameterSet.Config as cms
 
 
@@ -14,12 +18,12 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
     # Set the global tag and datatype for testing or by grid-control ---------
     data = (datatype == 'data')
     if data:
-        testfile = 'file:/storage/8/dhaitz/testfiles/data_AOD_2012A.root'
+        testfile = 'file:///storage/a/berger/kappatest/input/data_AOD_2012A.root'
         if '@' in globaltag:
             globaltag = 'FT53_V21A_AN6'
         maxevents = maxevents or 1000
     else:
-        testfile = 'file:/storage/8/dhaitz/testfiles/mc11.root'
+        testfile = 'file:///storage/a/berger/kappatest/input/mc11.root'
         if '@' in globaltag:
             globaltag = 'START53_V27'
         maxevents = maxevents or 1000
@@ -76,7 +80,7 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
     process.kappatuple.verbose = cms.int32(0)
     process.kappatuple.profile = cms.bool(True)
     process.kappatuple.active = cms.vstring(
-        'LV', 'Muons', 'TrackSummary', 'VertexSummary', 'BeamSpot',
+        'LV', 'TrackSummary', 'VertexSummary', 'BeamSpot',
         'MET', 'BasicJets',
     )
     if data:

@@ -9,6 +9,7 @@
 #ifndef KDATAFORMAT_H
 #define KDATAFORMAT_H
 
+#include "Hash.h"
 #include "KBasic.h"
 #include "KElectron.h"
 #include "KInfo.h"
@@ -68,6 +69,8 @@ REGISTER_NAME_OF_TYPE(KL1Muon,KL1Muon);
 REGISTER_NAME_OF_TYPE(KL1Muons,std::vector<KL1Muon>);
 REGISTER_NAME_OF_TYPE(KLepton,KLepton);
 REGISTER_NAME_OF_TYPE(KLeptons,std::vector<KLepton>);
+REGISTER_NAME_OF_TYPE(KLeptonPair,KLeptonPair);
+REGISTER_NAME_OF_TYPE(KLeptonPairs,std::vector<KLeptonPair>);
 REGISTER_NAME_OF_TYPE(KMET,KMET);
 REGISTER_NAME_OF_TYPE(KMuon,KMuon);
 REGISTER_NAME_OF_TYPE(KMuons,std::vector<KMuon>);
@@ -80,6 +83,8 @@ REGISTER_NAME_OF_TYPE(KPFCandidates,std::vector<KPFCandidate>);
 REGISTER_NAME_OF_TYPE(KPileupDensity,KPileupDensity);
 REGISTER_NAME_OF_TYPE(KTau,KTau);
 REGISTER_NAME_OF_TYPE(KTaus,std::vector<KTau>);
+REGISTER_NAME_OF_TYPE(KExtendedTau,KExtendedTau);
+REGISTER_NAME_OF_TYPE(KExtendedTaus,std::vector<KExtendedTau>);
 REGISTER_NAME_OF_TYPE(KTaupairVerticesMap,KTaupairVerticesMap);
 REGISTER_NAME_OF_TYPE(KTaupairVerticesMaps,std::vector<KTaupairVerticesMap>);
 REGISTER_NAME_OF_TYPE(KTrack,KTrack);

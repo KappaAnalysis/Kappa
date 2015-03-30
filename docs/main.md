@@ -2,15 +2,38 @@
 
 κappa is the Karlsruhe Package for Physics Analysis.
 It is a skimming framework constructed to extract the relevant data
-from EDM data sets (RECO, AOD, MINIAOD) and store it in a well-defined
-and compact ROOT data format. This full documentation is found
-[here](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/ "Kappa Doxygen").
+from EDM data sets (RECO, AOD, MINIAOD (in development)) and store it in a well-defined
+and compact ROOT data format. This full documentation is available through
+[Doxygen](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/ "Kappa Doxygen").
 
+The purpose of Kappa is to provide a stable, slim data format and the
+tools to produce these files (skimming) and to use them in the analysis.
+The basic workflow is:
+
+    source  --skimming-->  Kappa skim  --analysis-->  --plotting-->  results
+
+
+
+[TOC]
+
+- [Skimming]
+    - [Installation]
+    - Usage
+- [Analysis]
+    - [Installation for analysis]
+    - Usage in the analysis code
+- Data formats
+- Development Documentation
+    - Producers hierachy
+    - Naming scheme
+    - Repository management
+    - Kappa files explained
+
+Skimming
+========
 
 Installation
-============
-
-Skimming:
+------------
 
 setup CMSSW (tested versions: 5.3.14, 5.3.23, 7.0.9, 7.2.2):
 
@@ -18,18 +41,25 @@ setup CMSSW (tested versions: 5.3.14, 5.3.23, 7.0.9, 7.2.2):
     cd CMSSW_5_3_14/src
     cmsenv
 
-checkout Kappa
+checkout Kappa and compile it:
 
     git clone https://github.com/KappaAnalysis/Kappa.git
-
-compile
-
     scram b
 
-run
 
-    cmsRun Kappa/Skimming/skim_tutorial_53x.py
+There are a few cave-ats for different CMSSW versions:
 
+- 5.3.14: nothing known
+- 5.3.23: nothing known
+- 7.0.9: nothing known
+- 7.2.2: use the development branch
+
+
+## Usage and options {#main-options}
+
+A skim is run by calling `cmsRun` with a config file:
+
+    cmsRun Kappa/Skimming/examples/skim_tutorial1_basic.py
 
 The output looks similar to:
 
@@ -38,19 +68,10 @@ The output looks similar to:
     --- Reader                   : Booking "BDT" of type ... if electrons configured
     Electron ID MVA Completed                                until here
     Start Kappa producer KTuple
-    Init producer TreeInfo      ... for each configured Kappa producer
+    Init producer TreeInfo using config from Info        ... for each configured Kappa producer
     Taking trigger from process HLT (label = TriggerResults)
     Begin processing the 1st record. Run 1, Event 100000, LumiSection 2500 at 01-Jan-2015 00:01:00 CET
 
-There are a few cave-ats for different CMSSW versions:
-
-- 3.5.14: nothing known
-- 5.3.23: nothing known
-- 7.0.9: nothing known
-- 7.2.2: use the development branch
-
-
-# Usage and options {#main-options}
 
 The Kappa-CMSSW EDProducer has a few options:
 
@@ -59,16 +80,18 @@ The Kappa-CMSSW EDProducer has a few options:
 - `outputFile` (str): Name of the Kappa output file, (e.g. `"kappa.root"`)
 - `active` (list): List of object names that should be written out (e.g. `['Electrons']`)
 
-check skim (KappaTools)
-
-- check sizes
-- check runtime
-- diff skims
-- look at distributions
-
-What Kappa does is best summarized in this image:
+What Kappa does is summarized in this image:
 
 ![Kappa workflow](http://www-ekp.physik.uni-karlsruhe.de/~berger/files/kappa.svg "The Kappa workflow")
+
+
+Several tools are available to check the skimming process and the skim files (tbd):
+
+- check sizes of objects in skim
+- check runtime (performance checks)
+- diff skims
+- look at distributions with ROOT
+
 
 # Usage in the analysis
 
@@ -83,14 +106,15 @@ Compile:
     make -C KappaTools
 
 More detailed descriptions for the use of Kappa in an analysis are given
-that are based on Kappa:
+in the repositories that are based on Kappa:
 [Artus](https://github.com/artus-analysis/Artus),
 [KIT Higgs Analysis](https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau),
-[Excalibur](https://github.com/dhaitz/Excalibur).
+[Excalibur (Z+Jet and Calibration)](https://github.com/dhaitz/Excalibur),
+[JetAnalysis](https://github.com/claria/JetAnalysis).
 
 
-Documentation
-=============
+Print objects on standard out
+-----------------------------
 
 The objects of the Kappa data formats can be directly printed on standard out.
 Here is an example for jets:
@@ -101,6 +125,9 @@ Here is an example for jets:
     std::cout << displayVector(jets);    // print the vector size and all elements.
     std::cout << displayVector(jets, 2); // print the vector size and the first two elements
 
+
+Development Documentation
+=========================
 
 Producers hierachy
 ------------------------------
@@ -115,25 +142,29 @@ The base classes for all producers follow this hierarchy structure:
         - KBaseMultiVectorProducer: Produce lists (`std::vector`) of objects per event (e.g. KVertices)
           - KBaseMultiLVProducer: Produce lists of particles or other Lorentz-vector objects (e.g KElectron)
 
+Precision of member variables
+-----------------------------
+
 The data types of member variables are the same as in CMSSW in order to
 not loose precision but at the same time not waste space in the skim.
 Note: Even if some member functions of CMSSW data formats return an
 int or double type, the underlying member variable is only of char,
 short or float precision and therefore the latter is used.
 
-[Minimum sizes](http://www.cplusplus.com/doc/tutorial/variables/):
- 8 char
-16 short, int
-32 long
-64 long long
-32 float
-64 double
+[Minimum sizes](http://www.cplusplus.com/doc/tutorial/variables/) in bits:
+ 8 char;
+16 short/int;
+32 long;
+64 long long;
+32 float;
+64 double.
 
 Boolean values are mostly stored in bitmaps. Strings should not be part
-of a data format of the Events tree. In most cases this information can be stored in the Lumis tree.
+of a data format of the Events tree. In most cases this information can
+be stored in the Lumis tree.
 
 Naming scheme {#main-naming}
-============================
+----------------------------
 
 - K<Object> for all physical objects (e.g. KJet)
 - in case there are different versions for one object the object for the
@@ -170,7 +201,7 @@ Repository management
   in the form *last tag*-*commits since then*-*short commit hash*.
 
 Changes in Kappa 2.0 {#main-changes}
-====================================
+------------------------------------
 
 The changes can be seen using this command:
 ``git log --oneline 71f3f8e..333adc6``
@@ -308,11 +339,55 @@ To add a new object to Kappa, it needs:
   * a producer in [Producers](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers) (it makes sense to look at a similar object first)
   * a default config in [Producers/python/KTuple_cff.py](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers/python/KTuple_cff.py)
   * debug output in [DataFormats/test/KDebug.cpp](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/test/KDebug.cpp)
-  * an entry in [DataFormats/src/classes](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/src/classes)
+  * an entry in [Producers/src/KTuple.cc](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers/src/KTuple.cc)
+  * an entry in [DataFormats/src/classes.md](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/src/classes.md)
       * run [DataFormats/src/classes.UP](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/src/classes.UP) afterwards (from within its directory)
   * the corresponding lines in [DataFormats/test/LinkDef.h](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/test/LinkDef.h)
   * the documentation in [docs/objects.md](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/docs/objects.md)
 
+
+### Kappa test suite
+
+The functionality of this framework is regularly checked by the
+[Kappa test script](https://github.com/KappaAnalysis/Kappa/tree/development/DataFormats/test/test.py)
+as described [here](https://indico.cern.ch/event/371827/contribution/0/material/slides/0.pdf "Indico Meeting").
+The results are presented on
+[this webpage](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/result.html "Kappa test result").
+
+In order to use this script, the tested CMSSW config file must be
+equipped with these python comments:
+
+    # Kappa test: CMSSW 7.4.4
+    # Kappa test: scram arch slc6_amd64_gcc481
+
+Further optional comments are:
+
+    # Kappa test: checkout script Skimming/scripts/scriptname.[py|sh]  (default: no script)
+    # Kappa test: output <output-filename>.root                        (default from code)
+    # Kappa test: compare <compare-file-name>.root                     (default: configname.root)
+
+You can call the test script by using one of these lines:
+
+    /path/to/Kappa/DataFormats/test/test.py config.py  # test a list of configs
+    /path/to/Kappa/DataFormats/test/test.py            # test default configs in your working directory
+    /path/to/Kappa/DataFormats/test/test.py master     # test default configs in a list of branches
+
+The available options are:
+
+    -h show help message
+    -d dry run without running the tests (creates dummy folders and logs)
+    -b batch mode without interactive questions
+
+Testing policy:
+
+- Commits to `master` and `dictchanges` must be checked and pass.
+  If you think your commit is too simple and does not require checking,
+  that is your responsibility.
+- Commits to `development` should be checked, but there are reasons to
+  commit work in progress which does not pass the tests. This should be
+  mentioned at least in the second paragraph of the commit message.
+- Commits to any other temporary development branch can be tested by the
+  user.
 ________________________________________________________________________________
 
 [KIT]:      http://www.ekp.kit.edu "Institut für Experimentelle Kernphysik"
