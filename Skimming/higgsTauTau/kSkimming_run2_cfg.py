@@ -56,12 +56,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	"""
 	## ------------------------------------------------------------------------
 	# General configuration
-	"""
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
-	process.kappaTuple.active += cms.vstring('TriggerObjects')
+	#process.kappaTuple.active += cms.vstring('TriggerObjects')
 
+	"""
 	if not isEmbedded and data:
 			process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
 
