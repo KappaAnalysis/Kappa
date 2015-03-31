@@ -45,14 +45,18 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		print "GT (overwritten):", process.GlobalTag.globaltag
 	data = datasetsHelper.isData(nickname)
 	isEmbedded = datasetsHelper.getIsEmbedded(nickname)
+	miniaod = True
 
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
+	"""
 	process.kappaTuple.active = cms.vstring('TreeInfo')
 	process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 
+	"""
 	## ------------------------------------------------------------------------
 	# General configuration
+	"""
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
@@ -97,14 +101,18 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.active += cms.vstring('GenTaus') # save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
 
+	"""
 	## ------------------------------------------------------------------------
 	# Trigger
+	"""
 	from Kappa.Skimming.hlt import hltBlacklist, hltWhitelist
 	process.kappaTuple.Info.hltWhitelist = hltWhitelist
 	process.kappaTuple.Info.hltBlacklist = hltBlacklist
+	"""
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
+	"""
 	process.load("Kappa.Skimming.KPFCandidates_run2_cff")
 	#process.kappaTuple.active += cms.vstring('PFCandidates') # save PFCandidates for deltaBeta corrected
 	process.kappaTuple.PFCandidates.whitelist = cms.vstring( # isolation used for electrons and muons.
@@ -118,8 +126,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	##process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
 	process.p *= ( process.makeKappaPFCandidates )
 
+	"""
 	## ------------------------------------------------------------------------
 	# Configure Muons
+	"""
 	process.load("Kappa.Skimming.KMuons_run2_cff")
 	process.kappaTuple.active += cms.vstring('Muons')
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
@@ -145,8 +155,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.p *= ( process.makeKappaElectrons )
 
 
+	"""
 	## ------------------------------------------------------------------------
 	# Configure Taus
+	"""
 	process.load("Kappa.Skimming.KTaus_run2_cff")
 	process.kappaTuple.active += cms.vstring('Taus')
 	process.kappaTuple.Taus.minPt = cms.double(8.0)
@@ -158,8 +170,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.Taus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
 	process.kappaTuple.Taus.taus.preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFindingNewDMs")
 
+	"""
 	## ------------------------------------------------------------------------
 	## Configure Jets
+	"""
 	process.load("Kappa.Skimming.KJets_run2_cff")
 	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
 	process.kappaTuple.Jets = process.kappaTupleJets
@@ -175,15 +189,19 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kt6PFJets
 	)
 
+	"""
 	## ------------------------------------------------------------------------
 	## MET
+	"""
 	process.load("Kappa.Skimming.KMET_run2_cff")
 	process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
 	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
 	process.p *= process.makeKappaMET
 
+	"""
 	## ------------------------------------------------------------------------
 	## GenJets 
+	"""
 	if not data:
 		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
 		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
@@ -194,15 +212,18 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
 		process.kappaTuple.active += cms.vstring('GenJets')
 
+	"""
 	## ------------------------------------------------------------------------
 	## Further information saved to Kappa output 
 	# add python config to TreeInfo
+	"""
 	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
 		
 	# add repository revisions to TreeInfo
 	for repo, rev in tools.get_repository_revisions().iteritems():
 			setattr(process.kappaTuple.TreeInfo.parameters, repo, cms.string(rev))
 
+	"""
 	## ------------------------------------------------------------------------
 	## let Kappa run
 	process.p *= ( process.kappaOut )
@@ -231,10 +252,12 @@ if __name__ == "__main__":
 		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV
 		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_PU20bx25_tsg_PHYS14_25_V1-v2_0ACE16B2-5677-E411-87FF-7845C4FC3A40.root"))
 
+		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV MiniAOD
+		process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/rfriese/samples/VBF_HToTauTau_Miniaod.root"))
 		# Input file for test script
-		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
-		testPath = [p for p in testPaths if os.path.exists(p)][0]
-		process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_M-125_13TeV_PHYS14.root" % testPath))
+		#testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
+		#testPath = [p for p in testPaths if os.path.exists(p)][0]
+		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_M-125_13TeV_PHYS14.root" % testPath))
 
 	## for grid-control:
 	else:
