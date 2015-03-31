@@ -65,11 +65,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if not isEmbedded and data:
 			process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
 
+	"""
 	if not isEmbedded and not data:
 			process.kappaTuple.active+= cms.vstring('GenInfo')           # produce Metadata for MC,
 			process.kappaTuple.active+= cms.vstring('GenParticles')      # save GenParticles,
 			process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
 
+			if(miniaod):
+				process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("packedGenParticles")
+				process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("packedGenParticles")
 	# Prune genParticles
 	if not isEmbedded and not data:
 		process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
@@ -86,6 +90,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			)
 		)
 	
+	"""
 	# Special settings for embedded samples
 	# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonTauReplacementWithPFlow
 	if isEmbedded:
