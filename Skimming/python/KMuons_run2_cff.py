@@ -26,5 +26,5 @@ pfMuonIso = cms.Sequence(
 	muonPFIsolationValuesSequence
 )
 
-makeKappaMuons *= pfMuonIso
+#makeKappaMuons *= pfMuonIso
 

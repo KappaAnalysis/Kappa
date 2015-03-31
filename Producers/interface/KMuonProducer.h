@@ -42,7 +42,8 @@ public:
 		selectedMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
 		noPropagation(cfg.getParameter<bool>("noPropagation")),
 		propagatorToMuonSystem(cfg),
-		doPfIsolation(true)
+		doPfIsolation(true),
+		muonIsolationPFInitialized(false)
 	{
 		std::sort(selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
 		std::vector<std::string>::iterator tempIt = std::unique(
@@ -94,7 +95,10 @@ public:
 		edm::InputTag tagMuonIsolationPF = pset.getParameter<edm::InputTag>("srcMuonIsolationPF");
 
 		if (tagMuonIsolationPF.label() != "")
+		{
 			cEvent->getByLabel(tagMuonIsolationPF, isoDepsPF);
+			muonIsolationPFInitialized = true;
+		}
 
 		if (tagHLTrigger.label() != "")
 			cEvent->getByLabel(tagHLTrigger, triggerEventHandle);
@@ -204,22 +208,23 @@ public:
 			out.sumNeutralHadronEtHighThreshold = in.pfIsolationR04().sumNeutralHadronEtHighThreshold;
 			out.sumPhotonEtHighThreshold        = in.pfIsolationR04().sumPhotonEtHighThreshold;
 		}
-		
 		// source?
-		edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
-		reco::IsoDeposit muonIsoDepositPF = (*isoDepsPF)[muonref];
-		reco::isodeposit::Direction dir = reco::isodeposit::Direction(in.eta(), in.phi());
-		reco::isodeposit::ConeVeto pf_cone_veto(dir, pfIsoVetoCone);
-		reco::isodeposit::ThresholdVeto pf_threshold_veto(pfIsoVetoMinPt);
+		if(muonIsolationPFInitialized)
+		{
+			edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
+			reco::IsoDeposit muonIsoDepositPF = (*isoDepsPF)[muonref];
+			reco::isodeposit::Direction dir = reco::isodeposit::Direction(in.eta(), in.phi());
+			reco::isodeposit::ConeVeto pf_cone_veto(dir, pfIsoVetoCone);
+			reco::isodeposit::ThresholdVeto pf_threshold_veto(pfIsoVetoMinPt);
 
-		std::vector<reco::isodeposit::AbsVeto*> vetosPF;
-		vetosPF.push_back(&pf_cone_veto);
-		vetosPF.push_back(&pf_threshold_veto);
-
+			std::vector<reco::isodeposit::AbsVeto*> vetosPF;
+			vetosPF.push_back(&pf_cone_veto);
+			vetosPF.push_back(&pf_threshold_veto);
+			out.pfIso03    = muonIsoDepositPF.depositWithin(0.3, vetosPF);
+			//out.pfIso04    = muonIsoDepositPF.depositWithin(0.4, vetosPF);
+		}
 		/// isolation results
 		out.trackIso = in.isolationR03().sumPt;
-		out.pfIso03    = muonIsoDepositPF.depositWithin(0.3, vetosPF);
-		//out.pfIso04    = muonIsoDepositPF.depositWithin(0.4, vetosPF);
 
 
 		/// highpt ID variables
@@ -279,6 +284,7 @@ private:
 	
 	std::vector<edm::Handle<edm::ValueMap<double> > > isoVals;
 	bool doPfIsolation;
+	bool muonIsolationPFInitialized;
 
 	std::map<std::string, int> muonTriggerObjectBitMap;
 
