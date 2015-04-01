@@ -95,10 +95,10 @@ def is_data(prod_camp, default=None):
 
 def make_nickname(dict):
 	nick = ""
-	nick += dict["process"].replace("-", "")  + "-"
-	nick += dict["campaign"].replace("-", "") + "-"
-	nick += dict["scenario"].replace("-", "") + "-"
-	nick += dict["energy"].replace("-", "")   + "TeV"
+	nick += dict["process"].replace("_", "")  + "_"
+	nick += dict["campaign"].replace("_", "") + "_"
+	nick += dict["scenario"].replace("_", "") + "_"
+	nick += dict["energy"].replace("_", "")   + "TeV"
 	return nick
 
 def load_database(dataset):
