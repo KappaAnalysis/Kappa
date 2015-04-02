@@ -38,7 +38,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.source.fileNames      = testfile
 	process.maxEvents.input	      = maxevents
-	process.kappaTuple.verbose    = cms.int32(0)
+	process.kappaTuple.verbose    = cms.int32(2)
 	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
@@ -58,6 +58,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# General configuration
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
+	if(miniaod):
+		process.kappaTuple.VertexSummary.whitelist = cms.vstring("offlineSlimmedPrimaryVertices")
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
 	#process.kappaTuple.active += cms.vstring('TriggerObjects')
 
@@ -143,11 +145,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
 	process.p *= ( process.makeKappaMuons )
 
-	"""
 	## ------------------------------------------------------------------------
 	# Configure Electrons
 	process.load("Kappa.Skimming.KElectrons_run2_cff")
 	process.kappaTuple.active += cms.vstring('Electrons')
+	if(miniaod):
+		process.kappaTuple.Electrons.electrons.src = cms.InputTag("slimmedElectrons")
+		process.kappaTuple.Electrons.electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
+	#"""
 	process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
 						       "cutBasedEleIdPHYS14Medium",
 						       "cutBasedEleIdPHYS14Tight",
@@ -162,9 +168,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	setupElectrons(process)
 
 	process.p *= ( process.makeKappaElectrons )
+	#"""
 
-
-	"""
 	## ------------------------------------------------------------------------
 	# Configure Taus
 	"""

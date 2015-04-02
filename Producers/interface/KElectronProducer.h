@@ -50,7 +50,7 @@ public:
 	{
 		// Get additional objects for the cutbased IDs
 		edm::InputTag tagConversionSource = pset.getParameter<edm::InputTag>("allConversions");
-		cEvent->getByLabel(tagConversionSource, hConversions);
+		cEvent->getByLabel("reducedEgamma", "reducedConversions", hConversions);
 
 		edm::InputTag beamSpotSource = pset.getParameter<edm::InputTag>("offlineBeamSpot");
 		cEvent->getByLabel(beamSpotSource, BeamSpot);
@@ -102,7 +102,7 @@ public:
 			out.leptonInfo |= KLeptonChargeMask;
 		if (in.isPF())
 			out.leptonInfo |= KLeptonPFMask;
-
+		std::cout << " 4hier A" << std::endl;
 		// electron track
 		if (in.gsfTrack().isNonnull())
 			KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
@@ -112,6 +112,7 @@ public:
 			out.leptonInfo |= KLeptonAlternativeTrackMask;
 		}
 
+		std::cout << " 5nhier B" << std::endl;
 		// ECAL region: bits are set according to reco::GsfElectron::FiducialFlags
 		// the last bit is set to show that this bitset is filled.
 		out.fiducialFlags = in.isEB() | in.isEE() << 1 | in.isEBEEGap() << 2 |
@@ -131,22 +132,30 @@ public:
 		out.ecalEnergyErr = in.ecalEnergyError();
 		out.trackMomentumErr = in.trackMomentumError();
 
+		std::cout << " 6hier a" << std::endl;
 		// fill electronType
 		const reco::GsfElectron* eGSF = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
+		std::cout << " 6hier b" << std::endl;
 		out.electronType = 0;
 		out.electronType |= in.isEcalEnergyCorrected() << KElectronType::ecalEnergyCorrected;
 		out.electronType |= in.ecalDriven()          << KElectronType::ecalDriven;
 		out.electronType |= in.ecalDrivenSeed()        << KElectronType::ecalDrivenSeed;
+		std::cout << " 6hier c" << std::endl;
+		std::cout << eGSF->reco::GsfElectron::gsfTrack().isNonnull() << std::endl;
+		std::cout << eGSF->reco::GsfElectron::gsfTrack().id() << std::endl;
+		std::cout << eGSF->reco::GsfElectron::gsfTrack().key() << std::endl;
 		out.electronType |= ConversionTools::hasMatchedConversion(
 			*eGSF, hConversions, BeamSpot->position(), true, 2.0, 1e-6, 0)
 			<< KElectronType::hasConversionMatch;
 
+		std::cout << " 7hier d" << std::endl;
 		// isolation
 		out.trackIso = in.dr03TkSumPt();
 		out.ecalIso = in.dr03EcalRecHitSumEt();
 		out.hcal1Iso = in.dr03HcalDepth1TowerSumEt();
 		out.hcal2Iso = in.dr03HcalDepth2TowerSumEt();
 
+		std::cout << " 8hier e" << std::endl;
 		if (doPfIsolation)
 		{
 			// in analogy to https://github.com/cms-analysis/EgammaAnalysis-ElectronTools/blob/master/src/EGammaCutBasedEleIdAnalyzer.cc
@@ -168,6 +177,7 @@ public:
 
 			// cutbased IDs (cf. header)
 			// ElectronTools/interface/ElectronEffectiveArea.h: ElectronEffectiveAreaTarget::kEleEAData2011,kEleEASummer11MC,kEleEAFall11MC,kEleEAData2012
+		std::cout << " hier A1" << std::endl;
 			if (doCutbasedIds)
 			{
 #if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
@@ -201,12 +211,14 @@ public:
 		 * https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
 		 * Full instructions in Producer/KElectrons_cff
 		 */
+		std::cout << " hier A2" << std::endl;
 		out.electronIds.clear();
 		if (doMvaIds)
 			for (size_t i = 0; i < namesOfIds.size(); ++i)
 			{
 				out.electronIds.push_back(in.electronID(namesOfIds[i]));
 			}
+		std::cout << " hier A3" << std::endl;
 	}
 
 private:

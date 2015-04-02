@@ -75,6 +75,8 @@ from PhysicsTools.SelectorUtils.tools.vid_id_tools import setupAllVIDIdsInModule
 from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
 from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi import *
 egmGsfElectronIDSequence = cms.Sequence(egmGsfElectronIDs)
+egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('slimmedElectrons')
+egmGsfElectronIDs.vertices = cms.InputTag("offlineSlimmedPrimaryVertices")
 # Define which IDs we want to produce
 # Each of these IDs contains all four standard cut-based ID working points 
 

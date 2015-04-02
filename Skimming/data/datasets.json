@@ -9,13 +9,13 @@
         "scenario": "PU_S10"
     }, 
     "/DY1JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
-        "campaign": "Summer12", 
+        "campaign": "Summer12_DR53X", 
         "data": false, 
-        "embedded": false, 
-        "energy": "8", 
+        "embedded": true, 
+        "energy": "14", 
         "generator": "madgraph", 
         "process": "DY1JetsToLL_M50", 
-        "scenario": "PU_S10"
+        "scenario": "PU"
     }, 
     "/DY2JetsToLL_M-50_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7C-v1/AODSIM": {
         "campaign": "Summer12", 
