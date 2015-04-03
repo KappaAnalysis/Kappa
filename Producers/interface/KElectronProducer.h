@@ -137,9 +137,11 @@ public:
 		out.electronType |= in.isEcalEnergyCorrected() << KElectronType::ecalEnergyCorrected;
 		out.electronType |= in.ecalDriven()          << KElectronType::ecalDriven;
 		out.electronType |= in.ecalDrivenSeed()        << KElectronType::ecalDrivenSeed;
-		out.electronType |= ConversionTools::hasMatchedConversion(
-			*eGSF, hConversions, BeamSpot->position(), true, 2.0, 1e-6, 0)
-			<< KElectronType::hasConversionMatch;
+		// Conversion Veto pre-calculated in PAT
+		// https://github.com/cms-sw/cmssw/blob/69cd7ee90ab313f3736eea98316545635c8ca44c/PhysicsTools/PatAlgos/plugins/PATElectronProducer.cc#L453-L462
+		// TODO: check if change from hasConversionMatch to passConversionVeto works
+		out.electronType |= !(in.passConversionVeto())   << KElectronType::hasConversionMatch;
+		
 
 		// isolation
 		out.trackIso = in.dr03TkSumPt();

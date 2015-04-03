@@ -143,28 +143,32 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
 	process.p *= ( process.makeKappaMuons )
 
-	"""
 	## ------------------------------------------------------------------------
 	# Configure Electrons
 	process.load("Kappa.Skimming.KElectrons_run2_cff")
 	process.kappaTuple.active += cms.vstring('Electrons')
-	process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
-						       "cutBasedEleIdPHYS14Medium",
-						       "cutBasedEleIdPHYS14Tight",
-						       "cutBasedEleIdPHYS14Veto",
-						       "mvaTrigV050nsCSA14",
-						       "mvaTrigV025nsCSA14",
-						       "mvaNonTrigV050nsCSA14",
-						       "mvaNonTrigV025nsCSA14",
-						       "mvaNonTrigV025nsPHYS14")
-	process.kappaTuple.Electrons.minPt = cms.double(8.0)
-	from Kappa.Skimming.KElectrons_run2_cff import setupElectrons
-	setupElectrons(process)
+	if(miniaod):
+		process.kappaTuple.Electrons.electrons.src = cms.InputTag("slimmedElectrons")
+		process.kappaTuple.Electrons.electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
+		process.kappaTuple.Electrons.electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
+	#"""
+	process.kappaTuple.Electrons.ids = cms.vstring()#"cutBasedEleIdPHYS14Loose",
+						       #"cutBasedEleIdPHYS14Medium",
+						       #"cutBasedEleIdPHYS14Tight",
+						       #"cutBasedEleIdPHYS14Veto",
+						       #"mvaTrigV050nsCSA14",
+						       #"mvaTrigV025nsCSA14",
+						       #"mvaNonTrigV050nsCSA14",
+						       #"mvaNonTrigV025nsCSA14",
+						       #"mvaNonTrigV025nsPHYS14")
+	#process.kappaTuple.Electrons.minPt = cms.double(8.0)
+	#from Kappa.Skimming.KElectrons_run2_cff import setupElectrons
+	#setupElectrons(process)
 
-	process.p *= ( process.makeKappaElectrons )
+	#process.p *= ( process.makeKappaElectrons )
+	#"""
 
-
-	"""
 	## ------------------------------------------------------------------------
 	# Configure Taus
 	"""
