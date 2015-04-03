@@ -43,9 +43,7 @@ public:
 			if (acceptSingle(*lvit))
 			{
 				output.push_back(SingleOutputType());
-				std::cout << "fill single" << std::endl;
 				fillSingle(*lvit, output.back());
-				std::cout << "fill single end" << std::endl;
 			}
 		this->sort(output);
 		if (maxN > 0)
