@@ -171,11 +171,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	# Configure Taus
-	"""
-	process.load("Kappa.Skimming.KTaus_run2_cff")
+#	process.load("Kappa.Skimming.KTaus_run2_cff")
 	process.kappaTuple.active += cms.vstring('Taus')
-	process.kappaTuple.Taus.minPt = cms.double(8.0)
-	process.p *= ( process.makeKappaTaus )
+	process.kappaTuple.Taus.taus.src = cms.InputTag("slimmedTaus")
+#	process.kappaTuple.Taus.minPt = cms.double(8.0)
+#	process.p *= ( process.makeKappaTaus )
 
 	# Reduced number of Tau discriminators
 	# The blacklist is to some degree arbitrary to get below 64 binaty tau discriminators
@@ -183,7 +183,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.Taus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
 	process.kappaTuple.Taus.taus.preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFindingNewDMs")
 
-	"""
 	## ------------------------------------------------------------------------
 	## Configure Jets
 	"""

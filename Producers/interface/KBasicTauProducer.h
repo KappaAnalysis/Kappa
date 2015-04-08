@@ -52,7 +52,7 @@ public:
 	{
 		const edm::ParameterSet &psBase = this->psBase;
 		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
-
+		/*
 		for (size_t i = 0; i < names.size(); ++i)
 		{
 			discriminatorMap[names[i]]->binaryDiscriminatorNames.clear();
@@ -105,7 +105,7 @@ public:
 
 			}
 
-		}
+		}*/
 		return true;
 	}
 
@@ -158,16 +158,21 @@ public:
 				out.leptonInfo |= KLeptonAlternativeTrackMask;
 			}
 		}
-
-		out.emFraction = in.emFraction();
+		//out.emFraction = in.emFraction(); // pf specific and not saved in miniAOD. To be checked how to get it and if necessary
 		out.decayMode = in.decayMode();
-
 		// Discriminators:
 		edm::Ref<std::vector<TTau> > tauRef(this->handle, this->nCursor);
 		out.binaryDiscriminators = 0;
 		out.floatDiscriminators = std::vector<float>(currentFloatDiscriminators.size());
-		
+
+		// in pat::Taus the discriminator can be retrieved by in.tauID in the following way. 
+		// should probably implemented in derived class...
+		// in.tauID("neutralIsoPtSum")
+		// To re-enable the regex mechanism, retrieve the list of available discriminators:
+		// https://github.com/cms-sw/cmssw/blob/CMSSW_7_5_X/DataFormats/PatCandidates/interface/Tau.h#L353
+
 		// handle binary discriminators
+		/*
 		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
 		{
 			std::string discr_module = iter->provenance()->moduleLabel();
@@ -219,7 +224,7 @@ public:
 					}
 				}
 			}
-		}
+		}*/
 	}
 	virtual bool acceptSingle(const typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::SingleInputType &in)
 	{
@@ -227,10 +232,10 @@ public:
 
 		// propagate the selection on minPt/maxEta
 		bool acceptTau = KBaseMultiLVProducer<std::vector<TTau>, TProduct>::acceptSingle(in);
-		
+		//return acceptTau;
 		// preselect taus by given set of discriminators
 		// do not use regex matching here, as we do not want to apply any preselection by "accident"
-		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
+		/*for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
 		{
 			if ( !this->regexMatch(iter->provenance()->processName(),currentDiscrProcessName) )
 				continue; // this tau discriminator does not belong to this tau
@@ -246,7 +251,9 @@ public:
 					acceptTau = acceptTau && false;
 				}
 			}
-		}
+		}*/
+		// currently used for preselection on hpsPFTauDiscriminationByDecayModeFinding. miniAOD anyway only contains preselected taus, so maybe not necessary. 
+		// should be implemented in the same way as other discriminators, can be retrieved by in.tauID 
 
 		return acceptTau;
 	}
