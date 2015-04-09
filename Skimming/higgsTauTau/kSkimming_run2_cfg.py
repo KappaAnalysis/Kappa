@@ -204,13 +204,33 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	"""
 	## ------------------------------------------------------------------------
 	## MET
-	"""
 	process.load("Kappa.Skimming.KMET_run2_cff")
+	process.ak4PFJets.src = cms.InputTag("packedPFCandidates")
+	if(miniaod):
+		process.pfMetMVA.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.puJetIdForPFMVAMEt.jec =  cms.string('AK4PF')
+		process.puJetIdForPFMVAMEt.vertexes = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.puJetIdForPFMVAMEt.rho = cms.InputTag("fixedGridRhoFastjetAll")
+		process.mvaMETMuons.src = cms.InputTag("slimmedMuons")
+		# process.mvaMETElectrons.src = cms.InputTag("slimmedElectrons")
+		# Todo for miniAOD: find a selector that works in pat Taus and slimmedElectrons
+		process.pfMetMVAEM.srcLeptons = cms.VInputTag("slimmedElectrons", "mvaMETMuons" )
+		process.pfMetMVAET.srcLeptons = cms.VInputTag("slimmedElectrons", "slimmedTaus")
+		process.pfMetMVAMT.srcLeptons = cms.VInputTag("mvaMETMuons"    , "slimmedTaus")
+		process.pfMetMVATT.srcLeptons = cms.VInputTag("slimmedTaus")
+		process.pfMetMVAEM.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.pfMetMVAET.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.pfMetMVAMT.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.pfMetMVATT.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.pfMetMVAEM.srcPFCandidates = cms.InputTag("packedPFCandidates")
+		process.pfMetMVAET.srcPFCandidates = cms.InputTag("packedPFCandidates")
+		process.pfMetMVAMT.srcPFCandidates = cms.InputTag("packedPFCandidates")
+		process.pfMetMVATT.srcPFCandidates = cms.InputTag("packedPFCandidates")
+		process.makeKappaMET = cms.Sequence( process.ak4PFJets * process.calibratedAK4PFJetsForPFMVAMEt * process.mvaMETJets * process.puJetIdForPFMVAMEt * process.mvaMETMuons * process.pfMetMVAEM * process.pfMetMVAET * process.pfMetMVAMT * process.pfMetMVATT )
 	process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
 	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
 	process.p *= process.makeKappaMET
 
-	"""
 	## ------------------------------------------------------------------------
 	## GenJets 
 	"""
