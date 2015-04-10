@@ -231,10 +231,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	## GenJets 
-	"""
 	if not data:
 		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
 		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
+		if(miniaod):
+			process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
 		process.p *= ( 
 			process.tauGenJets +
 			process.tauGenJetsSelectorAllHadrons
@@ -242,7 +243,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
 		process.kappaTuple.active += cms.vstring('GenJets')
 
-	"""
 	## ------------------------------------------------------------------------
 	## Further information saved to Kappa output 
 	# add python config to TreeInfo
