@@ -109,17 +109,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	"""
 	## ------------------------------------------------------------------------
 	# Trigger
-	"""
 	from Kappa.Skimming.hlt import hltBlacklist, hltWhitelist
 	process.kappaTuple.Info.hltWhitelist = hltWhitelist
 	process.kappaTuple.Info.hltBlacklist = hltBlacklist
-	"""
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
-	"""
-	process.load("Kappa.Skimming.KPFCandidates_run2_cff")
-	#process.kappaTuple.active += cms.vstring('PFCandidates') # save PFCandidates for deltaBeta corrected
+	#process.load("Kappa.Skimming.KPFCandidates_run2_cff")
+	process.kappaTuple.active += cms.vstring('PFCandidates') # save PFCandidates for deltaBeta corrected
 	process.kappaTuple.PFCandidates.whitelist = cms.vstring( # isolation used for electrons and muons.
 	##	"pfNoPileUpChargedHadrons",    ## switch to pfAllChargedParticles
 		"pfAllChargedParticles",       ## same as pfNoPileUpChargedHadrons +pf_electrons + pf_muons
@@ -129,9 +126,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		)
 
 	##process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
-	process.p *= ( process.makeKappaPFCandidates )
+	#process.p *= ( process.makeKappaPFCandidates )
 
-	"""
 	## ------------------------------------------------------------------------
 	# Configure Muons
 	process.load("Kappa.Skimming.KMuons_run2_cff")
