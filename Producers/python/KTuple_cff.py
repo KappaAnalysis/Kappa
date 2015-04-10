@@ -258,6 +258,13 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
+	packedPFCandidates = cms.PSet(kappaNoRename, kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("packedPFCandidates"),
+		blacklist = cms.vstring(),
+	),
+
 	PileupDensity = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 

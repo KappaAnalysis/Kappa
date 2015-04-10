@@ -115,20 +115,21 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
-	#process.load("Kappa.Skimming.KPFCandidates_run2_cff")
-	process.kappaTuple.active += cms.vstring('PFCandidates') # save PFCandidates for deltaBeta corrected
-	process.kappaTuple.PFCandidates.whitelist = cms.vstring( # isolation used for electrons and muons.
-	##	"pfNoPileUpChargedHadrons",    ## switch to pfAllChargedParticles
-		"pfAllChargedParticles",       ## same as pfNoPileUpChargedHadrons +pf_electrons + pf_muons
-		"pfNoPileUpNeutralHadrons",
-		"pfNoPileUpPhotons",
-		"pfPileUpChargedHadrons",
-		)
+	if(not miniaod):
+		process.load("Kappa.Skimming.KPFCandidates_run2_cff")
+		process.kappaTuple.active += cms.vstring('PFCandidates') # save PFCandidates for deltaBeta corrected
+		process.kappaTuple.PFCandidates.whitelist = cms.vstring( # isolation used for electrons and muons.
+		##	"pfNoPileUpChargedHadrons",    ## switch to pfAllChargedParticles
+			"pfAllChargedParticles",       ## same as pfNoPileUpChargedHadrons +pf_electrons + pf_muons
+			"pfNoPileUpNeutralHadrons",
+			"pfNoPileUpPhotons",
+			"pfPileUpChargedHadrons",
+			)
+		##process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
+		process.p *= ( process.makeKappaPFCandidates )
 
 	if(miniaod):
-		process.kappaTuple.PFCandidates.whitelist = cms.vstring( "packedPFCandidates") # only collection available, probably has to be split up to be usefull for isolation 
-	##process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
-	#process.p *= ( process.makeKappaPFCandidates )
+		process.kappaTuple.active += cms.vstring('packedPFCandidates') # save PFCandidates. Not sure for what, because might not be usefull for isolation
 
 	## ------------------------------------------------------------------------
 	# Configure Muons

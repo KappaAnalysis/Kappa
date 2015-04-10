@@ -10,11 +10,11 @@
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/ParticleFlowCandidate/interface/PFCandidate.h>
 
-class KPFCandidateProducer : public KBaseMultiLVProducer<edm::View<pat::PackedCandidate>, KPFCandidates>
+class KPFCandidateProducer : public KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidates>
 {
 public:
 	KPFCandidateProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<pat::PackedCandidate>, KPFCandidates>(cfg, _event_tree, _run_tree, getLabel()) {}
+		KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidates>(cfg, _event_tree, _run_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "PFCandidates"; }
 
@@ -24,17 +24,6 @@ public:
 	}
 
 	static void fillPFCandidate(const SingleInputType &in, SingleOutputType &out)
-	{
-		copyP4(in, out.p4);
-		out.particleinfo = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
-		if (in.pdgId() < 0)
-			out.particleinfo |= KParticleSignMask;
-		//out.deltaP = in.deltaP(); // all not included in packedPFCandidates
-		//out.hcalEnergy = in.hcalEnergy();
-		//out.ecalEnergy = in.ecalEnergy();
-	}
-
-	static void fillPFCandidate(const reco::PFCandidate &in, SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
 		out.particleinfo = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
