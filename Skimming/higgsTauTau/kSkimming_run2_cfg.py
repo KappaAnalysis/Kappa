@@ -125,6 +125,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		"pfPileUpChargedHadrons",
 		)
 
+	if(miniaod):
+		process.kappaTuple.PFCandidates.whitelist = cms.vstring( "packedPFCandidates") # only collection available, probably has to be split up to be usefull for isolation 
 	##process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
 	#process.p *= ( process.makeKappaPFCandidates )
 
