@@ -5,18 +5,21 @@
 	'output', 'maxEvents' and 'files' keywords are already provided by the base class (VarParsing)
 	Attention: by default, '_numEvent(%s)' % maxEvents is appended to the output filename
 
+	Usage: cmsRun config.py maxEvents=10 globalTag=START53_V27 ...
+
 	VarParsing documentation:
 	https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideAboutPythonConfigFile#Passing_Command_Line_Arguments_T
 	https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideCommandLineParsing
 """
+import sys
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 
 class KappaParser(VarParsing):
 	def __init__(self,
-			default_globaltag = '',
-			default_nickname = '',
-			default_kappaverbosity = 0
+			default_globalTag = None,
+			default_nickName = None,
+			default_kappaVerbosity = 0
 		):
 		super(KappaParser, self).__init__('standard')
 
@@ -25,18 +28,47 @@ class KappaParser(VarParsing):
 		self.setDefault('maxEvents', 100)
 
 		# new arguments
-		self.register ('globaltag', default_globaltag, VarParsing.multiplicity.singleton,
-			VarParsing.varType.string, 'Global Tag to be used.')
-		self.register ('nickname', default_nickname, VarParsing.multiplicity.singleton,
-			VarParsing.varType.string, 'nickname.')
-		self.register ('kappaverbosity', default_kappaverbosity, VarParsing.multiplicity.singleton,
-			VarParsing.varType.int, 'kappa verbosity')
+		self.register('globalTag', default_globalTag, VarParsing.multiplicity.singleton,
+			VarParsing.varType.string, 'globalTag to be used.')
+		self.register('nickName', default_nickName, VarParsing.multiplicity.singleton,
+			VarParsing.varType.string, 'nickName.')
+		self.register('kappaVerbosity', default_kappaVerbosity, VarParsing.multiplicity.singleton,
+			VarParsing.varType.int, 'kappaVerbosity')
 
 
 class KappaParserZJet(KappaParser):
 	def __init__(self):
 		super(KappaParserZJet, self).__init__(
-			default_globaltag = 'FT53_V21A_AN6::All',
-			default_nickname = 'DoubleMu_Run2012A_22Jan2013_8TeV',
+			default_globalTag = None,
+			default_nickName = None,
 		)
-		self.setDefault('files', 'file:/storage/8/dhaitz/testfiles/data_AOD_2012A.root')
+		self.register('test', None, VarParsing.multiplicity.singleton,
+			VarParsing.varType.string, 'Test scenario to be used.')
+		self.register('channel', 'mm', VarParsing.multiplicity.singleton,
+			VarParsing.varType.string, 'Channel to be used (mm, ee, em).')
+
+	def parseArgumentsWithTestDict(self, testDict):
+		""" 
+			If test is not None, use values from testDict for non-defaults
+			Usage: cmsRun conf.py test=XX
+			files, GT, nick are set according to entries in testdict
+			structure of testdict: testdict = {'XX': {'files': ... } ...}
+		"""
+
+		self.parseArguments()
+
+		# 
+		if self.test != None:
+			if self.test not in testDict:
+				sys.exit("FATAL ERROR: unknown test case '{0}'".format(self.test))
+			print "Using values from testcase {0} as default parameters".format(self.test)
+			for attr in ['files', 'globalTag', 'nickName']:
+				if getattr(self, attr) in [None, '', []]:
+					setattr(self, attr, testDict[self.test][attr])
+
+
+
+
+
+
+
