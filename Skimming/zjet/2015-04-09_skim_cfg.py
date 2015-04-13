@@ -24,6 +24,7 @@ def getBaseConfig(
 		nickname,
 		outputfilename,
 		kappaverbosity,
+		channel='mm'
 	):
 	from Kappa.Skimming.KSkimming_template_cfg import process
 	process.source.fileNames	  = testfile
@@ -49,6 +50,7 @@ def getBaseConfig(
 	print "max events:     ", maxevents
 	print "output filename:", outputfilename
 	print "cmssw version:  ", cmssw_version
+	print "channel:        ", channel
 	print "-------------------------------\n"
 
 	process.p = cms.Path ( )
@@ -82,13 +84,14 @@ def getBaseConfig(
 		process.kappaTuple.active+= cms.vstring('GenInfo')		## produce Metadata for MC,
 		process.kappaTuple.active+= cms.vstring('GenParticles')
 
-	process.kappaTuple.Info.hltWhitelist = cms.vstring(			## HLT selection
-		# can be tested at http://regexpal.com
-		# matches 'HLT_Mu17_Mu8_v7' etc.
-		'^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$',
-		# matches 'HLT_DoubleMu7_v8' etc.
-		'^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$',
-		)
+	if channel == 'mm':
+		process.kappaTuple.Info.hltWhitelist = cms.vstring(			## HLT selection
+			# can be tested at http://regexpal.com
+			# matches 'HLT_Mu17_Mu8_v7' etc.
+			'^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$',
+			# matches 'HLT_DoubleMu7_v8' etc.
+			'^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$',
+			)
 
 
 
@@ -108,42 +111,43 @@ def getBaseConfig(
 
 
 	## ------------------------------------------------------------------------
-	# Configure Muons
-	process.load('Kappa.Skimming.KMuons_cff')
-	process.kappaTuple.active += cms.vstring('Muons')					## produce/save KappaMuons
-	process.kappaTuple.Muons.minPt = cms.double(8.0)
+	if channel= 'mm':
+		# Configure Muons
+		process.load('Kappa.Skimming.KMuons_cff')
+		process.kappaTuple.active += cms.vstring('Muons')					## produce/save KappaMuons
+		process.kappaTuple.Muons.minPt = cms.double(8.0)
 
-	process.goodMuons = cms.EDFilter('CandViewSelector',
-		src = cms.InputTag('muons'),
-		cut = cms.string("pt > 15.0 & abs(eta) < 8.0"),# & isGlobalMuon()"),
-	)
-	process.twoGoodMuons = cms.EDFilter('CandViewCountFilter',
-		src = cms.InputTag('goodMuons'),
-		minNumber = cms.uint32(2),
-	)
-	process.p *= (process.goodMuons * process.twoGoodMuons * process.makeKappaMuons)
+		process.goodMuons = cms.EDFilter('CandViewSelector',
+			src = cms.InputTag('muons'),
+			cut = cms.string("pt > 15.0 & abs(eta) < 8.0"),# & isGlobalMuon()"),
+		)
+		process.twoGoodMuons = cms.EDFilter('CandViewCountFilter',
+			src = cms.InputTag('goodMuons'),
+			minNumber = cms.uint32(2),
+		)
+		process.p *= (process.goodMuons * process.twoGoodMuons * process.makeKappaMuons)
 
-	## for muon iso
-	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L430-L460
-	process.load('CommonTools.ParticleFlow.Isolation.pfMuonIsolation_cff')
-	process.muPFIsoValueCharged04PFIso = process.muPFIsoValueCharged04.clone()
-	process.muPFIsoValueChargedAll04PFIso = process.muPFIsoValueChargedAll04.clone()
-	process.muPFIsoValueGamma04PFIso = process.muPFIsoValueGamma04.clone()
-	process.muPFIsoValueNeutral04PFIso = process.muPFIsoValueNeutral04.clone()
-	process.muPFIsoValuePU04PFIso = process.muPFIsoValuePU04.clone()
+		## for muon iso
+		# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L430-L460
+		process.load('CommonTools.ParticleFlow.Isolation.pfMuonIsolation_cff')
+		process.muPFIsoValueCharged04PFIso = process.muPFIsoValueCharged04.clone()
+		process.muPFIsoValueChargedAll04PFIso = process.muPFIsoValueChargedAll04.clone()
+		process.muPFIsoValueGamma04PFIso = process.muPFIsoValueGamma04.clone()
+		process.muPFIsoValueNeutral04PFIso = process.muPFIsoValueNeutral04.clone()
+		process.muPFIsoValuePU04PFIso = process.muPFIsoValuePU04.clone()
 
-	process.muonPFIsolationValuesSequence = cms.Sequence(
-		process.muPFIsoValueCharged04PFIso+
-		process.muPFIsoValueChargedAll04PFIso+
-		process.muPFIsoValueGamma04PFIso+
-		process.muPFIsoValueNeutral04PFIso+
-		process.muPFIsoValuePU04PFIso
-	)
-	process.muPFIsoDepositCharged.src = cms.InputTag('muons')
-	process.muPFIsoDepositChargedAll.src = cms.InputTag('muons')
-	process.muPFIsoDepositNeutral.src = cms.InputTag('muons')
-	process.muPFIsoDepositGamma.src = cms.InputTag('muons')
-	process.muPFIsoDepositPU.src = cms.InputTag('muons')
+		process.muonPFIsolationValuesSequence = cms.Sequence(
+			process.muPFIsoValueCharged04PFIso+
+			process.muPFIsoValueChargedAll04PFIso+
+			process.muPFIsoValueGamma04PFIso+
+			process.muPFIsoValueNeutral04PFIso+
+			process.muPFIsoValuePU04PFIso
+		)
+		process.muPFIsoDepositCharged.src = cms.InputTag('muons')
+		process.muPFIsoDepositChargedAll.src = cms.InputTag('muons')
+		process.muPFIsoDepositNeutral.src = cms.InputTag('muons')
+		process.muPFIsoDepositGamma.src = cms.InputTag('muons')
+		process.muPFIsoDepositPU.src = cms.InputTag('muons')
 
 	## ------------------------------------------------------------------------
 	## KappaJets
@@ -275,7 +279,8 @@ if __name__ == '__main__':
 			maxevents=KappaParser.maxEvents,
 			nickname=KappaParser.nickName,
 			outputfilename=KappaParser.output,
-			kappaverbosity=KappaParser.kappaVerbosity
+			kappaverbosity=KappaParser.kappaVerbosity,
+			channel=KappaParser.channel,
 		)
 	## for grid-control:
 	else:
