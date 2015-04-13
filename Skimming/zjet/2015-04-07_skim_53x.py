@@ -115,7 +115,16 @@ def getBaseConfig(
 	process.load('Kappa.Skimming.KMuons_cff')
 	process.kappaTuple.active += cms.vstring('Muons')					## produce/save KappaMuons
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
-	process.p *= process.makeKappaMuons
+
+	process.goodMuons = cms.EDFilter('CandViewSelector',
+		src = cms.InputTag('muons'),
+		cut = cms.string("pt > 15.0 & abs(eta) < 8.0"),# & isGlobalMuon()"),
+	)
+	process.twoGoodMuons = cms.EDFilter('CandViewCountFilter',
+		src = cms.InputTag('goodMuons'),
+		minNumber = cms.uint32(2),
+	)
+	process.p *= (process.goodMuons * process.twoGoodMuons * process.makeKappaMuons)
 
 	## for muon iso
 	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L430-L460
