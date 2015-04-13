@@ -57,7 +57,6 @@ class KappaParserZJet(KappaParser):
 
 		self.parseArguments()
 
-		# 
 		if self.test != None:
 			if self.test not in testDict:
 				sys.exit("FATAL ERROR: unknown test case '{0}'".format(self.test))
@@ -65,10 +64,3 @@ class KappaParserZJet(KappaParser):
 			for attr in ['files', 'globalTag', 'nickName']:
 				if getattr(self, attr) in [None, '', []]:
 					setattr(self, attr, testDict[self.test][attr])
-
-
-
-
-
-
-
