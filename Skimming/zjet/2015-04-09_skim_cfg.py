@@ -1,13 +1,3 @@
-#-# Copyright (c) 2014 - All Rights Reserved
-#-#   Benjamin Treiber <benjamin.treiber@gmail.com>
-#-#   Fabio Colombo <fabio.colombo@cern.ch>
-#-#   Joram Berger <joram.berger@cern.ch>
-#-#   Raphael Friese <Raphael.Friese@cern.ch>
-#-#   Roger Wolf <roger.wolf@cern.ch>
-#-#   Stefan Wayand <stefan.wayand@gmail.com>
-#-#   Thomas Mueller <tmuller@cern.ch>
-#-#   Yasmin Anstruther <yasmin.anstruther@kit.edu>
-
 # Kappa test: CMSSW 5.3.22
 # Kappa test: scram arch slc6_amd64_gcc472
 # Kappa test: checkout script scripts/checkoutCmssw53xPackagesForSkimming.py
@@ -42,7 +32,7 @@ def getBaseConfig(
 	process.kappaTuple.verbose	= cms.int32(kappaverbosity)				## verbosity level
 	process.kappaTuple.profile	= cms.bool(False)
 	if not globaltag.lower() == 'auto' :
-		process.GlobalTag.globaltag   = globaltag
+		process.GlobalTag.globaltag = globaltag
 	data = datasetsHelper.isData(nickname)
 	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
 	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
@@ -59,7 +49,7 @@ def getBaseConfig(
 	print "max events:     ", maxevents
 	print "output filename:", outputfilename
 	print "cmssw version:  ", cmssw_version
-	print "------------------\n"
+	print "-------------------------------\n"
 
 	process.p = cms.Path ( )
 	## ------------------------------------------------------------------------
@@ -122,7 +112,16 @@ def getBaseConfig(
 	process.load('Kappa.Skimming.KMuons_cff')
 	process.kappaTuple.active += cms.vstring('Muons')					## produce/save KappaMuons
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
-	process.p *= process.makeKappaMuons
+
+	process.goodMuons = cms.EDFilter('CandViewSelector',
+		src = cms.InputTag('muons'),
+		cut = cms.string("pt > 15.0 & abs(eta) < 8.0"),# & isGlobalMuon()"),
+	)
+	process.twoGoodMuons = cms.EDFilter('CandViewCountFilter',
+		src = cms.InputTag('goodMuons'),
+		minNumber = cms.uint32(2),
+	)
+	process.p *= (process.goodMuons * process.twoGoodMuons * process.makeKappaMuons)
 
 	## for muon iso
 	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L430-L460
@@ -255,15 +254,28 @@ if __name__ == '__main__':
 	if('@' in '@NICK@'):
 
 		KappaParser = kappaparser.KappaParserZJet()
-		KappaParser.parseArguments()
+		KappaParser.setDefault('test', '53mc12')
+		testdict = {
+			'53data12': {
+				'files': 'file:/storage/8/dhaitz/testfiles/data_AOD_2012A.root',
+				'globalTag': 'FT53_V21A_AN6::All',
+				'nickName': 'DoubleMu_Run2012A_22Jan2013_8TeV',
+			},
+			'53mc12': {
+				'files': 'file:/storage/8/dhaitz/testfiles/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball__Summer12_DR53X-PU_RD1_START53_V7N-v1__AODSIM.root',
+				'globalTag': 'START53_V27::All',
+				'nickName': 'DYJetsToLL_M_50_madgraph_8TeV',
+			},
+		}
+		KappaParser.parseArgumentsWithTestDict(testdict)
 
 		process = getBaseConfig(
-			globaltag=KappaParser.globaltag,
+			globaltag=KappaParser.globalTag,
 			testfile=cms.untracked.vstring(KappaParser.files),
 			maxevents=KappaParser.maxEvents,
-			nickname=KappaParser.nickname,
+			nickname=KappaParser.nickName,
 			outputfilename=KappaParser.output,
-			kappaverbosity=KappaParser.kappaverbosity
+			kappaverbosity=KappaParser.kappaVerbosity
 		)
 	## for grid-control:
 	else:
