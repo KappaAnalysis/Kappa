@@ -48,6 +48,15 @@ public:
 		}
 	}
 
+	template<typename T>
+	static int createTauHash(const T tau)
+	{
+	return ( std::hash<double>()(tau.pt()) ^
+	         std::hash<double>()(tau.eta()) ^
+	         std::hash<double>()(tau.phi()) ^
+	         std::hash<bool>()(tau.charge()) );
+	}
+
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		const edm::ParameterSet &psBase = this->psBase;
