@@ -30,7 +30,9 @@ protected:
 			out.leptonInfo |= KLeptonAlternativeTrackMask;
 			}
 		}
-		//out.emFraction = in.emFraction(); //not available in current miniAOD samples
+		if(in.isPFTau())
+			out.emFraction = in.emFraction();
+
 		out.decayMode = in.decayMode();
 	}
 
@@ -48,6 +50,33 @@ protected:
 		{
 			out.floatDiscriminators.push_back(in.tauID(discriminator));
 		}
+	}
+
+
+	virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
+	{
+		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); i++)
+		{
+			KPFCandidate tmp;
+			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
+			out.chargedHadronCandidates.push_back(tmp);
+		}
+		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); i++)
+		{
+			KLV tmp;
+			copyP4(in.signalPiZeroCandidates()[i].p4(), tmp.p4);
+			out.piZeroCandidates.push_back(tmp);
+		}
+		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
+		{
+			KPFCandidate tmp;
+			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
+			out.gammaCandidates.push_back(tmp);
+		}
+
+		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), PFSorter);
+		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), LVSorter);
+		std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), PFSorter);
 	}
 
 public:
@@ -114,10 +143,17 @@ virtual bool acceptSingle(const SingleInputType &in) override
 		fillChargeAndFlavour(in, out);
 		out.tauKey = createTauHash<pat::Tau>(in);
 		fillDiscriminators(in, out);
+		if(in.isPFTau())
+			fillPFCandidates(in, out);
 	}
 
 	virtual void onFirstEvent(const SingleInputType &in, SingleOutputType &out)
 	{
+		if(this->verbosity > 0)
+		{
+			if(!in.isPFTau())
+				std::cout << "Warning: pat::Tau has not been made from PFTau. emFraction and some PFCandidates will not be filled properly" << std::endl;
+		}
 		// Write out discriminators
 		// Discriminators are saved as floats in the pat::Tau. 
 		// The black/whitelisting mechanism is used to decide if a discriminato is used as binary or float.
@@ -153,6 +189,9 @@ private:
 	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist;
 	std::map<std::string, KTauMetadata *> discriminatorMap;
 	std::vector<std::string> names;
+
+	KLVSorter<KPFCandidate> PFSorter;
+	KLVSorter<KLV> LVSorter;
 };
 
 #endif
