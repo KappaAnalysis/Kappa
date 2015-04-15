@@ -492,6 +492,18 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
+	PATTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+		taus = cms.PSet(
+			src = cms.InputTag("slimmedTaus"),
+			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
+			binaryDiscrWhitelist = cms.vstring(".*"),
+			binaryDiscrBlacklist = cms.vstring(),
+			floatDiscrWhitelist = cms.vstring(".*"),
+			floatDiscrBlacklist = cms.vstring(),
+			tauDiscrProcessName = cms.string("KAPPA"),
+		),
+	),
+
 	ExtendedTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		taus = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),

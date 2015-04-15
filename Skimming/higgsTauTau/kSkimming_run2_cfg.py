@@ -169,18 +169,24 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#"""
 
 	## ------------------------------------------------------------------------
+	if(miniaod):
+		process.kappaTuple.active += cms.vstring('PATTaus')
+		#process.kappaTuple.PATTaus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
+		process.kappaTuple.PATTaus.taus.preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFindingNewDMs")
+	## ------------------------------------------------------------------------
 	# Configure Taus
-#	process.load("Kappa.Skimming.KTaus_run2_cff")
-	process.kappaTuple.active += cms.vstring('Taus')
-	process.kappaTuple.Taus.taus.src = cms.InputTag("slimmedTaus")
-#	process.kappaTuple.Taus.minPt = cms.double(8.0)
-#	process.p *= ( process.makeKappaTaus )
+	if(not miniaod):
+		process.load("Kappa.Skimming.KTaus_run2_cff")
+		process.kappaTuple.active += cms.vstring('PATTaus')
+		process.kappaTuple.Taus.taus.src = cms.InputTag("slimmedTaus")
+		process.kappaTuple.Taus.minPt = cms.double(8.0)
+		process.p *= ( process.makeKappaTaus )
 
 	# Reduced number of Tau discriminators
 	# The blacklist is to some degree arbitrary to get below 64 binaty tau discriminators
 	# - they may need to be changed as soon as 'official' discriminators for TauID 2014 will be published
-	process.kappaTuple.Taus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
-	process.kappaTuple.Taus.taus.preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFindingNewDMs")
+		process.kappaTuple.Taus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
+		process.kappaTuple.Taus.taus.preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFindingNewDMs")
 
 	## ------------------------------------------------------------------------
 	## Configure Jets
