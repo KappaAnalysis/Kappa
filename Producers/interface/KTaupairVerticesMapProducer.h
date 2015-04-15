@@ -115,8 +115,8 @@ private:
 			{
 				refittedTransientVertex = theFitter.vertex(transientTracks);  // if you don't want the beam constraint
 			}
-			int key1 = KTauProducer::createRecoPFTauHash(diTauPairs[i].first);
-			int key2 = KTauProducer::createRecoPFTauHash(diTauPairs[i].second);
+			int key1 =createTauHash(diTauPairs[i].first);
+			int key2 =createTauHash(diTauPairs[i].second);
 			int diTauKey = key1 ^ key2;
 			// converte Transient->reco
 			reco::Vertex refittedVertex = reco::Vertex(refittedTransientVertex);
