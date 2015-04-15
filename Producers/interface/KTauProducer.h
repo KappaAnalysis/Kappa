@@ -16,17 +16,16 @@
 #ifndef KAPPA_TAUPRODUCER_H
 #define KAPPA_TAUPRODUCER_H
 
-//#include <DataFormats/TauReco/interface/PFTau.h>
-#include <DataFormats/PatCandidates/interface/Tau.h>
+#include <DataFormats/TauReco/interface/PFTau.h>
 #include <DataFormats/TauReco/interface/PFTauDiscriminator.h>
 
 #include "KBasicTauProducer.h"
 
-class KTauProducer : public KBasicTauProducer<pat::Tau, reco::PFTauDiscriminator, KTaus>
+class KTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>
 {
 public:
 	KTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBasicTauProducer<pat::Tau, reco::PFTauDiscriminator, KTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {}
+		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "Taus"; }
 
@@ -41,14 +40,12 @@ public:
 			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
 			out.chargedHadronCandidates.push_back(tmp);
 		}
-		/*for(size_t i = 0; i < in.signalPiZeroCandidates().size(); i++)
+		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); i++)
 		{
 			KLV tmp;
 			copyP4(in.signalPiZeroCandidates()[i].p4(), tmp.p4);
 			out.piZeroCandidates.push_back(tmp);
-		}*/
-		// signalPiZeroCandidates are not stored in miniAOD
-		// https://github.com/cms-sw/cmssw/blob/CMSSW_7_5_X/DataFormats/PatCandidates/interface/Tau.h#L197
+		}
 		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
 		{
 			KPFCandidate tmp;
@@ -66,7 +63,7 @@ protected:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		// Fill fields of KBasicTau via base class
-		KBasicTauProducer<pat::Tau, reco::PFTauDiscriminator, KTaus>::fillSingle(in, out);
+		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>::fillSingle(in, out);
 		// Fill additional fields of KTau
 		KTauProducer::fillTau(in, out);
 		
