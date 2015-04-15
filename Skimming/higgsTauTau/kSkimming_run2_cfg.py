@@ -172,7 +172,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if(miniaod):
 		process.kappaTuple.active += cms.vstring('PATTaus')
 		#process.kappaTuple.PATTaus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
-		process.kappaTuple.PATTaus.taus.preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFindingNewDMs")
+		process.kappaTuple.PATTaus.taus.preselectOnDiscriminators = cms.vstring()
 	## ------------------------------------------------------------------------
 	# Configure Taus
 	if(not miniaod):

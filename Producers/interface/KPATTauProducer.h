@@ -83,14 +83,20 @@ public:
 	}
 
 
-virtual bool acceptSingle(const SingleInputType &in, SingleOutputType &out)
+virtual bool acceptSingle(const SingleInputType &in) override
 	{
 		// propagate the selection on minPt/maxEta
 		bool acceptTau = KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>::acceptSingle(in);
 
 		for(auto discriminator: preselectionDiscr[names[0]])
 		{
-			acceptTau = acceptTau && false;
+			if ( !in.isTauIDAvailable(discriminator) )
+			{
+				std::cout << "Configured Tau preselection discriminator " << discriminator << " is not available. Available discriminators are: " << std::endl;
+				for(auto availableDiscriminator : in.tauIDs())
+					std::cout << availableDiscriminator.first << std::endl;
+			}
+			acceptTau = acceptTau && (in.tauID(discriminator) > 0.5);
 		}
 		return acceptTau;
 	}
