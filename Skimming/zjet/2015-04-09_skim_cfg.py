@@ -98,6 +98,7 @@ def getBaseConfig(
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
 	# PFCandidates ------------------------------------------------------------
+	#
 	process.load('Kappa.Skimming.KPFCandidates_cff')
 	if cmssw_version_number.startswith("7"):
 		# Modifications for new particleFlow Pointers
@@ -107,11 +108,12 @@ def getBaseConfig(
 		#process.pfNoPileUpIso.bottomCollection = cms.InputTag('particleFlowPtrs')
 		process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag('ak5PFJets')
 
-	process.p *= (process.goodOfflinePrimaryVertices * process.pfPileUp * process.pfNoPileUp)# process.makePFBRECO * process.makeKappaPFCandidates)
 
+	#process.p *= (process.goodOfflinePrimaryVertices * process.pfPileUp * process.pfNoPileUp)
+	process.p *= (process.goodOfflinePrimaryVertices * process.pfPileUp * process.pfNoPileUp * process.makePFBRECO * process.makeKappaPFCandidates)
 
 	## ------------------------------------------------------------------------
-	if channel= 'mm':
+	if channel == 'mm':
 		# Configure Muons
 		process.load('Kappa.Skimming.KMuons_cff')
 		process.kappaTuple.active += cms.vstring('Muons')					## produce/save KappaMuons
@@ -167,9 +169,9 @@ def getBaseConfig(
 			'SoftMuonBJetTags',
 			'SoftMuonByIP3dBJetTags',
 			'SoftMuonByPtBJetTags',
-			'SimpleSecondaryVertexBJetTags',
+			#'SimpleSecondaryVertexBJetTags',
 			'CombinedSecondaryVertexBJetTags',
-			'CombinedSecondaryVertexMVABJetTags',
+			#'CombinedSecondaryVertexMVABJetTags',
 			'puJetIDFullDiscriminant',
 			'puJetIDFullLoose',
 			'puJetIDFullMedium',
@@ -269,6 +271,11 @@ if __name__ == '__main__':
 				'files': 'file:/storage/8/dhaitz/testfiles/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball__Summer12_DR53X-PU_RD1_START53_V7N-v1__AODSIM.root',
 				'globalTag': 'START53_V27::All',
 				'nickName': 'DYJetsToLL_M_50_madgraph_8TeV',
+			},
+			'74data12': {
+				'files': 'file:/storage/8/dhaitz/testfiles/DoubleMuParked__CMSSW_7_4_0_pre9_ROOT6-GR_R_74_V8_1Apr_RelVal_dm2012D-v2__RECO.root',
+				'globalTag': 'GR_R_74_V8::All',
+				'nickName': 'DoubleMu_Run2012A_22Jan2013_8TeV',
 			},
 		}
 		KappaParser.parseArgumentsWithTestDict(testdict)
