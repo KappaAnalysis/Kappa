@@ -54,3 +54,11 @@ def get_repository_revisions(repo_scan_base_dirs=["$CMSSW_BASE/src"], repo_scan_
 			result[repoScanDir] = popenCout.replace("\n", "")
 	
 	return result
+
+def get_cmssw_version():
+	"""returns 'CMSSW_X_Y_Z'"""
+	return os.environ["CMSSW_RELEASE_BASE"].split('/')[-1]
+
+def get_cmssw_version_number():
+	"""returns 'X_Y_Z' (without 'CMSSW_')"""
+	return get_cmssw_version().split("CMSSW_")[1]
