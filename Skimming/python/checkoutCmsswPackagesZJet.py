@@ -17,9 +17,9 @@ import tools
 
 
 class checkoutScript(object):
-	def __init__(self):
+	def __init__(self, checkout_commands_dict={}):
 		self.cmsswsrc = os.environ["CMSSW_BASE"] + '/src/'
-		self.checkout_commands_dict = {}
+		self.checkout_commands_dict = checkout_commands_dict
 
 		parser = argparse.ArgumentParser("")
 		parser.add_argument("--cmssw-version", default=tools.get_cmssw_version_number(), nargs='?',
@@ -66,17 +66,14 @@ class checkoutScript(object):
 
 class checkoutScriptZjet(checkoutScript):
 	def __init__(self):
-		super(checkoutScriptZjet, self).__init__()
-
-		self.checkout_commands_dict = {
+		super(checkoutScriptZjet, self).__init__({
 			#'5_3': [], TODO
 			#'7_2': [], TODO
 			'7_4':[
 				"git-cms-addpkg CommonTools/ParticleFlow",
 				"git clone https://github.com/KappaAnalysis/Kappa.git -b development",
 			],
-		}
-
+		})
 
 if __name__ == "__main__":
 	checkout = checkoutScriptZjet()
