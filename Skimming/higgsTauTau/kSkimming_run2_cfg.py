@@ -59,7 +59,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
-	#process.kappaTuple.active += cms.vstring('TriggerObjects')
+	if not miniaod:
+		process.kappaTuple.active += cms.vstring('TriggerObjects')
+	else:
+		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
 	"""
 	if not isEmbedded and data:

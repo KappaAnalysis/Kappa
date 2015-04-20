@@ -106,6 +106,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 		triggerObjects = cms.vstring(),
 	),
 
+	TriggerObjectStandalone = cms.PSet(kappaNoRegEx, kappaNoCut,
+			bits = cms.InputTag("TriggerResults","","HLT"),
+			objects = cms.InputTag("selectedPatTrigger"),
+			prescales = cms.InputTag("patTrigger"),
+		trigger = cms.PSet(
+			src = cms.InputTag("selectedPatTrigger"),
+			)
+	),
 	Tracks = cms.PSet(kappaNoRename,
 		maxN = cms.int32(-1),
 		minPt = cms.double(10.),

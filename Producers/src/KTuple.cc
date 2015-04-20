@@ -60,6 +60,7 @@
 #include "../interface/KLeptonPairProducer.h"
 #include "../interface/KTrackSummaryProducer.h"
 #include "../interface/KTriggerObjectProducer.h"
+#include "../interface/KTriggerObjectStandaloneProducer.h"
 #include "../interface/KVertexProducer.h"
 #include "../interface/KVertexSummaryProducer.h"
 /* are these still used?
@@ -225,6 +226,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KLeptonPairProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);
 		addProducer<KTriggerObjectProducer>(active[i]);
+		addProducer<KTriggerObjectStandaloneProducer>(active[i]);
 		addProducer<KVertexProducer>(active[i]);
 		addProducer<KVertexSummaryProducer>(active[i]);
 		addProducer<KTreeInfoProducer >(active[i]);
