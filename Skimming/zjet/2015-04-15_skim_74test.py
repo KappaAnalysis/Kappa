@@ -38,9 +38,7 @@ def getBaseConfig(
 	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
 	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
 
-	# TODO is there a better way to do this?
-	cmssw_version = os.environ["CMSSW_RELEASE_BASE"].split('/')[-1]
-	cmssw_version_number = cmssw_version.split("CMSSW_")[1]
+	cmssw_version_number = tools.get_cmssw_version_number()
 
 	## some infos
 	print "\n--------CONFIGURATION----------"
@@ -75,8 +73,8 @@ def getBaseConfig(
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')	## save VertexSummary,
 	process.kappaTuple.VertexSummary.whitelist = cms.vstring('goodOfflinePrimaryVertices')
-	#process.kappaTuple.active += cms.vstring('BeamSpot')		## save Beamspot,
-	#process.kappaTuple.active += cms.vstring('TriggerObjects')
+	process.kappaTuple.active += cms.vstring('BeamSpot')		## save Beamspot,
+	process.kappaTuple.active += cms.vstring('TriggerObjects')
 
 	if data:
 		process.kappaTuple.active+= cms.vstring('DataInfo')		## produce Metadata for data,
@@ -93,24 +91,27 @@ def getBaseConfig(
 			'^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$',
 			)
 
+	# test case for 74x relval
+	if globaltag = "GR_R_74_V8":
+		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
 
 
 	## ------------------------------------------------------------------------
 	# Configure PFCandidates and offline PV
 	# PFCandidates ------------------------------------------------------------
 	#
-	process.load('Kappa.Skimming.KPFCandidates_cff')
+	process.load('Kappa.Skimming.KPFCandidates_run2_cff')
 	if cmssw_version_number.startswith("7"):
 		# Modifications for new particleFlow Pointers
 		#process.pfPileUp.PFCandidates = cms.InputTag('particleFlowPtrs')
 		#process.pfPileUpIso.PFCandidates = cms.InputTag('particleFlowPtrs')
 		#process.pfNoPileUp.bottomCollection = cms.InputTag('particleFlowPtrs')
 		#process.pfNoPileUpIso.bottomCollection = cms.InputTag('particleFlowPtrs')
-		process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag('ak5PFJets')
+		process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag('ak4PFJets')
 
 
-	#process.p *= (process.goodOfflinePrimaryVertices * process.pfPileUp * process.pfNoPileUp)
-	process.p *= (process.goodOfflinePrimaryVertices * process.pfPileUp * process.pfNoPileUp * process.makePFBRECO * process.makeKappaPFCandidates)
+	process.p *= (process.goodOfflinePrimaryVertices * process.pfPileUp * process.pfNoPileUp)
+	#process.p *= (process.goodOfflinePrimaryVertices * process.pfPileUp * process.pfNoPileUp * process.makePFBRECO * process.makeKappaPFCandidates)
 
 	## ------------------------------------------------------------------------
 	if channel == 'mm':
@@ -166,9 +167,9 @@ def getBaseConfig(
 			'JetProbabilityBJetTags',
 			'JetBProbabilityBJetTags',
 			'SoftElectronBJetTags',
-			'SoftMuonBJetTags',
-			'SoftMuonByIP3dBJetTags',
-			'SoftMuonByPtBJetTags',
+			#'SoftMuonBJetTags',
+			#'SoftMuonByIP3dBJetTags',
+			#'SoftMuonByPtBJetTags',
 			#'SimpleSecondaryVertexBJetTags',
 			'CombinedSecondaryVertexBJetTags',
 			#'CombinedSecondaryVertexMVABJetTags',
@@ -219,7 +220,7 @@ def getBaseConfig(
 		process.makeBTagging *
 		process.makePUJetID
 	)
-
+	
 	## ------------------------------------------------------------------------
 	## MET
 	# MET correction ----------------------------------------------------------
@@ -245,12 +246,13 @@ def getBaseConfig(
 			process.producePFMETCorrections * process.pfMETCHS
 		)
 		process.kappaTuple.MET.whitelist += cms.vstring("pfMETCHS")
-
+	
 	## ------------------------------------------------------------------------
 	## And let it run
 	process.p *= (
 		process.kappaOut
 	)
+	print process.p
 
 	return process
 

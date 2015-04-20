@@ -5,6 +5,7 @@
 //-  * Manuel Zeise <zeise@cern.ch>
 
 #include "../interface/KBaseProducer.h"
+#include <iostream>
 #include <TTree.h>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/regex.hpp>
