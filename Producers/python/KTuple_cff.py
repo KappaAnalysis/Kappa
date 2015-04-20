@@ -110,7 +110,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			bits = cms.InputTag("TriggerResults","","HLT"),
 			objects = cms.InputTag("selectedPatTrigger"),
 			prescales = cms.InputTag("patTrigger"),
-		trigger = cms.PSet(
+		triggerObjects = cms.PSet(
 			src = cms.InputTag("selectedPatTrigger"),
 			)
 	),

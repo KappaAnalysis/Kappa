@@ -35,17 +35,21 @@ public:
 		triggerBits_ = cfg.getParameter<edm::InputTag>("bits");
 		triggerObjects_ = cfg.getParameter<edm::InputTag>("objects");
 		triggerPrescales_ = cfg.getParameter<edm::InputTag>("prescales");
+
+		toMetadata = new KTriggerObjectMetadata;
+		_run_tree->Bronch("triggerObjectMetadata", "KTriggerObjectMetadata", &toMetadata);
+
 	}
 
 	static const std::string getLabel() { return "TriggerObjectStandalone"; }
 
 
-/*	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
+	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		toMetadata->menu = KInfoProducerBase::hltConfig.tableName();
-		tometadata->tofilter.clear();
+		toMetadata->toFilter.clear();
 		return true;
-	}*/
+	}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup) override
 	{
@@ -93,9 +97,9 @@ public:
 	return false;
 	}
 
-	std::vector<int> getFilterIndices(std::vector<std::string> pathNamesTriggerObject, std::vector<size_t> selectedPathNameIndices)
+	std::vector<int> getHLTIndices(std::vector<std::string> pathNamesTriggerObject, std::vector<size_t> selectedPathNameIndices)
 	{
-		std::vector<int> filterIndices;
+		std::vector<int> hltIndices;
 
 		HLTConfigProvider &hltConfig(KInfoProducerBase::hltConfig);
 		for(auto pathNameTriggerObject : pathNamesTriggerObject)
@@ -104,11 +108,115 @@ public:
 			{
 				if (hltConfig.triggerName(hltIdx) == pathNameTriggerObject)
 				{
-					filterIndices.push_back(hltIdx);
+					hltIndices.push_back(hltIdx);
+					const std::vector<std::string>& saveTagsModules = KInfoProducerBase::hltConfig.saveTagsModules(hltIdx);
+					
+					toMetadata->nFiltersPerHLT.push_back(saveTagsModules.size());
+
 				}
 			}
 		}
+		return hltIndices;
+	}
+
+	std::vector<int> getFilterIndices(std::vector<std::string> filterLabels)
+	{
+		std::vector<int> filterIndices;
+		for(unsigned int i = 0; i < toMetadata->toFilter.size(); ++i)
+		{
+			if(toMetadata->toFilter[i] == "")
+				continue;
+
+			for(auto filterLabel: filterLabels)
+			{
+				if(filterLabel==toMetadata->toFilter[i])
+					filterIndices.push_back(i);
+			}
+		}
 		return filterIndices;
+	}
+
+	void fillMetadata(pat::TriggerObjectStandAlone &obj, KTriggerObjects &out, const std::string &name)
+	{
+		
+		HLTConfigProvider &hltConfig(KInfoProducerBase::hltConfig);
+
+		std::map<size_t, size_t> toFWK2Kappa;
+		
+		out.toIdxFilter.clear();
+		toMetadata->nFiltersPerHLT.clear();
+
+		// run over all triggers
+		for (size_t i = 0; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
+		{
+			if (i == 0)
+			{
+				toMetadata->nFiltersPerHLT.push_back(0);
+				continue;
+			}
+
+			// get HLT index
+			size_t hltIdx = KInfoProducerBase::hltKappa2FWK[i];
+			if (verbosity > 0)
+				std::cout << "KTriggerObjectProducer::fillProduct : " << hltConfig.triggerName(hltIdx) << ": ";
+			
+			const std::vector<std::string>& saveTagsModules = KInfoProducerBase::hltConfig.saveTagsModules(hltIdx);
+			
+			// allocate memory
+			toMetadata->nFiltersPerHLT.push_back(saveTagsModules.size());
+			if (toMetadata->toFilter.empty() || toMetadata->toFilter.size() < toMetadata->getMaxFilterIndex(i))
+			{
+				toMetadata->toFilter.resize(toMetadata->getMaxFilterIndex(i) + 1);
+			}
+			out.toIdxFilter.resize(toMetadata->getMaxFilterIndex(i) + 1);
+			// run over all filters for this trigger
+			for (size_t m = 0; m < saveTagsModules.size(); ++m)
+			{
+				// run over all filters in the event and match them with the given filter
+				bool found = false;
+
+				std::vector<std::string> filterLabels  = obj.filterLabels();
+				for (size_t iF = 0; iF < filterLabels.size(); ++iF)
+				{
+					if (saveTagsModules[m] == filterLabels[iF])
+					{
+						found = true;
+						if (verbosity > 1)
+							std::cout << "<" << saveTagsModules[m] << "> ";
+						
+						// current index in output vectors
+						size_t currentIndex = toMetadata->getMinFilterIndex(i) + m;
+						
+						// register filter name in the meta data and check possible changes in names within lumi section
+						if (toMetadata->toFilter[currentIndex] == "") // Register L1L2 object
+						{
+							toMetadata->toFilter[currentIndex] = saveTagsModules[m];
+							if (verbosity > 0)
+								std::cout << "\t" << name << " object: " << toMetadata->toFilter[currentIndex] << std::endl;
+						}
+						else if (toMetadata->toFilter[currentIndex] != saveTagsModules[m]) // Check existing entry
+						{
+							bool isPresent = (std::find(KInfoProducerBase::svHLTFailToleranceList.begin(),
+												KInfoProducerBase::svHLTFailToleranceList.end(), toMetadata->toFilter[currentIndex])
+												!= KInfoProducerBase::svHLTFailToleranceList.end());
+							if(!isPresent) //Check if known problem that can be skipped
+							{
+								std::cout << std::endl << name << " index mismatch! "<< toMetadata->toFilter[currentIndex] << " changed to " << saveTagsModules[m] << std::endl;
+								std::cout << "Try blacklisting the trigger " << hltConfig.triggerName(hltIdx) << " or add the trigger objects to the hltFailToleranceList" << std::endl;
+								exit(1);
+							}
+						}
+						
+						if (verbosity > 2)
+							std::cout << std::endl;
+					}
+				}
+				if ((verbosity > 1) && !found)
+					std::cout << saveTagsModules[m] << " ";
+			}
+			if (verbosity > 0)
+				std::cout << std::endl;
+		}
 	}
 
 protected:
@@ -122,16 +230,20 @@ protected:
 		for(auto obj : in)
 		{
 			obj.unpackPathNames(names_);
+
+			fillMetadata(obj, out, name);
+
 			auto pathNamesAll = obj.pathNames(false);
-			std::vector<int> filterIndices = getFilterIndices(pathNamesAll, KInfoProducerBase::hltKappa2FWK);
+
+			std::vector<int> filterIndices = getFilterIndices(obj.filterLabels());
 
 			if(filterIndices.size() > 0)
 			{
 				KLV triggerObject;
 				copyP4(obj.p4(), triggerObject.p4);
 				out.trgObjects.push_back(triggerObject);
-
 				out.toIdxFilter.push_back(filterIndices);
+
 			}
 		}
 	}

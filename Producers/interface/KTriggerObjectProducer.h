@@ -146,6 +146,18 @@ protected:
 			}
 			if (verbosity > 0)
 				std::cout << std::endl;
+		std::cout << "custom: " << std::endl;
+		int a = 0;
+		for(auto filter: toMetadata->toFilter)
+			std::cout << a++  << ": " << filter << std::endl;
+
+		std::cout << "nfiltersper" << std::endl;
+		for(auto n : toMetadata->nFiltersPerHLT)
+			std::cout << ", " << n ;
+		std::cout << endl;
+
+
+
 		}
 
 		// Save used trigger objects
@@ -160,6 +172,15 @@ protected:
 		for (size_t i = 0; i < out.toIdxFilter.size(); ++i)
 		{
 			std::sort(out.toIdxFilter[i].begin(), out.toIdxFilter[i].end(), toSorter);
+		}
+
+		std::cout << "trigger objects " << std::endl;
+		for(unsigned i = 0; i< out.trgObjects.size(); i++)
+		{
+			std::cout << "pt: " << out.trgObjects[i].p4.pt() << "; indices: ";
+			for(auto ding: out.toIdxFilter[i])
+				std::cout << ding << " ";
+			std::cout << endl;
 		}
 	}
 
