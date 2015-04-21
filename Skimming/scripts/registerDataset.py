@@ -27,6 +27,7 @@ def register_new_sample(dict, options):
 	new_entry[sample]["generator"] = get_generator(pd_name, options.generator, data=new_entry[sample]["data"])
 	new_entry[sample]["process"]   = get_process(pd_name, options.process)
 	new_entry[sample]["embedded"]  = is_embedded(filetype, options.embedded)
+	new_entry[sample]["format"]    = get_format(filetype, options.filetype)
 	pprint(new_entry)
 	print make_nickname(new_entry[sample])
 	dict[sample] = new_entry[sample]
@@ -94,6 +95,9 @@ def main():
 	# process
 	parser.add_option("-p", "--process", help="process", default=None)
 	
+	# process
+	parser.add_option("--filetype", help="process", default=None)
+
 	parser.add_option("-i", "--interactive", help="run in interactive mode", action="store_true")
 
 
