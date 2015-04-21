@@ -49,11 +49,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
-	"""
 	process.kappaTuple.active = cms.vstring('TreeInfo')
 	process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 
-	"""
 	## ------------------------------------------------------------------------
 	# General configuration
 
@@ -64,11 +62,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	else:
 		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
-	"""
 	if not isEmbedded and data:
 			process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
 
-	"""
 	if not isEmbedded and not data:
 			process.kappaTuple.active+= cms.vstring('GenInfo')           # produce Metadata for MC,
 			process.kappaTuple.active+= cms.vstring('GenParticles')      # save GenParticles,
@@ -93,7 +89,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			)
 		)
 	
-	"""
 	# Special settings for embedded samples
 	# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonTauReplacementWithPFlow
 	if isEmbedded:
@@ -109,7 +104,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.active += cms.vstring('GenTaus') # save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
 
-	"""
 	## ------------------------------------------------------------------------
 	# Trigger
 	from Kappa.Skimming.hlt import hltBlacklist, hltWhitelist
@@ -257,14 +251,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	## Further information saved to Kappa output 
 	# add python config to TreeInfo
-	"""
 	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
 		
 	# add repository revisions to TreeInfo
 	for repo, rev in tools.get_repository_revisions().iteritems():
 			setattr(process.kappaTuple.TreeInfo.parameters, repo, cms.string(rev))
 
-	"""
 	## ------------------------------------------------------------------------
 	## let Kappa run
 	process.p *= ( process.kappaOut )

@@ -81,10 +81,10 @@ protected:
 
 public:
 	KPATTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {
+		KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel()),
+		firstEvent(true){
 		const edm::ParameterSet &psBase = this->psBase;
 		 names = psBase.getParameterNamesForType<edm::ParameterSet>();
-
 		if(names.size() != 1)
 		{
 			std::cout << "Currently the PATTau Producer only supports one PSet" << std::endl;
@@ -93,7 +93,7 @@ public:
 
 		for(size_t i = 0; i < names.size(); ++i)
 		{
-			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>("taus");
+			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
 
 			preselectionDiscr[names[i]] = pset.getParameter< std::vector<std::string> >("preselectOnDiscriminators");
 			binaryDiscrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("binaryDiscrWhitelist");
@@ -161,10 +161,9 @@ virtual bool acceptSingle(const SingleInputType &in) override
 		out.binaryDiscriminators = 0;
 		out.floatDiscriminators = std::vector<float>(0);
 		const std::vector<std::pair<std::string, float>> tauIDs = in.tauIDs();
-		discriminatorMap[names[0]] = new KTauMetadata();
-
 		for(size_t i = 0; i < names.size(); ++i)
 		{
+			discriminatorMap[names[i]] = new KTauMetadata();
 			for(auto tauID : tauIDs)
 			{
 				if( KBaseProducer::regexMatch(tauID.first, binaryDiscrWhitelist[names[i]], binaryDiscrBlacklist[names[i]])) //regexmatch for binary discriminators
@@ -181,9 +180,19 @@ virtual bool acceptSingle(const SingleInputType &in) override
 						std::cout << "Float tau discriminator " << ": " << tauID.first << std::endl;
 				}
 			}
+			checkMapsize(discriminatorMap[names[i]]->floatDiscriminatorNames, "float Discriminators");
+			checkMapsize(discriminatorMap[names[i]]->binaryDiscriminatorNames, "binary Discriminators");
 		}
 	}
 private:
+	void checkMapsize(const std::vector<std::string> &map, const std::string &title)
+	{
+		if(map.size() > 64)
+		{
+			std::cout << title << " contains too many Elements(" << map.size() << ", max is 64" << std::endl;
+			exit(1);
+		}
+	}
 	bool firstEvent;
 	std::map<std::string, std::vector<std::string> > preselectionDiscr;
 	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist;
