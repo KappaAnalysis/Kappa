@@ -4,6 +4,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "DY1JetsToLL_M10To50", 
         "scenario": "PU_S10"
@@ -13,6 +14,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "DY1JetsToLL_M50", 
         "scenario": "PU_S10"
@@ -22,6 +24,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "DY2JetsToLL_M50", 
         "scenario": "PU_S10"
@@ -31,6 +34,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "DY2JetsToLL_TuneZ2star_M10To50", 
         "scenario": "PU_S10"
@@ -40,6 +44,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "DY3JetsToLL_M50", 
         "scenario": "PU_S10"
@@ -49,6 +54,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "DY4JetsToLL_M50", 
         "scenario": "PU_S10"
@@ -58,6 +64,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "DYJetsToLL_M10To50", 
         "scenario": "PU_S6"
@@ -67,6 +74,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "DYJetsToLL_M10To50filter", 
         "scenario": "PU_S10"
@@ -76,15 +84,27 @@
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "AODSIM", 
         "generator": "madgraph-pythia8-tauola_v2", 
         "process": "DYJetsToLL_M50", 
         "scenario": "PU"
+    }, 
+    "/DYJetsToLL_M-50_13TeV-madgraph-pythia8/Phys14DR-PU20bx25_PHYS14_25_V1-v1/AODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "AODSIM", 
+        "generator": "madgraph-pythia8", 
+        "process": "DYJetsToLL_M50", 
+        "scenario": "PU20bx25"
     }, 
     "/DYJetsToLL_M-50_13TeV-madgraph-pythia8/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM": {
         "campaign": "Phys14DR", 
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "MINIAODSIM", 
         "generator": "madgraph-pythia8", 
         "process": "DYJetsToLL_M50", 
         "scenario": "PU20bx25"
@@ -94,6 +114,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tarball-tauola-tauPolarOff", 
         "process": "DYJetsToLL_M50", 
         "scenario": "PU_S10"
@@ -103,6 +124,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tarball", 
         "process": "DYJetsToLL_M50", 
         "scenario": "PU_S10"
@@ -112,6 +134,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "DYJetsToLL_TuneZ2_M50", 
         "scenario": "PU_S6"
@@ -121,6 +144,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleElectron", 
         "scenario": "16Jan2012v1"
@@ -130,6 +154,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleElectron", 
         "scenario": "22Jan2013v1"
@@ -139,6 +164,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleElectron", 
         "scenario": "22Jan2013v1"
@@ -148,6 +174,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleElectron", 
         "scenario": "22Jan2013v1"
@@ -157,6 +184,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleElectron", 
         "scenario": "22Jan2013v1"
@@ -166,6 +194,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "16Jan2012v1"
@@ -175,6 +204,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "16Jan2012v1"
@@ -184,6 +214,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "22Jan2013v1"
@@ -193,6 +224,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v15ef1c0fd428eb740081f19333520fdc8"
@@ -202,6 +234,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v15ef1c0fd428eb740081f19333520fdc8"
@@ -211,6 +244,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -220,6 +254,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -229,6 +264,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -238,6 +274,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "Run2012A_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v15ef1c0fd428eb740081f19333520fdc8"
@@ -247,6 +284,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "Run2012A_22Jan2013_v1_RHembedded_trans1_tau115_ptelec1_20had1_18_v1f456bdbb960236e5c696adfe9b04eaae"
@@ -256,6 +294,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMu", 
         "scenario": "Run2012A_22Jan2013_v1_RHembedded_trans1_tau116_ptmu1_16had1_18_v1f456bdbb960236e5c696adfe9b04eaae"
@@ -265,6 +304,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "22Jan2013v1"
@@ -274,6 +314,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "22Jan2013v1"
@@ -283,6 +324,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "22Jan2013v1"
@@ -292,6 +334,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v15ef1c0fd428eb740081f19333520fdc8"
@@ -301,6 +344,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v15ef1c0fd428eb740081f19333520fdc8"
@@ -310,6 +354,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -319,6 +364,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -328,6 +374,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -337,6 +384,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012B_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v15ef1c0fd428eb740081f19333520fdc8"
@@ -346,6 +394,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v15ef1c0fd428eb740081f19333520fdc8"
@@ -355,6 +404,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v15ef1c0fd428eb740081f19333520fdc8"
@@ -364,6 +414,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -373,6 +424,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -382,6 +434,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -391,6 +444,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012C_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v15ef1c0fd428eb740081f19333520fdc8"
@@ -400,6 +454,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau115_ptelec1_20had1_18_v15ef1c0fd428eb740081f19333520fdc8"
@@ -409,6 +464,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v15ef1c0fd428eb740081f19333520fdc8"
@@ -418,6 +474,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau121_ptelec1_17elec2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -427,6 +484,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau122_ptmu1_18mu2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -436,6 +494,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau123_pttau1_18tau2_8_v15ef1c0fd428eb740081f19333520fdc8"
@@ -445,6 +504,7 @@
         "data": true, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v15ef1c0fd428eb740081f19333520fdc8"
@@ -454,6 +514,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M100", 
         "scenario": "PU_S6"
@@ -463,6 +524,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M100", 
         "scenario": "PU_S10"
@@ -472,6 +534,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M105", 
         "scenario": "PU_S6"
@@ -481,6 +544,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M105", 
         "scenario": "PU_S10"
@@ -490,6 +554,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M110", 
         "scenario": "PU_S6"
@@ -499,6 +564,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M110", 
         "scenario": "PU_S10"
@@ -508,6 +574,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M115", 
         "scenario": "PU_S6"
@@ -517,6 +584,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M115", 
         "scenario": "PU_S10"
@@ -526,6 +594,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M120", 
         "scenario": "PU_S6"
@@ -535,6 +604,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M120", 
         "scenario": "PU_S10"
@@ -544,6 +614,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "MINIAODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M125", 
         "scenario": "PU20bx25"
@@ -553,6 +624,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M125", 
         "scenario": "PU_S6"
@@ -562,6 +634,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauPolarOff", 
         "process": "GluGluToHToTauTau_M125", 
         "scenario": "PU_S10"
@@ -571,6 +644,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M125", 
         "scenario": "PU_S10"
@@ -580,6 +654,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M130", 
         "scenario": "PU_S6"
@@ -589,6 +664,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M130", 
         "scenario": "PU_S10"
@@ -598,6 +674,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M135", 
         "scenario": "PU_S6"
@@ -607,6 +684,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M135", 
         "scenario": "PU_S10"
@@ -616,6 +694,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M140", 
         "scenario": "PU_S6"
@@ -625,6 +704,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M140", 
         "scenario": "PU_S10"
@@ -634,6 +714,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M145", 
         "scenario": "PU_S6"
@@ -643,6 +724,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M145", 
         "scenario": "PU_S10"
@@ -652,6 +734,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M150", 
         "scenario": "PU_S6"
@@ -661,6 +744,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M150", 
         "scenario": "PU_S10"
@@ -670,6 +754,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M155", 
         "scenario": "PU_S6"
@@ -679,6 +764,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M155", 
         "scenario": "PU_S10"
@@ -688,6 +774,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M160", 
         "scenario": "PU_S6"
@@ -697,6 +784,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M160", 
         "scenario": "PU_S10"
@@ -706,6 +794,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M90", 
         "scenario": "PU_S6"
@@ -715,6 +804,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M90", 
         "scenario": "PU_S10"
@@ -724,6 +814,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M95", 
         "scenario": "PU_S6"
@@ -733,6 +824,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "GluGluToHToTauTau_M95", 
         "scenario": "PU_S10"
@@ -742,6 +834,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "JHUGenV4", 
         "process": "JJHiggs0MToTauTau_M125p6", 
         "scenario": "PU_S10"
@@ -751,6 +844,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "JHUGenV4", 
         "process": "JJHiggs0PToTauTau_M125p6", 
         "scenario": "PU_S10"
@@ -760,6 +854,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "MuEG", 
         "scenario": "22Jan2013v1"
@@ -769,6 +864,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "MuEG", 
         "scenario": "22Jan2013v1"
@@ -778,6 +874,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "MuEG", 
         "scenario": "22Jan2013v1"
@@ -787,6 +884,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "MuEG", 
         "scenario": "22Jan2013v1"
@@ -796,6 +894,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "SUSYBBHToTauTau_M110", 
         "scenario": "PU_S10"
@@ -805,6 +904,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "SUSYBBHToTauTau_M120", 
         "scenario": "PU_S10"
@@ -814,6 +914,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "SUSYBBHToTauTau_M130", 
         "scenario": "PU_S10"
@@ -823,6 +924,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "SUSYBBHToTauTau_M140", 
         "scenario": "PU_S10"
@@ -832,6 +934,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "SUSYBBHToTauTau_M300", 
         "scenario": "PU_S10"
@@ -841,6 +944,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "SUSYGluGluToHToTauTau_M110", 
         "scenario": "PU_S10"
@@ -850,6 +954,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "SUSYGluGluToHToTauTau_M120", 
         "scenario": "PU_S10"
@@ -859,6 +964,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "SUSYGluGluToHToTauTau_M130", 
         "scenario": "PU_S10"
@@ -868,6 +974,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "SUSYGluGluToHToTauTau_M140", 
         "scenario": "PU_S10"
@@ -877,6 +984,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "SUSYGluGluToHToTauTau_M300", 
         "scenario": "PU_S10"
@@ -886,6 +994,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AOD", 
         "generator": "", 
         "process": "SingleMu", 
         "scenario": "May10ReRecov1"
@@ -895,6 +1004,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AOD", 
         "generator": "", 
         "process": "SingleMu", 
         "scenario": "PromptRecov4"
@@ -904,6 +1014,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6", 
         "process": "TTH_HToTauTau_M110", 
         "scenario": "PU_S10"
@@ -913,6 +1024,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6", 
         "process": "TTH_HToTauTau_M115", 
         "scenario": "PU_S10"
@@ -922,6 +1034,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6", 
         "process": "TTH_HToTauTau_M120", 
         "scenario": "PU_S10"
@@ -931,6 +1044,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6", 
         "process": "TTH_HToTauTau_M122", 
         "scenario": "PU_S10"
@@ -940,6 +1054,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6", 
         "process": "TTH_HToTauTau_M125", 
         "scenario": "PU_S10"
@@ -949,6 +1064,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6", 
         "process": "TTH_HToTauTau_M127", 
         "scenario": "PU_S10"
@@ -958,6 +1074,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6", 
         "process": "TTH_HToTauTau_M130", 
         "scenario": "PU_S10"
@@ -967,6 +1084,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6", 
         "process": "TTH_HToTauTau_M135", 
         "scenario": "PU_S10"
@@ -976,6 +1094,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6", 
         "process": "TTH_HToTauTau_M140", 
         "scenario": "PU_S10"
@@ -985,6 +1104,7 @@
         "data": false, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "madgraph-tauola", 
         "process": "TTJets_FullLeptMGDecays", 
         "scenario": "Summer12_TTJets"
@@ -994,6 +1114,7 @@
         "data": false, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "madgraph-tauola", 
         "process": "TTJets", 
         "scenario": "Summer12_TTJets"
@@ -1003,6 +1124,7 @@
         "data": false, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "madgraph-tauola", 
         "process": "TTJets_FullLeptMGDecays", 
         "scenario": "Summer12_TTJets"
@@ -1012,6 +1134,7 @@
         "data": false, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "madgraph-tauola", 
         "process": "TTJets_FullLeptMGDecays", 
         "scenario": "Summer12_TTJets"
@@ -1021,6 +1144,7 @@
         "data": false, 
         "embedded": true, 
         "energy": "8", 
+        "format": "USER", 
         "generator": "madgraph-tauola", 
         "process": "TTJets_FullLeptMGDecays", 
         "scenario": "Summer12_TTJets"
@@ -1030,6 +1154,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "TTJets_FullLeptMGDecays", 
         "scenario": "PU_S10"
@@ -1039,6 +1164,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "TTJets_HadronicMGDecays", 
         "scenario": "PU_S10"
@@ -1048,6 +1174,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "MINIAODSIM", 
         "generator": "madgraph-tauola", 
         "process": "TTJets_MSDecaysCKM", 
         "scenario": "PU20bx25"
@@ -1057,6 +1184,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "TTJets_MassiveBinDECAY", 
         "scenario": "PU_S10"
@@ -1066,6 +1194,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "TTJets_SemiLeptMGDecays", 
         "scenario": "PU_S10"
@@ -1075,6 +1204,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "TTJets", 
         "scenario": "PU_S6"
@@ -1084,6 +1214,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "MINIAODSIM", 
         "generator": "pythia8-tauola", 
         "process": "TT", 
         "scenario": "PU20bx25"
@@ -1093,6 +1224,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-tauola", 
         "process": "T_tW", 
         "scenario": "PU_S6"
@@ -1102,6 +1234,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "MINIAODSIM", 
         "generator": "CSA14-powheg-tauola", 
         "process": "T_tW", 
         "scenario": "PU20bx25"
@@ -1111,6 +1244,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-tauola", 
         "process": "T_tW", 
         "scenario": "PU_S10"
@@ -1120,6 +1254,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "Tau", 
         "scenario": "22Jan2013v1"
@@ -1129,6 +1264,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauParked", 
         "scenario": "22Jan2013v1"
@@ -1138,6 +1274,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauParked", 
         "scenario": "22Jan2013v1"
@@ -1147,6 +1284,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauParked", 
         "scenario": "22Jan2013v1"
@@ -1156,6 +1294,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauPlusX", 
         "scenario": "05Aug2011v1"
@@ -1165,6 +1304,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauPlusX", 
         "scenario": "May10ReRecov1"
@@ -1174,6 +1314,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauPlusX", 
         "scenario": "PromptRecov4"
@@ -1183,6 +1324,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauPlusX", 
         "scenario": "PromptRecov6"
@@ -1192,6 +1334,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauPlusX", 
         "scenario": "PromptRecov1"
@@ -1201,6 +1344,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauPlusX", 
         "scenario": "22Jan2013v1"
@@ -1210,6 +1354,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauPlusX", 
         "scenario": "22Jan2013v1"
@@ -1219,6 +1364,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauPlusX", 
         "scenario": "22Jan2013v1"
@@ -1228,6 +1374,7 @@
         "data": true, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AOD", 
         "generator": "", 
         "process": "TauPlusX", 
         "scenario": "22Jan2013v1"
@@ -1237,6 +1384,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-tauola", 
         "process": "Tbar", 
         "scenario": "PU_S6"
@@ -1246,6 +1394,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "MINIAODSIM", 
         "generator": "CSA14-powheg-tauola", 
         "process": "Tbar", 
         "scenario": "PU20bx25"
@@ -1255,6 +1404,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-tauola", 
         "process": "Tbar", 
         "scenario": "PU_S10"
@@ -1264,6 +1414,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBFHToTauTau_M100", 
         "scenario": "PU_S10"
@@ -1273,6 +1424,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBFHToTauTau_M105", 
         "scenario": "PU_S10"
@@ -1282,6 +1434,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBFHToTauTau_M90", 
         "scenario": "PU_S10"
@@ -1291,6 +1444,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBFHToTauTau_M95", 
         "scenario": "PU_S10"
@@ -1300,6 +1454,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "JHUGenV4", 
         "process": "VBFHiggs0MToTauTau_M125p6", 
         "scenario": "PU_S10"
@@ -1309,6 +1464,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "JHUGenV4", 
         "process": "VBFHiggs0Mf05ph0ToTauTau_M125p6", 
         "scenario": "PU_S10"
@@ -1318,6 +1474,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "JHUGenV4", 
         "process": "VBFHiggs0PHToTauTau_M125p6", 
         "scenario": "PU_S10"
@@ -1327,6 +1484,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "JHUGenV4", 
         "process": "VBFHiggs0PToTauTau_M125p6", 
         "scenario": "PU_S10"
@@ -1336,6 +1494,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M100", 
         "scenario": "PU_S6"
@@ -1345,6 +1504,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M105", 
         "scenario": "PU_S6"
@@ -1354,6 +1514,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M110", 
         "scenario": "PU_S6"
@@ -1363,6 +1524,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M110", 
         "scenario": "PU_S10"
@@ -1372,6 +1534,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M115", 
         "scenario": "PU_S6"
@@ -1381,6 +1544,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M115", 
         "scenario": "PU_S10"
@@ -1390,6 +1554,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M120", 
         "scenario": "PU_S6"
@@ -1399,15 +1564,27 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M120", 
         "scenario": "PU_S10"
+    }, 
+    "/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/Phys14DR-PU20bx25_tsg_PHYS14_25_V1-v2/AODSIM": {
+        "campaign": "Phys14DR", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "AODSIM", 
+        "generator": "powheg-pythia6", 
+        "process": "VBF_HToTauTau_M125", 
+        "scenario": "PU20bx25"
     }, 
     "/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/Phys14DR-PU20bx25_tsg_PHYS14_25_V1-v2/MINIAODSIM": {
         "campaign": "Phys14DR", 
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "MINIAODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M125", 
         "scenario": "PU20bx25"
@@ -1417,6 +1594,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M125", 
         "scenario": "PU40bx25"
@@ -1426,6 +1604,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M125", 
         "scenario": "PU_S6"
@@ -1435,6 +1614,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola-tauPolarOff", 
         "process": "VBF_HToTauTau_M125", 
         "scenario": "PU_S10"
@@ -1444,6 +1624,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M125", 
         "scenario": "PU_S10"
@@ -1453,6 +1634,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M130", 
         "scenario": "PU_S6"
@@ -1462,6 +1644,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M130", 
         "scenario": "PU_S10"
@@ -1471,6 +1654,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M135", 
         "scenario": "PU_S6"
@@ -1480,6 +1664,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M135", 
         "scenario": "PU_S10"
@@ -1489,6 +1674,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M140", 
         "scenario": "PU_S6"
@@ -1498,6 +1684,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M140", 
         "scenario": "PU_S10"
@@ -1507,6 +1694,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M145", 
         "scenario": "PU_S6"
@@ -1516,6 +1704,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M145", 
         "scenario": "PU_S10"
@@ -1525,6 +1714,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M150", 
         "scenario": "PU_S6"
@@ -1534,6 +1724,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M150", 
         "scenario": "PU_S10"
@@ -1543,6 +1734,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M155", 
         "scenario": "PU_S6"
@@ -1552,6 +1744,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M155", 
         "scenario": "PU_S10"
@@ -1561,6 +1754,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M160", 
         "scenario": "PU_S6"
@@ -1570,6 +1764,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6", 
         "process": "VBF_HToTauTau_M160", 
         "scenario": "PU_S10"
@@ -1579,6 +1774,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M90", 
         "scenario": "PU_S6"
@@ -1588,6 +1784,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "powheg-pythia6-tauola", 
         "process": "VBF_HToTauTau_M95", 
         "scenario": "PU_S6"
@@ -1597,6 +1794,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6", 
         "process": "VBF_ZToLL", 
         "scenario": "PU_S10_START53_V7C"
@@ -1606,6 +1804,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "W1Jet", 
         "scenario": "PU_S6"
@@ -1615,6 +1814,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "W1JetsToLNu", 
         "scenario": "PU_S10"
@@ -1624,6 +1824,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "W2JetsToLNu", 
         "scenario": "PU_S10"
@@ -1633,6 +1834,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "W2Jets", 
         "scenario": "PU_S6"
@@ -1642,6 +1844,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "W3JetsToLNu", 
         "scenario": "PU_S10"
@@ -1651,6 +1854,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "W3Jets", 
         "scenario": "PU_S6"
@@ -1660,6 +1864,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph", 
         "process": "W4JetsToLNu", 
         "scenario": "PU_S10"
@@ -1669,6 +1874,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "W4Jets", 
         "scenario": "PU_S6"
@@ -1678,6 +1884,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M100", 
         "scenario": "PU_S6"
@@ -1687,6 +1894,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M100", 
         "scenario": "PU_S10"
@@ -1696,6 +1904,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M105", 
         "scenario": "PU_S6"
@@ -1705,6 +1914,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M105", 
         "scenario": "PU_S10"
@@ -1714,6 +1924,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M110", 
         "scenario": "PU_S6"
@@ -1723,6 +1934,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M110", 
         "scenario": "PU_S10"
@@ -1732,6 +1944,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M115", 
         "scenario": "PU_S6"
@@ -1741,6 +1954,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M115", 
         "scenario": "PU_S10"
@@ -1750,6 +1964,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M120", 
         "scenario": "PU_S6"
@@ -1759,6 +1974,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M120", 
         "scenario": "PU_S10"
@@ -1768,6 +1984,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M125", 
         "scenario": "PU_S6"
@@ -1777,6 +1994,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M125", 
         "scenario": "PU_S10"
@@ -1786,6 +2004,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M130", 
         "scenario": "PU_S6"
@@ -1795,6 +2014,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M130", 
         "scenario": "PU_S10"
@@ -1804,6 +2024,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M135", 
         "scenario": "PU_S6"
@@ -1813,6 +2034,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M135", 
         "scenario": "PU_S10"
@@ -1822,6 +2044,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M140", 
         "scenario": "PU_S6"
@@ -1831,6 +2054,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M140", 
         "scenario": "PU_S10"
@@ -1840,6 +2064,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M145", 
         "scenario": "PU_S6"
@@ -1849,6 +2074,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M145", 
         "scenario": "PU_S10"
@@ -1858,6 +2084,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M150", 
         "scenario": "PU_S6"
@@ -1867,6 +2094,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M150", 
         "scenario": "PU_S10"
@@ -1876,6 +2104,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M155", 
         "scenario": "PU_S6"
@@ -1885,6 +2114,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M155", 
         "scenario": "PU_S10"
@@ -1894,6 +2124,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M160", 
         "scenario": "PU_S6"
@@ -1903,6 +2134,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M160", 
         "scenario": "PU_S10"
@@ -1912,6 +2144,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M90", 
         "scenario": "PU_S6"
@@ -1921,6 +2154,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M90", 
         "scenario": "PU_S10"
@@ -1930,6 +2164,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M95", 
         "scenario": "PU_S6"
@@ -1939,6 +2174,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6-tauola", 
         "process": "WH_ZH_TTH_HToTauTau_M95", 
         "scenario": "PU_S10"
@@ -1948,6 +2184,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "MINIAODSIM", 
         "generator": "madgraph-pythia8-tauola", 
         "process": "WJetsToLNu", 
         "scenario": "PU20bx25"
@@ -1957,6 +2194,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tarball", 
         "process": "WJetsToLNu", 
         "scenario": "PU_S10"
@@ -1966,6 +2204,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "WJetsToLNu", 
         "scenario": "PU_S6"
@@ -1975,6 +2214,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "WWJetsTo2L2Nu", 
         "scenario": "PU_S6"
@@ -1984,6 +2224,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "WWJetsTo2L2Nu", 
         "scenario": "PU_S10"
@@ -1993,6 +2234,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6_tauola", 
         "process": "WW", 
         "scenario": "PU_S10"
@@ -2002,6 +2244,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "WZJetsTo2L2Q", 
         "scenario": "PU_S6"
@@ -2011,6 +2254,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "WZJetsTo2L2Q", 
         "scenario": "PU_S10"
@@ -2020,6 +2264,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "13", 
+        "format": "MINIAODSIM", 
         "generator": "madgraph-tauola", 
         "process": "WZJetsTo3LNu", 
         "scenario": "PU20bx25"
@@ -2029,6 +2274,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "WZJetsTo3LNu", 
         "scenario": "PU_S6"
@@ -2038,6 +2284,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "WZJetsTo3LNu", 
         "scenario": "PU_S10"
@@ -2047,6 +2294,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6_tauola", 
         "process": "WZ", 
         "scenario": "PU_S10"
@@ -2056,6 +2304,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "ZZJetsTo2L2Nu", 
         "scenario": "PU_S6"
@@ -2065,6 +2314,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "ZZJetsTo2L2Nu", 
         "scenario": "PU_S10"
@@ -2074,6 +2324,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "ZZJetsTo2L2Q", 
         "scenario": "PU_S6"
@@ -2083,6 +2334,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "ZZJetsTo2L2Q", 
         "scenario": "PU_S10"
@@ -2092,6 +2344,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "7", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "ZZJetsTo4L", 
         "scenario": "PU_S6"
@@ -2101,6 +2354,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "madgraph-tauola", 
         "process": "ZZJetsTo4L", 
         "scenario": "PU_S10"
@@ -2110,6 +2364,7 @@
         "data": false, 
         "embedded": false, 
         "energy": "8", 
+        "format": "AODSIM", 
         "generator": "pythia6_tauola", 
         "process": "ZZ", 
         "scenario": "PU_S10"

@@ -87,6 +87,13 @@ def is_embedded(filetype, default=False):
 	else:
 		return filetype == "USER"
 
+def get_format(filetype, default=False):
+	if (default == None):
+		return filetype
+	else:
+		return default
+
+
 def is_data(prod_camp, default=None):
 	if (default == None):
 		return prod_camp.find("Run")!=-1

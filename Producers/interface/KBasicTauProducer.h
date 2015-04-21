@@ -48,12 +48,11 @@ public:
 		}
 	}
 
-
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		const edm::ParameterSet &psBase = this->psBase;
 		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
-		
+
 		for (size_t i = 0; i < names.size(); ++i)
 		{
 			discriminatorMap[names[i]]->binaryDiscriminatorNames.clear();
@@ -142,9 +141,10 @@ public:
 	{
 		// momentum:
 		copyP4(in, out.p4);
+
 		// charge and flavour (lepton type)
 		out.leptonInfo = KLeptonFlavour::TAU;
-		assert(in.charge() == 1 || in.charge() == -1);
+		//assert(in.charge() == 1 || in.charge() == -1);
 		if (in.charge() > 0)
 			out.leptonInfo |= KLeptonChargeMask;
 		out.leptonInfo |= KLeptonPFMask;
@@ -159,16 +159,16 @@ public:
 				out.leptonInfo |= KLeptonAlternativeTrackMask;
 			}
 		}
+
 		out.emFraction = in.emFraction();
 		out.decayMode = in.decayMode();
+
 		// Discriminators:
 		edm::Ref<std::vector<TTau> > tauRef(this->handle, this->nCursor);
 		out.binaryDiscriminators = 0;
 		out.floatDiscriminators = std::vector<float>(currentFloatDiscriminators.size());
 
-
 		// handle binary discriminators
-		
 		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
 		{
 			std::string discr_module = iter->provenance()->moduleLabel();
@@ -228,6 +228,10 @@ public:
 
 		// propagate the selection on minPt/maxEta
 		bool acceptTau = KBaseMultiLVProducer<std::vector<TTau>, TProduct>::acceptSingle(in);
+
+		// reject taus with a charge different from +/- 1
+		acceptTau = acceptTau && (in.charge() == 1 || in.charge() == -1);
+
 		// preselect taus by given set of discriminators
 		// do not use regex matching here, as we do not want to apply any preselection by "accident"
 		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
