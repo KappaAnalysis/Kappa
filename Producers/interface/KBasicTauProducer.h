@@ -143,7 +143,7 @@ public:
 
 		// charge and flavour (lepton type)
 		out.leptonInfo = KLeptonFlavour::TAU;
-		assert(in.charge() == 1 || in.charge() == -1);
+		//assert(in.charge() == 1 || in.charge() == -1);
 		if (in.charge() > 0)
 			out.leptonInfo |= KLeptonChargeMask;
 		out.leptonInfo |= KLeptonPFMask;
@@ -228,6 +228,9 @@ public:
 		// propagate the selection on minPt/maxEta
 		bool acceptTau = KBaseMultiLVProducer<std::vector<TTau>, TProduct>::acceptSingle(in);
 		
+		// reject taus with a charge different from +/- 1
+		acceptTau = acceptTau && (in.charge() == 1 || in.charge() == -1);
+
 		// preselect taus by given set of discriminators
 		// do not use regex matching here, as we do not want to apply any preselection by "accident"
 		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
