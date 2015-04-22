@@ -26,9 +26,9 @@ public:
 		KBaseMultiLVProducer<edm::View<pat::Electron>,
 		KElectrons>(cfg, _event_tree, _lumi_tree, getLabel()),
 		namesOfIds(cfg.getParameter<std::vector<std::string> >("ids")),
-		doPfIsolation(true),
-		doCutbasedIds(true),
-		doMvaIds(true)
+		doPfIsolation_(true),
+		doCutbasedIds_(true),
+		doMvaIds_(true)
 {
 	electronMetadata = new KElectronMetadata;
 	_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
@@ -65,7 +65,7 @@ public:
 			cEvent->getByLabel(isoValInputTags_[j], isoVals[j]);
 			if (isoVals[j].failedToGet())
 			{
-				doPfIsolation = false;
+				doPfIsolation_ = false;
 			}
 		}
 		
@@ -132,7 +132,6 @@ public:
 		out.trackMomentumErr = in.trackMomentumError();
 
 		// fill electronType
-		const reco::GsfElectron* eGSF = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
 		out.electronType = 0;
 		out.electronType |= in.isEcalEnergyCorrected() << KElectronType::ecalEnergyCorrected;
 		out.electronType |= in.ecalDriven()          << KElectronType::ecalDriven;
@@ -148,67 +147,76 @@ public:
 		out.ecalIso = in.dr03EcalRecHitSumEt();
 		out.hcal1Iso = in.dr03HcalDepth1TowerSumEt();
 		out.hcal2Iso = in.dr03HcalDepth2TowerSumEt();
+		std::cout << "bla: " << out.hcal2Iso << std::endl;
+		if (doPfIsolation_)
+			doPFIsolation(in, out);
+		if (doPfIsolation_ && doCutbasedIds_)
+			doCutbasedIds(in,out);
+		if(doMvaIds_)
+			doMvaIds(in, out);
+	}
 
-		if (doPfIsolation)
-		{
-			// in analogy to https://github.com/cms-analysis/EgammaAnalysis-ElectronTools/blob/master/src/EGammaCutBasedEleIdAnalyzer.cc
-			const reco::BeamSpot &tmpbeamSpot = *(BeamSpot.product());
-			// we need the Ref, cf. example EgammaAnalysis/ElectronTools/src/EGammaCutBasedEleIdAnalyzer.cc
-			edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
-			
-			// isolation values (PF is used for IDs later)
-			double iso_ch = (*(isoVals)[0])[pe];
-			double iso_ph = (*(isoVals)[1])[pe];
-			double iso_nh = (*(isoVals)[2])[pe];
-			double iso_pu = (*(isoVals)[3])[pe];
-			double rhoIso = *(rhoIso_h.product());
-
-			out.sumChargedHadronPt = iso_ch;
-			out.sumNeutralHadronEt = iso_nh;
-			out.sumPhotonEt = iso_ph;
-			out.sumPUPt = iso_pu;
-
-			// cutbased IDs (cf. header)
-			// ElectronTools/interface/ElectronEffectiveArea.h: ElectronEffectiveAreaTarget::kEleEAData2011,kEleEASummer11MC,kEleEAFall11MC,kEleEAData2012
-			if (doCutbasedIds)
-			{
-#if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
-				bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
-					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
-				bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
-					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
-				bool cutbasedIDtight = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::TIGHT,
-					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
-				bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
-					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso, ElectronEffectiveArea::kEleEAData2012);
-#else
-				bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
-					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
-				bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
-					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
-				bool cutbasedIDtight = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::TIGHT,
-					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
-				bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
-					*eGSF, hConversions, tmpbeamSpot, VertexCollection, iso_ch, iso_ph, iso_nh, rhoIso);
-#endif
-				out.ids = 1 << KLeptonId::ANY;  // mark it as filled
-				out.ids |= cutbasedIDloose << KLeptonId::LOOSE;
-				out.ids |= cutbasedIDmedium << KLeptonId::MEDIUM;
-				out.ids |= cutbasedIDtight << KLeptonId::TIGHT;
-				out.ids |= cutbasedIDveto << KLeptonId::VETO;
-				assert(out.ids < 32);   // other bits should be zero
-			}
-		}
+protected:
+	virtual void doMvaIds(const SingleInputType &in, SingleOutputType &out)
+	{
 		/* Modification for new MVA Electron ID for Run 2
 		 * https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
 		 * Full instructions in Producer/KElectrons_cff
 		 */
 		out.electronIds.clear();
-		if (doMvaIds)
-			for (size_t i = 0; i < namesOfIds.size(); ++i)
-			{
-				out.electronIds.push_back(in.electronID(namesOfIds[i]));
-			}
+		for (size_t i = 0; i < namesOfIds.size(); ++i)
+		{
+			out.electronIds.push_back(in.electronID(namesOfIds[i]));
+		}
+	}
+
+	virtual void doCutbasedIds(const SingleInputType &in, SingleOutputType &out)
+	// cutbased IDs (cf. header)
+	// ElectronTools/interface/ElectronEffectiveArea.h: ElectronEffectiveAreaTarget::kEleEAData2011,kEleEASummer11MC,kEleEAFall11MC,kEleEAData2012
+	{
+		// in analogy to https://github.com/cms-analysis/EgammaAnalysis-ElectronTools/blob/master/src/EGammaCutBasedEleIdAnalyzer.cc
+		const reco::BeamSpot &tmpbeamSpot = *(BeamSpot.product());
+	
+		const reco::GsfElectron* eGSF = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
+
+		double rhoIso = *(rhoIso_h.product());
+#if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
+		bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
+			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+		bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
+			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+		bool cutbasedIDtight = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::TIGHT,
+			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+		bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
+			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso, ElectronEffectiveArea::kEleEAData2012);
+#else
+		bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
+			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso);
+		bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
+			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso);
+		bool cutbasedIDtight = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::TIGHT,
+			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso);
+		bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
+			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso);
+#endif
+		out.ids = 1 << KLeptonId::ANY;  // mark it as filled
+		out.ids |= cutbasedIDloose << KLeptonId::LOOSE;
+		out.ids |= cutbasedIDmedium << KLeptonId::MEDIUM;
+		out.ids |= cutbasedIDtight << KLeptonId::TIGHT;
+		out.ids |= cutbasedIDveto << KLeptonId::VETO;
+		assert(out.ids < 32);   // other bits should be zero
+	}
+
+	virtual void doPFIsolation(const SingleInputType &in, SingleOutputType &out)
+	{
+		// we need the Ref, cf. example EgammaAnalysis/ElectronTools/src/EGammaCutBasedEleIdAnalyzer.cc
+		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
+		
+		// isolation values (PF is used for IDs later)
+		out.sumChargedHadronPt = (*(isoVals)[0])[pe];
+		out.sumPhotonEt        = (*(isoVals)[1])[pe];
+		out.sumNeutralHadronEt = (*(isoVals)[2])[pe];
+		out.sumPUPt            = (*(isoVals)[3])[pe];
 	}
 
 private:
@@ -220,9 +228,9 @@ private:
 	edm::Handle<reco::BeamSpot> BeamSpot;
 	edm::Handle<reco::VertexCollection> VertexCollection;
 	edm::Handle<double> rhoIso_h;
-	bool doPfIsolation;
-	bool doCutbasedIds;
-	bool doMvaIds;
+	bool doPfIsolation_;
+	bool doCutbasedIds_;
+	bool doMvaIds_;
 };
 
 #endif
