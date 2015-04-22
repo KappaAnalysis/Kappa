@@ -430,6 +430,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Electrons = cms.PSet(kappaNoCut,
 		kappaNoRegEx,
 		ids = cms.vstring(),
+		srcIds = cms.string("pat"),
 		electrons = cms.PSet(
 			src = cms.InputTag("patElectrons"),
 			allConversions = cms.InputTag("allConversions"),

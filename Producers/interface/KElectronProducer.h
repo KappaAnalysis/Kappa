@@ -26,12 +26,15 @@ public:
 		KBaseMultiLVProducer<edm::View<pat::Electron>,
 		KElectrons>(cfg, _event_tree, _lumi_tree, getLabel()),
 		namesOfIds(cfg.getParameter<std::vector<std::string> >("ids")),
+		srcIds_(cfg.getParameter<std::string>("srcIds")),
 		doPfIsolation_(true),
-		doCutbasedIds_(true),
-		doMvaIds_(false)
+		doCutbasedIds_(true)
 {
 	electronMetadata = new KElectronMetadata;
 	_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
+
+	doMvaIds_ = (srcIds_ == "pat");
+	doAuxIds_ = (srcIds_ == "standalone");
 }
 
 	static const std::string getLabel() { return "Electrons"; }
@@ -89,17 +92,12 @@ public:
 		// Continue with main product: PAT-electrons
 		
 		// Prepare IDs for miniAOD
-		std::vector<edm::InputTag>  electronIdsInputTags;
-		electronIdsInputTags.resize(namesOfIds.size());
-
-		electronIDValueMap.resize(electronIdsInputTags.size());
-
-
+		edm::InputTag electronIdsInputTag;
+		electronIDValueMap.resize(namesOfIds.size());
 		for (size_t j = 0; j < namesOfIds.size(); ++j)
 		{
-			electronIdsInputTags[j] = edm::InputTag(namesOfIds[j]);
-			std::cout << "Input Tag: " << electronIdsInputTags[j].label() << std::endl;
-			cEvent->getByLabel(electronIdsInputTags[j], electronIDValueMap[j]);
+			electronIdsInputTag = edm::InputTag(namesOfIds[j]);
+			cEvent->getByLabel(electronIdsInputTag, electronIDValueMap[j]);
 		}
 		
 		// call base class
@@ -170,7 +168,6 @@ public:
 			doCutbasedIds(in,out);
 		if(doMvaIds_)
 			doMvaIds(in, out);
-		bool doAuxIds_ = true;
 		if(doAuxIds_)
 			doAuxIds(in, out);
 	}
@@ -256,10 +253,11 @@ private:
 	edm::Handle<reco::BeamSpot> BeamSpot;
 	edm::Handle<reco::VertexCollection> VertexCollection;
 	edm::Handle<double> rhoIso_h;
+	std::string srcIds_;
 	bool doPfIsolation_;
 	bool doCutbasedIds_;
 	bool doMvaIds_;
-
+	bool doAuxIds_;
 
 	std::vector<edm::Handle<edm::ValueMap<bool> > > electronIDValueMap;
 };
