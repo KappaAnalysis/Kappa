@@ -28,7 +28,7 @@ public:
 		namesOfIds(cfg.getParameter<std::vector<std::string> >("ids")),
 		doPfIsolation_(true),
 		doCutbasedIds_(true),
-		doMvaIds_(true)
+		doMvaIds_(false)
 {
 	electronMetadata = new KElectronMetadata;
 	_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
@@ -58,11 +58,11 @@ public:
 		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
 		cEvent->getByLabel(VertexCollectionSource, VertexCollection);
 
-		std::vector<edm::InputTag>  isoValInputTags_ = pset.getParameter<std::vector<edm::InputTag> >("isoValInputTags");
-		isoVals.resize(isoValInputTags_.size());
-		for (size_t j = 0; j < isoValInputTags_.size(); ++j)
+		std::vector<edm::InputTag>  isoValInputTags = pset.getParameter<std::vector<edm::InputTag> >("isoValInputTags");
+		isoVals.resize(isoValInputTags.size());
+		for (size_t j = 0; j < isoValInputTags.size(); ++j)
 		{
-			cEvent->getByLabel(isoValInputTags_[j], isoVals[j]);
+			cEvent->getByLabel(isoValInputTags[j], isoVals[j]);
 			if (isoVals[j].failedToGet())
 			{
 				doPfIsolation_ = false;
@@ -87,6 +87,22 @@ public:
 		*/
 
 		// Continue with main product: PAT-electrons
+		
+		// Prepare IDs for miniAOD
+		std::vector<edm::InputTag>  electronIdsInputTags;
+		electronIdsInputTags.resize(namesOfIds.size());
+
+		electronIDValueMap.resize(electronIdsInputTags.size());
+
+
+		for (size_t j = 0; j < namesOfIds.size(); ++j)
+		{
+			electronIdsInputTags[j] = edm::InputTag(namesOfIds[j]);
+			std::cout << "Input Tag: " << electronIdsInputTags[j].label() << std::endl;
+			cEvent->getByLabel(electronIdsInputTags[j], electronIDValueMap[j]);
+		}
+		
+		// call base class
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::fillProduct(in, out, name, tag, pset);
 	}
 
@@ -147,16 +163,28 @@ public:
 		out.ecalIso = in.dr03EcalRecHitSumEt();
 		out.hcal1Iso = in.dr03HcalDepth1TowerSumEt();
 		out.hcal2Iso = in.dr03HcalDepth2TowerSumEt();
-		std::cout << "bla: " << out.hcal2Iso << std::endl;
+
 		if (doPfIsolation_)
 			doPFIsolation(in, out);
 		if (doPfIsolation_ && doCutbasedIds_)
 			doCutbasedIds(in,out);
 		if(doMvaIds_)
 			doMvaIds(in, out);
+		bool doAuxIds_ = true;
+		if(doAuxIds_)
+			doAuxIds(in, out);
 	}
 
+
 protected:
+	virtual void doAuxIds(const SingleInputType &in, SingleOutputType &out)
+	{
+		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
+		for (size_t i = 0; i < namesOfIds.size(); ++i)
+		{
+			out.electronIds.push_back((*(electronIDValueMap)[i])[pe] ? 1.0 : 0);
+		}
+	}
 	virtual void doMvaIds(const SingleInputType &in, SingleOutputType &out)
 	{
 		/* Modification for new MVA Electron ID for Run 2
@@ -231,6 +259,9 @@ private:
 	bool doPfIsolation_;
 	bool doCutbasedIds_;
 	bool doMvaIds_;
+
+
+	std::vector<edm::Handle<edm::ValueMap<bool> > > electronIDValueMap;
 };
 
 #endif

@@ -141,19 +141,28 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
 	process.p *= ( process.makeKappaMuons )
-
+	"""
 	## ------------------------------------------------------------------------
 	# Configure Electrons
-	process.load("Kappa.Skimming.KElectrons_run2_cff")
 	process.kappaTuple.active += cms.vstring('Electrons')
 	if(miniaod):
+		process.load("Kappa.Skimming.KElectrons_miniAOD_cff")
 		process.kappaTuple.Electrons.electrons.src = cms.InputTag("slimmedElectrons")
 		process.kappaTuple.Electrons.electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
 		process.kappaTuple.Electrons.electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
-		process.kappaTuple.Electrons.ids = cms.vstring("cutBasedElectronID-CSA14-PU20bx25-V0-standalone-loose")
+		from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
+
+		process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-veto",
+						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-loose",
+						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-medium",
+						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-tight")
 
 	if not miniaod:
+		process.load("Kappa.Skimming.KElectrons_run2_cff")
+		process.kappaTuple.Electrons.minPt = cms.double(8.0)
+		from Kappa.Skimming.KElectrons_run2_cff import setupElectrons
+
 		process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
 						       	   "cutBasedEleIdPHYS14Medium",
 						       	   "cutBasedEleIdPHYS14Tight",
@@ -163,12 +172,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 						       	   "mvaNonTrigV050nsCSA14",
 						       	   "mvaNonTrigV025nsCSA14",
 						       	   "mvaNonTrigV025nsPHYS14")
-		process.kappaTuple.Electrons.minPt = cms.double(8.0)
-		from Kappa.Skimming.KElectrons_run2_cff import setupElectrons
-		setupElectrons(process)
 
-		process.p *= ( process.makeKappaElectrons )
-
+	setupElectrons(process)
+	process.p *= ( process.makeKappaElectrons )
+	"""
 	## ------------------------------------------------------------------------
 	if(miniaod):
 		process.kappaTuple.active += cms.vstring('PATTaus')
