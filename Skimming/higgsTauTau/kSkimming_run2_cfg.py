@@ -56,6 +56,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# General configuration
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
+	if miniaod:
+		process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
+		process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => offlinePrimaryVerticesSummary')  # save VertexSummary,
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
 	if not miniaod:
 		process.kappaTuple.active += cms.vstring('TriggerObjects')
