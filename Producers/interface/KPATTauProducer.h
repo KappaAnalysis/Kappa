@@ -82,7 +82,9 @@ protected:
 public:
 	KPATTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel()),
-		firstEvent(true){
+		firstEvent(true),
+		_lumi_tree_pointer(_lumi_tree)
+	{
 		const edm::ParameterSet &psBase = this->psBase;
 		 names = psBase.getParameterNamesForType<edm::ParameterSet>();
 		if(names.size() != 1)
@@ -164,6 +166,7 @@ virtual bool acceptSingle(const SingleInputType &in) override
 		for(size_t i = 0; i < names.size(); ++i)
 		{
 			discriminatorMap[names[i]] = new KTauMetadata();
+			_lumi_tree_pointer->Bronch(names[i].c_str(), "KTauMetadata", &discriminatorMap[names[i]]);
 			for(auto tauID : tauIDs)
 			{
 				if( KBaseProducer::regexMatch(tauID.first, binaryDiscrWhitelist[names[i]], binaryDiscrBlacklist[names[i]])) //regexmatch for binary discriminators
@@ -201,6 +204,8 @@ private:
 
 	KLVSorter<KPFCandidate> PFSorter;
 	KLVSorter<KLV> LVSorter;
+
+	TTree* _lumi_tree_pointer;
 };
 
 #endif
