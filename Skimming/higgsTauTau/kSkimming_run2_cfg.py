@@ -141,7 +141,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
 	process.p *= ( process.makeKappaMuons )
-	"""
 	## ------------------------------------------------------------------------
 	# Configure Electrons
 	process.kappaTuple.active += cms.vstring('Electrons')
@@ -175,7 +174,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	setupElectrons(process)
 	process.p *= ( process.makeKappaElectrons )
-	"""
 	## ------------------------------------------------------------------------
 	if(miniaod):
 		process.kappaTuple.active += cms.vstring('PATTaus')
