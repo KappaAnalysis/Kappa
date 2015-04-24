@@ -29,7 +29,7 @@ protected:
 		if (in.size() == 1)
 		{
 			// fill properties of basic MET
-			KBasicMETProducer::fillMET<InputType>(in, out);
+			KBasicMETProducer::fillMET<reco::PFMET>(in.at(0), out);
 
 			// additional PF properties
 			out.photonFraction = in.at(0).photonEtFraction();

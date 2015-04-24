@@ -18,7 +18,10 @@ class KPatMETProducer : public KBaseMultiProducer<edm::View<pat::MET>, KMET>
 {
 public:
 	KPatMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<pat::MET>, KMET>(cfg, _event_tree, _run_tree, getLabel()) {}
+		KBaseMultiProducer<edm::View<pat::MET>, KMET>(cfg, _event_tree, _run_tree, getLabel()) {
+		genMet = new KBasicMET;
+		_event_tree->Bronch("GenMET", "KBasicMET", &genMet);
+	}
 
 	static const std::string getLabel() { return "PatMET"; }
 
@@ -30,7 +33,7 @@ protected:
 		if (in.size() == 1)
 		{
 			// fill properties of basic MET
-			KBasicMETProducer::fillMET<InputType>(in, out);
+			KBasicMETProducer::fillMET<pat::MET>(in.at(0), out);
 			if(in.at(0).isPFMET())
 			{
 				// additional PF properties
@@ -42,10 +45,18 @@ protected:
 				out.hfHadronFraction = in.at(0).Type6EtFraction();
 				out.hfEMFraction = in.at(0).Type7EtFraction();
 			}
+
+			//fill GenMET
+			const reco::GenMET* recoGenMet = in.at(0).genMET();
+			KBasicMETProducer::fillMET<reco::GenMET>(*recoGenMet, *genMet);
+
 		}
 		else if (verbosity > 1)
 			std::cout << "KMETProducer::fillProduct: Found " << in.size() << " pat::MET objects!" << std::endl;
 	}
+private:
+	TTree* _event_tree_pointer;
+	KBasicMET* genMet;
 };
 
 #endif
