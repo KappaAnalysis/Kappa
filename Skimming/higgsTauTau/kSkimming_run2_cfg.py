@@ -217,6 +217,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## MET
 	process.load("Kappa.Skimming.KMET_run2_cff")
 	process.ak4PFJets.src = cms.InputTag("packedPFCandidates")
+	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET and MVA MET
+
+	if (not miniaod):
+		process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
+
 	if(miniaod):
 		process.pfMetMVA.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.puJetIdForPFMVAMEt.jec =  cms.string('AK4PF')
@@ -239,12 +244,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.pfMetMVATT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.makeKappaMET = cms.Sequence( process.ak4PFJets * process.calibratedAK4PFJetsForPFMVAMEt * process.mvaMETJets * process.puJetIdForPFMVAMEt * process.mvaMETMuons * process.pfMetMVAEM * process.pfMetMVAET * process.pfMetMVAMT * process.pfMetMVATT )
 
-		## Standard MET
-		process.kappaTuple.active += cms.vstring('PatMET')                  ## produce/save KappaMET
+		## Standard MET and GenMet from pat::MET
+		process.kappaTuple.active += cms.vstring('PatMET')
 
-	if (not miniaod):
-		process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
-		process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
+
 	process.p *= process.makeKappaMET
 	## ------------------------------------------------------------------------
 	## GenJets 
