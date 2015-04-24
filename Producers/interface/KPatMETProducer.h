@@ -20,7 +20,7 @@ public:
 	KPatMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<edm::View<pat::MET>, KMET>(cfg, _event_tree, _run_tree, getLabel()) {
 		genMet = new KBasicMET;
-		_event_tree->Bronch("GenMET", "KBasicMET", &genMet);
+		_event_tree->Bronch("genmetTrue", "KBasicMET", &genMet);
 	}
 
 	static const std::string getLabel() { return "PatMET"; }
