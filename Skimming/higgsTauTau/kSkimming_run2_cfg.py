@@ -238,10 +238,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.pfMetMVAMT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.pfMetMVATT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.makeKappaMET = cms.Sequence( process.ak4PFJets * process.calibratedAK4PFJetsForPFMVAMEt * process.mvaMETJets * process.puJetIdForPFMVAMEt * process.mvaMETMuons * process.pfMetMVAEM * process.pfMetMVAET * process.pfMetMVAMT * process.pfMetMVATT )
-	process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
-	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
-	process.p *= process.makeKappaMET
 
+		## Standard MET
+		process.kappaTuple.active += cms.vstring('PatMET')                  ## produce/save KappaMET
+
+	if (not miniaod):
+		process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
+		process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
+	process.p *= process.makeKappaMET
 	## ------------------------------------------------------------------------
 	## GenJets 
 	if not data:
