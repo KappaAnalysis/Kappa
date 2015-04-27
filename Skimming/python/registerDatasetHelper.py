@@ -105,7 +105,8 @@ def make_nickname(dict):
 	nick += dict["process"].replace("_", "")  + "_"
 	nick += dict["campaign"].replace("_", "") + "_"
 	nick += dict["scenario"].replace("_", "") + "_"
-	nick += dict["energy"].replace("_", "")   + "TeV"
+	nick += dict["energy"].replace("_", "")   + "TeV_"
+	nick += dict["format"].replace("_", "")
 	return nick
 
 def load_database(dataset):
