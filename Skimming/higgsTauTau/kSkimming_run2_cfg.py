@@ -196,9 +196,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	## Configure Jets
+	
+	#process.load("Kappa.Skimming.KJets_run2_cff")
+	process.kappaTuple.active += cms.vstring('BasicSJets', 'PileupDensity')
+	#process.kappaTuple.BasicJets.whitelist += 
 	"""
-	process.load("Kappa.Skimming.KJets_run2_cff")
-	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
 	process.kappaTuple.Jets = process.kappaTupleJets
 	process.kappaTuple.Jets.minPt = cms.double(10.0)
 
