@@ -458,11 +458,24 @@ kappaTupleDefaultsBlock = cms.PSet(
 	BasicJets = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("recoPFJets_ak5PFJets.*"),
+		whitelist = cms.vstring("recoPFJets_ak5PFJets.*", "patJets_.*"),
 		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG"),
 
 		rename = cms.vstring(
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1ak)(?2kt)(?3sc)(?4ic)(?5ic)(?6ak)(?7ca)$8"
+		),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
+
+	BasicSJets = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("patJets_.*"),
+		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG"),
+
+		rename = cms.vstring(
+			"(slimmedJetsAK8)|(slimmed) => (?1ak8PFJets)(?2ak5PF)"
 		),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
