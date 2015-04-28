@@ -22,7 +22,7 @@
 
 import os
 import FWCore.ParameterSet.Config as cms
-import Kappa.Skimming.datasetsHelper as datasetsHelper
+#import Kappa.Skimming.datasetsHelper2015 as datasetsHelper
 import Kappa.Skimming.tools as tools
 
 
@@ -43,14 +43,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
-	data = datasetsHelper.isData(nickname)
-	isEmbedded = datasetsHelper.getIsEmbedded(nickname)
+	data = False #datasetsHelper.isData(nickname)
+	isEmbedded = False #datasetsHelper.getIsEmbedded(nickname)
 	miniaod = True
 
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	process.kappaTuple.active = cms.vstring('TreeInfo')
-	process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
+	process.kappaTuple.TreeInfo.parameters = cms.PSet()#datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 
 	## ------------------------------------------------------------------------
 	# General configuration
