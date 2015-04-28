@@ -477,9 +477,9 @@ kappaTupleDefaultsBlock = cms.PSet(
 		taus = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
 			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
-			binaryDiscrWhitelist = cms.vstring("hpsPFTau.*"),
+			binaryDiscrWhitelist = cms.vstring("hpsPFTauDiscrimination.*"),
 			binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", "raw", "Raw"),
-			floatDiscrWhitelist = cms.vstring("hpsPFTau.*raw.*", "hpsPFTau.*Raw.*"),
+			floatDiscrWhitelist = cms.vstring("hpsPFTau.*raw.*", "hpsPFTau.*Raw.*", "hpsPFTauMVA.*"),
 			floatDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
 			tauDiscrProcessName = cms.string("KAPPA"),
 		),
