@@ -6,19 +6,19 @@
 //-  * Manuel Zeise <zeise@cern.ch>
 //-  * Thomas Hauth <Thomas.Hauth@cern.ch>
 
-#ifndef KAPPA_BASICJETPRODUCER_H
-#define KAPPA_BASICJETPRODUCER_H
+#ifndef KAPPA_PATJETPRODUCER_H
+#define KAPPA_PATJETPRODUCER_H
 
 #include "KBaseMultiLVProducer.h"
-#include <DataFormats/JetReco/interface/PFJet.h>
+#include <DataFormats/PatCandidates/interface/Jet.h>
 
-class KBasicJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, std::vector<KBasicJet> >
+class KPatJetProducer : public KBaseMultiLVProducer<edm::View<pat::Jet>, KJets >
 {
 public:
-	KBasicJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KBasicJets>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KPatJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>(cfg, _event_tree, _run_tree, getLabel()) {}
 
-	static const std::string getLabel() { return "BasicJets"; }
+	static const std::string getLabel() { return "PatJets"; }
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

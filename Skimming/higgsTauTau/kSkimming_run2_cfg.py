@@ -196,25 +196,28 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	## Configure Jets
-	
-	#process.load("Kappa.Skimming.KJets_run2_cff")
-	process.kappaTuple.active += cms.vstring('BasicSJets', 'PileupDensity')
-	#process.kappaTuple.BasicJets.whitelist += 
-	"""
-	process.kappaTuple.Jets = process.kappaTupleJets
-	process.kappaTuple.Jets.minPt = cms.double(10.0)
 
-	#Check if working
-	process.p *= (
-		process.makePFJets *
-		process.makePFJetsCHS *
-	#	process.makeQGTagging *
-		process.makeBTagging *
-		process.makePUJetID *
-		process.kt6PFJets
-	)
+	process.kappaTuple.active += cms.vstring('PileupDensity')
+	if not miniaod:
+		process.load("Kappa.Skimming.KJets_run2_cff")
+		process.kappaTuple.active += cms.vstring('Jets')
+		process.kappaTuple.Jets = process.kappaTupleJets
+		process.kappaTuple.Jets.minPt = cms.double(10.0)
 
-	"""
+		#Check if working
+		process.p *= (
+			process.makePFJets *
+			process.makePFJetsCHS *
+		#	process.makeQGTagging *
+			process.makeBTagging *
+			process.makePUJetID *
+			process.kt6PFJets
+		)
+
+	if miniaod:
+		process.kappaTuple.active += cms.vstring('PatJets')
+
+
 	## ------------------------------------------------------------------------
 	## MET
 	process.load("Kappa.Skimming.KMET_run2_cff")
@@ -253,17 +256,18 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.p *= process.makeKappaMET
 	## ------------------------------------------------------------------------
 	## GenJets 
-	if not data:
-		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
-		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
-		if(miniaod):
-			process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
-		process.p *= ( 
-			process.tauGenJets +
-			process.tauGenJetsSelectorAllHadrons
-			)
-		process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
-		process.kappaTuple.active += cms.vstring('GenJets')
+	if not miniaod:
+		if not data:
+			process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
+			process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
+			if(miniaod):
+				process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
+			process.p *= ( 
+				process.tauGenJets +
+				process.tauGenJetsSelectorAllHadrons
+				)
+			process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
+			process.kappaTuple.active += cms.vstring('GenJets')
 
 	## ------------------------------------------------------------------------
 	## Further information saved to Kappa output 
