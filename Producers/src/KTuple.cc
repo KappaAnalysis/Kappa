@@ -215,7 +215,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KPFCandidateProducer>(active[i]);
 		addProducer<KPackedPFCandidateProducer>(active[i]);
 		addProducer<KBasicJetProducer>(active[i]);
-		addProducer<KBasicSJetProducer>(active[i]);
 		addProducer<KMETProducer>(active[i]);
 		addProducer<KPatMETProducer>(active[i]);
 		addProducer<KJetProducer>(active[i]);
