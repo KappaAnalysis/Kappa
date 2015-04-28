@@ -11,16 +11,20 @@
 
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/JetReco/interface/PFJet.h>
+#include <DataFormats/PatCandidates/interface/Jet.h>
 
-class KBasicJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, std::vector<KBasicJet> >
+template <typename TJet>
+class KBasicJetProducerBase : public KBaseMultiLVProducer<edm::View<TJet>, std::vector<KBasicJet> >
 {
 public:
-	KBasicJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KBasicJets>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KBasicJetProducerBase(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+		KBaseMultiLVProducer<edm::View<TJet>, KBasicJets>(cfg, _event_tree, _run_tree, getLabel()) {}
 
-	static const std::string getLabel() { return "BasicJets"; }
+	const std::string getLabel() { return "BasicJets"; }
 
-	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
+	virtual void fillSingle(
+		const typename KBaseMultiLVProducer<edm::View<TJet>, std::vector<KBasicJet> >::SingleInputType &in,
+		typename KBaseMultiLVProducer<edm::View<TJet>, std::vector<KBasicJet> >::SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
 
@@ -35,6 +39,11 @@ public:
 		out.hfHadronFraction = in.HFHadronEnergyFraction();
 		out.hfEMFraction = in.HFEMEnergyFraction();
 	}
+};
+
+class KBasicJetProducer : public KBasicJetProducerBase<reco::PFJet> {};
+class KBasicSJetProducer : public KBasicJetProducerBase<pat::Jet> {
+	static const std::string getLabel() { return "BasicSJets"; }
 };
 
 #endif
