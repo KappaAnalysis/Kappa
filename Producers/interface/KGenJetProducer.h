@@ -20,20 +20,8 @@ public:
 
 	static const std::string getLabel() { return "GenJets"; }
 
-	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
-	{
-		return KBaseMultiLVProducer<edm::View<reco::GenJet>, KGenJets>::onLumi(lumiBlock, setup);
-	}
-
-	virtual void fillProduct(const InputType &in, OutputType &out, const std::string &name,
-	                         const edm::InputTag *tag, const edm::ParameterSet &pset)
-	{
-		KBaseMultiLVProducer<edm::View<reco::GenJet>, KGenJets>::fillProduct(in, out, name, tag, pset);
-	}
-
-	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
-	{
-		/// momentum:
+	static void fillGenJet(const SingleInputType &in, SingleOutputType &out)
+	{	/// momentum:
 		copyP4(in, out.p4);
 		
 		std::string genTauDecayModeString = JetMCTagUtils::genTauDecayMode(in);
@@ -57,6 +45,12 @@ public:
 		{
 			out.genTauDecayMode = -1;
 		}
+	}
+
+
+	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
+	{
+		fillGenJet(in, out);
 	}
 };
 
