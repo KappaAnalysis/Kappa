@@ -48,7 +48,6 @@ public:
 		const reco::GenJet* recoGenJet = in.genJet();
 		if (recoGenJet == NULL) // catch if null pointer is delivered from pat::Jet::genJet() and use an empty GenJet instead
 			recoGenJet = new reco::GenJet;
-		std::cout << recoGenJet->isJet() << std::endl;
 		KGenJetProducer::fillGenJet(*recoGenJet, *genJet); 
 	}
 private:
