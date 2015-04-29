@@ -57,11 +57,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if miniaod:
 		process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
 		process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')  # save VertexSummary,
+		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
+
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
+
 	if not miniaod:
 		process.kappaTuple.active += cms.vstring('TriggerObjects')
-	else:
-		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
 	if not isEmbedded and data:
 			process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
@@ -75,20 +76,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 				process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("packedGenParticles")
 				process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("packedGenParticles")
 	# Prune genParticles
-	if not isEmbedded and not data:
-		process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
-		process.prunedGenParticles = cms.EDProducer("GenParticlePruner",
-			src = cms.InputTag("genParticles", "", "SIM"),
-			select = cms.vstring(
-				"drop  *",
-				"keep status == 3",                                      # all status 3
-				"keep++ abs(pdgId) == 23",                               # Z
-				"keep++ abs(pdgId) == 24",                               # W
-				"keep++ abs(pdgId) == 25",                               # H
-				"keep abs(pdgId) == 11 || abs(pdgId) == 13",             # charged leptons
-				"keep++ abs(pdgId) == 15"                                # keep full tau decay chain
-			)
-		)
+	if not isEmbedded and not data and not miniAOD:
+		process.load("Kappa.Skimming.PruneGenParticles_cff")
 	
 	# Special settings for embedded samples
 	# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonTauReplacementWithPFlow
