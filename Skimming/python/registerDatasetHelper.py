@@ -6,7 +6,6 @@
 import os
 import string
 
-from pprint import pprint
 import json
 import re
 
@@ -32,7 +31,6 @@ def get_scenario(details, default=None, energy=None, data=False):
 			scenario = scenario.split("_")[0] +"_"+ scenario.split("_")[1]
 		if (energy == "13" or energy =="14"):
 			scenario = scenario.split("_")[0]
-		print "scneario:"
 		return scenario
 	else:
 		return default
@@ -122,7 +120,6 @@ def save_database(dict, dataset):
 		json.dump(dict, fp, sort_keys=True, indent = 4)
 
 def query_result(query):
-	print query
 	dict = load_database(dataset)
 
 	for sample, values in dict.iteritems():

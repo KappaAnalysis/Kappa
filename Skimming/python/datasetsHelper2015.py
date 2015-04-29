@@ -5,17 +5,12 @@
 
 from Kappa.Skimming.registerDatasetHelper import *
 import FWCore.ParameterSet.Config as cms
-import pprint
 
 def getTreeInfo(nickname, globaltag, kappaTag):
 
 	sample = get_sample_by_nick(nickname)
-
 	dict = load_database(dataset)
-	pprint.pprint(dict)
-	print sample
 	sample_details = dict[sample]
-	print sample_details
 
 	pd_name, details, filetype = sample.strip("/").split("/")
 
