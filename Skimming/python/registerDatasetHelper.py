@@ -8,7 +8,10 @@ import string
 
 from pprint import pprint
 import json
+import re
 
+cmssw_base = os.environ.get("CMSSW_BASE")
+dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
 def get_campaign(details, default=None, energy=None):
 	if (default == None):
@@ -117,3 +120,33 @@ def save_database(dict, dataset):
 
 	with open(dataset, 'w') as fp:
 		json.dump(dict, fp, sort_keys=True, indent = 4)
+
+def query_result(query):
+	print query
+	dict = load_database(dataset)
+
+	for sample, values in dict.iteritems():
+		matches = True
+		for name, attribute in values.iteritems():
+			if not name in query: continue
+			if not (re.match(str(query[name]), str(attribute).replace("_", "")) != None):
+				matches = False
+		if matches:
+			return sample
+
+def get_sample_by_nick(nickname):
+
+	# split nickname
+	process, campaign, scenario, energy, format = nickname.split("_")
+	query = {
+		"process" : process,
+		"campaign" : campaign,
+		"scenario" : scenario,
+		"energy" : energy.strip("TeV"),
+		"format" : format
+	}
+
+	#query_nick, sample = query_result(query)
+	return query_result(query)
+	#pd_name, details, filetype = options.sample.strip("/").split("/")
+	#return pd_name, details, filetype

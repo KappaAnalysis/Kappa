@@ -15,9 +15,6 @@ import Kappa.Skimming.datasets2012 as datasets2012
 import Kappa.Skimming.datasets2013 as datasets2013
 
 
-cmssw_base = os.environ.get("CMSSW_BASE")
-dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
-
 def writeFilelist(querytuple, dict, options):
 	query = querytuple[1]
 	query_result = []

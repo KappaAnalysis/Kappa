@@ -22,15 +22,15 @@
 
 import os
 import FWCore.ParameterSet.Config as cms
-#import Kappa.Skimming.datasetsHelper2015 as datasetsHelper
+import Kappa.Skimming.datasetsHelper2015 as datasetsHelper
 import Kappa.Skimming.tools as tools
 
 
 def getBaseConfig( globaltag= 'START70_V7::All',
                    testfile=cms.untracked.vstring(""),
                    maxevents=100, ## -1 = all in file
-                   nickname = 'SM_VBFHToTauTau_M_90_powheg_pythia_8TeV',
-                   kappaTag = 'Kappa_1_0_0' ):
+                   nickname = 'VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM',
+                   kappaTag = 'Kappa_2_0_0' ):
 
 	## ------------------------------------------------------------------------
 	# Configure Kappa
@@ -43,14 +43,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
-	data = False #datasetsHelper.isData(nickname)
-	isEmbedded = False #datasetsHelper.getIsEmbedded(nickname)
-	miniaod = True
 
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
+	# Important to be evaluated correctly for the following steps
 	process.kappaTuple.active = cms.vstring('TreeInfo')
-	process.kappaTuple.TreeInfo.parameters = cms.PSet()#datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
+	data, isEmbedded, miniaod, process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 
 	## ------------------------------------------------------------------------
 	# General configuration
