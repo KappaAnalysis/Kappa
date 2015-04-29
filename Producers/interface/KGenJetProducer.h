@@ -20,31 +20,32 @@ public:
 
 	static const std::string getLabel() { return "GenJets"; }
 
+	static bool allDaughtersValid(const SingleInputType &in)
+	{
+		const auto daughters = in.daughterPtrVector();
+		for ( auto daughter : daughters )
+		{
+			if (!daughter.isNonnull())
+				return false;
+		}
+		return true;
+	}
+
 	static void fillGenJet(const SingleInputType &in, SingleOutputType &out)
 	{	/// momentum:
 		copyP4(in, out.p4);
-		
-		std::string genTauDecayModeString = JetMCTagUtils::genTauDecayMode(in);
-		if (genTauDecayModeString == "oneProng0Pi0")
-		{
-			out.genTauDecayMode = 0;
-		}
-		else if (genTauDecayModeString == "oneProng1Pi0")
-		{
-			out.genTauDecayMode = 1;
-		}
-		else if (genTauDecayModeString == "oneProng2Pi0")
-		{
-			out.genTauDecayMode = 2;
-		}
-		else if (genTauDecayModeString == "threeProng0Pi0")
-		{
-			out.genTauDecayMode = 3;
-		}
-		else
-		{
-			out.genTauDecayMode = -1;
-		}
+		// check if inputs are valid. Status April 15: Some miniAOD samples do not fill their daughters properly
+		std::string genTauDecayModeString = allDaughtersValid(in) ? JetMCTagUtils::genTauDecayMode(in) : "invalid";
+		if      (genTauDecayModeString == "oneProng0Pi0")     out.genTauDecayMode = 0;
+		else if (genTauDecayModeString == "oneProng1Pi0")     out.genTauDecayMode = 1;
+		else if (genTauDecayModeString == "oneProng2Pi0")     out.genTauDecayMode = 2;
+		else if (genTauDecayModeString == "oneProngOther")    out.genTauDecayMode = 7;
+		else if (genTauDecayModeString == "threeProng0Pi0")   out.genTauDecayMode = 3;
+		else if (genTauDecayModeString == "threeProng1Pi0")   out.genTauDecayMode = 4;
+		else if (genTauDecayModeString == "threeProngOther")  out.genTauDecayMode = 8;
+		else if (genTauDecayModeString == "electron")         out.genTauDecayMode = 5;
+		else if (genTauDecayModeString == "muons")            out.genTauDecayMode = 6;
+		else out.genTauDecayMode = -1;
 	}
 
 
