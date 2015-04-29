@@ -524,7 +524,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
-	PATTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+	PatTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
 		taus = cms.PSet(
 			src = cms.InputTag("slimmedTaus"),
 			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!

@@ -8,7 +8,7 @@
 #include <DataFormats/PatCandidates/interface/Tau.h>
 
 
-class KPATTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
+class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 {
 protected:
 
@@ -80,7 +80,7 @@ protected:
 	}
 
 public:
-	KPATTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+	KPatTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel()),
 		firstEvent(true),
 		_lumi_tree_pointer(_lumi_tree)
@@ -89,7 +89,7 @@ public:
 		 names = psBase.getParameterNamesForType<edm::ParameterSet>();
 		if(names.size() != 1)
 		{
-			std::cout << "Currently the PATTau Producer only supports one PSet" << std::endl;
+			std::cout << "Currently the PatTau Producer only supports one PSet" << std::endl;
 			assert(false);
 		}
 
@@ -106,7 +106,7 @@ public:
 
 	}
 
-	static const std::string getLabel() { return "PATTaus"; }
+	static const std::string getLabel() { return "PatTaus"; }
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{

@@ -174,15 +174,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.p *= ( process.makeKappaElectrons )
 	## ------------------------------------------------------------------------
 	if(miniaod):
-		process.kappaTuple.active += cms.vstring('PATTaus')
+		process.kappaTuple.active += cms.vstring('PatTaus')
 		#process.kappaTuple.PATTaus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
-		process.kappaTuple.PATTaus.taus.preselectOnDiscriminators = cms.vstring()
+		process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring()
 	## ------------------------------------------------------------------------
 	# Configure Taus
 	if(not miniaod):
 		process.load("Kappa.Skimming.KTaus_run2_cff")
-		process.kappaTuple.active += cms.vstring('PATTaus')
-		process.kappaTuple.Taus.taus.src = cms.InputTag("slimmedTaus")
+		process.kappaTuple.active += cms.vstring('Taus')
 		process.kappaTuple.Taus.minPt = cms.double(8.0)
 		process.p *= ( process.makeKappaTaus )
 
