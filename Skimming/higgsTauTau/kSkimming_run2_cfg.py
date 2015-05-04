@@ -76,7 +76,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 				process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("packedGenParticles")
 				process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("packedGenParticles")
 	# Prune genParticles
-	if not isEmbedded and not data and not miniAOD:
+	if not isEmbedded and not data and not miniaod:
 		process.load("Kappa.Skimming.PruneGenParticles_cff")
 	
 	# Special settings for embedded samples
