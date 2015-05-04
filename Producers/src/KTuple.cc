@@ -46,7 +46,9 @@
 #include "../interface/KMuonProducer.h"
 #include "../interface/KElectronProducer.h"
 #include "../interface/KPFCandidateProducer.h"
+#if CMSSW_MAJOR_VERSION >= 7
 #include "../interface/KPackedPFCandidateProducer.h"
+#endif
 #include "../interface/KTaupairVerticesMapProducer.h"
 #include "../interface/KBasicJetProducer.h"
 #include "../interface/KMETProducer.h"
@@ -62,7 +64,9 @@
 #include "../interface/KLeptonPairProducer.h"
 #include "../interface/KTrackSummaryProducer.h"
 #include "../interface/KTriggerObjectProducer.h"
+#if CMSSW_MAJOR_VERSION >= 7
 #include "../interface/KTriggerObjectStandaloneProducer.h"
+#endif
 #include "../interface/KVertexProducer.h"
 #include "../interface/KVertexSummaryProducer.h"
 /* are these still used?
@@ -214,7 +218,9 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KMuonProducer>(active[i]);
 		addProducer<KElectronProducer>(active[i]);
 		addProducer<KPFCandidateProducer>(active[i]);
+		#if CMSSW_MAJOR_VERSION >= 7
 		addProducer<KPackedPFCandidateProducer>(active[i]);
+		#endif
 		addProducer<KBasicJetProducer>(active[i]);
 		addProducer<KMETProducer>(active[i]);
 		addProducer<KPatMETProducer>(active[i]);
@@ -230,7 +236,9 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KLeptonPairProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);
 		addProducer<KTriggerObjectProducer>(active[i]);
+		#if CMSSW_MAJOR_VERSION >= 7
 		addProducer<KTriggerObjectStandaloneProducer>(active[i]);
+		#endif
 		addProducer<KVertexProducer>(active[i]);
 		addProducer<KVertexSummaryProducer>(active[i]);
 		addProducer<KTreeInfoProducer >(active[i]);
