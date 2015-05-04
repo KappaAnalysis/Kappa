@@ -114,7 +114,7 @@ def getBaseConfig(
 	# Configure Muons
 	process.load('Kappa.Skimming.KMuons_cff')
 	process.kappaTuple.active += cms.vstring('Muons')					## produce/save KappaMuons
-	process.kappaTuple.Muons.minPt = cms.double(8.0)
+	#process.kappaTuple.Muons.minPt = cms.double(8.0)
 
 	process.goodMuons = cms.EDFilter('CandViewSelector',
 		src = cms.InputTag('muons'),
@@ -124,7 +124,8 @@ def getBaseConfig(
 		src = cms.InputTag('goodMuons'),
 		minNumber = cms.uint32(2),
 	)
-	process.p *= (process.goodMuons * process.twoGoodMuons * process.makeKappaMuons)
+	process.p *= (#process.goodMuons * process.twoGoodMuons * 
+		process.makeKappaMuons)
 
 	## for muon iso
 	# https://github.com/ajgilbert/ICHiggsTauTau/blob/master/test/higgstautau_new_cfg.py#L430-L460
@@ -195,7 +196,7 @@ def getBaseConfig(
 			PUJetID_full = cms.InputTag('full'),
 			),
 		)
-	process.kappaTuple.Jets.minPt = cms.double(5.0)
+	#process.kappaTuple.Jets.minPt = cms.double(5.0)
 
 	if not data:
 		process.kappaTuple.active += cms.vstring('GenJets')
@@ -252,6 +253,8 @@ def getBaseConfig(
 	process.p *= (
 		process.kappaOut
 	)
+
+	print process.p
 
 	return process
 

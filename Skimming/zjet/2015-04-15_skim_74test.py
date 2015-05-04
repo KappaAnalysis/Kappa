@@ -27,17 +27,18 @@ def getBaseConfig(
 		channel='mm'
 	):
 	from Kappa.Skimming.KSkimming_template_cfg import process
-	process.source.fileNames	  = testfile
-	process.maxEvents.input		  = maxevents				## number of events to be processed (-1 = all in file)
-	process.kappaTuple.outputFile = outputfilename			## name of output file
-	process.kappaTuple.verbose	= cms.int32(kappaverbosity)				## verbosity level
-	process.kappaTuple.profile	= cms.bool(False)
-	if not globaltag.lower() == 'auto' :
+	process.source.fileNames = testfile
+	process.maxEvents.input = maxevents  # number of events to be processed (-1 = all in file)
+	process.kappaTuple.outputFile = outputfilename  # name of output file
+	process.kappaTuple.verbose = cms.int32(kappaverbosity)  # verbosity level
+	process.kappaTuple.profile = cms.bool(False)
+	if not globaltag.lower() == 'auto':
 		process.GlobalTag.globaltag = globaltag
 	data = datasetsHelper.isData(nickname)
 	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
-	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
+	process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(False))
 
+	cmssw_version = tools.get_cmssw_version()
 	cmssw_version_number = tools.get_cmssw_version_number()
 
 	## some infos
@@ -51,7 +52,7 @@ def getBaseConfig(
 	print "channel:        ", channel
 	print "-------------------------------\n"
 
-	process.p = cms.Path ( )
+	process.p = cms.Path()
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	process.kappaTuple.active = cms.vstring('TreeInfo')
@@ -66,7 +67,7 @@ def getBaseConfig(
 		centerOfMassEnergy		= cms.int32(centerOfMassEnergy),
 		puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy)),
 		isData						= cms.bool(data)
-		)
+	)
 
 	## ------------------------------------------------------------------------
 	# General configuration
@@ -92,7 +93,7 @@ def getBaseConfig(
 			)
 
 	# test case for 74x relval
-	if globaltag = "GR_R_74_V8":
+	if globaltag == "GR_R_74_V8":
 		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
 
 
@@ -107,7 +108,7 @@ def getBaseConfig(
 		#process.pfPileUpIso.PFCandidates = cms.InputTag('particleFlowPtrs')
 		#process.pfNoPileUp.bottomCollection = cms.InputTag('particleFlowPtrs')
 		#process.pfNoPileUpIso.bottomCollection = cms.InputTag('particleFlowPtrs')
-		process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag('ak4PFJets')
+		process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag('ak5PFJets')
 
 
 	process.p *= (process.goodOfflinePrimaryVertices * process.pfPileUp * process.pfNoPileUp)
@@ -117,9 +118,10 @@ def getBaseConfig(
 	if channel == 'mm':
 		# Configure Muons
 		process.load('Kappa.Skimming.KMuons_cff')
-		process.kappaTuple.active += cms.vstring('Muons')					## produce/save KappaMuons
+		process.kappaTuple.active += cms.vstring('Muons')
 		process.kappaTuple.Muons.minPt = cms.double(8.0)
 
+		# muon pT filter
 		process.goodMuons = cms.EDFilter('CandViewSelector',
 			src = cms.InputTag('muons'),
 			cut = cms.string("pt > 15.0 & abs(eta) < 8.0"),# & isGlobalMuon()"),
@@ -223,11 +225,7 @@ def getBaseConfig(
 	
 	## ------------------------------------------------------------------------
 	## MET
-	# MET correction ----------------------------------------------------------
-	process.load('JetMETCorrections.Type1MET.pfMETCorrectionType0_cfi')
-	process.p *= (
-		process.type0PFMEtCorrection
-	)
+
 	#TODO check type 0 corrections
 	process.kappaTuple.active += cms.vstring('MET')					   ## produce/save KappaPFMET
 	process.kappaTuple.MET.whitelist = cms.vstring('pfChMet', '_pfMet_')
@@ -246,6 +244,23 @@ def getBaseConfig(
 			process.producePFMETCorrections * process.pfMETCHS
 		)
 		process.kappaTuple.MET.whitelist += cms.vstring("pfMETCHS")
+	elif cmssw_version_number.startswith("7"):
+		# MET correction ----------------------------------------------------------
+		#process.load('JetMETCorrections.Type1MET.pfMETCorrectionType0_cfi')
+		
+		process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
+		process.load("JetMETCorrections.Type1MET.correctedMet_cff")
+		
+		#process.pfchsMETcorr.src = cms.InputTag('goodOfflinePrimaryVertices')
+		process.pfMETCHS = process.pfMetT0pc.clone()
+
+		process.p *= (
+			process.correctionTermsPfMetType0PFCandidate
+			#* process.pfMETcorrType0
+			* process.pfMETCHS
+		)
+		process.kappaTuple.MET.whitelist += cms.vstring("pfMETCHS")
+	
 	
 	## ------------------------------------------------------------------------
 	## And let it run
@@ -260,7 +275,6 @@ def getBaseConfig(
 if __name__ == '__main__':
 	# run local skim by hand without replacements by grid-control
 	if('@' in '@NICK@'):
-
 		KappaParser = kappaparser.KappaParserZJet()
 		KappaParser.setDefault('test', '53mc12')
 		testdict = {
@@ -291,7 +305,7 @@ if __name__ == '__main__':
 			kappaverbosity=KappaParser.kappaVerbosity,
 			channel=KappaParser.channel,
 		)
-	## for grid-control:
+	# for grid-control:
 	else:
 		process = getBaseConfig(
 			globaltag='@GLOBALTAG@',
