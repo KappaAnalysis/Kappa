@@ -127,7 +127,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
-	process.p *= ( process.makeKappaMuons )
+	if (not miniaod):
+		process.p *= ( process.makeKappaMuons )
 	## ------------------------------------------------------------------------
 	# Configure Electrons
 	process.kappaTuple.active += cms.vstring('Electrons')
