@@ -33,7 +33,7 @@ pfmuIsoDepositPFCandidates = cms.EDProducer(
 ## run this to create particle flow based isodeposits for muons, which are
 ## expected fro mthe KMuonProducer 
 makeKappaMuons = cms.Sequence(
-    #pfmuIsoDepositPFCandidates
+    pfmuIsoDepositPFCandidates
     )
 
 
