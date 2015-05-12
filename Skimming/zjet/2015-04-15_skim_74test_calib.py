@@ -311,7 +311,7 @@ if __name__ == '__main__':
 			globaltag='@GLOBALTAG@',
 			testfile=cms.untracked.vstring(""),
 			maxevents=-1,
-			nickname='@NICK@',
+			nickname='DoubleMuParked_Run2012D_22Jan2013_8TeV',
 			outputfilename='kappatuple.root',
 			kappaverbosity=0
 		)
