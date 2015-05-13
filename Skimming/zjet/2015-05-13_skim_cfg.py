@@ -260,9 +260,14 @@ def getBaseConfig(
 	process.kappaTuple.Jets.minPt = cms.double(5.0)
 
 	if not data:
+		process.load('RecoJets.JetProducers.ak5GenJets_cfi')
+		process.path *= (
+			process.genParticlesForJetsNoNu *
+			process.ak5GenJetsNoNu
+		)
 		process.kappaTuple.active += cms.vstring('LV')
-		process.kappaTuple.LV.whitelist = cms.vstring('ak5GenJets')
 		process.kappaTuple.LV.rename = cms.vstring('ak => AK')
+		process.kappaTuple.LV.whitelist = cms.vstring('ak5GenJetsNoNu')
 
 	# add kt6PFJets, needed for the PileupDensity
 	from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
