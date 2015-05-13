@@ -21,9 +21,26 @@ public:
 	{
 		genJet = new KGenJet;
 		_event_tree->Bronch("genJet", "KGenJet", &genJet);
+		names = new KJetMetadata;
+		_run_tree->Bronch("jetMetadata", "KJetMetadata", &names);
 	}
 
 	static const std::string getLabel() { return "PatJets"; }
+
+	std::vector<std::string> bDiscriminators = { "jetBProbabilityBJetTags", "jetProbabilityBJetTags", 
+	                                             "trackCountingHighPurBJetTags", "trackCountingHighEffBJetTags", 
+	                                             "simpleSecondaryVertexHighEffBJetTags", "simpleSecondaryVertexHighPurBJetTags", 
+	                                             "combinedSecondaryVertexBJetTags", "combinedInclusiveSecondaryVertexBJetTags", "combinedInclusiveSecondaryVertexV2BJetTags" };
+
+	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
+	{
+		names->tagNames.push_back("puJetIDFullDiscriminant");
+
+		for(auto bDiscriminator : bDiscriminators)
+			names->tagNames.push_back(bDiscriminator);
+
+		return KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>::onLumi(lumiBlock, setup);
+	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
@@ -40,7 +57,9 @@ public:
 		out.hfHadronFraction = in.HFHadronEnergyFraction();
 		out.hfEMFraction = in.HFEMEnergyFraction();
 
-
+		out.tags.push_back(in.userFloat("pileupJetId:fullDiscriminant"));
+		for(auto bDiscriminator : bDiscriminators)
+			out.tags.push_back(in.bDiscriminator(bDiscriminator));
 		//write out generator information
 		//todo: catch if some daughters of genJets are not in genParticles collection
 		//in this case, the determination of the decay mode fails and the cmsRun exits with "product not found"
@@ -52,6 +71,7 @@ public:
 	}
 private:
 	KGenJet* genJet;
+	KJetMetadata *names;
 
 };
 
