@@ -202,23 +202,14 @@ def getBaseConfig(
 	############################################################################
 	#  Jets
 	############################################################################
-	#process.load('Kappa.Skimming.KJets{0}_cff'.format('_run2' if cmssw_version_number.startswith("7") else ''))
-
-	## ------------------------------------------------------------------------
-	## Create ak5 jets from all pf candidates and from pfNoPileUp candidates
-	##  - note that this requires that goodOfflinePrimaryVertices and PFBRECO
-	##    has been run beforehand. e.g. using the sequence makePFBRECO from
-	##    KPFCandidates_cff.py
-	process.load('RecoJets.JetProducers.ak5PFJets_cfi')
-	process.ak5PFJets.srcPVs = cms.InputTag('goodOfflinePrimaryVertices')
-	process.ak5PFJetsCHS = process.ak5PFJets.clone(src = cms.InputTag('pfNoPileUp'))
+	process.load('Kappa.Skimming.KJets{0}_cff'.format('_run2' if cmssw_version_number.startswith("7") else ''))
 
 	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
 	process.kappaTuple.Jets = cms.PSet(
 		process.kappaNoCut,
 		process.kappaNoRegEx,
 		taggers = cms.vstring(
-			#'QGlikelihood',
+			'QGlikelihood',
 			#'QGmlp',
 			#'TrackCountingHighEffBJetTags',
 			#'TrackCountingHighPurBJetTags',
@@ -229,8 +220,8 @@ def getBaseConfig(
 			#'SoftMuonByIP3dBJetTags',
 			#'SoftMuonByPtBJetTags',
 			#'SimpleSecondaryVertexBJetTags',
-			#'CombinedSecondaryVertexBJetTags',
-			#'CombinedSecondaryVertexMVABJetTags',
+			'CombinedSecondaryVertexBJetTags',
+			'CombinedSecondaryVertexMVABJetTags',
 			#'puJetIDFullDiscriminant',
 			#'puJetIDFullLoose',
 			#'puJetIDFullMedium',
@@ -242,16 +233,14 @@ def getBaseConfig(
 			),
 		AK5PFTaggedJets = cms.PSet(
 			src = cms.InputTag('ak5PFJets'),
-			#QGtagger = cms.InputTag('AK5PFJetsQGTagger'),
-			QGtagger = cms.InputTag(''),
+			QGtagger = cms.InputTag('AK5PFJetsQGTagger'),
 			Btagger  = cms.InputTag('ak5PF'),
 			PUJetID  = cms.InputTag('ak5PFPuJetMva'),
 			PUJetID_full = cms.InputTag('full'),
 			),
 		AK5PFTaggedJetsCHS = cms.PSet(
 			src = cms.InputTag('ak5PFJetsCHS'),
-			#QGtagger = cms.InputTag('AK5PFJetsCHSQGTagger'),
-			QGtagger = cms.InputTag(''),
+			QGtagger = cms.InputTag('AK5PFJetsCHSQGTagger'),
 			Btagger  = cms.InputTag('ak5PFCHS'),
 			PUJetID  = cms.InputTag('ak5PFCHSPuJetMva'),
 			PUJetID_full = cms.InputTag('full'),
@@ -275,12 +264,21 @@ def getBaseConfig(
 	process.kt6PFJets.Rho_EtaMax = cms.double(2.5)
 
 	process.path *= (
-		process.ak5PFJets *
-		process.ak5PFJetsCHS *
-		process.kt6PFJets
-		#process.makeQGTagging *
+		process.makePFJets
+		* process.makePFJetsCHS
+		* process.kt6PFJets
+		* process.makeQGTagging
+
+		* process.ak5PFJetTracksAssociator
+		* process.ak5PFJetBtaggingIP
+		* process.ak5PFJetBtaggingSV
+		* process.ak5PFCHSJetTracksAssociator
+		* process.ak5PFCHSJetBtaggingIP
+		* process.ak5PFCHSJetBtaggingSV
+		
+		
 		#process.makeBTagging *
-		#process.makePUJetID
+		#* process.makePUJetID
 	)
 
 
