@@ -210,13 +210,13 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	## MET
 	process.load("Kappa.Skimming.KMET_run2_cff")
-	process.ak4PFJets.src = cms.InputTag("packedPFCandidates")
 	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET and MVA MET
 
 	if (not miniaod):
 		process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
 
 	if(miniaod):
+		process.ak4PFJets.src = cms.InputTag("packedPFCandidates")
 		process.pfMetMVA.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.puJetIdForPFMVAMEt.jec =  cms.string('AK4PF')
 		process.puJetIdForPFMVAMEt.vertexes = cms.InputTag("offlineSlimmedPrimaryVertices")
