@@ -31,13 +31,21 @@ public:
 	                                             "trackCountingHighPurBJetTags", "trackCountingHighEffBJetTags", 
 	                                             "simpleSecondaryVertexHighEffBJetTags", "simpleSecondaryVertexHighPurBJetTags", 
 	                                             "combinedSecondaryVertexBJetTags", "combinedInclusiveSecondaryVertexBJetTags", "combinedInclusiveSecondaryVertexV2BJetTags" };
+	// discriminators are upper case coming from standalone producers. To be compatible with miniAOD, use also upper case here.
+	inline std::string firstLetterUppercase(const std::string input)
+	{
+		char firstpart = toupper(input[0]);
+		return firstpart + input.substr(1, input.size()-1);
+	}
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		names->tagNames.push_back("puJetIDFullDiscriminant");
 
 		for(auto bDiscriminator : bDiscriminators)
-			names->tagNames.push_back(bDiscriminator);
+		{
+			names->tagNames.push_back(firstLetterUppercase(bDiscriminator));
+		}
 
 		return KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>::onLumi(lumiBlock, setup);
 	}
