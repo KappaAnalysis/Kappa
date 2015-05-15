@@ -203,6 +203,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	if miniaod:
 		process.kappaTuple.active += cms.vstring('PatJets')
+		process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
+		process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
 
 
 	## ------------------------------------------------------------------------
