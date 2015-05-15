@@ -289,7 +289,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		whitelist = cms.vstring("kt6PFJetsRho_rho", "kt6PFJets_rho"),
 		blacklist = cms.vstring(),
 
-		rename = cms.vstring("kt6PFJetsRho => KT6AreaRho", "kt6PFJets => KT6Area"),
+		rename = cms.vstring("kt6PFJetsRho => pileupDensityRho", "kt6PFJets => pileupDensity"),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
