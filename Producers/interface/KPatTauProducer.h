@@ -18,7 +18,8 @@ protected:
 		assert(in.charge() == 1 || in.charge() == -1);
 		if (in.charge() > 0)
 			out.leptonInfo |= KLeptonChargeMask;
-		out.leptonInfo |= KLeptonPFMask;
+		if(in.isPF())
+			out.leptonInfo |= KLeptonPFMask;
 
 		if (in.leadPFChargedHadrCand().isNonnull())
 		{
