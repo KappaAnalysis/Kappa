@@ -18,7 +18,7 @@ protected:
 		assert(in.charge() == 1 || in.charge() == -1);
 		if (in.charge() > 0)
 			out.leptonInfo |= KLeptonChargeMask;
-		if(in.isPF())
+		if(in.isPFTau())
 			out.leptonInfo |= KLeptonPFMask;
 
 		if (in.leadPFChargedHadrCand().isNonnull())
@@ -30,6 +30,10 @@ protected:
 			KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track);
 			out.leptonInfo |= KLeptonAlternativeTrackMask;
 			}
+		}
+		else // at least fill reference point
+		{
+			out.track.ref.SetXYZ(in.vertex().x(), in.vertex().y(), in.vertex().z());
 		}
 		if(in.isPFTau())
 			out.emFraction = in.emFraction();
