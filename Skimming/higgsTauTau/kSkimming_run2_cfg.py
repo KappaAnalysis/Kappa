@@ -73,8 +73,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
 
 			if(miniaod):
-				process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("packedGenParticles")
-				process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("packedGenParticles")
+				process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
+				process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
 	# Prune genParticles
 	if not isEmbedded and not data and not miniaod:
 		process.load("Kappa.Skimming.PruneGenParticles_cff")
