@@ -14,17 +14,17 @@
 
 #define G__DICTIONARY
 
-#include "../interface/Hash.h"
-#include "../interface/KBasic.h"
-#include "../interface/KElectron.h"
-#include "../interface/KInfo.h"
-#include "../interface/KJetMET.h"
-#include "../interface/KLepton.h"
-#include "../interface/KMuon.h"
-#include "../interface/KParticle.h"
-#include "../interface/KRoot.h"
-#include "../interface/KTau.h"
-#include "../interface/KTrack.h"
+#include "Kappa/DataFormats/interface/Hash.h"
+#include "Kappa/DataFormats/interface/KBasic.h"
+#include "Kappa/DataFormats/interface/KElectron.h"
+#include "Kappa/DataFormats/interface/KInfo.h"
+#include "Kappa/DataFormats/interface/KJetMET.h"
+#include "Kappa/DataFormats/interface/KLepton.h"
+#include "Kappa/DataFormats/interface/KMuon.h"
+#include "Kappa/DataFormats/interface/KParticle.h"
+#include "Kappa/DataFormats/interface/KRoot.h"
+#include "Kappa/DataFormats/interface/KTau.h"
+#include "Kappa/DataFormats/interface/KTrack.h"
 
 namespace
 {
