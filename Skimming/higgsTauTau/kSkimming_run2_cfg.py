@@ -300,7 +300,7 @@ if __name__ == "__main__":
 		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
 		process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_Miniaod.root" % testPath))
-		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_M-125_13TeV_PHYS14.root" % testPath))
+		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_AODSIM", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_M-125_13TeV_PHYS14.root" % testPath))
 
 	## for grid-control:
 	else:
