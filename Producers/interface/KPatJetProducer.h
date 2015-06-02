@@ -46,6 +46,8 @@ public:
 		{
 			names->tagNames.push_back(firstLetterUppercase(bDiscriminator));
 		}
+		//fill the same discriminators also in binary IDs
+		names->idNames = names->tagNames;
 
 		return KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>::onLumi(lumiBlock, setup);
 	}
@@ -68,6 +70,15 @@ public:
 		out.tags.push_back(in.userFloat("pileupJetId:fullDiscriminant"));
 		for(auto bDiscriminator : bDiscriminators)
 			out.tags.push_back(in.bDiscriminator(bDiscriminator));
+		// write same thing as binary discriminator
+		int digit = 0;
+		out.binaryIds = 0;
+		for(auto tag: out.tags)
+		{
+			if(tag > 0.5)
+				out.binaryIds |= (1ull << digit);
+			digit++;
+		}
 		//write out generator information
 		//todo: catch if some daughters of genJets are not in genParticles collection
 		//in this case, the determination of the decay mode fails and the cmsRun exits with "product not found"
