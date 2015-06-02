@@ -45,6 +45,7 @@ protected:
 	{
 		const std::vector<std::pair<std::string, float>> tauIDs = in.tauIDs();
 		int digit = 0;
+		out.binaryDiscriminators = 0;
 		for(auto discriminator: discriminatorMap[names[0]]->binaryDiscriminatorNames)
 		{
 			if(in.tauID(discriminator) > 0.5 )
