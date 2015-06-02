@@ -245,18 +245,17 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.p *= process.makeKappaMET
 	## ------------------------------------------------------------------------
 	## GenJets 
-	if not miniaod:
-		if not data:
-			process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
-			process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
-			if(miniaod):
-				process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
-			process.p *= ( 
-				process.tauGenJets +
-				process.tauGenJetsSelectorAllHadrons
-				)
-			process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
-			process.kappaTuple.active += cms.vstring('GenJets')
+	if not data:
+		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
+		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
+		if(miniaod):
+			process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
+		process.p *= ( 
+			process.tauGenJets +
+			process.tauGenJetsSelectorAllHadrons
+			)
+		process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
+		process.kappaTuple.active += cms.vstring('GenJets')
 
 	## ------------------------------------------------------------------------
 	## Further information saved to Kappa output 
