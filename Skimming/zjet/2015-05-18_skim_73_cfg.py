@@ -41,21 +41,26 @@ def getBaseConfig(
 	#  Basic Process Setup
 	############################################################################
 	process = cms.Process("KAPPA")
+	process.path = cms.Path()
+
 	## MessageLogger
 	process.load("FWCore.MessageLogger.MessageLogger_cfi")
 	process.MessageLogger.default = cms.untracked.PSet(
 		ERROR = cms.untracked.PSet(limit = cms.untracked.int32(5))
-		#suppressError = cms.untracked.vstring("electronIdMVAProducer")
 	)
 	process.MessageLogger.cerr.FwkReport.reportEvery = 50
-	## Options and Output Report
+
+	# general options
 	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
-	## Source
 	process.source = cms.Source("PoolSource",
 		fileNames = cms.untracked.vstring()
 	)
-	## Maximal number of Events
-	process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+	data = datasetsHelper.isData(nickname)
+	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
+	process.source.fileNames	= testfile
+	process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(maxevents))
+	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
+
 	## Geometry and Detector Conditions (needed for a few patTuple production steps)
 	import Kappa.Skimming.tools as tools
 	cmssw_version_number = tools.get_cmssw_version_number()
@@ -68,10 +73,13 @@ def getBaseConfig(
 		process.load("Configuration.Geometry.GeometryIdeal_cff")
 		process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 	from Configuration.AlCa.autoCond import autoCond
-	process.GlobalTag.globaltag = cms.string(autoCond['startup'])
-	# print the global tag until it is clear whether this auto global tag is fine
-	print "GT from autoCond:", process.GlobalTag.globaltag
 	process.load("Configuration.StandardSequences.MagneticField_cff")
+
+	if globaltag.lower() == 'auto' :
+		process.GlobalTag.globaltag = cms.string(autoCond['startup'])
+		print "GT from autoCond:", process.GlobalTag.globaltag
+	else:
+		process.GlobalTag.globaltag = globaltag
 
 
 	############################################################################
@@ -83,20 +91,10 @@ def getBaseConfig(
 		outputFile = cms.string("kappaTuple.root"),
 	)
 	process.kappaTuple.active = cms.vstring()
-	process.kappaTuple.outputFile = outputfilename			## name of output file
-	process.kappaTuple.verbose	= cms.int32(kappaverbosity)				## verbosity level
+	process.kappaTuple.outputFile = outputfilename
+	process.kappaTuple.verbose	= cms.int32(kappaverbosity)
 	process.kappaTuple.profile	= cms.bool(False)
 	process.kappaOut = cms.Sequence(process.kappaTuple)
-
-	process.path = cms.Path()
-
-	process.source.fileNames	  = testfile
-	process.maxEvents.input		  = maxevents				## number of events to be processed (-1 = all in file)
-	if not globaltag.lower() == 'auto' :
-		process.GlobalTag.globaltag = globaltag
-	data = datasetsHelper.isData(nickname)
-	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
-	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
 
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
@@ -118,22 +116,23 @@ def getBaseConfig(
 	############################################################################
 	#  Basic Objects
 	############################################################################
-	process.kappaTuple.active += cms.vstring('VertexSummary')	## save VertexSummary,
+	process.kappaTuple.active += cms.vstring('VertexSummary')
 	process.kappaTuple.VertexSummary.whitelist = cms.vstring('goodOfflinePrimaryVertices')
-	#process.kappaTuple.active += cms.vstring('BeamSpot')		## save Beamspot,
+	#process.kappaTuple.active += cms.vstring('BeamSpot')
 	#process.kappaTuple.active += cms.vstring('TriggerObjects')
 	if data:
-		process.kappaTuple.active+= cms.vstring('DataInfo')		## produce Metadata for data,
+		process.kappaTuple.active+= cms.vstring('DataInfo')
 	else:
-		process.kappaTuple.active+= cms.vstring('GenInfo')		## produce Metadata for MC,
+		process.kappaTuple.active+= cms.vstring('GenInfo')
 		process.kappaTuple.active+= cms.vstring('GenParticles')
 		#process.kappaTuple.Info.hltSource = ""
 
-	if cmssw_version_number.startswith("7_4_2"):
+	if cmssw_version_number.startswith("7_4_2") or cmssw_version_number.startswith("7_4_0"):
 		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
 
 	if channel == 'mm':
-		process.kappaTuple.Info.hltWhitelist = cms.vstring(			## HLT selection
+		process.kappaTuple.Info.hltWhitelist = cms.vstring(
+			## HLT selection
 			# can be tested at http://regexpal.com
 			# matches 'HLT_Mu17_Mu8_v7' etc.
 			'^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$',
@@ -145,18 +144,56 @@ def getBaseConfig(
 	############################################################################
 	#  PFCandidates
 	############################################################################
+	## ------------------------------------------------------------------------
+	## Good offline PV selection: 
+	from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
+
+	process.goodOfflinePrimaryVertices = cms.EDFilter('PrimaryVertexObjectFilter',
+		src = cms.InputTag('offlinePrimaryVertices'),
+		filterParams = pvSelector.clone( minNdof = 4.0, maxZ = 24.0 ),
+	)
+
+	process.goodOfflinePrimaryVertexEvents = cms.EDFilter("KVertexFilter",
+		minNumber = cms.uint32(1),
+		maxNumber = cms.uint32(999999),
+		src = cms.InputTag("goodOfflinePrimaryVertices")
+	)
+
+	## ------------------------------------------------------------------------
+	## TopProjections from CommonTools/ParticleFlow:
 	process.load("CommonTools.ParticleFlow.pfNoPileUpIso_cff")
-	process.load("Kappa.Skimming.KPFCandidates_run2_cff")
-	"""process.kappaTuple.active += cms.vstring('PFCandidates') # save PFCandidates for deltaBeta corrected
-	process.kappaTuple.PFCandidates.whitelist = cms.vstring( # isolation used for electrons and muons.
-	##	"pfNoPileUpChargedHadrons",    ## switch to pfAllChargedParticles
-		"pfAllChargedParticles",       ## same as pfNoPileUpChargedHadrons +pf_electrons + pf_muons
-		"pfNoPileUpNeutralHadrons",
-		"pfNoPileUpPhotons",
-		"pfPileUpChargedHadrons",
-		)"""
-	#process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
-	process.path *= ( process.makeKappaPFCandidates )
+	process.load("CommonTools.ParticleFlow.pfNoPileUpIso_cff")
+	process.load("CommonTools.ParticleFlow.pfParticleSelection_cff")
+
+
+	## pf candidate configuration for everything but CHS jets
+	process.pfPileUpIso.PFCandidates		= 'particleFlow'
+	process.pfPileUpIso.Vertices			= 'goodOfflinePrimaryVertices'
+	process.pfPileUpIso.checkClosestZVertex	= True
+	process.pfNoPileUpIso.bottomCollection	= 'particleFlow'
+
+
+	## pf candidate configuration for deltaBeta corrections for muons and electrons 
+	process.pfNoPileUpChargedHadrons	= process.pfAllChargedHadrons.clone()
+	process.pfNoPileUpNeutralHadrons	= process.pfAllNeutralHadrons.clone()
+	process.pfNoPileUpPhotons			= process.pfAllPhotons.clone()
+	process.pfPileUpChargedHadrons		= process.pfAllChargedHadrons.clone(src = 'pfPileUpIso')
+
+	## pf candidate configuration for CHS jets
+	process.pfPileUp.Vertices				= 'goodOfflinePrimaryVertices'
+	process.pfPileUp.checkClosestZVertex	= False
+
+	# Modifications for new particleFlow Pointers
+	process.pfPileUp.PFCandidates = cms.InputTag("particleFlowPtrs")
+	process.pfPileUpIso.PFCandidates = cms.InputTag("particleFlowPtrs")
+	process.pfNoPileUp.bottomCollection = cms.InputTag("particleFlowPtrs")
+	process.pfNoPileUpIso.bottomCollection = cms.InputTag("particleFlowPtrs")
+	#process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag("ak5PFJets")
+	process.path *= (
+		process.goodOfflinePrimaryVertices
+		* process.goodOfflinePrimaryVertexEvents
+		* process.pfParticleSelectionSequence
+	)
 
 
 	if channel == 'mm':
@@ -165,7 +202,7 @@ def getBaseConfig(
 		############################################################################
 		process.load('Kappa.Skimming.KMuons_run2_cff')
 
-		process.kappaTuple.active += cms.vstring('Muons')					## produce/save KappaMuons
+		process.kappaTuple.active += cms.vstring('Muons')
 		process.kappaTuple.Muons.minPt = cms.double(8.0)
 
 		process.goodMuons = cms.EDFilter('CandViewSelector',
@@ -178,42 +215,10 @@ def getBaseConfig(
 		)
 		process.path *= (process.goodMuons * process.twoGoodMuons * process.makeKappaMuons)
 
-		"""
-		process.load("CommonTools.ParticleFlow.Isolation.pfMuonIsolation_cff")
-
-		process.muPFIsoValueCharged04PFIso = process.muPFIsoValueCharged04.clone()
-		process.muPFIsoValueChargedAll04PFIso = process.muPFIsoValueChargedAll04.clone()
-		process.muPFIsoValueGamma04PFIso = process.muPFIsoValueGamma04.clone()
-		process.muPFIsoValueNeutral04PFIso = process.muPFIsoValueNeutral04.clone()
-		process.muPFIsoValuePU04PFIso = process.muPFIsoValuePU04.clone()
-
-		process.muonPFIsolationValuesSequence = cms.Sequence(
-			process.muPFIsoValueCharged04PFIso+
-			process.muPFIsoValueChargedAll04PFIso+
-			process.muPFIsoValueGamma04PFIso+
-			process.muPFIsoValueNeutral04PFIso+
-			process.muPFIsoValuePU04PFIso
-			)
-		process.muPFIsoDepositCharged.src = cms.InputTag("muons")
-		process.muPFIsoDepositChargedAll.src = cms.InputTag("muons")
-		process.muPFIsoDepositNeutral.src = cms.InputTag("muons")
-		process.muPFIsoDepositGamma.src = cms.InputTag("muons")
-		process.muPFIsoDepositPU.src = cms.InputTag("muons")
-
-		process.pfMuonIso = cms.Sequence( 
-			process.muonPFIsolationDepositsSequence +
-			process.muonPFIsolationValuesSequence
-		)
-
-		process.path *= (process.goodMuons * process.twoGoodMuons * process.pfMuonIso)
-		"""
 
 	############################################################################
 	#  Jets
 	############################################################################
-	#process.load('Kappa.Skimming.KJets{0}_cff'.format('_run2' if cmssw_version_number.startswith("7") else ''))
-
-
 	## ------------------------------------------------------------------------
 	## Create ak5 jets from all pf candidates and from pfNoPileUp candidates
 	##  - note that this requires that goodOfflinePrimaryVertices and PFBRECO
@@ -427,7 +432,10 @@ def getBaseConfig(
 		)
 	process.kappaTuple.Jets.minPt = cms.double(5.0)
 
+	# GenJets
 	if not data:
+		process.load('RecoJets.Configuration.GenJetParticles_cff')
+		process.load('RecoJets.Configuration.RecoGenJets_cff')
 		process.load('RecoJets.JetProducers.ak5GenJets_cfi')
 		process.path *= (
 			process.genParticlesForJetsNoNu *
@@ -437,7 +445,7 @@ def getBaseConfig(
 		process.kappaTuple.LV.rename = cms.vstring('ak => AK')
 		process.kappaTuple.LV.whitelist = cms.vstring('ak5GenJetsNoNu')
 
-	# add kt6PFJets, needed for the PileupDensity
+	# add kt6PFJets for PileupDensity
 	from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
 	process.kt6PFJets = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
 	process.kt6PFJets.Rho_EtaMax = cms.double(2.5)
@@ -466,40 +474,20 @@ def getBaseConfig(
 
 	#TODO check type 0 corrections
 	process.kappaTuple.active += cms.vstring('MET')					   ## produce/save KappaPFMET
-	process.kappaTuple.MET.whitelist = cms.vstring('pfChMet', '_pfMet_')
+	process.kappaTuple.MET.whitelist = cms.vstring('pfChMet', '_pfMet_', 'pfMETCHS')
 
-	if cmssw_version_number.startswith("5"):
-		# MET correction ----------------------------------------------------------
-		process.load("JetMETCorrections.Type1MET.pfMETCorrections_cff")
-		process.pfchsMETcorr.src = cms.InputTag('goodOfflinePrimaryVertices')
-		# Type-0
-		process.pfMETCHS = process.pfType1CorrectedMet.clone(
-			applyType1Corrections = cms.bool(False),
-			applyType0Corrections = cms.bool(True)
-		)
-		# MET Path
-		process.path *= (
-			process.producePFMETCorrections * process.pfMETCHS
-		)
-		process.kappaTuple.MET.whitelist += cms.vstring("pfMETCHS")
-	elif cmssw_version_number.startswith("7"):
-		# MET correction ----------------------------------------------------------
-		#process.load('JetMETCorrections.Type1MET.pfMETCorrectionType0_cfi')
-		
-		process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
-		process.load("JetMETCorrections.Type1MET.correctedMet_cff")
-		
-		#process.pfchsMETcorr.src = cms.InputTag('goodOfflinePrimaryVertices')
-		process.pfMETCHS = process.pfMetT0pc.clone()
+	# MET correction ----------------------------------------------------------		
+	process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
+	process.load("JetMETCorrections.Type1MET.correctedMet_cff")
+	
+	process.pfMETCHS = process.pfMetT0pc.clone()
 
-		process.path *= (
-			process.correctionTermsPfMetType0PFCandidate
-			#* process.pfMETcorrType0
-			* process.pfMETCHS
-		)
-		process.kappaTuple.MET.whitelist += cms.vstring("pfMETCHS")
-	
-	
+	process.path *= (
+		process.correctionTermsPfMetType0PFCandidate
+		#* process.pfMETcorrType0
+		* process.pfMETCHS
+	)
+
 
 	############################################################################
 	#  Almost done ...
@@ -534,13 +522,19 @@ if __name__ == '__main__':
 			},
 			'740data12': {
 				'files': 'file:/storage/8/dhaitz/testfiles/DoubleMuParked__CMSSW_7_4_0_pre9_ROOT6-GR_R_74_V8_1Apr_RelVal_dm2012D-v2__RECO.root',
-				'globalTag': 'GR_R_74_V8::All',
+				'globalTag': 'GR_R_74_V8',
 				'nickName': 'DoubleMu_Run2012A_22Jan2013_8TeV',
 			},
 			'742data12': {
 				'files': 'file:/storage/8/dhaitz/testfiles/DoubleMuParked__CMSSW_7_4_2-GR_R_74_V12_19May_RelVal_dm2012D-v1__RECO.root',
 				'globalTag': 'GR_R_74_V12',
 				'nickName': 'DoubleMu_Run2012A_22Jan2013_8TeV',
+			},
+			'742mc15': {
+				#'files': 'file:/storage/8/dhaitz/testfiles/DoubleMuParked__CMSSW_7_4_2-GR_R_74_V12_19May_RelVal_dm2012D-v1__RECO.root',
+				'files': 'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/StartupFlat10to50bx50Raw_MCRUN2_74_V8-v1/10000/04CA79E8-8201-E511-9D9C-0025905A60AA.root',
+				'globalTag': 'MCRUN2_74_V8',
+				'nickName': 'DYJetsToLL_M_50_madgraph_13TeV',
 			},
 		}
 		KappaParser.parseArgumentsWithTestDict(testdict)
