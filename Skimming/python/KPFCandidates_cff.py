@@ -3,6 +3,9 @@
 #-#   Roger Wolf <roger.wolf@cern.ch>
 
 import FWCore.ParameterSet.Config as cms
+import Kappa.Skimming.tools as tools
+
+cmssw_version_number = tools.get_cmssw_version_number()
 
 ## ------------------------------------------------------------------------
 ## Good offline PV selection: 
@@ -22,6 +25,8 @@ goodOfflinePrimaryVertexEvents = cms.EDFilter("KVertexFilter",
 ## ------------------------------------------------------------------------
 ## TopProjections from CommonTools/ParticleFlow:
 from CommonTools.ParticleFlow.PFBRECO_cff import *
+if (cmssw_version_number.startswith("7_4")):
+	from CommonTools.ParticleFlow.pfParticleSelection_cff import *
 
 ## pf candidate configuration for everything but CHS jets
 pfPileUpIso.PFCandidates        = 'particleFlow'

@@ -6,6 +6,9 @@
 #-#   Roger Wolf <roger.wolf@cern.ch>
 
 import FWCore.ParameterSet.Config as cms
+import Kappa.Skimming.tools as tools
+
+cmssw_version_number = tools.get_cmssw_version_number()
 
 ## ------------------------------------------------------------------------
 ## POG recommended electron Id:
@@ -20,15 +23,17 @@ import FWCore.ParameterSet.Config as cms
 ## 1. download git repository as described at https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
 ## 2. run scramv1 b in src directory
 
-from EgammaAnalysis.ElectronTools.electronIdMVAProducer_CSA14_cfi import *
-
-electronIdMVA = cms.Sequence(
-    mvaTrigV050nsCSA14+
-    mvaTrigV025nsCSA14+
-    mvaNonTrigV050nsCSA14+
-    mvaNonTrigV025nsCSA14+
-    mvaNonTrigV025nsPHYS14
-    )
+if (cmssw_version_number.startswith("7_4")):
+	electronIdMVA = cms.Sequence()
+else:
+	from EgammaAnalysis.ElectronTools.electronIdMVAProducer_CSA14_cfi import *
+	electronIdMVA = cms.Sequence(
+	    mvaTrigV050nsCSA14+
+	    mvaTrigV025nsCSA14+
+	    mvaNonTrigV050nsCSA14+
+	    mvaNonTrigV025nsCSA14+
+	    mvaNonTrigV025nsPHYS14
+	    )
 
 ## ------------------------------------------------------------------------
 ## PAT electorn configuration
@@ -38,19 +43,29 @@ electronIdMVA = cms.Sequence(
 from TrackingTools.TransientTrack.TransientTrackBuilder_cfi import *
 from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
 
-patElectrons.electronIDSources = cms.PSet(
-	## cut based Id
-	cutBasedEleIdPHYS14Loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-loose"),
-	cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-medium"),
-	cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-tight"),
-	cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-veto"),
-	## MVA based Id
-	mvaTrigV050nsCSA14        = cms.InputTag("mvaTrigV050nsCSA14"),
-	mvaTrigV025nsCSA14        = cms.InputTag("mvaTrigV025nsCSA14"),
-	mvaNonTrigV050nsCSA14     = cms.InputTag("mvaNonTrigV050nsCSA14"),
-	mvaNonTrigV025nsCSA14     = cms.InputTag("mvaNonTrigV025nsCSA14"),
-	mvaNonTrigV025nsPHYS14    = cms.InputTag("mvaNonTrigV025nsPHYS14"),
-)
+if (cmssw_version_number.startswith("7_4")):
+	patElectrons.electronIDSources = cms.PSet(
+		## cut based Id
+		cutBasedEleIdPHYS14Loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-loose"),
+		cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-medium"),
+		cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-tight"),
+		cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-veto"),
+	)
+else:
+	patElectrons.electronIDSources = cms.PSet(
+		## cut based Id
+		cutBasedEleIdPHYS14Loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-loose"),
+		cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-medium"),
+		cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-tight"),
+		cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-veto"),
+		## MVA based Id
+		mvaTrigV050nsCSA14        = cms.InputTag("mvaTrigV050nsCSA14"),
+		mvaTrigV025nsCSA14        = cms.InputTag("mvaTrigV025nsCSA14"),
+		mvaNonTrigV050nsCSA14     = cms.InputTag("mvaNonTrigV050nsCSA14"),
+		mvaNonTrigV025nsCSA14     = cms.InputTag("mvaNonTrigV025nsCSA14"),
+		mvaNonTrigV025nsPHYS14    = cms.InputTag("mvaNonTrigV025nsPHYS14"),
+	)
+
 patElectrons.addGenMatch                   = False
 patElectrons.embedGenMatch                 = False
 patElectrons.genParticleMatch              = ""
