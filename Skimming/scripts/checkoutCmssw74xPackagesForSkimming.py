@@ -63,8 +63,12 @@ def checkoutPackages(args):
 		# do the git cms-addpkg before starting with checking out cvs repositories
 
 		#Electron cutBased Id package
-		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2
-		"git cms-merge-topic ikrav:egm_id_74X_v0",
+		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_74X
+		"git cms-merge-topic 9003",
+		"rm -rf RecoEgamma/ElectronIdentification/data",
+		"git clone https://github.com/cms-data/RecoEgamma-ElectronIdentification.git RecoEgamma/ElectronIdentification/data",
+		"rm -rf RecoEgamma/PhotonIdentification/data",
+		"git clone https://github.com/cms-data/RecoEgamma-PhotonIdentification.git RecoEgamma/PhotonIdentification/data",
 
 		#Electron MVA Id package (no public recipe existing yet for 74X release)
 		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2

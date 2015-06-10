@@ -46,10 +46,10 @@ from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
 if (cmssw_version_number.startswith("7_4")):
 	patElectrons.electronIDSources = cms.PSet(
 		## cut based Id
-		cutBasedEleIdPHYS14Loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-loose"),
-		cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-medium"),
-		cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-tight"),
-		cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-veto"),
+		cutBasedEleIdPHYS14Loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-loose"),
+		cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-medium"),
+		cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-tight"),
+		cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto"),
 	)
 else:
 	patElectrons.electronIDSources = cms.PSet(
@@ -94,7 +94,10 @@ egmGsfElectronIDSequence = cms.Sequence(egmGsfElectronIDs)
 # Each of these IDs contains all four standard cut-based ID working points 
 
 def setupElectrons(process):
-	my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_cff']
+	if (cmssw_version_number.startswith("7_4")):
+		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V2_cff']
+	else:
+		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_cff']
 	for idmod in my_id_modules:
 		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 

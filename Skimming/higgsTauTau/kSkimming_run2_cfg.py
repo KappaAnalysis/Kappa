@@ -25,6 +25,7 @@ import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper2015 as datasetsHelper
 import Kappa.Skimming.tools as tools
 
+cmssw_version_number = tools.get_cmssw_version_number()
 
 def getBaseConfig( globaltag= 'START70_V7::All',
                    testfile=cms.untracked.vstring(""),
@@ -150,15 +151,21 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Electrons.minPt = cms.double(8.0)
 		from Kappa.Skimming.KElectrons_run2_cff import setupElectrons
 
-		process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
-						       	   "cutBasedEleIdPHYS14Medium",
-						       	   "cutBasedEleIdPHYS14Tight",
-						       	   "cutBasedEleIdPHYS14Veto",
-						       	   "mvaTrigV050nsCSA14",
-						       	   "mvaTrigV025nsCSA14",
-						       	   "mvaNonTrigV050nsCSA14",
-						       	   "mvaNonTrigV025nsCSA14",
-						       	   "mvaNonTrigV025nsPHYS14")
+		if (cmssw_version_number.startswith("7_4")):
+			process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
+							       	   "cutBasedEleIdPHYS14Medium",
+							       	   "cutBasedEleIdPHYS14Tight",
+							       	   "cutBasedEleIdPHYS14Veto")
+		else:
+			process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
+							       	   "cutBasedEleIdPHYS14Medium",
+							       	   "cutBasedEleIdPHYS14Tight",
+							       	   "cutBasedEleIdPHYS14Veto",
+							       	   "mvaTrigV050nsCSA14",
+							       	   "mvaTrigV025nsCSA14",
+							       	   "mvaNonTrigV050nsCSA14",
+							       	   "mvaNonTrigV025nsCSA14",
+						       		   "mvaNonTrigV025nsPHYS14")
 
 	setupElectrons(process)
 	process.p *= ( process.makeKappaElectrons )
