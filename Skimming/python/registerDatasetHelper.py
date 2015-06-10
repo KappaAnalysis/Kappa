@@ -97,7 +97,7 @@ def get_format(filetype, default=False):
 
 def is_data(prod_camp, default=None):
 	if (default == None):
-		return prod_camp.find("Run")!=-1
+		return prod_camp.find("DR")==-1
 	else:
 		return default 
 
