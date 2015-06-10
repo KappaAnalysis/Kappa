@@ -141,7 +141,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Electrons.electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
 		from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 		process.kappaTuple.Electrons.srcIds = cms.string("standalone");
-		process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-veto",
+
+		if (cmssw_version_number.startswith("7_4")):
+			process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto",
+						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-loose",
+						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-medium",
+						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-tight")
+		else:
+			process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-veto",
 						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-loose",
 						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-medium",
 						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-tight")
