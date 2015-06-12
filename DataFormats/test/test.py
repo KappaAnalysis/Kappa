@@ -41,10 +41,10 @@ import time
 import shutil
 
 groupConfigsToBeChecked = [
-    "Skimming/zjet/x.py",  # does not exist, just testing error handling here
     "Skimming/higgsTauTau/kSkimming_cfg.py",
     "Skimming/higgsTauTau/kSkimming_run2_cfg.py",
-    "Skimming/zjet/2015-03-27_skim_kappa2.py",
+    "Skimming/zjet/2015-05-13_skim_cfg.py",
+    "Skimming/zjet/2015-05-18_skim_73_cfg.py",
 ]
 compareFilesPaths = [
     '/storage/6/berger/kappatest/output/',
