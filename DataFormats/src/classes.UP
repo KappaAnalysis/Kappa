@@ -186,7 +186,7 @@ class ClassesH(BaseFile):
 	http://root.cern.ch/drupal/content/selecting-dictionary-entries-linkdefh
 	http://root.cern.ch/drupal/content/interacting-shared-libraries-rootcint"""
 	filename  = 'classes.h'
-	includeStr = '#include "Kappa/DataFormats/interface/{include}"'
+	includeStr = '#include "../interface/{include}"'
 	singleStr = '\t\t{single} dict_{single};'
 	vectorStr = '\t\t{vector} dict_{vector};'
 	interStr  = '\nnamespace\n{\n\tstruct dictionary\n\t{'
