@@ -142,7 +142,7 @@ def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryR
     print "\nConfigure %d cases:" % len(cases)
     tests = [
         Arch(), Env(), Recipe(), Scram(), Copy(), Compile(),
-        Config(), CmsRun(), Output(), Compare(),
+        Config(), CmsRun(), Output(), Valid(),
     ]
     for case, i in zip(sorted(cases), range(len(cases))):
         print "- Case %d/%d: %s ..." % (i+1, len(cases), case.name),
@@ -514,7 +514,8 @@ class Output(Test):
 
 class Valid(Test):
     """Is output file a valid ROOT file"""
-    script = "test -f {output}"
+    script = "root -q -l {output} 2>&1 | grep -v \"no dictionary for class\"\n"\
+             "! root -q -l {output} 2>&1 | grep Error"
 
 class Compare(Test):
     """Whether the output file is identical to the given compare file"""
