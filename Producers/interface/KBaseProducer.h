@@ -12,7 +12,6 @@
 #include <FWCore/Framework/interface/Run.h>
 #include <FWCore/ParameterSet/interface/ParameterSet.h>
 #include "../../DataFormats/interface/KInfo.h"
-#include <iostream>
 
 // KBaseProducer is the base class for all producers
 //  - provides common matching tools
