@@ -13,12 +13,12 @@ Each test case needs a config file with these comments:
 # Kappa test: compare /path/to/test/filename.root (auto: cfgname: ordner_name.root)
 
 Checks once: make, classes.UP
-Checks per case: setup, checkout, scram, python, cmsRun, output, root output, compare output
+Checks per case: setup, checkout, scram, python, cmsRun, output, validate output, compare output
 
 usecases:
 check single config file
 check current working tree
-check current branch heads
+check current branch heads or other commits
 options:
 stop after precheck? batch mode
 Naming:
@@ -484,7 +484,9 @@ class Recipe(Test):
     script = "{checkout script}"
 
 class Scram(Test):
-    """The recipe (checkout script) compiles with scram)"""
+    """The recipe (checkout script, without Kappa) compiles with scram"""
+    # Kappa is removed if it was automatically checked out to test the
+    # CMSSW packages alone
     # complicated rm path to prevent accidental removal
     script = "rm -rf ../../../{case}/CMSSW_{CMSSW}/src/Kappa\n"\
              "scram b -j8"
@@ -503,11 +505,11 @@ class Config(Test):
     script = "python {config}"
 
 class CmsRun(Test):
-    """Return code of CMSSW"""
+    """Return code of CMSSW cmsRun command"""
     script = "cmsRun {config}"
 
 class Output(Test):
-    """Does file exist"""
+    """Does output file exist"""
     script = "test -f {output}"
 
 class Valid(Test):
@@ -518,6 +520,7 @@ class Compare(Test):
     """Whether the output file is identical to the given compare file"""
     script = "compareFiles.py {output} {compare}\n"\
              "echo Not tested"
+
 
 def writeHTML(branches, allOK):
     # header
