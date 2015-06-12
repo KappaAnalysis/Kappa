@@ -81,6 +81,11 @@ def checkoutPackages(args):
 		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 72X-13TeV-Phys14_25_V4-26Mar15",
 		"cd " + cmsswsrc,
 
+		#Code fix: change the default input values given to the variables "mvaNameU_" and "mvaNameDPhi_". For some reason, 
+		#in the 74X release these names are not read out from the config file but are instead hardcoded
+		"sed -i 's/U1Correction/RecoilCor/g' RecoMET/METPUSubtraction/src/PFMETAlgorithmMVA.cc",
+		"sed -i 's/PhiCorrection/PhiCor/g' RecoMET/METPUSubtraction/src/PFMETAlgorithmMVA.cc",
+
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git -b development",
 		#"scram b -j 4"
