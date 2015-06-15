@@ -99,12 +99,13 @@ def main():
 	parser.add_option("--filetype", help="process", default=None)
 
 	parser.add_option("-i", "--interactive", help="run in interactive mode", action="store_true")
-
+	parser.add_option("-v", "--verbose", help="verbose output", action="store_true", default=False)
 
 	(options, args) = parser.parse_args()
 
 	dict = load_database(dataset)
-	pprint(dict)
+	if options.verbose:
+		pprint(dict)
 	newdict = register_new_sample(dict, options)
 	if options.interactive:
 		if(confirm()):
