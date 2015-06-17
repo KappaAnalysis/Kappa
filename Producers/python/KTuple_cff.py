@@ -472,7 +472,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("patJets_.*"),
-		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG"),
+		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG", ".*SubJets.*"),
 
 		rename = cms.vstring(
 			"(slimmedJetsAK8)|(slimmed) => (?1ak8PFJets)(?2ak5PF)"
