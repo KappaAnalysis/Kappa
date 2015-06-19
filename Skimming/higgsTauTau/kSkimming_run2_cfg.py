@@ -17,7 +17,7 @@
 
 # Kappa test: CMSSW 7.2.2, 7.4.2
 # Kappa test: scram arch slc6_amd64_gcc481, slc6_amd64_gcc491
-# Kappa test: checkout script scripts/checkoutCmssw72xPackagesForSkimming.py
+# Kappa test: checkout script scripts/checkoutCmssw72xPackagesForSkimming.py, scripts/checkoutCmssw74xPackagesForSkimming.py
 # Kappa test: output kappaTuple.root
 
 import os
