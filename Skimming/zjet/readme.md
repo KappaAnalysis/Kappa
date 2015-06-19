@@ -9,10 +9,10 @@ of this skim in the [ISO format](http://en.wikipedia.org/wiki/ISO_8601)
 which is denoted as `YYYY-MM-DD` in the following list.
 
 1. A checkout recipe for additional CMSSW packages:
-`YYYY-MM-DD_checkout-packages.sh`
+`checkoutXY.sh`
 
 2. The CMSSW configuration file including the CMSSW version (XYZ) and a nick name:
-`YYYY-MM-DD_skim_XYZ_name.py
+`skim_XYZ_[name_]YYYY-MM-DD_cfg.py
 
 3. The grid-control configuration file also mentions the responsible person of that
 skim in the form of initials (NN):
