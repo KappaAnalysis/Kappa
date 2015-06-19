@@ -157,7 +157,7 @@ def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryR
     print "\nWrite test script for %d cases:" % len(cases)
     for case, i in zip(sorted(cases), range(len(cases))):
         print "- Case %d/%d: %s" % (i+1, len(cases), case.name)
-        case.writeScript()
+        print ['failed', 'successful'][case.writeScript()]
 
     print "\nRun %d cases:" % len(cases)
     for case, i in zip(sorted(cases), range(len(cases))):
@@ -485,6 +485,17 @@ class Env(Test):
              "cd CMSSW_{CMSSW}/src\n"\
              "cmsenv\n"\
              "sed -i -e \"s@-fipa-pta@@g\" ../config/toolbox/{scram arch}/tools/selected/gcc-cxxcompiler.xml\n"\
+             "uname -a\n"\
+             "echo \"HOSTNAME=$HOSTNAME\"\n"\
+             "echo \"SHELL=$SHELL\"\n"\
+             "echo \"PYTHONSTARTUP=$PYTHONSTARTUP\"\n"\
+             "echo \"PYTHONPATH=$PYTHONPATH\"\n"\
+             "echo \"SCRAM_ARCH=$SCRAM_ARCH\"\n"\
+             "echo \"VO_CMS_SW_DIR=$VO_CMS_SW_DIR\"\n"\
+             "echo \"CMSSW_VERSION=$CMSSW_VERSION\"\n"\
+             "echo \"CMSSW_GIT_HASH=$CMSSW_GIT_HASH\"\n"\
+             "echo \"CMSSW_BASE=$CMSSW_BASE\"\n"\
+             "echo \"CMSSW_RELEASE_BASE=$CMSSW_RELEASE_BASE\"\n"\
              "test ! -z $CMSSW_BASE"
 
 class Recipe(Test):
