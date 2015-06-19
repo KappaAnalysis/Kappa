@@ -198,7 +198,8 @@ def niceVersion(version):
 def parseConfigs(configs, kappaCommentIdentifier='Kappa test:'):
     """Parse list of configs for CMSSW version, scram arch and checkout script
 
-    Returns a dictionary for each config
+    Returns a dictionary for each config containing the # Kappa test
+    keys and their values
     """
     result = {}
     for config in configs:
@@ -212,8 +213,10 @@ def parseConfigs(configs, kappaCommentIdentifier='Kappa test:'):
                     for key in ['CMSSW', 'scram arch', "checkout script", 'output', 'compare']:
                         if key in line:
                             string = line.split(key, 1)[1]
-                            if key in ['CMSSW', 'scram arch']:  # lists
+                            if key in ['CMSSW']:  # version list
                                 result[name][key] = [v.strip().replace(".", "_") for v in string.split(',')]
+                            elif key in ['scram arch', 'checkout script']:  # other lists
+                                result[name][key] = [v.strip() for v in string.split(',')]
                             else:  # single strings
                                 result[name][key] = string.strip()
                             done = True
@@ -254,12 +257,19 @@ def preCheck(name, case):
     if case['compare'] is False:
         print "- Warning: {cfg:30}: Given compare file does not exist: no result comparision possible.".format(cfg=name)
     if case['checkout script']:
-        path = os.path.join(kappaPath, 'Skimming', case['checkout script'])
-        if not os.path.exists(path):
-            print "- Warning: {cfg:30}: Given checkout script '{script}' does not exist: checkout will fail ({path}).".format(cfg=name, script=case['checkout script'], path=path)
-            case['checkout script'] = False
-        else:
-            case['checkout script'] = path
+        for i in range(len(case['checkout script'])):
+            path = os.path.join(kappaPath, 'Skimming', case['checkout script'][i])
+            if not os.path.exists(path):
+                print "- Warning: {cfg:30}: Given checkout script '{script}' does not exist: checkout will fail ({path}).".format(cfg=name, script=case['checkout script'][i], path=path)
+                case['checkout script'][i] = False
+            else:
+                case['checkout script'][i] = path
+    if len(case['checkout script']) == 1 and len(case['CMSSW']) > 1:
+        config['checkout script'] = case['checkout script'] * len(case['CMSSW'])
+    if len(case['checkout script']) != len(case['CMSSW']):
+        print "- Warning: {cfg:30}: Different number of CMSSW versions ({nV}) and checkout scripts ({nA}) given!".format(
+                cfg=name, nV=len(case['CMSSW']), nA=len(case['checkout script']))
+
 
 def printPreCheck(cases, length=78):
     """Print the results of preCheck in a nice table"""
@@ -286,7 +296,7 @@ def printPreCheck(cases, length=78):
         success = success and ok
     print "=> %s required information available" % ['Not all', 'All'][success]
     versions = collectVersions(cases)
-    print "   Required CMSSW versions:", ", ".join([niceVersion(v) for v in versions])
+    print "   Required CMSSW versions:", ", ".join([niceVersion(v) for v in sorted(versions)])
     print "_"*length
     return success
 
@@ -294,12 +304,13 @@ def expandCases(configs):
     """For all configs, create a test case for each CMSSW version"""
     cases = []
     for config in configs.values():
-        for ver, arch in zip(config['CMSSW'], config['scram arch']):
+        for ver, arch, script in zip(config['CMSSW'], config['scram arch'], config['checkout script']):
             case = TestCase(config)
             case.name = config['cfgname'] + '_' + ver
             case.config['name'] = case.name
             case.config['CMSSW'] = ver
             case.config['scram arch'] = arch
+            case.config['checkout script'] = script
             cases.append(case)
             #print case.config
     return cases
