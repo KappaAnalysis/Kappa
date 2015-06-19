@@ -1,6 +1,6 @@
 # Kappa test: CMSSW 7.4.2
 # Kappa test: scram arch slc6_amd64_gcc491
-# Kappa test: checkout script zjet/checkout.sh
+# Kappa test: checkout script zjet/checkout74.sh
 # Kappa test: output kappaTuple.root
 
 import os
