@@ -312,7 +312,10 @@ if __name__ == "__main__":
 		# Input file for test script
 		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
-		process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_Miniaod.root" % testPath))
+		globalTag = 'PYS14_25_V1::All'
+		if cmssw_version_number.startswith("7_4"):
+			globalTag = 'MCRUN2_74_V9::All'
+		process = getBaseConfig(globaltag=globalTag, nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_Miniaod.root" % testPath))
 		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_AODSIM", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_M-125_13TeV_PHYS14.root" % testPath))
 
 	## for grid-control:
