@@ -505,7 +505,7 @@ if __name__ == '__main__':
 	if('@' in '@NICK@'):
 
 		KappaParser = kappaparser.KappaParserZJet()
-		KappaParser.setDefault('test', '53mc12')
+		KappaParser.setDefault('test', '742data12')
 		testdict = {
 			'53data12': {
 				'files': 'file:/storage/8/dhaitz/testfiles/data_AOD_2012A.root',
