@@ -490,7 +490,7 @@ class Env(Test):
              "test ! -z $CMSSW_BASE"
 
 class Recipe(Test):
-    """Return code of the checkout recipe (if provided)"""
+    """Return code of the checkout recipe (if provided, light green otherwise)"""
     optional = True
     script = "{checkout script}"
 
@@ -521,7 +521,8 @@ class CmsRun(Test):
 
 class Output(Test):
     """Does output file exist"""
-    script = "test -f {output}"
+    script = "ls -l {output}\n"\
+             "test -f {output}"
 
 class Valid(Test):
     """Is output file a valid ROOT file"""
