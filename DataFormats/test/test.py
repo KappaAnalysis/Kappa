@@ -264,6 +264,8 @@ def preCheck(name, case):
                 case['checkout script'][i] = False
             else:
                 case['checkout script'][i] = path
+    if not case['checkout script']:
+        case['checkout script'] = [None]*len(case['CMSSW'])
     if len(case['checkout script']) == 1 and len(case['CMSSW']) > 1:
         config['checkout script'] = case['checkout script'] * len(case['CMSSW'])
     if len(case['checkout script']) != len(case['CMSSW']):
@@ -478,11 +480,7 @@ class Arch(Test):
 
 class Env(Test):
     """Return code of cmsrel and cmsenv"""
-    script = "echo \"NAF setup (will fail on EKP machines)\"\n"\
-             "module use -a /afs/desy.de/group/cms/modulefiles/\n"\
-             "module load cmssw\n"\
-             "echo \"EKP setup\"\n"\
-             "[[ $(hostname) == \"ekp\"* ]] && source /cvmfs/cms.cern.ch/cmsset_default.sh\n"\
+    script = "source /cvmfs/cms.cern.ch/cmsset_default.sh\n"\
              "cmsrel CMSSW_{CMSSW}\n"\
              "cd CMSSW_{CMSSW}/src\n"\
              "cmsenv\n"\
