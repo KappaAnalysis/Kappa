@@ -15,7 +15,7 @@ protected:
 	virtual void fillChargeAndFlavour(const SingleInputType &in, SingleOutputType &out)
 	{
 		out.leptonInfo = KLeptonFlavour::TAU;
-		assert(in.charge() == 1 || in.charge() == -1);
+		//assert(in.charge() == 1 || in.charge() == -1);
 		if (in.charge() > 0)
 			out.leptonInfo |= KLeptonChargeMask;
 		if(in.isPFTau())
@@ -124,6 +124,9 @@ virtual bool acceptSingle(const SingleInputType &in) override
 	{
 		// propagate the selection on minPt/maxEta
 		bool acceptTau = KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>::acceptSingle(in);
+
+		// reject taus with a charge different from +/- 1
+		acceptTau = acceptTau && (in.charge() == 1 || in.charge() == -1);
 
 		for(auto discriminator: preselectionDiscr[names[0]])
 		{
