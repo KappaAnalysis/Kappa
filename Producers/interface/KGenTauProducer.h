@@ -61,7 +61,7 @@ protected:
 
 			// TODO: Can this happen?
 			if( (info.n_charged % 2) == 0)
-				std::cerr << "Kappa GenTau producer warning: %d charged particles in tau decay!" << std::endl;
+				printf("Kappa GenTau producer warning: %d charged particles in tau decay!\n", info.n_charged);
 
 			break;
 		default:
@@ -85,6 +85,11 @@ protected:
 		// Reject decendant taus as all relevant information is contained in the
 		// top-level tau anyway
 		if(in.mother() && abs(in.mother()->pdgId()) == 15)
+			return false;
+
+		// Check one level above the mother, to be sure that the taus don't come
+		// from an intermediate gamma emission from another tau
+		if(in.mother()->mother() && abs(in.mother()->mother()->pdgId()) == 15)
 			return false;
 
 		return true;
@@ -111,7 +116,16 @@ private:
 		if(in.numberOfDaughters() == 0)
 		{
 			//printf("\n");
+
+			// Check that the final particle of the chain is a direct tau decay product, avoiding,
+			// for example, particles coming from intermediate gamma emission, which are listed as
+			// tau daughters in prunedGenParticle collections. Method available only from 74X.
+#if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
+			if(in.status() == 1 && !isNeutrino(in.pdgId()) && in.statusFlags().isDirectTauDecayProduct() 
+								       && in.statusFlags().isDirectHardProcessTauDecayProduct())
+#else
 			if(in.status() == 1 && !isNeutrino(in.pdgId()))
+#endif
 			{
 				RMDLV p4;
 				copyP4(in.p4(), p4);
@@ -120,14 +134,7 @@ private:
 				if(abs(in.pdgId()) == 11 && abs(in.mother()->pdgId()) == 15) info.mode = DecayInfo::Electronic;
 				if(abs(in.pdgId()) == 13 && abs(in.mother()->pdgId()) == 15) info.mode = DecayInfo::Muonic;
 
-				// Increment the charge only if the particle is a direct decay product of a prompt tau, avoiding,
-				// for example, particles coming from intermediate gamma emission, which are listed as tau
-				// daughters in prunedGenParticle collections. Method available only from 74X.
-#if CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 4
-				if(in.charge() != 0 && in.isDirectPromptTauDecayProductFinalState()) ++info.n_charged;
-#else
 				if(in.charge() != 0) ++info.n_charged;
-#endif
 			}
 		}
 		else if(in.numberOfDaughters() == 1)
