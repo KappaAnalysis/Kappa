@@ -156,7 +156,7 @@ def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryR
 
     print "\nWrite test script for %d cases:" % len(cases)
     for case, i in zip(sorted(cases), range(len(cases))):
-        print "- Case %d/%d: %s" % (i+1, len(cases), case.name)
+        print "- Case %d/%d: %s ..." % (i+1, len(cases), case.name),
         print ['failed', 'successful'][case.writeScript()]
 
     print "\nRun %d cases:" % len(cases)
@@ -168,7 +168,7 @@ def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryR
     print "\nRetrieve results for %d cases:" % len(cases)
     result = []
     for case, i in zip(sorted(cases), range(len(cases))):
-        print "- Case %d/%d: %s" % (i+1, len(cases), case.name)
+        print "- Case %d/%d: %s ..." % (i+1, len(cases), case.name)
         result.append(case.getResult())
     return cases
 
@@ -444,7 +444,8 @@ class TestCase(dict):
             self.scriptreturncode = subprocess.Popen(['bash', self.scriptname]).wait()
         self.runtime = time.time() - startTime
         self.nicetime = "%4d:%02d" % (int(self.runtime/60), int(self.runtime - int(self.runtime/60) * 60))
-        return ((min([t.result for t in self.tasks]) > 40) + 2 * dryRun)
+        retval = (bool(min([t.result for t in self.tasks]) > 40) + 2 * dryRun)
+        return retval
 
     def retrieve(self):
         self.log = self.name + '_log.txt'
@@ -486,8 +487,12 @@ class Env(Test):
              "cmsenv\n"\
              "sed -i -e \"s@-fipa-pta@@g\" ../config/toolbox/{scram arch}/tools/selected/gcc-cxxcompiler.xml\n"\
              "uname -a\n"\
+             "git  --work-tree={kappa} --git-dir={kappa}/.git describe\n"\
+             "git  --work-tree={kappa} --git-dir={kappa}/.git status\n"\
              "echo \"HOSTNAME=$HOSTNAME\"\n"\
              "echo \"SHELL=$SHELL\"\n"\
+             "python --version\n"\
+             "echo \"python:\" $(which python)\n"\
              "echo \"PYTHONSTARTUP=$PYTHONSTARTUP\"\n"\
              "echo \"PYTHONPATH=$PYTHONPATH\"\n"\
              "echo \"SCRAM_ARCH=$SCRAM_ARCH\"\n"\

@@ -27,6 +27,6 @@ then
 else
   echo "Kappa test running               $(date)"
   checkresult
-  echo "Latest log output:"
+  echo "Latest log output from $(ls -rt1 | tail -1):"
   tail -8 $(ls -rt1 | tail -1)
 fi
