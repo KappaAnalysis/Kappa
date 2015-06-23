@@ -1,7 +1,7 @@
 # Kappa test: CMSSW 7.4.2
 # Kappa test: scram arch slc6_amd64_gcc491
 # Kappa test: checkout script zjet/checkout74.sh
-# Kappa test: output kappaTuple.root
+# Kappa test: output skim74.root
 
 import os
 
@@ -546,7 +546,7 @@ if __name__ == '__main__':
 			testfile=cms.untracked.vstring(KappaParser.files),
 			maxevents=KappaParser.maxEvents,
 			nickname=KappaParser.nickName,
-			outputfilename=KappaParser.output,
+			outputfilename="skim74.root",
 			kappaverbosity=KappaParser.kappaVerbosity,
 			channel=KappaParser.channel,
 		)

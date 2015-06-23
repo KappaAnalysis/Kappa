@@ -1,7 +1,6 @@
 #!/bin/bash
 
-cd $CMSSW_BASE/src
-git-cms-addpkg CommonTools/ParticleFlow
+git cms-addpkg CommonTools/ParticleFlow
 git clone git@github.com:KappaAnalysis/Kappa.git -b development
 git clone https://github.com/amarini/QuarkGluonTagger.git -b v1-2-6
 
