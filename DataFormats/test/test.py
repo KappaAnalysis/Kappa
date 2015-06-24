@@ -541,7 +541,7 @@ class Output(Test):
 class Valid(Test):
     """Is output file a valid ROOT file"""
     script = "root -q -l {output} 2>&1 | grep -v \"no dictionary for class\"\n"\
-             "! root -q -l {output} 2>&1 | grep Error"
+             "! root -q -l {output} 2>&1 | grep -E \"(Error|not found)\""
 
 class Compare(Test):
     """Whether the output file is identical to the given compare file"""
