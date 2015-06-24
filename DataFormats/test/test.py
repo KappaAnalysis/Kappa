@@ -344,7 +344,7 @@ class Test:
                 self.result = 90 + 10 * ('KAPPA TEST STEP SUCCESSFUL' in f.read())
         else:
             self.result = 40
-        print self.result, self.optional, self.config['checkout script'], self.name, self.config['name']
+        #print self.result, self.optional, self.config['checkout script'], self.name, self.config['name']
         # hack to make checkout script optional if not given
         if self.optional and self.config['checkout script'] and type(self.config['checkout script']) == str and self.config['checkout script'][0] == '#':
             self.result = 99
@@ -431,21 +431,18 @@ class TestCase(dict):
     def run(self, dryRun=False):
         startTime = time.time()
         if dryRun:
-            #os.mkdir(self.name + '/CMSSW_' + self.config['CMSSW'])
-            #os.mkdir(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src')
-            for task in self.tasks: # if not t.optional]:
-                print "Writing to", task.log
+            for task in self.tasks:
                 if not task.log:
                     print task.log, "LOG", task.name, self.name
                 with open(task.log, 'w') as f:
                     f.write("Test %s\nKAPPA TEST STEP SUCCESSFUL\n" % task.name)
             time.sleep(0)
+            self.scriptreturncode = 0
         else:
             self.scriptreturncode = subprocess.Popen(['bash', self.scriptname]).wait()
         self.runtime = time.time() - startTime
         self.nicetime = "%4d:%02d" % (int(self.runtime/60), int(self.runtime - int(self.runtime/60) * 60))
-        retval = (bool(min([t.result for t in self.tasks]) > 40) + 2 * dryRun)
-        return retval
+        return self.scriptreturncode == 0
 
     def retrieve(self):
         self.log = self.name + '_log.txt'
@@ -457,6 +454,8 @@ class TestCase(dict):
                     f.write(open(task.log).read())
                 else:
                     print "File not found:", task.log
+        #retval = (bool(min([t.result for t in self.tasks]) > 40) + 2 * dryRun)
+        #print "Results", [t.result for t in self.tasks], min([t.result for t in self.tasks]), bool(min([t.result for t in self.tasks]) > 40), dryRun, retval
         return True
 
     def getResult(self):
