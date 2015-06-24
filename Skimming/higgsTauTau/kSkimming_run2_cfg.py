@@ -309,14 +309,17 @@ if __name__ == "__main__":
 		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_PU20bx25_tsg_PHYS14_25_V1-v2_0ACE16B2-5677-E411-87FF-7845C4FC3A40.root"))
 
 		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV MiniAOD
-		# Input file for test script
+		# Input file for test script - please leave this as default!
 		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
-		globalTag = 'PYS14_25_V1::All'
+		globalTag = "PHYS14_25_V1::All"
+		testFile = "VBF_HToTauTau_Miniaod.root"
+		nickName = "VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM"
 		if cmssw_version_number.startswith("7_4"):
 			globalTag = 'MCRUN2_74_V9::All'
-		process = getBaseConfig(globaltag=globalTag, nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_Miniaod.root" % testPath))
-		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_AODSIM", testfile=cms.untracked.vstring("file://%s/VBF_HToTauTau_M-125_13TeV_PHYS14.root" % testPath))
+			testFile = "SUSYGluGluHToTauTau_M-120_13TeV_MCRUN2.root"
+			nickName = "SUSYGluGluToHToTauTauM120_RunIISpring15DR74_Asympt25ns_13TeV_AODSIM"
+		process = getBaseConfig(globaltag=globalTag, nickname=nickName, testfile=cms.untracked.vstring("file://%s/%s" % (testPath, testFile)))
 
 	## for grid-control:
 	else:
