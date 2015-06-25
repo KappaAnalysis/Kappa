@@ -68,11 +68,10 @@ def checkoutPackages(args):
 		"rm -rf RecoEgamma/ElectronIdentification/data",
 		"git clone https://github.com/cms-data/RecoEgamma-ElectronIdentification.git RecoEgamma/ElectronIdentification/data",
 		"rm -rf RecoEgamma/PhotonIdentification/data",
-		"git clone https://github.com/cms-data/RecoEgamma-PhotonIdentification.git RecoEgamma/PhotonIdentification/data",
 
-		#Electron MVA Id package (no public recipe existing yet for 74X release)
-		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
-		#"git cms-merge-topic HuguesBrun:trigElecIdInCommonIsoSelection720",
+		#Electron MVA Id package
+		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_74X_Phys14_MVA_train
+		"git cms-merge-topic ikrav:egm_id_74X_v2",
 
 		#MVA & No-PU MET Recipe
 		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#Instructions_for_7_4_X
