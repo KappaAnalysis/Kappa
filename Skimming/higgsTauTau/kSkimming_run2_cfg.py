@@ -146,7 +146,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto",
 						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-loose",
 						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-medium",
-						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-tight")
+						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-tight",
+						"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Phys14NonTrigValues")
 		else:
 			process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-veto",
 						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-loose",
@@ -162,7 +163,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
 							       	   "cutBasedEleIdPHYS14Medium",
 							       	   "cutBasedEleIdPHYS14Tight",
-							       	   "cutBasedEleIdPHYS14Veto")
+							       	   "cutBasedEleIdPHYS14Veto",
+								   "mvaNonTrig25nsPHYS14")
 		else:
 			process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
 							       	   "cutBasedEleIdPHYS14Medium",

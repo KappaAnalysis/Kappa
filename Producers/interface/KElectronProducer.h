@@ -179,7 +179,7 @@ protected:
 		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
 		for (size_t i = 0; i < namesOfIds.size(); ++i)
 		{
-			out.electronIds.push_back((*(electronIDValueMap)[i])[pe] ? 1.0 : 0);
+			out.electronIds.push_back((*(electronIDValueMap)[i])[pe]);
 		}
 	}
 	virtual void doMvaIds(const SingleInputType &in, SingleOutputType &out)
@@ -259,7 +259,7 @@ private:
 	bool doMvaIds_;
 	bool doAuxIds_;
 
-	std::vector<edm::Handle<edm::ValueMap<bool> > > electronIDValueMap;
+	std::vector<edm::Handle<edm::ValueMap<float> > > electronIDValueMap;
 };
 
 #endif

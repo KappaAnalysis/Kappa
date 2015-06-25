@@ -11,19 +11,15 @@ import Kappa.Skimming.tools as tools
 cmssw_version_number = tools.get_cmssw_version_number()
 
 ## ------------------------------------------------------------------------
-## POG recommended electron Id:
-##  - works for patElectron level, not for gsfElectron
-
-## Modification for new Electron ID for Run 2
+## Electron ID for Run 2
 ## CutBased:
 ## https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2
 ## MVA:
 ## https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
-## Instructions for using new MVA-training:
-## 1. download git repository as described at https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
-## 2. run scramv1 b in src directory
 
 if (cmssw_version_number.startswith("7_4")):
+	# In the 74X release, the MVA IDs are calculated in the VID framework,
+	# together with the cut-based ones (see below)
 	electronIdMVA = cms.Sequence()
 else:
 	from EgammaAnalysis.ElectronTools.electronIdMVAProducer_CSA14_cfi import *
@@ -50,6 +46,8 @@ if (cmssw_version_number.startswith("7_4")):
 		cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-medium"),
 		cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-tight"),
 		cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto"),
+		## MVA based Id
+		mvaNonTrig25nsPHYS14      = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Phys14NonTrigValues"),
 	)
 else:
 	patElectrons.electronIDSources = cms.PSet(
@@ -84,18 +82,25 @@ patElectrons.embedRecHits                  = False
 patElectrons.embedHighLevelSelection.pvSrc = "goodOfflinePrimaryVertices"
 
 
-## for the Run 2 cutBased Id
-# https://github.com/ikrav/ElectronWork/blob/master/ElectronNtupler/test/runIdDemoPrePHYS14AOD.py#L29-L56
+## Set up electron ID (VID framework)
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import setupAllVIDIdsInModule, setupVIDElectronSelection
-from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
-from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi import *
-egmGsfElectronIDSequence = cms.Sequence(egmGsfElectronIDs)
-# Define which IDs we want to produce
-# Each of these IDs contains all four standard cut-based ID working points 
+
+if (cmssw_version_number.startswith("7_4")):
+	# https://github.com/ikrav/EgammaWork/blob/v1/ElectronNtupler/test/runElectrons_VID_MVA_PHYS14_demo.py
+	from PhysicsTools.SelectorUtils.tools.vid_id_tools import switchOnVIDElectronIdProducer, DataFormat
+	from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cff import *
+
+else:
+	# https://github.com/ikrav/ElectronWork/blob/master/ElectronNtupler/test/runIdDemoPrePHYS14AOD.py#L29-L56
+	from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
+	from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi import *
+	egmGsfElectronIDSequence = cms.Sequence(egmGsfElectronIDs)
 
 def setupElectrons(process):
 	if (cmssw_version_number.startswith("7_4")):
-		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V2_cff']
+		switchOnVIDElectronIdProducer(process, DataFormat.AOD)
+		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V2_cff',
+				 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_PHYS14_PU20bx25_nonTrig_V1_cff']
 	else:
 		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_cff']
 	for idmod in my_id_modules:
