@@ -151,24 +151,26 @@ def getBaseConfig(
 	)
 
 
+	#  Muons  ##########################################################
 	if channel == 'mm':
-		############################################################################
-		#  Muons
-		############################################################################
 		process.load('Kappa.Skimming.KMuons_run2_cff')
-
-		process.kappaTuple.active += cms.vstring('Muons')
-		process.kappaTuple.Muons.minPt = cms.double(8.0)
-
-		process.goodMuons = cms.EDFilter('CandViewSelector',
+		process.muPreselection1 = cms.EDFilter('CandViewSelector',
 			src = cms.InputTag('muons'),
-			cut = cms.string("pt > 15.0 & abs(eta) < 8.0"),# & isGlobalMuon()"),
+			cut = cms.string("pt > 8.0"),
 		)
-		process.twoGoodMuons = cms.EDFilter('CandViewCountFilter',
-			src = cms.InputTag('goodMuons'),
+		process.muPreselection2 = cms.EDFilter('CandViewCountFilter',
+			src = cms.InputTag('muPreselection1'),
 			minNumber = cms.uint32(2),
 		)
-		process.path *= (process.goodMuons * process.twoGoodMuons * process.makeKappaMuons)
+		process.kappaTuple.Muons.minPt = 8.0
+		process.kappaTuple.active += cms.vstring('Muons')
+
+		process.path *= (process.muPreselection1 * process.muPreselection2 * process.makeKappaMuons)
+	
+	# Electrons ########################################################
+	# to be done
+	if channel == 'ee':
+		pass
 
 	## ------------------------------------------------------------------------
 	## PUPPI
