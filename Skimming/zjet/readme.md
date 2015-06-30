@@ -11,11 +11,11 @@ which is denoted as `YYYY-MM-DD` in the following list.
 1. A checkout recipe for additional CMSSW packages:
 `checkoutXY.sh`
 
-2. The CMSSW configuration file including the CMSSW version (XYZ) and a nick name:
-`skim_XYZ_[name_]YYYY-MM-DD_cfg.py
+2. The CMSSW configuration file including the CMSSW version (XY) and a nick name:
+`skim_XY_[name_]_cfg.py
 
-3. The grid-control configuration file also mentions the responsible person of that
-skim in the form of initials (NN):
+3. The grid-control configuration file are in the gc-cfg folder. They also mention
+the responsible person of that skim in the form of initials (NN):
 `YYYY-MM-DD_NN_XYZ_name.conf`
 
 The skim is done by setting up CMSSW for skimming as described in the docs.
