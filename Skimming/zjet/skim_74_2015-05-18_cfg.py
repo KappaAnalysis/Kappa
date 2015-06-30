@@ -6,9 +6,14 @@
 import os
 
 import FWCore.ParameterSet.Config as cms
-import Kappa.Skimming.datasetsHelper as datasetsHelper
-import Kappa.Skimming.tools as tools
 import Kappa.Skimming.kappaparser as kappaparser
+
+# concepts for simplifying:
+# first set all paramenters (arguments), reduce them, version as tuple
+# group by object: basic(HLT, npv, rho), muon, jet+genjet, met
+# within group: 1. CMSSW load, 2. CMSSW settings, 3. Kappa settings. (kappa active?) 4. CMSSW path
+# can there be better Kappa defaults?
+# what is used in common?
 
 
 def getBaseConfig(
@@ -17,148 +22,96 @@ def getBaseConfig(
 		maxevents,
 		nickname,
 		outputfilename,
-		kappaverbosity,
-		channel='mm'
+		channel='mm',
 	):
 
-	############################################################################
-	#  Config Info
-	############################################################################
-	# TODO is there a better way to do this?
-	cmssw_version = os.environ["CMSSW_RELEASE_BASE"].split('/')[-1]
-	cmssw_version_number = cmssw_version.split("CMSSW_")[1]
-	## some infos
-	print "\n--------CONFIGURATION----------"
-	print "input:          ", testfile
+	#  Config parameters  ##############################################
+	# get information  ... get gt, etc. here, common?
+	cmssw_version = os.environ["CMSSW_VERSION"].split('_')
+	cmssw_version = tuple([int(i) for i in cmssw_version[1:4]] + cmssw_version[4:])
+	from Configuration.AlCa.autoCond import autoCond
+	autostr = ""
+	if globaltag.lower() == 'auto':
+		globaltag = autoCond['startup']
+		autostr = " (from autoCond)"
+	if '::' not in globaltag:
+		globaltag += '::All'
+	data = ('DoubleMu' in testfile[0]) # TODO: improve this!
+	miniaod = False
+
+	## print information
+	print "\n------- CONFIGURATION 1 ---------"
+	print "input:          ", testfile[0], "... (%d files)" % len(testfile) if len(testfile) > 1 else ""
+	print "file type:      ", "miniAOD" if miniaod else "AOD"
+	print "output:         ", outputfilename
 	print "nickname:       ", nickname
-	print "global tag:     ", globaltag
+	print "global tag:     ", globaltag + autostr
 	print "max events:     ", maxevents
-	print "output filename:", outputfilename
-	print "cmssw version:  ", cmssw_version
+	print "cmssw version:  ", '.'.join([str(i) for i in cmssw_version])
 	print "channel:        ", channel
-	print "-------------------------------\n"
+	print "---------------------------------\n"
 
 
-	############################################################################
-	#  Basic Process Setup
-	############################################################################
+	#  Basic Process Setup  ############################################
 	process = cms.Process("KAPPA")
 	process.path = cms.Path()
-
-	## MessageLogger
+	process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(maxevents))
+	process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
+	process.source = cms.Source("PoolSource",
+		fileNames = cms.untracked.vstring(testfile)
+	)
+	# message logger
 	process.load("FWCore.MessageLogger.MessageLogger_cfi")
+	process.MessageLogger.cerr.FwkReport.reportEvery = 50
 	process.MessageLogger.default = cms.untracked.PSet(
 		ERROR = cms.untracked.PSet(limit = cms.untracked.int32(5))
 	)
-	process.MessageLogger.cerr.FwkReport.reportEvery = 50
-
-	# general options
-	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
-	process.source = cms.Source("PoolSource",
-		fileNames = cms.untracked.vstring()
-	)
-	data = datasetsHelper.isData(nickname)
-	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
-	process.source.fileNames	= testfile
-	process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(maxevents))
-	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
 
 	## Geometry and Detector Conditions (needed for a few patTuple production steps)
-	import Kappa.Skimming.tools as tools
-	cmssw_version_number = tools.get_cmssw_version_number()
-	if True or (cmssw_version_number.startswith("7_4_0") and cmssw_version_number.split("_")[3].startswith("pre") and (cmssw_version_number.split("_")[3][3:] >= 8)):
-		# cmssw 7_4_0_pre8 or higher. see https://twiki.cern.ch/twiki/bin/view/Sandbox/MyRootMakerFrom72XTo74X#DDVectorGetter_vectors_are_empty
-		print "Use condDBv2 and GeometryRecoDB"
+	if cmssw_version > (7, 4, 0, 'pre8'):
+		# https://twiki.cern.ch/twiki/bin/view/Sandbox/MyRootMakerFrom72XTo74X#DDVectorGetter_vectors_are_empty
+		print "Use condDBv2 and GeometryRecoDB:"
 		process.load("Configuration.Geometry.GeometryRecoDB_cff")
 		process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 	else:
 		process.load("Configuration.Geometry.GeometryIdeal_cff")
 		process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-	from Configuration.AlCa.autoCond import autoCond
 	process.load("Configuration.StandardSequences.MagneticField_cff")
-
-	if globaltag.lower() == 'auto' :
-		process.GlobalTag.globaltag = cms.string(autoCond['startup'])
-		print "GT from autoCond:", process.GlobalTag.globaltag
-	else:
-		process.GlobalTag.globaltag = globaltag
+	process.GlobalTag.globaltag = cms.string(globaltag)
 
 
-	############################################################################
-	#  KAPPA
-	############################################################################
+	#  Kappa  ##########################################################
 	process.load('Kappa.Producers.KTuple_cff')
 	process.kappaTuple = cms.EDAnalyzer('KTuple',
 		process.kappaTupleDefaultsBlock,
-		outputFile = cms.string("kappaTuple.root"),
+		outputFile = cms.string(outputfilename),
 	)
-	process.kappaTuple.active = cms.vstring()
-	process.kappaTuple.outputFile = outputfilename
-	process.kappaTuple.verbose	= cms.int32(kappaverbosity)
-	process.kappaTuple.profile	= cms.bool(False)
+	process.kappaTuple.verbose = 0
 	process.kappaOut = cms.Sequence(process.kappaTuple)
-
-	## ------------------------------------------------------------------------
-	# Configure Metadata describing the file
-	process.kappaTuple.active = cms.vstring('TreeInfo')
-	process.kappaTuple.TreeInfo.parameters = cms.PSet(
-		dataset						= cms.string(datasetsHelper.getDatasetName(nickname)),
-		#generator					= cms.string(datasetsHelper.getGenerator(nickname)),
-		productionProcess			= cms.string(datasetsHelper.getProcess(nickname)),
-		globalTag					= cms.string(globaltag),
-		prodCampaignGlobalTag	= cms.string(datasetsHelper.getProductionCampaignGlobalTag(nickname, centerOfMassEnergy)),
-		runPeriod					= cms.string(datasetsHelper.getRunPeriod(nickname)),
-		jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname)),
-		centerOfMassEnergy		= cms.int32(centerOfMassEnergy),
-		puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy)),
-		isData						= cms.bool(data)
-		)
-
-
-	############################################################################
-	#  Basic Objects
-	############################################################################
-	process.kappaTuple.active += cms.vstring('VertexSummary')
-	process.kappaTuple.VertexSummary.whitelist = cms.vstring('goodOfflinePrimaryVertices')
-	#process.kappaTuple.active += cms.vstring('BeamSpot')
-	#process.kappaTuple.active += cms.vstring('TriggerObjects')
+	process.kappaTuple.active = cms.vstring('VertexSummary', 'BeamSpot', 'TreeInfo')
 	if data:
-		process.kappaTuple.active+= cms.vstring('DataInfo')
+		process.kappaTuple.active += cms.vstring('DataInfo')
 	else:
-		process.kappaTuple.active+= cms.vstring('GenInfo')
-		process.kappaTuple.active+= cms.vstring('GenParticles')
-		#process.kappaTuple.Info.hltSource = ""
+		process.kappaTuple.active += cms.vstring('GenInfo', 'GenParticles')
 
-	if cmssw_version_number.startswith("7_4_2") or cmssw_version_number.startswith("7_4_0"):
-		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
+	if cmssw_version >= (7, 4, 0):
+		process.kappaTuple.Info.overrideHLTCheck = cms.bool(True)
 
 	if channel == 'mm':
 		process.kappaTuple.Info.hltWhitelist = cms.vstring(
-			## HLT selection
-			# can be tested at http://regexpal.com
-			# matches 'HLT_Mu17_Mu8_v7' etc.
-			'^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$',
-			# matches 'HLT_DoubleMu7_v8' etc.
-			'^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$',
-			)
+			# HLT regex selection can be tested at https://regex101.com (with gm options)
+			# single muon triggers, e.g. HLT_Mu50_v1
+			"^HLT_(Iso)?(Tk)?Mu[0-9]+(_eta2p1|_TrkIsoVVL)?_v[0-9]+$",
+			# double muon triggers, e.g. HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1
+			"^HLT_Mu[0-9]+(_TrkIsoVVL)?_(Tk)?Mu[0-9]+(_TrkIsoVVL)?(_DZ)?_v[0-9]+$",
+		)
 
 
-	############################################################################
-	#  PFCandidates
-	############################################################################
-	## ------------------------------------------------------------------------
+	#  PFCandidates  ###################################################
 	## Good offline PV selection: 
 	from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
-
 	process.goodOfflinePrimaryVertices = cms.EDFilter('PrimaryVertexObjectFilter',
-		src = cms.InputTag('offlinePrimaryVertices'),
-		filterParams = pvSelector.clone( minNdof = 4.0, maxZ = 24.0 ),
-	)
-
-	process.goodOfflinePrimaryVertexEvents = cms.EDFilter("KVertexFilter",
-		minNumber = cms.uint32(1),
-		maxNumber = cms.uint32(999999),
-		src = cms.InputTag("goodOfflinePrimaryVertices")
+		filterParams = pvSelector.clone(maxZ = 24.0), # ndof >= 4, rho <= 2
 	)
 
 	## ------------------------------------------------------------------------
@@ -193,7 +146,7 @@ def getBaseConfig(
 	#process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag("ak5PFJets")
 	process.path *= (
 		process.goodOfflinePrimaryVertices
-		* process.goodOfflinePrimaryVertexEvents
+		#* process.goodOfflinePrimaryVertexEvents
 		* process.pfParticleSelectionSequence
 	)
 
@@ -533,12 +486,21 @@ def getBaseConfig(
 	)
 
 
-	############################################################################
-	#  Almost done ...
-	############################################################################
+	#  Kappa  ##########################################################
+	# process.kappaTuple.active = []
 	process.path *= (
 		process.kappaOut
 	)
+	# final information:
+	print "------- CONFIGURATION 2 ---------"
+	print "CMSSW producers:"
+	for p in str(process.path).split('+'):
+		print "  %s" % p
+	print "Kappa producers:", ", ".join(sorted(process.kappaTuple.active))
+	print "---------------------------------"
+	#print process.selectedVerticesForPFMEtCorrType0.dumpPython()
+	#print process.selectedPrimaryVertexHighestPtTrackSumForPFMEtCorrType0.dumpPython()
+	#print process.goodOfflinePrimaryVertices.dumpPython()
 	return process
 
 
@@ -585,11 +547,10 @@ if __name__ == '__main__':
 
 		process = getBaseConfig(
 			globaltag=KappaParser.globalTag,
-			testfile=cms.untracked.vstring(KappaParser.files),
+			testfile=KappaParser.files,
 			maxevents=KappaParser.maxEvents,
 			nickname=KappaParser.nickName,
 			outputfilename="skim74.root",
-			kappaverbosity=KappaParser.kappaVerbosity,
 			channel=KappaParser.channel,
 		)
 	## for grid-control:
@@ -600,5 +561,4 @@ if __name__ == '__main__':
 			maxevents=-1,
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
-			kappaverbosity=0
 		)
