@@ -456,20 +456,17 @@ def getBaseConfig(
 		#* process.makePUJetID
 	)
 
-
-	############################################################################
-	#  MET
-	############################################################################
+	# MET ##############################################################
 
 	#TODO check type 0 corrections
-	process.kappaTuple.active += cms.vstring('MET')					   ## produce/save KappaPFMET
-	process.kappaTuple.MET.whitelist = cms.vstring('pfChMet', '_pfMet_', 'pfMETCHS')
-
 	# MET correction ----------------------------------------------------------		
 	process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
 	process.load("JetMETCorrections.Type1MET.correctedMet_cff")
 	
 	process.pfMETCHS = process.pfMetT0pc.clone()
+
+	process.kappaTuple.active += cms.vstring('MET')					   ## produce/save KappaPFMET
+	process.kappaTuple.MET.whitelist = cms.vstring('pfChMet', '_pfMet_', 'pfMETCHS') # defaults!!
 
 	process.path *= (
 		process.correctionTermsPfMetType0PFCandidate
