@@ -64,10 +64,7 @@ def checkoutPackages(args):
 
 		#Electron cutBased Id package
 		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_74X
-		"git cms-merge-topic 9003",
-		"rm -rf RecoEgamma/ElectronIdentification/data",
-		"git clone https://github.com/cms-data/RecoEgamma-ElectronIdentification.git RecoEgamma/ElectronIdentification/data",
-		"rm -rf RecoEgamma/PhotonIdentification/data",
+		#everything needed is already in the 7_4_6 release
 
 		#Electron MVA Id package
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_74X_Phys14_MVA_train
@@ -75,15 +72,7 @@ def checkoutPackages(args):
 
 		#MVA & No-PU MET Recipe
 		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#Instructions_for_7_4_X
-		"git cms-addpkg RecoMET/METPUSubtraction/",
-		"cd " + cmsswsrc + "RecoMET/METPUSubtraction/",
-		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 72X-13TeV-Phys14_25_V4-26Mar15",
-		"cd " + cmsswsrc,
-
-		#Code fix: change the default input values given to the variables "mvaNameU_" and "mvaNameDPhi_". For some reason, 
-		#in the 74X release these names are not read out from the config file but are instead hardcoded
-		"sed -i 's/U1Correction/RecoilCor/g' RecoMET/METPUSubtraction/src/PFMETAlgorithmMVA.cc",
-		"sed -i 's/PhiCorrection/PhiCor/g' RecoMET/METPUSubtraction/src/PFMETAlgorithmMVA.cc",
+		#everything needed is already in the 7_4_6 release
 
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git -b development",
