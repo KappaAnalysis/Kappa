@@ -150,7 +150,6 @@ def getBaseConfig(
 		* process.pfParticleSelectionSequence
 	)
 
-
 	#  Muons  ##########################################################
 	if channel == 'mm':
 		process.load('Kappa.Skimming.KMuons_run2_cff')
@@ -172,49 +171,44 @@ def getBaseConfig(
 	if channel == 'ee':
 		pass
 
-	## ------------------------------------------------------------------------
-	## PUPPI
-	## creates reweighted PFC collection 'puppi'
-	process.load('CommonTools.PileupAlgos.Puppi_cff')
-#	process.puppi.candName = cms.InputTag('packedPFCandidates')
-#	process.puppi.vertexName = cms.InputTag('offlineSlimmedPrimaryVertices')
-	process.path *= process.puppi
-
-	############################################################################
-	#  Jets
-	############################################################################
-	## ------------------------------------------------------------------------
-	## Create ak5 jets from all pf candidates and from pfNoPileUp candidates
-	##  - note that this requires that goodOfflinePrimaryVertices and PFBRECO
-	##	has been run beforehand. e.g. using the sequence makePFBRECO from
-	##	KPFCandidates_cff.py
+	#  Jets  ###########################################################
+	## PFBRECO?
 	process.load("RecoJets.JetProducers.ak5PFJets_cfi")
+	base_jet = process.ak5PFJets.clone(srcPVs = 'goodOfflinePrimaryVertices')
 
-	process.ak5PFJets.srcPVs = cms.InputTag('goodOfflinePrimaryVertices')
-	base_akjet = process.ak5PFJets.clone()
-	variants = {}
-	kappa_ak_jets = {}
+	## PUPPI
+	# creates reweighted PFCandidates collection 'puppi'
+	process.load('CommonTools.PileupAlgos.Puppi_cff')
+	if miniaod:
+		process.puppi.candName = cms.InputTag('packedPFCandidates')
+		process.puppi.vertexName = cms.InputTag('offlineSlimmedPrimaryVertices')
+
+
+	cmssw_jets = {}  # algo: cmssw module
+	kappa_jets = {}  # algo: kappa jet config
 	# create Jet variants
-	for param in (4,5,8):
-		for variant, input_tag in (("",None),("CHS",'pfNoPileUp'),("Puppi",'puppi')):
-			# CMSSW process object
-			variant_name = "ak%dPFJets%s"%(param, variant)
-			variant_mod = base_akjet.clone()
-			variant_mod.rParam   = param/10.0
-			variant_mod.radiusPU = param/10.0
+	for param in (4, 5, 8):
+		for variant, input_tag in (("", None), ("CHS", 'pfNoPileUp'), ("Puppi", 'puppi')):
+			# CMSSW module
+			variant_name = "ak%dPFJets%s" % (param, variant)
+			variant_mod = base_jet.clone()
+			variant_mod.rParam   = param / 10.0
+			variant_mod.radiusPU = param / 10.0
 			if input_tag:
 				variant_mod.src = cms.InputTag(input_tag)
 			setattr(process, variant_name, variant_mod)
-			variants[variant_name]=variant_mod
-			# KAPPA output object
-			kappa_ak_jets["AK%dPFTaggedJets%s"%(param, variant)] = cms.PSet(
-				Btagger = cms.InputTag("ak%dPF%s"%(param, variant)),
-				PUJetID = cms.InputTag("ak%dPF%sPuJetMva"%(param, variant)),
+			cmssw_jets[variant_name] = variant_mod
+			# Kappa output object
+			kappa_jets["ak%dPFJets%s"%(param, variant)] = cms.PSet(
+				Btagger = cms.InputTag("ak%dPF%s" % (param, variant)),
+				PUJetID = cms.InputTag("ak%dPF%sPuJetMva" % (param, variant)),
 				PUJetID_full = cms.InputTag("full"),
-				QGtagger = cms.InputTag("AK%dPFJets%sQGTagger"%(param, variant)),
+				QGtagger = cms.InputTag("AK%dPFJets%sQGTagger" % (param, variant)),
 				src = cms.InputTag(variant_name)
 			)
-	process.path *= reduce(lambda a,b:a*b, variants.values())
+			# add gen jets?
+
+	process.path *= process.puppi * reduce(lambda a, b: a * b, sorted(cmssw_jets.values()))
 
 	"""
 	## ------------------------------------------------------------------------
@@ -374,12 +368,11 @@ def getBaseConfig(
 		))
 	"""
 
+	# add kt6PFJets for PileupDensity
+	from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
+	process.kt6PFJets = kt4PFJets.clone(rParam=0.6, doRhoFastjet=True, Rho_EtaMax=2.5)
 
-	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
-	process.kappaTuple.Jets = cms.PSet(
-		process.kappaNoCut,
-		process.kappaNoRegEx,
-		taggers = cms.vstring(
+	process.kappaTuple.Jets.taggers = cms.vstring(
 			#'QGlikelihood',
 			#'QGmlp',
 			#'TrackCountingHighEffBJetTags',
@@ -401,35 +394,36 @@ def getBaseConfig(
 			#'puJetIDCutbasedLoose',
 			#'puJetIDCutbasedMedium',
 			#'puJetIDCutbasedTight'
-			),
+			)
         # TODO: remove these in favour for auto-generated
-		AK5PFTaggedJets = cms.PSet(
-			src = cms.InputTag('ak5PFJets'),
-			QGtagger = cms.InputTag('AK5PFJetsQGTagger'),
-			Btagger  = cms.InputTag('ak5PF'),
-			PUJetID  = cms.InputTag('ak5PFPuJetMva'),
-			PUJetID_full = cms.InputTag('full'),
-			),
-		AK5PFTaggedJetsCHS = cms.PSet(
-			src = cms.InputTag('ak5PFJetsCHS'),
-			QGtagger = cms.InputTag('AK5PFJetsCHSQGTagger'),
-			Btagger  = cms.InputTag('ak5PFCHS'),
-			PUJetID  = cms.InputTag('ak5PFCHSPuJetMva'),
-			PUJetID_full = cms.InputTag('full'),
-			),
-        # PUPPI collection in kappa
-		AK5PFTaggedJetsPuppi = cms.PSet(
-			src = cms.InputTag('ak5PFJetsPuppi'),
-			QGtagger = cms.InputTag('AK5PFJetsPuppiQGTagger'),
-			Btagger  = cms.InputTag('ak5PFPuppi'),
-			PUJetID  = cms.InputTag('ak5PFPuppiPuJetMva'),
-			PUJetID_full = cms.InputTag('full'),
-			),
-		)
-	process.kappaTuple.Jets.minPt = cms.double(5.0)
+		#AK5PFTaggedJets = cms.PSet(
+			#src = cms.InputTag('ak5PFJets'),
+			#QGtagger = cms.InputTag('AK5PFJetsQGTagger'),
+			#Btagger  = cms.InputTag('ak5PF'),
+			#PUJetID  = cms.InputTag('ak5PFPuJetMva'),
+			#PUJetID_full = cms.InputTag('full'),
+			#),
+		#AK5PFTaggedJetsCHS = cms.PSet(
+			#src = cms.InputTag('ak5PFJetsCHS'),
+			#QGtagger = cms.InputTag('AK5PFJetsCHSQGTagger'),
+			#Btagger  = cms.InputTag('ak5PFCHS'),
+			#PUJetID  = cms.InputTag('ak5PFCHSPuJetMva'),
+			#PUJetID_full = cms.InputTag('full'),
+			#),
+        ## PUPPI collection in kappa
+		#AK5PFTaggedJetsPuppi = cms.PSet(
+			#src = cms.InputTag('ak5PFJetsPuppi'),
+			#QGtagger = cms.InputTag('AK5PFJetsPuppiQGTagger'),
+			#Btagger  = cms.InputTag('ak5PFPuppi'),
+			#PUJetID  = cms.InputTag('ak5PFPuppiPuJetMva'),
+			#PUJetID_full = cms.InputTag('full'),
+			#),
+
+	process.kappaTuple.Jets.minPt = 5.0
 	# load autogenerated jets
-	for name, pset in kappa_ak_jets.iteritems():
+	for name, pset in kappa_jets.iteritems():
 		setattr(process.kappaTuple.Jets, name, pset)
+	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
 
 	# GenJets
 	if not data:
@@ -441,14 +435,10 @@ def getBaseConfig(
 			process.ak5GenJetsNoNu
 		)
 		process.kappaTuple.active += cms.vstring('LV')
-		process.kappaTuple.LV.rename = cms.vstring('ak => AK')
-		process.kappaTuple.LV.whitelist = cms.vstring('ak5GenJetsNoNu')
+		process.kappaTuple.LV.whitelist = cms.vstring('ak5GenJetsNoNu') #default?
 
-	# add kt6PFJets for PileupDensity
-	from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
-	process.kt6PFJets = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
-	process.kt6PFJets.Rho_EtaMax = cms.double(2.5)
-	process.kappaTuple.PileupDensity.rename = cms.vstring("kt6PFJetsRho => KT6AreaRho", "kt6PFJets => KT6Area")
+
+
 
 	process.path *= (
         # AK jets currently auto-loaded on instantiation
