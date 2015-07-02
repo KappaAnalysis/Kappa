@@ -468,6 +468,12 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
+	Jets = cms.PSet(kappaNoCut,
+		kappaNoRegEx,
+
+		taggers = cms.vstring(),
+	),
+
 	PatJets = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
