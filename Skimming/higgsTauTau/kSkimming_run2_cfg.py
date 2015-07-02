@@ -97,7 +97,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	# Trigger
-	from Kappa.Skimming.hlt import hltBlacklist, hltWhitelist
+	from Kappa.Skimming.hlt_run2 import hltBlacklist, hltWhitelist
 	process.kappaTuple.Info.hltWhitelist = hltWhitelist
 	process.kappaTuple.Info.hltBlacklist = hltBlacklist
 
