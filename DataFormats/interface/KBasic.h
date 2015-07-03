@@ -51,7 +51,7 @@ struct KVertex
 
 	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;  //< covariance matrix
 
-	inline bool fake() const { return (chi2 == 0 && nDOF == 0 && nTracks == 0); };
+	inline bool fake() const { return (chi2 <= 0 && nDOF <= 0 && nTracks == 0); };
 };
 typedef std::vector<KVertex> KVertices;
 
