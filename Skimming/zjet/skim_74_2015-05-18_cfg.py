@@ -41,6 +41,7 @@ def getBaseConfig(
 	print "\n------- CONFIGURATION 1 ---------"
 	print "input:          ", testfile[0], "... (%d files)" % len(testfile) if len(testfile) > 1 else ""
 	print "file type:      ", "miniAOD" if miniaod else "AOD"
+	print "data:           ", data
 	print "output:         ", outputfilename
 	print "nickname:       ", nickname
 	print "global tag:     ", globaltag + autostr
@@ -528,7 +529,7 @@ if __name__ == '__main__':
 	else:
 		process = getBaseConfig(
 			globaltag='@GLOBALTAG@',
-			testfile=cms.untracked.vstring(""),
+			testfile=cms.untracked.vstring('@FILE_NAMES@'.strip('"').split('", "')),
 			maxevents=-1,
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
