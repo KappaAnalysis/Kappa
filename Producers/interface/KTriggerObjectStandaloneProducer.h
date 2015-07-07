@@ -140,10 +140,9 @@ public:
 	{
 		
 		HLTConfigProvider &hltConfig(KInfoProducerBase::hltConfig);
+		if (verbosity > 0)
+			std::cout << "KTriggerObjectStandaloneProducer::fillProduct : " << hltConfig.tableName() << std::endl;
 
-		std::map<size_t, size_t> toFWK2Kappa;
-		
-		out.toIdxFilter.clear();
 		toMetadata->nFiltersPerHLT.clear();
 
 		// run over all triggers
@@ -158,7 +157,7 @@ public:
 			// get HLT index
 			size_t hltIdx = KInfoProducerBase::hltKappa2FWK[i];
 			if (verbosity > 0)
-				std::cout << "KTriggerObjectProducer::fillProduct : " << hltConfig.triggerName(hltIdx) << ": ";
+				std::cout << "KTriggerObjectStandaloneProducer::fillProduct : " << hltConfig.triggerName(hltIdx) << ": ";
 			
 			const std::vector<std::string>& saveTagsModules = KInfoProducerBase::hltConfig.saveTagsModules(hltIdx);
 			
@@ -168,7 +167,11 @@ public:
 			{
 				toMetadata->toFilter.resize(toMetadata->getMaxFilterIndex(i) + 1);
 			}
-			out.toIdxFilter.resize(toMetadata->getMaxFilterIndex(i) + 1);
+
+			// fillMetadata runs in a loop: resize the vector only at the first iteration
+			if (iLoop == 0)
+				out.toIdxFilter.resize(toMetadata->getMaxFilterIndex(i) + 1);
+
 			// run over all filters for this trigger
 			for (size_t m = 0; m < saveTagsModules.size(); ++m)
 			{
@@ -207,6 +210,23 @@ public:
 							}
 						}
 						
+						// store reference indices to trigger objects for every event
+						if (toFWK2Kappa.count(currentIndex) == 0) {
+							std::vector<int> toFWK2KappaSize;
+							toFWK2KappaSize.push_back(filterIndex);
+							toFWK2Kappa.insert(std::make_pair(currentIndex, toFWK2KappaSize));
+						}
+						else {
+							toFWK2Kappa[currentIndex].push_back(filterIndex);
+						}
+
+						out.toIdxFilter[currentIndex] = toFWK2Kappa[currentIndex];
+						KLV triggerObject;
+						copyP4(obj.p4(), triggerObject.p4);
+						out.trgObjects.push_back(triggerObject);
+
+						filterIndex++;
+
 						if (verbosity > 2)
 							std::cout << std::endl;
 					}
@@ -222,29 +242,29 @@ public:
 protected:
 	KTriggerObjectMetadata *toMetadata;
 	KTriggerObjects *trgObjects;
+	std::map<size_t, std::vector<int>> toFWK2Kappa;
+	int filterIndex;
+	int iLoop;
 
 	virtual void fillProduct(const InputType &in, KTriggerObjects &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset) override
 	{
 		if(!signifTriggerBitFired_)
 			return;
+
+		filterIndex = 0;
+		iLoop = 0;
+		toFWK2Kappa.clear();
+		out.trgObjects.clear();
+		out.toIdxFilter.clear();
+
 		for(auto obj : in)
 		{
 			obj.unpackPathNames(names_);
-
 			fillMetadata(obj, out, name);
 
 			auto pathNamesAll = obj.pathNames(false);
-
-			std::vector<int> filterIndices = getFilterIndices(obj.filterLabels());
-
-			if(filterIndices.size() > 0)
-			{
-				KLV triggerObject;
-				copyP4(obj.p4(), triggerObject.p4);
-				out.trgObjects.push_back(triggerObject);
-				out.toIdxFilter.push_back(filterIndices);
-
-			}
+	
+			iLoop++;
 		}
 	}
 
