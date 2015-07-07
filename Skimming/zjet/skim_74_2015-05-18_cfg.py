@@ -91,6 +91,10 @@ def getBaseConfig(
 		process.kappaTuple.active += cms.vstring('DataInfo')
 	else:
 		process.kappaTuple.active += cms.vstring('GenInfo', 'GenParticles')
+		process.kappaTuple.Info.hltSource = ""
+		process.kappaTuple.Info.l1Source = ""
+		process.kappaTuple.Info.hlTrigger = ""
+		process.kappaTuple.Info.noiseHCAL = ""
 
 	if cmssw_version >= (7, 4, 0):
 		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
@@ -503,6 +507,11 @@ if __name__ == '__main__':
 				'files': 'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/StartupFlat10to50bx50Raw_MCRUN2_74_V8-v1/10000/04CA79E8-8201-E511-9D9C-0025905A60AA.root',
 				'globalTag': 'MCRUN2_74_V8',
 				'nickName': 'DYJetsToLL_M_50_madgraph_13TeV',
+			},
+			'742data15': {
+				'files': 'root://xrootd-cms.infn.it//store/data/Run2015A/DoubleMuon/AOD/PromptReco-v1/000/248/038/00000/E8F5583C-6914-E511-A613-02163E0140E8.root',
+				'globalTag': 'GR_R_74_V12',
+				'nickName': 'DoubleMu_Run2012A_22Jan2013_8TeV',
 			},
 		}
 		KappaParser.parseArgumentsWithTestDict(testdict)
