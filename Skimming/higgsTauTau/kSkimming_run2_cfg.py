@@ -56,8 +56,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
 	if miniaod:
-		process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
-		process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')  # save VertexSummary,
+		process.load("Kappa.Skimming.KVertices_cff")
+		process.goodOfflinePrimaryVertices.src = cms.InputTag('offlineSlimmedPrimaryVertices')
+		process.p *= ( process.makeVertexes )
+		process.kappaTuple.VertexSummary.whitelist = cms.vstring('goodOfflinePrimaryVertices')  # save VertexSummary,
+
 		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
