@@ -2,8 +2,10 @@ import FWCore.ParameterSet.Config as cms
 hltWhitelist = cms.vstring( ## HLT selection
 	# https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorking2015#Trigger_Information
 	# can be tested at https://regex101.com
+	# m
+	"^HLT_(Iso)?Mu[0-9]+(_eta2p1)?_v[0-9]+$",
 	# em
-	"^HLT_Mu[0-9]+(_TrkIsoVVL)_(Ele)[0-9]+_Gsf_CaloId_TrackId_Iso_MediumWP_v[0-9]+$",
+	"^HLT_Mu[0-9]+(_TrkIsoVVL)_(Ele)[0-9]+(_Gsf)?_CaloId(L)?_TrackId(L)?_Iso(VL)?(_MediumWP)?_v[0-9]+$",
 	# et
 	"^HLT_Ele[0-9]+_eta2p1_WP[0-9]+_Gsf(_LooseIsoPFTau[0-9]+)?_v[0-9]+$",
 	# mt
