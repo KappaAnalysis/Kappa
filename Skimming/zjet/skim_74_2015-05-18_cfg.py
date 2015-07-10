@@ -8,6 +8,15 @@ import os
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.kappaparser as kappaparser
 
+try:
+	from hashlib import sha1
+except ImportError:
+	class sha1(object):
+		def __init__(self, *args, **kwargs):
+			pass
+		def hexdigest(self, *args, **kwargs):
+			return "<missing :py:mod:`hashlib.sha1`>"
+
 # concepts for simplifying:
 # first set all paramenters (arguments), reduce them, version as tuple
 # group by object: basic(HLT, npv, rho), muon, jet+genjet, met
@@ -23,6 +32,8 @@ def getBaseConfig(
 		nickname,
 		outputfilename,
 		channel='mm',
+		min_mu_count = 2,
+		min_mu_pt = 8.0,
 	):
 
 	#  Config parameters  ##############################################
@@ -48,7 +59,15 @@ def getBaseConfig(
 	print "max events:     ", maxevents
 	print "cmssw version:  ", '.'.join([str(i) for i in cmssw_version])
 	print "channel:        ", channel
-	print "---------------------------------\n"
+	print "data:           ", data
+	print "--------- Selection ----------"
+	print "Min Muon Count: ", min_mu_count
+	print "Min Muon pT:    ", min_mu_pt
+	# TODO: automatize this somehow?
+	print "--------- Checksums ----------"
+	print "Selection SHA1: ", sha1("min_mu_count=%s, min_mu_pt=%s"%(min_mu_count, min_mu_pt)).hexdigest()
+	print "---------------------------------"
+	print
 
 
 	#  Basic Process Setup  ############################################
@@ -158,11 +177,11 @@ def getBaseConfig(
 		process.load('Kappa.Skimming.KMuons_run2_cff')
 		process.muPreselection1 = cms.EDFilter('CandViewSelector',
 			src = cms.InputTag('muons'),
-			cut = cms.string("pt > 8.0"),
+			cut = cms.string("pt > %.2f"%min_mu_pt),
 		)
 		process.muPreselection2 = cms.EDFilter('CandViewCountFilter',
 			src = cms.InputTag('muPreselection1'),
-			minNumber = cms.uint32(2),
+			minNumber = cms.uint32(min_mu_count),
 		)
 		process.kappaTuple.Muons.minPt = 8.0
 		process.kappaTuple.active += cms.vstring('Muons')
@@ -198,6 +217,7 @@ def getBaseConfig(
 			variant_mod.rParam   = param / 10.0
 			variant_mod.radiusPU = param / 10.0
 			variant_mod.src = cms.InputTag(input_tag)
+			variant_mod.doAreaFastjet = True
 			setattr(process, variant_name, variant_mod)
 			cmssw_jets[variant_name] = variant_mod
 			# Kappa output object
@@ -533,4 +553,6 @@ if __name__ == '__main__':
 			maxevents=-1,
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
+			min_mu_count = int('@MIN_MU_COUNT@') if not '@' in '@MIN_MU_COUNT@' else 2,
+			min_mu_pt = float('@MIN_MU_PT@') if not '@' in '@MIN_MU_PT@' else 8.0,
 		)
