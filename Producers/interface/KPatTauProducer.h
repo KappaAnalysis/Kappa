@@ -21,15 +21,10 @@ protected:
 		if(in.isPFTau())
 			out.leptonInfo |= KLeptonPFMask;
 
-		if (in.leadPFChargedHadrCand().isNonnull())
+		pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(in.leadChargedHadrCand().get());
+		if (packedLeadTauCand->bestTrack() != nullptr)
 		{
-			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
-				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track);
-			else if (in.leadPFChargedHadrCand()->gsfTrackRef().isNonnull())
-			{
-			KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track);
-			out.leptonInfo |= KLeptonAlternativeTrackMask;
-			}
+			KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track);
 		}
 		else // at least fill reference point
 		{
