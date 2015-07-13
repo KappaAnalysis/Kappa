@@ -30,7 +30,8 @@ public:
 	std::vector<std::string> bDiscriminators = { "jetBProbabilityBJetTags", "jetProbabilityBJetTags", 
 	                                             "trackCountingHighPurBJetTags", "trackCountingHighEffBJetTags", 
 	                                             "simpleSecondaryVertexHighEffBJetTags", "simpleSecondaryVertexHighPurBJetTags", 
-	                                             "combinedSecondaryVertexBJetTags", "combinedInclusiveSecondaryVertexBJetTags", "combinedInclusiveSecondaryVertexV2BJetTags" };
+	                                             "combinedSecondaryVertexBJetTags", "combinedInclusiveSecondaryVertexBJetTags", 
+						     "combinedInclusiveSecondaryVertexV2BJetTags", "pfCombinedInclusiveSecondaryVertexV2BJetTags" };
 	// discriminators are upper case coming from standalone producers. To be compatible with miniAOD, use also upper case here.
 	inline std::string firstLetterUppercase(const std::string input)
 	{
