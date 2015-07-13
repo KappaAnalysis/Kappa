@@ -59,7 +59,9 @@ class KappaParserZJet(KappaParser):
 
 		if self.test != None:
 			if self.test not in testDict:
-				sys.exit("FATAL ERROR: unknown test case '{0}'".format(self.test))
+				print("FATAL ERROR: Unknown test case '{0}'".format(self.test))
+				print("Expected test case out of '{0}'".format("', '".join(testDict.keys())))
+				sys.exit(2)
 			print "Using values from testcase {0} as default parameters".format(self.test)
 			for key, value in testDict[self.test].iteritems():
 				if hasattr(self, key) and getattr(self, key) in [None, '', []]:
