@@ -12,7 +12,7 @@ which is denoted as `YYYY-MM-DD` in the following list.
 `checkoutXY.sh`
 
 2. The CMSSW configuration file including the CMSSW version (XY) and a nick name:
-`skim_XY_[name_]_cfg.py
+`skim_XY_[name_]cfg.py
 
 3. The grid-control configuration file are in the gc-cfg folder. They also mention
 the responsible person of that skim in the form of initials (NN):

@@ -43,8 +43,8 @@ import shutil
 groupConfigsToBeChecked = [
     "Skimming/higgsTauTau/kSkimming_cfg.py",
     "Skimming/higgsTauTau/kSkimming_run2_cfg.py",
-    "Skimming/zjet/skim_53_2015-05-13_cfg.py",
-    "Skimming/zjet/skim_74_2015-05-18_cfg.py",
+    "Skimming/zjet/skim_53_cfg.py",
+    "Skimming/zjet/skim_74_cfg.py",
 ]
 compareFilesPaths = [
     '/storage/6/berger/kappatest/output/',
