@@ -7,6 +7,7 @@ import os
 
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.kappaparser as kappaparser
+from Kappa.Skimming.gc_tools import gc_var_or_callable_parameter
 
 try:
 	from hashlib import sha1
@@ -60,12 +61,12 @@ def getBaseConfig(
 	print "cmssw version:  ", '.'.join([str(i) for i in cmssw_version])
 	print "channel:        ", channel
 	print "data:           ", data
-	print "--------- Selection ----------"
+	print "--------- Parameters ----------"
 	print "Min Muon Count: ", min_mu_count
 	print "Min Muon pT:    ", min_mu_pt
 	# TODO: automatize this somehow?
 	print "--------- Checksums ----------"
-	print "Selection SHA1: ", sha1("min_mu_count=%s, min_mu_pt=%s"%(min_mu_count, min_mu_pt)).hexdigest()
+	print "Parameter SHA1: ", sha1("min_mu_count=%s, min_mu_pt=%s"%(min_mu_count, min_mu_pt)).hexdigest()
 	print "---------------------------------"
 	print
 
@@ -553,6 +554,7 @@ if __name__ == '__main__':
 			maxevents=-1,
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
-			min_mu_count = int('@MIN_MU_COUNT@') if not '@' in '@MIN_MU_COUNT@' else 2,
-			min_mu_pt = float('@MIN_MU_PT@') if not '@' in '@MIN_MU_PT@' else 8.0,
+			channel = gc_var_or_callable_parameter(gc_var_name='@CHANNEL@',callable=getBaseConfig),
+			min_mu_count = gc_var_or_callable_parameter(gc_var_name='@MIN_MU_COUNT@',callable=getBaseConfig),
+			min_mu_pt = gc_var_or_callable_parameter(gc_var_name='@MIN_MU_PT@',callable=getBaseConfig),
 		)
