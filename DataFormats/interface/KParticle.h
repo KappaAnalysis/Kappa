@@ -96,14 +96,14 @@ struct KGenParticle : public KParticle
 	std::vector<unsigned int> daughterIndices;
 
 	/// return the number of daughters
-	int nDaughters() const
+	unsigned long nDaughters() const
 	{
 		return daughterIndices.size();
 	}
 
 	/// return index of daughter i
 	/** returns -1 in case i >= numberOfDaughters */
-	unsigned int daughterIndex(unsigned int i) const
+	int daughterIndex(unsigned int i) const
 	{
 		if (i < daughterIndices.size())
 			return daughterIndices.at(i);
