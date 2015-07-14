@@ -61,27 +61,28 @@ struct KTrack : public KLV
 	};
 
 	/// distances to primary vertex, beamspot and interaction point
-	double getDxy(const KVertex * pv) const
+	/// all these function mix float and double precision values
+	float getDxy(const KVertex * pv) const
 	{
 		if (!pv)
 			return -1.;
 		return (
 			- (ref.x() - pv->position.x()) * p4.y()
 			+ (ref.y() - pv->position.y()) * p4.x()
-		) / sqrt(p4.Perp2());
+		) / sqrtf(p4.Perp2());
 	}
 
-	double getDxy(const KBeamSpot *bs) const
+	float getDxy(const KBeamSpot *bs) const
 	{
 		if (!bs)
 			return -1.;
 		return (
 			- (ref.x() - bs->position.x()) * p4.y()
 			+ (ref.y() - bs->position.y()) * p4.x()
-		) / sqrt(p4.Perp2());
+		) / sqrtf(p4.Perp2());
 	}
 
-	double getDz(const KVertex *pv) const
+	float getDz(const KVertex *pv) const
 	{
 		if (!pv)
 			return -1.;
@@ -91,7 +92,7 @@ struct KTrack : public KLV
 			) * p4.z() / p4.Perp2();
 	}
 
-	double getDz(const KBeamSpot *bs) const
+	float getDz(const KBeamSpot *bs) const
 	{
 		if (!bs)
 			return -1.;
@@ -107,28 +108,30 @@ struct KTrack : public KLV
 			1 - dxy/error(track)
 			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
 	*/
-	double getIP(const KVertex *pv, unsigned int mode = 0) const
+	float getIP(const KVertex *pv, unsigned int mode = 0) const
 	{
 		if (!pv)
 			return -10000.;
 
+		//double error = static_cast<double>(errDxy);
 		switch (mode)
 		{
 			case 0:
 				return getDxy(pv);
-				break;
 			case 1:
 				return getDxy(pv) / errDxy;
-				break;
 			case 2:
+			{
 				ROOT::Math::SVector<double, 3> orthog;
-				orthog[0] = p4.y();
+				orthog[0] = +p4.y();
 				orthog[1] = -p4.x();
 				orthog[2] = 0;
 
-				double vtxErr2 = ROOT::Math::Similarity(pv->covariance, orthog) / p4.Perp2();
-				return getDxy(pv) / sqrt(errDxy*errDxy + vtxErr2);
-				break;
+				float vtxErr2 = static_cast<float>(ROOT::Math::Similarity(pv->covariance, orthog)) / p4.Perp2();
+				return getDxy(pv) / sqrtf(errDxy * errDxy + vtxErr2);
+			}
+			default:
+				return -10000.;
 		}
 		return -10000.;
 	}
@@ -139,29 +142,31 @@ struct KTrack : public KLV
 			1 - dxy/error(track)
 			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
 	*/
-	double getIP(const KBeamSpot *bs, unsigned int mode = 0) const
+	float getIP(const KBeamSpot *bs, unsigned int mode = 0) const
 	{
 		if (!bs)
 			return -10000.;
 
+		//double error = static_cast<double>(errDxy);
 		switch (mode)
 		{
 			case 0:
 				return getDxy(bs);
-				break;
 			case 1:
 				return getDxy(bs) / errDxy;
-				break;
 			case 2:
+			{
 				ROOT::Math::SVector<double, 7> orthog;
 				orthog[0] = p4.y();
 				orthog[1] = -p4.x();
 				for (int i = 2; i < 7; i++)
 					orthog[i] = 0;
 
-				float vtxErr2 = ROOT::Math::Similarity(bs->covariance, orthog) / p4.Perp2();
-				return getDxy(bs) / sqrt(errDxy*errDxy + vtxErr2);
-				break;
+				float vtxErr2 = static_cast<float>(ROOT::Math::Similarity(bs->covariance, orthog)) / p4.Perp2();
+				return getDxy(bs) / sqrtf(errDxy * errDxy + vtxErr2);
+			}
+			default:
+				return -10000.;
 		}
 		return -10000.;
 	}
