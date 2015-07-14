@@ -8,6 +8,8 @@ Tools for integrating GC with python applications
 
 import difflib
 import inspect
+import linecache
+import sys
 
 
 NO_DEFAULT = object()
@@ -46,43 +48,28 @@ def gc_var_or_default(gc_var_name, default=NO_DEFAULT, gc_var_str="@", var_type=
 	var_type = type(default) if var_type is None else var_type
 	return var_type(gc_var_name)
 
-def gc_var_or_callable_parameter(gc_var_name, callable, gc_var_str="@", var_type=None, var_name=None):
+def gc_var_or_callable_parameter(gc_var_name, callable, gc_var_str="@", var_type=None):
 	"""
 	Similar to :py:func:`~.gc_var_or_default`, extracting the default
 	dynamically from a callable
-
-	This function tries to find the parameter corresponding to the variable with
-	the following steps performed for ``var_name``:
-
-	1. ``var_name`` has been specified and names a parameter to ``callable``
-
-	2. ``gc_var_name`` without ``gc_var_str`` is tried as ``var_name``
-
-	3. match without any ``_``
-
-	4. match as lowercase
-
-	5. match without any ``_`` and as lowercase
-
-	6. best lowercase match of both ``var_name`` and parameters according to
-		:py:func:`difflib.get_close_matches`
 	"""
+	# extract callable signature
 	args, _, _, defaults = inspect.getargspec(callable)
-	if var_name not in args:
-		var_name = gc_var_name.strip(gc_var_str)
-		if var_name not in args:
-			if var_name.replace("_", "") in args:
-				var_name = var_name.replace("_", "")
-			elif var_name.lower() in args:
-				var_name = var_name.lower()
-			elif var_name.lower().replace("_", "") in args:
-				var_name = var_name.lower()
-			else:
-				args = [arg.lower() for arg in args]
-				matches = difflib.get_close_matches(var_name.lower(), args)
-				if not matches:
-					raise ValueError("Failed to guess parameter corresponding to GC variable '%s'"%gc_var_name.strip(gc_var_str))
-				var_name = matches[0]
+	# extract the variable name from the callstack
+	call_frame = sys._getframe(1)
+	var_assigned = False
+	# variable assignment and name might be on different lines, so backtrack a little if needed
+	for backtrack in range(8):
+		call_line = linecache.getline(call_frame.f_code.co_filename, call_frame.f_lineno-backtrack).partition("#")[0].strip()
+		# variable name is always before assignment operator
+		if "=" in call_line:
+			var_assigned = True
+			call_line = call_line.partition("=")[0].strip()
+		if var_assigned and call_line:
+			var_name = call_line
+			break
+	else:
+		raise ValueError("GC Tools failed to find variable name in calling frame")
 	try:
 		return gc_var_or_default(
 			gc_var_name,
