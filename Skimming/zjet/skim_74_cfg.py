@@ -1,4 +1,4 @@
-# Kappa test: CMSSW CMSSW 7_4_6_patch5
+# Kappa test: CMSSW 7.4.6.patch5
 # Kappa test: scram arch slc6_amd64_gcc491
 # Kappa test: checkout script zjet/checkout74.sh
 # Kappa test: output skim74.root
