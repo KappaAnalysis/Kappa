@@ -1,4 +1,4 @@
-# Kappa test: CMSSW 7.4.2
+# Kappa test: CMSSW CMSSW 7_4_6_patch5
 # Kappa test: scram arch slc6_amd64_gcc491
 # Kappa test: checkout script zjet/checkout74.sh
 # Kappa test: output skim74.root
@@ -8,15 +8,6 @@ import os
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.kappaparser as kappaparser
 from Kappa.Skimming.gc_tools import gc_var_or_callable_parameter
-
-try:
-	from hashlib import sha1
-except ImportError:
-	class sha1(object):
-		def __init__(self, *args, **kwargs):
-			pass
-		def hexdigest(self, *args, **kwargs):
-			return "<missing :py:mod:`hashlib.sha1`>"
 
 # concepts for simplifying:
 # first set all paramenters (arguments), reduce them, version as tuple
@@ -64,9 +55,6 @@ def getBaseConfig(
 	print "--------- Parameters ----------"
 	print "Min Muon Count: ", min_mu_count
 	print "Min Muon pT:    ", min_mu_pt
-	# TODO: automatize this somehow?
-	print "--------- Checksums ----------"
-	print "Parameter SHA1: ", sha1("min_mu_count=%s, min_mu_pt=%s"%(min_mu_count, min_mu_pt)).hexdigest()
 	print "---------------------------------"
 	print
 
@@ -270,7 +258,6 @@ def getBaseConfig(
 				cmssw_jets[variant_name] = variant_mod
 				# GenJets are just KLVs
 				process.kappaTuple.LV.whitelist += cms.vstring(variant_name)
-	print sorted(cmssw_jets.keys())
 	# mount generated jets for processing
 	for name, jet_module in cmssw_jets.iteritems():
 		setattr(process, name, jet_module)
@@ -491,7 +478,6 @@ def getBaseConfig(
 if __name__ == '__main__':
 	# run local skim by hand without replacements by grid-control
 	if('@' in '@NICK@'):
-
 		KappaParser = kappaparser.KappaParserZJet()
 		KappaParser.setDefault('test', '742data12')
 		testdict = {
@@ -550,7 +536,7 @@ if __name__ == '__main__':
 			maxevents=-1,
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
-			channel = gc_var_or_callable_parameter(gc_var_name='@CHANNEL@',callable=getBaseConfig),
-			min_mu_count = gc_var_or_callable_parameter(gc_var_name='@MIN_MU_COUNT@',callable=getBaseConfig),
-			min_mu_pt = gc_var_or_callable_parameter(gc_var_name='@MIN_MU_PT@',callable=getBaseConfig),
+			channel = gc_var_or_callable_parameter(gc_var_name='@CHANNEL@', callable=getBaseConfig),
+			min_mu_count = gc_var_or_callable_parameter(gc_var_name='@MIN_MU_COUNT@', callable=getBaseConfig),
+			min_mu_pt = gc_var_or_callable_parameter(gc_var_name='@MIN_MU_PT@', callable=getBaseConfig),
 		)
