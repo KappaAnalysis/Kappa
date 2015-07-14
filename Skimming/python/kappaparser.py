@@ -54,8 +54,12 @@ class KappaParserZJet(KappaParser):
 			files, GT, nick are set according to entries in testdict
 			structure of testdict: testdict = {'XX': {'files': ... } ...}
 		"""
-
-		self.parseArguments()
+		try:
+			self.parseArguments()
+		except AttributeError:
+			if not hasattr(sys, "argv"):
+				raise RuntimeError("Cannot parse arguments from 'sys.argv' (is this a pre-compiled session?)")
+			raise
 
 		if self.test != None:
 			if self.test not in testDict:
