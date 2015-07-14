@@ -476,7 +476,7 @@ class TestCase(dict):
 class Arch(Test):
     """Does the config file specify the scram arch needed for testing (required)"""
     script = "export SCRAM_ARCH={scram arch}\n"\
-             "ls -d /cvmfs/cms.cern.ch/{scram arch}/cms/cmssw/CMSSW_{CMSSW}" # for the return code
+             "ls -d /cvmfs/cms.cern.ch/{scram arch}/cms/cmssw*/CMSSW_{CMSSW}" # for the return code
 
 class Env(Test):
     """Return code of cmsrel and cmsenv"""
