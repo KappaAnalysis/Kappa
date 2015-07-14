@@ -48,9 +48,9 @@ struct KTrack : public KLV
 	unsigned short nPixelLayers, nStripLayers; // for soft/tight muID as trackerLayers
 	unsigned short nInnerHits;
 	/// functions for combinations
-	inline unsigned short nValidHits() const { return nValidPixelHits + nValidStripHits + nValidMuonHits; };
-	inline unsigned short nValidTrackerHits() const { return nValidPixelHits + nValidStripHits; };
-	inline unsigned short nTrackerLayers() const { return nPixelLayers + nStripLayers; };
+	inline unsigned int nValidHits() const { return nValidPixelHits + nValidStripHits + nValidMuonHits; };
+	inline unsigned int nValidTrackerHits() const { return nValidPixelHits + nValidStripHits; };
+	inline unsigned int nTrackerLayers() const { return nPixelLayers + nStripLayers; };
 
 	/// quality bitset
 	unsigned char qualityBits; // for soft muID
