@@ -11,7 +11,7 @@ WARNINGS = -Wextra -Wno-unused-parameter -Wswitch-enum -Wsync-nand -Wunused-loca
 # additional warnings that show up in dictionary code created by ROOT
 #          -Wconversion -Wuseless-cast -Wcast-equal -Wswitch-default -Wmissing-declarations
 LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
-	-lGenVector -lMathCore -lReflex -lReflexDict
+	-lGenVector -lMathCore
 
 all: $(PROGRAM)
 
