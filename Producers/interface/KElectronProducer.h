@@ -164,7 +164,7 @@ public:
 
 		if (doPfIsolation_)
 			doPFIsolation(in, out);
-		if (doPfIsolation_ && doCutbasedIds_)
+		if (doPfIsolation_ && doCutbasedIds_ && !doAuxIds_)
 			doCutbasedIds(in,out);
 		if(doMvaIds_)
 			doMvaIds(in, out);

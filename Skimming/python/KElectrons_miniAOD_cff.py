@@ -30,6 +30,41 @@ def setupElectrons(process):
 	for idmod in my_id_modules:
 		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
+## for electron iso
+from CommonTools.ParticleFlow.Isolation.pfElectronIsolation_cff import *
+elPFIsoValueCharged03PFIdPFIso = elPFIsoValueCharged03PFId.clone()
+elPFIsoValueChargedAll03PFIdPFIso = elPFIsoValueChargedAll03PFId.clone()
+elPFIsoValueGamma03PFIdPFIso = elPFIsoValueGamma03PFId.clone()
+elPFIsoValueNeutral03PFIdPFIso = elPFIsoValueNeutral03PFId.clone()
+elPFIsoValuePU03PFIdPFIso = elPFIsoValuePU03PFId.clone()
+
+elPFIsoValueGamma03PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.08)','EcalBarrel:ConeVeto(0.08)'))
+elPFIsoValueNeutral03PFIdPFIso.deposits[0].vetos = (cms.vstring())
+elPFIsoValuePU03PFIdPFIso.deposits[0].vetos = (cms.vstring())
+elPFIsoValueCharged03PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.015)'))
+elPFIsoValueChargedAll03PFIdPFIso.deposits[0].vetos = (cms.vstring('EcalEndcaps:ConeVeto(0.015)','EcalBarrel:ConeVeto(0.01)'))
+
+electronPFIsolationValuesSequence = cms.Sequence(
+	elPFIsoValueCharged03PFIdPFIso+
+	elPFIsoValueChargedAll03PFIdPFIso+
+	elPFIsoValueGamma03PFIdPFIso+
+	elPFIsoValueNeutral03PFIdPFIso+
+	elPFIsoValuePU03PFIdPFIso
+)
+elPFIsoDepositCharged.src = cms.InputTag("slimmedElectrons")
+elPFIsoDepositChargedAll.src = cms.InputTag("slimmedElectrons")
+elPFIsoDepositNeutral.src = cms.InputTag("slimmedElectrons")
+elPFIsoDepositGamma.src = cms.InputTag("slimmedElectrons")
+elPFIsoDepositPU.src = cms.InputTag("slimmedElectrons")
+elPFIsoDepositGamma.ExtractorPSet.ComponentName = cms.string("CandViewExtractor")
+
+# electron/muon PF iso sequence
+pfElectronIso = cms.Sequence(
+	electronPFIsolationDepositsSequence +
+	electronPFIsolationValuesSequence
+)
+
 makeKappaElectrons = cms.Sequence(
-	egmGsfElectronIDSequence
+	egmGsfElectronIDSequence *
+	pfElectronIso
 	)
