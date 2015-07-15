@@ -274,7 +274,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.pfMetMVAET.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.pfMetMVAMT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.pfMetMVATT.srcPFCandidates = cms.InputTag("packedPFCandidates")
-		process.makeKappaMET = cms.Sequence( process.ak4PFJets * process.calibratedAK4PFJetsForPFMVAMEt * process.mvaMETJets * process.puJetIdForPFMVAMEt * process.mvaMETMuons * process.pfMetMVAEM * process.pfMetMVAET * process.pfMetMVAMT * process.pfMetMVATT )
+		#process.makeKappaMET = cms.Sequence( process.ak4PFJets * process.calibratedAK4PFJetsForPFMVAMEt * process.mvaMETJets * process.puJetIdForPFMVAMEt * process.mvaMETMuons * process.pfMetMVAEM * process.pfMetMVAET * process.pfMetMVAMT * process.pfMetMVATT )
+		process.makeKappaMET = cms.Sequence( process.ak4PFJets * process.calibratedAK4PFJetsForPFMVAMEt * process.mvaMETJets )
 
 		## Standard MET and GenMet from pat::MET
 		process.kappaTuple.active += cms.vstring('PatMET')
