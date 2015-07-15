@@ -326,12 +326,9 @@ if __name__ == "__main__":
 
 		# DYJetsToLL_M_50_madgraph_13TeV
 		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="DYJetsToLL_M_50_madgraph_13TeV", testfile=cms.untracked.vstring("root://xrootd.unl.edu//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/0432E62A-7A6C-E411-87BB-002590DB92A8.root"))
-		
-		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV
-		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("root://xrootd.unl.edu//store/mc/Phys14DR/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_tsg_PHYS14_25_V1-v2/00000/147B369C-9F77-E411-B99D-00266CF9B184.root"))
 
 		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV
-		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="SM_VBFHToTauTau_M_125_powheg_pythia_13TeV", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/VBF_HToTauTau_M-125_13TeV-powheg-pythia6_PU20bx25_tsg_PHYS14_25_V1-v2_0ACE16B2-5677-E411-87FF-7845C4FC3A40.root"))
+		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM", testfile=cms.untracked.vstring("root://xrootd.unl.edu//store/mc/Phys14DR/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_tsg_PHYS14_25_V1-v2/00000/147B369C-9F77-E411-B99D-00266CF9B184.root"))
 
 		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV MiniAOD
 		# Input file for test script - please leave this as default!
