@@ -59,7 +59,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.load("Kappa.Skimming.KVertices_cff")
 		process.goodOfflinePrimaryVertices.src = cms.InputTag('offlineSlimmedPrimaryVertices')
 		process.p *= ( process.makeVertexes )
-		process.kappaTuple.VertexSummary.whitelist = cms.vstring('goodOfflinePrimaryVertices')  # save VertexSummary,
+		if (cmssw_version_number.startswith("7_4")):
+			process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
+			process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
+		else:
+			process.kappaTuple.VertexSummary.whitelist = cms.vstring('goodOfflinePrimaryVertices')  # save VertexSummary,
 
 		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
@@ -120,19 +124,29 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.p *= ( process.makeKappaPFCandidates )
 
 	if(miniaod):
+		process.load("Kappa.Skimming.KPFCandidates_miniAOD_cff")
 		process.kappaTuple.active += cms.vstring('packedPFCandidates') # save PFCandidates. Not sure for what, because might not be usefull for isolation
+		process.p *= ( process.makeKappaPFCandidates )
 
 	## ------------------------------------------------------------------------
 	# Configure Muons
-	process.load("Kappa.Skimming.KMuons_run2_cff")
-	process.kappaTuple.active += cms.vstring('Muons')
+	if not miniaod:
+		process.load("Kappa.Skimming.KMuons_run2_cff")
 	if(miniaod):
+		process.load("Kappa.Skimming.KMuons_miniAOD_cff")
 		process.kappaTuple.Muons.muons.src = cms.InputTag("slimmedMuons")
 		process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
+		process.kappaTuple.Muons.muons.isoValInputTags = cms.VInputTag(
+								cms.InputTag('muPFIsoValueChargedAll03PFIso'),
+								cms.InputTag('muPFIsoValueGamma03PFIso'),
+								cms.InputTag('muPFIsoValueNeutral03PFIso'),
+								cms.InputTag('muPFIsoValuePU03PFIso'))
+
+	process.kappaTuple.active += cms.vstring('Muons')
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
-	if (not miniaod):
-		process.p *= ( process.makeKappaMuons )
+	process.p *= ( process.makeKappaMuons )
+
 	## ------------------------------------------------------------------------
 	# Configure Electrons
 	process.kappaTuple.active += cms.vstring('Electrons')
@@ -142,6 +156,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Electrons.electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
 		process.kappaTuple.Electrons.electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
+		process.kappaTuple.Electrons.electrons.isoValInputTags = cms.VInputTag(
+								cms.InputTag('elPFIsoValueChargedAll03PFIdPFIso'),
+								cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
+								cms.InputTag('elPFIsoValueNeutral03PFIdPFIso'),
+								cms.InputTag('elPFIsoValuePU03PFIdPFIso'))
 		from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 		process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
