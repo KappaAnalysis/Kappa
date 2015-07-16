@@ -24,6 +24,7 @@ def getBaseConfig(
 		nickname,
 		outputfilename,
 		channel='mm',
+		is_data=None,
 		min_mu_count = 2,
 		min_mu_pt = 8.0,
 	):
@@ -37,7 +38,10 @@ def getBaseConfig(
 	if globaltag.lower() == 'auto':
 		globaltag = autoCond['startup']
 		autostr = " (from autoCond)"
-	data = ('DoubleMu' in testfile[0]) # TODO: improve this!
+	if is_data is None:
+		data = ('DoubleMuon' in testfile[0]) or ('SingleMuon' in testfile[0]) # TODO: improve this!
+	else:
+		data = is_data
 	miniaod = False
 
 	## print information
@@ -541,6 +545,7 @@ if __name__ == '__main__':
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
 			channel = gc_var_or_callable_parameter(gc_var_name='@CHANNEL@', callable=getBaseConfig),
+			is_data = gc_var_or_callable_parameter(gc_var_name='@IS_DATA@', callable=getBaseConfig, var_type=bool),
 			min_mu_count = gc_var_or_callable_parameter(gc_var_name='@MIN_MU_COUNT@', callable=getBaseConfig),
 			min_mu_pt = gc_var_or_callable_parameter(gc_var_name='@MIN_MU_PT@', callable=getBaseConfig),
 		)
