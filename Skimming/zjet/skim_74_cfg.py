@@ -450,13 +450,17 @@ def getBaseConfig(
 	process.load("JetMETCorrections.Type1MET.correctedMet_cff")
 	
 	process.pfMETCHS = process.pfMetT0pc.clone()
+	# Puppi
+	from RecoMET.METProducers.PFMET_cfi import pfMet
+	process.pfMetPuppi = pfMet.clone(src=cms.InputTag('puppi'));
 
 	process.kappaTuple.active += cms.vstring('MET')					   ## produce/save KappaPFMET
-	process.kappaTuple.MET.whitelist = cms.vstring('pfChMet', '_pfMet_', 'pfMETCHS') # defaults!!
+	process.kappaTuple.MET.whitelist = cms.vstring('pfChMet', '_pfMet_', 'pfMETCHS', 'pfMetPuppi') # defaults!!
 
 	process.path *= (
 		process.correctionTermsPfMetType0PFCandidate
 		#* process.pfMETcorrType0
+		* process.pfMetPuppi
 		* process.pfMETCHS
 	)
 
