@@ -47,8 +47,8 @@ protected:
 			}
 
 			//fill GenMET
-			const reco::GenMET* recoGenMet = in.at(0).genMET();
-			KBasicMETProducer::fillMET<reco::GenMET>(*recoGenMet, *genMet);
+			//const reco::GenMET* recoGenMet = in.at(0).genMET();
+			//KBasicMETProducer::fillMET<reco::GenMET>(*recoGenMet, *genMet);
 
 		}
 		else if (verbosity > 1)
