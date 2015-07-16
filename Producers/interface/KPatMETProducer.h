@@ -46,9 +46,12 @@ protected:
 				out.hfEMFraction = in.at(0).Type7EtFraction();
 			}
 
-			//fill GenMET
-			//const reco::GenMET* recoGenMet = in.at(0).genMET();
-			//KBasicMETProducer::fillMET<reco::GenMET>(*recoGenMet, *genMet);
+			// fill GenMET
+			if(in.at(0).genMET())
+			{
+				const reco::GenMET* recoGenMet = in.at(0).genMET();
+				KBasicMETProducer::fillMET<reco::GenMET>(*recoGenMet, *genMet);
+			}
 
 		}
 		else if (verbosity > 1)
