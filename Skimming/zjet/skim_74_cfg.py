@@ -9,13 +9,6 @@ import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.kappaparser as kappaparser
 from Kappa.Skimming.gc_tools import gc_var_or_callable_parameter
 
-# concepts for simplifying:
-# first set all paramenters (arguments), reduce them, version as tuple
-# group by object: basic(HLT, npv, rho), muon, jet+genjet, met
-# within group: 1. CMSSW load, 2. CMSSW settings, 3. Kappa settings. (kappa active?) 4. CMSSW path
-# can there be better Kappa defaults?
-# what is used in common?
-
 
 def getBaseConfig(
 		globaltag,
@@ -25,21 +18,18 @@ def getBaseConfig(
 		outputfilename,
 		channel='mm',
 		is_data=None,
-		min_mu_count = 2,
-		min_mu_pt = 8.0,
 	):
 
 	#  Config parameters  ##############################################
-	# get information  ... get gt, etc. here, common?
 	cmssw_version = os.environ["CMSSW_VERSION"].split('_')
 	cmssw_version = tuple([int(i) for i in cmssw_version[1:4]] + cmssw_version[4:])
-	from Configuration.AlCa.autoCond import autoCond
 	autostr = ""
 	if globaltag.lower() == 'auto':
+		from Configuration.AlCa.autoCond import autoCond
 		globaltag = autoCond['startup']
 		autostr = " (from autoCond)"
 	if is_data is None:
-		data = ('DoubleMuon' in testfile[0]) or ('SingleMuon' in testfile[0]) # TODO: improve this!
+		data = ('DoubleMu' in testfile[0]) or ('SingleMu' in testfile[0])
 	else:
 		data = is_data
 	miniaod = False
@@ -56,9 +46,6 @@ def getBaseConfig(
 	print "cmssw version:  ", '.'.join([str(i) for i in cmssw_version])
 	print "channel:        ", channel
 	print "data:           ", data
-	print "--------- Parameters ----------"
-	print "Min Muon Count: ", min_mu_count
-	print "Min Muon pT:    ", min_mu_pt
 	print "---------------------------------"
 	print
 
@@ -66,16 +53,20 @@ def getBaseConfig(
 	#  Basic Process Setup  ############################################
 	process = cms.Process("KAPPA")
 	process.path = cms.Path()
-	process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(maxevents))
-	process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
+	process.maxEvents = cms.untracked.PSet(
+		input=cms.untracked.int32(maxevents)
+	)
+	process.options = cms.untracked.PSet(
+		wantSummary=cms.untracked.bool(True)
+	)
 	process.source = cms.Source("PoolSource",
-		fileNames = cms.untracked.vstring(testfile)
+		fileNames=cms.untracked.vstring(testfile)
 	)
 	# message logger
 	process.load("FWCore.MessageLogger.MessageLogger_cfi")
 	process.MessageLogger.cerr.FwkReport.reportEvery = 50
 	process.MessageLogger.default = cms.untracked.PSet(
-		ERROR = cms.untracked.PSet(limit = cms.untracked.int32(5))
+		ERROR=cms.untracked.PSet(limit=cms.untracked.int32(5))
 	)
 
 	## Geometry and Detector Conditions (needed for a few patTuple production steps)
@@ -90,7 +81,6 @@ def getBaseConfig(
 	process.load("Configuration.StandardSequences.MagneticField_cff")
 	process.GlobalTag.globaltag = cms.string(globaltag)
 
-
 	#  Kappa  ##########################################################
 	process.load('Kappa.Producers.KTuple_cff')
 	process.kappaTuple = cms.EDAnalyzer('KTuple',
@@ -104,10 +94,6 @@ def getBaseConfig(
 		process.kappaTuple.active += cms.vstring('DataInfo')
 	else:
 		process.kappaTuple.active += cms.vstring('GenInfo', 'GenParticles')
-		process.kappaTuple.Info.hltSource = ""
-		process.kappaTuple.Info.l1Source = ""
-		process.kappaTuple.Info.hlTrigger = ""
-		process.kappaTuple.Info.noiseHCAL = ""
 
 	if cmssw_version >= (7, 4, 0):
 		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
@@ -170,11 +156,11 @@ def getBaseConfig(
 		process.load('Kappa.Skimming.KMuons_run2_cff')
 		process.muPreselection1 = cms.EDFilter('CandViewSelector',
 			src = cms.InputTag('muons'),
-			cut = cms.string("pt > %.2f"%min_mu_pt),
+			cut = cms.string("pt >8.0"),
 		)
 		process.muPreselection2 = cms.EDFilter('CandViewCountFilter',
 			src = cms.InputTag('muPreselection1'),
-			minNumber = cms.uint32(min_mu_count),
+			minNumber = cms.uint32(2),
 		)
 		process.kappaTuple.Muons.minPt = 8.0
 		process.kappaTuple.active += cms.vstring('Muons')
@@ -189,29 +175,7 @@ def getBaseConfig(
 	#  Jets  ###########################################################
 	# Kappa jet processing
 	process.kappaTuple.Jets.minPt = 5.0
-	process.kappaTuple.Jets.taggers = cms.vstring(
-		#'QGlikelihood',
-		#'QGmlp',
-		#'TrackCountingHighEffBJetTags',
-		#'TrackCountingHighPurBJetTags',
-		#'JetProbabilityBJetTags',
-		#'JetBProbabilityBJetTags',
-		#'SoftElectronBJetTags',
-		#'SoftMuonBJetTags',
-		#'SoftMuonByIP3dBJetTags',
-		#'SoftMuonByPtBJetTags',
-		#'SimpleSecondaryVertexBJetTags',
-		#'CombinedSecondaryVertexBJetTags',
-		#'CombinedSecondaryVertexMVABJetTags',
-		#'puJetIDFullDiscriminant',
-		#'puJetIDFullLoose',
-		#'puJetIDFullMedium',
-		#'puJetIDFullTight',
-		#'puJetIDCutbasedDiscriminant',
-		#'puJetIDCutbasedLoose',
-		#'puJetIDCutbasedMedium',
-		#'puJetIDCutbasedTight'
-	)
+	process.kappaTuple.Jets.taggers = cms.vstring()
 
 	# containers of objects to process
 	jet_resources = []
@@ -242,22 +206,22 @@ def getBaseConfig(
 	# create Jet variants
 	for param in (4, 5, 8):
 		# PFJets
-		for variant, input_tag in (("", 'particleFlow'), ("CHS", 'pfNoPileUp'), ("Puppi", 'puppi')):
-			variant_name = "ak%dPFJets%s" % (param, variant)
+		for algo, input_tag in (("", 'particleFlow'), ("CHS", 'pfNoPileUp'), ("Puppi", 'puppi')):
+			variant_name = "ak%dPFJets%s" % (param, algo)
 			variant_mod = pfbase_jet.clone(src=cms.InputTag(input_tag), rParam=param/10.0)
 			cmssw_jets[variant_name] = variant_mod
 			# Full Kappa jet definition
-			kappa_jets["ak%dPFJets%s"%(param, variant)] = cms.PSet(
+			kappa_jets["ak%dPFJets%s"%(param, algo)] = cms.PSet(
 				src = cms.InputTag(variant_name),
-				PUJetID = cms.InputTag("ak%dPF%sPuJetMva" % (param, variant)),
+				PUJetID = cms.InputTag("ak%dPF%sPuJetMva" % (param, algo)),
 				PUJetID_full = cms.InputTag("full"),
-				QGtagger = cms.InputTag("AK%dPFJets%sQGTagger" % (param, variant)),
-				Btagger = cms.InputTag("ak%dPF%s" % (param, variant)),
+				QGtagger = cms.InputTag("AK%dPFJets%sQGTagger" % (param, algo)),
+				Btagger = cms.InputTag("ak%dPF%s" % (param, algo)),
 			)
 		# GenJets
 		if not data:
-			for variant in ("NoNu",): # TODO: add "NoMuNoNu", "" ?
-				variant_name = "ak%sGenJets%s" % (param, variant)
+			for collection in ("NoNu",): # TODO: add "NoMuNoNu", "" ?
+				variant_name = "ak%sGenJets%s" % (param, collection)
 				variant_mod = genbase_jet.clone(rParam=param/10.0)
 				cmssw_jets[variant_name] = variant_mod
 				# GenJets are just KLVs
@@ -269,207 +233,44 @@ def getBaseConfig(
 		setattr(process.kappaTuple.Jets, name, pset)
 	process.path *= reduce(lambda a, b: a * b, jet_resources) * reduce(lambda a, b: a * b, sorted(cmssw_jets.values()))
 
-	"""
-	## ------------------------------------------------------------------------
-	## Gluon tagging
-	##  - https://twiki.cern.ch/twiki/bin/viewauth/CMS/GluonTag
-	process.load("QuarkGluonTagger.EightTeV.QGTagger_RecoJets_cff")
+	# Gluon tagging? - https://twiki.cern.ch/twiki/bin/viewauth/CMS/GluonTag
 
-	process.QGTagger.srcJets	 = cms.InputTag('ak5PFJets')
-	process.AK5PFJetsQGTagger	= process.QGTagger.clone()
-	process.AK5PFJetsCHSQGTagger = process.QGTagger.clone(
-		srcJets = cms.InputTag('ak5PFJetsCHS'),
-		useCHS = cms.untracked.bool(True)
-	)
-	## run this to create Quark-Gluon tag
-	makeQGTagging = cms.Sequence(
-		QuarkGluonTagger *
-		AK5PFJetsQGTagger *
-		AK5PFJetsCHSQGTagger
-		)
+	# B-tagging (for ak5 jets)? - https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagging#DifferentJets
 
+	# B-tagging for (ak5 CHS jets)? - https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagging#DifferentJets
 
-	## ------------------------------------------------------------------------
-	## B-tagging (for ak5 jets)
-	##  - https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagging#DifferentJets
-	process.load("RecoJets.JetAssociationProducers.ic5JetTracksAssociatorAtVertex_cfi")
-	process.load("RecoBTag.Configuration.RecoBTag_cff")
-	#from RecoBTag.SoftLepton.softPFElectronTagInfos_cfi import softPFElectronsTagInfos
-	#from RecoBTag.SoftLepton.SoftLeptonByPt_cfi import softPFElectronByPtBJetTags
-	#from RecoBTag.SoftLepton.softMuonTagInfos_cfi import softMuonTagInfos
-	#from RecoBTag.SoftLepton.SoftLeptonByPt_cfi import softPFMuonByPtBJetTags
-	#from RecoBTag.SoftLepton.SoftLeptonByIP3d_cfi import softPFMuonByIP3dBJetTags
-
-	## create a ak5PF jets and tracks association
-	process.ak5PFJetNewTracksAssociatorAtVertex		   = process.ic5JetTracksAssociatorAtVertex.clone()
-	process.ak5PFJetNewTracksAssociatorAtVertex.jets	  = "ak5PFJets"
-	process.ak5PFJetNewTracksAssociatorAtVertex.tracks	= "generalTracks"
-
-	## impact parameter b-tag
-	process.ak5PFImpactParameterTagInfos				= process.impactParameterTagInfos.clone()
-	process.ak5PFImpactParameterTagInfos.jetTracks		= "ak5PFJetNewTracksAssociatorAtVertex"
-	process.ak5PFTrackCountingHighEffBJetTags			= process.trackCountingHighEffBJetTags.clone()
-	process.ak5PFTrackCountingHighEffBJetTags.tagInfos	= cms.VInputTag(cms.InputTag("ak5PFImpactParameterTagInfos"))
-	process.ak5PFTrackCountingHighPurBJetTags			= process.trackCountingHighPurBJetTags.clone()
-	process.ak5PFTrackCountingHighPurBJetTags.tagInfos	= cms.VInputTag(cms.InputTag("ak5PFImpactParameterTagInfos"))
-	process.ak5PFJetProbabilityBJetTags					= process.jetProbabilityBJetTags.clone()
-	process.ak5PFJetProbabilityBJetTags.tagInfos		= cms.VInputTag(cms.InputTag("ak5PFImpactParameterTagInfos"))
-	process.ak5PFJetBProbabilityBJetTags				= process.jetBProbabilityBJetTags.clone()
-	process.ak5PFJetBProbabilityBJetTags.tagInfos		= cms.VInputTag(cms.InputTag("ak5PFImpactParameterTagInfos"))
-
-	## secondary vertex b-tag
-	process.ak5PFSecondaryVertexTagInfos					= process.secondaryVertexTagInfos.clone()
-	process.ak5PFSecondaryVertexTagInfos.trackIPTagInfos	= "ak5PFImpactParameterTagInfos"
-	process.ak5PFSimpleSecondaryVertexBJetTags				= process.simpleSecondaryVertexBJetTags.clone()
-	process.ak5PFSimpleSecondaryVertexBJetTags.tagInfos		= cms.VInputTag(cms.InputTag("ak5PFSecondaryVertexTagInfos"))
-	process.ak5PFCombinedSecondaryVertexBJetTags			= process.combinedSecondaryVertexBJetTags.clone()
-	process.ak5PFCombinedSecondaryVertexBJetTags.tagInfos	= cms.VInputTag(
-		cms.InputTag("ak5PFImpactParameterTagInfos"),
-		cms.InputTag("ak5PFSecondaryVertexTagInfos")
-		)
-	process.ak5PFCombinedSecondaryVertexMVABJetTags	   = process.combinedSecondaryVertexMVABJetTags.clone()
-	process.ak5PFCombinedSecondaryVertexMVABJetTags.tagInfos = cms.VInputTag(
-		cms.InputTag("ak5PFImpactParameterTagInfos"),
-		cms.InputTag("ak5PFSecondaryVertexTagInfos")
-		)
-
-	## ------------------------------------------------------------------------
-	## Definition of sequences
-
-	## run this to create track-jet associations needed for most b-taggers
-	process.ak5PFJetTracksAssociator = cms.Sequence(
-		process.ak5PFJetNewTracksAssociatorAtVertex
-		)
-
-	## run this to create all products needed for impact parameter based
-	## b-taggers
-	process.ak5PFJetBtaggingIP = cms.Sequence(
-		process.ak5PFImpactParameterTagInfos * (
-		process.ak5PFTrackCountingHighEffBJetTags +
-		process.ak5PFTrackCountingHighPurBJetTags +
-		process.ak5PFJetProbabilityBJetTags +
-		process.ak5PFJetBProbabilityBJetTags
-		))
-
-	## run this to create all products needed for secondary vertex based
-	## b-taggers
-	process.ak5PFJetBtaggingSV = cms.Sequence(
-		process.ak5PFImpactParameterTagInfos *
-		process.ak5PFSecondaryVertexTagInfos * (
-		process.ak5PFSimpleSecondaryVertexBJetTags +
-		process.ak5PFCombinedSecondaryVertexBJetTags +
-		process.ak5PFCombinedSecondaryVertexMVABJetTags
-		))
-
-	## ------------------------------------------------------------------------
-	## B-tagging for (ak5 CHS jets)
-	##  - https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookBTagging#DifferentJets
-
-	## create a ak5PF jets and tracks association
-	process.ak5PFCHSNewJetTracksAssociatorAtVertex		= process.ic5JetTracksAssociatorAtVertex.clone()
-	process.ak5PFCHSNewJetTracksAssociatorAtVertex.jets   = "ak5PFJetsCHS"
-	process.ak5PFCHSNewJetTracksAssociatorAtVertex.tracks = "generalTracks"
-
-	## impact parameter b-tag
-	process.ak5PFCHSImpactParameterTagInfos			   = process.impactParameterTagInfos.clone()
-	process.ak5PFCHSImpactParameterTagInfos.jetTracks	 = "ak5PFCHSNewJetTracksAssociatorAtVertex"
-	process.ak5PFCHSTrackCountingHighEffBJetTags		  = process.trackCountingHighEffBJetTags.clone()
-	process.ak5PFCHSTrackCountingHighEffBJetTags.tagInfos = cms.VInputTag(cms.InputTag("ak5PFCHSImpactParameterTagInfos"))
-	process.ak5PFCHSTrackCountingHighPurBJetTags		  = process.trackCountingHighPurBJetTags.clone()
-	process.ak5PFCHSTrackCountingHighPurBJetTags.tagInfos = cms.VInputTag(cms.InputTag("ak5PFCHSImpactParameterTagInfos"))
-	process.ak5PFCHSJetProbabilityBJetTags				= process.jetProbabilityBJetTags.clone()
-	process.ak5PFCHSJetProbabilityBJetTags.tagInfos	   = cms.VInputTag(cms.InputTag("ak5PFCHSImpactParameterTagInfos"))
-	process.ak5PFCHSJetBProbabilityBJetTags			   = process.jetBProbabilityBJetTags.clone()
-	process.ak5PFCHSJetBProbabilityBJetTags.tagInfos	  = cms.VInputTag(cms.InputTag("ak5PFCHSImpactParameterTagInfos"))
-
-	## secondary vertex b-tag
-	process.ak5PFCHSSecondaryVertexTagInfos				  = process.secondaryVertexTagInfos.clone()
-	process.ak5PFCHSSecondaryVertexTagInfos.trackIPTagInfos  = "ak5PFCHSImpactParameterTagInfos"
-	process.ak5PFCHSSimpleSecondaryVertexBJetTags			= process.simpleSecondaryVertexBJetTags.clone()
-	process.ak5PFCHSSimpleSecondaryVertexBJetTags.tagInfos   = cms.VInputTag(cms.InputTag("ak5PFCHSSecondaryVertexTagInfos"))
-	process.ak5PFCHSCombinedSecondaryVertexBJetTags		  = process.combinedSecondaryVertexBJetTags.clone()
-	process.ak5PFCHSCombinedSecondaryVertexBJetTags.tagInfos = cms.VInputTag(
-		cms.InputTag("ak5PFCHSImpactParameterTagInfos"),
-		cms.InputTag("ak5PFCHSSecondaryVertexTagInfos")
-		)
-	process.ak5PFCHSCombinedSecondaryVertexMVABJetTags	   = process.combinedSecondaryVertexMVABJetTags.clone()
-	process.ak5PFCHSCombinedSecondaryVertexMVABJetTags.tagInfos = cms.VInputTag(
-		cms.InputTag("ak5PFCHSImpactParameterTagInfos"),
-		cms.InputTag("ak5PFCHSSecondaryVertexTagInfos")
-		)
-
-	## ------------------------------------------------------------------------
-	## Definition of sequences
-
-	## run this to create track-jet associations needed for most b-taggers
-	process.ak5PFCHSJetTracksAssociator = cms.Sequence(
-		process.ak5PFCHSNewJetTracksAssociatorAtVertex
-		)
-
-	## run this to create all products needed for impact parameter based
-	## b-taggers
-	process.ak5PFCHSJetBtaggingIP = cms.Sequence(
-		process.ak5PFCHSImpactParameterTagInfos * (
-		process.ak5PFCHSTrackCountingHighEffBJetTags +
-		process.ak5PFCHSTrackCountingHighPurBJetTags +
-		process.ak5PFCHSJetProbabilityBJetTags +
-		process.ak5PFCHSJetBProbabilityBJetTags
-		))
-
-	## run this to create all products needed for secondary vertex based
-	## b-taggers
-	process.ak5PFCHSJetBtaggingSV = cms.Sequence(
-		process.ak5PFCHSImpactParameterTagInfos * 
-		process.ak5PFCHSSecondaryVertexTagInfos * (
-		process.ak5PFCHSSimpleSecondaryVertexBJetTags +
-		process.ak5PFCHSCombinedSecondaryVertexBJetTags +
-		process.ak5PFCHSCombinedSecondaryVertexMVABJetTags
-		))
-	"""
-
-	# add kt6PFJets for PileupDensity
+	# PileupDensity ########################
 	from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
-	process.kt6PFJets = kt4PFJets.clone(rParam=0.6, doRhoFastjet=True, Rho_EtaMax=2.5)
+	process.pileupDensitykt6PFJets = kt4PFJets.clone(rParam=0.6, doRhoFastjet=True, Rho_EtaMax=2.5)
 
 	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
+	process.kappaTuple.PileupDensity.whitelist += cms.vstring("fixedGridRhoFastjetAll", "pileupDensitykt6PFJets")
+	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
 
 	process.path *= (
-		process.kt6PFJets
-
-		#* process.ak5PFJetTracksAssociator
-		#* process.ak5PFJetBtaggingIP
-		#* process.ak5PFJetBtaggingSV
-		#* process.ak5PFCHSJetTracksAssociator
-		#* process.ak5PFCHSJetBtaggingIP
-		#* process.ak5PFCHSJetBtaggingSV
-
-		#* process.makePUJetID
+		process.pileupDensitykt6PFJets
 	)
 
-	# MET ##############################################################
-
+	# MET correction ----------------------------------------------------------
 	#TODO check type 0 corrections
-	# MET correction ----------------------------------------------------------		
 	process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
 	process.load("JetMETCorrections.Type1MET.correctedMet_cff")
 	
 	process.pfMETCHS = process.pfMetT0pc.clone()
 	# Puppi
 	from RecoMET.METProducers.PFMET_cfi import pfMet
-	process.pfMetPuppi = pfMet.clone(src=cms.InputTag('puppi'));
+	process.pfMetPuppi = pfMet.clone(src=cms.InputTag('puppi'))
 
-	process.kappaTuple.active += cms.vstring('MET')					   ## produce/save KappaPFMET
-	process.kappaTuple.MET.whitelist = cms.vstring('pfChMet', '_pfMet_', 'pfMETCHS', 'pfMetPuppi') # defaults!!
+	process.kappaTuple.active += cms.vstring('MET')
+	process.kappaTuple.MET.whitelist = cms.vstring('pfChMet', '_pfMet_', 'pfMETCHS', 'pfMetPuppi')
 
 	process.path *= (
 		process.correctionTermsPfMetType0PFCandidate
-		#* process.pfMETcorrType0
 		* process.pfMetPuppi
 		* process.pfMETCHS
 	)
 
-
-	#  Kappa  ##########################################################
+	#  Kappa  Output ###########################################################
 	process.path *= (
 		process.kappaOut
 	)
@@ -478,7 +279,9 @@ def getBaseConfig(
 	print "CMSSW producers:"
 	for p in str(process.path).split('+'):
 		print "  %s" % p
-	print "Kappa producers:", ", ".join(sorted(process.kappaTuple.active))
+	print "Kappa producers:"
+	for p in sorted(process.kappaTuple.active):
+		print "  %s" % p
 	print "---------------------------------"
 	return process
 
@@ -546,6 +349,4 @@ if __name__ == '__main__':
 			outputfilename='kappatuple.root',
 			channel = gc_var_or_callable_parameter(gc_var_name='@CHANNEL@', callable=getBaseConfig),
 			is_data = gc_var_or_callable_parameter(gc_var_name='@IS_DATA@', callable=getBaseConfig, var_type=bool),
-			min_mu_count = gc_var_or_callable_parameter(gc_var_name='@MIN_MU_COUNT@', callable=getBaseConfig),
-			min_mu_pt = gc_var_or_callable_parameter(gc_var_name='@MIN_MU_PT@', callable=getBaseConfig),
 		)
