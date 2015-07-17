@@ -10,12 +10,13 @@ import difflib
 import inspect
 import linecache
 import sys
+import ast
 
 
 NO_DEFAULT = object()
 
 
-def gc_var_or_default(gc_var_name, default=NO_DEFAULT, gc_var_str="@", var_type=None):
+def gc_var_or_default(gc_var_name, default=NO_DEFAULT, gc_var_str="@", var_type=ast.literal_eval):
 	"""
 	Use an injected GridControl variable or fall back to a default
 
@@ -33,10 +34,9 @@ def gc_var_or_default(gc_var_name, default=NO_DEFAULT, gc_var_str="@", var_type=
 	:param var_type: callable to convert literal to appropriate variable type
 	:type var_type: callable
 
-	:note: If var_type is not given or is ``None``, it is automatically
-		guessed using ``type(default)``. The reverse does not hold true; if
-		``var_type`` is explicitly specified, ``default`` is not checked for
-		type compatibility.
+	:note: If var_type is not ``None``, it is automatically guessed using
+		``type(default)``. The reverse does not hold true; if ``var_type`` is
+		explicitly specified, ``default`` is not checked for type compatibility.
 
 	:note: By convention from GC, gc_var_str should be ``"@"`` or ``"__"``. This
 		is not enforced by the function.
@@ -46,9 +46,11 @@ def gc_var_or_default(gc_var_name, default=NO_DEFAULT, gc_var_str="@", var_type=
 			raise TypeError("'%s' must be a GC variable/parameter (no default given as fallback)" % gc_var_name.strip(gc_var_str))
 		return default
 	var_type = type(default) if var_type is None else var_type
+	if var_type is bool:
+		return gc_var_name.lower() in ("true", "yes", "y", "1")
 	return var_type(gc_var_name)
 
-def gc_var_or_callable_parameter(gc_var_name, callable, gc_var_str="@", var_type=None):
+def gc_var_or_callable_parameter(gc_var_name, callable, gc_var_str="@", var_type=ast.literal_eval):
 	"""
 	Similar to :py:func:`~.gc_var_or_default`, extracting the default
 	dynamically from a callable

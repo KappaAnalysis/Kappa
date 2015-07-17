@@ -45,7 +45,6 @@ def getBaseConfig(
 	print "max events:     ", maxevents
 	print "cmssw version:  ", '.'.join([str(i) for i in cmssw_version])
 	print "channel:        ", channel
-	print "data:           ", data
 	print "---------------------------------"
 	print
 
@@ -318,7 +317,6 @@ if __name__ == '__main__':
 				'nickName': 'DoubleMu_Run2012A_22Jan2013_8TeV',
 			},
 			'742mc15': {
-				#'files': 'file:/storage/8/dhaitz/testfiles/DoubleMuParked__CMSSW_7_4_2-GR_R_74_V12_19May_RelVal_dm2012D-v1__RECO.root',
 				'files': 'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/StartupFlat10to50bx50Raw_MCRUN2_74_V8-v1/10000/04CA79E8-8201-E511-9D9C-0025905A60AA.root',
 				'globalTag': 'MCRUN2_74_V8',
 				'nickName': 'DYJetsToLL_M_50_madgraph_13TeV',
@@ -348,5 +346,5 @@ if __name__ == '__main__':
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
 			channel = gc_var_or_callable_parameter(gc_var_name='@CHANNEL@', callable=getBaseConfig),
-			is_data = gc_var_or_callable_parameter(gc_var_name='@IS_DATA@', callable=getBaseConfig, var_type=bool),
+			is_data = gc_var_or_callable_parameter(gc_var_name='@IS_DATA@', callable=getBaseConfig),
 		)
