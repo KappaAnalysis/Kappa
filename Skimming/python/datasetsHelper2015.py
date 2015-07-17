@@ -16,8 +16,8 @@ def getTreeInfo(nickname, globaltag, kappaTag):
 
 	centerOfMassEnergy = int(sample_details["energy"])
 	data = sample_details["data"]
-	isEmbedded =  sample_details["embedded"]
-	miniaod = True if (sample_details["format"] == "MINIAODSIM" or sample_details["format"] == "MINIAOD") else False
+	isEmbedded = sample_details["embedded"]
+	miniaod = (sample_details["format"] == "MINIAODSIM" or sample_details["format"] == "MINIAOD")
 
 	return data, isEmbedded, miniaod, cms.PSet(
 		dataset               = cms.string(str(sample)),
@@ -30,4 +30,4 @@ def getTreeInfo(nickname, globaltag, kappaTag):
 		isEmbedded            = cms.bool(isEmbedded),
 		centerOfMassEnergy    = cms.int32(centerOfMassEnergy),
 		isData                = cms.bool(data)
-		)
+	)
