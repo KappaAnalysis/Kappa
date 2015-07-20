@@ -348,7 +348,6 @@ class Test:
         # hack to make checkout script optional if not given
         if self.optional and self.config['checkout script'] and type(self.config['checkout script']) == str and self.config['checkout script'][0] == '#':
             self.result = 99
-            print "optional", self.result
         self.previous = 100
         return self.result
 
