@@ -243,7 +243,6 @@ def getBaseConfig(
 	process.pileupDensitykt6PFJets = kt4PFJets.clone(rParam=0.6, doRhoFastjet=True, Rho_EtaMax=2.5)
 
 	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
-	process.kappaTuple.PileupDensity.whitelist += cms.vstring("fixedGridRhoFastjetAll", "pileupDensitykt6PFJets")
 	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
 
 	process.path *= (
@@ -261,7 +260,6 @@ def getBaseConfig(
 	process.pfMetPuppi = pfMet.clone(src=cms.InputTag('puppi'))
 
 	process.kappaTuple.active += cms.vstring('MET')
-	process.kappaTuple.MET.whitelist = cms.vstring('pfChMet', '_pfMet_', 'pfMETCHS', 'pfMetPuppi')
 
 	process.path *= (
 		process.correctionTermsPfMetType0PFCandidate

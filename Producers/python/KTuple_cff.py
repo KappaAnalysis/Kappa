@@ -221,7 +221,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 	MET = cms.PSet(
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("recoPFMET"),
+		whitelist = cms.vstring("recoPFMET", "pfMetPuppi", "pfMETCHS","_pfMet_"),
 		blacklist = cms.vstring(),
 
 		rename = cms.vstring("pfMet => met"),
@@ -286,7 +286,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 	PileupDensity = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("kt6PFJetsRho_rho", "kt6PFJets_rho"),
+		whitelist = cms.vstring(
+			"kt6PFJetsRho_rho",
+			"kt6PFJets_rho",
+			# CMSSW 7xy precomputed pileup density
+			"fixedGridRhoFastjetAll",
+			"fixedGridRhoFastjetAllCalo",
+			# legacy, recomputed
+			"pileupDensitykt6PFJets",
+		),
 		blacklist = cms.vstring(),
 
 		rename = cms.vstring("kt6PFJetsRho => pileupDensityRho", "kt6PFJets => pileupDensity"),
