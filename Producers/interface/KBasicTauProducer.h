@@ -48,6 +48,12 @@ public:
 		}
 	}
 
+	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
+	{
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder",this->theB);
+		return true;
+	}
+
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		const edm::ParameterSet &psBase = this->psBase;
@@ -114,6 +120,10 @@ public:
 		typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
+		// Get vertices from event
+		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
+		this->cEvent->getByLabel(VertexCollectionSource, VertexHandle);
+
 		// Get tau discriminators from event
 		this->cEvent->getManyByType(currentTauDiscriminators);
 
@@ -149,13 +159,18 @@ public:
 			out.leptonInfo |= KLeptonChargeMask;
 		out.leptonInfo |= KLeptonPFMask;
 
+		//vertex for IP
+		std::vector<reco::Vertex> pv;
+		edm::View<reco::Vertex> vertices = *VertexHandle;
+		pv.push_back(vertices.at(0));
+
 		if (in.leadPFChargedHadrCand().isNonnull())
 		{
 			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
-				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track);
+				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track, pv, this->theB);
 			else if (in.leadPFChargedHadrCand()->gsfTrackRef().isNonnull())
 			{
-				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track);
+				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, pv, this->theB);
 				out.leptonInfo |= KLeptonAlternativeTrackMask;
 			}
 		}
@@ -272,14 +287,17 @@ private:
 	std::vector<edm::Handle<TauDiscriminator> > currentTauDiscriminators; // discriminators found in event
 
 	std::vector<std::string> currentPreselDiscr; // discriminators to use for tau preselection (based on PSet)
-	
+
 	std::vector<std::string> currentBinaryDiscriminators; // binary discriminators to use (based on PSet)
 	std::vector<std::string> currentFloatDiscriminators; // float discriminators to use (based on PSet)
-	
+
 	std::string currentDiscrProcessName; // process name to use for accessing discriminators (based on PSet)
-	
+
 	std::map<std::string, unsigned int> currentBinaryDiscriminatorMap; // binary discriminator-to-bit mapping to use (based on PSet)
 	std::map<std::string, unsigned int> currentFloatDiscriminatorMap; // float discriminator-to-bit mapping to use (based on PSet)
+
+	edm::Handle<edm::View<reco::Vertex> > VertexHandle;
+	edm::ESHandle<TransientTrackBuilder> theB;
 };
 	template<typename T>
 	static int createTauHash(const T tau)

@@ -535,6 +535,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			floatDiscrWhitelist = cms.vstring("hpsPFTau.*raw.*", "hpsPFTau.*Raw.*", "hpsPFTauMVA.*"),
 			floatDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
 			tauDiscrProcessName = cms.string("KAPPA"),
+			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
 		),
 	),
 

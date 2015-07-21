@@ -10,6 +10,8 @@
 
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/TrackReco/interface/Track.h>
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+#include "TrackingTools/IPTools/interface/IPTools.h"
 
 class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KTracks>
 {
@@ -25,7 +27,7 @@ public:
 	}
 
 	// Static method for filling Tracks in other producers
-	static void fillTrack(const SingleInputType &in, SingleOutputType &out)
+	static void fillTrack(const SingleInputType &in, SingleOutputType &out, std::vector<reco::Vertex> vertices = std::vector<reco::Vertex>(), edm::ESHandle<TransientTrackBuilder> builder = edm::ESHandle<TransientTrackBuilder>())
 	{
 		// Momentum:
 		out.p4.SetCoordinates(in.pt(), in.eta(), in.phi(), 0);
@@ -55,6 +57,16 @@ public:
 #else
 		out.nInnerHits = in.trackerExpectedHitsInner().numberOfHits();
 #endif
+
+		// check for builder
+		if(vertices.size() == 1)
+		{
+			reco::TransientTrack transientTrack = builder->build(in);
+			out.IP3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(0)).second.value();
+			out.IP2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(0)).second.value();
+			out.errIP3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(0)).second.error();
+			out.errIP2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(0)).second.error();
+		}
 	}
 };
 

@@ -38,6 +38,8 @@ struct KTrack : public KLV
 	char charge;
 	float chi2, nDOF;
 	float errPt, errEta, errPhi, errDxy, errDz;
+	float IP3D, IP2D;
+	float errIP3D, errIP2D;
 
 	/// number of hits or tracker layers in detector components (used for lepton IDs)
 	/// DataFormats/TrackReco/interface/HitPattern.h (numberOf...)
