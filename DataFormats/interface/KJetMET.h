@@ -108,7 +108,9 @@ struct KMET : public KBasicMET
 	float neutralHadronFraction, chargedHadronFraction;
 	float muonFraction;
 	float hfHadronFraction, hfEMFraction;
+	int leptonSelectionHash;
 };
+typedef std::vector<KMET> KMETs;
 
 struct KHCALNoiseSummary
 {

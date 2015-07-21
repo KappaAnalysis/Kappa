@@ -264,8 +264,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		# Todo for miniAOD: find a selector that works in pat Taus and slimmedElectrons
 		process.pfMetMVAEM.srcLeptons = cms.VInputTag("slimmedElectrons", "mvaMETMuons" )
 		process.pfMetMVAET.srcLeptons = cms.VInputTag("slimmedElectrons", "slimmedTaus")
-		process.pfMetMVAMT.srcLeptons = cms.VInputTag("mvaMETMuons"    , "slimmedTaus")
-		process.pfMetMVATT.srcLeptons = cms.VInputTag("slimmedTaus")
+		process.pfMetMVAMT.srcLeptons = cms.VInputTag("slimmedMuons"    , "slimmedMuons")
+		process.pfMetMVATT.srcLeptons = cms.VInputTag("slimmedTaus"     , "slimmedTaus")
 		process.pfMetMVAEM.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.pfMetMVAET.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.pfMetMVAMT.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
@@ -274,11 +274,25 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.pfMetMVAET.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.pfMetMVAMT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.pfMetMVATT.srcPFCandidates = cms.InputTag("packedPFCandidates")
-		#process.makeKappaMET = cms.Sequence( process.ak4PFJets * process.calibratedAK4PFJetsForPFMVAMEt * process.mvaMETJets * process.puJetIdForPFMVAMEt * process.mvaMETMuons * process.pfMetMVAEM * process.pfMetMVAET * process.pfMetMVAMT * process.pfMetMVATT )
-		process.makeKappaMET = cms.Sequence( process.ak4PFJets * process.calibratedAK4PFJetsForPFMVAMEt * process.mvaMETJets )
+		process.makeKappaMET = cms.Sequence( 
+		                process.ak4PFJets * 
+		                process.calibratedAK4PFJetsForPFMVAMEt * 
+		                process.mvaMETJets * 
+		                process.puJetIdForPFMVAMEt * 
+		                process.mvaMETMuons * 
+		                process.pfMetMVAEM * 
+		                process.pfMetMVAET * 
+		                process.pfMetMVAMT * 
+		                process.pfMetMVATT )
 
 		## Standard MET and GenMet from pat::MET
 		process.kappaTuple.active += cms.vstring('PatMET')
+		process.kappaTuple.PatMET.whitelist = cms.vstring( "slimmedMETs",
+		                                                   "pfMetMVAEM",
+		                                                   "pfMetMVAET",
+		                                                   "pfMetMVAMT",
+		                                                   "pfMetMVATT"
+		                                                    )
 
 
 	process.p *= process.makeKappaMET

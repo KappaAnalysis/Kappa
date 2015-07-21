@@ -132,6 +132,8 @@
 #pragma link C++ typedef KLeptonPairs;
 
 #pragma link C++ struct KMET+;
+#pragma link C++ class std::vector<KMET>+;
+#pragma link C++ typedef KMETs;
 
 #pragma link C++ struct KMuon+;
 #pragma link C++ class std::vector<KMuon>+;

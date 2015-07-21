@@ -68,6 +68,7 @@ namespace
 		KLeptonPair dict_KLeptonPair;
 		KLeptonPairs dict_KLeptonPairs;
 		KMET dict_KMET;
+		KMETs dict_KMETs;
 		KMuon dict_KMuon;
 		KMuons dict_KMuons;
 		KMuonTriggerCandidate dict_KMuonTriggerCandidate;

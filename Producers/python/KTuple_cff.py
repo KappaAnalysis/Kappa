@@ -228,9 +228,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
-	PatMET = cms.PSet(
+	PatMET = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
-
 		whitelist = cms.vstring("slimmedMETs"),
 		blacklist = cms.vstring(),
 
