@@ -10,7 +10,7 @@ import Kappa.Skimming.kappaparser as kappaparser
 from Kappa.Skimming.gc_tools import gc_var_or_callable_parameter
 
 
-def getBaseConfig(
+def baseconfig(
 		globaltag,
 		testfile,
 		maxevents,
@@ -47,7 +47,6 @@ def getBaseConfig(
 	print "channel:        ", channel
 	print "---------------------------------"
 	print
-
 
 	#  Basic Process Setup  ############################################
 	process = cms.Process("KAPPA")
@@ -111,7 +110,7 @@ def getBaseConfig(
 	## Good offline PV selection: 
 	from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
 	process.goodOfflinePrimaryVertices = cms.EDFilter('PrimaryVertexObjectFilter',
-		filterParams = pvSelector.clone(maxZ = 24.0), # ndof >= 4, rho <= 2
+		filterParams = pvSelector.clone(maxZ = 24.0),  # ndof >= 4, rho <= 2
 	)
 
 	## ------------------------------------------------------------------------
@@ -165,7 +164,7 @@ def getBaseConfig(
 		process.kappaTuple.active += cms.vstring('Muons')
 
 		process.path *= (process.muPreselection1 * process.muPreselection2 * process.makeKappaMuons)
-	
+
 	# Electrons ########################################################
 	# to be done
 	if channel == 'ee':
@@ -178,8 +177,8 @@ def getBaseConfig(
 
 	# containers of objects to process
 	jet_resources = []
-	cmssw_jets = {} # algoname: cmssw module
-	kappa_jets = {} # algoname: kappa jet config
+	cmssw_jets = {}  # algoname: cmssw module
+	kappa_jets = {}  # algoname: kappa jet config
 
 	# GenJets
 	if not data:
@@ -253,7 +252,7 @@ def getBaseConfig(
 	#TODO check type 0 corrections
 	process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
 	process.load("JetMETCorrections.Type1MET.correctedMet_cff")
-	
+
 	process.pfMETCHS = process.pfMetT0pc.clone()
 	# Puppi
 	from RecoMET.METProducers.PFMET_cfi import pfMet
@@ -327,7 +326,7 @@ if __name__ == '__main__':
 		}
 		KappaParser.parseArgumentsWithTestDict(testdict)
 
-		process = getBaseConfig(
+		process = baseconfig(
 			globaltag=KappaParser.globalTag,
 			testfile=KappaParser.files,
 			maxevents=KappaParser.maxEvents,
@@ -337,12 +336,12 @@ if __name__ == '__main__':
 		)
 	## for grid-control:
 	else:
-		process = getBaseConfig(
+		process = baseconfig(
 			globaltag='@GLOBALTAG@',
 			testfile=cms.untracked.vstring('@FILE_NAMES@'.strip('"').split('", "')),
 			maxevents=-1,
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
-			channel = gc_var_or_callable_parameter(gc_var_name='@CHANNEL@', callable=getBaseConfig),
-			is_data = gc_var_or_callable_parameter(gc_var_name='@IS_DATA@', callable=getBaseConfig),
+			channel = gc_var_or_callable_parameter(gc_var_name='@CHANNEL@', callable=baseconfig),
+			is_data = gc_var_or_callable_parameter(gc_var_name='@IS_DATA@', callable=baseconfig),
 		)
