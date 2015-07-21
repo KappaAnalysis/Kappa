@@ -10,6 +10,18 @@ import Kappa.Skimming.datasetsHelper as datasetsHelper
 import Kappa.Skimming.tools as tools
 import Kappa.Skimming.kappaparser as kappaparser
 
+from Kappa.Skimming.gc_tools import gc_var_or_callable_parameter
+
+""" channels:
+		mm: add muons, require >=2 muons
+		ee: add electrons, require >=2 electrons
+		em: add muons and electrons, >=1 muon and >=1 electron require (for background studies with the e-mu-method)
+		eemm: add muons and electrons, require >=2 muons and >=2 electrons
+
+	#TODO e/mu filter for eemm and em channel
+
+"""
+
 
 def getBaseConfig(
 		globaltag,
@@ -17,26 +29,37 @@ def getBaseConfig(
 		maxevents,
 		nickname,
 		outputfilename,
-		kappaverbosity,
-		channel='mm'
+		channel='mm',
+		is_data=None,
 	):
 
-	############################################################################
-	#  Config Info
-	############################################################################
-	# TODO is there a better way to do this?
-	cmssw_version = os.environ["CMSSW_RELEASE_BASE"].split('/')[-1]
-	cmssw_version_number = cmssw_version.split("CMSSW_")[1]
-	## some infos
-	print "\n--------CONFIGURATION----------"
-	print "input:          ", testfile
+	#  Config parameters  ##############################################
+	cmssw_version = os.environ["CMSSW_VERSION"].split('_')
+	cmssw_version = tuple([int(i) for i in cmssw_version[1:4]] + cmssw_version[4:])
+	autostr = ""
+	if globaltag.lower() == 'auto':
+		from Configuration.AlCa.autoCond import autoCond
+		globaltag = autoCond['startup']
+		autostr = " (from autoCond)"
+	if is_data is None:
+		data = any([name in testfile[0] for name in 'SingleMu', 'DoubleMu', 'DoubleElectron', 'MuEG'])
+	else:
+		data = is_data
+	miniaod = False
+
+	## print information
+	print "\n------- CONFIGURATION 1 ---------"
+	print "input:          ", testfile[0], "... (%d files)" % len(testfile) if len(testfile) > 1 else ""
+	print "file type:      ", "miniAOD" if miniaod else "AOD"
+	print "data:           ", data
+	print "output:         ", outputfilename
 	print "nickname:       ", nickname
-	print "global tag:     ", globaltag
+	print "global tag:     ", globaltag + autostr
 	print "max events:     ", maxevents
-	print "output filename:", outputfilename
-	print "cmssw version:  ", cmssw_version
+	print "cmssw version:  ", '.'.join([str(i) for i in cmssw_version])
 	print "channel:        ", channel
-	print "-------------------------------\n"
+	print "---------------------------------"
+	print
 
 
 	############################################################################
@@ -61,14 +84,8 @@ def getBaseConfig(
 	## Geometry and Detector Conditions (needed for a few patTuple production steps)
 	import Kappa.Skimming.tools as tools
 	cmssw_version_number = tools.get_cmssw_version_number()
-	if (cmssw_version_number.startswith("7_4_0") and cmssw_version_number.split("_")[3].startswith("pre") and (cmssw_version_number.split("_")[3][3:] >= 8)):
-		# cmssw 7_4_0_pre8 or higher. see https://twiki.cern.ch/twiki/bin/view/Sandbox/MyRootMakerFrom72XTo74X#DDVectorGetter_vectors_are_empty
-		print "Use condDBv2 and GeometryRecoDB"
-		process.load("Configuration.Geometry.GeometryRecoDB_cff")
-		process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
-	else:
-		process.load("Configuration.Geometry.GeometryIdeal_cff")
-		process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+	process.load("Configuration.Geometry.GeometryIdeal_cff")
+	process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 	from Configuration.AlCa.autoCond import autoCond
 	process.GlobalTag.globaltag = cms.string(autoCond['startup'])
 	# print the global tag until it is clear whether this auto global tag is fine
@@ -86,7 +103,7 @@ def getBaseConfig(
 	)
 	process.kappaTuple.active = cms.vstring()
 	process.kappaTuple.outputFile = outputfilename			## name of output file
-	process.kappaTuple.verbose	= cms.int32(kappaverbosity)				## verbosity level
+	process.kappaTuple.verbose	= 0				## verbosity level
 	process.kappaTuple.profile	= cms.bool(False)
 	process.kappaOut = cms.Sequence(process.kappaTuple)
 
@@ -98,24 +115,7 @@ def getBaseConfig(
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag = globaltag
 	data = datasetsHelper.isData(nickname)
-	centerOfMassEnergy = datasetsHelper.getCenterOfMassEnergy(nickname)
 	process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) )
-
-	## ------------------------------------------------------------------------
-	# Configure Metadata describing the file
-	process.kappaTuple.active = cms.vstring('TreeInfo')
-	process.kappaTuple.TreeInfo.parameters = cms.PSet(
-		dataset						= cms.string(datasetsHelper.getDatasetName(nickname)),
-		generator					= cms.string(datasetsHelper.getGenerator(nickname)),
-		productionProcess			= cms.string(datasetsHelper.getProcess(nickname)),
-		globalTag					= cms.string(globaltag),
-		prodCampaignGlobalTag	= cms.string(datasetsHelper.getProductionCampaignGlobalTag(nickname, centerOfMassEnergy)),
-		runPeriod					= cms.string(datasetsHelper.getRunPeriod(nickname)),
-		jetMultiplicity			= cms.int32(datasetsHelper.getJetMultiplicity(nickname)),
-		centerOfMassEnergy		= cms.int32(centerOfMassEnergy),
-		puScenario					= cms.string(datasetsHelper.getPuScenario(nickname, centerOfMassEnergy)),
-		isData						= cms.bool(data)
-		)
 
 
 	############################################################################
@@ -131,28 +131,28 @@ def getBaseConfig(
 		process.kappaTuple.active+= cms.vstring('GenInfo')		## produce Metadata for MC,
 		process.kappaTuple.active+= cms.vstring('GenParticles')
 
-	if channel == 'mm':
-		process.kappaTuple.Info.hltWhitelist = cms.vstring(			## HLT selection
-			# can be tested at http://regexpal.com
-			# matches 'HLT_Mu17_Mu8_v7' etc.
-			'^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$',
-			# matches 'HLT_DoubleMu7_v8' etc.
-			'^HLT_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$',
-			)
+	#Trigger 
+	trigger_dict = {
+		'mtrigger': ['^HLT_(Double)?Mu([0-9]+)_(Double)?Mu([0-9]+)(_v[[:digit:]]+)?$'],
+		'etrigger': ['HLT_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL.*'],
+		'emtrigger': ["HLT_Mu17_Ele8_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL.*", "HLT_Mu8_Ele17_CaloIdT_CaloIsoVL_TrkIdVL_TrkIsoVL.*",]
+	}
+	channel_dict = {
+		'ee': ['etrigger'],
+		'mm': ['mtrigger'],
+		'eemm': ['etrigger', 'mtrigger'],
+		'em': ['emtrigger']
+	}	
+	process.kappaTuple.Info.hltWhitelist = cms.vstring("")
+	for triggers in channel_dict[channel]:
+		for trigger in trigger_dict[triggers]:
+			process.kappaTuple.Info.hltWhitelist += cms.vstring(trigger)
 
 
 	############################################################################
 	#  PFCandidates
 	############################################################################
 	process.load('Kappa.Skimming.KPFCandidates_cff')
-	if cmssw_version_number.startswith("7"):
-		# Modifications for new particleFlow Pointers
-		#process.pfPileUp.PFCandidates = cms.InputTag('particleFlowPtrs')
-		#process.pfPileUpIso.PFCandidates = cms.InputTag('particleFlowPtrs')
-		#process.pfNoPileUp.bottomCollection = cms.InputTag('particleFlowPtrs')
-		#process.pfNoPileUpIso.bottomCollection = cms.InputTag('particleFlowPtrs')
-		process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag('ak5PFJets')
-
 	process.path *= (
 		process.goodOfflinePrimaryVertices
 		* process.pfPileUp
@@ -161,23 +161,14 @@ def getBaseConfig(
 		#* process.makeKappaPFCandidates
 	)
 
-
-	if channel == 'mm':
+	if 'm' in channel:
 		############################################################################
 		#  Muons
 		############################################################################
-		#process.load('Kappa.Skimming.KMuons_cff')
-		process.kappaTuple.active += cms.vstring('Muons')					## produce/save KappaMuons
+
+		process.kappaTuple.active += cms.vstring('Muons')	## produce/save KappaMuons
 		process.kappaTuple.Muons.minPt = cms.double(8.0)
 
-		process.goodMuons = cms.EDFilter('CandViewSelector',
-			src = cms.InputTag('muons'),
-			cut = cms.string("pt > 15.0 & abs(eta) < 8.0"),# & isGlobalMuon()"),
-		)
-		process.twoGoodMuons = cms.EDFilter('CandViewCountFilter',
-			src = cms.InputTag('goodMuons'),
-			minNumber = cms.uint32(2),
-		)
 		## Isodeposits for muons
 		process.load('TrackPropagation.SteppingHelixPropagator.SteppingHelixPropagatorAny_cfi')
 		process.load('TrackPropagation.SteppingHelixPropagator.SteppingHelixPropagatorAlong_cfi')
@@ -198,49 +189,168 @@ def getBaseConfig(
 				DepositLabel = cms.untracked.string('')
 			)
 		)
+		process.path *= (process.pfmuIsoDepositPFCandidates)
+		if 'mm' in channel:
+			process.goodMuons = cms.EDFilter('CandViewSelector',
+				src = cms.InputTag('muons'),
+				cut = cms.string("pt > 15.0"),
+			)
+			process.twoGoodMuons = cms.EDFilter('CandViewCountFilter',
+				src = cms.InputTag('goodMuons'),
+				minNumber = cms.uint32(2),
+			)
+			process.path *= (process.goodMuons * process.twoGoodMuons)
 
-		process.path *= (process.goodMuons * process.twoGoodMuons * process.pfmuIsoDepositPFCandidates)
+
+
+	elif 'e' in channel:
+		############################################################################
+		#  Electrons
+		############################################################################
+
+		#TODO Add Electron
+		process.load('EgammaAnalysis.ElectronTools.electronIdMVAProducer_cfi')
+		process.load('TrackingTools.TransientTrack.TransientTrackBuilder_cfi')
+		process.load('PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi')
+		process.patElectrons.electronIDSources = cms.PSet(
+			## default cut based Id
+			eidRobustLoose      = cms.InputTag("eidRobustLoose"     ),
+			eidRobustTight      = cms.InputTag("eidRobustTight"     ),
+			eidLoose            = cms.InputTag("eidLoose"           ),
+			eidTight            = cms.InputTag("eidTight"           ),
+			eidRobustHighEnergy = cms.InputTag("eidRobustHighEnergy"),
+			## MVA based Id
+			mvaTrigV0           = cms.InputTag("mvaTrigV0"          ),
+			mvaTrigNoIPV0       = cms.InputTag("mvaTrigNoIPV0"      ),
+			mvaNonTrigV0        = cms.InputTag("mvaNonTrigV0"       ),
+		)
+		process.patElectrons.genParticleMatch = ""
+		process.patElectrons.addGenMatch = False
+		process.patElectrons.embedGenMatch = False
+		process.patElectrons.embedHighLevelSelection.pvSrc = "goodOfflinePrimaryVertices"
+		process.electronIdMVA = cms.Sequence(
+			process.mvaTrigV0+
+			process.mvaTrigNoIPV0+
+			process.mvaNonTrigV0
+		)
+		process.makeKappaElectrons = cms.Sequence(
+			process.electronIdMVA *
+			process.patElectrons
+		)
+		process.path *= (process.makeKappaElectrons)
+
+
+		## CALIBRATIONS
+		# momentum corrections
+		process.load('EgammaAnalysis.ElectronTools.electronRegressionEnergyProducer_cfi')
+		process.eleRegressionEnergy.inputElectronsTag = cms.InputTag('patElectrons')
+		process.eleRegressionEnergy.inputCollectionType = cms.uint32(1)
+
+		process.load("Configuration.StandardSequences.Services_cff")
+		process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+				calibratedPatElectrons = cms.PSet(
+					initialSeed = cms.untracked.uint32(1),
+					engineName = cms.untracked.string('TRandom3')
+				),
+		)
+
+		# calibrate pat electrons
+		process.load("EgammaAnalysis.ElectronTools.calibratedPatElectrons_cfi")
+		if data:
+			inputDataset =  "22Jan2013ReReco"
+		else:
+			#inputDataset =  "Summer12_DR53X_HCP2012"
+			inputDataset =  "Summer12_LegacyPaper"
+		process.calibratedPatElectrons.inputDataset = cms.string(inputDataset)
+		process.calibratedPatElectrons.isMC = cms.bool(not data)
+
+		## for cutbased ID
+		from CommonTools.ParticleFlow.Tools.pfIsolation import setupPFElectronIso, setupPFMuonIso
+		process.calibeleIsoSequence = setupPFElectronIso(process, 'calibratedPatElectrons', "PFIsoCal")
+		process.eleIsoSequence = setupPFElectronIso(process, 'patElectrons')
+		process.pfiso = cms.Sequence(process.pfParticleSelectionSequence
+			+ process.eleIsoSequence + process.calibeleIsoSequence 
+		)
+
+		# rho for e isolation
+		from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
+		process.kt6PFJetsForIsolation = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
+		process.kt6PFJetsForIsolation.Rho_EtaMax = cms.double(2.5)
+
+		process.path *= (
+			process.eleRegressionEnergy *
+			process.calibratedPatElectrons * 
+			process.pfiso *
+			process.kt6PFJetsForIsolation
+		)
+
+
+		#add to Kappa
+		process.kappaTuple.active += cms.vstring('Electrons')
+		process.kappaTuple.Electrons = cms.PSet(
+			process.kappaNoCut, process.kappaNoRegEx,
+			ids = cms.vstring(),
+			srcIds = cms.string("pat"),
+			electrons = cms.PSet(
+				src = cms.InputTag("patElectrons"),
+				allConversions = cms.InputTag("allConversions"),
+				offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
+				vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
+				isoValInputTags = cms.VInputTag(
+					cms.InputTag('elPFIsoValueChargedAll04PFIdPFIso'),
+					cms.InputTag('elPFIsoValueGamma04PFIdPFIso'),
+					cms.InputTag('elPFIsoValueNeutral04PFIdPFIso'),
+					cms.InputTag('elPFIsoValuePU04PFIdPFIso')),
+				rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
+			),
+		)
+		process.kappaTuple.Electrons.correlectrons = process.kappaTuple.Electrons.electrons.clone(
+				src = cms.InputTag("calibratedPatElectrons"),
+				isoValInputTags = cms.VInputTag(
+					cms.InputTag('elPFIsoValueChargedAll04PFIdPFIsoCal'),
+					cms.InputTag('elPFIsoValueGamma04PFIdPFIsoCal'),
+					cms.InputTag('elPFIsoValueNeutral04PFIdPFIsoCal'),
+					cms.InputTag('elPFIsoValuePU04PFIdPFIsoCal')),
+		)
+
+		process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV0", "mvaTrigNoIPV0", "mvaNonTrigV0")
+		#process.kappaTuple.Electrons.minPt = cms.double(8.0)
+
+
+		### Filter
+		if 'mm' in channel:
+			process.goodElectrons = cms.EDFilter('CandViewSelector',
+				src = cms.InputTag('calibratedPatElectrons'),
+				cut = cms.string("pt > 15.0"),
+			)
+			process.twoGoodElectrons = cms.EDFilter('CandViewCountFilter',
+				src = cms.InputTag('goodElectrons'),
+				minNumber = cms.uint32(2),
+			)
+			#process.path *= (process.goodElectrons * process.twoGoodElectrons)
+
 
 	############################################################################
 	#  Jets
 	############################################################################
-	process.load('Kappa.Skimming.KJets{0}_cff'.format('_run2' if cmssw_version_number.startswith("7") else ''))
+
+	process.load('RecoJets.JetProducers.ak5PFJets_cfi')
+	process.ak5PFJets.srcPVs = cms.InputTag('goodOfflinePrimaryVertices')
+	process.ak5PFJetsCHS = process.ak5PFJets.clone( src = cms.InputTag('pfNoPileUp') )
 
 	process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
 	process.kappaTuple.Jets = cms.PSet(
 		process.kappaNoCut,
 		process.kappaNoRegEx,
-		taggers = cms.vstring(
-			'QGlikelihood',
-			#'QGmlp',
-			#'TrackCountingHighEffBJetTags',
-			#'TrackCountingHighPurBJetTags',
-			#'JetProbabilityBJetTags',
-			#'JetBProbabilityBJetTags',
-			#'SoftElectronBJetTags',
-			#'SoftMuonBJetTags',
-			#'SoftMuonByIP3dBJetTags',
-			#'SoftMuonByPtBJetTags',
-			#'SimpleSecondaryVertexBJetTags',
-			'CombinedSecondaryVertexBJetTags',
-			'CombinedSecondaryVertexMVABJetTags',
-			#'puJetIDFullDiscriminant',
-			#'puJetIDFullLoose',
-			#'puJetIDFullMedium',
-			#'puJetIDFullTight',
-			#'puJetIDCutbasedDiscriminant',
-			#'puJetIDCutbasedLoose',
-			#'puJetIDCutbasedMedium',
-			#'puJetIDCutbasedTight'
-			),
-		AK5PFTaggedJets = cms.PSet(
+		taggers = cms.vstring(),
+		ak5PFJets = cms.PSet(
 			src = cms.InputTag('ak5PFJets'),
 			QGtagger = cms.InputTag('AK5PFJetsQGTagger'),
 			Btagger  = cms.InputTag('ak5PF'),
 			PUJetID  = cms.InputTag('ak5PFPuJetMva'),
 			PUJetID_full = cms.InputTag('full'),
 			),
-		AK5PFTaggedJetsCHS = cms.PSet(
+		ak5PFJetsCHS = cms.PSet(
 			src = cms.InputTag('ak5PFJetsCHS'),
 			QGtagger = cms.InputTag('AK5PFJetsCHSQGTagger'),
 			Btagger  = cms.InputTag('ak5PFCHS'),
@@ -266,21 +376,9 @@ def getBaseConfig(
 	process.kt6PFJets.Rho_EtaMax = cms.double(2.5)
 
 	process.path *= (
-		process.makePFJets
-		* process.makePFJetsCHS
+		process.ak5PFJets
+		* process.ak5PFJetsCHS
 		* process.kt6PFJets
-		* process.makeQGTagging
-
-		* process.ak5PFJetTracksAssociator
-		* process.ak5PFJetBtaggingIP
-		* process.ak5PFJetBtaggingSV
-		* process.ak5PFCHSJetTracksAssociator
-		* process.ak5PFCHSJetBtaggingIP
-		* process.ak5PFCHSJetBtaggingSV
-		
-		
-		#process.makeBTagging *
-		#* process.makePUJetID
 	)
 
 
@@ -321,47 +419,56 @@ def getBaseConfig(
 	return process
 
 
+
 if __name__ == '__main__':
 	# run local skim by hand without replacements by grid-control
 	if('@' in '@NICK@'):
-
 		KappaParser = kappaparser.KappaParserZJet()
-		KappaParser.setDefault('test', '53mc12')
+		KappaParser.setDefault('test', '53data12')
 		testdict = {
 			'53data12': {
 				'files': 'file:/storage/8/dhaitz/testfiles/data_AOD_2012A.root',
 				'globalTag': 'FT53_V21A_AN6::All',
 				'nickName': 'DoubleMu_Run2012A_22Jan2013_8TeV',
+				'channel': 'mm',
 			},
 			'53mc12': {
 				'files': 'file:/storage/8/dhaitz/testfiles/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball__Summer12_DR53X-PU_RD1_START53_V7N-v1__AODSIM.root',
 				'globalTag': 'START53_V27::All',
 				'nickName': 'DYJetsToLL_M_50_madgraph_8TeV',
+				'channel': 'mm',
 			},
-			'74data12': {
-				'files': 'file:/storage/8/dhaitz/testfiles/DoubleMuParked__CMSSW_7_4_0_pre9_ROOT6-GR_R_74_V8_1Apr_RelVal_dm2012D-v2__RECO.root',
-				'globalTag': 'GR_R_74_V8::All',
-				'nickName': 'DoubleMu_Run2012A_22Jan2013_8TeV',
+			'53mc12ee': {
+				'files': 'file:/storage/8/dhaitz/testfiles/mc_DYToEE-powheg.root',
+				'globalTag': 'START53_V27::All',
+				'nickName': 'DYJetsToEE_M_20_powheg_8TeV',
+				'channel': 'ee',
+			},
+			'53mc12': {
+				'files': 'file:/storage/8/dhaitz/testfiles/DYJetsToLL_M-50_TuneZ2Star_8TeV-madgraph-tarball__Summer12_DR53X-PU_RD1_START53_V7N-v1__AODSIM.root',
+				'globalTag': 'START53_V27::All',
+				'nickName': 'DYJetsToLL_M_50_madgraph_8TeV',
+				'channel': 'eemm',
 			},
 		}
 		KappaParser.parseArgumentsWithTestDict(testdict)
 
 		process = getBaseConfig(
 			globaltag=KappaParser.globalTag,
-			testfile=cms.untracked.vstring(KappaParser.files),
+			testfile=KappaParser.files,
 			maxevents=KappaParser.maxEvents,
 			nickname=KappaParser.nickName,
 			outputfilename="skim53.root",
-			kappaverbosity=KappaParser.kappaVerbosity,
 			channel=KappaParser.channel,
 		)
 	## for grid-control:
 	else:
 		process = getBaseConfig(
 			globaltag='@GLOBALTAG@',
-			testfile=cms.untracked.vstring(""),
+			testfile=cms.untracked.vstring('@FILE_NAMES@'.strip('"').split('", "')),
 			maxevents=-1,
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
-			kappaverbosity=0
+			channel = '@CHANNEL@',
+			is_data = gc_var_or_callable_parameter(gc_var_name='@IS_DATA@', callable=getBaseConfig),
 		)
