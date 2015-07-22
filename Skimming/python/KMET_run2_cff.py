@@ -17,7 +17,6 @@ import FWCore.ParameterSet.Config as cms
 ##    producer.
 
 ## conditions needed for the JEC applied inside the MVA MET
-from Configuration.StandardSequences.FrontierConditions_GlobalTag_cff import *
 from JetMETCorrections.Configuration.JetCorrectionProducers_cff import *
 
 ## ------------------------------------------------------------------------
