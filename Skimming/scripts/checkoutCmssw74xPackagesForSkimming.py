@@ -68,12 +68,20 @@ def checkoutPackages(args):
 
 		#Electron MVA Id package
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_74X_Phys14_MVA_train
-		"git cms-merge-topic ikrav:egm_id_74X_v2",
+		# seems to be in the release 7_4_7
+		#"git cms-merge-topic ikrav:egm_id_74X_v2",
 
 		#MVA & No-PU MET Recipe
 		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#Instructions_for_7_4_X
-		#everything needed is already in the 7_4_6 release
-
+		#everything needed is already in the 7_4_6 release -> only use 7_4_7 due to bugfix!
+		#Jan's multi-MET Producer
+		"git cms-addpkg RecoMET/METPUSubtraction",
+		"cd " + cmsswrc + "/RecoMET/METPUSubtraction/",
+		"git remote add cmgtools git@github.com:CERN-PH-CMG/cmg-cmssw.git",
+		"git pull cmgtools",
+		"git checkout CMGTools-from-CMSSW_7_4_7",
+		"cd " + cmsswrc + "/RecoMET/METPUSubtraction/",
+		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 74X-13TeV-Summer15-July2015",
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git -b development",
 		#"scram b -j 4"
