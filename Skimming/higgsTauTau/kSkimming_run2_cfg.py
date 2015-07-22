@@ -300,7 +300,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## Further information saved to Kappa output 
 	# add python config to TreeInfo
 	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
-		
+
 	# add repository revisions to TreeInfo
 	for repo, rev in tools.get_repository_revisions().iteritems():
 			setattr(process.kappaTuple.TreeInfo.parameters, repo, cms.string(rev))
@@ -338,7 +338,7 @@ if __name__ == "__main__":
 		testFile = "VBF_HToTauTau_Miniaod.root"
 		nickName = "VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM"
 		if cmssw_version_number.startswith("7_4"):
-			globalTag = 'MCRUN2_74_V9::All'
+			globalTag = 'MCRUN2_74_V9'
 			testFile = "SUSYGluGluHToTauTau_M-120_13TeV_MCRUN2.root"
 			nickName = "SUSYGluGluToHToTauTauM120_RunIISpring15DR74_Asympt25ns_13TeV_AODSIM"
 		process = getBaseConfig(globaltag=globalTag, nickname=nickName, testfile=cms.untracked.vstring("file://%s/%s" % (testPath, testFile)))

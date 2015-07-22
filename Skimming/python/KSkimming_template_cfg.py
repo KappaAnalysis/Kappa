@@ -34,16 +34,10 @@ split_cmssw_version = cmssw_version_number.split("_")
 
 if (cmssw_version_number.startswith("7_4")):
 	# see https://twiki.cern.ch/twiki/bin/view/Sandbox/MyRootMakerFrom72XTo74X#DDVectorGetter_vectors_are_empty
-	print "Use GeometryRecoDB"
+	print "Use GeometryRecoDB and condDBv2"
 	process.load("Configuration.Geometry.GeometryRecoDB_cff")
-	
-	# cmssw 7_4_X_pre8 or higher "pre" versions
-	if (len(split_cmssw_version) > 3 and split_cmssw_version[3].startswith("pre") and split_cmssw_version[3][3:] >= 8):
-		print "Use condDBv2"
-		process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
-	# cmssw 7_4_X, others 
-	else:
-		process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+	process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+
 else:
 	process.load("Configuration.Geometry.GeometryIdeal_cff")
 	process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
