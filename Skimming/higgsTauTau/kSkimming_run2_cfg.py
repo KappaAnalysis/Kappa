@@ -287,7 +287,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 		## Standard MET and GenMet from pat::MET
 		process.kappaTuple.active += cms.vstring('PatMET')
-		process.kappaTuple.PatMET.whitelist = cms.vstring( "slimmedMETs",
+		## Write MVA MET to KMETs. To check what happens on AOD
+		process.kappaTuple.active += cms.vstring('PatMETs')
+		process.kappaTuple.PatMETs.whitelist = cms.vstring(
 		                                                   "pfMetMVAEM",
 		                                                   "pfMetMVAET",
 		                                                   "pfMetMVAMT",

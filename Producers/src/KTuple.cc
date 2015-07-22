@@ -53,6 +53,7 @@
 #include "../interface/KBasicJetProducer.h"
 #include "../interface/KMETProducer.h"
 #include "../interface/KPatMETProducer.h"
+#include "../interface/KPatMETsProducer.h"
 #include "../interface/KJetProducer.h"
 #include "../interface/KPatJetProducer.h"
 #include "../interface/KGenJetProducer.h"
@@ -224,6 +225,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KBasicJetProducer>(active[i]);
 		addProducer<KMETProducer>(active[i]);
 		addProducer<KPatMETProducer>(active[i]);
+		addProducer<KPatMETsProducer>(active[i]);
 		addProducer<KJetProducer>(active[i]);
 		addProducer<KGenJetProducer>(active[i]);
 		addProducer<KPatJetProducer>(active[i]);
