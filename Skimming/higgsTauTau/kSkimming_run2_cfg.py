@@ -262,9 +262,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.mvaMETMuons.src = cms.InputTag("slimmedMuons")
 		# process.mvaMETElectrons.src = cms.InputTag("slimmedElectrons")
 		# Todo for miniAOD: find a selector that works in pat Taus and slimmedElectrons
-		process.metMVAEM.srcLeptons = cms.VInputTag("slimmedElectrons", "mvaMETMuons" )
+		process.metMVAEM.srcLeptons = cms.VInputTag("slimmedElectrons", "slimmedMuons" )
 		process.metMVAET.srcLeptons = cms.VInputTag("slimmedElectrons", "slimmedTaus")
-		process.metMVAMT.srcLeptons = cms.VInputTag("slimmedMuons"    , "slimmedMuons")
+		process.metMVAMT.srcLeptons = cms.VInputTag("slimmedMuons"    , "slimmedTaus")
 		process.metMVATT.srcLeptons = cms.VInputTag("slimmedTaus"     , "slimmedTaus")
 		process.metMVAEM.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.metMVAET.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
