@@ -44,7 +44,7 @@ class KappaParserZJet(KappaParser):
 		)
 		self.register('test', None, VarParsing.multiplicity.singleton,
 			VarParsing.varType.string, 'Test scenario to be used.')
-		self.register('channel', 'mm', VarParsing.multiplicity.singleton,
+		self.register('channel', None, VarParsing.multiplicity.singleton,
 			VarParsing.varType.string, 'Channel to be used (mm, ee, em).')
 
 	def parseArgumentsWithTestDict(self, testDict):
