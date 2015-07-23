@@ -45,6 +45,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
 
+	process.load("Kappa.Skimming.customJECs_cff")
+
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	# Important to be evaluated correctly for the following steps
