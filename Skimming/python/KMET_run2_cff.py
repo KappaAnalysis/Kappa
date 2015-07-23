@@ -143,13 +143,13 @@ from RecoJets.JetProducers.PileupJetIDParams_cfi import JetIdParams
 
 from RecoMET.METPUSubtraction.mvaPFMET_cff import pfMVAMEt as pfMetMVA
 
-pfMetMVAEM = cms.EDProducer('PFMETProducerMVATauTau', 
+metMVAEM = cms.EDProducer('PFMETProducerMVATauTau', 
                              **pfMetMVA.parameters_())#pfMVAMEt.clone()
-pfMetMVAET = cms.EDProducer('PFMETProducerMVATauTau', 
+metMVAET = cms.EDProducer('PFMETProducerMVATauTau', 
                              **pfMetMVA.parameters_())#pfMVAMEt.clone()
-pfMetMVAMT = cms.EDProducer('PFMETProducerMVATauTau', 
+metMVAMT = cms.EDProducer('PFMETProducerMVATauTau', 
                              **pfMetMVA.parameters_())#pfMVAMEt.clone()
-pfMetMVATT = cms.EDProducer('PFMETProducerMVATauTau', 
+metMVATT = cms.EDProducer('PFMETProducerMVATauTau', 
                              **pfMetMVA.parameters_())#pfMVAMEt.clone()
 
 inputFileNames = cms.PSet(
@@ -158,17 +158,17 @@ inputFileNames = cms.PSet(
         CovU1 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru1cov_7_4_X_miniAOD_50NS_July2015.root'),
         CovU2 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru2cov_7_4_X_miniAOD_50NS_July2015.root') )
 ## specify the leptons similar to those used in the analysis (channel specific)
-pfMetMVAEM.srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETMuons" )
-pfMetMVAEM.permuteLeptons = cms.bool(True)
+metMVAEM.srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETMuons" )
+metMVAEM.permuteLeptons = cms.bool(True)
 
-pfMetMVAET.srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETTausET")
-pfMetMVAET.permuteLeptons = cms.bool(True)
+metMVAET.srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETTausET")
+metMVAET.permuteLeptons = cms.bool(True)
 
-pfMetMVAMT.srcLeptons = cms.VInputTag("mvaMETMuons"    , "mvaMETMuons")
-pfMetMVAMT.permuteLeptons = cms.bool(True)
+metMVAMT.srcLeptons = cms.VInputTag("mvaMETMuons"    , "mvaMETMuons")
+metMVAMT.permuteLeptons = cms.bool(True)
 
-pfMetMVATT.srcLeptons = cms.VInputTag("mvaMETTausTT"    , "mvaMETTausTT")
-pfMetMVATT.permuteLeptons = cms.bool(True)
+metMVATT.srcLeptons = cms.VInputTag("mvaMETTausTT"    , "mvaMETTausTT")
+metMVATT.permuteLeptons = cms.bool(True)
 ## ------------------------------------------------------------------------
 ## Definition of sequences
 makeKappaMET = cms.Sequence(
@@ -181,8 +181,8 @@ makeKappaMET = cms.Sequence(
     mvaMETTausMT *
     mvaMETTausTT *
     mvaMETElectrons *
-    pfMetMVAEM * 
-    pfMetMVAET *
-    pfMetMVAMT *
-    pfMetMVATT 
+    metMVAEM * 
+    metMVAET *
+    metMVAMT *
+    metMVATT 
     )

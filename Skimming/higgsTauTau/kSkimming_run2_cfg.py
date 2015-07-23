@@ -262,38 +262,38 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.mvaMETMuons.src = cms.InputTag("slimmedMuons")
 		# process.mvaMETElectrons.src = cms.InputTag("slimmedElectrons")
 		# Todo for miniAOD: find a selector that works in pat Taus and slimmedElectrons
-		process.pfMetMVAEM.srcLeptons = cms.VInputTag("slimmedElectrons", "mvaMETMuons" )
-		process.pfMetMVAET.srcLeptons = cms.VInputTag("slimmedElectrons", "slimmedTaus")
-		process.pfMetMVAMT.srcLeptons = cms.VInputTag("slimmedMuons"    , "slimmedMuons")
-		process.pfMetMVATT.srcLeptons = cms.VInputTag("slimmedTaus"     , "slimmedTaus")
-		process.pfMetMVAEM.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
-		process.pfMetMVAET.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
-		process.pfMetMVAMT.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
-		process.pfMetMVATT.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
-		process.pfMetMVAEM.srcPFCandidates = cms.InputTag("packedPFCandidates")
-		process.pfMetMVAET.srcPFCandidates = cms.InputTag("packedPFCandidates")
-		process.pfMetMVAMT.srcPFCandidates = cms.InputTag("packedPFCandidates")
-		process.pfMetMVATT.srcPFCandidates = cms.InputTag("packedPFCandidates")
+		process.metMVAEM.srcLeptons = cms.VInputTag("slimmedElectrons", "mvaMETMuons" )
+		process.metMVAET.srcLeptons = cms.VInputTag("slimmedElectrons", "slimmedTaus")
+		process.metMVAMT.srcLeptons = cms.VInputTag("slimmedMuons"    , "slimmedMuons")
+		process.metMVATT.srcLeptons = cms.VInputTag("slimmedTaus"     , "slimmedTaus")
+		process.metMVAEM.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.metMVAET.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.metMVAMT.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.metMVATT.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
+		process.metMVAEM.srcPFCandidates = cms.InputTag("packedPFCandidates")
+		process.metMVAET.srcPFCandidates = cms.InputTag("packedPFCandidates")
+		process.metMVAMT.srcPFCandidates = cms.InputTag("packedPFCandidates")
+		process.metMVATT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.makeKappaMET = cms.Sequence( 
 		                process.ak4PFJets * 
 		                process.calibratedAK4PFJetsForPFMVAMEt * 
 		                process.mvaMETJets * 
 		                process.puJetIdForPFMVAMEt * 
 		                process.mvaMETMuons * 
-		                process.pfMetMVAEM * 
-		                process.pfMetMVAET * 
-		                process.pfMetMVAMT * 
-		                process.pfMetMVATT )
+		                process.metMVAEM * 
+		                process.metMVAET * 
+		                process.metMVAMT * 
+		                process.metMVATT )
 
 		## Standard MET and GenMet from pat::MET
 		process.kappaTuple.active += cms.vstring('PatMET')
 		## Write MVA MET to KMETs. To check what happens on AOD
 		process.kappaTuple.active += cms.vstring('PatMETs')
 		process.kappaTuple.PatMETs.whitelist = cms.vstring(
-		                                                   "pfMetMVAEM",
-		                                                   "pfMetMVAET",
-		                                                   "pfMetMVAMT",
-		                                                   "pfMetMVATT"
+		                                                   "metMVAEM",
+		                                                   "metMVAET",
+		                                                   "metMVAMT",
+		                                                   "metMVATT"
 		                                                    )
 
 
