@@ -161,6 +161,7 @@ def baseconfig(
 			minNumber = cms.uint32(2),
 		)
 		process.kappaTuple.Muons.minPt = 8.0
+		process.kappaTuple.Muons.doPfIsolation = cms.bool(False)
 		process.kappaTuple.active += cms.vstring('Muons')
 
 		process.path *= (process.muPreselection1 * process.muPreselection2 * process.makeKappaMuons)
