@@ -319,10 +319,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
-			# track/ecal/hcal iso are directly taken from reco instead...
-			#srcMuonIsolationTrack = cms.InputTag("muIsoDepositTk"),
-			#srcMuonIsolationEcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","ecal"),
-			#srcMuonIsolationHcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","hcal"),
 			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
 			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
 			vertexcollection = cms.InputTag("offlinePrimaryVertices"),
@@ -422,6 +418,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltMaxdR = cms.double(0.2),
 		hltMaxdPt_Pt = cms.double(1.),
 		noPropagation = cms.bool(False),
+		doPfIsolation = cms.bool(True), # use PFIso instead of muon iso
 
 		useSimpleGeometry = cms.bool(True),
 		useTrack = cms.string("tracker"),

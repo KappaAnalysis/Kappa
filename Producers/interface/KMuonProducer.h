@@ -42,7 +42,7 @@ public:
 		selectedMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
 		noPropagation(cfg.getParameter<bool>("noPropagation")),
 		propagatorToMuonSystem(cfg),
-		doPfIsolation(true),
+		doPfIsolation(cfg.getParameter<bool>("doPfIsolation")),
 		muonIsolationPFInitialized(false)
 	{
 		std::sort(selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
