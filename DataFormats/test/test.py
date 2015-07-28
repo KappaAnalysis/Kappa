@@ -108,8 +108,8 @@ def main(args):
     htmlfile = 'result.html'
     with open(htmlfile, 'w') as f:
         f.write(html)
-    if sendMailOnFail and not allOK:
-        sendMail(os.path.abspath('.'))
+    if sendMailOnFail and (opt['dryRun'] or not allOK):
+        sendMail(os.path.abspath('.'), ['development'])
     print "HTML written to %s, Kappa status:%s ok." % (htmlfile, [' not', ''][allOK])
     return not allOK
 
@@ -766,22 +766,25 @@ function timeAgo(time) {
     return html
 
 
-def sendMail(testPaths):
+def sendMail(testPaths, branches=None):
+    if not branches:
+        branches = []
     import smtplib
     from email.mime.text import MIMEText as Message
 
     msg = Message("""Dear Kappa developers,
 
 the test script found problems in the current state of the Kappa repository.
-Please have a look at: http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/result.html
+Please have a look at: http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/current/result.html
 
-The test directory is %s
+Tested branches are: %s.
+The test directory is %s.
 
 Your friendly test script
-""" % testPaths)
+""" % (', '.join(branches), testPaths))
     msg['Subject'] = 'Kappa test problems'
-    msg['From'] = 'test@kappa' 
-    msg['To'] = 'joram.berger@cern.ch'  # artus list?
+    msg['From'] = 'joram.berger@kit.edu' # must be on the artus list
+    msg['To'] = 'artus@lists.kit.edu'
 
     s = smtplib.SMTP('smarthost.kit.edu')
     s.sendmail(msg['From'], msg['To'] , msg.as_string())
