@@ -76,11 +76,11 @@ def checkoutPackages(args):
 		#everything needed is already in the 7_4_6 release -> only use 7_4_7 due to bugfix!
 		#Jan's multi-MET Producer
 		"git cms-addpkg RecoMET/METPUSubtraction",
-		"cd " + cmsswrc + "/RecoMET/METPUSubtraction/",
+		"cd " + cmsswsrc + "/RecoMET/METPUSubtraction/",
 		"git remote add cmgtools git@github.com:CERN-PH-CMG/cmg-cmssw.git",
 		"git pull cmgtools",
 		"git checkout CMGTools-from-CMSSW_7_4_7",
-		"cd " + cmsswrc + "/RecoMET/METPUSubtraction/",
+		"cd " + cmsswsrc + "/RecoMET/METPUSubtraction/",
 		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 74X-13TeV-Summer15-July2015",
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git -b development",
