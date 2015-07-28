@@ -396,7 +396,7 @@ void myJetAna::analyze( const edm::Event& evt, const edm::EventSetup& es ) {
  
   using namespace edm;
 
-  bool Pass, Pass_HFTime, Pass_DiJet, Pass_BunchCrossing, Pass_Trigger, Pass_Vertex;
+  bool Pass, Pass_HFTime, Pass_DiJet, Pass_BunchCrossing, /*Pass_Trigger,*/ Pass_Vertex;
 
   int EtaOk10, EtaOk13, EtaOk40;
 
@@ -414,7 +414,7 @@ void myJetAna::analyze( const edm::Event& evt, const edm::EventSetup& es ) {
   double HOThreshold   = 2.0;
   double EBEEThreshold = 2.0;
 
-  float pt1;
+  //float pt1;
 
   float minJetPt = 5.;
   float minJetPt10 = 10.;
@@ -493,9 +493,9 @@ void myJetAna::analyze( const edm::Event& evt, const edm::EventSetup& es ) {
       //	   (triggerNames.triggerName(i) == "HLT_MinBiasHcal") )  {
 
       if (triggerNames.triggerName(i) == "HLT_MinBiasBSC") {
-	Pass_Trigger = true;
+	//Pass_Trigger = true;
       } else {
-	Pass_Trigger = false;
+	//Pass_Trigger = false;
       }
 
     }
@@ -513,7 +513,7 @@ void myJetAna::analyze( const edm::Event& evt, const edm::EventSetup& es ) {
     edm::LogInfo("myJetAna") << "TriggerResults::HLT not found, "
       "automatically select events";
 
-    Pass_Trigger = true;
+    //Pass_Trigger = true;
 
     //return;
   }
@@ -1107,7 +1107,7 @@ void myJetAna::analyze( const edm::Event& evt, const edm::EventSetup& es ) {
     if (allJetInd == 1) {
       h_jet1Pt->Fill( cal->pt() );
       if (JetLoPass != 0) h_jet1PtHLT->Fill( cal->pt() );
-      pt1 = cal->pt();
+      //pt1 = cal->pt();
       p4tmp[0] = cal->p4();
       if ( fabs(cal->eta()) < 1.0) EtaOk10++;
       if ( fabs(cal->eta()) < 1.3) EtaOk13++;

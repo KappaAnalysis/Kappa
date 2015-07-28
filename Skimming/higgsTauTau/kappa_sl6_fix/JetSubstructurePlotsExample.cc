@@ -191,11 +191,11 @@ void JetSubstructurePlotsExample::analyze(edm::Event const& evt, edm::EventSetup
     const reco::CATopJetTagInfo * catopTag = dynamic_cast<reco::CATopJetTagInfo const *>(ijet->tagInfo("CATop"));
 
     double pt       = ijet->pt();
-    double eta      = ijet->eta();
+    //double eta      = ijet->eta();
     double rapidity = ijet->rapidity();
     double mass     = ijet->mass();
     double minmass  = catopTag->properties().minMass;
-    double topmass  = catopTag->properties().topMass;
+    //double topmass  = catopTag->properties().topMass;
     int nsubjets    = ijet->numberOfDaughters();
     
     if (pt>350){

@@ -96,7 +96,7 @@ def checkoutPackages(args):
 		"git cms-addpkg PhysicsTools/JetMCAlgos",
 
 		#Check out Kappa
-		"git clone https://github.com/KappaAnalysis/Kappa.git",
+		"git clone https://github.com/KappaAnalysis/Kappa.git -b development",
 		#"scram b -j 4"
 	]
 	execCommands(commands)

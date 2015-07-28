@@ -659,7 +659,7 @@ void myFastSimVal::analyze( const Event& evt, const EventSetup& es ) {
   double LeadMass1, LeadMass2, LeadMass3, LeadMass4;
   double LeadMassP1, LeadMassP2, LeadMassP3;
 
-  float pt1, pt2, pt3;
+  //float pt1, pt2, pt3;
 
   float minJetPt = 30.;
   float minJetPt10 = 10.;
@@ -764,7 +764,7 @@ void myFastSimVal::analyze( const Event& evt, const EventSetup& es ) {
     allJetInd++;
     if (allJetInd == 1) {
       h_jet1Pt1.Fill( cal->pt() );
-      pt1 = cal->pt();
+      //pt1 = cal->pt();
       p4tmp[0] = cal->p4();
       if ( fabs(cal->eta()) < 1.0) EtaOk10++;
       if ( fabs(cal->eta()) < 1.3) EtaOk13++;
@@ -956,7 +956,7 @@ void myFastSimVal::analyze( const Event& evt, const EventSetup& es ) {
     allJetInd++;
     if (allJetInd == 1) {
       h_jet1Pt2.Fill( cal->pt() );
-      pt2 = cal->pt();
+      //pt2 = cal->pt();
       p4tmp[0] = cal->p4();
     }
     if (allJetInd == 2) {
@@ -1093,7 +1093,7 @@ void myFastSimVal::analyze( const Event& evt, const EventSetup& es ) {
     allJetInd++;
     if (allJetInd == 1) {
       h_jet1Pt3.Fill( cal->pt() );
-      pt3 = cal->pt();
+      //pt3 = cal->pt();
       p4tmp[0] = cal->p4();
     }
     if (allJetInd == 2) {

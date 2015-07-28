@@ -6,13 +6,15 @@ CMSDAS12ThreejetTestAnalyzer::CMSDAS12ThreejetTestAnalyzer(const edm::ParameterS
 }
 
 void CMSDAS12ThreejetTestAnalyzer::beginJob() {
+/*
   const int   NBINS = 52;
   double BINNING[NBINS+1] = {0.,5.,10.,15.,20.,25.,30.,35.,40.,45.,50.,56.,62.,68.,75.,
 			     83.,91.,100.,110.,121.,133.,147.,162.,179.,197.,217.,239.,
 			     263.,290.,319.,351.,386.,425.,468.,515.,567.,624.,687.,756.,
 			     832.,915.,1007.,1108.,1219.,1341.,1475.,1623.,1785.,1964.,
 			     2160.,2376.,2614.,3000.};
-  
+*/
+
   outputFile = new TFile("myhistos.root","recreate");
   
   //setup histograms
@@ -63,7 +65,7 @@ void CMSDAS12ThreejetTestAnalyzer::analyze(const edm::Event& iEvent, const edm::
   //Define jet containers and iterators
   std::vector<pat::Jet> selectedJets;
   std::vector<pat::Jet>::const_iterator iJet;
-  float sumHT    = 0.0;
+  //float sumHT    = 0.0;
 
   //Fill a histogram
   hNJets->Fill(Jets.size());
