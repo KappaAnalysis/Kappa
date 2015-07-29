@@ -419,6 +419,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltMaxdPt_Pt = cms.double(1.),
 		noPropagation = cms.bool(False),
 		doPfIsolation = cms.bool(True), # use PFIso instead of muon iso
+		use03ConeForPfIso = cms.bool(False), # use 0.3 cone for PFIso instead of the more common 0.4
 
 		useSimpleGeometry = cms.bool(True),
 		useTrack = cms.string("tracker"),

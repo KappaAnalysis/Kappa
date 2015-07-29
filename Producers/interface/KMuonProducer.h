@@ -43,6 +43,7 @@ public:
 		noPropagation(cfg.getParameter<bool>("noPropagation")),
 		propagatorToMuonSystem(cfg),
 		doPfIsolation(cfg.getParameter<bool>("doPfIsolation")),
+		use03ConeForPfIso(cfg.getParameter<bool>("use03ConeForPfIso")),
 		muonIsolationPFInitialized(false)
 	{
 		std::sort(selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
@@ -198,15 +199,28 @@ public:
 		}
 		else
 		{
-			/// isolation variables for pfIso04
+			/// isolation variables for pfIso
 			/// DataFormats/MuonReco/interface/MuonPFIsolation.h
-			out.sumChargedHadronPt   = in.pfIsolationR04().sumChargedHadronPt;
-			out.sumChargedParticlePt = in.pfIsolationR04().sumChargedParticlePt;
-			out.sumNeutralHadronEt   = in.pfIsolationR04().sumNeutralHadronEt;
-			out.sumPhotonEt          = in.pfIsolationR04().sumPhotonEt;
-			out.sumPUPt              = in.pfIsolationR04().sumPUPt;
-			out.sumNeutralHadronEtHighThreshold = in.pfIsolationR04().sumNeutralHadronEtHighThreshold;
-			out.sumPhotonEtHighThreshold        = in.pfIsolationR04().sumPhotonEtHighThreshold;
+			if (use03ConeForPfIso)
+			{
+				out.sumChargedHadronPt   = in.pfIsolationR03().sumChargedHadronPt;
+				out.sumChargedParticlePt = in.pfIsolationR03().sumChargedParticlePt;
+				out.sumNeutralHadronEt   = in.pfIsolationR03().sumNeutralHadronEt;
+				out.sumPhotonEt          = in.pfIsolationR03().sumPhotonEt;
+				out.sumPUPt              = in.pfIsolationR03().sumPUPt;
+				out.sumNeutralHadronEtHighThreshold = in.pfIsolationR03().sumNeutralHadronEtHighThreshold;
+				out.sumPhotonEtHighThreshold        = in.pfIsolationR03().sumPhotonEtHighThreshold;
+			}
+			else
+			{
+				out.sumChargedHadronPt   = in.pfIsolationR04().sumChargedHadronPt;
+				out.sumChargedParticlePt = in.pfIsolationR04().sumChargedParticlePt;
+				out.sumNeutralHadronEt   = in.pfIsolationR04().sumNeutralHadronEt;
+				out.sumPhotonEt          = in.pfIsolationR04().sumPhotonEt;
+				out.sumPUPt              = in.pfIsolationR04().sumPUPt;
+				out.sumNeutralHadronEtHighThreshold = in.pfIsolationR04().sumNeutralHadronEtHighThreshold;
+				out.sumPhotonEtHighThreshold        = in.pfIsolationR04().sumPhotonEtHighThreshold;
+			}
 		}
 		// source?
 		if(muonIsolationPFInitialized)
@@ -289,6 +303,7 @@ private:
 	
 	std::vector<edm::Handle<edm::ValueMap<double> > > isoVals;
 	bool doPfIsolation;
+	bool use03ConeForPfIso;
 	bool muonIsolationPFInitialized;
 
 	std::map<std::string, int> muonTriggerObjectBitMap;
