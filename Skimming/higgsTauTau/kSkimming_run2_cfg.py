@@ -137,11 +137,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Muons.muons.src = cms.InputTag("slimmedMuons")
 		process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
-		process.kappaTuple.Muons.muons.isoValInputTags = cms.VInputTag(
-								cms.InputTag('muPFIsoValueChargedAll03PFIso'),
-								cms.InputTag('muPFIsoValueGamma03PFIso'),
-								cms.InputTag('muPFIsoValueNeutral03PFIso'),
-								cms.InputTag('muPFIsoValuePU03PFIso'))
+		process.kappaTuple.Muons.use03ConeForPfIso = cms.bool(True)
 
 	process.kappaTuple.active += cms.vstring('Muons')
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
@@ -156,11 +152,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Electrons.electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
 		process.kappaTuple.Electrons.electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
-		process.kappaTuple.Electrons.electrons.isoValInputTags = cms.VInputTag(
-								cms.InputTag('elPFIsoValueChargedAll03PFIdPFIso'),
-								cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
-								cms.InputTag('elPFIsoValueNeutral03PFIdPFIso'),
-								cms.InputTag('elPFIsoValuePU03PFIdPFIso'))
 		from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 		process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
