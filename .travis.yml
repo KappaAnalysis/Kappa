@@ -18,6 +18,9 @@ addons:
     - clang
 before_install:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+  - sudo add-apt-repository --yes ppa:boost-latest/ppa
+  - sudo apt-get -qq update
+  - sudo apt-get install libboost1.54-all-dev
   - ./.install-dependencies.sh
 install: 
   - make -C DataFormats/test
