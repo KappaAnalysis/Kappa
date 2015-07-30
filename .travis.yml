@@ -24,3 +24,4 @@ before_install:
   - ./.install-dependencies.sh
 install: 
   - make -C DataFormats/test
+script: make -C DataFormats/test
