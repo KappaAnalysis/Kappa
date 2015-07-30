@@ -1,4 +1,5 @@
 # travis config for Kappa
+
 sudo: required
 language: cpp
 notifications:
