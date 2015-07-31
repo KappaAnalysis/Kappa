@@ -120,6 +120,9 @@ struct KGenEventInfo : public KEventInfo
 	unsigned char nPU;    // bx =  0
 	unsigned char nPUp1;  // bx = +1
 	unsigned char nPUp2;  // bx = +2
+	double x1;            ///< x of the first parton (used for PDF reweighting)
+	double x2;            ///< x of the second parton (used for PDF reweighting)
+	double qScale;        ///< q scale of the process (used for PDF reweighting)
 };
 
 

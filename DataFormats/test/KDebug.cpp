@@ -416,6 +416,7 @@ std::ostream &operator<<(std::ostream &os, const KGenEventInfo &i)
 {
 	os << static_cast<const KEventInfo>(i) << std::endl;
 	os << "\tweight=" << i.weight << " bin=" << i.binValue << " alphaQCD=" << i.alphaQCD << std::endl;
+	os << "\tx1=" << i.x1 << " x2=" << i.x2 << " qScale=" << i.qScale << std::endl;
 	os << "\tnPU=(" << int(i.nPUm2) << "--, " << int(i.nPUm1) << "-, ";
 	os << int(i.nPU) << ", " << int(i.nPUp1) << "+, " << int(i.nPUp2) << "++) nPUMean=" << i.nPUMean;
 	return os;
