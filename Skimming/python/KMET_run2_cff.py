@@ -17,7 +17,6 @@ import FWCore.ParameterSet.Config as cms
 ##    producer.
 
 ## conditions needed for the JEC applied inside the MVA MET
-from Configuration.StandardSequences.FrontierConditions_GlobalTag_cff import *
 from JetMETCorrections.Configuration.JetCorrectionProducers_cff import *
 
 ## ------------------------------------------------------------------------
@@ -26,6 +25,8 @@ from JetMETCorrections.Configuration.JetCorrectionProducers_cff import *
 ##    data
 
 ##  - NOTE: apparently "ak5PFL1FastL2L3" does not work
+from RecoJets.JetProducers.ak4PFJets_cfi import ak4PFJets
+
 mvaMETJets = cms.EDProducer('PFJetCorrectionProducer',
     src = cms.InputTag('ak4PFJets'),
     correctors = cms.vstring("ak4PFL1FastL2L3")
@@ -33,45 +34,7 @@ mvaMETJets = cms.EDProducer('PFJetCorrectionProducer',
 
 from RecoJets.JetProducers.pileupjetidproducer_cfi import pileupJetIdEvaluator
 from RecoJets.JetProducers.PileupJetIDParams_cfi import JetIdParams
-puJetIdForPFMVAMEt = pileupJetIdEvaluator.clone(
-    algos = cms.VPSet(
-    cms.PSet(
-    tmvaVariables = cms.vstring(
-        "nvtx",
-        "jetPt",
-        "jetEta",
-        "jetPhi",
-        "dZ",
-        "beta",
-        "betaStar",
-        "nCharged",
-        "nNeutrals",
-        "dR2Mean",
-        "ptD",
-        "frac01",
-        "frac02",
-        "frac03",
-        "frac04",
-        "frac05"
-    ),
-    tmvaWeights = cms.string("RecoJets/JetProducers/data/TMVAClassificationCategory_JetID_MET_53X_Dec2012.weights.xml.gz"),
-    tmvaMethod = cms.string("JetID"),
-    tmvaSpectators = cms.vstring(),
-    JetIdParams = JetIdParams,
-    impactParTkThreshold = cms.double(0.),
-    version = cms.int32(-1),
-    cutBased = cms.bool(False),
-    label = cms.string("full")
-    )
-    ),
-    produceJetIds = cms.bool(True),
-    runMvas = cms.bool(True),
-    jets = cms.InputTag("mvaMETJets"),
-    applyJec = cms.bool(True),
-    inputIsCorrected = cms.bool(True),
-    jec = cms.string("AK4PF"),
-    )
-
+from RecoMET.METPUSubtraction.mvaPFMET_cff import calibratedAK4PFJetsForPFMVAMEt, puJetIdForPFMVAMEt
 # the following two statements have been widely restricted and deactivated since they caused Kappa to crash
 from JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff import corrPfMetType1
 #from JetMETCorrections.Type1MET.correctedMet_cff import *
@@ -177,37 +140,12 @@ mvaMETTausTT = cms.EDFilter("PFTauSelector",
 ##    the analysis. 
 from RecoJets.JetProducers.PileupJetIDParams_cfi import JetIdParams
 
-pfMetMVA = cms.EDProducer(
-    "PFMETProducerMVA",
-    srcCorrJets       = cms.InputTag('mvaMETJets'),
-    srcUncorrJets     = cms.InputTag('ak5PFJets'),
-    srcMVAPileupJetId = cms.InputTag('puJetIdForPFMVAMEt','fullDiscriminant'),
-    srcPFCandidates   = cms.InputTag('particleFlow'),
-    srcVertices       = cms.InputTag('goodOfflinePrimaryVertices'),
-    srcLeptons        = cms.VInputTag(),
-    minNumLeptons     = cms.int32(0),
-    srcRho            = cms.InputTag('kt6PFJets','rho'),
-    globalThreshold   = cms.double(-1.),#pfMet.globalThreshold,
-    minCorrJetPt      = cms.double(-1.),
-    inputFileNames    = cms.PSet(
+from RecoMET.METPUSubtraction.mvaPFMET_cff import pfMVAMEt as pfMetMVA
+pfMetMVA.inputFileNames    = cms.PSet(
         U     = cms.FileInPath('RecoMET/METPUSubtraction/data/gbrmet_7_2_X_MINIAOD_BX25PU20_Mar2015.root'),
         DPhi  = cms.FileInPath('RecoMET/METPUSubtraction/data/gbrphi_7_2_X_MINIAOD_BX25PU20_Mar2015.root'),
         CovU1 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru1cov_7_2_X_MINIAOD_BX25PU20_Mar2015.root'),
-        CovU2 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru2cov_7_2_X_MINIAOD_BX25PU20_Mar2015.root'),
-    ),
-    inputRecords = cms.PSet(
-        U     = cms.string("RecoilCor"),
-        DPhi  = cms.string("PhiCor"), 
-        CovU1 = cms.string("CovU1"),
-        CovU2 = cms.string("CovU2")
-    ),
-    loadMVAfromDB   = cms.bool(False),
-    corrector       = cms.string("ak4PFL1Fastjet"),
-    useType1        = cms.bool(True),
-    dZcut           = cms.double(0.1),
-    verbosity       = cms.int32(0)
-)
-
+        CovU2 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru2cov_7_2_X_MINIAOD_BX25PU20_Mar2015.root') )
 ## specify the leptons similar to those used in the analysis (channel specific)
 pfMetMVAEM = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETMuons" ))
 pfMetMVAET = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETTausET"))
@@ -217,6 +155,8 @@ pfMetMVATT = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETTausTT"))
 ## ------------------------------------------------------------------------
 ## Definition of sequences
 makeKappaMET = cms.Sequence(
+    ak4PFJets *
+    calibratedAK4PFJetsForPFMVAMEt *
     mvaMETJets *
     puJetIdForPFMVAMEt *
     mvaMETMuons *

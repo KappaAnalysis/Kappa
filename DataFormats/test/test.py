@@ -13,12 +13,12 @@ Each test case needs a config file with these comments:
 # Kappa test: compare /path/to/test/filename.root (auto: cfgname: ordner_name.root)
 
 Checks once: make, classes.UP
-Checks per case: setup, checkout, scram, python, cmsRun, output, root output, compare output
+Checks per case: setup, checkout, scram, python, cmsRun, output, validate output, compare output
 
 usecases:
 check single config file
 check current working tree
-check current branch heads
+check current branch heads or other commits
 options:
 stop after precheck? batch mode
 Naming:
@@ -41,10 +41,10 @@ import time
 import shutil
 
 groupConfigsToBeChecked = [
-    "Skimming/zjet/x.py",  # does not exist, just testing error handling here
     "Skimming/higgsTauTau/kSkimming_cfg.py",
     "Skimming/higgsTauTau/kSkimming_run2_cfg.py",
-    "Skimming/zjet/2015-03-27_skim_kappa2.py",
+    "Skimming/zjet/skim_53_cfg.py",
+    "Skimming/zjet/skim_74_cfg.py",
 ]
 compareFilesPaths = [
     '/storage/6/berger/kappatest/output/',
@@ -108,8 +108,8 @@ def main(args):
     htmlfile = 'result.html'
     with open(htmlfile, 'w') as f:
         f.write(html)
-    if sendMailOnFail and not allOK:
-        sendMail(os.path.abspath('.'))
+    if sendMailOnFail and (opt['dryRun'] or not allOK):
+        sendMail(os.path.abspath('.'), ['development'])
     print "HTML written to %s, Kappa status:%s ok." % (htmlfile, [' not', ''][allOK])
     return not allOK
 
@@ -142,7 +142,7 @@ def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryR
     print "\nConfigure %d cases:" % len(cases)
     tests = [
         Arch(), Env(), Recipe(), Scram(), Copy(), Compile(),
-        Config(), CmsRun(), Output(), Compare(),
+        Config(), CmsRun(), Output(), Valid(),
     ]
     for case, i in zip(sorted(cases), range(len(cases))):
         print "- Case %d/%d: %s ..." % (i+1, len(cases), case.name),
@@ -156,8 +156,8 @@ def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryR
 
     print "\nWrite test script for %d cases:" % len(cases)
     for case, i in zip(sorted(cases), range(len(cases))):
-        print "- Case %d/%d: %s" % (i+1, len(cases), case.name)
-        case.writeScript()
+        print "- Case %d/%d: %s ..." % (i+1, len(cases), case.name),
+        print ['failed', 'successful'][case.writeScript()]
 
     print "\nRun %d cases:" % len(cases)
     for case, i in zip(sorted(cases), range(len(cases))):
@@ -168,7 +168,7 @@ def run(kappaPath, configs=None, branch=None, commit=None, batchMode=False, dryR
     print "\nRetrieve results for %d cases:" % len(cases)
     result = []
     for case, i in zip(sorted(cases), range(len(cases))):
-        print "- Case %d/%d: %s" % (i+1, len(cases), case.name)
+        print "- Case %d/%d: %s ..." % (i+1, len(cases), case.name)
         result.append(case.getResult())
     return cases
 
@@ -198,7 +198,8 @@ def niceVersion(version):
 def parseConfigs(configs, kappaCommentIdentifier='Kappa test:'):
     """Parse list of configs for CMSSW version, scram arch and checkout script
 
-    Returns a dictionary for each config
+    Returns a dictionary for each config containing the # Kappa test
+    keys and their values
     """
     result = {}
     for config in configs:
@@ -212,15 +213,17 @@ def parseConfigs(configs, kappaCommentIdentifier='Kappa test:'):
                     for key in ['CMSSW', 'scram arch', "checkout script", 'output', 'compare']:
                         if key in line:
                             string = line.split(key, 1)[1]
-                            if key in ['CMSSW', 'scram arch']:  # lists
+                            if key in ['CMSSW']:  # version list
                                 result[name][key] = [v.strip().replace(".", "_") for v in string.split(',')]
+                            elif key in ['scram arch', 'checkout script']:  # other lists
+                                result[name][key] = [v.strip() for v in string.split(',')]
                             else:  # single strings
                                 result[name][key] = string.strip()
                             done = True
                     if not done:
                         print "- Warning: {cfg:30}: Unknown 'Kappa test' line: {line}".format(cfg=name, line=line.strip())
                 elif 'outputFile' in line and not result[name].get('output', False):
-                    result[name]['output'] = line.split('=', 1)[1].split('root')[0].strip()[1:] + 'root'
+                    result[name]['output'] = line.split('=', 1)[1].replace('cms.string(', '').replace('"','').split('root')[0].strip() + 'root'
         # fill missing items to have a complete dictionary
         if 'CMSSW' not in result[name]:
             result[name]['CMSSW'] = []
@@ -236,7 +239,7 @@ def parseConfigs(configs, kappaCommentIdentifier='Kappa test:'):
                 "_".join(config.split('/')[-2:]).replace('/', '_').replace('.py', '.root'))
             if not os.path.exists(result[name]['compare']):
                 result[name]['compare'] = None
-        if 'output' in result[name] and '"' in result[name]['output']:
+        if 'output' in result[name] and ' ' in result[name]['output']:
             result[name]['output'] = False
         result[name]['cfgname'] = name
     return result
@@ -254,12 +257,21 @@ def preCheck(name, case):
     if case['compare'] is False:
         print "- Warning: {cfg:30}: Given compare file does not exist: no result comparision possible.".format(cfg=name)
     if case['checkout script']:
-        path = os.path.join(kappaPath, 'Skimming', case['checkout script'])
-        if not os.path.exists(path):
-            print "- Warning: {cfg:30}: Given checkout script '{script}' does not exist: checkout will fail ({path}).".format(cfg=name, script=case['checkout script'], path=path)
-            case['checkout script'] = False
-        else:
-            case['checkout script'] = path
+        for i in range(len(case['checkout script'])):
+            path = os.path.join(kappaPath, 'Skimming', case['checkout script'][i])
+            if not os.path.exists(path):
+                print "- Warning: {cfg:30}: Given checkout script '{script}' does not exist: checkout will fail ({path}).".format(cfg=name, script=case['checkout script'][i], path=path)
+                case['checkout script'][i] = False
+            else:
+                case['checkout script'][i] = path
+    if not case['checkout script']:
+        case['checkout script'] = [None]*len(case['CMSSW'])
+    if len(case['checkout script']) == 1 and len(case['CMSSW']) > 1:
+        config['checkout script'] = case['checkout script'] * len(case['CMSSW'])
+    if len(case['checkout script']) != len(case['CMSSW']):
+        print "- Warning: {cfg:30}: Different number of CMSSW versions ({nV}) and checkout scripts ({nA}) given!".format(
+                cfg=name, nV=len(case['CMSSW']), nA=len(case['checkout script']))
+
 
 def printPreCheck(cases, length=78):
     """Print the results of preCheck in a nice table"""
@@ -286,7 +298,7 @@ def printPreCheck(cases, length=78):
         success = success and ok
     print "=> %s required information available" % ['Not all', 'All'][success]
     versions = collectVersions(cases)
-    print "   Required CMSSW versions:", ", ".join([niceVersion(v) for v in versions])
+    print "   Required CMSSW versions:", ", ".join([niceVersion(v) for v in sorted(versions)])
     print "_"*length
     return success
 
@@ -294,12 +306,13 @@ def expandCases(configs):
     """For all configs, create a test case for each CMSSW version"""
     cases = []
     for config in configs.values():
-        for ver, arch in zip(config['CMSSW'], config['scram arch']):
+        for ver, arch, script in zip(config['CMSSW'], config['scram arch'], config['checkout script']):
             case = TestCase(config)
             case.name = config['cfgname'] + '_' + ver
             case.config['name'] = case.name
             case.config['CMSSW'] = ver
             case.config['scram arch'] = arch
+            case.config['checkout script'] = script
             cases.append(case)
             #print case.config
     return cases
@@ -331,11 +344,10 @@ class Test:
                 self.result = 90 + 10 * ('KAPPA TEST STEP SUCCESSFUL' in f.read())
         else:
             self.result = 40
-        print self.result, self.optional, self.config['checkout script'], self.name, self.config['name']
+        #print self.result, self.optional, self.config['checkout script'], self.name, self.config['name']
         # hack to make checkout script optional if not given
         if self.optional and self.config['checkout script'] and type(self.config['checkout script']) == str and self.config['checkout script'][0] == '#':
             self.result = 99
-            print "optional", self.result
         self.previous = 100
         return self.result
 
@@ -418,20 +430,18 @@ class TestCase(dict):
     def run(self, dryRun=False):
         startTime = time.time()
         if dryRun:
-            #os.mkdir(self.name + '/CMSSW_' + self.config['CMSSW'])
-            #os.mkdir(self.name + '/CMSSW_' + self.config['CMSSW'] + '/src')
-            for task in self.tasks: # if not t.optional]:
-                print "Writing to", task.log
+            for task in self.tasks:
                 if not task.log:
                     print task.log, "LOG", task.name, self.name
                 with open(task.log, 'w') as f:
                     f.write("Test %s\nKAPPA TEST STEP SUCCESSFUL\n" % task.name)
             time.sleep(0)
+            self.scriptreturncode = 0
         else:
             self.scriptreturncode = subprocess.Popen(['bash', self.scriptname]).wait()
         self.runtime = time.time() - startTime
         self.nicetime = "%4d:%02d" % (int(self.runtime/60), int(self.runtime - int(self.runtime/60) * 60))
-        return ((min([t.result for t in self.tasks]) > 40) + 2 * dryRun)
+        return self.scriptreturncode == 0
 
     def retrieve(self):
         self.log = self.name + '_log.txt'
@@ -443,6 +453,8 @@ class TestCase(dict):
                     f.write(open(task.log).read())
                 else:
                     print "File not found:", task.log
+        #retval = (bool(min([t.result for t in self.tasks]) > 40) + 2 * dryRun)
+        #print "Results", [t.result for t in self.tasks], min([t.result for t in self.tasks]), bool(min([t.result for t in self.tasks]) > 40), dryRun, retval
         return True
 
     def getResult(self):
@@ -463,28 +475,42 @@ class TestCase(dict):
 class Arch(Test):
     """Does the config file specify the scram arch needed for testing (required)"""
     script = "export SCRAM_ARCH={scram arch}\n"\
-             "ls -d /cvmfs/cms.cern.ch/{scram arch}/cms/cmssw/CMSSW_{CMSSW}" # for the return code
+             "ls -d /cvmfs/cms.cern.ch/{scram arch}/cms/cmssw*/CMSSW_{CMSSW}" # for the return code
 
 class Env(Test):
     """Return code of cmsrel and cmsenv"""
-    script = "echo \"NAF setup (will fail on EKP machines)\"\n"\
-             "module use -a /afs/desy.de/group/cms/modulefiles/\n"\
-             "module load cmssw\n"\
-             "echo \"EKP setup\"\n"\
-             "[[ $(hostname) == \"ekp\"* ]] && source /cvmfs/cms.cern.ch/cmsset_default.sh\n"\
+    script = "source /cvmfs/cms.cern.ch/cmsset_default.sh\n"\
              "cmsrel CMSSW_{CMSSW}\n"\
              "cd CMSSW_{CMSSW}/src\n"\
              "cmsenv\n"\
              "sed -i -e \"s@-fipa-pta@@g\" ../config/toolbox/{scram arch}/tools/selected/gcc-cxxcompiler.xml\n"\
+             "uname -a\n"\
+             "git  --work-tree={kappa} --git-dir={kappa}/.git describe\n"\
+             "git  --work-tree={kappa} --git-dir={kappa}/.git status\n"\
+             "echo \"HOSTNAME=$HOSTNAME\"\n"\
+             "echo \"SHELL=$SHELL\"\n"\
+             "python --version\n"\
+             "echo \"python:\" $(which python)\n"\
+             "echo \"PYTHONSTARTUP=$PYTHONSTARTUP\"\n"\
+             "echo \"PYTHONPATH=$PYTHONPATH\"\n"\
+             "echo \"SCRAM_ARCH=$SCRAM_ARCH\"\n"\
+             "echo \"VO_CMS_SW_DIR=$VO_CMS_SW_DIR\"\n"\
+             "echo \"CMSSW_VERSION=$CMSSW_VERSION\"\n"\
+             "echo \"CMSSW_GIT_HASH=$CMSSW_GIT_HASH\"\n"\
+             "echo \"CMSSW_BASE=$CMSSW_BASE\"\n"\
+             "echo \"CMSSW_RELEASE_BASE=$CMSSW_RELEASE_BASE\"\n"\
              "test ! -z $CMSSW_BASE"
 
 class Recipe(Test):
-    """Return code of the checkout recipe (if provided)"""
+    """Return code of the checkout recipe (if provided, light green otherwise)"""
     optional = True
-    script = "{checkout script}"
+    script = "cat {checkout script}\n"\
+             "{checkout script}"
 
 class Scram(Test):
-    """The recipe (checkout script) compiles with scram)"""
+    """The recipe (checkout script, without Kappa) compiles with scram"""
+    # Kappa is removed if it was automatically checked out to test the
+    # CMSSW packages alone
     # complicated rm path to prevent accidental removal
     script = "rm -rf ../../../{case}/CMSSW_{CMSSW}/src/Kappa\n"\
              "scram b -j8"
@@ -503,21 +529,24 @@ class Config(Test):
     script = "python {config}"
 
 class CmsRun(Test):
-    """Return code of CMSSW"""
+    """Return code of CMSSW cmsRun command"""
     script = "cmsRun {config}"
 
 class Output(Test):
-    """Does file exist"""
-    script = "test -f {output}"
+    """Does output file exist"""
+    script = "ls -l {output}\n"\
+             "test -f {output}"
 
 class Valid(Test):
     """Is output file a valid ROOT file"""
-    script = "test -f {output}"
+    script = "root -q -l {output} 2>&1 | grep -v \"no dictionary for class\"\n"\
+             "! root -q -l {output} 2>&1 | grep -E \"(Error|not found)\""
 
 class Compare(Test):
     """Whether the output file is identical to the given compare file"""
     script = "compareFiles.py {output} {compare}\n"\
              "echo Not tested"
+
 
 def writeHTML(branches, allOK):
     # header
@@ -737,22 +766,25 @@ function timeAgo(time) {
     return html
 
 
-def sendMail(testPaths):
+def sendMail(testPaths, branches=None):
+    if not branches:
+        branches = []
     import smtplib
     from email.mime.text import MIMEText as Message
 
     msg = Message("""Dear Kappa developers,
 
 the test script found problems in the current state of the Kappa repository.
-Please have a look at: http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/result.html
+Please have a look at: http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/current/result.html
 
-The test directory is %s
+Tested branches are: %s.
+The test directory is %s.
 
 Your friendly test script
-""" % testPaths)
+""" % (', '.join(branches), testPaths))
     msg['Subject'] = 'Kappa test problems'
-    msg['From'] = 'test@kappa' 
-    msg['To'] = 'joram.berger@cern.ch'  # artus list?
+    msg['From'] = 'joram.berger@kit.edu' # must be on the artus list
+    msg['To'] = 'artus@lists.kit.edu'
 
     s = smtplib.SMTP('smarthost.kit.edu')
     s.sendmail(msg['From'], msg['To'] , msg.as_string())

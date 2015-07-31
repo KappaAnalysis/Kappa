@@ -22,13 +22,13 @@ public:
 	template<typename Tin>
 	static void fillMET(const Tin &in, OutputType &out)
 	{
-		copyP4(in.at(0), out.p4);
-		out.sumEt = in.at(0).sumEt();
+		copyP4(in, out.p4);
+		out.sumEt = in.sumEt();
 
 #if CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2
-		reco::METCovMatrix mat = in.at(0).getSignificanceMatrix();
+		reco::METCovMatrix mat = in.getSignificanceMatrix();
 #else
-		TMatrixD mat = in.at(0).getSignificanceMatrix();
+		TMatrixD mat = in.getSignificanceMatrix();
 #endif
 		if (mat(0,1) != mat(1,0))
 			std::cout << "KBasicMETProducer::fillMET: Matrix is not symmetric: " << mat(0,1) << " != " << mat(1,0) << std::endl;
@@ -46,7 +46,7 @@ protected:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		if (in.size() == 1)
-			KBasicMETProducer::fillMET<InputType>(in, out);
+			KBasicMETProducer::fillMET<reco::MET>(in.at(0), out);
 		else if (verbosity > 1)
 			std::cout << "KBasicMETProducer::fillProduct: Found " << in.size() << " PFMET objects!" << std::endl;
 	}

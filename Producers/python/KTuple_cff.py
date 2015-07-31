@@ -106,6 +106,14 @@ kappaTupleDefaultsBlock = cms.PSet(
 		triggerObjects = cms.vstring(),
 	),
 
+	TriggerObjectStandalone = cms.PSet(kappaNoRegEx, kappaNoCut,
+			bits = cms.InputTag("TriggerResults","","HLT"),
+			objects = cms.InputTag("selectedPatTrigger"),
+			prescales = cms.InputTag("patTrigger"),
+		triggerObjects = cms.PSet(
+			src = cms.InputTag("selectedPatTrigger"),
+			)
+	),
 	Tracks = cms.PSet(kappaNoRename,
 		maxN = cms.int32(-1),
 		minPt = cms.double(10.),
@@ -213,10 +221,20 @@ kappaTupleDefaultsBlock = cms.PSet(
 	MET = cms.PSet(
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("recoPFMET"),
+		whitelist = cms.vstring("recoPFMET", "pfMetPuppi", "pfMETCHS","_pfMet_"),
 		blacklist = cms.vstring(),
 
 		rename = cms.vstring("pfMet => met"),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
+	PatMET = cms.PSet(
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("slimmedMETs"),
+		blacklist = cms.vstring(),
+
+		rename = cms.vstring("slimmedMETs => met"),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
@@ -258,13 +276,28 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
+	packedPFCandidates = cms.PSet(kappaNoRename, kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("packedPFCandidates"),
+		blacklist = cms.vstring(),
+	),
+
 	PileupDensity = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("kt6PFJetsRho_rho", "kt6PFJets_rho"),
+		whitelist = cms.vstring(
+			"kt6PFJetsRho_rho",
+			"kt6PFJets_rho",
+			# CMSSW 7xy precomputed pileup density
+			"fixedGridRhoFastjetAll",
+			"fixedGridRhoFastjetAllCalo",
+			# legacy, recomputed
+			"pileupDensitykt6PFJets",
+		),
 		blacklist = cms.vstring(),
 
-		rename = cms.vstring("kt6PFJetsRho => KT6AreaRho", "kt6PFJets => KT6Area"),
+		rename = cms.vstring("kt6PFJetsRho => pileupDensityRho", "kt6PFJets => pileupDensity"),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
@@ -286,10 +319,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
-			# track/ecal/hcal iso are directly taken from reco instead...
-			#srcMuonIsolationTrack = cms.InputTag("muIsoDepositTk"),
-			#srcMuonIsolationEcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","ecal"),
-			#srcMuonIsolationHcal = cms.InputTag("muIsoDepositCalByAssociatorTowers","hcal"),
 			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
 			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
 			vertexcollection = cms.InputTag("offlinePrimaryVertices"),
@@ -389,6 +418,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 		hltMaxdR = cms.double(0.2),
 		hltMaxdPt_Pt = cms.double(1.),
 		noPropagation = cms.bool(False),
+		doPfIsolation = cms.bool(True), # use PFIso instead of muon iso
+		use03ConeForPfIso = cms.bool(False), # use 0.3 cone for PFIso instead of the more common 0.4
 
 		useSimpleGeometry = cms.bool(True),
 		useTrack = cms.string("tracker"),
@@ -415,6 +446,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 	Electrons = cms.PSet(kappaNoCut,
 		kappaNoRegEx,
 		ids = cms.vstring(),
+		srcIds = cms.string("pat"),
 		electrons = cms.PSet(
 			src = cms.InputTag("patElectrons"),
 			allConversions = cms.InputTag("allConversions"),
@@ -432,11 +464,30 @@ kappaTupleDefaultsBlock = cms.PSet(
 	BasicJets = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 
-		whitelist = cms.vstring("recoPFJets_ak5PFJets.*"),
+		whitelist = cms.vstring("recoPFJets_ak5PFJets.*", "patJets_.*"),
 		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG"),
 
 		rename = cms.vstring(
 			"(antikt)|(kt)|(siscone)|(iterativecone)|(icone)|(ak)|(ca)([0-9]*) => (?1ak)(?2kt)(?3sc)(?4ic)(?5ic)(?6ak)(?7ca)$8"
+		),
+		rename_whitelist= cms.vstring(),
+		rename_blacklist = cms.vstring(),
+	),
+
+	Jets = cms.PSet(kappaNoCut,
+		kappaNoRegEx,
+
+		taggers = cms.vstring(),
+	),
+
+	PatJets = cms.PSet(kappaNoCut,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("patJets_.*"),
+		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG", ".*SubJets.*"),
+
+		rename = cms.vstring(
+			"(slimmedJetsAK8)|(slimmed) => (?1ak8PFJets)(?2ak5PF)"
 		),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
@@ -477,10 +528,22 @@ kappaTupleDefaultsBlock = cms.PSet(
 		taus = cms.PSet(
 			src = cms.InputTag("hpsPFTauProducer"),
 			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
-			binaryDiscrWhitelist = cms.vstring("hpsPFTau.*"),
+			binaryDiscrWhitelist = cms.vstring("hpsPFTauDiscrimination.*"),
 			binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", "raw", "Raw"),
-			floatDiscrWhitelist = cms.vstring("hpsPFTau.*raw.*", "hpsPFTau.*Raw.*"),
+			floatDiscrWhitelist = cms.vstring("hpsPFTau.*raw.*", "hpsPFTau.*Raw.*", "hpsPFTauMVA.*"),
 			floatDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
+			tauDiscrProcessName = cms.string("KAPPA"),
+		),
+	),
+
+	PatTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+		taus = cms.PSet(
+			src = cms.InputTag("slimmedTaus"),
+			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
+			binaryDiscrWhitelist = cms.vstring(".*"),
+			binaryDiscrBlacklist = cms.vstring(),
+			floatDiscrWhitelist = cms.vstring(".*"),
+			floatDiscrBlacklist = cms.vstring(),
 			tauDiscrProcessName = cms.string("KAPPA"),
 		),
 	),

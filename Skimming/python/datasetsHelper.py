@@ -107,7 +107,6 @@ def getProductionCampaignGlobalTag(nickname, centerOfMassEnergy):
 	dataSetName = getDatasetName(nickname)
 	if getProcess(nickname) == "Data": return "None"
 	posLeft = dataSetName.find("_START") +1
-	print posLeft
 	if posLeft < 1 :
 		return ""
 	posRight = posLeft + dataSetName[posLeft+5:].find("-")

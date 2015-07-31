@@ -1,5 +1,9 @@
 # κappa {#mainpage}
 
+[![Build Status](https://travis-ci.org/KappaAnalysis/Kappa.svg)](https://travis-ci.org/KappaAnalysis/Kappa)
+
+CMSSW based tests: [results](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/current/result.html)
+
 κappa is the Karlsruhe Package for Physics Analysis.
 It is a skimming framework constructed to extract the relevant data
 from EDM data sets (RECO, AOD, MINIAOD (in development)) and store it in a well-defined

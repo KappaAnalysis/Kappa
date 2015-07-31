@@ -42,7 +42,9 @@ public:
 		selectedMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
 		noPropagation(cfg.getParameter<bool>("noPropagation")),
 		propagatorToMuonSystem(cfg),
-		doPfIsolation(true)
+		doPfIsolation(cfg.getParameter<bool>("doPfIsolation")),
+		use03ConeForPfIso(cfg.getParameter<bool>("use03ConeForPfIso")),
+		muonIsolationPFInitialized(false)
 	{
 		std::sort(selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
 		std::vector<std::string>::iterator tempIt = std::unique(
@@ -94,7 +96,10 @@ public:
 		edm::InputTag tagMuonIsolationPF = pset.getParameter<edm::InputTag>("srcMuonIsolationPF");
 
 		if (tagMuonIsolationPF.label() != "")
+		{
 			cEvent->getByLabel(tagMuonIsolationPF, isoDepsPF);
+			muonIsolationPFInitialized = true;
+		}
 
 		if (tagHLTrigger.label() != "")
 			cEvent->getByLabel(tagHLTrigger, triggerEventHandle);
@@ -194,32 +199,46 @@ public:
 		}
 		else
 		{
-			/// isolation variables for pfIso04
+			/// isolation variables for pfIso
 			/// DataFormats/MuonReco/interface/MuonPFIsolation.h
-			out.sumChargedHadronPt   = in.pfIsolationR04().sumChargedHadronPt;
-			out.sumChargedParticlePt = in.pfIsolationR04().sumChargedParticlePt;
-			out.sumNeutralHadronEt   = in.pfIsolationR04().sumNeutralHadronEt;
-			out.sumPhotonEt          = in.pfIsolationR04().sumPhotonEt;
-			out.sumPUPt              = in.pfIsolationR04().sumPUPt;
-			out.sumNeutralHadronEtHighThreshold = in.pfIsolationR04().sumNeutralHadronEtHighThreshold;
-			out.sumPhotonEtHighThreshold        = in.pfIsolationR04().sumPhotonEtHighThreshold;
+			if (use03ConeForPfIso)
+			{
+				out.sumChargedHadronPt   = in.pfIsolationR03().sumChargedHadronPt;
+				out.sumChargedParticlePt = in.pfIsolationR03().sumChargedParticlePt;
+				out.sumNeutralHadronEt   = in.pfIsolationR03().sumNeutralHadronEt;
+				out.sumPhotonEt          = in.pfIsolationR03().sumPhotonEt;
+				out.sumPUPt              = in.pfIsolationR03().sumPUPt;
+				out.sumNeutralHadronEtHighThreshold = in.pfIsolationR03().sumNeutralHadronEtHighThreshold;
+				out.sumPhotonEtHighThreshold        = in.pfIsolationR03().sumPhotonEtHighThreshold;
+			}
+			else
+			{
+				out.sumChargedHadronPt   = in.pfIsolationR04().sumChargedHadronPt;
+				out.sumChargedParticlePt = in.pfIsolationR04().sumChargedParticlePt;
+				out.sumNeutralHadronEt   = in.pfIsolationR04().sumNeutralHadronEt;
+				out.sumPhotonEt          = in.pfIsolationR04().sumPhotonEt;
+				out.sumPUPt              = in.pfIsolationR04().sumPUPt;
+				out.sumNeutralHadronEtHighThreshold = in.pfIsolationR04().sumNeutralHadronEtHighThreshold;
+				out.sumPhotonEtHighThreshold        = in.pfIsolationR04().sumPhotonEtHighThreshold;
+			}
 		}
-		
 		// source?
-		edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
-		reco::IsoDeposit muonIsoDepositPF = (*isoDepsPF)[muonref];
-		reco::isodeposit::Direction dir = reco::isodeposit::Direction(in.eta(), in.phi());
-		reco::isodeposit::ConeVeto pf_cone_veto(dir, pfIsoVetoCone);
-		reco::isodeposit::ThresholdVeto pf_threshold_veto(pfIsoVetoMinPt);
+		if(muonIsolationPFInitialized)
+		{
+			edm::RefToBase<reco::Muon> muonref(edm::Ref<edm::View<reco::Muon> >(handle, this->nCursor));
+			reco::IsoDeposit muonIsoDepositPF = (*isoDepsPF)[muonref];
+			reco::isodeposit::Direction dir = reco::isodeposit::Direction(in.eta(), in.phi());
+			reco::isodeposit::ConeVeto pf_cone_veto(dir, pfIsoVetoCone);
+			reco::isodeposit::ThresholdVeto pf_threshold_veto(pfIsoVetoMinPt);
 
-		std::vector<reco::isodeposit::AbsVeto*> vetosPF;
-		vetosPF.push_back(&pf_cone_veto);
-		vetosPF.push_back(&pf_threshold_veto);
-
+			std::vector<reco::isodeposit::AbsVeto*> vetosPF;
+			vetosPF.push_back(&pf_cone_veto);
+			vetosPF.push_back(&pf_threshold_veto);
+			out.pfIso03    = muonIsoDepositPF.depositWithin(0.3, vetosPF);
+			//out.pfIso04    = muonIsoDepositPF.depositWithin(0.4, vetosPF);
+		}
 		/// isolation results
 		out.trackIso = in.isolationR03().sumPt;
-		out.pfIso03    = muonIsoDepositPF.depositWithin(0.3, vetosPF);
-		//out.pfIso04    = muonIsoDepositPF.depositWithin(0.4, vetosPF);
 
 
 		/// highpt ID variables
@@ -243,14 +262,19 @@ public:
 			automatically use muon::improvedTuneP default as in CMSSW
 		    Medium Id definition taken from:
 		    https://indico.cern.ch/event/357213/contribution/2/material/slides/0.pdf
-			last update: 2015-02-10
+		    if release < 74X, otherwise use the method in the muon dataformat
+			last update: 2015-06-19
 		*/
+#if (CMSSW_MAJOR_VERSION < 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION < 4)
 		bool goodGlb = in.isGlobalMuon() &&
 			       (in.globalTrack().isNonnull() ? (in.globalTrack()->normalizedChi2() < 3.) : 0 ) &&
 			       in.combinedQuality().chi2LocalPosition < 12. &&
 			       in.combinedQuality().trkKink < 20.;
 		bool isMediumMuon = (in.innerTrack().isNonnull() ? (in.innerTrack()->validFraction() >= 0.8) : 0 ) &&
 			       muon::segmentCompatibility(in) >= (goodGlb ? 0.303 : 0.451);
+#else
+		bool isMediumMuon = muon::isMediumMuon(in);
+#endif
 
 		out.ids = KLeptonId::ANY;
 		out.ids |= (muon::isLooseMuon(in)      << KLeptonId::LOOSE);
@@ -279,6 +303,8 @@ private:
 	
 	std::vector<edm::Handle<edm::ValueMap<double> > > isoVals;
 	bool doPfIsolation;
+	bool use03ConeForPfIso;
+	bool muonIsolationPFInitialized;
 
 	std::map<std::string, int> muonTriggerObjectBitMap;
 

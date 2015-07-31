@@ -6,9 +6,11 @@
 import os
 import string
 
-from pprint import pprint
 import json
+import re
 
+cmssw_base = os.environ.get("CMSSW_BASE")
+dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
 def get_campaign(details, default=None, energy=None):
 	if (default == None):
@@ -29,7 +31,6 @@ def get_scenario(details, default=None, energy=None, data=False):
 			scenario = scenario.split("_")[0] +"_"+ scenario.split("_")[1]
 		if (energy == "13" or energy =="14"):
 			scenario = scenario.split("_")[0]
-		print "scneario:"
 		return scenario
 	else:
 		return default
@@ -87,18 +88,26 @@ def is_embedded(filetype, default=False):
 	else:
 		return filetype == "USER"
 
+def get_format(filetype, default=False):
+	if (default == None):
+		return filetype
+	else:
+		return default
+
+
 def is_data(prod_camp, default=None):
 	if (default == None):
-		return prod_camp.find("Run")!=-1
+		return prod_camp.find("DR")==-1
 	else:
 		return default 
 
 def make_nickname(dict):
 	nick = ""
-	nick += dict["process"].replace("-", "")  + "-"
-	nick += dict["campaign"].replace("-", "") + "-"
-	nick += dict["scenario"].replace("-", "") + "-"
-	nick += dict["energy"].replace("-", "")   + "TeV"
+	nick += dict["process"].replace("_", "")  + "_"
+	nick += dict["campaign"].replace("_", "") + "_"
+	nick += dict["scenario"].replace("_", "") + "_"
+	nick += dict["energy"].replace("_", "")   + "TeV_"
+	nick += dict["format"].replace("_", "")
 	return nick
 
 def load_database(dataset):
@@ -109,3 +118,32 @@ def save_database(dict, dataset):
 
 	with open(dataset, 'w') as fp:
 		json.dump(dict, fp, sort_keys=True, indent = 4)
+
+def query_result(query):
+	dict = load_database(dataset)
+
+	for sample, values in dict.iteritems():
+		matches = True
+		for name, attribute in values.iteritems():
+			if not name in query: continue
+			if not (re.match(str(query[name]), str(attribute).replace("_", "")) != None):
+				matches = False
+		if matches:
+			return sample
+
+def get_sample_by_nick(nickname):
+
+	# split nickname
+	process, campaign, scenario, energy, format = nickname.split("_")
+	query = {
+		"process" : process,
+		"campaign" : campaign,
+		"scenario" : scenario,
+		"energy" : energy.strip("TeV"),
+		"format" : format
+	}
+
+	#query_nick, sample = query_result(query)
+	return query_result(query)
+	#pd_name, details, filetype = options.sample.strip("/").split("/")
+	#return pd_name, details, filetype

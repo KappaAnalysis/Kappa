@@ -197,8 +197,8 @@ std::ostream &operator<<(std::ostream &os, const KExtendedTau &tau)
 std::ostream &operator<<(std::ostream &os, const KGenTau &tau)
 {
 	return os << static_cast<const KGenParticle>(tau)
-		<< " visible=" << static_cast<const KLV>(tau.visible)
-		<< " decayMode=" << int(tau.decayMode) << " vertex=" << tau.vertex;
+		<< " visible=" << tau.visible << " decayMode=" << int(tau.decayMode)
+		<< " vertex=" << tau.vertex;
 }
 
 std::ostream &operator<<(std::ostream &os, const KGenJet &jet)

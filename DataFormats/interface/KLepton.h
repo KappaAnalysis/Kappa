@@ -67,9 +67,9 @@ public:
 	inline bool idTightMuonRejection()     const { return (ids & (1 << KLeptonId::TIGHTMUONREJECTION)     && (KLeptonFlavour::TAU == (leptonInfo & KLeptonFlavourMask))); }; // tau
 
 	/// PF isolation with delta beta corrections (default fraction of pile-up is 0.5)
-	inline double pfIso(const double puFraction=0.5) const
+	inline float pfIso(const float puFraction=0.5) const
 	{
-		return sumChargedHadronPt + std::max(0.0,
+		return sumChargedHadronPt + std::max(0.0f,
 			sumNeutralHadronEt + sumPhotonEt - puFraction * sumPUPt);
 	}
 
@@ -82,7 +82,7 @@ public:
 	double pfIsoRho(const double rho = 0.0, const double radius = 0.4) const
 	{
 		double area = radius * radius * 3.14159;
-		return std::max(0.0, pfIso(0.0) - std::max(rho * area, 0.0));
+		return std::max(0.0, static_cast<double>(pfIso(0.0)) - std::max(rho * area, 0.0));
 	}
 	
 	int getHash() const

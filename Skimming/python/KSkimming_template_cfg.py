@@ -28,8 +28,19 @@ process.source = cms.Source("PoolSource",
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 ## Geometry and Detector Conditions (needed for a few patTuple production steps)
-process.load("Configuration.Geometry.GeometryIdeal_cff")
-process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+import Kappa.Skimming.tools as tools
+cmssw_version_number = tools.get_cmssw_version_number()
+split_cmssw_version = cmssw_version_number.split("_") 
+
+if (cmssw_version_number.startswith("7_4")):
+	# see https://twiki.cern.ch/twiki/bin/view/Sandbox/MyRootMakerFrom72XTo74X#DDVectorGetter_vectors_are_empty
+	print "Use GeometryRecoDB and condDBv2"
+	process.load("Configuration.Geometry.GeometryRecoDB_cff")
+	process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+
+else:
+	process.load("Configuration.Geometry.GeometryIdeal_cff")
+	process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
 from Configuration.AlCa.autoCond import autoCond
 process.GlobalTag.globaltag = cms.string(autoCond['startup'])

@@ -20,43 +20,38 @@ public:
 
 	static const std::string getLabel() { return "GenJets"; }
 
-	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
+	static bool allDaughtersValid(const SingleInputType &in)
 	{
-		return KBaseMultiLVProducer<edm::View<reco::GenJet>, KGenJets>::onLumi(lumiBlock, setup);
+		const auto daughters = in.daughterPtrVector();
+		for ( auto daughter : daughters )
+		{
+			if (!daughter.isNonnull())
+				return false;
+		}
+		return true;
 	}
 
-	virtual void fillProduct(const InputType &in, OutputType &out, const std::string &name,
-	                         const edm::InputTag *tag, const edm::ParameterSet &pset)
-	{
-		KBaseMultiLVProducer<edm::View<reco::GenJet>, KGenJets>::fillProduct(in, out, name, tag, pset);
+	static void fillGenJet(const SingleInputType &in, SingleOutputType &out)
+	{	/// momentum:
+		copyP4(in, out.p4);
+		// check if inputs are valid. Status April 15: Some miniAOD samples do not fill their daughters properly
+		std::string genTauDecayModeString = allDaughtersValid(in) ? JetMCTagUtils::genTauDecayMode(in) : "invalid";
+		if      (genTauDecayModeString == "oneProng0Pi0")     out.genTauDecayMode = 0;
+		else if (genTauDecayModeString == "oneProng1Pi0")     out.genTauDecayMode = 1;
+		else if (genTauDecayModeString == "oneProng2Pi0")     out.genTauDecayMode = 2;
+		else if (genTauDecayModeString == "oneProngOther")    out.genTauDecayMode = 7;
+		else if (genTauDecayModeString == "threeProng0Pi0")   out.genTauDecayMode = 3;
+		else if (genTauDecayModeString == "threeProng1Pi0")   out.genTauDecayMode = 4;
+		else if (genTauDecayModeString == "threeProngOther")  out.genTauDecayMode = 8;
+		else if (genTauDecayModeString == "electron")         out.genTauDecayMode = 5;
+		else if (genTauDecayModeString == "muons")            out.genTauDecayMode = 6;
+		else out.genTauDecayMode = -1;
 	}
+
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		/// momentum:
-		copyP4(in, out.p4);
-		
-		std::string genTauDecayModeString = JetMCTagUtils::genTauDecayMode(in);
-		if (genTauDecayModeString == "oneProng0Pi0")
-		{
-			out.genTauDecayMode = 0;
-		}
-		else if (genTauDecayModeString == "oneProng1Pi0")
-		{
-			out.genTauDecayMode = 1;
-		}
-		else if (genTauDecayModeString == "oneProng2Pi0")
-		{
-			out.genTauDecayMode = 2;
-		}
-		else if (genTauDecayModeString == "threeProng0Pi0")
-		{
-			out.genTauDecayMode = 3;
-		}
-		else
-		{
-			out.genTauDecayMode = -1;
-		}
+		fillGenJet(in, out);
 	}
 };
 

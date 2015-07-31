@@ -99,9 +99,9 @@ struct KMuon : public KLepton
 	inline bool isPFMuon() const         { return (type & (1 << 5)); };
 	inline bool isRPCMuon() const        { return (type & (1 << 6)); };
 
-	double pfIso04high(const double puFraction=0.5) const
+	float pfIso04high(const float puFraction=0.5) const
 	{
-		return sumChargedHadronPt + std::max(0.0,
+		return sumChargedHadronPt + std::max(0.0f,
 			sumNeutralHadronEtHighThreshold + sumPhotonEtHighThreshold - puFraction * sumPUPt);
 	}
 

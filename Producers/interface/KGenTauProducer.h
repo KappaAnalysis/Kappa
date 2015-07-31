@@ -37,7 +37,7 @@ protected:
 		KBasicGenParticleProducer<KGenTaus>::fillSingle(in, out);
 
 		DecayInfo info;
-		walkDecayTree(in, info);
+		walkDecayTree(dynamic_cast<const reco::GenParticle&>(in), info);
 
 		out.visible.p4 = info.p4_vis;
 
@@ -61,7 +61,7 @@ protected:
 
 			// TODO: Can this happen?
 			if( (info.n_charged % 2) == 0)
-				std::cerr << "Kappa GenTau producer warning: %d charged particles in tau decay!" << std::endl;
+				printf("Kappa GenTau producer warning: %d charged particles in tau decay!\n", info.n_charged);
 
 			break;
 		default:
@@ -87,6 +87,11 @@ protected:
 		if(in.mother() && abs(in.mother()->pdgId()) == 15)
 			return false;
 
+		// Check one level above the mother, to be sure that the taus don't come
+		// from an intermediate gamma emission from another tau
+		if(in.mother()->mother() && abs(in.mother()->mother()->pdgId()) == 15)
+			return false;
+
 		return true;
 	}
 
@@ -102,7 +107,7 @@ private:
 		unsigned int n_charged;
 	};
 
-	void walkDecayTree(const reco::Candidate& in, DecayInfo& info, int level = 0)
+	void walkDecayTree(const reco::GenParticle& in, DecayInfo& info, int level = 0)
 	{
 		//for(int i = 0; i < level; ++i) printf(" ");
 		//printf("PDG %d\tstatus %d", in.pdgId(), in.status());
@@ -111,7 +116,16 @@ private:
 		if(in.numberOfDaughters() == 0)
 		{
 			//printf("\n");
+
+			// Check that the final particle of the chain is a direct tau decay product, avoiding,
+			// for example, particles coming from intermediate gamma emission, which are listed as
+			// tau daughters in prunedGenParticle collections. Method available only from 74X.
+#if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
+			if(in.status() == 1 && !isNeutrino(in.pdgId()) && in.statusFlags().isDirectTauDecayProduct() 
+								       && in.statusFlags().isDirectHardProcessTauDecayProduct())
+#else
 			if(in.status() == 1 && !isNeutrino(in.pdgId()))
+#endif
 			{
 				RMDLV p4;
 				copyP4(in.p4(), p4);
@@ -128,27 +142,27 @@ private:
 			//printf("\tone child, keeping level... ");
 			// Don't increase level since this does not seem to be a "real"
 			// decay but just an intermediate generator step
-			walkDecayTree(*in.daughter(0), info, level);
+			walkDecayTree(static_cast<const reco::GenParticle&>(*in.daughter(0)), info, level);
 		}
 		else if(in.numberOfDaughters() == 2 && (
 				(abs(in.daughter(0)->pdgId()) == 22 && abs(in.daughter(1)->pdgId()) == 15) ||
 				(abs(in.daughter(0)->pdgId()) == 15 && abs(in.daughter(1)->pdgId()) == 22))
 			   )
 		{
-			//printf("\tone child, keeping level... ");
+			//printf("\tinterm. gamma emission, keeping level... ");
 			// Don't increase level since this does not seem to be a "real"
 			// decay but just an intermediate emission of a photon
 			// Don't follow photon decay path
 			if (abs(in.daughter(0)->pdgId()) == 15)
-				walkDecayTree(*in.daughter(0), info, level);
+				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(0)), info, level);
 			else
-				walkDecayTree(*in.daughter(1), info, level);
+				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(1)), info, level);
 		}
 		else
 		{
-			//printf("\t%d children, recurse...\n", in.numberOfDaughters());
+			//printf("\t%lu children, recurse...\n", in.numberOfDaughters());
 			for(unsigned int i = 0; i < in.numberOfDaughters(); ++i)
-				walkDecayTree(*in.daughter(i), info, level + 1);
+				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(i)), info, level + 1);
 		}
 	}
 

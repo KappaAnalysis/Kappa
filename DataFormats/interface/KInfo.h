@@ -58,7 +58,7 @@ struct KDataLumiInfo : public KLumiInfo
 	double getLumi() const
 	{
 		// 10: , 1e6: conversion in pb
-		return avgInsRecLumi * lumiSectionLength / 10.0 / 1e6;
+		return static_cast<double>(avgInsRecLumi) * static_cast<double>(lumiSectionLength) / 10.0 / 1e6;
 	}
 };
 

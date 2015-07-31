@@ -6,29 +6,30 @@
 #-#   Roger Wolf <roger.wolf@cern.ch>
 
 import FWCore.ParameterSet.Config as cms
+import Kappa.Skimming.tools as tools
+
+cmssw_version_number = tools.get_cmssw_version_number()
 
 ## ------------------------------------------------------------------------
-## POG recommended electron Id:
-##  - works for patElectron level, not for gsfElectron
-
-## Modification for new Electron ID for Run 2
+## Electron ID for Run 2
 ## CutBased:
 ## https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2
 ## MVA:
 ## https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
-## Instructions for using new MVA-training:
-## 1. download git repository as described at https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
-## 2. run scramv1 b in src directory
 
-from EgammaAnalysis.ElectronTools.electronIdMVAProducer_CSA14_cfi import *
-
-electronIdMVA = cms.Sequence(
-    mvaTrigV050nsCSA14+
-    mvaTrigV025nsCSA14+
-    mvaNonTrigV050nsCSA14+
-    mvaNonTrigV025nsCSA14+
-    mvaNonTrigV025nsPHYS14
-    )
+if (cmssw_version_number.startswith("7_4")):
+	# In the 74X release, the MVA IDs are calculated in the VID framework,
+	# together with the cut-based ones (see below)
+	electronIdMVA = cms.Sequence()
+else:
+	from EgammaAnalysis.ElectronTools.electronIdMVAProducer_CSA14_cfi import *
+	electronIdMVA = cms.Sequence(
+	    mvaTrigV050nsCSA14+
+	    mvaTrigV025nsCSA14+
+	    mvaNonTrigV050nsCSA14+
+	    mvaNonTrigV025nsCSA14+
+	    mvaNonTrigV025nsPHYS14
+	    )
 
 ## ------------------------------------------------------------------------
 ## PAT electorn configuration
@@ -38,19 +39,31 @@ electronIdMVA = cms.Sequence(
 from TrackingTools.TransientTrack.TransientTrackBuilder_cfi import *
 from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
 
-patElectrons.electronIDSources = cms.PSet(
-	## cut based Id
-	cutBasedEleIdPHYS14Loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-loose"),
-	cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-medium"),
-	cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-tight"),
-	cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-veto"),
-	## MVA based Id
-	mvaTrigV050nsCSA14        = cms.InputTag("mvaTrigV050nsCSA14"),
-	mvaTrigV025nsCSA14        = cms.InputTag("mvaTrigV025nsCSA14"),
-	mvaNonTrigV050nsCSA14     = cms.InputTag("mvaNonTrigV050nsCSA14"),
-	mvaNonTrigV025nsCSA14     = cms.InputTag("mvaNonTrigV025nsCSA14"),
-	mvaNonTrigV025nsPHYS14    = cms.InputTag("mvaNonTrigV025nsPHYS14"),
-)
+if (cmssw_version_number.startswith("7_4")):
+	patElectrons.electronIDSources = cms.PSet(
+		## cut based Id
+		cutBasedEleIdPHYS14Loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-loose"),
+		cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-medium"),
+		cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-tight"),
+		cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto"),
+		## MVA based Id
+		mvaNonTrig25nsPHYS14      = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Phys14NonTrigValues"),
+	)
+else:
+	patElectrons.electronIDSources = cms.PSet(
+		## cut based Id
+		cutBasedEleIdPHYS14Loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-loose"),
+		cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-medium"),
+		cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-tight"),
+		cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-veto"),
+		## MVA based Id
+		mvaTrigV050nsCSA14        = cms.InputTag("mvaTrigV050nsCSA14"),
+		mvaTrigV025nsCSA14        = cms.InputTag("mvaTrigV025nsCSA14"),
+		mvaNonTrigV050nsCSA14     = cms.InputTag("mvaNonTrigV050nsCSA14"),
+		mvaNonTrigV025nsCSA14     = cms.InputTag("mvaNonTrigV025nsCSA14"),
+		mvaNonTrigV025nsPHYS14    = cms.InputTag("mvaNonTrigV025nsPHYS14"),
+	)
+
 patElectrons.addGenMatch                   = False
 patElectrons.embedGenMatch                 = False
 patElectrons.genParticleMatch              = ""
@@ -69,17 +82,27 @@ patElectrons.embedRecHits                  = False
 patElectrons.embedHighLevelSelection.pvSrc = "goodOfflinePrimaryVertices"
 
 
-## for the Run 2 cutBased Id
-# https://github.com/ikrav/ElectronWork/blob/master/ElectronNtupler/test/runIdDemoPrePHYS14AOD.py#L29-L56
+## Set up electron ID (VID framework)
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import setupAllVIDIdsInModule, setupVIDElectronSelection
-from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
-from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi import *
-egmGsfElectronIDSequence = cms.Sequence(egmGsfElectronIDs)
-# Define which IDs we want to produce
-# Each of these IDs contains all four standard cut-based ID working points 
+
+if (cmssw_version_number.startswith("7_4")):
+	# https://github.com/ikrav/EgammaWork/blob/v1/ElectronNtupler/test/runElectrons_VID_MVA_PHYS14_demo.py
+	from PhysicsTools.SelectorUtils.tools.vid_id_tools import switchOnVIDElectronIdProducer, DataFormat
+	from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cff import *
+
+else:
+	# https://github.com/ikrav/ElectronWork/blob/master/ElectronNtupler/test/runIdDemoPrePHYS14AOD.py#L29-L56
+	from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
+	from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi import *
+	egmGsfElectronIDSequence = cms.Sequence(egmGsfElectronIDs)
 
 def setupElectrons(process):
-	my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_cff']
+	if (cmssw_version_number.startswith("7_4")):
+		switchOnVIDElectronIdProducer(process, DataFormat.AOD)
+		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V2_cff',
+				 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_PHYS14_PU20bx25_nonTrig_V1_cff']
+	else:
+		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_cff']
 	for idmod in my_id_modules:
 		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 

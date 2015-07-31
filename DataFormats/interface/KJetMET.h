@@ -73,7 +73,17 @@ struct KJet : public KBasicJet
 		}
 		if (!check)
 			return false;
-		std::cout << "Binary ID \"" << name << "\" not available!" << std::endl;
+		std::cout << "Binary ID \"" << name << "\" not available!";
+		if(jetmetadata->idNames.size() == 0)
+			std::cout << " Sample does not include any IDs at all." << std::endl;
+		else
+		{
+			std::cout << " Available IDs are:" << std::endl;
+			for (unsigned int i = 0; i < jetmetadata->idNames.size(); ++i)
+			{
+				std::cout << jetmetadata->idNames[i] << std::endl;
+			}
+		}
 		exit(1);
 	}
 };

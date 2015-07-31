@@ -12,11 +12,8 @@ import re
 from Kappa.Skimming.registerDatasetHelper import *
 import Kappa.Skimming.datasets2011 as datasets2011
 import Kappa.Skimming.datasets2012 as datasets2012
-#from Kappa.Skimming.datasets2013 import *
+import Kappa.Skimming.datasets2013 as datasets2013
 
-
-cmssw_base = os.environ.get("CMSSW_BASE")
-dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
 def writeFilelist(querytuple, dict, options):
 	query = querytuple[1]
@@ -103,8 +100,9 @@ def main():
 		querielist.append( createCustomFilelist(options.title, options.campaign, options.data, options.embedded, options.energy, options.generator, options.process, options.scenario))
 
 	else:
-		querielist.append( datasets2011.queries )
-		querielist.append( datasets2012.queries )
+		#querielist.append( datasets2011.queries )
+		#querielist.append( datasets2012.queries )
+		querielist.append( datasets2013.queries )
 
 	dict = load_database(dataset)
 	for queries in querielist:

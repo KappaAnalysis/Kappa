@@ -64,7 +64,7 @@ struct KTau : public KBasicTau
 
 	int tauKey;
 
-	inline int nCandidates()
+	inline unsigned long nCandidates()
 	{
 		return chargedHadronCandidates.size() + gammaCandidates.size();
 	}

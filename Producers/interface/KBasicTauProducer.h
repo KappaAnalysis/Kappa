@@ -134,6 +134,7 @@ public:
 		KBaseMultiLVProducer<std::vector<TTau>, TProduct>::fillProduct(in, out, name, tag, pset);
 	}
 
+
 	virtual void fillSingle(
 		const typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::SingleInputType &in,
 		typename KBaseMultiLVProducer<std::vector<TTau>, TProduct>::SingleOutputType &out)
@@ -166,7 +167,7 @@ public:
 		edm::Ref<std::vector<TTau> > tauRef(this->handle, this->nCursor);
 		out.binaryDiscriminators = 0;
 		out.floatDiscriminators = std::vector<float>(currentFloatDiscriminators.size());
-		
+
 		// handle binary discriminators
 		for(typename std::vector<edm::Handle<TauDiscriminator> >::const_iterator iter = currentTauDiscriminators.begin(); iter != currentTauDiscriminators.end(); ++iter)
 		{
@@ -227,7 +228,7 @@ public:
 
 		// propagate the selection on minPt/maxEta
 		bool acceptTau = KBaseMultiLVProducer<std::vector<TTau>, TProduct>::acceptSingle(in);
-		
+
 		// reject taus with a charge different from +/- 1
 		acceptTau = acceptTau && (in.charge() == 1 || in.charge() == -1);
 
@@ -250,6 +251,8 @@ public:
 				}
 			}
 		}
+		// currently used for preselection on hpsPFTauDiscriminationByDecayModeFinding. miniAOD anyway only contains preselected taus, so maybe not necessary. 
+		// should be implemented in the same way as other discriminators, can be retrieved by in.tauID 
 
 		return acceptTau;
 	}
@@ -278,4 +281,12 @@ private:
 	std::map<std::string, unsigned int> currentBinaryDiscriminatorMap; // binary discriminator-to-bit mapping to use (based on PSet)
 	std::map<std::string, unsigned int> currentFloatDiscriminatorMap; // float discriminator-to-bit mapping to use (based on PSet)
 };
+	template<typename T>
+	static int createTauHash(const T tau)
+	{
+	return ( std::hash<double>()(tau.pt()) ^
+	         std::hash<double>()(tau.eta()) ^
+	         std::hash<double>()(tau.phi()) ^
+	         std::hash<bool>()(tau.charge()) );
+	}
 #endif

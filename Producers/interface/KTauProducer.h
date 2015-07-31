@@ -29,18 +29,10 @@ public:
 
 	static const std::string getLabel() { return "Taus"; }
 
-	static int createRecoPFTauHash(const reco::PFTau tau)
-	{
-		return ( std::hash<double>()(tau.pt()) ^
-		         std::hash<double>()(tau.eta()) ^
-		         std::hash<double>()(tau.phi()) ^
-		         std::hash<bool>()(tau.charge()) );
-	}
-
 	static void fillTau(const SingleInputType &in, SingleOutputType &out)
 	{
 		// Fill additional fields from KTau
-		out.tauKey = createRecoPFTauHash(in);
+		out.tauKey = createTauHash(in);
 
 		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); i++)
 		{
@@ -48,14 +40,12 @@ public:
 			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
 			out.chargedHadronCandidates.push_back(tmp);
 		}
-
 		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); i++)
 		{
 			KLV tmp;
 			copyP4(in.signalPiZeroCandidates()[i].p4(), tmp.p4);
 			out.piZeroCandidates.push_back(tmp);
 		}
-
 		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
 		{
 			KPFCandidate tmp;
