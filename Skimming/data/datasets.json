@@ -969,6 +969,16 @@
         "process": "MuEG", 
         "scenario": "22Jan2013v1"
     }, 
+    "/MuonEG/Run2015B-PromptReco-v1/MINIAOD": {
+        "campaign": "Run2015B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "MuonEG", 
+        "scenario": "PromptRecov1"
+    }, 
     "/ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
         "campaign": "RunIISpring15DR74", 
         "data": false, 
