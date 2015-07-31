@@ -7,7 +7,7 @@ hltWhitelist = cms.vstring( ## HLT selection
 	# em
 	"^HLT_Mu[0-9]+(_TrkIsoVVL)_(Ele)[0-9]+(_Gsf)?_CaloId(L)?_TrackId(L)?_Iso(VL)?(_MediumWP)?_v[0-9]+$",
 	# et
-	"^HLT_Ele[0-9]+_eta2p1_WP[0-9]+_Gsf(_LooseIsoPFTau[0-9]+)?_v[0-9]+$",
+	"^HLT_Ele[0-9]+_eta2p1_WP([0-9]+)?(Loose|Medium|Tight)?_Gsf(_LooseIsoPFTau[0-9]+)?_v[0-9]+$",
 	# mt
 	"^HLT_(Iso)?Mu[0-9]+(_eta2p1)?_(Loose|Medium|Tight)IsoPFTau[0-9]+(_Trk[0-9]_eta2p1)?_v[0-9]+$",
 	"^HLT_(Iso)?Mu[0-9]+(_eta2p1)?_IterTrk[0-9]+_v[0-9]+$",
