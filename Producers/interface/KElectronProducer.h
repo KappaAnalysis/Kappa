@@ -164,6 +164,15 @@ public:
 
 		if (doPfIsolation_)
 			doPFIsolation(in, out);
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
+		else {
+			// fall back on built-in methods, where available
+			out.sumChargedHadronPt = in.pfIsolationVariables().sumChargedHadronPt;
+			out.sumPhotonEt        = in.pfIsolationVariables().sumPhotonEt;
+			out.sumNeutralHadronEt = in.pfIsolationVariables().sumNeutralHadronEt;
+			out.sumPUPt            = in.pfIsolationVariables().sumPUPt;
+		}
+#endif
 		if (doPfIsolation_ && doCutbasedIds_ && !doAuxIds_)
 			doCutbasedIds(in,out);
 		if(doMvaIds_)

@@ -15,7 +15,7 @@
 # if possible, run2 configs import the run1 configs and add some extra information
 ## ------------------------------------------------------------------------
 
-# Kappa test: CMSSW 7.2.2, 7.4.6
+# Kappa test: CMSSW 7.2.2, 7.4.6_patch6
 # Kappa test: scram arch slc6_amd64_gcc481, slc6_amd64_gcc491
 # Kappa test: checkout script scripts/checkoutCmssw72xPackagesForSkimming.py, scripts/checkoutCmssw74xPackagesForSkimming.py
 # Kappa test: output kappaTuple.root
@@ -137,11 +137,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Muons.muons.src = cms.InputTag("slimmedMuons")
 		process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
-		process.kappaTuple.Muons.muons.isoValInputTags = cms.VInputTag(
-								cms.InputTag('muPFIsoValueChargedAll03PFIso'),
-								cms.InputTag('muPFIsoValueGamma03PFIso'),
-								cms.InputTag('muPFIsoValueNeutral03PFIso'),
-								cms.InputTag('muPFIsoValuePU03PFIso'))
+		process.kappaTuple.Muons.use03ConeForPfIso = cms.bool(True)
 
 	process.kappaTuple.active += cms.vstring('Muons')
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
@@ -156,11 +152,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Electrons.electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
 		process.kappaTuple.Electrons.electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
-		process.kappaTuple.Electrons.electrons.isoValInputTags = cms.VInputTag(
-								cms.InputTag('elPFIsoValueChargedAll03PFIdPFIso'),
-								cms.InputTag('elPFIsoValueGamma03PFIdPFIso'),
-								cms.InputTag('elPFIsoValueNeutral03PFIdPFIso'),
-								cms.InputTag('elPFIsoValuePU03PFIdPFIso'))
 		from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 		process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
@@ -300,7 +291,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## Further information saved to Kappa output 
 	# add python config to TreeInfo
 	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
-		
+
 	# add repository revisions to TreeInfo
 	for repo, rev in tools.get_repository_revisions().iteritems():
 			setattr(process.kappaTuple.TreeInfo.parameters, repo, cms.string(rev))
@@ -338,7 +329,7 @@ if __name__ == "__main__":
 		testFile = "VBF_HToTauTau_Miniaod.root"
 		nickName = "VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM"
 		if cmssw_version_number.startswith("7_4"):
-			globalTag = 'MCRUN2_74_V9::All'
+			globalTag = 'MCRUN2_74_V9'
 			testFile = "SUSYGluGluHToTauTau_M-120_13TeV_MCRUN2.root"
 			nickName = "SUSYGluGluToHToTauTauM120_RunIISpring15DR74_Asympt25ns_13TeV_AODSIM"
 		process = getBaseConfig(globaltag=globalTag, nickname=nickName, testfile=cms.untracked.vstring("file://%s/%s" % (testPath, testFile)))
