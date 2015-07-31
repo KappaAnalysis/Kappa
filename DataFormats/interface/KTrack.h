@@ -37,9 +37,9 @@ struct KTrack : public KLV
 	/// charge and fit quality
 	char charge;
 	float chi2, nDOF;
-	float errPt, errEta, errPhi, errDxy, errDz;
-	float IP3D, IP2D;
-	float errIP3D, errIP2D;
+	float errPt, errEta, errPhi, errDxy, errDz;  ///< errors on four vector and distances
+	float d2D, d3D;      ///< impact parameters dxy and d calculated considering the magnetic field
+	float err3D, err2D;  ///< errors on the dxy (2D) and d (3D) impact parameters
 
 	/// number of hits or tracker layers in detector components (used for lepton IDs)
 	/// DataFormats/TrackReco/interface/HitPattern.h (numberOf...)

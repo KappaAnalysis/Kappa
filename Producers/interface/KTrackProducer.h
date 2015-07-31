@@ -62,10 +62,10 @@ public:
 		if(vertices.size() == 1)
 		{
 			reco::TransientTrack transientTrack = builder->build(in);
-			out.IP3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(0)).second.value();
-			out.IP2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(0)).second.value();
-			out.errIP3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(0)).second.error();
-			out.errIP2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(0)).second.error();
+			out.d3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(0)).second.value();
+			out.d2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(0)).second.value();
+			out.err3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(0)).second.error();
+			out.err2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(0)).second.error();
 		}
 	}
 };
