@@ -141,17 +141,33 @@ mvaMETTausTT = cms.EDFilter("PFTauSelector",
 from RecoJets.JetProducers.PileupJetIDParams_cfi import JetIdParams
 
 from RecoMET.METPUSubtraction.mvaPFMET_cff import pfMVAMEt as pfMetMVA
-pfMetMVA.inputFileNames    = cms.PSet(
-        U     = cms.FileInPath('RecoMET/METPUSubtraction/data/gbrmet_7_2_X_MINIAOD_BX25PU20_Mar2015.root'),
-        DPhi  = cms.FileInPath('RecoMET/METPUSubtraction/data/gbrphi_7_2_X_MINIAOD_BX25PU20_Mar2015.root'),
-        CovU1 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru1cov_7_2_X_MINIAOD_BX25PU20_Mar2015.root'),
-        CovU2 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru2cov_7_2_X_MINIAOD_BX25PU20_Mar2015.root') )
-## specify the leptons similar to those used in the analysis (channel specific)
-pfMetMVAEM = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETMuons" ))
-pfMetMVAET = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETTausET"))
-pfMetMVAMT = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETMuons"    , "mvaMETTausMT"))
-pfMetMVATT = pfMetMVA.clone(srcLeptons = cms.VInputTag("mvaMETTausTT"))
 
+metMVAEM = cms.EDProducer('PFMETProducerMVATauTau', 
+                             **pfMetMVA.parameters_())#pfMVAMEt.clone()
+metMVAET = cms.EDProducer('PFMETProducerMVATauTau', 
+                             **pfMetMVA.parameters_())#pfMVAMEt.clone()
+metMVAMT = cms.EDProducer('PFMETProducerMVATauTau', 
+                             **pfMetMVA.parameters_())#pfMVAMEt.clone()
+metMVATT = cms.EDProducer('PFMETProducerMVATauTau', 
+                             **pfMetMVA.parameters_())#pfMVAMEt.clone()
+
+inputFileNames = cms.PSet(
+        U     = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru_7_4_X_miniAOD_50NS_July2015.root'),
+        DPhi  = cms.FileInPath('RecoMET/METPUSubtraction/data/gbrphi_7_4_X_miniAOD_50NS_July2015.root'),
+        CovU1 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru1cov_7_4_X_miniAOD_50NS_July2015.root'),
+        CovU2 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru2cov_7_4_X_miniAOD_50NS_July2015.root') )
+## specify the leptons similar to those used in the analysis (channel specific)
+metMVAEM.srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETMuons" )
+metMVAEM.permuteLeptons = cms.bool(True)
+
+metMVAET.srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETTausET")
+metMVAET.permuteLeptons = cms.bool(True)
+
+metMVAMT.srcLeptons = cms.VInputTag("mvaMETMuons"    , "mvaMETMuons")
+metMVAMT.permuteLeptons = cms.bool(True)
+
+metMVATT.srcLeptons = cms.VInputTag("mvaMETTausTT"    , "mvaMETTausTT")
+metMVATT.permuteLeptons = cms.bool(True)
 ## ------------------------------------------------------------------------
 ## Definition of sequences
 makeKappaMET = cms.Sequence(
@@ -164,8 +180,8 @@ makeKappaMET = cms.Sequence(
     mvaMETTausMT *
     mvaMETTausTT *
     mvaMETElectrons *
-    pfMetMVAEM * 
-    pfMetMVAET *
-    pfMetMVAMT *
-    pfMetMVATT 
+    metMVAEM * 
+    metMVAET *
+    metMVAMT *
+    metMVATT 
     )

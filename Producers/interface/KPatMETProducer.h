@@ -25,38 +25,44 @@ public:
 
 	static const std::string getLabel() { return "PatMET"; }
 
+	static void fillMET(const pat::MET &in, KMET &out)
+	{
+		// fill properties of basic MET
+		KBasicMETProducer::fillMET<pat::MET>(in, out);
+		if(in.isPFMET())
+		{
+			// additional PF properties
+			out.photonFraction = in.NeutralEMFraction(); // Todo: check if equivalent to photonEtFraction
+			out.neutralHadronFraction = in.NeutralHadEtFraction();
+			out.electronFraction = in.ChargedEMEtFraction();
+			out.chargedHadronFraction = in.ChargedHadEtFraction();
+			out.muonFraction = in.MuonEtFraction();
+			out.hfHadronFraction = in.Type6EtFraction();
+			out.hfEMFraction = in.Type7EtFraction();
+		}
+	}
+
 protected:
 	virtual void clearProduct(OutputType &output) { output.p4.SetCoordinates(0, 0, 0, 0); output.sumEt = -1; }
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		if (in.size() == 1)
+		if (in.size() != 1)
 		{
-			// fill properties of basic MET
-			KBasicMETProducer::fillMET<pat::MET>(in.at(0), out);
-			if(in.at(0).isPFMET())
-			{
-				// additional PF properties
-				out.photonFraction = in.at(0).NeutralEMFraction(); // Todo: check if equivalent to photonEtFraction
-				out.neutralHadronFraction = in.at(0).NeutralHadEtFraction();
-				out.electronFraction = in.at(0).ChargedEMEtFraction();
-				out.chargedHadronFraction = in.at(0).ChargedHadEtFraction();
-				out.muonFraction = in.at(0).MuonEtFraction();
-				out.hfHadronFraction = in.at(0).Type6EtFraction();
-				out.hfEMFraction = in.at(0).Type7EtFraction();
-			}
-
-			// fill GenMET
-			if(in.at(0).genMET())
-			{
-				const reco::GenMET* recoGenMet = in.at(0).genMET();
-				KBasicMETProducer::fillMET<reco::GenMET>(*recoGenMet, *genMet);
-			}
-
+			if (verbosity > 1)
+				std::cout << "KMETProducer::fillProduct: Found " << in.size() << " pat::MET objects!" << std::endl;
+			return;
 		}
-		else if (verbosity > 1)
-			std::cout << "KMETProducer::fillProduct: Found " << in.size() << " pat::MET objects!" << std::endl;
+
+		fillMET(in.at(0), out);
+		// fill GenMET
+		if(in.at(0).genMET())
+		{
+			const reco::GenMET* recoGenMet = in.at(0).genMET();
+			KBasicMETProducer::fillMET<reco::GenMET>(*recoGenMet, *genMet);
+		}
 	}
+
 private:
 	TTree* _event_tree_pointer;
 	KBasicMET* genMet;

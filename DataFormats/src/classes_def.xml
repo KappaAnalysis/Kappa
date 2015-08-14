@@ -37,6 +37,7 @@
 	<class name="KLeptonPair"/>
 	<class name="KLeptonPairs"/>
 	<class name="KMET"/>
+	<class name="KMETs"/>
 	<class name="KMuon"/>
 	<class name="KMuons"/>
 	<class name="KMuonTriggerCandidate"/>

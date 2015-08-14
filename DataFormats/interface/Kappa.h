@@ -72,6 +72,7 @@ REGISTER_NAME_OF_TYPE(KLeptons,std::vector<KLepton>);
 REGISTER_NAME_OF_TYPE(KLeptonPair,KLeptonPair);
 REGISTER_NAME_OF_TYPE(KLeptonPairs,std::vector<KLeptonPair>);
 REGISTER_NAME_OF_TYPE(KMET,KMET);
+REGISTER_NAME_OF_TYPE(KMETs,std::vector<KMET>);
 REGISTER_NAME_OF_TYPE(KMuon,KMuon);
 REGISTER_NAME_OF_TYPE(KMuons,std::vector<KMuon>);
 REGISTER_NAME_OF_TYPE(KMuonTriggerCandidate,KMuonTriggerCandidate);
