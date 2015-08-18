@@ -190,20 +190,22 @@ def getBaseConfig(
 			)
 		)
 		process.path *= (process.pfmuIsoDepositPFCandidates)
+		process.goodMuons = cms.EDFilter('CandViewSelector',
+			src = cms.InputTag('muons'),
+			cut = cms.string("pt > 15.0"),
+		)
+		process.oneGoodMuon = cms.EDFilter('CandViewCountFilter',
+			src = cms.InputTag('goodMuons'),
+			minNumber = cms.uint32(1),
+		)
+		process.twoGoodMuons = cms.EDFilter('CandViewCountFilter',
+			src = cms.InputTag('goodMuons'),
+			minNumber = cms.uint32(2),
+		)
 		if 'mm' in channel:
-			process.goodMuons = cms.EDFilter('CandViewSelector',
-				src = cms.InputTag('muons'),
-				cut = cms.string("pt > 15.0"),
-			)
-			process.twoGoodMuons = cms.EDFilter('CandViewCountFilter',
-				src = cms.InputTag('goodMuons'),
-				minNumber = cms.uint32(2),
-			)
 			process.path *= (process.goodMuons * process.twoGoodMuons)
 
-
-
-	elif 'e' in channel:
+	if 'e' in channel:
 		############################################################################
 		#  Electrons
 		############################################################################
@@ -220,13 +222,26 @@ def getBaseConfig(
 			eidTight            = cms.InputTag("eidTight"           ),
 			eidRobustHighEnergy = cms.InputTag("eidRobustHighEnergy"),
 			## MVA based Id
-			mvaTrigV0           = cms.InputTag("mvaTrigV0"          ),
-			mvaTrigNoIPV0       = cms.InputTag("mvaTrigNoIPV0"      ),
-			mvaNonTrigV0        = cms.InputTag("mvaNonTrigV0"       ),
+			idMvaTrigV0           = cms.InputTag("mvaTrigV0"          ),
+			idMvaTrigNoIPV0       = cms.InputTag("mvaTrigNoIPV0"      ),
+			idMvaNonTrigV0        = cms.InputTag("mvaNonTrigV0"       ),
 		)
 		process.patElectrons.genParticleMatch = ""
 		process.patElectrons.addGenMatch = False
 		process.patElectrons.embedGenMatch = False
+		process.patElectrons.embedGsfElectronCore          = True
+		process.patElectrons.embedGsfTrack                 = True
+		process.patElectrons.embedSuperCluster             = True
+		process.patElectrons.embedPflowSuperCluster        = True
+		process.patElectrons.embedSeedCluster              = True
+		process.patElectrons.embedBasicClusters            = True
+		process.patElectrons.embedPreshowerClusters        = True
+		process.patElectrons.embedPflowBasicClusters       = True
+		process.patElectrons.embedPflowPreshowerClusters   = True
+		process.patElectrons.embedPFCandidate              = True
+		process.patElectrons.embedTrack                    = True
+		process.patElectrons.embedRecHits                  = True
+
 		process.patElectrons.embedHighLevelSelection.pvSrc = "goodOfflinePrimaryVertices"
 		process.electronIdMVA = cms.Sequence(
 			process.mvaTrigV0+
@@ -261,6 +276,7 @@ def getBaseConfig(
 		else:
 			#inputDataset =  "Summer12_DR53X_HCP2012"
 			inputDataset =  "Summer12_LegacyPaper"
+		print "Using electron calibration", inputDataset
 		process.calibratedPatElectrons.inputDataset = cms.string(inputDataset)
 		process.calibratedPatElectrons.isMC = cms.bool(not data)
 
@@ -313,21 +329,30 @@ def getBaseConfig(
 					cms.InputTag('elPFIsoValuePU04PFIdPFIsoCal')),
 		)
 
-		process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV0", "mvaTrigNoIPV0", "mvaNonTrigV0")
-		#process.kappaTuple.Electrons.minPt = cms.double(8.0)
+		#process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV0", "mvaTrigNoIPV0", "mvaNonTrigV0")
+		process.kappaTuple.Electrons.ids = cms.vstring('idMvaNonTrigV0', 'idMvaTrigNoIPV0', 'idMvaTrigV0')
+		process.kappaTuple.Electrons.minPt = cms.double(8.0)
 
 
 		### Filter
-		if 'mm' in channel:
-			process.goodElectrons = cms.EDFilter('CandViewSelector',
-				src = cms.InputTag('calibratedPatElectrons'),
-				cut = cms.string("pt > 15.0"),
-			)
-			process.twoGoodElectrons = cms.EDFilter('CandViewCountFilter',
-				src = cms.InputTag('goodElectrons'),
-				minNumber = cms.uint32(2),
-			)
-			#process.path *= (process.goodElectrons * process.twoGoodElectrons)
+		process.goodElectrons = cms.EDFilter('CandViewSelector',
+			src = cms.InputTag('calibratedPatElectrons'),
+			cut = cms.string("pt > 15.0"),
+		)
+		process.oneGoodElectron = cms.EDFilter('CandViewCountFilter',
+			src = cms.InputTag('goodElectrons'),
+			minNumber = cms.uint32(1),
+		)
+		process.twoGoodElectrons = cms.EDFilter('CandViewCountFilter',
+			src = cms.InputTag('goodElectrons'),
+			minNumber = cms.uint32(2),
+		)
+		if 'ee' in channel:
+			process.path *= (process.goodElectrons * process.twoGoodElectrons)
+
+	if 'em' in channel:
+		process.path *= (process.goodElectrons * process.oneGoodElectron
+						* process.goodMuons * process.oneGoodMuon)
 
 
 	############################################################################
