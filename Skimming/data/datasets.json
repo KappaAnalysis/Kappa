@@ -1089,6 +1089,26 @@
         "process": "SUSYGluGluToHToTauTau_M120", 
         "scenario": "PU_S10"
     }, 
+    "/SUSYGluGluToHToTauTau_M-120_TuneCUETP8M1_13TeV-pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
+        "campaign": "RunIISpring15DR74", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "AODSIM", 
+        "generator": "pythia8", 
+        "process": "SUSYGluGluToHToTauTau_M120", 
+        "scenario": "Asympt25ns"
+    }, 
+    "/SUSYGluGluToHToTauTau_M-120_TuneCUETP8M1_13TeV-pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM": {
+        "campaign": "RunIISpring15DR74", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "pythia8", 
+        "process": "SUSYGluGluToHToTauTau_M120", 
+        "scenario": "Asympt25ns"
+    }, 
     "/SUSYGluGluToHToTauTau_M-130_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
         "campaign": "Summer12", 
         "data": false, 
