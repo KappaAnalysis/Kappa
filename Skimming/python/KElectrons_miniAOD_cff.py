@@ -65,6 +65,6 @@ pfElectronIso = cms.Sequence(
 )
 
 makeKappaElectrons = cms.Sequence(
-	egmGsfElectronIDSequence *
-	pfElectronIso
+	egmGsfElectronIDSequence
+	#pfElectronIso
 	)
