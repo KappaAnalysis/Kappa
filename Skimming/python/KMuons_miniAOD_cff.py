@@ -27,7 +27,7 @@ muPFIsoDepositGamma.src = cms.InputTag("slimmedMuons")
 muPFIsoDepositPU.src = cms.InputTag("slimmedMuons")
 
 makeKappaMuons = cms.Sequence( 
-	muonPFIsolationDepositsSequence +
-	muonPFIsolationValuesSequence
+	#muonPFIsolationDepositsSequence +
+	#muonPFIsolationValuesSequence
 )
 

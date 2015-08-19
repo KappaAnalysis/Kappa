@@ -126,9 +126,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.p *= ( process.makeKappaPFCandidates )
 
 	if(miniaod):
-		process.load("Kappa.Skimming.KPFCandidates_miniAOD_cff")
 		process.kappaTuple.active += cms.vstring('packedPFCandidates') # save PFCandidates. Not sure for what, because might not be usefull for isolation
-		process.p *= ( process.makeKappaPFCandidates )
 
 	## ------------------------------------------------------------------------
 	# Configure Muons
@@ -349,7 +347,7 @@ if __name__ == "__main__":
 		if cmssw_version_number.startswith("7_4"):
 			globalTag = 'MCRUN2_74_V9'
 			testFile = "SUSYGluGluHToTauTau_M-120_13TeV_MCRUN2.root"
-			nickName = "SUSYGluGluToHToTauTauM120_RunIISpring15DR74_Asympt25ns_13TeV_AODSIM"
+			nickName = "SUSYGluGluToHToTauTauM120_RunIISpring15DR74_Asympt25ns_13TeV_AODSIM_pythia8"
 		process = getBaseConfig(globaltag=globalTag, nickname=nickName, testfile=cms.untracked.vstring("file://%s/%s" % (testPath, testFile)))
 
 	## for grid-control:

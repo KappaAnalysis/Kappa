@@ -90,7 +90,7 @@ def is_embedded(filetype, default=False):
 
 def get_format(filetype, default=False):
 	if (default == None):
-		return filetype
+		return filetype.replace("MINIAODSIM", "MINIAOD")
 	else:
 		return default
 
@@ -107,7 +107,8 @@ def make_nickname(dict):
 	nick += dict["campaign"].replace("_", "") + "_"
 	nick += dict["scenario"].replace("_", "") + "_"
 	nick += dict["energy"].replace("_", "")   + "TeV_"
-	nick += dict["format"].replace("_", "")
+	nick += dict["format"].replace("_", "") + "_"
+	nick += dict["generator"].replace("_", "")
 	return nick
 
 def load_database(dataset):
@@ -134,13 +135,14 @@ def query_result(query):
 def get_sample_by_nick(nickname):
 
 	# split nickname
-	process, campaign, scenario, energy, format = nickname.split("_")
+	process, campaign, scenario, energy, format, generator = nickname.split("_")
 	query = {
 		"process" : process,
 		"campaign" : campaign,
 		"scenario" : scenario,
 		"energy" : energy.strip("TeV"),
-		"format" : format
+		"format" : format,
+		"generator" : generator
 	}
 
 	#query_nick, sample = query_result(query)
