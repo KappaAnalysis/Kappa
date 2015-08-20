@@ -71,7 +71,20 @@ def get_process(pd_name, default=None):
 		posMass = pd_name.find("_M-")
 		if posMass != -1:
 			length = 3+ pd_name[posMass+3:].find("_")
-			process = pd_name[0:posMass+length].replace("-", "")
+			try:
+				int (pd_name[posMass+3])
+				process = pd_name[0:posMass+length].replace("-", "")
+			except:
+				pass
+		else:
+			posMass = pd_name.find("_M")
+			if posMass != -1:
+				length = 2+ pd_name[posMass+2:].find("_")
+				try:
+					int (pd_name[posMass+2])
+					process = pd_name[0:posMass+length]
+				except:
+					pass
 		return process 
 	else:
 		return default
