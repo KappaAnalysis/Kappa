@@ -62,28 +62,25 @@ def checkoutPackages(args):
 		"cd " + cmsswsrc,
 		# do the git cms-addpkg before starting with checking out cvs repositories
 
-		#Electron cutBased Id package
-		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_74X
-		#everything needed is already in the 7_4_6 release
-
-		#Electron MVA Id package
-		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_74X_Phys14_MVA_train
-		# seems to be in the release 7_4_7
-		#"git cms-merge-topic ikrav:egm_id_74X_v2",
-
 		#MVA & No-PU MET Recipe
 		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#Instructions_for_7_4_X
 		#everything needed is already in the 7_4_6 release -> only use 7_4_7 due to bugfix!
 		#Jan's multi-MET Producer
 		"git cms-addpkg RecoMET/METPUSubtraction",
 		"cd " + cmsswsrc + "/RecoMET/METPUSubtraction/",
-		"git remote add cmgtools git@github.com:CERN-PH-CMG/cmg-cmssw.git",
+		"git remote add cmgtools https://github.com/CERN-PH-CMG/cmg-cmssw.git",
 		"git pull cmgtools",
 		"git checkout CMGTools-from-CMSSW_7_4_7",
-		"cd " + cmsswsrc + "/RecoMET/METPUSubtraction/",
 		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 74X-13TeV-Summer15-July2015",
-		#Check out Kappa
-		"git clone https://github.com/KappaAnalysis/Kappa.git -b development",
+		"cd " + cmsswsrc,
+
+		#Electron cutBased Id and MVA Id
+		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_747
+		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_747_Spring15_MVA_tra
+		"git cms-merge-topic ikrav:egm_id_747_v2",
+
+		#Check out Kappa (dictchanges branch, to be able to run the MVA MET)
+		"git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges",
 		#"scram b -j 4"
 	]
 	execCommands(commands)
