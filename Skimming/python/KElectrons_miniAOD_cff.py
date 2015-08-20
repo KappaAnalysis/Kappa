@@ -23,8 +23,8 @@ egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('slimmedElectrons')
 def setupElectrons(process):
 	if (cmssw_version_number.startswith("7_4")):
 		switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V2_cff',
-				 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_PHYS14_PU20bx25_nonTrig_V1_cff']
+		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
+				 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
 	else:
 		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_miniAOD_cff']
 	for idmod in my_id_modules:

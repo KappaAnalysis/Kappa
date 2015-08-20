@@ -156,11 +156,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
 		if (cmssw_version_number.startswith("7_4")):
-			process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto",
-						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-loose",
-						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-medium",
-						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-tight",
-						"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Phys14NonTrigValues")
+			process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
+						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
+						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
+						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
+						"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
 		else:
 			process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-veto",
 						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-loose",
