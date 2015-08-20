@@ -337,6 +337,9 @@ if __name__ == "__main__":
 		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV
 		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM", testfile=cms.untracked.vstring("root://xrootd.unl.edu//store/mc/Phys14DR/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_tsg_PHYS14_25_V1-v2/00000/147B369C-9F77-E411-B99D-00266CF9B184.root"))
 
+		# SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8
+		#process = getBaseConfig(globaltag="MCRUN2_74_V9", nickname="SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/A2E90ABD-5303-E511-9365-0025905A60B6.root"))
+
 		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV MiniAOD
 		# Input file for test script - please leave this as default!
 		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
