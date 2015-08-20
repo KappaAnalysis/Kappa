@@ -56,10 +56,8 @@ def getSysInformation():
 
 
 def checkoutPackages(args):
-	cmsswsrc = os.popen("echo $CMSSW_BASE").readline().replace("\n", "") + '/src/'
-
 	commands = [
-		"cd " + cmsswsrc,
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 		# do the git cms-addpkg before starting with checking out cvs repositories
 
 		#MVA & No-PU MET Recipe
@@ -67,12 +65,12 @@ def checkoutPackages(args):
 		#everything needed is already in the 7_4_6 release -> only use 7_4_7 due to bugfix!
 		#Jan's multi-MET Producer
 		"git cms-addpkg RecoMET/METPUSubtraction",
-		"cd " + cmsswsrc + "/RecoMET/METPUSubtraction/",
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction"),
 		"git remote add cmgtools https://github.com/CERN-PH-CMG/cmg-cmssw.git",
 		"git pull cmgtools",
 		"git checkout CMGTools-from-CMSSW_7_4_7",
 		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 74X-13TeV-Summer15-July2015",
-		"cd " + cmsswsrc,
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 
 		#Electron cutBased Id and MVA Id
 		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_747
