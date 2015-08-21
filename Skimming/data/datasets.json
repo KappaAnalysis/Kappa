@@ -939,6 +939,16 @@
         "process": "MuonEG", 
         "scenario": "PromptRecov1"
     }, 
+    "/MuonEG/Run2015C-PromptReco-v1/MINIAOD": {
+        "campaign": "Run2015C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "MuonEG", 
+        "scenario": "PromptRecov1"
+    }, 
     "/ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
         "campaign": "RunIISpring15DR74", 
         "data": false, 
@@ -1169,6 +1179,16 @@
         "process": "SingleElectron", 
         "scenario": "PromptRecov1"
     }, 
+    "/SingleElectron/Run2015C-PromptReco-v1/MINIAOD": {
+        "campaign": "Run2015C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "SingleElectron", 
+        "scenario": "PromptRecov1"
+    }, 
     "/SingleMu/Run2011A-May10ReReco-v1/AOD": {
         "campaign": "Run2011A", 
         "data": true, 
@@ -1201,6 +1221,16 @@
     }, 
     "/SingleMuon/Run2015B-PromptReco-v1/MINIAOD": {
         "campaign": "Run2015B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "SingleMuon", 
+        "scenario": "PromptRecov1"
+    }, 
+    "/SingleMuon/Run2015C-PromptReco-v1/MINIAOD": {
+        "campaign": "Run2015C", 
         "data": true, 
         "embedded": false, 
         "energy": "13", 
@@ -1501,6 +1531,16 @@
     }, 
     "/Tau/Run2015B-PromptReco-v1/MINIAOD": {
         "campaign": "Run2015B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "Tau", 
+        "scenario": "PromptRecov1"
+    }, 
+    "/Tau/Run2015C-PromptReco-v1/MINIAOD": {
+        "campaign": "Run2015C", 
         "data": true, 
         "embedded": false, 
         "energy": "13", 
