@@ -71,7 +71,20 @@ def get_process(pd_name, default=None):
 		posMass = pd_name.find("_M-")
 		if posMass != -1:
 			length = 3+ pd_name[posMass+3:].find("_")
-			process = pd_name[0:posMass+length].replace("-", "")
+			try:
+				int (pd_name[posMass+3])
+				process = pd_name[0:posMass+length].replace("-", "")
+			except:
+				pass
+		else:
+			posMass = pd_name.find("_M")
+			if posMass != -1:
+				length = 2+ pd_name[posMass+2:].find("_")
+				try:
+					int (pd_name[posMass+2])
+					process = pd_name[0:posMass+length]
+				except:
+					pass
 		return process 
 	else:
 		return default
@@ -107,7 +120,7 @@ def make_nickname(dict):
 	nick += dict["campaign"].replace("_", "") + "_"
 	nick += dict["scenario"].replace("_", "") + "_"
 	nick += dict["energy"].replace("_", "")   + "TeV_"
-	nick += dict["format"].replace("_", "") + "_"
+	nick += dict["format"].replace("_", "") + ("" if (dict["data"] or dict["embedded"]) else "_")
 	nick += dict["generator"].replace("_", "")
 	return nick
 
@@ -135,14 +148,14 @@ def query_result(query):
 def get_sample_by_nick(nickname):
 
 	# split nickname
-	process, campaign, scenario, energy, format, generator = nickname.split("_")
+	split_nick = nickname.split("_")
 	query = {
-		"process" : process,
-		"campaign" : campaign,
-		"scenario" : scenario,
-		"energy" : energy.strip("TeV"),
-		"format" : format,
-		"generator" : generator
+		"process" : split_nick[0],
+		"campaign" : split_nick[1],
+		"scenario" : split_nick[2],
+		"energy" : split_nick[3].strip("TeV"),
+		"format" : split_nick[4],
+		"generator" : (split_nick[5] if (len(split_nick) > 5) else "")
 	}
 
 	#query_nick, sample = query_result(query)
