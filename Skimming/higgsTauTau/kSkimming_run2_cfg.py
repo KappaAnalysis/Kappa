@@ -45,8 +45,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
 
-	process.load("Kappa.Skimming.customJECs_cff")
-
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	# Important to be evaluated correctly for the following steps
@@ -55,6 +53,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	# General configuration
+	process.load("Kappa.Skimming.customJECs_cff")
+	if data:
+		process.jec.toGet = cms.VPSet(
+			cms.PSet(
+			record = cms.string('JetCorrectionsRecord'),
+			tag = cms.string('JetCorrectorParametersCollection_Summer15_50nsV4_DATA_AK4PF'),
+			label  = cms.untracked.string('AK4PF'))
+			)
+		process.jec.connect = cms.string('sqlite:Summer15_50nsV4_DATA.db')
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
 	if miniaod:
