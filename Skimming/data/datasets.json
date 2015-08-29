@@ -179,6 +179,26 @@
         "process": "DYJetsToLL_TuneZ2_M50", 
         "scenario": "PU_S6"
     }, 
+    "/DoubleEG/Run2015B-PromptReco-v1/MINIAOD": {
+        "campaign": "Run2015B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "DoubleEG", 
+        "scenario": "PromptRecov1"
+    }, 
+    "/DoubleEG/Run2015C-PromptReco-v1/MINIAOD": {
+        "campaign": "Run2015C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "DoubleEG", 
+        "scenario": "PromptRecov1"
+    }, 
     "/DoubleElectron/Run2011A-16Jan2012-v1/AOD": {
         "campaign": "Run2011A", 
         "data": true, 
@@ -548,6 +568,26 @@
         "generator": "", 
         "process": "DoubleMuParked", 
         "scenario": "Run2012D_22Jan2013_v1_PFembedded_trans1_tau132_pthad1_30had2_30_v15ef1c0fd428eb740081f19333520fdc8"
+    }, 
+    "/DoubleMuon/Run2015B-PromptReco-v1/MINIAOD": {
+        "campaign": "Run2015B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "DoubleMuon", 
+        "scenario": "PromptRecov1"
+    }, 
+    "/DoubleMuon/Run2015C-PromptReco-v1/MINIAOD": {
+        "campaign": "Run2015C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "DoubleMuon", 
+        "scenario": "PromptRecov1"
     }, 
     "/GluGluHToTauTau_M120_13TeV_powheg_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM": {
         "campaign": "RunIISpring15DR74", 
