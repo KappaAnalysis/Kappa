@@ -9,6 +9,10 @@ hltWhitelist = cms.vstring( ## HLT selection
 )
 
 hltBlacklist = cms.vstring(
+	"^HLT_.*Mu300.*_v[0-9]+$",
+	"^HLT_.*Mu350.*_v[0-9]+$",
+	"^HLT_.*Ele105.*_v[0-9]+$",
+	"^HLT_.*Ele115.*_v[0-9]+$",
 	"^HLT_.*Photon.*_v[0-9]+$",
 	"^HLT_.*photon.*_v[0-9]+$",
 	"^HLT_.*Jet.*_v[0-9]+$",
@@ -30,4 +34,7 @@ hltBlacklist = cms.vstring(
 	"^HLT_.*_Bs.*_v[0-9]+$",
 	"^HLT_.*_DZ.*_v[0-9]+$",
 	"^HLT_.*Onia.*_v[0-9]+$",
+	"^HLT_.*WHbbBoost.*_v[0-9]+$",
+	"^HLT_.*dEta.*_v[0-9]+$",
+	"^HLT_.*DiMu[0-9]+_Ele[0-9]+.*_v[0-9]+$",
 )
