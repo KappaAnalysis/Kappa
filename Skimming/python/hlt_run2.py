@@ -9,10 +9,9 @@ hltWhitelist = cms.vstring( ## HLT selection
 )
 
 hltBlacklist = cms.vstring(
-	"^HLT_.*Mu300.*_v[0-9]+$",
-	"^HLT_.*Mu350.*_v[0-9]+$",
-	"^HLT_.*Ele105.*_v[0-9]+$",
-	"^HLT_.*Ele115.*_v[0-9]+$",
+	"^HLT_.*Mu5[0-9]+.*_v[0-9]+$",
+	"^HLT_.*Mu[0-9][0-9][0-9]+.*_v[0-9]+$",
+	"^HLT_.*Ele[0-9][0-9][0-9]+.*_v[0-9]+$",
 	"^HLT_.*Photon.*_v[0-9]+$",
 	"^HLT_.*photon.*_v[0-9]+$",
 	"^HLT_.*Jet.*_v[0-9]+$",
@@ -21,9 +20,7 @@ hltBlacklist = cms.vstring(
 	"^HLT_.*Psi.*_v[0-9]+$",
 	"^HLT_.*Mass.*_v[0-9]+$",
 	"^HLT_.*HT[0-9]+.*_v[0-9]+$",
-	"^HLT_L1.*_v[0-9]+$",
-	"^HLT_L2.*_v[0-9]+$",
-	"^HLT_L1L2.*_v[0-9]+$",
+	"^HLT_(HI)?(L1|L2|L3)(L1|L2|L3)?(L1|L2|L3)?.*_v[0-9]+$",
 	"^HLT_.*SameSign.*_v[0-9]+$",
 	"^HLT_.*NoVertex.*_v[0-9]+$",
 	"^HLT_.*NoVtx.*_v[0-9]+$",
