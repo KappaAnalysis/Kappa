@@ -109,6 +109,9 @@ public:
 
 		for(size_t i = 0; i < names.size(); ++i)
 		{
+			discriminatorMap[names[i]] = new KTauMetadata();
+			_lumi_tree_pointer->Bronch(names[i].c_str(), "KTauMetadata", &discriminatorMap[names[i]]);
+			
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
 
 			preselectionDiscr[names[i]] = pset.getParameter< std::vector<std::string> >("preselectOnDiscriminators");
@@ -182,8 +185,6 @@ virtual bool acceptSingle(const SingleInputType &in) override
 		const std::vector<std::pair<std::string, float>> tauIDs = in.tauIDs();
 		for(size_t i = 0; i < names.size(); ++i)
 		{
-			discriminatorMap[names[i]] = new KTauMetadata();
-			_lumi_tree_pointer->Bronch(names[i].c_str(), "KTauMetadata", &discriminatorMap[names[i]]);
 			for(auto tauID : tauIDs)
 			{
 				if( KBaseProducer::regexMatch(tauID.first, binaryDiscrWhitelist[names[i]], binaryDiscrBlacklist[names[i]])) //regexmatch for binary discriminators
