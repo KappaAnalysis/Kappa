@@ -20,10 +20,24 @@
 # Kappa test: checkout script scripts/checkoutCmssw72xPackagesForSkimming.py, scripts/checkoutCmssw74xPackagesForSkimming.py
 # Kappa test: output kappaTuple.root
 
+import sys
+if not hasattr(sys, 'argv'):
+	sys.argv = ["cmsRun", "runFrameworkMC.py"]
+
 import os
 import FWCore.ParameterSet.Config as cms
 import Kappa.Skimming.datasetsHelper2015 as datasetsHelper
 import Kappa.Skimming.tools as tools
+
+from FWCore.ParameterSet.VarParsing import VarParsing
+options = VarParsing('python')
+options.register('globalTag', 'MCRUN2_74_V9', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'GlobalTag')
+options.register('kappaTag', 'KAPPA_2_0_0', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'KappaTag')
+options.register('nickname', 'SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Dataset Nickname')
+options.register('testfile', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Path for a testfile')
+options.register('maxevents', -1, VarParsing.multiplicity.singleton, VarParsing.varType.int, 'maxevents')
+options.register('outputfilename', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Filename for the Outputfile')
+options.parseArguments()
 
 cmssw_version_number = tools.get_cmssw_version_number()
 
@@ -31,13 +45,17 @@ def getBaseConfig( globaltag= 'START70_V7::All',
                    testfile=cms.untracked.vstring(""),
                    maxevents=100, ## -1 = all in file
                    nickname = 'VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM',
-                   kappaTag = 'Kappa_2_0_0' ):
+                   kappaTag = 'Kappa_2_0_0',
+				   outputfilename = ''):
 
 	## ------------------------------------------------------------------------
 	# Configure Kappa
 	from Kappa.Skimming.KSkimming_template_cfg import process
 
-	process.source.fileNames      = testfile
+	if testfile:
+		process.source.fileNames      = testfile
+	else:
+		process.source 			  = cms.Source('PoolSource', fileNames=cms.untracked.vstring())
 	process.maxEvents.input	      = maxevents
 	process.kappaTuple.verbose    = cms.int32(0)
 	process.kappaTuple.profile    = cms.bool(True)
@@ -319,6 +337,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	for repo, rev in tools.get_repository_revisions().iteritems():
 			setattr(process.kappaTuple.TreeInfo.parameters, repo, cms.string(rev))
 
+	## if needed adapt output filename
+	if outputfilename != '':
+		process.kappaTuple.outputFile = cms.string('%s'%outputfilename)
+
 	## ------------------------------------------------------------------------
 	## let Kappa run
 	process.p *= ( process.kappaOut )
@@ -329,38 +351,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	return process
 
-if __name__ == "__main__":
-	if("@" in "@NICK@"): # run local skim by hand without replacements by grid-control
-
-		# TauPlusX_Run2012B_22Jan2013_8TeV
-		#process = getBaseConfig(globaltag="FT_53_V21_AN4::All", nickname="TauPlusX_Run2012B_22Jan2013_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/data/Run2012B/TauPlusX/AOD/22Jan2013-v1/20000/0040CF04-8E74-E211-AD0C-00266CFFA344.root"))
-		
-		# DoubleMu_PFembedded_Run2012A_22Jan2013_mt_8TeV
-		#process = getBaseConfig(globaltag="FT_53_V21_AN4::All", nickname="DoubleMu_PFembedded_Run2012A_22Jan2013_mt_8TeV", testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/results/higgs/DoubleMu/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/DoubleMu/USER/StoreResults-Run2012A_22Jan2013_v1_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/0000/00F5125E-A3E4-E211-A54D-0023AEFDE638.root"))
-
-		# DYJetsToLL_M_50_madgraph_13TeV
-		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="DYJetsToLL_M_50_madgraph_13TeV", testfile=cms.untracked.vstring("root://xrootd.unl.edu//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/0432E62A-7A6C-E411-87BB-002590DB92A8.root"))
-
-		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV
-		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM", testfile=cms.untracked.vstring("root://xrootd.unl.edu//store/mc/Phys14DR/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_tsg_PHYS14_25_V1-v2/00000/147B369C-9F77-E411-B99D-00266CF9B184.root"))
-
-		# SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8
-		#process = getBaseConfig(globaltag="MCRUN2_74_V9", nickname="SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/A2E90ABD-5303-E511-9365-0025905A60B6.root"))
-
-		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV MiniAOD
-		# Input file for test script - please leave this as default!
-		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
-		testPath = [p for p in testPaths if os.path.exists(p)][0]
-		globalTag = "PHYS14_25_V1::All"
-		testFile = "VBF_HToTauTau_Miniaod.root"
-		nickName = "VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM"
-		if cmssw_version_number.startswith("7_4"):
-			globalTag = 'MCRUN2_74_V9'
-			testFile = "SUSYGluGluHToTauTau_M-120_13TeV_MCRUN2.root"
-			nickName = "SUSYGluGluToHToTauTauM120_RunIISpring15DR74_Asympt25ns_13TeV_AODSIM_pythia8"
-		process = getBaseConfig(globaltag=globalTag, nickname=nickName, testfile=cms.untracked.vstring("file://%s/%s" % (testPath, testFile)))
-
-	## for grid-control:
+if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
+	if options.testfile:
+		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents)
 	else:
-		process = getBaseConfig("@GLOBALTAG@", nickname="@NICK@", kappaTag="@KAPPA_TAG@")
-
+		if options.outputfilename:
+			process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents, outputfilename=options.outputfilename)
+		else:
+			process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents)

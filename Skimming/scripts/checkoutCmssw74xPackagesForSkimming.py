@@ -69,7 +69,7 @@ def checkoutPackages(args):
 		"git remote add cmgtools https://github.com/CERN-PH-CMG/cmg-cmssw.git",
 		"git pull cmgtools",
 		"git checkout CMGTools-from-CMSSW_7_4_7",
-		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 74X-13TeV-Summer15-July2015",
+		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 74X-13TeV-Summer15-July2015 --depth 1",
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 
 		#Electron cutBased Id and MVA Id
