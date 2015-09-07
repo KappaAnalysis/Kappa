@@ -12,13 +12,29 @@ from Kappa.Skimming.gc_tools import gc_var_or_callable_parameter
 
 def baseconfig(
 		globaltag,
-		testfile,
+		input_files,
 		maxevents,
 		nickname,
 		outputfilename,
 		channel='mm',
 		is_data=None,
 	):
+	"""
+	Create the CMSSW/cmsRun config for the z+jet skim
+
+	:param globaltag: CMS global tag for the data
+	:param globaltag: str
+	:param input_files: files to process
+	:type input_files: list[str]
+	:param maxevents: number of events to process; `-1` implies all events
+	:type maxevents: int
+	:param nickname: nickname of the skim
+	:type nickname: str
+	:param channel: decay channel of Z; either of `mm` , `em`, `ee`
+	:type channel: str
+	:param is_data: whether input is data or simulated; use `None` for autodetection
+	:type is_data: bool or None
+	"""
 
 	#  Config parameters  ##############################################
 	cmssw_version = os.environ["CMSSW_VERSION"].split('_')
@@ -29,20 +45,20 @@ def baseconfig(
 		globaltag = autoCond['startup']
 		autostr = " (from autoCond)"
 	if is_data is None:
-		data = ('DoubleMu' in testfile[0]) or ('SingleMu' in testfile[0])
+		data = ('DoubleMu' in input_files[0]) or ('SingleMu' in input_files[0])
 	else:
 		data = is_data
 	miniaod = False
 
 	## print information
 	print "\n------- CONFIGURATION 1 ---------"
-	print "input:          ", testfile[0], "... (%d files)" % len(testfile) if len(testfile) > 1 else ""
+	print "input:          ", input_files[0], "... (%d files)" % len(input_files) if len(input_files) > 1 else ""
 	print "file type:      ", "miniAOD" if miniaod else "AOD"
 	print "data:           ", data
 	print "output:         ", outputfilename
 	print "nickname:       ", nickname
 	print "global tag:     ", globaltag + autostr
-	print "max events:     ", maxevents
+	print "max events:     ", maxevents if maxevents >= 0 else "all"
 	print "cmssw version:  ", '.'.join([str(i) for i in cmssw_version])
 	print "channel:        ", channel
 	print "---------------------------------"
@@ -58,7 +74,7 @@ def baseconfig(
 		wantSummary=cms.untracked.bool(True)
 	)
 	process.source = cms.Source("PoolSource",
-		fileNames=cms.untracked.vstring(testfile)
+		fileNames=cms.untracked.vstring(input_files)
 	)
 	# message logger
 	process.load("FWCore.MessageLogger.MessageLogger_cfi")
@@ -105,6 +121,17 @@ def baseconfig(
 			"^HLT_Mu[0-9]+(_TrkIsoVVL)?_(Tk)?Mu[0-9]+(_TrkIsoVVL)?(_DZ)?_v[0-9]+$",
 		)
 
+	# Primary Input Collections ###################################################
+	## miniAOD has NOT been tested, I'm just guessing names - MF@20150907
+	if miniaod:
+		input_PFCandidates = 'packedPFCandidates'
+		input_PFCandidatePtrs = 'packedPFCandidatesPtrs'
+		input_PrimaryVertices = 'offlineSlimmedPrimaryVertices'
+	else:
+		input_PFCandidates = 'particleFlow'
+		input_PFCandidatePtrs = 'particleFlowPtrs'
+		input_PrimaryVertices = 'goodOfflinePrimaryVertices'
+
 
 	#  PFCandidates  ###################################################
 	## Good offline PV selection: 
@@ -121,10 +148,10 @@ def baseconfig(
 
 
 	## pf candidate configuration for everything but CHS jets
-	process.pfPileUpIso.PFCandidates		= 'particleFlow'
-	process.pfPileUpIso.Vertices			= 'goodOfflinePrimaryVertices'
+	process.pfPileUpIso.PFCandidates		= cms.InputTag(input_PFCandidates)
+	process.pfPileUpIso.Vertices			= cms.InputTag(input_PrimaryVertices)
 	process.pfPileUpIso.checkClosestZVertex	= True
-	process.pfNoPileUpIso.bottomCollection	= 'particleFlow'
+	process.pfNoPileUpIso.bottomCollection	= cms.InputTag(input_PFCandidates)
 
 
 	## pf candidate configuration for deltaBeta corrections for muons and electrons 
@@ -134,20 +161,33 @@ def baseconfig(
 	process.pfPileUpChargedHadrons		= process.pfAllChargedHadrons.clone(src = 'pfPileUpIso')
 
 	## pf candidate configuration for CHS jets
-	process.pfPileUp.Vertices				= 'goodOfflinePrimaryVertices'
+	process.pfPileUp.Vertices				= cms.InputTag(input_PrimaryVertices)
 	process.pfPileUp.checkClosestZVertex	= False
 
 	# Modifications for new particleFlow Pointers
-	process.pfPileUp.PFCandidates = cms.InputTag("particleFlowPtrs")
-	process.pfPileUpIso.PFCandidates = cms.InputTag("particleFlowPtrs")
-	process.pfNoPileUp.bottomCollection = cms.InputTag("particleFlowPtrs")
-	process.pfNoPileUpIso.bottomCollection = cms.InputTag("particleFlowPtrs")
-	#process.pfJetTracksAssociatorAtVertex.jets= cms.InputTag("ak5PFJets")
+	process.pfPileUp.PFCandidates = cms.InputTag(input_PFCandidatePtrs)
+	process.pfPileUpIso.PFCandidates = cms.InputTag(input_PFCandidatePtrs)
+	process.pfNoPileUp.bottomCollection = cms.InputTag(input_PFCandidatePtrs)
+	process.pfNoPileUpIso.bottomCollection = cms.InputTag(input_PFCandidatePtrs)
 	process.path *= (
 		process.goodOfflinePrimaryVertices
-		#* process.goodOfflinePrimaryVertexEvents
 		* process.pfParticleSelectionSequence
 	)
+
+	## PUPPI - https://twiki.cern.ch/twiki/bin/viewauth/CMS/PUPPI
+	# creates reweighted PFCandidates collection 'puppi'
+	process.load('CommonTools.PileupAlgos.Puppi_cff')
+	process.puppi.candName = cms.InputTag(input_PFCandidates)
+	process.puppi.vertexName = cms.InputTag(input_PrimaryVertices)
+	# PFCandidates without muons - avoid misidentification from high-PT muons
+	process.PFCandidatesNoMu  = cms.EDFilter("CandPtrSelector",
+		src = cms.InputTag(input_PFCandidates),
+		cut = cms.string("abs(pdgId)!=13" )
+	)
+	process.puppinomu = process.puppi.clone(
+		candName = cms.InputTag('PFCandidatesNoMu')
+	)
+	process.path *= (process.puppi * (process.PFCandidatesNoMu * process.puppinomu))
 
 	#  Muons  ##########################################################
 	if channel == 'mm':
@@ -176,7 +216,7 @@ def baseconfig(
 	process.kappaTuple.Jets.minPt = 5.0
 	process.kappaTuple.Jets.taggers = cms.vstring()
 
-	# containers of objects to process
+	# containers for objects to process
 	jet_resources = []
 	cmssw_jets = {}  # algoname: cmssw module
 	kappa_jets = {}  # algoname: kappa jet config
@@ -194,18 +234,10 @@ def baseconfig(
 	process.load("RecoJets.JetProducers.ak5PFJets_cfi")
 	pfbase_jet = process.ak5PFJets.clone(srcPVs = 'goodOfflinePrimaryVertices', doAreaFastjet=True)
 
-	## PUPPI
-	# creates reweighted PFCandidates collection 'puppi'
-	process.load('CommonTools.PileupAlgos.Puppi_cff')
-	jet_resources.append(process.puppi)
-	if miniaod:
-		process.puppi.candName = cms.InputTag('packedPFCandidates')
-		process.puppi.vertexName = cms.InputTag('offlineSlimmedPrimaryVertices')
-
 	# create Jet variants
 	for param in (4, 5, 8):
 		# PFJets
-		for algo, input_tag in (("", 'particleFlow'), ("CHS", 'pfNoPileUp'), ("Puppi", 'puppi')):
+		for algo, input_tag in (("", input_PFCandidates), ("CHS", 'pfNoPileUp'), ("Puppi", 'puppi'),("PuppiNoMu", 'puppinomu')):
 			variant_name = "ak%dPFJets%s" % (param, algo)
 			variant_mod = pfbase_jet.clone(src=cms.InputTag(input_tag), rParam=param/10.0)
 			cmssw_jets[variant_name] = variant_mod
@@ -230,7 +262,7 @@ def baseconfig(
 		setattr(process, name, jet_module)
 	for name, pset in kappa_jets.iteritems():
 		setattr(process.kappaTuple.Jets, name, pset)
-	process.path *= reduce(lambda a, b: a * b, jet_resources) * reduce(lambda a, b: a * b, sorted(cmssw_jets.values()))
+	process.path *= reduce(lambda a, b: a * b, jet_resources + sorted(cmssw_jets.values()))
 
 	# Gluon tagging? - https://twiki.cern.ch/twiki/bin/viewauth/CMS/GluonTag
 
@@ -258,14 +290,31 @@ def baseconfig(
 	# Puppi
 	from RecoMET.METProducers.PFMET_cfi import pfMet
 	process.pfMetPuppi = pfMet.clone(src=cms.InputTag('puppi'))
-
-	process.kappaTuple.active += cms.vstring('MET')
-
+	process.pfMetPuppiNoMu = pfMet.clone(src=cms.InputTag('puppinomu'))
 	process.path *= (
 		process.correctionTermsPfMetType0PFCandidate
 		* process.pfMetPuppi
+		* process.pfMetPuppiNoMu
 		* process.pfMETCHS
 	)
+	# MET without forward region
+	process.PuppiNoHF  = cms.EDFilter("CandPtrSelector",
+		src = cms.InputTag('puppi'),
+		cut = cms.string("abs(eta) < 3" )
+	)
+	process.PuppiNoMuNoHF  = cms.EDFilter("CandPtrSelector",
+		src = cms.InputTag('puppinomu'),
+		cut = cms.string("abs(eta) < 3" )
+	)
+	process.pfMetPuppiNoHF = pfMet.clone(src=cms.InputTag('PuppiNoHF'))
+	process.pfMetPuppiNoMuNoHF = pfMet.clone(src=cms.InputTag('PuppiNoMuNoHF'))
+	process.path *= (
+		process.PuppiNoHF * process.pfMetPuppiNoHF
+		* process.PuppiNoMuNoHF * process.pfMetPuppiNoMuNoHF
+	)
+
+	process.kappaTuple.active += cms.vstring('MET')
+
 
 	#  Kappa  Output ###########################################################
 	process.path *= (
@@ -285,7 +334,7 @@ def baseconfig(
 
 if __name__ == '__main__':
 	# run local skim by hand without replacements by grid-control
-	if('@' in '@NICK@'):
+	if '@' in '@NICK@':
 		KappaParser = kappaparser.KappaParserZJet()
 		KappaParser.setDefault('test', '742data12')
 		testdict = {
@@ -336,7 +385,7 @@ if __name__ == '__main__':
 
 		process = baseconfig(
 			globaltag=KappaParser.globalTag,
-			testfile=KappaParser.files,
+			input_files=KappaParser.files,
 			maxevents=KappaParser.maxEvents,
 			nickname=KappaParser.nickName,
 			outputfilename="skim74.root",
@@ -346,7 +395,7 @@ if __name__ == '__main__':
 	else:
 		process = baseconfig(
 			globaltag='@GLOBALTAG@',
-			testfile=cms.untracked.vstring('@FILE_NAMES@'.strip('"').split('", "')),
+			input_files=cms.untracked.vstring('@FILE_NAMES@'.strip('"').split('", "')),
 			maxevents=-1,
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
