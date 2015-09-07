@@ -314,6 +314,7 @@ def baseconfig(
 	)
 
 	process.kappaTuple.active += cms.vstring('MET')
+	process.kappaTuple.MET.whitelist += cms.vstring('pfMetPuppiNoHF', 'pfMetPuppiNoMuNoHF')
 
 
 	#  Kappa  Output ###########################################################
