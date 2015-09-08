@@ -164,10 +164,10 @@ metMVAEM.permuteLeptons = cms.bool(True)
 metMVAET.srcLeptons = cms.VInputTag("mvaMETElectrons", "mvaMETTausET")
 metMVAET.permuteLeptons = cms.bool(True)
 
-metMVAMT.srcLeptons = cms.VInputTag("mvaMETMuons"    , "mvaMETMuons")
+metMVAMT.srcLeptons = cms.VInputTag("mvaMETMuons", "mvaMETTausMT")
 metMVAMT.permuteLeptons = cms.bool(True)
 
-metMVATT.srcLeptons = cms.VInputTag("mvaMETTausTT"    , "mvaMETTausTT")
+metMVATT.srcLeptons = cms.VInputTag("mvaMETTausTT", "mvaMETTausTT")
 metMVATT.permuteLeptons = cms.bool(True)
 ## ------------------------------------------------------------------------
 ## Definition of sequences
