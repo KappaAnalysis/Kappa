@@ -253,12 +253,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	if(miniaod):
 		process.ak4PFJets.src = cms.InputTag("packedPFCandidates")
+		process.ak4PFJets.doAreaFastjet = cms.bool(True)
 		process.pfMetMVA.srcVertices = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.puJetIdForPFMVAMEt.jec =  cms.string('AK4PF')
 		process.puJetIdForPFMVAMEt.vertexes = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.puJetIdForPFMVAMEt.rho = cms.InputTag("fixedGridRhoFastjetAll")
-		process.mvaMETMuons.src = cms.InputTag("slimmedMuons")
-		# process.mvaMETElectrons.src = cms.InputTag("slimmedElectrons")
 		# Todo for miniAOD: find a selector that works in pat Taus and slimmedElectrons
 		process.metMVAEM.srcLeptons = cms.VInputTag("slimmedElectrons", "slimmedMuons" )
 		process.metMVAET.srcLeptons = cms.VInputTag("slimmedElectrons", "slimmedTaus")
@@ -277,7 +276,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		                process.calibratedAK4PFJetsForPFMVAMEt * 
 		                process.mvaMETJets * 
 		                process.puJetIdForPFMVAMEt * 
-		                process.mvaMETMuons * 
 		                process.metMVAEM * 
 		                process.metMVAET * 
 		                process.metMVAMT * 
