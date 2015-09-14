@@ -53,16 +53,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	# General configuration
-	process.load("Kappa.Skimming.customJECs_cff")
-	if data:
-		process.jec.toGet = cms.VPSet(
-			cms.PSet(
-			record = cms.string('JetCorrectionsRecord'),
-			tag = cms.string('JetCorrectorParametersCollection_Summer15_50nsV4_DATA_AK4PF'),
-			label  = cms.untracked.string('AK4PF'))
-			)
-		process.jec.connect = cms.string('sqlite:Summer15_50nsV4_DATA.db')
-
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
 	if miniaod:
 		process.load("Kappa.Skimming.KVertices_cff")
@@ -343,7 +333,10 @@ if __name__ == "__main__":
 		#process = getBaseConfig(globaltag="PHYS14_25_V1::All", nickname="VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM", testfile=cms.untracked.vstring("root://xrootd.unl.edu//store/mc/Phys14DR/VBF_HToTauTau_M-125_13TeV-powheg-pythia6/MINIAODSIM/PU20bx25_tsg_PHYS14_25_V1-v2/00000/147B369C-9F77-E411-B99D-00266CF9B184.root"))
 
 		# SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8
-		#process = getBaseConfig(globaltag="MCRUN2_74_V9", nickname="SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/A2E90ABD-5303-E511-9365-0025905A60B6.root"))
+		#process = getBaseConfig(globaltag="74X_mcRun2_asymptotic_v2", nickname="SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8", testfile=cms.untracked.vstring("file:///nfs/dust/cms/user/fcolombo/A2E90ABD-5303-E511-9365-0025905A60B6.root"))
+
+		# SingleMuon_Run2015B_PromptRecov1_13TeV_MINIAOD
+		#process = getBaseConfig(globaltag="74X_dataRun2_v2", nickname="SingleMuon_Run2015B_PromptRecov1_13TeV_MINIAOD", testfile=cms.untracked.vstring("root://xrootd.unl.edu//store/data/Run2015B/SingleMuon/MINIAOD/PromptReco-v1/000/251/168/00000/4E8E390B-EA26-E511-9EDA-02163E013567.root"))
 
 		# SM_VBFHToTauTau_M_125_powheg_pythia_13TeV MiniAOD
 		# Input file for test script - please leave this as default!
