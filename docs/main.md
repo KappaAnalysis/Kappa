@@ -8,7 +8,7 @@ CMSSW based tests: [results](http://www-ekp.physik.uni-karlsruhe.de/~berger/kapp
 It is a skimming framework constructed to extract the relevant data
 from EDM data sets (RECO, AOD, MINIAOD (in development)) and store it in a well-defined
 and compact ROOT data format. This full documentation is available through
-[Doxygen](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/ "Kappa Doxygen").
+[Doxygen](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/doc "Kappa Doxygen").
 
 The purpose of Kappa is to provide a stable, slim data format and the
 tools to produce these files (skimming) and to use them in the analysis.
@@ -86,7 +86,7 @@ The Kappa-CMSSW EDProducer has a few options:
 
 What Kappa does is summarized in this image:
 
-![Kappa workflow](http://www-ekp.physik.uni-karlsruhe.de/~berger/files/kappa.svg "The Kappa workflow")
+![Kappa workflow](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/img/kappa.svg "The Kappa workflow")
 
 
 Several tools are available to check the skimming process and the skim files (tbd):
@@ -356,7 +356,7 @@ The functionality of this framework is regularly checked by the
 [Kappa test script](https://github.com/KappaAnalysis/Kappa/tree/development/DataFormats/test/test.py)
 as described [here](https://indico.cern.ch/event/371827/contribution/0/material/slides/0.pdf "Indico Meeting").
 The results are presented on
-[this webpage](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/result.html "Kappa test result").
+[this webpage](http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/current/result.html "Kappa test result").
 
 In order to use this script, the tested CMSSW config file must be
 equipped with these python comments:
