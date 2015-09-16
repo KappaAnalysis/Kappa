@@ -62,3 +62,45 @@ def get_cmssw_version():
 def get_cmssw_version_number():
 	"""returns 'X_Y_Z' (without 'CMSSW_')"""
 	return get_cmssw_version().split("CMSSW_")[1]
+
+def read_grid_control_includes(filenames):
+	nicknameslist = []
+	for filename in filenames:
+		nicknameslist.append(read_grid_control_include(filename))
+	nicknames = [item for sublist in nicknameslist for item in sublist]
+	return nicknames
+
+def read_grid_control_include(filename):
+	f = open(filename)
+	a = []
+	for line in f:
+		a.append(line.replace("\n", "").replace("\t", "").replace(" ",""))
+	a.remove("[global]")
+	a.remove("include=")
+	nicks = []
+	for line in a:
+		if(not line.startswith(";")):
+			if(line.endswith(".conf")):
+			#	print line
+				for nick in read_grid_control_dataset(line):
+					nicks.append(nick)
+			else:
+				print "could not parse " + line + " from " + filename
+				sys.exit()
+	return nicks
+
+def read_grid_control_dataset(filename):
+	f = open(filename)
+	a = []
+	nicks = []
+	for line in f:
+		a.append(line.replace("\n", "").replace("\t", "").replace(" ",""))
+	a.remove("[CMSSW_Advanced]")
+	a.remove("dataset+=")
+	a.remove("")
+	#print a
+	for line in a:
+		nick = line.split(":")
+		if not nick[0].startswith(";"):
+			nicks.append(nick[0])
+	return nicks

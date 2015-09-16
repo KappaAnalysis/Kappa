@@ -11,6 +11,7 @@ from Kappa.Skimming.registerDatasetHelper import get_sample_by_nick
 import sys
 from glob import glob
 import os, shutil
+from Kappa.Skimming.tools import read_grid_control_includes
 
 def submit(config):
 	try:
@@ -61,9 +62,11 @@ def submission():
 	config.Data.publication = False
 	
 	config.Site.storageSite = "T2_DE_DESY"
-	
-	nicknames = ['SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8']
-	
+	# load nicknames form gc-style config files and write them to a flat nicknames list
+	nicknames = read_grid_control_includes(["samples/13TeV/Data_miniAOD.conf", "samples/13TeV/Spring15_miniAOD.conf"])
+	print nicknames
+	#nicknames = ['ZZTo4L_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_powhegpythia8']
+
 	# loop over datasets and get repsective nicks
 	for nickname in nicknames:
 		config.General.requestName = nickname+'newEleId'
