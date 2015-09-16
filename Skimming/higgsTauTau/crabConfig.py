@@ -10,6 +10,7 @@ from multiprocessing import Process
 from Kappa.Skimming.registerDatasetHelper import get_sample_by_nick
 import sys
 from glob import glob
+import os, shutil
 
 def submit(config):
 	try:
@@ -23,11 +24,28 @@ def crab_command(command):
 	for dir in glob('/nfs/dust/cms/user/%s/crab_kappa_skim-2/*'%(getUsernameFromSiteDB())):
 		crabCommand(command, dir = dir)
 
+def check_path(path):
+	if os.path.exists(path):
+		print(path + " already exists! Delete it now in order to re-initialize it by crab? [y/n]")
+		yes = set(['yes','y', 'ye', ''])
+		no = set(['no','n'])
+
+		choice = raw_input().lower()
+		if choice in yes:
+			shutil.rmtree(path)
+			return
+		elif choice in no:
+			return
+		else:
+			sys.stdout.write(path + " already exists! Delete it now in order to re-initialize it by crab?")
+
+
 def submission():
 	from CRABClient.UserUtilities import config
 	config = config()
 	
 	config.General.workArea = '/nfs/dust/cms/user/%s/crab_kappa_skim-2'%(getUsernameFromSiteDB())
+	check_path(config.General.workArea)
 	config.General.transferOutputs = True
 	config.General.transferLogs = True
 	
