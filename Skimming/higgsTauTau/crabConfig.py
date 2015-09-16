@@ -1,4 +1,6 @@
 #!/bin/env python
+# crab submission script
+# usage: python crabConfig.py submit
 
 from CRABClient.UserUtilities import getUsernameFromSiteDB
 from httplib import HTTPException
@@ -30,8 +32,8 @@ def submission():
 	config.General.transferLogs = True
 	
 	config.JobType.pluginName = 'Analysis'
-	config.JobType.psetName = 'kSkimming_run2_rework_cfg.py'
-	config.JobType.inputFiles = ['Summer15_V5_MC.db']
+	config.JobType.psetName = 'kSkimming_run2_cfg.py'
+	#config.JobType.inputFiles = ['Summer15_V5_MC.db']
 	config.JobType.allowUndistributedCMSSW = True
 	
 	config.Data.inputDBS = 'global'
@@ -46,8 +48,8 @@ def submission():
 	
 	# loop over datasets and get repsective nicks
 	for nickname in nicknames:
-		config.General.requestName = nickname+'rework_oldEleId_rename'
-		config.JobType.pyCfgParams = ['globalTag=MCRUN2_74_V9','kappaTag=KAPPA_2_0_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname)]
+		config.General.requestName = nickname+'newEleId'
+		config.JobType.pyCfgParams = ['globalTag=74X_mcRun2_asymptotic_v2','kappaTag=KAPPA_2_0_4','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname)]
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
 		p = Process(target=submit, args=(config,))
