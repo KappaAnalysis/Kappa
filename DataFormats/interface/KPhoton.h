@@ -30,9 +30,9 @@ struct KPhoton : public KLV
 	inline bool idVeto() const { return (ids & (1 << KPhotonId::VETO)); };  // electron veto
 
 	/// PF isolation with delta beta corrections (default fraction of pile-up is 0.5)
-	inline double pfIso(const double puFraction=0.5) const
+	inline float pfIso(const float puFraction=0.5) const
 	{
-		return sumChargedHadronPt + std::max(0.0,
+		return sumChargedHadronPt + std::max(0.0f,
 			sumNeutralHadronEt + sumPhotonEt - puFraction * sumPUPt);
 	}
 };
