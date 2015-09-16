@@ -8,6 +8,7 @@ from CRABAPI.RawCommand import crabCommand
 from CRABClient.ClientExceptions import ClientException
 from multiprocessing import Process
 from Kappa.Skimming.registerDatasetHelper import get_sample_by_nick
+from Kappa.Skimming.datasetsHelper2015 import isData
 import sys
 from glob import glob
 import os, shutil
@@ -64,13 +65,12 @@ def submission():
 	config.Site.storageSite = "T2_DE_DESY"
 	# load nicknames form gc-style config files and write them to a flat nicknames list
 	nicknames = read_grid_control_includes(["samples/13TeV/Data_miniAOD.conf", "samples/13TeV/Spring15_miniAOD.conf"])
-	print nicknames
 	#nicknames = ['ZZTo4L_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_powhegpythia8']
 
 	# loop over datasets and get repsective nicks
 	for nickname in nicknames:
 		config.General.requestName = nickname+'newEleId'
-		config.JobType.pyCfgParams = ['globalTag=74X_mcRun2_asymptotic_v2','kappaTag=KAPPA_2_0_4','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname)]
+		config.JobType.pyCfgParams = ['globalTag=74X_dataRun2_v2' if isData(nickname) else 'globalTag=74X_mcRun2_asymptotic_v2' ,'kappaTag=KAPPA_2_0_4','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname)]
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
 		p = Process(target=submit, args=(config,))
