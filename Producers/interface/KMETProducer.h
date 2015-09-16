@@ -28,9 +28,10 @@ protected:
 	{
 		if (in.size() == 1)
 		{
-			// fill properties of basic MET
+			// fill basic MET properties
 			KBasicMETProducer::fillMET<reco::PFMET>(in.at(0), out);
-
+			copyP4(in, out.p4);
+			out.sumEt = in.sumEt();
 			// additional PF properties
 			out.photonFraction = in.at(0).photonEtFraction();
 			out.neutralHadronFraction = in.at(0).neutralHadronEtFraction();

@@ -50,11 +50,13 @@ std::ostream &operator<<(std::ostream &os, const KBasicMET &met)
 
 std::ostream &operator<<(std::ostream &os, const KMET &met)
 {
-	os << static_cast<const KBasicMET>(met) << std::endl;
+	os << static_cast<const KLV>(met) << " sumEt=" << met.sumEt;
 	os << "\tCHF=" << met.chargedHadronFraction << " NHF=" << met.neutralHadronFraction;
 	os << " HFHadF=" << met.hfHadronFraction << " HFEMF=" << met.hfEMFraction << std::endl;
 	os << "\teF=" << met.electronFraction << " photF=" << met.photonFraction;
 	os << " muF=" << met.muonFraction;
+	os << " sig=(" << met.significance(0,0) << ", " << met.significance(1,0) << "; ";
+	os << met.significance(0,1) << ", " << met.significance(1,1) << ")";
 	return os;
 }
 

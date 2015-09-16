@@ -102,13 +102,16 @@ struct KBasicMET : public KLV
 	ROOT::Math::SMatrix<double, 2, 2, ROOT::Math::MatRepSym<double, 2> > significance;
 };
 
-struct KMET : public KBasicMET
+struct KMET : public KLV
 {
+	double sumEt;
 	float photonFraction, electronFraction;
 	float neutralHadronFraction, chargedHadronFraction;
 	float muonFraction;
 	float hfHadronFraction, hfEMFraction;
 	int leptonSelectionHash;
+	ROOT::Math::SMatrix<double, 2, 2, ROOT::Math::MatRepSym<double, 2> > significance;
+
 };
 typedef std::vector<KMET> KMETs;
 
