@@ -19,8 +19,8 @@ class KPatMETProducer : public KBaseMultiProducer<edm::View<pat::MET>, KMET>
 public:
 	KPatMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<edm::View<pat::MET>, KMET>(cfg, _event_tree, _run_tree, getLabel()) {
-		genMet = new KBasicMET;
-		_event_tree->Bronch("genmetTrue", "KBasicMET", &genMet);
+		genMet = new KMET;
+		_event_tree->Bronch("genmetTrue", "KMET", &genMet);
 	}
 
 	static const std::string getLabel() { return "PatMET"; }
@@ -65,7 +65,7 @@ protected:
 
 private:
 	TTree* _event_tree_pointer;
-	KBasicMET* genMet;
+	KMET* genMet;
 };
 
 #endif

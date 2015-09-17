@@ -11,13 +11,13 @@
 #include "../../DataFormats/interface/KBasic.h"
 #include <DataFormats/METReco/interface/MET.h>
 
-class KBasicMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KBasicMET>
+class KBasicMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KMET>
 {
 public:
 	KBasicMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::MET>, KBasicMET>(cfg, _event_tree, _run_tree, getLabel()) {}
+		KBaseMultiProducer<edm::View<reco::MET>, KMET>(cfg, _event_tree, _run_tree, getLabel()) {}
 
-	static const std::string getLabel() { return "BasicMET"; }
+	static const std::string getLabel() { return "GenMET"; }
 
 	template<typename Tin>
 	static void fillMET(const Tin &in, OutputType &out)
@@ -31,12 +31,13 @@ public:
 		TMatrixD mat = in.getSignificanceMatrix();
 #endif
 		if (mat(0,1) != mat(1,0))
-			std::cout << "KBasicMETProducer::fillMET: Matrix is not symmetric: " << mat(0,1) << " != " << mat(1,0) << std::endl;
+			std::cout << "KBasicMETProducer::fillMET: Matrix is not symmetric: "
+			          << mat(0,1) << " != " << mat(1,0) << std::endl;
 		out.significance(0,0) = mat(0,0);
 		out.significance(0,1) = mat(0,1);
 		if (out.significance(1,0) != mat(1,0))
 			std::cout << "KBasicMETProducer::fillMET: Significance matrix is not identical to input:"
-				<< out.significance(1,0) << " != " << mat(1,0) << std::endl;
+			          << out.significance(1,0) << " != " << mat(1,0) << std::endl;
 		out.significance(1,1) = mat(1,1);
 	}
 
