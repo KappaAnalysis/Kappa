@@ -18,7 +18,7 @@ cmsenv
 cd src/
 
 mkdir Kappa
-mv /home/travis/* Kappa/
+cp -r /home/travis/* Kappa/
 
 echo "# ================= #"
 echo "# Building in CMSSW #"
