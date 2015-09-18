@@ -4,6 +4,7 @@
 <flags REM_CXXFLAGS="-fipa-pta"/>
 <use name="rootrflx" />
 <use name="rootmath" />
+<use name="boost" />
 
 <export>
 	<use name="rootrflx" />
