@@ -22,6 +22,7 @@ public:
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup);
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup);
+	virtual bool endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
 	virtual ~KBaseProducer() {};
 
 protected:

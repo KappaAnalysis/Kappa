@@ -121,6 +121,10 @@ struct KTriggerObjects
 struct KFilterMetadata
 {
 	std::vector<std::string> filternames;
+	unsigned int nEventsTotal;
+	unsigned int nNegEventsTotal;
+	unsigned int nEventsFiltered;
+	unsigned int nNegEventsFiltered;
 };
 
 struct KFilterSummary

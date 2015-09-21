@@ -397,6 +397,10 @@ void KTuple::analyze(const edm::Event &event, const edm::EventSetup &setup)
 
 void KTuple::endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 {
+	for (unsigned int i = 0; i < producers.size(); ++i)
+	{
+		producers[i]->endLuminosityBlock(lumiBlock, setup);
+	}
 	ROOTContextSentinel ctx;
 	lumi_tree->Fill();
 }
