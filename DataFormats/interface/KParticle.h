@@ -37,7 +37,7 @@ struct KParticle : public KLV
 	/// PDG-ID of the particle (signed)
 	int pdgId() const
 	{
-		return sign() * (particleinfo & KParticlePdgIdMask);
+		return sign() * static_cast<int>(particleinfo & KParticlePdgIdMask);
 	}
 
 	/// particle charge multiplied by 3 (for integer comparisons)
@@ -103,10 +103,10 @@ struct KGenParticle : public KParticle
 
 	/// return index of daughter i
 	/** returns -1 in case i >= numberOfDaughters */
-	int daughterIndex(unsigned int i) const
+	long daughterIndex(unsigned int i) const
 	{
 		if (i < daughterIndices.size())
-			return daughterIndices.at(i);
+			return static_cast<long>(daughterIndices.at(i));
 		else
 			return -1;
 	}

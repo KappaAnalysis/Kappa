@@ -159,7 +159,7 @@ struct KTrack : public KLV
 				ROOT::Math::SVector<double, 7> orthog;
 				orthog[0] = p4.y();
 				orthog[1] = -p4.x();
-				for (int i = 2; i < 7; i++)
+				for (unsigned int i = 2; i < 7; i++)
 					orthog[i] = 0;
 
 				float vtxErr2 = static_cast<float>(ROOT::Math::Similarity(bs->covariance, orthog)) / p4.Perp2();

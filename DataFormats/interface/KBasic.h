@@ -89,23 +89,23 @@ struct KTriggerObjectMetadata
 	size_t getMinFilterIndex(size_t hltIndex)
 	{
 		assert(hltIndex < nFiltersPerHLT.size());
-		size_t minFilterIndex = 0;
+		int minFilterIndex = 0;
 		for (size_t tmpHltIndex = 0; tmpHltIndex < hltIndex; ++tmpHltIndex)
 		{
 			minFilterIndex += nFiltersPerHLT[tmpHltIndex];
 		}
-		return minFilterIndex;
+		return static_cast<size_t>(minFilterIndex);
 	}
-	
+
 	size_t getMaxFilterIndex(size_t hltIndex)
 	{
 		assert(hltIndex < nFiltersPerHLT.size());
-		size_t maxFilterIndex = 0;
+		int maxFilterIndex = 0;
 		for (size_t tmpHltIndex = 0; tmpHltIndex <= hltIndex; ++tmpHltIndex)
 		{
 			maxFilterIndex += nFiltersPerHLT[tmpHltIndex];
 		}
-		return maxFilterIndex;
+		return static_cast<size_t>(maxFilterIndex);
 	}
 };
 
