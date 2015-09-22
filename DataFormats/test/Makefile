@@ -15,7 +15,7 @@ LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
 
 # Boost
 # Use Boost from CMSSW if CMSSW env available otherwise fall back to system boost
-BOOST_INCDIR = $(shell test ! -z $(CMSSW_BASE) && cd $(CMSSW_BASE) && scram tool info boost | sed -n 's/INCLUDE=/-I/p')
+BOOST_INCDIR = $(shell test ! -z $(CMSSW_BASE) && cd $(CMSSW_BASE) && scram tool info boost | sed -n 's/INCLUDE=/-isystem/p')
 CXXFLAGS += $(BOOST_INCDIR)
 
 all: $(PROGRAM)
