@@ -50,6 +50,7 @@ def submission():
 	check_path(config.General.workArea)
 	config.General.transferOutputs = True
 	config.General.transferLogs = True
+	config.User.voGroup = 'dcms'
 	
 	config.JobType.pluginName = 'Analysis'
 	config.JobType.psetName = 'kSkimming_run2_cfg.py'
