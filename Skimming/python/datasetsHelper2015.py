@@ -6,6 +6,13 @@
 from Kappa.Skimming.registerDatasetHelper import *
 import FWCore.ParameterSet.Config as cms
 
+def isData(nickname):
+	sample = get_sample_by_nick(nickname)
+	dict = load_database(dataset)
+	sample_details = dict[sample]
+	data = sample_details["data"]
+	return data
+
 def getTreeInfo(nickname, globaltag, kappaTag):
 
 	sample = get_sample_by_nick(nickname)
