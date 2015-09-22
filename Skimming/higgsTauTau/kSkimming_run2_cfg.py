@@ -37,6 +37,7 @@ options.register('nickname', 'SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt
 options.register('testfile', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Path for a testfile')
 options.register('maxevents', -1, VarParsing.multiplicity.singleton, VarParsing.varType.int, 'maxevents')
 options.register('outputfilename', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Filename for the Outputfile')
+options.register('testsuite', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Run the Kappa test suite. Default: True')
 options.parseArguments()
 
 cmssw_version_number = tools.get_cmssw_version_number()
@@ -354,10 +355,24 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	return process
 
 if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
-	if options.testfile:
+
+	if options.testsuite:
+		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
+		testPath = [p for p in testPaths if os.path.exists(p)][0]
+		globalTag = "PHYS14_25_V1::All"
+		testFile = "VBF_HToTauTau_Miniaod.root"
+		nickName = "VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM"
+		if cmssw_version_number.startswith("7_4"):
+			globalTag = 'MCRUN2_74_V9'
+			testFile = "SUSYGluGluHToTauTau_M-120_13TeV_MCRUN2.root"
+			nickName = "SUSYGluGluToHToTauTauM120_RunIISpring15DR74_Asympt25ns_13TeV_AODSIM_pythia8"
 		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents)
+
 	else:
-		if options.outputfilename:
-			process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents, outputfilename=options.outputfilename)
+		if options.testfile:
+			process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents)
 		else:
-			process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents)
+			if options.outputfilename:
+				process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents, outputfilename=options.outputfilename)
+			else:
+				process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents)
