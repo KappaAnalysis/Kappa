@@ -57,4 +57,9 @@ process.kappaTuple = cms.EDAnalyzer('KTuple',
 process.kappaTuple.active = cms.vstring()
 process.kappaOut = cms.Sequence(process.kappaTuple)
 
-process.p = cms.Path ( )
+process.p = cms.Path ()
+
+process.load("Kappa.Producers.EventWeightCountProducer_cff")
+
+process.p *= process.nEventsTotal
+process.p *= process.nNegEventsTotal

@@ -9,6 +9,11 @@
 #include "../../DataFormats/interface/KInfo.h"
 #include <FWCore/Utilities/interface/InputTag.h>
 
+#include "DataFormats/FWLite/interface/Handle.h"
+#include "DataFormats/FWLite/interface/Event.h"
+#include "DataFormats/FWLite/interface/ChainEvent.h"
+#include "DataFormats/Common/interface/MergeableCounter.h"
+
 class KFilterSummaryProducer : public KBaseMatchingProducer<KFilterSummary>
 {
 public:
@@ -65,6 +70,25 @@ public:
 
 		return true;
 	}
+	virtual bool endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup) override
+	{
+		edm::Handle<edm::MergeableCounter> nEventsTotal, nNegEventsTotal, nEventsFiltered, nNegEventsFiltered;
+
+		lumiBlock.getByLabel(labelEventsTotal, nEventsTotal);
+		names->nEventsTotal = nEventsTotal->value;
+
+		lumiBlock.getByLabel(labelNegEventsTotal, nNegEventsTotal);
+		names->nNegEventsTotal = nNegEventsTotal->value;
+
+		lumiBlock.getByLabel(labelEventsFiltered, nEventsFiltered);
+		names->nEventsFiltered = nEventsFiltered->value;
+
+		lumiBlock.getByLabel(labelNegEventsFiltered, nNegEventsFiltered);
+		names->nNegEventsFiltered = nNegEventsFiltered->value;
+
+		return true;
+
+	}
 
 private:
 	struct NameAndTagComparison
@@ -82,6 +106,11 @@ private:
 	KFilterSummary *summary;
 	KFilterMetadata *names;
 	std::vector<edm::InputTag> tags;
+
+	std::string labelEventsTotal = "nEventsTotal";
+	std::string labelNegEventsTotal = "nNegEventsTotal";
+	std::string labelEventsFiltered = "nEventsFiltered";
+	std::string labelNegEventsFiltered = "nNegEventsFiltered";
 
 	virtual bool onMatchingInput(const std::string targetName, const std::string inputName,
 		const edm::ParameterSet &pset, const edm::InputTag &tag)

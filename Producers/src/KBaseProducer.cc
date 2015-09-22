@@ -30,6 +30,11 @@ bool KBaseProducer::onFirstEvent(const edm::Event &event, const edm::EventSetup 
 	return true;
 }
 
+bool KBaseProducer::endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
+{
+	return true;
+}
+
 bool KBaseProducer::tagMatch(const edm::Provenance *prov, const std::vector<edm::InputTag> &tags)
 {
 	for (std::vector<edm::InputTag>::const_iterator titer = tags.begin(); titer < tags.end(); ++titer)

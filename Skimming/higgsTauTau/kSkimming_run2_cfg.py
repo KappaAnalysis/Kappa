@@ -325,6 +325,20 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	for repo, rev in tools.get_repository_revisions().iteritems():
 			setattr(process.kappaTuple.TreeInfo.parameters, repo, cms.string(rev))
 
+
+	## ------------------------------------------------------------------------
+	## Count Events after running all filters 
+	if not data:
+		process.nEventsTotal.isMC = cms.bool(True)
+		process.nNegEventsTotal.isMC = cms.bool(True)
+		process.nEventsFiltered.isMC = cms.bool(True)
+		process.nNegEventsFiltered.isMC = cms.bool(True)
+
+	process.p *= process.nEventsFiltered 
+	process.p *= process.nNegEventsFiltered 
+	process.kappaTuple.active += cms.vstring('FilterSummary')
+
+	## ------------------------------------------------------------------------
 	## if needed adapt output filename
 	if outputfilename != '':
 		process.kappaTuple.outputFile = cms.string('%s'%outputfilename)
