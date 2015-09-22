@@ -1,27 +1,14 @@
-# travis config for Kappa
-
 sudo: required
 language: cpp
-notifications:
-  email:
-    on_success: never # default: change
-    on_failure: never # default: always
+services:
+  - docker
+env:
+  - TEST_CMSSW_VERSION: CMSSW_5_3_29
+  - TEST_CMSSW_VERSION: CMSSW_7_2_5
+  - TEST_CMSSW_VERSION: CMSSW_7_4_2
 compiler:
   - gcc
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-4.8
-    - g++-4.8
-    - clang
 before_install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
-  - sudo add-apt-repository --yes ppa:boost-latest/ppa
-  - sudo apt-get -qq update
-  - sudo apt-get install libboost1.54-all-dev
-  - ./.install-dependencies.sh
-install: 
-  - make -C DataFormats/test
-script: make -C DataFormats/test
+  - docker pull claria/cvmfs-cms
+script:
+  - docker run --privileged -e TEST_CMSSW_VERSION=${TEST_CMSSW_VERSION} -v ${TRAVIS_BUILD_DIR}:/home/travis claria/cvmfs-cms /bin/bash -c "cd /home/; /home/travis/test_build.sh"

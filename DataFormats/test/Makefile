@@ -13,6 +13,11 @@ WARNINGS = -Wextra -Wno-unused-parameter -Wswitch-enum -Wsync-nand \
 LDFLAGS  = -O $(shell root-config --libs) $(SYSLIBS) \
 	-lGenVector -lMathCore
 
+# Boost
+# Use Boost from CMSSW if CMSSW env available otherwise fall back to system boost
+BOOST_INCDIR = $(shell test ! -z $(CMSSW_BASE) && cd $(CMSSW_BASE) && scram tool info boost | sed -n 's/INCLUDE=/-isystem/p')
+CXXFLAGS += $(BOOST_INCDIR)
+
 all: $(PROGRAM)
 
 Hash.o: ../src/Hash.cpp
