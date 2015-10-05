@@ -103,7 +103,7 @@ def is_embedded(filetype, default=False):
 
 def get_format(filetype, default=False):
 	if (default == None):
-		return filetype.replace("MINIAODSIM", "MINIAOD")
+		return filetype.replace("AODSIM", "AOD")
 	else:
 		return default
 
