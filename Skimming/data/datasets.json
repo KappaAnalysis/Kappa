@@ -939,6 +939,46 @@
         "process": "GluGluToHToTauTau_M95", 
         "scenario": "PU_S10"
     }, 
+    "/GluGluZH_HToWW_M125_13TeV_powheg_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM": {
+        "campaign": "RunIISpring15DR74", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "powheg_pythia8", 
+        "process": "GluGluZH_HToWW_M125", 
+        "scenario": "Asympt25ns"
+    }, 
+    "/HWminusJ_HToWW_M125_13TeV_powheg_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM": {
+        "campaign": "RunIISpring15DR74", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "powheg_pythia8", 
+        "process": "HWminusJ_HToWW_M125", 
+        "scenario": "Asympt25ns"
+    }, 
+    "/HWplusJ_HToWW_M125_13TeV_powheg_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM": {
+        "campaign": "RunIISpring15DR74", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "powheg_pythia8", 
+        "process": "HWplusJ_HToWW_M125", 
+        "scenario": "Asympt25ns"
+    }, 
+    "/HZJ_HToWW_M125_13TeV_powheg_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM": {
+        "campaign": "RunIISpring15DR74", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "powheg_pythia8", 
+        "process": "HZJ_HToWW_M125", 
+        "scenario": "Asympt25ns"
+    }, 
     "/JJHiggs0MToTauTau_M-125p6_8TeV-JHUGenV4/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
         "campaign": "Summer12", 
         "data": false, 
@@ -2937,6 +2977,16 @@
         "format": "MINIAOD", 
         "generator": "powheg_pythia8", 
         "process": "ZHToTauTau_M125", 
+        "scenario": "Asympt25ns"
+    }, 
+    "/ZHToTauTau_M130_13TeV_powheg_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM": {
+        "campaign": "RunIISpring15DR74", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "powheg_pythia8", 
+        "process": "ZHToTauTau_M130", 
         "scenario": "Asympt25ns"
     }, 
     "/ZZJetsTo2L2Nu_TuneZ2_7TeV-madgraph-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
