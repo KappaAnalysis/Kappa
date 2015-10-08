@@ -66,13 +66,14 @@ def checkoutPackages(args):
 		#Jan's multi-MET Producer
 		"git cms-addpkg RecoMET/METPUSubtraction",
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/plugins"),
-		"wget https://raw.githubusercontent.com/CERN-PH-CMG/cmg-cmssw/CMGTools-from-CMSSW_7_4_3/RecoMET/METPUSubtraction/plugins/PFMETProducerMVATauTau.cc"
-		"wget https://raw.githubusercontent.com/CERN-PH-CMG/cmg-cmssw/CMGTools-from-CMSSW_7_4_3/RecoMET/METPUSubtraction/plugins/PFMETProducerMVATauTau.h"
+		"wget https://raw.githubusercontent.com/CERN-PH-CMG/cmg-cmssw/CMGTools-from-CMSSW_7_4_3/RecoMET/METPUSubtraction/plugins/PFMETProducerMVATauTau.cc",
+		"wget https://raw.githubusercontent.com/CERN-PH-CMG/cmg-cmssw/CMGTools-from-CMSSW_7_4_3/RecoMET/METPUSubtraction/plugins/PFMETProducerMVATauTau.h",
 		#"git remote add cmgtools https://github.com/CERN-PH-CMG/cmg-cmssw.git",
 		#"git pull cmgtools",
 		#"git checkout CMGTools-from-CMSSW_7_4_7",
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/"),
 		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 74X-13TeV-Summer15-July2015 --depth 1",
-		"rm -r data/.git/",
+		"rm -rf $CMSSW_BASE/src/RecoMET/METPUSubtraction/data/.git/",
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 
 		#PF MET with NoHF MET
