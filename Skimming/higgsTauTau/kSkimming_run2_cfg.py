@@ -49,10 +49,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
                    kappaTag = 'Kappa_2_0_0',
 				   outputfilename = ''):
 
+	from Kappa.Skimming.KSkimming_template_cfg import process
+	## ------------------------------------------------------------------------
+	## Write out edmFile to allos unscheduled modules to work
+	process.load("Kappa.Skimming.edmOut")
+	process.ep *= process.edmOut
+
 	## ------------------------------------------------------------------------
 	# Configure Kappa
-	from Kappa.Skimming.KSkimming_template_cfg import process
-
 	if testfile:
 		process.source.fileNames      = testfile
 	else:
@@ -63,7 +67,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
-
+	process.ep *= process.kappaOut
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	# Important to be evaluated correctly for the following steps
@@ -282,9 +286,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
                                postfix="NoHF"
                                )
 
-
-	#process.kappaTuple.whitelist = cms.vstring("patPFMet", "patPFMetT1", "patPFMetNoHF", "patPFMetNoHFT1")
+	
 	process.kappaTuple.PatMET.whitelist = cms.vstring("patPFMet(T1)?(NoHF)?_")
+	# configure edmOutput module to really produce the desired METs
+	process.edmOut.outputCommands = cms.untracked.vstring('drop *', 
+	                                              'keep *_patPFMet_*_KAPPA',
+	                                              'keep *_patPFMetT1_*_KAPPA',
+	                                              'keep *_patPFMetNoHF_*_KAPPA',
+	                                              'keep *_patPFMetT1NoHF_*_KAPPA'
+	)
 
 	process.p *= process.patMetModuleSequence 
 	if(miniaod):
@@ -371,15 +381,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if outputfilename != '':
 		process.kappaTuple.outputFile = cms.string('%s'%outputfilename)
 
-	## ------------------------------------------------------------------------
-	## let Kappa run
-	#process.p *= ( process.kappaOut )
-
-	## ------------------------------------------------------------------------
-	## Write out edmFile for debugging perposes 
-	process.load("Kappa.Skimming.edmOut")
-
-	process.ep *= process.kappaOut
 	return process
 
 if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":

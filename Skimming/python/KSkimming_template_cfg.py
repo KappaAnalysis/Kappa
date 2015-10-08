@@ -59,7 +59,7 @@ process.kappaTuple.active = cms.vstring()
 process.kappaOut = cms.Sequence(process.kappaTuple)
 
 process.p = cms.Path ()
-
+process.ep = cms.EndPath()
 process.load("Kappa.Producers.EventWeightCountProducer_cff")
 
 process.p *= process.nEventsTotal
