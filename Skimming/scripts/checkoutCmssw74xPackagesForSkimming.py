@@ -65,13 +65,19 @@ def checkoutPackages(args):
 		#everything needed is already in the 7_4_6 release -> only use 7_4_7 due to bugfix!
 		#Jan's multi-MET Producer
 		"git cms-addpkg RecoMET/METPUSubtraction",
-		"cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction"),
-		"git remote add cmgtools https://github.com/CERN-PH-CMG/cmg-cmssw.git",
-		"git pull cmgtools",
-		"git checkout CMGTools-from-CMSSW_7_4_7",
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/plugins"),
+		"wget https://raw.githubusercontent.com/CERN-PH-CMG/cmg-cmssw/CMGTools-from-CMSSW_7_4_3/RecoMET/METPUSubtraction/plugins/PFMETProducerMVATauTau.cc"
+		"wget https://raw.githubusercontent.com/CERN-PH-CMG/cmg-cmssw/CMGTools-from-CMSSW_7_4_3/RecoMET/METPUSubtraction/plugins/PFMETProducerMVATauTau.h"
+		#"git remote add cmgtools https://github.com/CERN-PH-CMG/cmg-cmssw.git",
+		#"git pull cmgtools",
+		#"git checkout CMGTools-from-CMSSW_7_4_7",
 		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 74X-13TeV-Summer15-July2015 --depth 1",
 		"rm -r data/.git/",
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
+
+		#PF MET with NoHF MET
+		#https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription
+		"git cms-merge-topic -u cms-met:METCorUnc74X",
 
 		#Electron cutBased Id and MVA Id
 		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_747
