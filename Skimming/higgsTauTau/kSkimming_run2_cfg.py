@@ -255,11 +255,38 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	## MET
 	process.load("Kappa.Skimming.KMET_run2_cff")
-	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET and MVA MET
 
 	if (not miniaod):
 		process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
+		process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET and MVA MET
 
+	from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+	jecUncertaintyFile="PhysicsTools/PatUtils/data/Summer15_50nsV4_DATA_UncertaintySources_AK4PFchs.txt"
+
+	runMetCorAndUncFromMiniAOD(process,
+                           isData=False,
+                           jecUncFile=jecUncertaintyFile
+                           )
+
+
+	process.noHFCands = cms.EDFilter("CandPtrSelector",
+                                     src=cms.InputTag("packedPFCandidates"),
+                                     cut=cms.string("abs(pdgId)!=1 && abs(pdgId)!=2 && abs(eta)<3.0")
+                            
+        )
+
+	runMetCorAndUncFromMiniAOD(process,
+                               isData=False,
+                               pfCandColl=cms.InputTag("noHFCands"),
+                               jecUncFile=jecUncertaintyFile,
+                               postfix="NoHF"
+                               )
+
+
+	#process.kappaTuple.whitelist = cms.vstring("patPFMet", "patPFMetT1", "patPFMetNoHF", "patPFMetNoHFT1")
+	process.kappaTuple.PatMET.whitelist = cms.vstring("patPFMet(T1)?(NoHF)?_")
+
+	process.p *= process.patMetModuleSequence 
 	if(miniaod):
 		process.ak4PFJets.src = cms.InputTag("packedPFCandidates")
 		process.ak4PFJets.doAreaFastjet = cms.bool(True)
@@ -346,12 +373,13 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	## let Kappa run
-	process.p *= ( process.kappaOut )
+	#process.p *= ( process.kappaOut )
 
 	## ------------------------------------------------------------------------
 	## Write out edmFile for debugging perposes 
-	#process.load("Kappa.Skimming.edmOut")
+	process.load("Kappa.Skimming.edmOut")
 
+	process.ep *= process.kappaOut
 	return process
 
 if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":

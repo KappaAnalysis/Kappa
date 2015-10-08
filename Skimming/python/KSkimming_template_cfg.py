@@ -18,7 +18,8 @@ process.MessageLogger.default = cms.untracked.PSet(
 process.MessageLogger.cerr.FwkReport.reportEvery = 50
 
 ## Options and Output Report
-process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
+process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) ,
+	allowUnscheduled = cms.untracked.bool(True) )
 
 ## Source
 process.source = cms.Source("PoolSource",
