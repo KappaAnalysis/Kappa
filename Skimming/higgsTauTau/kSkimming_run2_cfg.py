@@ -193,11 +193,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		from Kappa.Skimming.KElectrons_run2_cff import setupElectrons
 
 		if (cmssw_version_number.startswith("7_4")):
-			process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
-							       	   "cutBasedEleIdPHYS14Medium",
-							       	   "cutBasedEleIdPHYS14Tight",
-							       	   "cutBasedEleIdPHYS14Veto",
-								   "mvaNonTrig25nsPHYS14")
+			process.kappaTuple.Electrons.ids = cms.vstring("cutBasedElectronID_Spring15_25ns_V1_standalone_loose",
+								 	 "cutBasedElectronID_Spring15_25ns_V1_standalone_medium",
+								 	 "cutBasedElectronID_Spring15_25ns_V1_standalone_tight",
+								 	 "cutBasedElectronID_Spring15_25ns_V1_standalone_veto",
+								 "ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
 		else:
 			process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
 							       	   "cutBasedEleIdPHYS14Medium",
@@ -242,18 +242,19 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 		#Check if working
 		process.p *= (
-			process.makePFJets *
-			process.makePFJetsCHS *
+			process.ak4PFJetsCHScor *
+		#	process.makePFJets *
+		#	process.makePFJetsCHS *
 		#	process.makeQGTagging *
-			process.makeBTagging *
-			process.makePUJetID *
+		#	process.makeBTagging *
+		#	process.makePUJetID *
 			process.kt6PFJets
 		)
 
 	if miniaod:
 		process.kappaTuple.active += cms.vstring('PatJets')
-		process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
-		process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
+	process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
+	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
 
 
 	## ------------------------------------------------------------------------
@@ -263,6 +264,45 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if (not miniaod):
 		process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
 		process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET and MVA MET
+		process.ak4PFJets.src = cms.InputTag("particleFlow")
+		process.ak4PFJets.doAreaFastjet = cms.bool(True)
+		process.pfMetMVA.srcVertices = cms.InputTag("offlinePrimaryVertices")
+		process.puJetIdForPFMVAMEt.jec =  cms.string('AK4PF')
+		process.puJetIdForPFMVAMEt.vertexes = cms.InputTag("offlinePrimaryVertices")
+		process.puJetIdForPFMVAMEt.rho = cms.InputTag("fixedGridRhoFastjetAll")
+		# Todo for miniAOD: find a selector that works in pat Taus and slimmedElectrons
+		process.metMVAEM.srcLeptons = cms.VInputTag("gedGsfElectrons", "muons" )
+		process.metMVAET.srcLeptons = cms.VInputTag("gedGsfElectrons", "hpsPFTauProducer")
+		process.metMVAMT.srcLeptons = cms.VInputTag("muons"    , "hpsPFTauProducer")
+		process.metMVATT.srcLeptons = cms.VInputTag("hpsPFTauProducer"     , "hpsPFTauProducer")
+		process.metMVAEM.srcVertices = cms.InputTag("offlinePrimaryVertices")
+		process.metMVAET.srcVertices = cms.InputTag("offlinePrimaryVertices")
+		process.metMVAMT.srcVertices = cms.InputTag("offlinePrimaryVertices")
+		process.metMVATT.srcVertices = cms.InputTag("offlinePrimaryVertices")
+		process.metMVAEM.srcPFCandidates = cms.InputTag("particleFlow")
+		process.metMVAET.srcPFCandidates = cms.InputTag("particleFlow")
+		process.metMVAMT.srcPFCandidates = cms.InputTag("particleFlow")
+		process.metMVATT.srcPFCandidates = cms.InputTag("particleFlow")
+		process.makeKappaMET = cms.Sequence( 
+		                process.ak4PFJets * 
+		                process.calibratedAK4PFJetsForPFMVAMEt * 
+		                process.mvaMETJets * 
+		                process.puJetIdForPFMVAMEt * 
+		                process.metMVAEM * 
+		                process.metMVAET * 
+		                process.metMVAMT * 
+		                process.metMVATT )
+
+		## Standard MET and GenMet from pat::MET
+		#process.kappaTuple.active += cms.vstring('PatMET')
+		## Write MVA MET to KMETs. To check what happens on AOD
+		process.kappaTuple.active += cms.vstring('PatMETs')
+		process.kappaTuple.PatMETs.whitelist = cms.vstring(
+		                                                   "metMVAEM",
+		                                                   "metMVAET",
+		                                                   "metMVAMT",
+		                                                   "metMVATT"
+		                                                    )
 
 	from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 	jecUncertaintyFile="PhysicsTools/PatUtils/data/Summer15_50nsV4_DATA_UncertaintySources_AK4PFchs.txt"

@@ -428,6 +428,15 @@ makePUJetID = cms.Sequence(
     )
 
 from Kappa.Producers.KTuple_cff import kappaNoCut, kappaNoRegEx
+from JetMETCorrections.Configuration.JetCorrectionServices_cff import *
+
+ak4PFJetsCHScor   = cms.EDProducer('PFJetCorrectionProducer',
+    src         = cms.InputTag('ak4PFJetsCHS'),
+	correctors  = cms.vstring('ak4PFCHSL1FastL2L3')
+)
+
+
+
 
 kappaTupleJets = cms.PSet(
 	kappaNoCut,
@@ -435,58 +444,58 @@ kappaTupleJets = cms.PSet(
 	taggers = cms.vstring(
 #		"QGlikelihood",
 #		"QGmlp",
-		"TrackCountingHighEffBJetTags",
-		"TrackCountingHighPurBJetTags",
-		"JetProbabilityBJetTags",
-		"JetBProbabilityBJetTags",
-		"SoftElectronBJetTags",
-		"SoftMuonBJetTags",
-		"SoftMuonByIP3dBJetTags",
-		"SoftMuonByPtBJetTags",
-		"SimpleSecondaryVertexBJetTags",
-		"CombinedSecondaryVertexBJetTags",
-		"CombinedSecondaryVertexMVABJetTags",
-		"puJetIDFullDiscriminant",
-		"puJetIDFullLoose",
-		"puJetIDFullMedium",
-		"puJetIDFullTight",
+#		"TrackCountingHighEffBJetTags",
+#		"TrackCountingHighPurBJetTags",
+#		"JetProbabilityBJetTags",
+#		"JetBProbabilityBJetTags",
+#		"SoftElectronBJetTags",
+#		"SoftMuonBJetTags",
+#		"SoftMuonByIP3dBJetTags",
+#		"SoftMuonByPtBJetTags",
+#		"SimpleSecondaryVertexBJetTags",
+#		"CombinedSecondaryVertexBJetTags",
+#		"CombinedSecondaryVertexMVABJetTags",
+#		"puJetIDFullDiscriminant",
+#		"puJetIDFullLoose",
+#		"puJetIDFullMedium",
+#		"puJetIDFullTight",
 		#"puJetIDCutbasedDiscriminant",
 		#"puJetIDCutbasedLoose",
 		#"puJetIDCutbasedMedium",
 		#"puJetIDCutbasedTight"
 		),
 	AK5PFTaggedJets = cms.PSet(
-		src = cms.InputTag("ak5PFJets"),
+		src = cms.InputTag("ak4PFJetsCHScor"),
 		#QGtagger = cms.InputTag("AK5PFJetsQGTagger"),
 		QGtagger = cms.InputTag(""),
-		Btagger  = cms.InputTag("ak5PF"),
-		PUJetID  = cms.InputTag("ak5PFPuJetMva"),
-		PUJetID_full = cms.InputTag("full"),
+		Btagger  = cms.InputTag(""),
+		PUJetID  = cms.InputTag(""),
+		PUJetID_full = cms.InputTag(""),
 		),
-	AK5PFTaggedJetsCHS = cms.PSet(
-		src = cms.InputTag("ak5PFJetsCHS"),
+#	AK5PFTaggedJetsCHS = cms.PSet(
+#		src = cms.InputTag("ak5PFJetsCHS"),
 		#QGtagger = cms.InputTag("AK5PFJetsCHSQGTagger"),
-		QGtagger = cms.InputTag(""),
-		Btagger  = cms.InputTag("ak5PFCHS"),
-		PUJetID  = cms.InputTag("ak5PFCHSPuJetMva"),
-		PUJetID_full = cms.InputTag("full"),
-		),
+#		QGtagger = cms.InputTag(""),
+#		Btagger  = cms.InputTag("ak5PFCHS"),
+#		PUJetID  = cms.InputTag("ak5PFCHSPuJetMva"),
+#		PUJetID_full = cms.InputTag("full"),
+#		),
 	)
 
 if (cmssw_version_number.startswith("7_4")):
 	kappaTupleJets.taggers =  cms.vstring(
 #		"QGlikelihood",
 #		"QGmlp",
-		"TrackCountingHighEffBJetTags",
-		"TrackCountingHighPurBJetTags",
-		"JetProbabilityBJetTags",
-		"JetBProbabilityBJetTags",
-		"SoftElectronBJetTags",
-		"CombinedSecondaryVertexBJetTags",
-		"puJetIDFullDiscriminant",
-		"puJetIDFullLoose",
-		"puJetIDFullMedium",
-		"puJetIDFullTight",
+#		"TrackCountingHighEffBJetTags",
+#		"TrackCountingHighPurBJetTags",
+#		"JetProbabilityBJetTags",
+#		"JetBProbabilityBJetTags",
+#		"SoftElectronBJetTags",
+#		"CombinedSecondaryVertexBJetTags",
+#		"puJetIDFullDiscriminant",
+#		"puJetIDFullLoose",
+#		"puJetIDFullMedium",
+#		"puJetIDFullTight",
 		#"puJetIDCutbasedDiscriminant",
 		#"puJetIDCutbasedLoose",
 		#"puJetIDCutbasedMedium",

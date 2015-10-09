@@ -42,12 +42,12 @@ from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
 if (cmssw_version_number.startswith("7_4")):
 	patElectrons.electronIDSources = cms.PSet(
 		## cut based Id
-		cutBasedEleIdPHYS14Loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-loose"),
-		cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-medium"),
-		cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-tight"),
-		cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V2-standalone-veto"),
+		cutBasedElectronID_Spring15_25ns_V1_standalone_loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose"),
+		cutBasedElectronID_Spring15_25ns_V1_standalone_medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium"),
+		cutBasedElectronID_Spring15_25ns_V1_standalone_tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight"),
+		cutBasedElectronID_Spring15_25ns_V1_standalone_veto  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto"),
 		## MVA based Id
-		mvaNonTrig25nsPHYS14      = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Phys14NonTrigValues"),
+		ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
 	)
 else:
 	patElectrons.electronIDSources = cms.PSet(
@@ -99,8 +99,8 @@ else:
 def setupElectrons(process):
 	if (cmssw_version_number.startswith("7_4")):
 		switchOnVIDElectronIdProducer(process, DataFormat.AOD)
-		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V2_cff',
-				 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_PHYS14_PU20bx25_nonTrig_V1_cff']
+		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
+				 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
 	else:
 		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_cff']
 	for idmod in my_id_modules:
