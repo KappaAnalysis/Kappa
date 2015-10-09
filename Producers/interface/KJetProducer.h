@@ -160,21 +160,32 @@ public:
 		out.area = in.jetArea();
 		out.nConstituents = in.nConstituents();
 		out.nCharged = in.chargedMultiplicity();
-		out.neutralHadronFraction = in.neutralHadronEnergyFraction();
-		out.chargedHadronFraction = in.chargedHadronEnergyFraction();
-		out.muonFraction = in.muonEnergyFraction();
-		out.photonFraction = in.photonEnergyFraction();
-		out.electronFraction = in.electronEnergyFraction();
-		out.hfHadronFraction = in.HFHadronEnergyFraction();
-		out.hfEMFraction = in.HFEMEnergyFraction();
+
+		double sumFractions =
+			in.neutralHadronEnergyFraction() +
+			in.chargedHadronEnergyFraction() +
+			in.muonEnergyFraction() +
+			in.photonEnergyFraction() +
+			in.electronEnergyFraction() +
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
+			in.HFHadronEnergyFraction() +
+#endif
+			in.HFEMEnergyFraction();
+		out.neutralHadronFraction = in.neutralHadronEnergyFraction() / sumFractions;
+		out.chargedHadronFraction = in.chargedHadronEnergyFraction() / sumFractions;
+		out.muonFraction = in.muonEnergyFraction() / sumFractions;
+		out.photonFraction = in.photonEnergyFraction() / sumFractions;
+		out.electronFraction = in.electronEnergyFraction() / sumFractions;
+		out.hfHadronFraction = in.HFHadronEnergyFraction() / sumFractions;
+		out.hfEMFraction = in.HFEMEnergyFraction() / sumFractions;
 
 // energy fraction definitions have changed in CMSSW 7.3.X
 // fractions should add up to unity
 #if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
 		assert(out.neutralHadronFraction >= out.hfHadronFraction);
-		//assert(std::abs(out.neutralHadronFraction + out.chargedHadronFraction +
-		//	out.muonFraction + out.photonFraction + out.electronFraction +
-		//	out.hfEMFraction - 1.0f) < 0.001f);
+		assert(std::abs(out.neutralHadronFraction + out.chargedHadronFraction +
+			out.muonFraction + out.photonFraction + out.electronFraction +
+			out.hfEMFraction - 1.0f) < 0.001f);
 #else
 		assert(std::abs(out.neutralHadronFraction + out.chargedHadronFraction +
 			out.muonFraction + out.photonFraction + out.electronFraction +
