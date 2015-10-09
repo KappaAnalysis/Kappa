@@ -304,29 +304,35 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		                                                   "metMVATT"
 		                                                    )
 
+	# do produce pfMet and No-HF pfMet, both raw and T1 corrected
 	from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 	jecUncertaintyFile="PhysicsTools/PatUtils/data/Summer15_50nsV4_DATA_UncertaintySources_AK4PFchs.txt"
 
-	runMetCorAndUncFromMiniAOD(process,
-                           isData=False,
-                           jecUncFile=jecUncertaintyFile
-                           )
+	runMetCorAndUncFromMiniAOD(process, isData=data, jecUncFile=jecUncertaintyFile )
+	process.noHFCands = cms.EDFilter("CandPtrSelector", src=cms.InputTag("packedPFCandidates"), cut=cms.string("abs(pdgId)!=1 && abs(pdgId)!=2 && abs(eta)<3.0") )
+	runMetCorAndUncFromMiniAOD(process, isData=data, pfCandColl=cms.InputTag("noHFCands"), jecUncFile=jecUncertaintyFile,  postfix="NoHF" )
 
+	process.patPFMet.computeMETSignificance = cms.bool(True)
+	process.patPFMetNoHF.computeMETSignificance = cms.bool(True)
+	process.pfMet.calculateSignificance = cms.bool(True)
+	process.pfMetNoHF.calculateSignificance = cms.bool(True)
+	from RecoMET.METProducers.METSignificanceParams_cfi import METSignificanceParams
+	process.pfMet.parameters = METSignificanceParams
+	process.pfMet.srcMet = cms.InputTag("pfMet")
+	process.pfMet.srcJets = cms.InputTag("slimmedJets")
+	process.pfMet.srcLeptons = cms.VInputTag("slimmedTaus", "slimmedElectrons", "slimmedMuons")
+	process.pfMetNoHF.parameters = METSignificanceParams
+	process.pfMetNoHF.srcMet = cms.InputTag("pfMetNoHF")
+	process.pfMetNoHF.srcJets = cms.InputTag("slimmedJets")
+	process.pfMetNoHF.srcLeptons = cms.VInputTag("slimmedTaus", "slimmedElectrons", "slimmedMuons")
+	process.pfMetNoHF.srcCandidates = cms.InputTag("noHFCands")
 
-	process.noHFCands = cms.EDFilter("CandPtrSelector",
-                                     src=cms.InputTag("packedPFCandidates"),
-                                     cut=cms.string("abs(pdgId)!=1 && abs(pdgId)!=2 && abs(eta)<3.0")
-                            
-        )
+	# temporary fix from Missing ET mailing list
+	process.patMETs.addGenMET  = cms.bool(False)
+	process.patJets.addGenJetMatch = cms.bool(False)
+	process.patJets.addGenPartonMatch = cms.bool(False)
+	process.patJets.addPartonJetMatch = cms.bool(False)
 
-	runMetCorAndUncFromMiniAOD(process,
-                               isData=False,
-                               pfCandColl=cms.InputTag("noHFCands"),
-                               jecUncFile=jecUncertaintyFile,
-                               postfix="NoHF"
-                               )
-
-	
 	process.kappaTuple.PatMET.whitelist = cms.vstring("patPFMet(T1)?(NoHF)?_")
 	# configure edmOutput module to really produce the desired METs
 	process.edmOut.outputCommands = cms.untracked.vstring('drop *', 

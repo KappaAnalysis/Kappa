@@ -76,6 +76,9 @@ def checkoutPackages(args):
 		"rm -rf $CMSSW_BASE/src/RecoMET/METPUSubtraction/data/.git/",
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 
+		"git cms-addpkg PhysicsTools/PatUtils",
+		"sed '/pat::MET outMET/a \ \ \  outMET\.setSignificanceMatrix\(srcMET\.getSignificanceMatrix\(\)\)\;' PhysicsTools/PatUtils/plugins/CorrectedPATMETProducer.cc -i",
+
 		#PF MET with NoHF MET
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription
 		"git cms-merge-topic -u cms-met:METCorUnc74X",
