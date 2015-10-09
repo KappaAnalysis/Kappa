@@ -175,26 +175,35 @@ def baseconfig(
 	)
 
 	## PUPPI - https://twiki.cern.ch/twiki/bin/viewauth/CMS/PUPPI
-	# creates reweighted PFCandidates collection 'puppi'
+	# creates filtered PFCandidates collection 'puppi'
 	process.load('CommonTools.PileupAlgos.Puppi_cff')
 	process.puppi.candName = cms.InputTag(input_PFCandidates)
 	process.puppi.vertexName = cms.InputTag(input_PrimaryVertices)
-	# PFCandidates without muons - avoid misidentification from high-PT muons
+	# PFCandidates w/o muons for PUPPI - avoid misidentification from high-PT muons
 	process.PFCandidatesNoMu  = cms.EDFilter("CandPtrSelector",
 		src = cms.InputTag(input_PFCandidates),
 		cut = cms.string("abs(pdgId)!=13" )
 	)
-	process.puppinomu = process.puppi.clone(
+	process.PFCandidatesOnlyMu  = cms.EDFilter("CandPtrSelector",
+		src = cms.InputTag(input_PFCandidates),
+		cut = cms.string("abs(pdgId)==13" )
+	)
+	# veto without any muons
+	process.puppinomutmp = process.puppi.clone(
 		candName = cms.InputTag('PFCandidatesNoMu')
 	)
-	process.path *= (process.puppi * (process.PFCandidatesNoMu * process.puppinomu))
+	# nomu veto, muons merged back again for proper MET etc.
+	process.puppinomu = cms.EDProducer("CandViewMerger",
+		src = cms.VInputTag( "puppinomutmp", "PFCandidatesOnlyMu")
+	)
+	process.path *= (process.puppi * (process.PFCandidatesNoMu * process.PFCandidatesOnlyMu * process.puppinomutmp * process.puppinomu))
 
 	#  Muons  ##########################################################
 	if channel == 'mm':
 		process.load('Kappa.Skimming.KMuons_run2_cff')
 		process.muPreselection1 = cms.EDFilter('CandViewSelector',
 			src = cms.InputTag('muons'),
-			cut = cms.string("pt >8.0"),
+			cut = cms.string("pt>8.0"),
 		)
 		process.muPreselection2 = cms.EDFilter('CandViewCountFilter',
 			src = cms.InputTag('muPreselection1'),
@@ -283,21 +292,20 @@ def baseconfig(
 
 	# MET correction ----------------------------------------------------------
 	#TODO check type 0 corrections
-	process.load("JetMETCorrections.Type1MET.correctionTermsPfMetType0PFCandidate_cff")
-	process.load("JetMETCorrections.Type1MET.correctedMet_cff")
-
-	process.pfMETCHS = process.pfMetT0pc.clone()
-	# Puppi
 	from RecoMET.METProducers.PFMET_cfi import pfMet
+	process.pfMETCHS = pfMet.clone(src=cms.InputTag(input_PFCandidates))
 	process.pfMetPuppi = pfMet.clone(src=cms.InputTag('puppi'))
 	process.pfMetPuppiNoMu = pfMet.clone(src=cms.InputTag('puppinomu'))
 	process.path *= (
-		process.correctionTermsPfMetType0PFCandidate
-		* process.pfMetPuppi
+		process.pfMetPuppi
 		* process.pfMetPuppiNoMu
 		* process.pfMETCHS
 	)
 	# MET without forward region
+	process.PFCandidatesNoHF  = cms.EDFilter("CandPtrSelector",
+		src = cms.InputTag(input_PFCandidates),
+		cut = cms.string("abs(eta) < 3" )
+	)
 	process.PuppiNoHF  = cms.EDFilter("CandPtrSelector",
 		src = cms.InputTag('puppi'),
 		cut = cms.string("abs(eta) < 3" )
@@ -306,10 +314,12 @@ def baseconfig(
 		src = cms.InputTag('puppinomu'),
 		cut = cms.string("abs(eta) < 3" )
 	)
+	process.pfMETCHSNoHF = pfMet.clone(src=cms.InputTag('PFCandidatesNoHF'))
 	process.pfMetPuppiNoHF = pfMet.clone(src=cms.InputTag('PuppiNoHF'))
 	process.pfMetPuppiNoMuNoHF = pfMet.clone(src=cms.InputTag('PuppiNoMuNoHF'))
 	process.path *= (
-		process.PuppiNoHF * process.pfMetPuppiNoHF
+		process.PFCandidatesNoHF * process.pfMETCHSNoHF
+		* process.PuppiNoHF * process.pfMetPuppiNoHF
 		* process.PuppiNoMuNoHF * process.pfMetPuppiNoMuNoHF
 	)
 
