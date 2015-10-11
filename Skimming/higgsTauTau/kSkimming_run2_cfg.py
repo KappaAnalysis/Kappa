@@ -304,6 +304,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		                                                   "metMVATT"
 		                                                    )
 
+		process.p *= process.makeKappaMET
+
 	# do produce pfMet and No-HF pfMet, both raw and T1 corrected
 	from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 	jecUncertaintyFile="PhysicsTools/PatUtils/data/Summer15_50nsV4_DATA_UncertaintySources_AK4PFchs.txt"
@@ -342,7 +344,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                              'keep *_patPFMetT1NoHF_*_KAPPA'
 	)
 
-	process.p *= process.patMetModuleSequence 
 	if(miniaod):
 		process.ak4PFJets.src = cms.InputTag("packedPFCandidates")
 		process.ak4PFJets.doAreaFastjet = cms.bool(True)
@@ -364,7 +365,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.metMVAMT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.metMVATT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.makeKappaMET = cms.Sequence( 
-		                process.ak4PFJets * 
+		                process.ak4PFJets *
+				process.pfCHS *
+				process.ak4PFJetsCHS *
+				process.pfMet *
+				process.genMetExtractor *
+				process.patJetCorrFactors *
+				process.patJets *
+				process.patPFMetT1T2Corr *
+				process.patPFMetTxyCorr *
 		                process.calibratedAK4PFJetsForPFMVAMEt * 
 		                process.mvaMETJets * 
 		                process.puJetIdForPFMVAMEt * 
@@ -384,8 +393,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		                                                   "metMVATT"
 		                                                    )
 
+		process.p *= (process.makeKappaMET * process.patMetModuleSequence)
 
-	process.p *= process.makeKappaMET
 	## ------------------------------------------------------------------------
 	## GenJets 
 	if not data:
