@@ -34,7 +34,7 @@ mvaMETJets = cms.EDProducer('PFJetCorrectionProducer',
 
 from RecoJets.JetProducers.pileupjetidproducer_cfi import pileupJetIdEvaluator
 from RecoJets.JetProducers.PileupJetIDParams_cfi import JetIdParams
-from RecoMET.METPUSubtraction.mvaPFMET_cff import calibratedAK4PFJetsForPFMVAMEt, puJetIdForPFMVAMEt
+from RecoMET.METPUSubtraction.mvaPFMET_cff import calibratedAK4PFJetsForPFMVAMEt #, puJetIdForPFMVAMEt
 # the following two statements have been widely restricted and deactivated since they caused Kappa to crash
 from JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff import corrPfMetType1
 #from JetMETCorrections.Type1MET.correctedMet_cff import *
@@ -171,6 +171,48 @@ metMVATT.srcLeptons = cms.VInputTag("mvaMETTausTT", "mvaMETTausTT")
 metMVATT.permuteLeptons = cms.bool(True)
 ## ------------------------------------------------------------------------
 ## Definition of sequences
+
+puJetIdForPFMVAMEt = pileupJetIdEvaluator.clone(
+    algos = cms.VPSet(
+        cms.PSet(
+        tmvaVariables = cms.vstring(
+            "nvtx",
+            "jetPt",
+            "jetEta",
+            "jetPhi",
+            "dZ",
+            "beta",
+            "betaStar",
+            "nCharged",
+            "nNeutrals",
+            "dR2Mean",
+            "ptD",
+            "frac01",
+            "frac02",
+            "frac03",
+            "frac04",
+            "frac05"
+            ),
+	etaBinnedWeights = cms.bool(False),
+        tmvaWeights = cms.string("RecoJets/JetProducers/data/TMVAClassificationCategory_JetID_MET_53X_Dec2012.weights.xml.gz"),
+        tmvaMethod = cms.string("JetID"),
+        tmvaSpectators = cms.vstring(),
+        JetIdParams = JetIdParams,                  
+        impactParTkThreshold = cms.double(0.),
+        version = cms.int32(-1),
+        cutBased = cms.bool(False), 
+        label = cms.string("full")
+        )
+        ),
+    produceJetIds = cms.bool(True),
+    runMvas = cms.bool(True),
+    jets = cms.InputTag("calibratedAK4PFJetsForPFMVAMEt"),#calibratedAK4PFJetsForPFMVAMEt
+    applyJec = cms.bool(True),
+    inputIsCorrected = cms.bool(True),
+    jec     = cms.string("AK4PF"),
+)
+
+
 makeKappaMET = cms.Sequence(
     ak4PFJets *
     calibratedAK4PFJetsForPFMVAMEt *
@@ -262,7 +304,9 @@ def configurePFMetForMiniAOD(process, data=False):
 	runMetCorAndUncFromMiniAOD(process, isData=data, pfCandColl=cms.InputTag("noHFCands"), jecUncFile=jecUncertaintyFile,  postfix="NoHF" )
 
 	process.patPFMet.computeMETSignificance = cms.bool(True)
+	process.patPFMet.srcLeptons = cms.VInputTag("slimmedTaus", "slimmedElectrons", "slimmedMuons")
 	process.patPFMetNoHF.computeMETSignificance = cms.bool(True)
+	process.patPFMetNoHF.srcLeptons = cms.VInputTag("slimmedTaus", "slimmedElectrons", "slimmedMuons")
 	process.pfMet.calculateSignificance = cms.bool(True)
 	process.pfMetNoHF.calculateSignificance = cms.bool(True)
 	from RecoMET.METProducers.METSignificanceParams_cfi import METSignificanceParams
@@ -301,10 +345,12 @@ def configurePFMetForMiniAOD(process, data=False):
 		                process.noHFCands *
 		                process.pfCHSNoHF *
 		                process.pfMetNoHF *
+				process.ak4PFJetsCHSNoHF *
+				process.patJetCorrFactorsNoHF *
+				process.patJetsNoHF *
+				process.selectedPatJetsNoHF *
 		                process.patPFMetNoHF *
-		                process.ak4PFJetsCHSNoHF *
-		                process.patJetCorrFactorsNoHF *
-		                process.patJetsNoHF *
+				process.selectedPatJets *
 		                process.patPFMetT1T2CorrNoHF *
 		                process.patPFMetTxyCorrNoHF *
 		                process.patPFMetT1NoHF
