@@ -291,6 +291,13 @@ def configurePFMetForMiniAOD(process, data=False):
 	process.patJets.addGenJetMatch = cms.bool(False)
 	process.patJets.addGenPartonMatch = cms.bool(False)
 	process.patJets.addPartonJetMatch = cms.bool(False)
+
+	# latest Recommendataion https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETRun2Corrections#type_1_PF_MET_recommended
+	process.corrPfMetType1.type1JetPtThreshold = cms.double(15.0)
+	process.patPFMetT1T2Corr.type1JetPtThreshold = cms.double(15.0)
+	process.patPFMetT1T2CorrNoHF.type1JetPtThreshold = cms.double(15.0)
+
+
 	process.makePFMET = cms.Sequence( 
 		                process.ak4PFJets *
 		                process.pfCHS *
