@@ -265,6 +265,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	if (not miniaod):
 		configureMVAMetForAOD(process)
+		process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
+		process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET and MVA MET
+		## Write MVA MET to KMETs. To check what happens on AOD
+		process.kappaTuple.active += cms.vstring('PatMETs')
+		process.kappaTuple.PatMETs.whitelist = cms.vstring(
+		                                                   "metMVAEM",
+		                                                   "metMVAET",
+		                                                   "metMVAMT",
+		                                                   "metMVATT"
+		                                                    )
 		process.p *= process.makeKappaMET
 
 	if(miniaod):

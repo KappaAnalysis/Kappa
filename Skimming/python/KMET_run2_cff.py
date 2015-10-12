@@ -188,8 +188,6 @@ makeKappaMET = cms.Sequence(
     )
 
 def configureMVAMetForAOD(process):
-		process.kappaTuple.active += cms.vstring('BasicMET')                  ## produce/save KappaMET
-		process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET and MVA MET
 		process.ak4PFJets.src = cms.InputTag("particleFlow")
 		process.ak4PFJets.doAreaFastjet = cms.bool(True)
 		process.pfMetMVA.srcVertices = cms.InputTag("offlinePrimaryVertices")
@@ -221,14 +219,6 @@ def configureMVAMetForAOD(process):
 
 		## Standard MET and GenMet from pat::MET
 		#process.kappaTuple.active += cms.vstring('PatMET')
-		## Write MVA MET to KMETs. To check what happens on AOD
-		kappaTuple.active += cms.vstring('PatMETs')
-		kappaTuple.PatMETs.whitelist = cms.vstring(
-		                                                   "metMVAEM",
-		                                                   "metMVAET",
-		                                                   "metMVAMT",
-		                                                   "metMVATT"
-		                                                    )
 	
 def configureMVAMetForMiniAOD(process):
 		process.ak4PFJets.src = cms.InputTag("packedPFCandidates")
