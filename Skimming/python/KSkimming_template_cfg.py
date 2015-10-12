@@ -60,7 +60,7 @@ process.kappaOut = cms.Sequence(process.kappaTuple)
 
 process.p = cms.Path ()
 process.ep = cms.EndPath()
-process.load("Kappa.Producers.EventWeightCountProducer_cff")
+process.load("Kappa.CMSSW.EventWeightCountProducer_cff")
 
 process.p *= process.nEventsTotal
 process.p *= process.nNegEventsTotal

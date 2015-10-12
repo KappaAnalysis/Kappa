@@ -8,7 +8,7 @@ Description: An event counter that fills a histogram with positive and negative 
 
 */
 
-
+#if (CMSSW_MAJOR_VERSION >= 7)
 // system include files
 #include <memory>
 #include <vector>
@@ -120,4 +120,5 @@ void EventWeightCountProducer::endLuminosityBlockProduce(LuminosityBlock & theLu
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(EventWeightCountProducer);
+#endif
 
