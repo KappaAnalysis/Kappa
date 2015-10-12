@@ -53,7 +53,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	## Write out edmFile to allos unscheduled modules to work
 	process.load("Kappa.Skimming.edmOut")
-	process.ep *= process.edmOut
+	#process.ep *= process.edmOut
 
 	## ------------------------------------------------------------------------
 	# Configure Kappa
@@ -337,12 +337,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.kappaTuple.PatMET.whitelist = cms.vstring("patPFMet(T1)?(NoHF)?_")
 	# configure edmOutput module to really produce the desired METs
-	process.edmOut.outputCommands = cms.untracked.vstring('drop *', 
-	                                              'keep *_patPFMet_*_KAPPA',
-	                                              'keep *_patPFMetT1_*_KAPPA',
-	                                              'keep *_patPFMetNoHF_*_KAPPA',
-	                                              'keep *_patPFMetT1NoHF_*_KAPPA'
-	)
 
 	if(miniaod):
 		process.ak4PFJets.src = cms.InputTag("packedPFCandidates")
@@ -366,14 +360,24 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.metMVATT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.makeKappaMET = cms.Sequence( 
 		                process.ak4PFJets *
-				process.pfCHS *
-				process.ak4PFJetsCHS *
-				process.pfMet *
-				process.genMetExtractor *
-				process.patJetCorrFactors *
-				process.patJets *
-				process.patPFMetT1T2Corr *
-				process.patPFMetTxyCorr *
+		                process.pfCHS *
+		                process.ak4PFJetsCHS *
+		                process.pfMet *
+		                process.genMetExtractor *
+		                process.patJetCorrFactors *
+		                process.patJets *
+		                process.patPFMetT1T2Corr *
+		                process.patPFMetTxyCorr *
+		                process.noHFCands *
+		                process.pfCHSNoHF *
+		                process.pfMetNoHF *
+		                process.patPFMetNoHF *
+		                process.ak4PFJetsCHSNoHF *
+		                process.patJetCorrFactorsNoHF *
+		                process.patJetsNoHF *
+		                process.patPFMetT1T2CorrNoHF *
+		                process.patPFMetTxyCorrNoHF *
+		                process.patPFMetT1NoHF *
 		                process.calibratedAK4PFJetsForPFMVAMEt * 
 		                process.mvaMETJets * 
 		                process.puJetIdForPFMVAMEt * 
