@@ -23,7 +23,7 @@ def submit(config):
 		print "Failed submitting task: %s" % (cle)
 
 def crab_command(command):
-	for dir in glob('/nfs/dust/cms/user/%s/crab_kappa_skim-2/*'%(getUsernameFromSiteDB())):
+	for dir in glob('/nfs/dust/cms/user/%s/crab_kappa_skim-2015-10-14/*'%(getUsernameFromSiteDB())):
 		crabCommand(command, dir = dir)
 
 def check_path(path):
@@ -46,7 +46,7 @@ def submission():
 	from CRABClient.UserUtilities import config
 	config = config()
 	
-	config.General.workArea = '/nfs/dust/cms/user/%s/crab_kappa_skim-2'%(getUsernameFromSiteDB())
+	config.General.workArea = '/nfs/dust/cms/user/%s/crab_kappa_skim-2015-10-14'%(getUsernameFromSiteDB())
 	check_path(config.General.workArea)
 	config.General.transferOutputs = True
 	config.General.transferLogs = True
@@ -60,18 +60,18 @@ def submission():
 	config.Data.inputDBS = 'global'
 	config.Data.splitting = 'FileBased'
 	config.Data.unitsPerJob = 1
-	config.Data.outLFNDirBase = '/store/user/%s/higgs-kit-crab-2/'%(getUsernameFromSiteDB())
+	config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/2015-10-14'%(getUsernameFromSiteDB())
 	config.Data.publication = False
 	
 	config.Site.storageSite = "T2_DE_DESY"
 	# load nicknames form gc-style config files and write them to a flat nicknames list
-	nicknames = read_grid_control_includes(["samples/13TeV/Data_miniAOD.conf", "samples/13TeV/Spring15_miniAOD.conf"])
-	#nicknames = ['ZZTo4L_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_powhegpythia8']
+	nicknames = read_grid_control_includes(["samples/13TeV/Data_miniAODv2.conf", "samples/13TeV/Spring15_miniAODv2.conf"])
+	#nicknames = ['SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8']
 
 	# loop over datasets and get repsective nicks
 	for nickname in nicknames:
-		config.General.requestName = nickname+'newEleId'
-		config.JobType.pyCfgParams = ['globalTag=74X_dataRun2_v2' if isData(nickname) else 'globalTag=74X_mcRun2_asymptotic_v2' ,'kappaTag=KAPPA_2_0_4','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
+		config.General.requestName = nickname
+		config.JobType.pyCfgParams = ['globalTag=74X_dataRun2_reMiniAOD_v0' if isData(nickname) else 'globalTag=74X_mcRun2_asymptotic_v2' ,'kappaTag=KAPPA_2_0_4','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
 		p = Process(target=submit, args=(config,))
