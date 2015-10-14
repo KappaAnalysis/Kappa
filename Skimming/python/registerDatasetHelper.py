@@ -57,7 +57,16 @@ def get_generator(pd_name, default=None, data=False):
 
 	if (default == None):
 		pos = pd_name.find("TeV")+4
-		return pd_name[pos:] 
+		generators = []
+		if "amcatnlo" in pd_name[pos:]:
+			generators.append("amcatnlo")
+		if "powheg" in pd_name[pos:]:
+			generators.append("powheg")
+		if "madgraph" in pd_name[pos:]:
+			generators.append("madgraph")
+		if "pythia" in pd_name[pos:]:
+			generators.append(pd_name[pos:][pd_name[pos:].find("pythia"):pd_name[pos:].find("pythia")+7])
+		return '-'.join(generators)
 	else:
 		return default
 
@@ -110,9 +119,14 @@ def get_format(filetype, default=False):
 
 def is_data(prod_camp, default=None):
 	if (default == None):
-		return prod_camp.find("DR")==-1
+		pos = prod_camp.find("Run")+3
+		year = prod_camp[pos:pos+4]
+		if year in ["2011", "2012", "2015", "2016"]:
+			return True
+		else:
+			return False
 	else:
-		return default 
+		return default
 
 def make_nickname(dict):
 	nick = ""
