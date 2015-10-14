@@ -71,7 +71,6 @@ EventWeightCountProducer::EventWeightCountProducer(const edm::ParameterSet& iCon
 
   if (isMC)
   {
-	std::cout << "srcGenEventInfo da und es ist mc" << std::endl;
     srcGenEventInfo_ = iConfig.getParameter<edm::InputTag>("srcGenEventInfo");
     srcGenEventInfoToken_ = consumes<GenEventInfoProduct>(srcGenEventInfo_);
   }
