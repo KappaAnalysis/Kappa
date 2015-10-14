@@ -332,12 +332,16 @@ def configurePFMetForMiniAOD(process, data=False):
 	process.patPFMetT1T2CorrNoHF.type1JetPtThreshold = cms.double(15.0)
 
 
-	process.makePFMET = cms.Sequence( 
+	process.makePFMET = cms.Sequence()
+
+	if not data:
+		process.makePFMET = cms.Sequence( process.genMetExtractor )
+
+	process.makePFMET *= cms.Sequence( 
 		                process.ak4PFJets *
 		                process.pfCHS *
 		                process.ak4PFJetsCHS *
 		                process.pfMet *
-		                process.genMetExtractor *
 		                process.patJetCorrFactors *
 		                process.patJets *
 		                process.patPFMetT1T2Corr *
@@ -345,12 +349,12 @@ def configurePFMetForMiniAOD(process, data=False):
 		                process.noHFCands *
 		                process.pfCHSNoHF *
 		                process.pfMetNoHF *
-				process.ak4PFJetsCHSNoHF *
-				process.patJetCorrFactorsNoHF *
-				process.patJetsNoHF *
-				process.selectedPatJetsNoHF *
+		                process.ak4PFJetsCHSNoHF *
+		                process.patJetCorrFactorsNoHF *
+		                process.patJetsNoHF *
+		                process.selectedPatJetsNoHF *
 		                process.patPFMetNoHF *
-				process.selectedPatJets *
+		                process.selectedPatJets *
 		                process.patPFMetT1T2CorrNoHF *
 		                process.patPFMetTxyCorrNoHF *
 		                process.patPFMetT1NoHF
