@@ -69,12 +69,13 @@ EventWeightCountProducer::EventWeightCountProducer(const edm::ParameterSet& iCon
   }
 
 
-  if (iConfig.existsAs<edm::InputTag>("srcGenEventInfo") and isMC)
+  if (isMC)
   {
+	std::cout << "srcGenEventInfo da und es ist mc" << std::endl;
     srcGenEventInfo_ = iConfig.getParameter<edm::InputTag>("srcGenEventInfo");
     srcGenEventInfoToken_ = consumes<GenEventInfoProduct>(srcGenEventInfo_);
   }
-  else throw cms::Exception("Configuration")<<"Missing parameter input srcGenEventInfo \n";
+  //else throw cms::Exception("Configuration")<<"Missing parameter input srcGenEventInfo \n";
 }
 
 

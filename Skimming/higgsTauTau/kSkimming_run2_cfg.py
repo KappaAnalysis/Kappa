@@ -74,6 +74,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active = cms.vstring('TreeInfo')
 	data, isEmbedded, miniaod, process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 
+	process.p *= process.nEventsTotal
+	if not data:
+		process.p *= process.nNegEventsTotal
 	## ------------------------------------------------------------------------
 	# General configuration
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
@@ -330,8 +333,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.nEventsFiltered.isMC = cms.bool(True)
 		process.nNegEventsFiltered.isMC = cms.bool(True)
 
+		process.p *= process.nNegEventsFiltered 
 	process.p *= process.nEventsFiltered 
-	process.p *= process.nNegEventsFiltered 
 	process.kappaTuple.active += cms.vstring('FilterSummary')
 
 	## ------------------------------------------------------------------------

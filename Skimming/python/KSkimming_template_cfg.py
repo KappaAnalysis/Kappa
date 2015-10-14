@@ -62,5 +62,3 @@ process.p = cms.Path ()
 process.ep = cms.EndPath()
 process.load("Kappa.CMSSW.EventWeightCountProducer_cff")
 
-process.p *= process.nEventsTotal
-process.p *= process.nNegEventsTotal
