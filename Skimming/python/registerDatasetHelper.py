@@ -154,7 +154,8 @@ def query_result(query):
 		matches = True
 		for name, attribute in values.iteritems():
 			if not name in query: continue
-			if not (re.match(str(query[name]), str(attribute).replace("_", "")) != None):
+			if query[name] == '': continue
+			if not (re.match('\\b'+str(query[name])+'\\b', str(attribute).replace("_", "")) != None):
 				matches = False
 		if matches:
 			return sample
