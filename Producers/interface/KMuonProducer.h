@@ -201,26 +201,23 @@ public:
 		{
 			/// isolation variables for pfIso
 			/// DataFormats/MuonReco/interface/MuonPFIsolation.h
+			reco::MuonPFIsolation muonIsolation;
 			if (use03ConeForPfIso)
 			{
-				out.sumChargedHadronPt   = in.pfIsolationR03().sumChargedHadronPt;
-				out.sumChargedParticlePt = in.pfIsolationR03().sumChargedParticlePt;
-				out.sumNeutralHadronEt   = in.pfIsolationR03().sumNeutralHadronEt;
-				out.sumPhotonEt          = in.pfIsolationR03().sumPhotonEt;
-				out.sumPUPt              = in.pfIsolationR03().sumPUPt;
-				out.sumNeutralHadronEtHighThreshold = in.pfIsolationR03().sumNeutralHadronEtHighThreshold;
-				out.sumPhotonEtHighThreshold        = in.pfIsolationR03().sumPhotonEtHighThreshold;
+				muonIsolation = in.pfIsolationR03();
 			}
 			else
 			{
-				out.sumChargedHadronPt   = in.pfIsolationR04().sumChargedHadronPt;
-				out.sumChargedParticlePt = in.pfIsolationR04().sumChargedParticlePt;
-				out.sumNeutralHadronEt   = in.pfIsolationR04().sumNeutralHadronEt;
-				out.sumPhotonEt          = in.pfIsolationR04().sumPhotonEt;
-				out.sumPUPt              = in.pfIsolationR04().sumPUPt;
-				out.sumNeutralHadronEtHighThreshold = in.pfIsolationR04().sumNeutralHadronEtHighThreshold;
-				out.sumPhotonEtHighThreshold        = in.pfIsolationR04().sumPhotonEtHighThreshold;
+				muonIsolation = in.pfIsolationR04();
 			}
+
+			out.sumChargedHadronPt   = muonIsolation.sumChargedHadronPt;
+			out.sumChargedParticlePt = muonIsolation.sumChargedParticlePt;
+			out.sumNeutralHadronEt   = muonIsolation.sumNeutralHadronEt;
+			out.sumPhotonEt          = muonIsolation.sumPhotonEt;
+			out.sumPUPt              = muonIsolation.sumPUPt;
+			out.sumNeutralHadronEtHighThreshold = muonIsolation.sumNeutralHadronEtHighThreshold;
+			out.sumPhotonEtHighThreshold        = muonIsolation.sumPhotonEtHighThreshold;
 		}
 		// source?
 		if(muonIsolationPFInitialized)
