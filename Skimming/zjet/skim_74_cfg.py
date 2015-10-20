@@ -45,7 +45,7 @@ def baseconfig(
 		globaltag = autoCond['startup']
 		autostr = " (from autoCond)"
 	if is_data is None:
-		data = ('DoubleMu' in input_files[0]) or ('SingleMu' in input_files[0])
+		data = ('Double' in input_files[0]) or ('Single' in input_files[0])
 	else:
 		data = is_data
 	miniaod = False
@@ -119,6 +119,10 @@ def baseconfig(
 			"^HLT_(Iso)?(Tk)?Mu[0-9]+(_eta2p1|_TrkIsoVVL)?_v[0-9]+$",
 			# double muon triggers, e.g. HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v1
 			"^HLT_Mu[0-9]+(_TrkIsoVVL)?_(Tk)?Mu[0-9]+(_TrkIsoVVL)?(_DZ)?_v[0-9]+$",
+		)
+	elif channel == 'ee':
+		process.kappaTuple.Info.hltWhitelist = cms.vstring(
+			"^HLT_Ele[0-9]+_Ele[0-9]+(_CaloIdL)?(_TrackIdL)?(_IsoVL)?(_DZ)?_v[0-9]+$",
 		)
 
 	# Primary Input Collections ###################################################
@@ -216,9 +220,28 @@ def baseconfig(
 		process.path *= (process.muPreselection1 * process.muPreselection2 * process.makeKappaMuons)
 
 	# Electrons ########################################################
-	# to be done
-	if channel == 'ee':
-		pass
+	elif channel == 'ee':
+		process.load('Kappa.Skimming.KElectrons_run2_cff')
+		process.ePreselection1 = cms.EDFilter('CandViewSelector',
+			src = cms.InputTag('patElectrons'),
+			cut = cms.string("pt>8.0"),
+		)
+		process.ePreselection2 = cms.EDFilter('CandViewCountFilter',
+			src = cms.InputTag('ePreselection1'),
+			minNumber = cms.uint32(2),
+		)
+		process.kappaTuple.Electrons.minPt = 8.0
+
+		from Kappa.Skimming.KElectrons_run2_cff import setupElectrons
+		process.kappaTuple.Electrons.ids = cms.vstring("cutBasedElectronID_Spring15_25ns_V1_standalone_loose",
+								 	 "cutBasedElectronID_Spring15_25ns_V1_standalone_medium",
+								 	 "cutBasedElectronID_Spring15_25ns_V1_standalone_tight",
+								 	 "cutBasedElectronID_Spring15_25ns_V1_standalone_veto",
+								 "ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
+		setupElectrons(process)
+
+		process.kappaTuple.active += cms.vstring('Electrons')
+		process.path *= (process.makeKappaElectrons * process.ePreselection1 * process.ePreselection2)
 
 	#  Jets  ###########################################################
 	# Kappa jet processing
@@ -390,6 +413,13 @@ if __name__ == '__main__':
 				'globalTag': 'GR_R_74_V12',
 				'nickName': 'DoubleMu_Run2012A_22Jan2013_8TeV',
 				'channel': 'mm',
+			},
+			'742mc15ee': {
+				#'files': 'root://xrootd.unl.edu//store/mc/RunIISpring15DR74/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/Asympt50ns_MCRUN2_74_V9A-v2/00000/0033A97B-8707-E511-9D3B-008CFA1980B8.root',
+				'files': 'file:/storage/8/dhaitz/testfiles/mc15_ee.root',
+				'globalTag': 'MCRUN2_74_V8',
+				'nickName': 'DYJetsToLL_M_50_madgraph_13TeV',
+				'channel': 'ee',
 			},
 		}
 		KappaParser.parseArgumentsWithTestDict(testdict)
