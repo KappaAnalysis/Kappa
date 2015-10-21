@@ -63,10 +63,10 @@ EventWeightCountProducer::EventWeightCountProducer(const edm::ParameterSet& iCon
     countNegWeightsOnly = iConfig.getParameter<bool>("countNegWeightsOnly");
   else throw cms::Exception("Configuration")<<"Missing parameter countNegWeightsOnly \n";
 
-  if(not isMC and countNegWeightsOnly)
-  {
-    throw cms::Exception("Configuration")<<"Configuration error: trying to count negative event weights in data \n";
-  }
+//  if(not isMC and countNegWeightsOnly)
+//  {
+//    throw cms::Exception("Configuration")<<"Configuration error: trying to count negative event weights in data \n";
+//  }
 
 
   if (isMC)
