@@ -41,6 +41,7 @@ options.register('testsuite', False, VarParsing.multiplicity.singleton, VarParsi
 options.parseArguments()
 
 cmssw_version_number = tools.get_cmssw_version_number()
+split_cmssw_version = cmssw_version_number.split("_")
 
 def getBaseConfig( globaltag= 'START70_V7::All',
                    testfile=cms.untracked.vstring(""),
@@ -78,6 +79,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.p *= process.nNegEventsTotal
 	## ------------------------------------------------------------------------
 	# General configuration
+	if (cmssw_version_number.startswith("7_4") and split_cmssw_version[2] >= 14):
+		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
+
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
 	if miniaod:
 		process.load("Kappa.Skimming.KVertices_cff")
