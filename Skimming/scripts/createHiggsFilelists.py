@@ -13,6 +13,7 @@ from Kappa.Skimming.registerDatasetHelper import *
 import Kappa.Skimming.datasets2011 as datasets2011
 import Kappa.Skimming.datasets2012 as datasets2012
 import Kappa.Skimming.datasets2013 as datasets2013
+import Kappa.Skimming.datasets2015_miniAODv2 as datasets2015_miniAODv2
 
 
 def writeFilelist(querytuple, dict, options):
@@ -102,7 +103,8 @@ def main():
 	else:
 		#querielist.append( datasets2011.queries )
 		#querielist.append( datasets2012.queries )
-		querielist.append( datasets2013.queries )
+		#querielist.append( datasets2013.queries )
+		querielist.append( datasets2015_miniAODv2.queries )
 
 	dict = load_database(dataset)
 	for queries in querielist:
