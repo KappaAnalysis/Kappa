@@ -151,9 +151,9 @@ struct KGenTau : public KGenParticle
 	bool isElectronicDecay() const { return (decayMode & ~DescendantMask) == 1; }
 	bool isMuonicDecay() const { return (decayMode & ~DescendantMask) == 2; }
 	bool isHadronicDecay() const { return (decayMode & ~DescendantMask) > 2; }
-	bool is1Prong() const { return (decayMode & DescendantMask) == 3; }
-	bool is3Prong() const { return (decayMode & DescendantMask) == 4; }
-	bool isXProng() const { return (decayMode & DescendantMask) == 5; }
+	bool is1Prong() const { return (decayMode & ~DescendantMask) == 3; }
+	bool is3Prong() const { return (decayMode & ~DescendantMask) == 4; }
+	bool isXProng() const { return (decayMode & ~DescendantMask) == 5; }
 	bool isDescendant() const { return (decayMode & DescendantMask) != 0; }
 };
 typedef std::vector<KGenTau> KGenTaus;
