@@ -1199,6 +1199,16 @@
         "process": "MuonEG", 
         "scenario": "PromptRecov1"
     }, 
+    "/MuonEG/Run2015C_25ns-05Oct2015-v1/MINIAOD": {
+        "campaign": "Run2015C_25ns", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "MuonEG", 
+        "scenario": "05Oct2015v1"
+    }, 
     "/MuonEG/Run2015D-05Oct2015-v2/MINIAOD": {
         "campaign": "Run2015D", 
         "data": true, 
@@ -1529,6 +1539,16 @@
         "process": "SingleElectron", 
         "scenario": "PromptRecov1"
     }, 
+    "/SingleElectron/Run2015C_25ns-05Oct2015-v1/MINIAOD": {
+        "campaign": "Run2015C_25ns", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "SingleElectron", 
+        "scenario": "05Oct2015v1"
+    }, 
     "/SingleElectron/Run2015D-05Oct2015-v1/MINIAOD": {
         "campaign": "Run2015D", 
         "data": true, 
@@ -1598,6 +1618,16 @@
         "generator": "", 
         "process": "SingleMuon", 
         "scenario": "PromptRecov1"
+    }, 
+    "/SingleMuon/Run2015C_25ns-05Oct2015-v1/MINIAOD": {
+        "campaign": "Run2015C_25ns", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "SingleMuon", 
+        "scenario": "05Oct2015v1"
     }, 
     "/SingleMuon/Run2015D-05Oct2015-v1/MINIAOD": {
         "campaign": "Run2015D", 
@@ -1968,6 +1998,16 @@
         "generator": "", 
         "process": "Tau", 
         "scenario": "PromptRecov1"
+    }, 
+    "/Tau/Run2015C_25ns-05Oct2015-v1/MINIAOD": {
+        "campaign": "Run2015C_25ns", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "process": "Tau", 
+        "scenario": "05Oct2015v1"
     }, 
     "/Tau/Run2015D-05Oct2015-v1/MINIAOD": {
         "campaign": "Run2015D", 
