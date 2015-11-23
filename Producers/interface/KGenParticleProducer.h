@@ -49,12 +49,30 @@ protected:
 		}
 
 		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
-		out.particleinfo = id | ((in.status() % 128) << KParticleStatusPosition);
+		out.particleid = id;
+		out.particleinfo = ((in.status() % 128) << KParticleStatusPosition);
+// 		out.particleinfo = id | ((in.status() % 128) << KParticleStatusPosition);
 		if (in.status() >= 111)  // Pythia 8 maximum
 			out.particleinfo |= (127 << KParticleStatusPosition);
 		if (in.pdgId() < 0)
 			out.particleinfo |= KParticleSignMask;
 		out.daughterIndices = daughters;
+
+#if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
+		// generator-independent flags
+		reco::GenStatusFlags statusFlags = (dynamic_cast<const reco::GenParticle*>(&in))->statusFlags();
+		out.particleinfo |= (statusFlags.isPrompt()                           << 0);
+		out.particleinfo |= (statusFlags.isDecayedLeptonHadron()              << 1);
+		out.particleinfo |= (statusFlags.isTauDecayProduct()                  << 2);
+		out.particleinfo |= (statusFlags.isPromptTauDecayProduct()            << 3);
+		out.particleinfo |= (statusFlags.isDirectTauDecayProduct()            << 4);
+		out.particleinfo |= (statusFlags.isDirectPromptTauDecayProduct()      << 5);
+		out.particleinfo |= (statusFlags.isDirectHadronDecayProduct()         << 6);
+		out.particleinfo |= (statusFlags.isHardProcess()                      << 7);
+		out.particleinfo |= (statusFlags.fromHardProcess()                    << 8);
+		out.particleinfo |= (statusFlags.isHardProcessTauDecayProduct()       << 9);
+		out.particleinfo |= (statusFlags.isDirectHardProcessTauDecayProduct() << 10);
+#endif
 
 		if (in.pdgId() != out.pdgId())
 			std::cout << "The pdgId is not skimmed correctly! "
