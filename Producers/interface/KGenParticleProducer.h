@@ -74,11 +74,11 @@ protected:
 		out.particleinfo |= (statusFlags.isDirectHardProcessTauDecayProduct() << 10);
 #endif
 
-		if (in.pdgId() != out.pdgId())
+		if (in.pdgId() != out.pdgId_v2())
 			std::cout << "The pdgId is not skimmed correctly! "
 					  << "in=" << in.pdgId() << ", out=" << out.pdgId()
 					  << std::endl << std::flush;
-		assert(in.pdgId() == out.pdgId());
+		assert(in.pdgId() == out.pdgId_v2());
 
 	}
 

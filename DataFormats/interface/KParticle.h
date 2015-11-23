@@ -14,7 +14,7 @@ const unsigned int KParticleStatusPosition = 24;
 const unsigned int KParticleSignMask   =  (unsigned int)1 << KParticleSignPosition;
 const unsigned int KParticleCustomMask =  (unsigned int)15 << KParticleCustomPosition;  // to be removed
 const unsigned int KParticleStatusMask =  (unsigned int)127 << KParticleStatusPosition;
-// const unsigned int KParticlePdgIdMask  = ((unsigned int)1 << KParticleStatusPosition) - (unsigned int)1;
+const unsigned int KParticlePdgIdMask  = ((unsigned int)1 << KParticleStatusPosition) - (unsigned int)1;
 
 
 /// Particle base class for generator particles or candidates
@@ -39,8 +39,11 @@ struct KParticle : public KLV
 	/// PDG-ID of the particle (signed)
 	int pdgId() const
 	{
+		return sign() * static_cast<int>(particleinfo & KParticlePdgIdMask);
+	}
+	int pdgId_v2() const
+	{
 		return sign() * static_cast<int>(particleid);
-// 		return sign() * static_cast<int>(particleinfo & KParticlePdgIdMask);
 	}
 
 	inline bool isPromptFinalState()                           const { return (status() == 1 && (particleinfo & (1 << 0))); };
