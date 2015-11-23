@@ -39,20 +39,8 @@ struct KParticle : public KLV
 	/// PDG-ID of the particle (signed)
 	int pdgId() const
 	{
-		return sign() * static_cast<int>(particleinfo & KParticlePdgIdMask);
-	}
-	int pdgId_v2() const
-	{
 		return sign() * static_cast<int>(particleid);
 	}
-
-	inline bool isPromptFinalState()                           const { return (status() == 1 && (particleinfo & (1 << 0))); };
-	inline bool fromHardProcessFinalState()                    const { return (status() == 1 && (particleinfo & (1 << 8))); };
-	inline bool isDirectPromptTauDecayProductFinalState()      const { return (status() == 1 && (particleinfo & (1 << 5))); };
-	inline bool isDirectHardProcessTauDecayProductFinalState() const { return (status() == 1 && (particleinfo & (1 << 10))); };
-	inline bool isPromptDecayed()        const { return ((particleinfo & (1 << 0)) && (particleinfo & (1 << 1))); };
-	inline bool isHardProcess()          const { return ((particleinfo & (1 << 7))); };
-	inline bool fromHardProcessDecayed() const { return ((particleinfo & (1 << 1)) && (particleinfo & (1 << 8))); };
 
 	/// particle charge multiplied by 3 (for integer comparisons)
 	/** e.g. 2 for up-quark, -3 for electron
@@ -104,6 +92,23 @@ struct KParticle : public KLV
 typedef std::vector<KParticle> KParticles;
 
 
+/// from DataFormats/HepMCCandidate/interface/GenStatusFlags.h
+namespace KGenStatusFlags { enum Type
+{
+	isPrompt                           = 0,
+	isDecayedLeptonHadron              = 1,
+	isTauDecayProduct                  = 2,
+	isPromptTauDecayProduct            = 3,
+	isDirectTauDecayProduct            = 4,
+	isDirectPromptTauDecayProduct      = 5,
+	isDirectHadronDecayProduct         = 6,
+	isHardProcess                      = 7,
+	fromHardProcess                    = 8,
+	isHardProcessTauDecayProduct       = 9,
+	isDirectHardProcessTauDecayProduct = 10
+};
+}
+
 /// Generator particle
 struct KGenParticle : public KParticle
 {
@@ -124,6 +129,14 @@ struct KGenParticle : public KParticle
 		else
 			return -1;
 	}
+
+	inline bool isPromptFinalState()                           const { return (status() == 1 && (particleinfo & (1 << KGenStatusFlags::isPrompt))); };
+	inline bool fromHardProcessFinalState()                    const { return (status() == 1 && (particleinfo & (1 << KGenStatusFlags::fromHardProcess))); };
+	inline bool isDirectPromptTauDecayProductFinalState()      const { return (status() == 1 && (particleinfo & (1 << KGenStatusFlags::isDirectPromptTauDecayProduct))); };
+	inline bool isDirectHardProcessTauDecayProductFinalState() const { return (status() == 1 && (particleinfo & (1 << KGenStatusFlags::isDirectHardProcessTauDecayProduct))); };
+	inline bool isPromptDecayed()        const { return ((particleinfo & (1 << KGenStatusFlags::isPrompt)) && (particleinfo & (1 << KGenStatusFlags::isDecayedLeptonHadron))); };
+	inline bool isHardProcess()          const { return ((particleinfo & (1 << KGenStatusFlags::isHardProcess))); };
+	inline bool fromHardProcessDecayed() const { return ((particleinfo & (1 << KGenStatusFlags::isDecayedLeptonHadron)) && (particleinfo & (1 << KGenStatusFlags::fromHardProcess))); };
 };
 typedef std::vector<KGenParticle> KGenParticles;
 

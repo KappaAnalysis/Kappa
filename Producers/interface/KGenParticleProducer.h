@@ -51,7 +51,6 @@ protected:
 		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
 		out.particleid = id;
 		out.particleinfo = ((in.status() % 128) << KParticleStatusPosition);
-// 		out.particleinfo = id | ((in.status() % 128) << KParticleStatusPosition);
 		if (in.status() >= 111)  // Pythia 8 maximum
 			out.particleinfo |= (127 << KParticleStatusPosition);
 		if (in.pdgId() < 0)
@@ -60,25 +59,25 @@ protected:
 
 #if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
 		// generator-independent flags
-		reco::GenStatusFlags statusFlags = (dynamic_cast<const reco::GenParticle*>(&in))->statusFlags();
-		out.particleinfo |= (statusFlags.isPrompt()                           << 0);
-		out.particleinfo |= (statusFlags.isDecayedLeptonHadron()              << 1);
-		out.particleinfo |= (statusFlags.isTauDecayProduct()                  << 2);
-		out.particleinfo |= (statusFlags.isPromptTauDecayProduct()            << 3);
-		out.particleinfo |= (statusFlags.isDirectTauDecayProduct()            << 4);
-		out.particleinfo |= (statusFlags.isDirectPromptTauDecayProduct()      << 5);
-		out.particleinfo |= (statusFlags.isDirectHadronDecayProduct()         << 6);
-		out.particleinfo |= (statusFlags.isHardProcess()                      << 7);
-		out.particleinfo |= (statusFlags.fromHardProcess()                    << 8);
-		out.particleinfo |= (statusFlags.isHardProcessTauDecayProduct()       << 9);
-		out.particleinfo |= (statusFlags.isDirectHardProcessTauDecayProduct() << 10);
+		reco::GenStatusFlags flags = (dynamic_cast<const reco::GenParticle*>(&in))->statusFlags();
+		out.particleinfo |= (flags.isPrompt()                           << KGenStatusFlags::isPrompt);
+		out.particleinfo |= (flags.isDecayedLeptonHadron()              << KGenStatusFlags::isDecayedLeptonHadron);
+		out.particleinfo |= (flags.isTauDecayProduct()                  << KGenStatusFlags::isTauDecayProduct);
+		out.particleinfo |= (flags.isPromptTauDecayProduct()            << KGenStatusFlags::isPromptTauDecayProduct);
+		out.particleinfo |= (flags.isDirectTauDecayProduct()            << KGenStatusFlags::isDirectTauDecayProduct);
+		out.particleinfo |= (flags.isDirectPromptTauDecayProduct()      << KGenStatusFlags::isDirectPromptTauDecayProduct);
+		out.particleinfo |= (flags.isDirectHadronDecayProduct()         << KGenStatusFlags::isDirectHadronDecayProduct);
+		out.particleinfo |= (flags.isHardProcess()                      << KGenStatusFlags::isHardProcess);
+		out.particleinfo |= (flags.fromHardProcess()                    << KGenStatusFlags::fromHardProcess);
+		out.particleinfo |= (flags.isHardProcessTauDecayProduct()       << KGenStatusFlags::isHardProcessTauDecayProduct);
+		out.particleinfo |= (flags.isDirectHardProcessTauDecayProduct() << KGenStatusFlags::isDirectHardProcessTauDecayProduct);
 #endif
 
-		if (in.pdgId() != out.pdgId_v2())
+		if (in.pdgId() != out.pdgId())
 			std::cout << "The pdgId is not skimmed correctly! "
 					  << "in=" << in.pdgId() << ", out=" << out.pdgId()
 					  << std::endl << std::flush;
-		assert(in.pdgId() == out.pdgId_v2());
+		assert(in.pdgId() == out.pdgId());
 
 	}
 

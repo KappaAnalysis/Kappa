@@ -26,7 +26,7 @@ public:
 	static void fillPFCandidate(const SingleInputType &in, SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
-		out.particleinfo = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
+		out.particleid = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
 		if (in.pdgId() < 0)
 			out.particleinfo |= KParticleSignMask;
 		out.deltaP = in.deltaP();
