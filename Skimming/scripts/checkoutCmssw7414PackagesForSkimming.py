@@ -71,6 +71,8 @@ def checkoutPackages(args):
 		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 74X-13TeV-Summer15-July2015 --depth 1",
 		"rm -rf $CMSSW_BASE/src/RecoMET/METPUSubtraction/data/.git/",
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
+		"sed '/mvaOutputCovU1_\ = GetR/c \ \ mvaOutputCovU1_ = std\:\:pow\(GetResponse\(mvaReaderCovU1_, varForCovU1_\)\* mvaOutputU\_ \* var\_\[\"particleFlow\_U\"\]\, 2\)\;' RecoMET/METPUSubtraction/src/PFMETAlgorithmMVA.cc -i",
+		"sed '/mvaOutputCovU2_\ = GetR/c \ \ mvaOutputCovU2_ = std\:\:pow\(GetResponse\(mvaReaderCovU2_, varForCovU2_\)\* mvaOutputU\_ \* var\_\[\"particleFlow\_U\"\]\, 2\)\;' RecoMET/METPUSubtraction/src/PFMETAlgorithmMVA.cc -i",
 
 		"git cms-addpkg PhysicsTools/PatUtils",
 		"sed '/pat::MET outMET/a \ \ \  outMET\.setSignificanceMatrix\(srcMET\.getSignificanceMatrix\(\)\)\;' PhysicsTools/PatUtils/plugins/CorrectedPATMETProducer.cc -i",
