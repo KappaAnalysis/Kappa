@@ -59,7 +59,7 @@ protected:
 
 #if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
 		// generator-independent flags
-		reco::GenStatusFlags flags = (dynamic_cast<const reco::GenParticle*>(&in))->statusFlags();
+		reco::GenStatusFlags flags = (static_cast<const reco::GenParticle*>(&in))->statusFlags();
 		out.particleinfo |= (flags.isPrompt()                           << KGenStatusFlags::isPrompt);
 		out.particleinfo |= (flags.isDecayedLeptonHadron()              << KGenStatusFlags::isDecayedLeptonHadron);
 		out.particleinfo |= (flags.isTauDecayProduct()                  << KGenStatusFlags::isTauDecayProduct);
