@@ -96,7 +96,6 @@ protected:
 public:
 	KPatTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
 		KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel()),
-		firstEvent(true),
 		_lumi_tree_pointer(_lumi_tree)
 	{
 		const edm::ParameterSet &psBase = this->psBase;
@@ -155,12 +154,6 @@ virtual bool acceptSingle(const SingleInputType &in) override
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		// momentum:
-		if(firstEvent)
-		{
-			onFirstEvent(in, out);
-			firstEvent = false;
-		}
 		copyP4(in, out.p4);
 		fillChargeAndFlavour(in, out);
 		out.tauKey = createTauHash<pat::Tau>(in);
@@ -169,7 +162,7 @@ virtual bool acceptSingle(const SingleInputType &in) override
 			fillPFCandidates(in, out);
 	}
 
-	virtual void onFirstEvent(const SingleInputType &in, SingleOutputType &out)
+	virtual void onFirstObject(const SingleInputType &in, SingleOutputType &out) override
 	{
 		if(this->verbosity > 0)
 		{
@@ -214,7 +207,6 @@ private:
 			exit(1);
 		}
 	}
-	bool firstEvent;
 	std::map<std::string, std::vector<std::string> > preselectionDiscr;
 	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist;
 	std::map<std::string, KTauMetadata *> discriminatorMap;

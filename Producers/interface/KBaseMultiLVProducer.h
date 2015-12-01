@@ -24,10 +24,14 @@ struct KLVSorter
 template<typename Tin, typename Tout>
 class KBaseMultiVectorProducer : public KBaseMultiProducer<Tin, Tout>
 {
+protected:
+	typedef typename KBaseMultiProducer<Tin, Tout>::InputType::value_type SingleInputType;
+	typedef typename KBaseMultiProducer<Tin, Tout>::OutputType::value_type SingleOutputType;
 public:
 	KBaseMultiVectorProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName) :
 		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree, producerName),
-		maxN(cfg.getParameter<int>("maxN")) {}
+		maxN(cfg.getParameter<int>("maxN")),
+		firstObject(true) {}
 
 	virtual void fillProduct(const typename KBaseMultiProducer<Tin, Tout>::InputType &input,
 		typename KBaseMultiProducer<Tin, Tout>::OutputType &output,
@@ -43,6 +47,11 @@ public:
 			if (acceptSingle(*lvit))
 			{
 				output.push_back(SingleOutputType());
+				if(firstObject)
+				{
+					firstObject = false;
+					onFirstObject(*lvit, output.back());
+				}
 				fillSingle(*lvit, output.back());
 			}
 		this->sort(output);
@@ -56,11 +65,12 @@ public:
 	virtual void clearProduct(typename KBaseMultiProducer<Tin, Tout>::OutputType &output) { output.clear(); }
 	virtual void sort(typename KBaseMultiProducer<Tin, Tout>::OutputType &out) {}
 
+	// function necessary for the intialization of PAT objects to read metadate etc.
+	virtual void onFirstObject(const SingleInputType &in, SingleOutputType &out) {return;};
+
 protected:
 	int maxN, nCursor;
-
-	typedef typename KBaseMultiProducer<Tin, Tout>::InputType::value_type SingleInputType;
-	typedef typename KBaseMultiProducer<Tin, Tout>::OutputType::value_type SingleOutputType;
+	bool firstObject;
 
 	virtual bool acceptSingle(const SingleInputType &in) { return true; }
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out) = 0;
