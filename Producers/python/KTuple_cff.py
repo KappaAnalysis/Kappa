@@ -233,7 +233,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		whitelist = cms.vstring("slimmedMETs"),
 		blacklist = cms.vstring(),
 
-		rename = cms.vstring("slimmedMETs => met"),
+		rename = cms.vstring("slimmedMETs => met", "patPFMet => met"),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
 	),
@@ -495,7 +495,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(".*Tau.*", "recoPFJets_pfJets.*kappaSkim", "Jets(Iso)?QG", ".*SubJets.*"),
 
 		rename = cms.vstring(
-			"(slimmedJetsAK8)|(slimmed) => (?1ak8PFJets)(?2ak5PF)"
+			"(slimmedJetsAK8)|(slimmed) => (?1ak8PFJets)(?2ak4PF)"
 		),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
