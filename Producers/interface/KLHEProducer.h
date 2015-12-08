@@ -38,7 +38,8 @@ protected:
 
 			// particle id and status
 			unsigned int id = (in.hepeup().IDUP[i] < 0) ? -in.hepeup().IDUP[i] : in.hepeup().IDUP[i];
-			p.particleinfo = id | ((in.hepeup().ISTUP[i] % 4) << KParticleStatusPosition);
+			p.particleid = id;
+			p.particleinfo = ((in.hepeup().ISTUP[i] % 4) << KParticleStatusPosition);
 			if (in.hepeup().IDUP[i] < 0)
 				p.particleinfo |= KParticleSignMask;
 
