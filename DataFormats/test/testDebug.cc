@@ -39,6 +39,7 @@ int main() {
 	cout << "* KMuonTriggerCandidate: " << KMuonTriggerCandidate() << endl << endl;
 	cout << "* KParticle: " << KParticle() << endl << endl;
 	cout << "* KPFCandidate: " << KPFCandidate() << endl << endl;
+	cout << "* KPhoton: " << KPhoton() << endl << endl;
 	cout << "* KPileupDensity: " << KPileupDensity() << endl << endl;
 	cout << "* KTau: " << KTau() << endl << endl;
 	cout << "* KExtendedTau: " << KExtendedTau() << endl << endl;

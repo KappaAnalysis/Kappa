@@ -17,6 +17,7 @@
 #include "KLepton.h"
 #include "KMuon.h"
 #include "KParticle.h"
+#include "KPhoton.h"
 #include "KRoot.h"
 #include "KTau.h"
 #include "KTrack.h"
@@ -81,6 +82,8 @@ REGISTER_NAME_OF_TYPE(KParticle,KParticle);
 REGISTER_NAME_OF_TYPE(KParticles,std::vector<KParticle>);
 REGISTER_NAME_OF_TYPE(KPFCandidate,KPFCandidate);
 REGISTER_NAME_OF_TYPE(KPFCandidates,std::vector<KPFCandidate>);
+REGISTER_NAME_OF_TYPE(KPhoton,KPhoton);
+REGISTER_NAME_OF_TYPE(KPhotons,std::vector<KPhoton>);
 REGISTER_NAME_OF_TYPE(KPileupDensity,KPileupDensity);
 REGISTER_NAME_OF_TYPE(KTau,KTau);
 REGISTER_NAME_OF_TYPE(KTaus,std::vector<KTau>);

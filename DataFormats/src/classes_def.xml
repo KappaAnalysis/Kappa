@@ -46,6 +46,8 @@
 	<class name="KParticles"/>
 	<class name="KPFCandidate"/>
 	<class name="KPFCandidates"/>
+	<class name="KPhoton"/>
+	<class name="KPhotons"/>
 	<class name="KPileupDensity"/>
 	<class name="KTau"/>
 	<class name="KTaus"/>

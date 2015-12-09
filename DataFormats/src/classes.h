@@ -22,6 +22,7 @@
 #include "../interface/KLepton.h"
 #include "../interface/KMuon.h"
 #include "../interface/KParticle.h"
+#include "../interface/KPhoton.h"
 #include "../interface/KRoot.h"
 #include "../interface/KTau.h"
 #include "../interface/KTrack.h"
@@ -77,6 +78,8 @@ namespace
 		KParticles dict_KParticles;
 		KPFCandidate dict_KPFCandidate;
 		KPFCandidates dict_KPFCandidates;
+		KPhoton dict_KPhoton;
+		KPhotons dict_KPhotons;
 		KPileupDensity dict_KPileupDensity;
 		KTau dict_KTau;
 		KTaus dict_KTaus;

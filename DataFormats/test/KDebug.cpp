@@ -144,6 +144,15 @@ std::ostream &operator<<(std::ostream &os, const KJet &jet)
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const KPhoton &phot)
+{
+	os << static_cast<const KLV>(phot);
+	os << "\tIDs=" << std::bitset<8>(phot.ids) << " sigmaIetaIeta=" << phot.sigmaIetaIeta << std::endl;
+	os << "\tiso: pf(CH,NH,PH,PU)=(" << phot.sumChargedHadronPt << ", " << phot.sumNeutralHadronEt;
+	os << ", " << phot.sumPhotonEt << ", " << phot.sumPUPt << ")=" << phot.pfIso();
+	return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const KLepton &lep)
 {
 	// flavour as [E], [M] or [T]

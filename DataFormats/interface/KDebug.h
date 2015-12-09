@@ -25,6 +25,7 @@ std::ostream &operator<<(std::ostream &os, const KElectron &e);
 std::ostream &operator<<(std::ostream &os, const KCaloJet &jet);
 std::ostream &operator<<(std::ostream &os, const KBasicJet &jet);
 std::ostream &operator<<(std::ostream &os, const KJet &jet);
+std::ostream &operator<<(std::ostream &os, const KPhoton &phot);
 std::ostream &operator<<(std::ostream &os, const KLepton &lep);
 std::ostream &operator<<(std::ostream &os, const KLeptonPair &leptonPair);
 std::ostream &operator<<(std::ostream &os, const KBasicTau &tau);

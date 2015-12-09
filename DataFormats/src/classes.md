@@ -51,6 +51,7 @@ Plural forms are standard vectors of the classes with singular class names.
 + KMuonTriggerCandidate  KMuonTriggerCandidates
 + KParticle              KParticles
 + KPFCandidate           KPFCandidates
++ KPhoton                KPhotons
 + KPileupDensity
 + KTau                   KTaus
 + KExtendedTau           KExtendedTaus

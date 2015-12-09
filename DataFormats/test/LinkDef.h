@@ -151,6 +151,10 @@
 #pragma link C++ class std::vector<KPFCandidate>+;
 #pragma link C++ typedef KPFCandidates;
 
+#pragma link C++ struct KPhoton+;
+#pragma link C++ class std::vector<KPhoton>+;
+#pragma link C++ typedef KPhotons;
+
 #pragma link C++ struct KPileupDensity+;
 
 #pragma link C++ struct KTau+;
