@@ -73,40 +73,6 @@ public:
 		return sumChargedHadronPt + std::max(0.0f,
 			sumNeutralHadronEt + sumPhotonEt - puFraction * sumPUPt);
 	}
-	inline double pfIsoOnlyAll() const
-	{
-		return sumChargedAllPt;
-	}
-	inline double pfIsoOnlyPu() const
-	{
-		return sumPUPt;
-	}
-	inline double pfIsoOnlyHadron() const
-	{
-		return sumChargedHadronPt;
-	}
-	inline double pfIsoOnlyNeutral() const
-	{
-		return sumNeutralHadronEt;
-	}
-	inline double pfIsoOnlyPhoton() const
-	{
-		return sumPhotonEt;
-	}
-	inline double pfIsoNoNeutral(const double puFraction=0.5) const
-	{
-		return sumChargedHadronPt + std::max(0.0,
-			sumPhotonEt - puFraction * sumPUPt);
-	}
-	inline double pfIsoNoPhoton(const double puFraction=0.5) const
-	{
-		return sumChargedHadronPt + std::max(0.0,
-			sumNeutralHadronEt - puFraction * sumPUPt);
-	}
-	inline double pfIsoNoPU() const
-	{
-		return sumChargedHadronPt + sumNeutralHadronEt + sumPhotonEt;
-	}
 
 	/// rho effective area isolation (approximation)
 	/** this is an alternative method for pile-up subtraction:
