@@ -360,7 +360,7 @@ std::ostream &operator<<(std::ostream &os, const KEventInfo &i)
 {
 	os << "Event=" << i.nRun << ":" << i.nLumi << ":" << i.nBX << ":" << i.nEvent;
 	os << " flags=" << std::bitset<32>(i.bitsUserFlags);
-	os << " rnd=" << i.randomNumber << " minWght=" << i.minVisPtFilterWeight << std::endl;
+	os << " minWght=" << i.minVisPtFilterWeight << std::endl;
 	os << "\tTrigger: L1=" << std::bitset<64>(i.bitsL1) << std::endl;
 	os << "\t        HLT=" << std::bitset<64>(i.bitsHLT);
 	return os;

@@ -79,7 +79,6 @@ struct KEventInfo
 	unsigned int nRun;             //< run number
 	int nBX;                       //< bunch crossing number
 	unsigned int bitsUserFlags;    //<
-	float randomNumber;            //< random number per event for deterministic sample splittings
 	float minVisPtFilterWeight;    //< weight necessary to correct embedded events
 
 	bool hltFired (const std::string &name, const KLumiInfo *lumiinfo) const

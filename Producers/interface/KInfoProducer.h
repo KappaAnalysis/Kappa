@@ -39,9 +39,8 @@
 
 #include <DataFormats/Provenance/interface/ProcessHistory.h>
 
-#include "TRandom3.h"
-
 #define NEWHLT
+
 
 // real data
 struct KInfo_Product
@@ -71,7 +70,6 @@ std::vector<size_t> KInfoProducerBase::hltKappa2FWK;
 std::vector<std::string> KInfoProducerBase::selectedHLT;
 std::vector<std::string> KInfoProducerBase::svHLTFailToleranceList;
 
-TRandom3 randomGenerator = TRandom3();
 
 template<typename Tmeta>
 class KInfoProducer : public KInfoProducerBase
@@ -236,7 +234,6 @@ public:
 		metaEvent->nEvent = event.id().event();
 		metaEvent->nLumi = event.luminosityBlock();
 		metaEvent->nBX = event.bunchCrossing();
-		metaEvent->randomNumber = randomGenerator.Rndm();
 		// If we are running on real data then the trigger should
 		// always be HLT.
 		// Disable the overrideHLTCheck for embedded data
