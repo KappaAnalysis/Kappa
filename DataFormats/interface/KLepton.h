@@ -34,7 +34,6 @@ namespace KLeptonId { enum Type
 
 struct KLepton : public KLV
 {
-public:
 	unsigned char leptonInfo;  //< bitset containing the flavour, charge and user bits
 	unsigned char ids;         //< most relevant IDs of the lepton
 	float sumChargedHadronPt;  //< sum pt of charged hadrons for isolation
