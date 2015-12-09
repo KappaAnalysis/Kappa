@@ -31,6 +31,7 @@ typedef std::vector<KCaloJet> KCaloJets;
 struct KBasicJet : public KLV
 {
 	float area;
+	float correction;
 
 	float neutralHadronFraction, chargedHadronFraction;
 	float muonFraction, photonFraction, electronFraction;
