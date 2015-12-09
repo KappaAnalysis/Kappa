@@ -73,8 +73,6 @@
 #pragma link C++ class std::vector<KBasicJet>+;
 #pragma link C++ typedef KBasicJets;
 
-#pragma link C++ struct KBasicMET+;
-
 #pragma link C++ struct KBasicTau+;
 #pragma link C++ class std::vector<KBasicTau>+;
 #pragma link C++ typedef KBasicTaus;

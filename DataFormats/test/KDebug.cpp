@@ -40,14 +40,6 @@ std::ostream &operator<<(std::ostream &os, const KBeamSpot &bs)
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const KBasicMET &met)
-{
-	os << static_cast<const KLV>(met) << " sumEt=" << met.sumEt;
-	os << " sig=(" << met.significance(0,0) << ", " << met.significance(1,0) << "; ";
-	os << met.significance(0,1) << ", " << met.significance(1,1) << ")";
-	return os;
-}
-
 std::ostream &operator<<(std::ostream &os, const KMET &met)
 {
 	os << static_cast<const KLV>(met) << " sumEt=" << met.sumEt;

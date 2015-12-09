@@ -96,12 +96,6 @@ struct KGenJet : public KLV
 };
 typedef std::vector<KGenJet> KGenJets;
 
-struct KBasicMET : public KLV
-{
-	double sumEt;
-	ROOT::Math::SMatrix<double, 2, 2, ROOT::Math::MatRepSym<double, 2> > significance;
-};
-
 struct KMET : public KLV
 {
 	double sumEt;

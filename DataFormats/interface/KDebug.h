@@ -14,7 +14,6 @@
 
 std::ostream &operator<<(std::ostream &os, const KLV &lv);
 std::ostream &operator<<(std::ostream &os, const KBeamSpot &bs);
-std::ostream &operator<<(std::ostream &os, const KBasicMET &met);
 std::ostream &operator<<(std::ostream &os, const KMET &met);
 std::ostream &operator<<(std::ostream &os, const KTrackSummary &s);
 std::ostream &operator<<(std::ostream &os, const KTrack &trk);

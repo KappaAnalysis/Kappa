@@ -31,7 +31,6 @@ Plural forms are standard vectors of the classes with singular class names.
 
 ### Particles and per event objects
 + KBasicJet              KBasicJets
-+ KBasicMET
 + KBasicTau              KBasicTaus
 + KBeamSpot              KBeamSpots
 + KCaloJet               KCaloJets

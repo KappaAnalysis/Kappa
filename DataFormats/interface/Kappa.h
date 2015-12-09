@@ -43,7 +43,6 @@ REGISTER_NAME_OF_TYPE(KEventInfo,KEventInfo);
 REGISTER_NAME_OF_TYPE(KGenEventInfo,KGenEventInfo);
 REGISTER_NAME_OF_TYPE(KBasicJet,KBasicJet);
 REGISTER_NAME_OF_TYPE(KBasicJets,std::vector<KBasicJet>);
-REGISTER_NAME_OF_TYPE(KBasicMET,KBasicMET);
 REGISTER_NAME_OF_TYPE(KBasicTau,KBasicTau);
 REGISTER_NAME_OF_TYPE(KBasicTaus,std::vector<KBasicTau>);
 REGISTER_NAME_OF_TYPE(KBeamSpot,KBeamSpot);

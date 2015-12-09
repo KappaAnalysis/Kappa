@@ -19,7 +19,6 @@ int main() {
 	cout << "* KEventInfo: " << KEventInfo() << endl << endl;
 	cout << "* KGenEventInfo: " << KGenEventInfo() << endl << endl;
 	cout << "* KBasicJet: " << KBasicJet() << endl << endl;
-	cout << "* KBasicMET: " << KBasicMET() << endl << endl;
 	cout << "* KBasicTau: " << KBasicTau() << endl << endl;
 	cout << "* KBeamSpot: " << KBeamSpot() << endl << endl;
 	cout << "* KCaloJet: " << KCaloJet() << endl << endl;

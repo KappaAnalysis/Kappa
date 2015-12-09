@@ -39,7 +39,6 @@ namespace
 		KGenEventInfo dict_KGenEventInfo;
 		KBasicJet dict_KBasicJet;
 		KBasicJets dict_KBasicJets;
-		KBasicMET dict_KBasicMET;
 		KBasicTau dict_KBasicTau;
 		KBasicTaus dict_KBasicTaus;
 		KBeamSpot dict_KBeamSpot;

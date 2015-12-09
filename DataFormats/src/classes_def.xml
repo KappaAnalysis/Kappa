@@ -7,7 +7,6 @@
 	<class name="KGenEventInfo"/>
 	<class name="KBasicJet"/>
 	<class name="KBasicJets"/>
-	<class name="KBasicMET"/>
 	<class name="KBasicTau"/>
 	<class name="KBasicTaus"/>
 	<class name="KBeamSpot"/>
