@@ -6,15 +6,12 @@
 
 #include "KBasic.h"
 
-/// particleinfo = [sign: 1 bit][custom: 4 bits][status: 3 bits][flags: 24 bits]
+/// particleinfo = [custom: 10 bits][status: 7 bits][flags: 15 bits]
 /// particleid   = [id: 32 bits]
-const unsigned int KParticleSignPosition   = 31;
-const unsigned int KParticleCustomPosition = 27;  // to be removed in favour of 7 bit status
-const unsigned int KParticleStatusPosition = 24;
-const unsigned int KParticleSignMask   =  (unsigned int)1 << KParticleSignPosition;
+const unsigned int KParticleCustomPosition = 22;  // to be removed in favour of 7 bit status
+const unsigned int KParticleStatusPosition = 15;
 const unsigned int KParticleCustomMask =  (unsigned int)15 << KParticleCustomPosition;  // to be removed
 const unsigned int KParticleStatusMask =  (unsigned int)127 << KParticleStatusPosition;
-const unsigned int KParticlePdgIdMask  = ((unsigned int)1 << KParticleStatusPosition) - (unsigned int)1;
 
 
 /// Particle base class for generator particles or candidates
@@ -22,24 +19,12 @@ struct KParticle : public KLV
 {
 	/// bitset containing the status and the signed PDG-ID
 	unsigned int particleinfo;
-	unsigned int particleid;
-
-	/// sign of the PDG-ID (particles: +1, anti-particles: -1)
-	int sign() const
-	{
-		return (particleinfo & KParticleSignMask ? -1 : 1);
-	}
+	int pdgId;  ///< PDG-ID of the particle
 
 	/// Monte-Carlo generator status, cf. [KParticle](md_docs_objects.html#obj-particle)
 	int status() const
 	{
 		return (particleinfo & KParticleStatusMask) >> KParticleStatusPosition;
-	}
-
-	/// PDG-ID of the particle (signed)
-	int pdgId() const
-	{
-		return sign() * static_cast<int>(particleid);
 	}
 
 	/// particle charge multiplied by 3 (for integer comparisons)
@@ -49,7 +34,7 @@ struct KParticle : public KLV
 	*/
 	int chargeTimesThree() const
 	{
-		int pdg = std::abs(pdgId());
+		int pdg = std::abs(pdgId);
 		int had = pdg % 10000 / 10;  // quark content of hadrons (digits 2-4)
 
 		if (pdg == 0)
