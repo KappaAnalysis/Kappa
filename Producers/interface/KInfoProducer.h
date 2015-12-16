@@ -39,8 +39,6 @@
 
 #include <DataFormats/Provenance/interface/ProcessHistory.h>
 
-#define NEWHLT
-
 
 // real data
 struct KInfo_Product
@@ -163,13 +161,8 @@ public:
 				return true;
 		}
 		bool hltSetupChanged = false;
-#ifdef NEWHLT
 		if (!KInfoProducerBase::hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
-#else
-		if (!KInfoProducerBase::hltConfig.init(tagHLTResults.process()))
-			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
-#endif
 
 		if (verbosity > 0 && hltSetupChanged)
 			std::cout << "HLT setup has changed." << std::endl;
@@ -264,13 +257,13 @@ public:
 			{
 				const std::string &name = metaLumi->hltNames[i];
 				unsigned int prescale = 0;
-#ifdef NEWHLT
+
 				std::pair<int, int> prescale_L1_HLT = KInfoProducerBase::hltConfig.prescaleValues(event, setup, name);
 				if (prescale_L1_HLT.first < 0 || prescale_L1_HLT.second < 0)
 					prescale = 0;
 				else
 					prescale = prescale_L1_HLT.first * prescale_L1_HLT.second;
-#endif
+
 				if (metaLumi->hltPrescales[i] == 0)
 				{
 					if (verbosity > 0 || printHltList)
