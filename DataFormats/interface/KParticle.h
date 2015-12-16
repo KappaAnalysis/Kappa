@@ -6,25 +6,15 @@
 
 #include "KBasic.h"
 
-/// particleinfo = [custom: 10 bits][status: 7 bits][flags: 15 bits]
-/// particleid   = [id: 32 bits]
-const unsigned int KParticleCustomPosition = 22;  // to be removed in favour of 7 bit status
-const unsigned int KParticleStatusPosition = 15;
-const unsigned int KParticleCustomMask =  (unsigned int)15 << KParticleCustomPosition;  // to be removed
-const unsigned int KParticleStatusMask =  (unsigned int)127 << KParticleStatusPosition;
-
-
 /// Particle base class for generator particles or candidates
 struct KParticle : public KLV
 {
 	/// bitset containing the status and the signed PDG-ID
-	unsigned int particleinfo;
 	int pdgId;  ///< PDG-ID of the particle
 
-	/// Monte-Carlo generator status, cf. [KParticle](md_docs_objects.html#obj-particle)
-	int status() const
+	int sign() const
 	{
-		return (particleinfo & KParticleStatusMask) >> KParticleStatusPosition;
+		return (pdgId > 0) - (pdgId < 0);
 	}
 
 	/// particle charge multiplied by 3 (for integer comparisons)
@@ -94,10 +84,25 @@ namespace KGenStatusFlags { enum Type
 };
 }
 
+/// particleinfo = [custom: 10 bits][status: 7 bits][flags: 15 bits]
+/// particleid   = [id: 32 bits]
+const unsigned int KGenParticleCustomPosition = 15 + 7;
+const unsigned int KGenParticleStatusPosition = 15;
+const unsigned int KGenParticleFlagsMask =  32767u;
+const unsigned int KGenParticleStatusMask = 127u << KGenParticleStatusPosition;
+const unsigned int KGenParticleCustomMask = 1023u << KGenParticleCustomPosition;
+
 /// Generator particle
 struct KGenParticle : public KParticle
 {
+	unsigned int particleinfo;
 	std::vector<unsigned int> daughterIndices;
+
+	/// Monte-Carlo generator status, cf. [KParticle](md_docs_objects.html#obj-particle)
+	int status() const
+	{
+		return (particleinfo & KGenParticleStatusMask) >> KGenParticleStatusPosition;
+	}
 
 	/// return the number of daughters
 	unsigned long nDaughters() const
