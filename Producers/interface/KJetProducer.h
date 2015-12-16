@@ -179,6 +179,9 @@ public:
 		out.hfHadronFraction = in.HFHadronEnergyFraction() / sumFractions;
 		out.hfEMFraction = in.HFEMEnergyFraction() / sumFractions;
 
+		// JEC factor (a member of PFJet would be better, but if everything is right, this should be equivalent)
+		out.correction = sumFractions;
+
 // energy fraction definitions have changed in CMSSW 7.3.X
 // fractions should add up to unity
 #if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
