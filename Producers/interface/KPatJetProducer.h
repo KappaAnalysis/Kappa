@@ -95,7 +95,7 @@ public:
 		{
 			if(tag > 0.5)
 				out.binaryIds |= (1ull << digit);
-			digit++;
+			++digit;
 		}
 		//write out generator information
 		//todo: catch if some daughters of genJets are not in genParticles collection

@@ -184,7 +184,7 @@ public:
 			if (KInfoProducerBase::hltKappa2FWK.size() < 64)
 			{
 				addHLT(hltIdx, name, 0/*, KInfoProducerBase::hltConfig.saveTagsModules(i)*/);
-				counter++;
+				++counter;
 			}
 			else
 			{

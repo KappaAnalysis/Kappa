@@ -34,19 +34,19 @@ public:
 		// Fill additional fields from KTau
 		out.tauKey = createTauHash(in);
 
-		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); i++)
+		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); ++i)
 		{
 			KPFCandidate tmp;
 			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
 			out.chargedHadronCandidates.push_back(tmp);
 		}
-		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); i++)
+		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); ++i)
 		{
 			KLV tmp;
 			copyP4(in.signalPiZeroCandidates()[i].p4(), tmp.p4);
 			out.piZeroCandidates.push_back(tmp);
 		}
-		for(size_t i = 0; i < in.signalPFGammaCands().size(); i++)
+		for(size_t i = 0; i < in.signalPFGammaCands().size(); ++i)
 		{
 			KPFCandidate tmp;
 			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);

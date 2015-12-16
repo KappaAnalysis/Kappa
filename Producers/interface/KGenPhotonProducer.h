@@ -49,7 +49,7 @@ protected:
 						copyP4(ancestors.front()->p4(), out.mother.p4);
 					}
 					else
-						for (size_t idx = 0; idx < ancestors.front()->numberOfMothers(); idx++)
+						for (size_t idx = 0; idx < ancestors.front()->numberOfMothers(); ++idx)
 							ancestors.push(ancestors.front()->mother(idx));
 					ancestors.pop();
 				}
@@ -107,7 +107,7 @@ protected:
 				if (tmpID == 11 || tmpID == 13 || tmpID == 15)
 					return true;
 				else
-					for (size_t idx = 0; idx < ancestors.front()->numberOfMothers(); idx++)
+					for (size_t idx = 0; idx < ancestors.front()->numberOfMothers(); ++idx)
 						ancestors.push(ancestors.front()->mother(idx));
 				ancestors.pop();
 			}

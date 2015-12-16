@@ -219,9 +219,9 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KMuonProducer>(active[i]);
 		addProducer<KElectronProducer>(active[i]);
 		addProducer<KPFCandidateProducer>(active[i]);
-		#if CMSSW_MAJOR_VERSION >= 7
+#if CMSSW_MAJOR_VERSION >= 7
 		addProducer<KPackedPFCandidateProducer>(active[i]);
-		#endif
+#endif
 		addProducer<KBasicJetProducer>(active[i]);
 		addProducer<KMETProducer>(active[i]);
 		addProducer<KPatMETProducer>(active[i]);
@@ -238,9 +238,9 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KLeptonPairProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);
 		addProducer<KTriggerObjectProducer>(active[i]);
-		#if CMSSW_MAJOR_VERSION >= 7
+#if CMSSW_MAJOR_VERSION >= 7
 		addProducer<KTriggerObjectStandaloneProducer>(active[i]);
-		#endif
+#endif
 		addProducer<KVertexProducer>(active[i]);
 		addProducer<KVertexSummaryProducer>(active[i]);
 		addProducer<KTreeInfoProducer >(active[i]);
@@ -315,7 +315,7 @@ KTuple::~KTuple()
 void KTuple::beginRun(edm::Run const &run, edm::EventSetup const &setup)
 {
 	ROOTContextSentinel ctx;
-	nRuns++;
+	++nRuns;
 	for (unsigned int i = 0; i < producers.size(); ++i)
 	{
 		if (doProfile)
@@ -333,7 +333,7 @@ void KTuple::beginRun(edm::Run const &run, edm::EventSetup const &setup)
 void KTuple::beginLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 {
 	ROOTContextSentinel ctx;
-	nLumis++;
+	++nLumis;
 	for (unsigned int i = 0; i < producers.size(); ++i)
 	{
 		if (doProfile)
@@ -353,7 +353,7 @@ void KTuple::analyze(const edm::Event &event, const edm::EventSetup &setup)
 	ROOTContextSentinel ctx;
 	if (first)
 	{
-		nFirsts++;
+		++nFirsts;
 		for (unsigned int i = 0; i < producers.size(); ++i)
 		{
 			if (doProfile)
@@ -368,7 +368,7 @@ void KTuple::analyze(const edm::Event &event, const edm::EventSetup &setup)
 		}
 		first = false;
 	}
-	nEvents++;
+	++nEvents;
 	for (unsigned int i = 0; i < producers.size(); ++i)
 	{
 		if (doProfile)
