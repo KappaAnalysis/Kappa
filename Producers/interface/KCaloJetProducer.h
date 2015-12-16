@@ -48,7 +48,7 @@ public:
 		{
 			edm::RefToBase<reco::Jet> jetRef(edm::Ref<reco::CaloJetCollection>(handle, this->nCursor));
 			const reco::JetID &jetID = (*hJetID)[jetRef];
-			out.n90Hits = (int)(jetID.n90Hits);
+			out.n90Hits = static_cast<int>(jetID.n90Hits);
 			out.fHPD = jetID.fHPD;
 			out.fRBX = jetID.fRBX;
 			out.fHO = jetID.fHO;
