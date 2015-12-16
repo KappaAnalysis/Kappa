@@ -8,7 +8,7 @@
 #define KAPPA_PATMETPRODUCER_H
 
 #include "KBaseMultiProducer.h"
-#include "KBasicMETProducer.h"
+#include "KMETProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/PFMET.h>
@@ -28,7 +28,7 @@ public:
 	static void fillMET(const pat::MET &in, KMET &out)
 	{
 		// fill properties of basic MET
-		KBasicMETProducer::fillMET<pat::MET>(in, out);
+		KMETProducer::fillMET<pat::MET>(in, out);
 		if(in.isPFMET())
 		{
 			// additional PF properties
@@ -56,10 +56,10 @@ protected:
 
 		fillMET(in.at(0), out);
 		// fill GenMET
-		if(in.at(0).genMET())
+		if (in.at(0).genMET())
 		{
 			const reco::GenMET* recoGenMet = in.at(0).genMET();
-			KBasicMETProducer::fillMET<reco::GenMET>(*recoGenMet, *genMet);
+			KMETProducer::fillMET<reco::GenMET>(*recoGenMet, *genMet);
 		}
 	}
 
