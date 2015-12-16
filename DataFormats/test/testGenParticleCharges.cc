@@ -9,20 +9,11 @@
 
 using namespace std;
 
-int getid(int pid)
-{
-	unsigned int id = (pid < 0) ? -pid : pid;
-	id = id | (3 << KParticleStatusPosition);
-	if (pid < 0)
-		id |= KParticleSignMask;
-	return id;
-}
-
 void test(int pdg, int truth = 0, string comment = "")
 {
 	KParticle p;
-	p.particleinfo = getid(pdg);
-	cout << std::setw(7) << std::fixed << std::setprecision(2) << p.pdgId()
+	p.pdgId = pdg;
+	cout << std::setw(7) << std::fixed << std::setprecision(2) << p.pdgId
 		 << ": c = " << std::setw(5) << p.charge()
 		 << ", c*3 =" << std::setw(3) << p.chargeTimesThree();
 	if (p.chargeTimesThree() != truth)

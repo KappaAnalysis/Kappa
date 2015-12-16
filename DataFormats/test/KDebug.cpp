@@ -72,7 +72,7 @@ std::ostream &operator<<(std::ostream &os, const KTrack &trk)
 std::ostream &operator<<(std::ostream &os, const KParticle &p)
 {
 	return os << static_cast<const KLV>(p)
-		<< " status=" << p.status() << " pdgid=" << p.pdgId() << " charge=" << p.charge();
+		<< " pdgid=" << p.pdgId << " charge=" << p.charge();
 }
 
 std::ostream &operator<<(std::ostream &os, const KGenParticle &p)
@@ -256,7 +256,7 @@ std::ostream &operator<<(std::ostream &os, const KHit &hit)
 std::ostream &operator<<(std::ostream &os, const KPFCandidate &cand)
 {
 	return os << static_cast<const KLV>(cand)
-		<< " charge=" << cand.charge() << " pdgid=" << cand.pdgId()
+		<< " charge=" << cand.charge() << " pdgid=" << cand.pdgId
 		<< " deltaP=" << cand.deltaP
 		<< " Eecal=" << cand.ecalEnergy << " Ehcal=" << cand.hcalEnergy;
 }

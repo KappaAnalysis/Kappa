@@ -48,13 +48,10 @@ protected:
 			std::cout << std::endl << std::endl;
 		}
 
-		unsigned int id = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
-		out.particleid = id;
-		out.particleinfo = ((in.status() % 128) << KParticleStatusPosition);
+		out.pdgId = in.pdgId();
+		out.particleinfo = ((in.status() % 128) << KGenParticleStatusPosition);
 		if (in.status() >= 111)  // Pythia 8 maximum
-			out.particleinfo |= (127 << KParticleStatusPosition);
-		if (in.pdgId() < 0)
-			out.particleinfo |= KParticleSignMask;
+			out.particleinfo |= (127 << KGenParticleStatusPosition);
 		out.daughterIndices = daughters;
 
 #if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
@@ -72,13 +69,6 @@ protected:
 		out.particleinfo |= (flags.isHardProcessTauDecayProduct()       << KGenStatusFlags::isHardProcessTauDecayProduct);
 		out.particleinfo |= (flags.isDirectHardProcessTauDecayProduct() << KGenStatusFlags::isDirectHardProcessTauDecayProduct);
 #endif
-
-		if (in.pdgId() != out.pdgId())
-			std::cout << "The pdgId is not skimmed correctly! "
-					  << "in=" << in.pdgId() << ", out=" << out.pdgId()
-					  << std::endl << std::flush;
-		assert(in.pdgId() == out.pdgId());
-
 	}
 
 	virtual bool acceptSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType& in)

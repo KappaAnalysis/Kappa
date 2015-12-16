@@ -21,9 +21,9 @@ public:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
-		out.particleid = (in.pdgId() < 0) ? -in.pdgId() : in.pdgId();
-		if (in.pdgId() < 0)
-			out.particleinfo |= KParticleSignMask;
+		out.pdgId = in.pdgId();
+
+		// KParticles are smaller than KPFCandidates
 		//out.deltaP = in.deltaP(); // all not included in packedPFCandidates
 		//out.hcalEnergy = in.hcalEnergy();
 		//out.ecalEnergy = in.ecalEnergy();
