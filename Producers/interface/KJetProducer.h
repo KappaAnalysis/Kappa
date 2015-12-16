@@ -167,7 +167,7 @@ public:
 			in.muonEnergyFraction() +
 			in.photonEnergyFraction() +
 			in.electronEnergyFraction() +
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION < 3) || (CMSSW_MAJOR_VERSION < 7)
 			in.HFHadronEnergyFraction() +
 #endif
 			in.HFEMEnergyFraction();
