@@ -207,7 +207,7 @@ def preparetable(producers, kappaprod):
 		'GenParticles': [None, None],
 		'GenTaus': [None, None],
 		'PileupDensity': [None, None],
-		'BasicMET': [None, None],
+		'GenMET': [None, None],
 		'kappa': ['kappaTuple', None],
 	}
 	objProducers = []

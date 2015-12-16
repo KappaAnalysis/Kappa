@@ -4,18 +4,18 @@
 //-  * Fred Stober <stober@cern.ch>
 //-  * Joram Berger <joram.berger@cern.ch>
 
-#ifndef KAPPA_BASICMETPRODUCER_H
-#define KAPPA_BASICMETPRODUCER_H
+#ifndef KAPPA_GENMETPRODUCER_H
+#define KAPPA_GENMETPRODUCER_H
 
 #include "KBaseMultiProducer.h"
 #include "KMETProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include <DataFormats/METReco/interface/MET.h>
 
-class KBasicMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KMET>
+class KGenMETProducer : public KBaseMultiProducer<edm::View<reco::MET>, KMET>
 {
 public:
-	KBasicMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
+	KGenMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
 		KBaseMultiProducer<edm::View<reco::MET>, KMET>(cfg, _event_tree, _run_tree, getLabel()) {}
 
 	static const std::string getLabel() { return "GenMET"; }

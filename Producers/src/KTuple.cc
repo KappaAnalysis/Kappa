@@ -42,7 +42,7 @@
 #include "../interface/KHitProducer.h"
 #include "../interface/KPileupDensityProducer.h"
 #include "../interface/KLorentzProducer.h"
-#include "../interface/KBasicMETProducer.h"
+#include "../interface/KGenMETProducer.h"
 #include "../interface/KMuonProducer.h"
 #include "../interface/KElectronProducer.h"
 #include "../interface/KPFCandidateProducer.h"
@@ -215,7 +215,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KHitProducer>(active[i]);
 		addProducer<KPileupDensityProducer>(active[i]);
 		addProducer<KLorentzProducer>(active[i]);
-		addProducer<KBasicMETProducer>(active[i]);
+		addProducer<KGenMETProducer>(active[i]);
 		addProducer<KMuonProducer>(active[i]);
 		addProducer<KElectronProducer>(active[i]);
 		addProducer<KPFCandidateProducer>(active[i]);

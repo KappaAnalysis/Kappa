@@ -268,7 +268,7 @@ def getBaseConfig(globaltag= 'START53_V15A::All', testfile=cms.untracked.vstring
 	## ------------------------------------------------------------------------
 	## MET
 	process.load("Kappa.Skimming.KMET_cff")
-	process.kappaTuple.active += cms.vstring('BasicMET')                         ## produce/save KappaMET
+	process.kappaTuple.active += cms.vstring('GenMET')                         ## produce/save KappaMET
 	process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET
 	process.p *= process.makeKappaMET
 	#"""

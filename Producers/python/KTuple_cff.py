@@ -205,7 +205,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		srcPVs = cms.InputTag("offlinePrimaryVertices"),
 	),
 
-	BasicMET = cms.PSet(
+	GenMET = cms.PSet(
 		manual = cms.VInputTag(),
 
 		whitelist = cms.vstring("reco(Calo|Gen)MET"),
