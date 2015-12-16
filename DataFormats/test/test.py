@@ -504,8 +504,7 @@ class Env(Test):
 class Recipe(Test):
     """Return code of the checkout recipe (if provided, light green otherwise)"""
     optional = True
-    script = "cat {checkout script}\n"\
-             "{checkout script}"
+    script = "{checkout script}"
 
 class Scram(Test):
     """The recipe (checkout script, without Kappa) compiles with scram"""
