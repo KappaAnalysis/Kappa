@@ -71,7 +71,7 @@ protected:
 
 		// Just for the sake of completeness... note that we filter descendant
 		// taus anyway in acceptSingle
-		if(in.mother() && abs(in.mother()->pdgId()) == 15)
+		if(in.mother() && std::abs(in.mother()->pdgId()) == 15)
 			out.decayMode |= KGenTau::DescendantMask;
 
 		out.vertex = in.vertex();
@@ -84,12 +84,12 @@ protected:
 
 		// Reject decendant taus as all relevant information is contained in the
 		// top-level tau anyway
-		if(in.mother() && abs(in.mother()->pdgId()) == 15)
+		if(in.mother() && std::abs(in.mother()->pdgId()) == 15)
 			return false;
 
 		// Check one level above the mother, to be sure that the taus don't come
 		// from an intermediate gamma emission from another tau
-		if(in.mother()->mother() && abs(in.mother()->mother()->pdgId()) == 15)
+		if(in.mother()->mother() && std::abs(in.mother()->mother()->pdgId()) == 15)
 			return false;
 
 		return true;
@@ -131,8 +131,8 @@ private:
 				copyP4(in.p4(), p4);
 				info.p4_vis += p4;
 
-				if(abs(in.pdgId()) == 11 && abs(in.mother()->pdgId()) == 15) info.mode = DecayInfo::Electronic;
-				if(abs(in.pdgId()) == 13 && abs(in.mother()->pdgId()) == 15) info.mode = DecayInfo::Muonic;
+				if(std::abs(in.pdgId()) == 11 && std::abs(in.mother()->pdgId()) == 15) info.mode = DecayInfo::Electronic;
+				if(std::abs(in.pdgId()) == 13 && std::abs(in.mother()->pdgId()) == 15) info.mode = DecayInfo::Muonic;
 
 				if(in.charge() != 0) ++info.n_charged;
 			}
@@ -145,15 +145,15 @@ private:
 			walkDecayTree(static_cast<const reco::GenParticle&>(*in.daughter(0)), info, level);
 		}
 		else if(in.numberOfDaughters() == 2 && (
-				(abs(in.daughter(0)->pdgId()) == 22 && abs(in.daughter(1)->pdgId()) == 15) ||
-				(abs(in.daughter(0)->pdgId()) == 15 && abs(in.daughter(1)->pdgId()) == 22))
+				(std::abs(in.daughter(0)->pdgId()) == 22 && std::abs(in.daughter(1)->pdgId()) == 15) ||
+				(std::abs(in.daughter(0)->pdgId()) == 15 && std::abs(in.daughter(1)->pdgId()) == 22))
 			   )
 		{
 			//printf("\tinterm. gamma emission, keeping level... ");
 			// Don't increase level since this does not seem to be a "real"
 			// decay but just an intermediate emission of a photon
 			// Don't follow photon decay path
-			if (abs(in.daughter(0)->pdgId()) == 15)
+			if (std::abs(in.daughter(0)->pdgId()) == 15)
 				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(0)), info, level);
 			else
 				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(1)), info, level);
@@ -168,7 +168,7 @@ private:
 
 	static bool isNeutrino(int pdg_id)
 	{
-		return abs(pdg_id) == 12 || abs(pdg_id) == 14 || abs(pdg_id) == 16;
+		return std::abs(pdg_id) == 12 || std::abs(pdg_id) == 14 || std::abs(pdg_id) == 16;
 	}
 };
 
