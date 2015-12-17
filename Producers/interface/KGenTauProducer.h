@@ -9,12 +9,13 @@
 
 #include "KGenParticleProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KGenTauProducer : public KBasicGenParticleProducer<KGenTaus>
 {
 public:
-	KGenTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBasicGenParticleProducer<KGenTaus>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KGenTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBasicGenParticleProducer<KGenTaus>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "GenTaus"; }
 

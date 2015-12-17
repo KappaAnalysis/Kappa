@@ -9,12 +9,13 @@
 
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/ParticleFlowCandidate/interface/PFCandidate.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KPFCandidateProducer : public KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidates>
 {
 public:
-	KPFCandidateProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidates>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KPFCandidateProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidates>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "PFCandidates"; }
 

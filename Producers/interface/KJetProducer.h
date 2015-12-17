@@ -12,12 +12,13 @@
 #include "../../DataFormats/interface/KJetMET.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/BTauReco/interface/JetTag.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KJets>
 {
 public:
-	KJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KJets>(cfg, _event_tree, _run_tree, getLabel()),
+	KJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<reco::PFJetCollection, KJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		 tagger(cfg.getParameter<std::vector<std::string> >("taggers"))
 {
 		names = new KJetMetadata;

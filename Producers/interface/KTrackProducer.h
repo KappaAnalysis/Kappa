@@ -12,12 +12,13 @@
 #include <DataFormats/TrackReco/interface/Track.h>
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KTracks>
 {
 public:
-	KTrackProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Track>, KTracks>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KTrackProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::Track>, KTracks>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "Tracks"; }
 

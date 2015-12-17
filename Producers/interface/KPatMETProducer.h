@@ -13,12 +13,13 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/PFMET.h>
 #include <DataFormats/PatCandidates/interface/MET.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KPatMETProducer : public KBaseMultiProducer<edm::View<pat::MET>, KMET>
 {
 public:
-	KPatMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<pat::MET>, KMET>(cfg, _event_tree, _run_tree, getLabel()) {
+	KPatMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<edm::View<pat::MET>, KMET>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {
 		genMet = new KMET;
 		_event_tree->Bronch("genmetTrue", "KMET", &genMet);
 	}

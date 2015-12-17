@@ -18,14 +18,15 @@
 
 #include <DataFormats/TauReco/interface/PFTau.h>
 #include <DataFormats/TauReco/interface/PFTauDiscriminator.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 #include "KBasicTauProducer.h"
 
 class KTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>
 {
 public:
-	KTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {}
+	KTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "Taus"; }
 

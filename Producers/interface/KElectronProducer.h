@@ -13,6 +13,7 @@
 #include <DataFormats/PatCandidates/interface/Electron.h>
 #include <RecoEgamma/EgammaTools/interface/ConversionTools.h>
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 #include "EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h"
 #if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
 	#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
@@ -22,9 +23,9 @@
 class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>
 {
 public:
-	KElectronProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
+	KElectronProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
 		KBaseMultiLVProducer<edm::View<pat::Electron>,
-		KElectrons>(cfg, _event_tree, _lumi_tree, getLabel()),
+		KElectrons>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		namesOfIds(cfg.getParameter<std::vector<std::string> >("ids")),
 		srcIds_(cfg.getParameter<std::string>("srcIds")),
 		doPfIsolation_(true),
