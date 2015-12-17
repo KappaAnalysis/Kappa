@@ -88,8 +88,8 @@ def checkoutPackages(args):
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_747_Spring15_MVA_tra
 		"git cms-merge-topic ikrav:egm_id_747_v2",
 
-		#Check out Kappa (dictchanges branch, to be able to run the MVA MET)
-		"git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges",
+		#Check out Kappa
+		"git clone https://github.com/KappaAnalysis/Kappa.git",
 		#"scram b -j 4"
 	]
 	execCommands(commands)

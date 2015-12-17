@@ -81,7 +81,7 @@ def checkoutPackages(args):
 		'cd ' + cmsswsrc,
 
 		#Check out Kappa
-		"git clone https://github.com/KappaAnalysis/Kappa.git -b development",
+		"git clone https://github.com/KappaAnalysis/Kappa.git",
 		#"scram b -j 4"
 	]
 	execCommands(commands)

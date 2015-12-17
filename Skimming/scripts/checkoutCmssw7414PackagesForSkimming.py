@@ -76,6 +76,9 @@ def checkoutPackages(args):
 
 		"git cms-addpkg PhysicsTools/PatUtils",
 		"sed '/pat::MET outMET/a \ \ \  outMET\.setSignificanceMatrix\(srcMET\.getSignificanceMatrix\(\)\)\;' PhysicsTools/PatUtils/plugins/CorrectedPATMETProducer.cc -i",
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/PhysicsTools/PatUtils/data"),
+		"wget https://github.com/cms-met/cmssw/blob/METCorUnc74X/PhysicsTools/PatUtils/data/Summer15_50nsV4_DATA_UncertaintySources_AK4PFchs.txt",
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 
 		#PF MET with NoHF MET
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription
@@ -86,8 +89,8 @@ def checkoutPackages(args):
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_7412_Spring15_MVA_tr
 		"git cms-merge-topic ikrav:egm_id_7.4.12_v1",
 
-		#Check out Kappa (dictchanges branch, to be able to run the MVA MET)
-		"git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges",
+		#Check out Kappa
+		"git clone https://github.com/KappaAnalysis/Kappa.git",
 		#"scram b -j 4"
 	]
 	execCommands(commands)
