@@ -15,12 +15,13 @@
 #include "RecoVertex/VertexPrimitives/interface/TransientVertex.h"
 #include "RecoVertex/AdaptiveVertexFit/interface/AdaptiveVertexFitter.h"
 #include "DataFormats/Math/interface/deltaR.h"
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KTaupairVerticesMapProducer : public KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>
 {
 public:
-	KTaupairVerticesMapProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KTaupairVerticesMapProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "TaupairVerticesMap"; }
 

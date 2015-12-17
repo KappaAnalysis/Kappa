@@ -12,12 +12,13 @@
 
 #include "KBasicTauProducer.h"
 #include "KTauProducer.h"
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KExtendedTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KExtendedTaus>
 {
 public:
-	KExtendedTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KExtendedTaus>(cfg, _event_tree, _lumi_tree, getLabel()) {}
+	KExtendedTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KExtendedTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "ExtendedTaus"; }
 

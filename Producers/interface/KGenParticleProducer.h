@@ -14,14 +14,15 @@
 
 #include "KBaseMultiProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 #include <bitset>
 
 template<typename TProduct>
 class KBasicGenParticleProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>
 {
 public:
-	KBasicGenParticleProducer(const edm::ParameterSet& cfg, TTree* _event_tree, TTree* _run_tree, const std::string& producerName) :
-		KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _run_tree, producerName) {}
+	KBasicGenParticleProducer(const edm::ParameterSet& cfg, TTree* _event_tree, TTree* _run_tree, const std::string& producerName, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 
 protected:
@@ -114,8 +115,8 @@ private:
 class KGenParticleProducer: public KBasicGenParticleProducer<KGenParticles>
 {
 public:
-	KGenParticleProducer(const edm::ParameterSet& cfg, TTree* _event_tree, TTree* _run_tree) :
-		KBasicGenParticleProducer<KGenParticles>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KGenParticleProducer(const edm::ParameterSet& cfg, TTree* _event_tree, TTree* _run_tree, edm::ConsumesCollector && consumescollector) :
+		KBasicGenParticleProducer<KGenParticles>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel()
 	{

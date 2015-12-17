@@ -13,6 +13,7 @@
 #include <SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h>
 #include <SimDataFormats/GeneratorProducts/interface/HepMCProduct.h>
 #include <SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 #include "KInfoProducer.h"
 
@@ -30,8 +31,8 @@ template<typename Tmeta>
 class KGenInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KGenInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+	KGenInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		ignoreExtXSec(cfg.getParameter<bool>("ignoreExtXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
@@ -129,8 +130,8 @@ template<typename Tmeta>
 class KHepMCInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KHepMCInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+	KHepMCInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		forceXSec(cfg.getParameter<double>("forceXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")) {}

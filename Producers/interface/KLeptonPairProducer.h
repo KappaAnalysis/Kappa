@@ -10,6 +10,7 @@
 #include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 #include <TrackingTools/PatternTools/interface/TwoTrackMinimumDistance.h>
 #include <RecoVertex/KinematicFitPrimitives/interface/KinematicParticleFactoryFromTransientTrack.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 #include "KBaseMultiProducer.h"
 #include "Kappa/DataFormats/interface/Hash.h"
@@ -19,8 +20,8 @@ class KLeptonPairProducer : public KBaseMultiProducer<edm::View<reco::Track>, KL
 {
 
 public:
-	KLeptonPairProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::Track>, KLeptonPairs>(cfg, _event_tree, _run_tree, getLabel()),
+	KLeptonPairProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<edm::View<reco::Track>, KLeptonPairs>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		electronsTag(cfg.getParameter<edm::InputTag>("electrons")),
 		muonsTag(cfg.getParameter<edm::InputTag>("muons"))
 	{

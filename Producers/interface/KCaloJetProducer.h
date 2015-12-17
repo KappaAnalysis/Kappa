@@ -9,14 +9,15 @@
 #define KAPPA_CALOJETPRODUCER_H
 
 #include "KBaseMultiLVProducer.h"
+#include <FWCore/Framework/interface/EDProducer.h>
 #include <DataFormats/JetReco/interface/CaloJet.h>
 #include <DataFormats/JetReco/interface/JetID.h>
 
 class KCaloJetProducer : public KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJets>
 {
 public:
-	KCaloJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJets>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KCaloJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "CaloJets"; }
 

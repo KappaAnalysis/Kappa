@@ -11,12 +11,13 @@
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/PFMET.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KMETProducer : public KBaseMultiProducer<edm::View<reco::PFMET>, KMET>
 {
 public:
-	KMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::PFMET>, KMET>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<edm::View<reco::PFMET>, KMET>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "MET"; }
 

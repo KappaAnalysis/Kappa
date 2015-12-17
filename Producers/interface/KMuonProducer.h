@@ -30,12 +30,13 @@
 #include <TrackingTools/Records/interface/TrackingComponentsRecord.h>
 #include <TrackingTools/Records/interface/TransientTrackRecord.h>
 #include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>
 {
 public:
-	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>(cfg, _event_tree, _lumi_tree, getLabel()),
+	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")),

@@ -7,12 +7,13 @@
 
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/L1Trigger/interface/L1MuonParticle.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KL1MuonProducer : public KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1Muons>
 {
 public:
-	KL1MuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1MuonProducer_Product>(cfg, _event_tree, _run_tree) {}
+	KL1MuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1MuonProducer_Product>(cfg, _event_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

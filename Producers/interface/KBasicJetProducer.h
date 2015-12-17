@@ -10,13 +10,14 @@
 #define KAPPA_BASICJETPRODUCER_H
 
 #include "KBaseMultiLVProducer.h"
+#include <FWCore/Framework/interface/EDProducer.h>
 #include <DataFormats/JetReco/interface/PFJet.h>
 
 class KBasicJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, std::vector<KBasicJet> >
 {
 public:
-	KBasicJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KBasicJets>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KBasicJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<reco::PFJetCollection, KBasicJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "BasicJets"; }
 

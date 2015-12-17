@@ -11,12 +11,13 @@
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/VertexReco/interface/Vertex.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KVertexProducer : public KBaseMultiVectorProducer<edm::View<reco::Vertex>, std::vector<KVertex> >
 {
 public:
-	KVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiVectorProducer<edm::View<reco::Vertex>, std::vector<KVertex> >(cfg, _event_tree, _run_tree, getLabel()) {}
+	KVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiVectorProducer<edm::View<reco::Vertex>, std::vector<KVertex> >(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "Vertex"; }
 

@@ -8,13 +8,14 @@
 
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
+#include <FWCore/Framework/interface/EDProducer.h>
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 
 class KBeamSpotProducer : public KBaseMultiProducer<reco::BeamSpot, KBeamSpot>
 {
 public:
-	KBeamSpotProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<reco::BeamSpot, KBeamSpot>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KBeamSpotProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<reco::BeamSpot, KBeamSpot>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 	virtual ~KBeamSpotProducer() {};
 
 	static const std::string getLabel() { return "BeamSpot"; }

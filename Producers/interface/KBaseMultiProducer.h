@@ -4,6 +4,8 @@
 #ifndef KAPPA_MULTIPRODUCER_H
 #define KAPPA_MULTIPRODUCER_H
 
+#include <FWCore/Framework/interface/EDProducer.h>
+
 #include "KBaseMatchingProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 
@@ -14,9 +16,19 @@ template<typename Tin, typename Tout>
 class KBaseMultiProducer : public KBaseMatchingProducer<Tout>
 {
 public:
-	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName, bool _justOutputName = false) :
-		KBaseMatchingProducer<Tout>(cfg, _event_tree, _run_tree, producerName),
-		event_tree(_event_tree), justOutputName(_justOutputName) {}
+	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector, bool _justOutputName = false) :
+		KBaseMatchingProducer<Tout>(cfg, _event_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)),
+		event_tree(_event_tree), justOutputName(_justOutputName)
+		{
+			this->addPSetRequests();
+			for (typename std::map<Tout*, std::pair<const edm::ParameterSet, const edm::InputTag> >::iterator
+				it = targetSetupMap.begin(); it != targetSetupMap.end(); ++it)
+			{
+				const edm::InputTag &src = it->second.second;
+				consumescollector.consumes<Tin>(src);
+			}
+			
+		}
 	virtual ~KBaseMultiProducer() {}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
