@@ -17,20 +17,6 @@ cmssw_version_number = tools.get_cmssw_version_number()
 ## MVA:
 ## https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
 
-if (cmssw_version_number.startswith("7_4")):
-	# In the 74X release, the MVA IDs are calculated in the VID framework,
-	# together with the cut-based ones (see below)
-	electronIdMVA = cms.Sequence()
-else:
-	from EgammaAnalysis.ElectronTools.electronIdMVAProducer_CSA14_cfi import *
-	electronIdMVA = cms.Sequence(
-	    mvaTrigV050nsCSA14+
-	    mvaTrigV025nsCSA14+
-	    mvaNonTrigV050nsCSA14+
-	    mvaNonTrigV025nsCSA14+
-	    mvaNonTrigV025nsPHYS14
-	    )
-
 ## ------------------------------------------------------------------------
 ## PAT electorn configuration
 ##  - electron Id sources
@@ -39,30 +25,15 @@ else:
 from TrackingTools.TransientTrack.TransientTrackBuilder_cfi import *
 from PhysicsTools.PatAlgos.producersLayer1.electronProducer_cfi import *
 
-if (cmssw_version_number.startswith("7_4")):
-	patElectrons.electronIDSources = cms.PSet(
-		## cut based Id
-		cutBasedElectronID_Spring15_25ns_V1_standalone_loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose"),
-		cutBasedElectronID_Spring15_25ns_V1_standalone_medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium"),
-		cutBasedElectronID_Spring15_25ns_V1_standalone_tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight"),
-		cutBasedElectronID_Spring15_25ns_V1_standalone_veto  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto"),
-		## MVA based Id
-		ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
-	)
-else:
-	patElectrons.electronIDSources = cms.PSet(
-		## cut based Id
-		cutBasedEleIdPHYS14Loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-loose"),
-		cutBasedEleIdPHYS14Medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-medium"),
-		cutBasedEleIdPHYS14Tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-tight"),
-		cutBasedEleIdPHYS14Veto   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-standalone-veto"),
-		## MVA based Id
-		mvaTrigV050nsCSA14        = cms.InputTag("mvaTrigV050nsCSA14"),
-		mvaTrigV025nsCSA14        = cms.InputTag("mvaTrigV025nsCSA14"),
-		mvaNonTrigV050nsCSA14     = cms.InputTag("mvaNonTrigV050nsCSA14"),
-		mvaNonTrigV025nsCSA14     = cms.InputTag("mvaNonTrigV025nsCSA14"),
-		mvaNonTrigV025nsPHYS14    = cms.InputTag("mvaNonTrigV025nsPHYS14"),
-	)
+patElectrons.electronIDSources = cms.PSet(
+	## cut based Id
+	cutBasedElectronID_Spring15_25ns_V1_standalone_loose  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose"),
+	cutBasedElectronID_Spring15_25ns_V1_standalone_medium = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium"),
+	cutBasedElectronID_Spring15_25ns_V1_standalone_tight  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight"),
+	cutBasedElectronID_Spring15_25ns_V1_standalone_veto  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto"),
+	## MVA based Id
+	ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"),
+)
 
 patElectrons.addGenMatch                   = False
 patElectrons.embedGenMatch                 = False
@@ -85,24 +56,14 @@ patElectrons.embedHighLevelSelection.pvSrc = "goodOfflinePrimaryVertices"
 ## Set up electron ID (VID framework)
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import setupAllVIDIdsInModule, setupVIDElectronSelection
 
-if (cmssw_version_number.startswith("7_4")):
-	# https://github.com/ikrav/EgammaWork/blob/v1/ElectronNtupler/test/runElectrons_VID_MVA_PHYS14_demo.py
-	from PhysicsTools.SelectorUtils.tools.vid_id_tools import switchOnVIDElectronIdProducer, DataFormat
-	from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cff import *
-
-else:
-	# https://github.com/ikrav/ElectronWork/blob/master/ElectronNtupler/test/runIdDemoPrePHYS14AOD.py#L29-L56
-	from PhysicsTools.SelectorUtils.centralIDRegistry import central_id_registry
-	from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cfi import *
-	egmGsfElectronIDSequence = cms.Sequence(egmGsfElectronIDs)
+# https://github.com/ikrav/EgammaWork/blob/v1/ElectronNtupler/test/runElectrons_VID_MVA_PHYS14_demo.py
+from PhysicsTools.SelectorUtils.tools.vid_id_tools import switchOnVIDElectronIdProducer, DataFormat
+from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cff import *
 
 def setupElectrons(process):
-	if (cmssw_version_number.startswith("7_4")):
-		switchOnVIDElectronIdProducer(process, DataFormat.AOD)
-		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
-				 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
-	else:
-		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_PHYS14_PU20bx25_V1_cff']
+	switchOnVIDElectronIdProducer(process, DataFormat.AOD)
+	my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
+			 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
 	for idmod in my_id_modules:
 		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 
@@ -141,7 +102,7 @@ pfElectronIso = cms.Sequence(
 	electronPFIsolationValuesSequence
 )
 
-	# rho for electron iso
+# rho for electron iso
 from RecoJets.JetProducers.kt4PFJets_cfi import kt4PFJets
 kt6PFJetsForIsolation = kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
 kt6PFJetsForIsolation.Rho_EtaMax = cms.double(2.5)
@@ -153,7 +114,6 @@ kt6PFJetsForIsolation.Rho_EtaMax = cms.double(2.5)
 ## and with MVA electron ID
 makeKappaElectrons = cms.Sequence(
     egmGsfElectronIDSequence *
-    electronIdMVA *
     patElectrons *
     pfElectronIso *
     kt6PFJetsForIsolation

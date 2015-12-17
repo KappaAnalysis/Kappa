@@ -15,9 +15,9 @@
 # if possible, run2 configs import the run1 configs and add some extra information
 ## ------------------------------------------------------------------------
 
-# Kappa test: CMSSW 7.2.2, 7.4.14
-# Kappa test: scram arch slc6_amd64_gcc481, slc6_amd64_gcc491
-# Kappa test: checkout script scripts/checkoutCmssw72xPackagesForSkimming.py, scripts/checkoutCmssw7414PackagesForSkimming.py
+# Kappa test: CMSSW 7.4.14
+# Kappa test: scram arch slc6_amd64_gcc491
+# Kappa test: checkout script scripts/checkoutCmssw7414PackagesForSkimming.py
 # Kappa test: output kappaTuple.root
 
 import sys
@@ -46,7 +46,7 @@ split_cmssw_version = cmssw_version_number.split("_")
 def getBaseConfig( globaltag= 'START70_V7::All',
                    testfile=cms.untracked.vstring(""),
                    maxevents=100, ## -1 = all in file
-                   nickname = 'VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM',
+                   nickname = 'SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8',
                    kappaTag = 'Kappa_2_0_0',
 				   outputfilename = ''):
 
@@ -87,11 +87,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.load("Kappa.Skimming.KVertices_cff")
 		process.goodOfflinePrimaryVertices.src = cms.InputTag('offlineSlimmedPrimaryVertices')
 		process.p *= ( process.makeVertexes )
-		if (cmssw_version_number.startswith("7_4")):
-			process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
-			process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
-		else:
-			process.kappaTuple.VertexSummary.whitelist = cms.vstring('goodOfflinePrimaryVertices')  # save VertexSummary,
+		process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
+		process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
 
 		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
@@ -181,39 +178,22 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 		process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
-		if (cmssw_version_number.startswith("7_4")):
-			process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
+		process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
 						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
 						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
 						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
 						"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
-		else:
-			process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-veto",
-						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-loose",
-						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-medium",
-						"egmGsfElectronIDs:cutBasedElectronID-PHYS14-PU20bx25-V1-miniAOD-standalone-tight")
 
 	if not miniaod:
 		process.load("Kappa.Skimming.KElectrons_run2_cff")
 		process.kappaTuple.Electrons.minPt = cms.double(8.0)
 		from Kappa.Skimming.KElectrons_run2_cff import setupElectrons
 
-		if (cmssw_version_number.startswith("7_4")):
-			process.kappaTuple.Electrons.ids = cms.vstring("cutBasedElectronID_Spring15_25ns_V1_standalone_loose",
-								 	 "cutBasedElectronID_Spring15_25ns_V1_standalone_medium",
-								 	 "cutBasedElectronID_Spring15_25ns_V1_standalone_tight",
-								 	 "cutBasedElectronID_Spring15_25ns_V1_standalone_veto",
-								 "ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
-		else:
-			process.kappaTuple.Electrons.ids = cms.vstring("cutBasedEleIdPHYS14Loose",
-							       	   "cutBasedEleIdPHYS14Medium",
-							       	   "cutBasedEleIdPHYS14Tight",
-							       	   "cutBasedEleIdPHYS14Veto",
-							       	   "mvaTrigV050nsCSA14",
-							       	   "mvaTrigV025nsCSA14",
-							       	   "mvaNonTrigV050nsCSA14",
-							       	   "mvaNonTrigV025nsCSA14",
-						       		   "mvaNonTrigV025nsPHYS14")
+		process.kappaTuple.Electrons.ids = cms.vstring("cutBasedElectronID_Spring15_25ns_V1_standalone_loose",
+						"cutBasedElectronID_Spring15_25ns_V1_standalone_medium",
+						"cutBasedElectronID_Spring15_25ns_V1_standalone_tight",
+						"cutBasedElectronID_Spring15_25ns_V1_standalone_veto",
+						"ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
 
 	setupElectrons(process)
 	process.p *= ( process.makeKappaElectrons )
@@ -352,13 +332,9 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 	if options.testsuite:
 		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
-		globalTag = "PHYS14_25_V1::All"
-		testFile = "VBF_HToTauTau_Miniaod.root"
-		nickName = "VBFHToTauTauM125_Phys14DR_PU20bx25_13TeV_MINIAODSIM"
-		if cmssw_version_number.startswith("7_4"):
-			globalTag = 'MCRUN2_74_V9'
-			testFile = "SUSYGluGluHToTauTau_M-120_13TeV_MCRUN2.root"
-			nickName = "SUSYGluGluToHToTauTauM120_RunIISpring15DR74_Asympt25ns_13TeV_AODSIM_pythia8"
+		globalTag = 'MCRUN2_74_V9'
+		testFile = "SUSYGluGluHToTauTau_M-120_13TeV_MCRUN2.root"
+		nickName = "SUSYGluGluToHToTauTauM120_RunIISpring15DR74_Asympt25ns_13TeV_AODSIM_pythia8"
 		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents)
 
 	else:
