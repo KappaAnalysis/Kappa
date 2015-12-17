@@ -8,6 +8,7 @@
 #define KAPPA_DATAINFOPRODUCER_H
 
 #include <DataFormats/Luminosity/interface/LumiSummary.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 #include "KInfoProducer.h"
 
 
@@ -24,8 +25,8 @@ template<typename Tmeta>
 class KDataInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KDataInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+	KDataInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		currentRun(0),
 		lumiSource(cfg.getParameter<edm::InputTag>("lumiSource")),
 		isEmbedded(cfg.getParameter<bool>("isEmbedded")) {}

@@ -8,6 +8,7 @@
 #define KAPPA_MULTILVPRODUCER_H
 
 #include "KBaseMultiProducer.h"
+#include <FWCore/Framework/interface/EDProducer.h>
 
 template<typename T>
 struct KLVSorter
@@ -28,8 +29,8 @@ protected:
 	typedef typename KBaseMultiProducer<Tin, Tout>::InputType::value_type SingleInputType;
 	typedef typename KBaseMultiProducer<Tin, Tout>::OutputType::value_type SingleOutputType;
 public:
-	KBaseMultiVectorProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName) :
-		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree, producerName),
+	KBaseMultiVectorProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<Tin, Tout>(cfg, _event_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)),
 		maxN(cfg.getParameter<int>("maxN")),
 		firstObject(true) {}
 
@@ -85,8 +86,8 @@ template<typename Tin, typename Tout>
 class KBaseMultiLVProducer : public KBaseMultiVectorProducer<Tin, Tout>
 {
 public:
-	KBaseMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName) :
-		KBaseMultiVectorProducer<Tin, Tout>(cfg, _event_tree, _run_tree, producerName),
+	KBaseMultiLVProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiVectorProducer<Tin, Tout>(cfg, _event_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)),
 		minPt(cfg.getParameter<double>("minPt")),
 		maxEta(cfg.getParameter<double>("maxEta")) {}
 

@@ -110,7 +110,7 @@ protected:
 			if (sName == "")
 				sName = sActive;
 			std::cout << "Init producer " << sActive << " using config from " << sName << std::endl;
-			producers.push_back(new Tprod(psConfig.getParameter<edm::ParameterSet>(sName), event_tree, lumi_tree));
+			producers.push_back(new Tprod(psConfig.getParameter<edm::ParameterSet>(sName), event_tree, lumi_tree, consumesCollector()));
 			producers.back()->runRuntime = 0;
 			producers.back()->lumiRuntime = 0;
 			producers.back()->firstRuntime = 0;

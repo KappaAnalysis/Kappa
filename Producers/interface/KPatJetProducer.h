@@ -12,12 +12,13 @@
 #include "KBaseMultiLVProducer.h"
 #include "KGenJetProducer.h"
 #include <DataFormats/PatCandidates/interface/Jet.h>
+#include <FWCore/Framework/interface/EDProducer.h>
 
 class KPatJetProducer : public KBaseMultiLVProducer<edm::View<pat::Jet>, KJets >
 {
 public:
-	KPatJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>(cfg, _event_tree, _run_tree, getLabel())
+	KPatJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
 	{
 		genJet = new KGenJet;
 		_event_tree->Bronch("genJet", "KGenJet", &genJet);

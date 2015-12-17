@@ -11,6 +11,7 @@
 
 #include "KBaseMultiLVProducer.h"
 #include "../../DataFormats/interface/KTrack.h"
+#include <FWCore/Framework/interface/EDProducer.h>
 
 template<typename TTau, typename TTauDiscriminator, typename TProduct>
 // Note: We need to use std::vector here, not edm::View, because otherwise
@@ -21,8 +22,8 @@ template<typename TTau, typename TTauDiscriminator, typename TProduct>
 class KBasicTauProducer : public KBaseMultiLVProducer<std::vector<TTau>, TProduct>
 {
 public:
-	KBasicTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName) :
-		KBaseMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _lumi_tree, producerName)
+	KBasicTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _lumi_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector))
 	{
 		const edm::ParameterSet &psBase = this->psBase;
 		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
