@@ -130,7 +130,7 @@ std::ostream &operator<<(std::ostream &os, const KBasicJet &jet)
 std::ostream &operator<<(std::ostream &os, const KJet &jet)
 {
 	os << static_cast<const KBasicJet>(jet);
-	os << "\tflavour=" << jet.hadronFlavour;
+	os << "\tflavour=" << jet.flavour;
 	os << "\tIDs=" << std::bitset<8>(jet.binaryIds);
 	if (jet.tags.size() > 0)
 		os << std::endl << "\ttags: ";
