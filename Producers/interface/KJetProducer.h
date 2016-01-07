@@ -160,8 +160,7 @@ public:
 		out.area = in.jetArea();
 		out.nConstituents = in.nConstituents();
 		out.nCharged = in.chargedMultiplicity();
-		out.partonFlavour = 0;
-		out.hadronFlavour = 0;
+		out.flavour = 0;
 
 		double sumFractions =
 			in.neutralHadronEnergyFraction() +
