@@ -96,7 +96,17 @@ class KMuonTriggerCandidateProducer : public KBaseMultiLVProducer<edm::View<reco
 public:
 	KMuonTriggerCandidateProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
 		KBaseMultiLVProducer<edm::View<reco::RecoChargedCandidate>, KMuonTriggerCandidateProducer_Product>(cfg, _event_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector))
-		{}
+		{
+			const edm::ParameterSet &psBase = this->psBase;
+			std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+			for (size_t i = 0; i < names.size(); ++i)
+			{
+				const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+				if(pset.existsAs<edm::InputTag>("srcIsolation")) consumescollector.consumes<edm::ValueMap<reco::IsoDeposit>>(pset.getParameter<edm::InputTag>("srcIsolation"));
+				if(pset.existsAs<edm::InputTag>("srcIsolation")) consumescollector.consumes<edm::ValueMap<bool>>(pset.getParameter<edm::InputTag>("srcIsolation"));
+			}
+		}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)

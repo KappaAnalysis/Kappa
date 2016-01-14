@@ -36,7 +36,12 @@ public:
 		ignoreExtXSec(cfg.getParameter<bool>("ignoreExtXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
-		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource")) {}
+		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource"))
+		{
+			consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
+			consumescollector.consumes<GenEventInfoProduct>(tagSource);
+			consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
+		}
 
 	static const std::string getLabel() { return "GenInfo"; }
 
@@ -134,7 +139,10 @@ public:
 		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		forceXSec(cfg.getParameter<double>("forceXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
-		tagSource(cfg.getParameter<edm::InputTag>("genSource")) {}
+		tagSource(cfg.getParameter<edm::InputTag>("genSource"))
+		{
+		    consumescollector.consumes<edm::HepMCProduct>(tagSource);
+		}
 
 	static const std::string getLabel() { return "HepMCInfo"; }
 

@@ -55,6 +55,20 @@ public:
 		muonMetadata = new KMuonMetadata();
 		_lumi_tree->Bronch("muonMetadata", "KMuonMetadata", &muonMetadata);
 
+        consumescollector.consumes<trigger::TriggerEvent>(tagHLTrigger);
+        const edm::ParameterSet &psBase = this->psBase;
+        std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+        for (size_t i = 0; i < names.size(); ++i)
+        {
+            const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+            if(pset.existsAs<edm::InputTag>("srcMuonIsolationPF")) consumescollector.consumes<edm::ValueMap<reco::IsoDeposit>>(pset.getParameter<edm::InputTag>("srcMuonIsolationPF"));
+            if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<edm::View<reco::Vertex>>(pset.getParameter<edm::InputTag>("vertexcollection"));
+            if(pset.existsAs<std::vector<edm::InputTag>>("isoValInputTags"))
+            {
+                for(size_t j = 0; j < pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").size(); ++j) consumescollector.consumes<edm::ValueMap<double>>(pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").at(j));
+            }
+        }
 	}
 
 	static const std::string getLabel() { return "Muons"; }

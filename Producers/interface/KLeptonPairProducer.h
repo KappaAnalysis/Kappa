@@ -25,6 +25,8 @@ public:
 		electronsTag(cfg.getParameter<edm::InputTag>("electrons")),
 		muonsTag(cfg.getParameter<edm::InputTag>("muons"))
 	{
+		consumescollector.consumes<edm::View<pat::Electron>>(electronsTag);
+		consumescollector.consumes<edm::View<reco::Muon>>(muonsTag);
 	}
 
 	static const std::string getLabel() { return "LeptonPair"; }

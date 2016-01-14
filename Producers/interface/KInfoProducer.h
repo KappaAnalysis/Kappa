@@ -99,6 +99,10 @@ public:
 		{
 			svHLTFailToleranceList.push_back(list[i]);
 		}
+		consumescollector.consumes<L1GlobalTriggerReadoutRecord>(tagL1Results);
+		consumescollector.consumes<edm::TriggerResults>(tagHLTResults);
+		consumescollector.consumes<HcalNoiseSummary>(tagNoiseHCAL);
+		consumescollector.consumes<edm::ErrorSummaryEntry>(tagErrorsAndWarnings);
 	}
 	virtual ~KInfoProducer() {};
 

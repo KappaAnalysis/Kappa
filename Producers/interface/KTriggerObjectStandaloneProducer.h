@@ -39,6 +39,9 @@ public:
 		toMetadata = new KTriggerObjectMetadata;
 		_run_tree->Bronch("triggerObjectMetadata", "KTriggerObjectMetadata", &toMetadata);
 
+		consumescollector.consumes<edm::TriggerResults>(triggerBits_);
+		consumescollector.consumes<pat::TriggerObjectStandAloneCollection>(triggerObjects_);
+		consumescollector.consumes<pat::PackedTriggerPrescales>(triggerPrescales_);
 	}
 
 	static const std::string getLabel() { return "TriggerObjectStandalone"; }
