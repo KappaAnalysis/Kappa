@@ -39,7 +39,13 @@ public:
 		binningMode(cfg.getParameter<std::string>("binningMode")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
 		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource")),
-		lheSource(cfg.getParameter<edm::InputTag>("lheSource")) {}
+		lheSource(cfg.getParameter<edm::InputTag>("lheSource"))
+		{
+			consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
+			consumescollector.consumes<GenEventInfoProduct>(tagSource);
+			consumescollector.consumes<LHEEventProduct>(lheSource);
+			consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
+		}
 
 	static const std::string getLabel() { return "GenInfo"; }
 
@@ -163,7 +169,10 @@ public:
 		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		forceXSec(cfg.getParameter<double>("forceXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
-		tagSource(cfg.getParameter<edm::InputTag>("genSource")) {}
+		tagSource(cfg.getParameter<edm::InputTag>("genSource"))
+		{
+		    consumescollector.consumes<edm::HepMCProduct>(tagSource);
+		}
 
 	static const std::string getLabel() { return "HepMCInfo"; }
 

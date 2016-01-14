@@ -29,7 +29,11 @@ public:
 		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		currentRun(0),
 		lumiSource(cfg.getParameter<edm::InputTag>("lumiSource")),
-		isEmbedded(cfg.getParameter<bool>("isEmbedded")) {}
+		isEmbedded(cfg.getParameter<bool>("isEmbedded"))
+		{
+		    consumescollector.consumes<LumiSummary>(lumiSource);
+		    consumescollector.consumes<GenFilterInfo>(edm::InputTag("generator", "minVisPtFilter", "EmbeddedRECO"));
+		}
 
 	static const std::string getLabel() { return "DataInfo"; }
 

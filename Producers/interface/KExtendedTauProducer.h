@@ -18,7 +18,18 @@ class KExtendedTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDi
 {
 public:
 	KExtendedTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KExtendedTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KExtendedTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
+		{
+			const edm::ParameterSet &psBase = this->psBase;
+			std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+			for (size_t i = 0; i < names.size(); ++i)
+			{
+				const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+				if(pset.existsAs<edm::InputTag>("barrelSuperClustersSource")) consumescollector.consumes<reco::SuperClusterCollection>(pset.getParameter<edm::InputTag>("barrelSuperClustersSource"));
+				if(pset.existsAs<edm::InputTag>("endcapSuperClustersSource")) consumescollector.consumes<reco::SuperClusterCollection>(pset.getParameter<edm::InputTag>("endcapSuperClustersSource"));
+			}
+		}
 
 	static const std::string getLabel() { return "ExtendedTaus"; }
 
