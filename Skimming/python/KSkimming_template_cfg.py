@@ -33,7 +33,7 @@ import Kappa.Skimming.tools as tools
 cmssw_version_number = tools.get_cmssw_version_number()
 split_cmssw_version = cmssw_version_number.split("_") 
 
-if (cmssw_version_number.startswith("7_4")):
+if (cmssw_version_number.startswith("7_4") or cmssw_version_number.startswith("7_6")):
 	# see https://twiki.cern.ch/twiki/bin/view/Sandbox/MyRootMakerFrom72XTo74X#DDVectorGetter_vectors_are_empty
 	print "Use GeometryRecoDB and condDBv2"
 	process.load("Configuration.Geometry.GeometryRecoDB_cff")
