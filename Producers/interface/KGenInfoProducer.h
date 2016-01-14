@@ -13,6 +13,7 @@
 #include <SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h>
 #include <SimDataFormats/GeneratorProducts/interface/HepMCProduct.h>
 #include <SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h>
+#include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 
 #include "KInfoProducer.h"
 
@@ -34,8 +35,10 @@ public:
 		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
 		ignoreExtXSec(cfg.getParameter<bool>("ignoreExtXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
+		binningMode(cfg.getParameter<std::string>("binningMode")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
-		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource")) {}
+		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource")),
+		lheSource(cfg.getParameter<edm::InputTag>("lheSource")) {}
 
 	static const std::string getLabel() { return "GenInfo"; }
 
@@ -70,13 +73,38 @@ public:
 		if (forceLumi > 0)
 			this->metaEvent->nLumi = forceLumi;
 
+		// Get generator level HT
+		edm::Handle<LHEEventProduct> lheEventProduct;
+		double lheHt = 0.;
+		if (event.getByLabel(lheSource, lheEventProduct) && lheEventProduct.isValid())
+		{
+			const lhef::HEPEUP& lheEvent = lheEventProduct->hepeup();
+			std::vector<lhef::HEPEUP::FiveVector> lheParticles = lheEvent.PUP;
+			for ( size_t idxParticle = 0; idxParticle < lheParticles.size(); ++idxParticle ) {
+				int id = std::abs(lheEvent.IDUP[idxParticle]);
+				int status = lheEvent.ISTUP[idxParticle];
+				if ( status == 1 && ((id >= 1 && id <= 6) || id == 21) ) { // quarks and gluons
+					lheHt += std::sqrt(std::pow(lheParticles[idxParticle][0], 2.) + std::pow(lheParticles[idxParticle][1], 2.));
+				}
+			}
+		}
+		
 		// Get generator event info:
 		edm::Handle<GenEventInfoProduct> hEventInfo;
 		event.getByLabel(tagSource, hEventInfo);
 
 		this->metaEvent->binValue = -1;
 		if (hEventInfo->binningValues().size() > 0)
+		{
 			this->metaEvent->binValue = hEventInfo->binningValues()[0];
+		}
+		else
+		{
+			if (binningMode == "ht")
+			{
+				this->metaEvent->binValue = lheHt;
+			}
+		}
 
 		this->metaEvent->weight = hEventInfo->weight();
 		this->metaEvent->alphaQCD = hEventInfo->alphaQCD();
@@ -122,7 +150,8 @@ public:
 protected:
 	bool ignoreExtXSec;
 	int forceLumi;
-	edm::InputTag tagSource, puInfoSource;
+	std::string binningMode;
+	edm::InputTag tagSource, puInfoSource, lheSource;
 };
 
 template<typename Tmeta>
