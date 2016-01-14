@@ -79,7 +79,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.p *= process.nNegEventsTotal
 	## ------------------------------------------------------------------------
 	# General configuration
-	if (cmssw_version_number.startswith("7_4") and split_cmssw_version[2] >= 14):
+	if ((cmssw_version_number.startswith("7_4") and split_cmssw_version[2] >= 14) or (cmssw_version_number.startswith("7_6"))):
 		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
@@ -90,13 +90,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		if (cmssw_version_number.startswith("7_4")):
 			process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
 			process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
+		elif (cmssw_version_number.startswith("7_6")):
+			process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
 		else:
 			process.kappaTuple.VertexSummary.whitelist = cms.vstring('goodOfflinePrimaryVertices')  # save VertexSummary,
 
 		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
-
+	if (cmssw_version_number.startswith("7_6")):
+		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))
 	if not miniaod:
 		process.kappaTuple.active += cms.vstring('TriggerObjects')
 
@@ -153,6 +156,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	if(miniaod):
 		process.kappaTuple.active += cms.vstring('packedPFCandidates') # save PFCandidates. Not sure for what, because might not be usefull for isolation
+		if (cmssw_version_number.startswith("7_6")):
+			process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
 	## ------------------------------------------------------------------------
 	# Configure Muons
@@ -181,7 +186,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 		process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
-		if (cmssw_version_number.startswith("7_4")):
+		if (cmssw_version_number.startswith("7_4") or cmssw_version_number.startswith("7_6")):
 			process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
 						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
 						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
@@ -259,6 +264,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	if miniaod:
 		process.kappaTuple.active += cms.vstring('PatJets')
+		if (cmssw_version_number.startswith("7_6")):
+			process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag("slimmedJets"))
+	if (cmssw_version_number.startswith("7_6")):
+		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
 	process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
 	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
 
@@ -317,6 +326,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			)
 		process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
 		process.kappaTuple.active += cms.vstring('GenJets')
+		if (cmssw_version_number.startswith("7_6")):
+			process.kappaTuple.GenJets.tauGenJets = cms.PSet(src=cms.InputTag("tauGenJets"))
 
 	## ------------------------------------------------------------------------
 	## Further information saved to Kappa output 

@@ -7,7 +7,7 @@ cmssw_version_number = tools.get_cmssw_version_number()
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 
 
-if (cmssw_version_number.startswith("7_4")):
+if (cmssw_version_number.startswith("7_4") or cmssw_version_number.startswith("7_6")):
 	# https://github.com/ikrav/EgammaWork/blob/v1/ElectronNtupler/test/runElectrons_VID_MVA_PHYS14_demo.py
 	from PhysicsTools.SelectorUtils.tools.vid_id_tools import switchOnVIDElectronIdProducer, DataFormat
 	from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cff import *
@@ -21,7 +21,7 @@ else:
 egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('slimmedElectrons')
 
 def setupElectrons(process):
-	if (cmssw_version_number.startswith("7_4")):
+	if (cmssw_version_number.startswith("7_4") or cmssw_version_number.startswith("7_6")):
 		switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 		my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
 				 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
