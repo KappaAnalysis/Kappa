@@ -23,10 +23,10 @@ public:
 	{
 		names = new KFilterMetadata;
 		_lumi_tree->Bronch("filterMetadata", "KFilterMetadata", &names);
-		consumescollector.consumes<edm::MergeableCounter>(labelEventsTotal);
-		consumescollector.consumes<edm::MergeableCounter>(labelNegEventsTotal);
-		consumescollector.consumes<edm::MergeableCounter>(labelEventsFiltered);
-		consumescollector.consumes<edm::MergeableCounter>(labelNegEventsFiltered);
+		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelEventsTotal);
+		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelNegEventsTotal);
+		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelEventsFiltered);
+		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelNegEventsFiltered);
 	}
 
 	static const std::string getLabel() { return "FilterSummary"; }

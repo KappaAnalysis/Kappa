@@ -102,7 +102,7 @@ public:
 		consumescollector.consumes<L1GlobalTriggerReadoutRecord>(tagL1Results);
 		consumescollector.consumes<edm::TriggerResults>(tagHLTResults);
 		consumescollector.consumes<HcalNoiseSummary>(tagNoiseHCAL);
-		consumescollector.consumes<edm::ErrorSummaryEntry>(tagErrorsAndWarnings);
+		consumescollector.consumes<std::vector<edm::ErrorSummaryEntry>>(tagErrorsAndWarnings);
 	}
 	virtual ~KInfoProducer() {};
 
