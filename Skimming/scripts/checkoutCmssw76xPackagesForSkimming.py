@@ -58,39 +58,14 @@ def getSysInformation():
 def checkoutPackages(args):
 	commands = [
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
-		# do the git cms-addpkg before starting with checking out cvs repositories
-
-		#MVA & No-PU MET Recipe
-		#https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#Instructions_for_7_4_X
-		#everything needed is already in the 7_4_6 release -> only use 7_4_7 due to bugfix!
-		#Jan's multi-MET Producer
-		"git cms-addpkg RecoMET/METPUSubtraction",
-		"cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/plugins"),
-		"wget https://raw.githubusercontent.com/CERN-PH-CMG/cmg-cmssw/CMGTools-from-CMSSW_7_4_3/RecoMET/METPUSubtraction/plugins/PFMETProducerMVATauTau.cc",
-		"wget https://raw.githubusercontent.com/CERN-PH-CMG/cmg-cmssw/CMGTools-from-CMSSW_7_4_3/RecoMET/METPUSubtraction/plugins/PFMETProducerMVATauTau.h",
-		#"git remote add cmgtools https://github.com/CERN-PH-CMG/cmg-cmssw.git",
-		#"git pull cmgtools",
-		#"git checkout CMGTools-from-CMSSW_7_4_7",
-		"cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/"),
-		"git clone https://github.com/rfriese/RecoMET-METPUSubtraction data -b 74X-13TeV-Summer15-July2015 --depth 1",
-		"rm -rf $CMSSW_BASE/src/RecoMET/METPUSubtraction/data/.git/",
-		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
-
-		"git cms-addpkg PhysicsTools/PatUtils",
-		#"sed '/pat::MET outMET/a \ \ \  outMET\.setSignificanceMatrix\(srcMET\.getSignificanceMatrix\(\)\)\;' PhysicsTools/PatUtils/plugins/CorrectedPATMETProducer.cc -i",
-
-		#PF MET with NoHF MET
-		#https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription
-		"git cms-merge-topic -u cms-met:mvaMetBugfix76X",
-
+		"git cms-merge-topic -u KappaAnalysis:Kappa_CMSSW_763",
 		#Electron cutBased Id and MVA Id
 		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_747
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_747_Spring15_MVA_tra
 		#"git cms-merge-topic ikrav:egm_id_747_v2",
 
 		#Check out Kappa
-		"git clone https://github.com/KappaAnalysis/Kappa.git",
-		#"scram b -j 4"
+		"git clone https://github.com/KappaAnalysis/Kappa.git"
 	]
 	execCommands(commands)
 	return
