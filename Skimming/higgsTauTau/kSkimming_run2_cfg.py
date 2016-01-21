@@ -205,8 +205,45 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	if(miniaod):
 		process.kappaTuple.active += cms.vstring('PatTaus')
-		#process.kappaTuple.PATTaus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
-		process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring()
+		process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring(".*")
+		process.kappaTuple.PatTaus.taus.floatDiscrBlacklist = cms.vstring(".*")
+		# just took everything from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV
+		process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring(
+		                                                                       "decayModeFinding",
+		                                                                       "decayModeFindingNewDMs",
+		                                                                       "byLooseCombinedIsolationDeltaBetaCorr3Hits",
+		                                                                       "byMediumCombinedIsolationDeltaBetaCorr3Hits",
+		                                                                       "byTightCombinedIsolationDeltaBetaCorr3Hits",
+		                                                                       "byCombinedIsolationDeltaBetaCorrRaw3Hits",
+		                                                                       "chargedIsoPtSum",
+		                                                                       "neutralIsoPtSum",
+		                                                                       "puCorrPtSum",
+		                                                                       "footprintCorrection",
+		                                                                       "photonPtSumOutsideSignalCone",
+		                                                                       "byLooseIsolationMVArun2v1DBoldDMwLT",
+		                                                                       "byMediumIsolationMVArun2v1DBoldDMwLT",
+		                                                                       "byTightIsolationMVArun2v1DBoldDMwLT",
+		                                                                       "byVTightIsolationMVArun2v1DBoldDMwLT",
+		                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
+		                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
+		                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
+		                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
+		                                                                       "againstMuonLoose3",
+		                                                                       "againstMuonTight3",
+		                                                                       "againstElectronVLooseMVA5 ",
+		                                                                       "againstElectronLooseMVA5",
+		                                                                       "againstElectronMediumMVA5",
+		                                                                       "againstElectronVLooseMVA6",
+		                                                                       "againstElectronLooseMVA6",
+		                                                                       "againstElectronMediumMVA6",
+		                                                                       "byLooseCombinedIsolationDeltaBetaCorr3HitsdR03",
+		                                                                       "byMediumCombinedIsolationDeltaBetaCorr3HitsdR03",
+		                                                                       "byTightCombinedIsolationDeltaBetaCorr3HitsdR03",
+		                                                                       "byLooseIsolationMVArun2v1DBdR03oldDMwLT",
+		                                                                       "byMediumIsolationMVArun2v1DBdR03oldDMwLT",
+		                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
+		                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT"
+		)
 	## ------------------------------------------------------------------------
 	# Configure Taus
 	if(not miniaod):
