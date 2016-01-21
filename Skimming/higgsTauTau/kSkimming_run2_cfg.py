@@ -255,10 +255,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	## MET
 	process.load("Kappa.Skimming.KMET_run2_cff")
-	from Kappa.Skimming.KMET_run2_cff import configureMVAMetForAOD, configureMVAMetForMiniAOD
-	from Kappa.Skimming.KMET_run2_cff import configurePFMetForMiniAOD
 
 	if (not miniaod):
+		from Kappa.Skimming.KMET_run2_cff import configureMVAMetForAOD
 		configureMVAMetForAOD(process)
 		process.kappaTuple.active += cms.vstring('GenMET')                  ## produce/save KappaMET
 		process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET and MVA MET
@@ -273,8 +272,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.p *= process.makeKappaMET
 
 	if(miniaod):
+		from Kappa.Skimming.KMET_run2_cff import configureMVAMetForMiniAOD
 		configureMVAMetForMiniAOD(process)
-		configurePFMetForMiniAOD(process, data=data)
 
 		## Standard MET and GenMet from pat::MET
 		process.kappaTuple.active += cms.vstring('PatMET')
@@ -288,10 +287,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		                                                   "metMVAMT",
 		                                                   "metMVATT"
 		                                                    )
-
-		process.p *= (  process.makeKappaMET * 
-		                process.makePFMET *
-		                process.patMetModuleSequence)
+		process.load('JetMETCorrections.Configuration.JetCorrectionServices_cff')
+		process.p *= (process.makeKappaMET)
 
 	## ------------------------------------------------------------------------
 	## GenJets 
