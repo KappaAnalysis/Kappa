@@ -277,16 +277,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 		## Standard MET and GenMet from pat::MET
 		process.kappaTuple.active += cms.vstring('PatMET')
-		process.kappaTuple.PatMET.whitelist = cms.vstring("patPFMet(T1)?(NoHF)?_", "slimmedMETsPuppi")
+		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
+		process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
 
 		## Write MVA MET to KMETs. To check what happens on AOD
 		process.kappaTuple.active += cms.vstring('PatMETs')
-		process.kappaTuple.PatMETs.whitelist = cms.vstring(
-		                                                   "metMVAEM",
-		                                                   "metMVAET",
-		                                                   "metMVAMT",
-		                                                   "metMVATT"
-		                                                    )
+		process.kappaTuple.PatMETs.metMVAEM = cms.PSet(src=cms.InputTag("metMVAEM"))
+		process.kappaTuple.PatMETs.metMVAET = cms.PSet(src=cms.InputTag("metMVAET"))
+		process.kappaTuple.PatMETs.metMVAMT = cms.PSet(src=cms.InputTag("metMVAMT"))
+		process.kappaTuple.PatMETs.metMVATT = cms.PSet(src=cms.InputTag("metMVATT"))
 		process.load('JetMETCorrections.Configuration.JetCorrectionServices_cff')
 		process.p *= (process.makeKappaMET)
 
