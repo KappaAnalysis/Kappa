@@ -71,7 +71,7 @@ def submission():
 	# loop over datasets and get repsective nicks
 	for nickname in nicknames:
 		config.General.requestName = nickname
-		config.JobType.pyCfgParams = ['globalTag=74X_dataRun2_reMiniAOD_v0' if isData(nickname) else 'globalTag=74X_mcRun2_asymptotic_v2' ,'kappaTag=KAPPA_2_0_4','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
+		config.JobType.pyCfgParams = ['globalTag=74X_dataRun2_reMiniAOD_v0' if isData(nickname) else 'globalTag=76X_mcRun1_realistic_v10' ,'kappaTag=KAPPA_2_0_4','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
 		p = Process(target=submit, args=(config,))
