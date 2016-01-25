@@ -205,10 +205,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	if(miniaod):
 		process.kappaTuple.active += cms.vstring('PatTaus')
-		process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring(".*")
-		process.kappaTuple.PatTaus.taus.floatDiscrBlacklist = cms.vstring(".*")
+		process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
+		process.kappaTuple.PatTaus.taus.floatDiscrBlacklist = cms.vstring()
 		# just took everything from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV
-		process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring(
+		process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring ()
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist = cms.vstring(
 		                                                                       "decayModeFinding",
 		                                                                       "decayModeFindingNewDMs",
 		                                                                       "byLooseCombinedIsolationDeltaBetaCorr3Hits",
@@ -242,6 +243,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
 		                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT"
 		)
+		process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	## ------------------------------------------------------------------------
 	# Configure Taus
 	if(not miniaod):
