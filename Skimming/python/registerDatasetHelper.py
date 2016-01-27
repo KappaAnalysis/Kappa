@@ -94,6 +94,10 @@ def get_process(pd_name, default=None):
 					process = pd_name[0:posMass+length]
 				except:
 					pass
+		htPos = pd_name.find("HT-")
+		if(htPos!=-1):
+			length = pd_name[htPos:].find("_")
+			process += "_"+pd_name[htPos: htPos + length]
 		return process 
 	else:
 		return default
