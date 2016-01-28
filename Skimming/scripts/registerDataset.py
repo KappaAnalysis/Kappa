@@ -28,6 +28,7 @@ def register_new_sample(dict, options):
 	new_entry[sample]["process"]   = get_process(pd_name, options.process)
 	new_entry[sample]["embedded"]  = is_embedded(filetype, options.embedded)
 	new_entry[sample]["format"]    = get_format(filetype, options.filetype)
+	new_entry[sample]["n_events_generated"]    = get_n_generated_events(sample)
 	pprint(new_entry)
 	print make_nickname(new_entry[sample])
 	dict[sample] = new_entry[sample]

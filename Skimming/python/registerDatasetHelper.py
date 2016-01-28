@@ -8,7 +8,7 @@ import string
 
 import json
 import re
-
+from Kappa.Skimming.getNumberGeneratedEventsFromDB import getNumberGeneratedEventsFromDB
 cmssw_base = os.environ.get("CMSSW_BASE")
 dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
@@ -131,6 +131,9 @@ def is_data(prod_camp, default=None):
 			return False
 	else:
 		return default
+
+def get_n_generated_events(sample):
+	return getNumberGeneratedEventsFromDB(sample)
 
 def make_nickname(dict):
 	nick = ""
