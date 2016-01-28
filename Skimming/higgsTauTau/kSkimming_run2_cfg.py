@@ -329,19 +329,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 
-	if options.testsuite:
+	# test with user-defined input file
+	if options.testfile:
+		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents)
+	
+	# CRAB job-submission
+	elif options.outputfilename:
+		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents, outputfilename=options.outputfilename)
+	
+	# Kappa test suite (cmsRun with no extra options)
+	else:
 		testPaths = ['/storage/6/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
-		globalTag = 'MCRUN2_74_V9'
-		testFile = "SUSYGluGluHToTauTau_M-120_13TeV_MCRUN2.root"
-		nickName = "SUSYGluGluToHToTauTauM120_RunIISpring15DR74_Asympt25ns_13TeV_AODSIM_pythia8"
-		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents)
-
-	else:
-		if options.testfile:
-			process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents)
-		else:
-			if options.outputfilename:
-				process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents, outputfilename=options.outputfilename)
-			else:
-				process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents)
+		process = getBaseConfig(globaltag=options.globalTag, testfile=cms.untracked.vstring("file://%s/SUSYGluGluToHToTauTau_M-160_spring15_miniAOD.root" % testPath))
