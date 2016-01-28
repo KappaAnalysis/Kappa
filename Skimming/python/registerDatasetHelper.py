@@ -135,6 +135,11 @@ def is_data(prod_camp, default=None):
 def get_n_generated_events(sample):
 	return getNumberGeneratedEventsFromDB(sample)
 
+def get_n_generated_events_from_nick(nick):
+	sample = get_sample_by_nick(nick)
+	dict = load_database(dataset)
+	return dataset[sample]["n_events_generated"]
+
 def make_nickname(dict):
 	nick = ""
 	nick += dict["process"].replace("_", "")  + "_"
