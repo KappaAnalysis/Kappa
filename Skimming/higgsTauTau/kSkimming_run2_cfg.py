@@ -341,4 +341,4 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 	else:
 		testPaths = ['/storage/6/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
-		process = getBaseConfig(globaltag=options.globalTag, testfile=cms.untracked.vstring("file://%s/SUSYGluGluToHToTauTau_M-160_spring15_miniAOD.root" % testPath))
+		process = getBaseConfig(globaltag=options.globalTag, testfile=cms.untracked.vstring("file://%s/SUSYGluGluToHToTauTau_M-160_spring15_miniAOD.root" % testPath), outputfilename="kappaTuple.root")
