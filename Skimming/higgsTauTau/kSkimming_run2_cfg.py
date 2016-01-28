@@ -326,7 +326,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 
 	if options.testsuite:
-		testPaths = ['/storage/a/berger/kappatest/input', '/nfs/dust/cms/user/jberger/kappatest/input']
+		testPaths = ['/storage/6/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
 		globalTag = 'MCRUN2_74_V9'
 		testFile = "SUSYGluGluHToTauTau_M-120_13TeV_MCRUN2.root"

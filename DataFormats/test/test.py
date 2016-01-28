@@ -47,8 +47,8 @@ groupConfigsToBeChecked = [
     "Skimming/zjet/skim_74_cfg.py",
 ]
 compareFilesPaths = [
-    '/storage/6/berger/kappatest/output/',
-    '/nfs/dust/cms/user/jberger/kappatest/output/',
+    '/storage/6/fcolombo/kappatest/output/',
+    '/nfs/dust/cms/user/fcolombo/kappatest/output/',
 ]
 compareFilesPath = compareFilesPaths[0]
 for p in compareFilesPaths:
@@ -557,7 +557,7 @@ def writeHTML(branches, allOK):
 <html>
 <head>
 <meta charset="utf-8"/>
-<link rel="shortcut icon" type=image/x-icon" href="http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/img/Kappa.ico"/>
+<link rel="shortcut icon" type=image/x-icon" href="http://www-ekp.physik.uni-karlsruhe.de/~fcolombo/kappa/img/Kappa.ico"/>
 <meta name="description" content="Result overview of the status of the Kappa framework"/>
 <title>Kappa test results</title>
 <style>
@@ -774,7 +774,7 @@ def sendMail(testPaths, branches=None):
     msg = Message("""Dear Kappa developers,
 
 the test script found problems in the current state of the Kappa repository.
-Please have a look at: http://www-ekp.physik.uni-karlsruhe.de/~berger/kappa/test/current/result.html
+Please have a look at: http://www-ekp.physik.uni-karlsruhe.de/~fcolombo/kappa/test/current/result.html
 
 Tested branches are: %s.
 The test directory is %s.
@@ -782,7 +782,7 @@ The test directory is %s.
 Your friendly test script
 """ % (', '.join(branches), testPaths))
     msg['Subject'] = 'Kappa test problems'
-    msg['From'] = 'joram.berger@kit.edu' # must be on the artus list
+    msg['From'] = 'fabio.colombo@kit.edu' # must be on the artus list
     msg['To'] = 'artus@lists.kit.edu'
 
     s = smtplib.SMTP('smarthost.kit.edu')
