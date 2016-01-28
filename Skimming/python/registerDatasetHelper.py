@@ -143,6 +143,13 @@ def get_n_generated_events_from_nick(nick):
 	else:
 		return -1
 
+def get_xsec(nick):
+	sample = get_sample_by_nick(nick)
+	dict = load_database(dataset)
+	if sample in dict:
+		return dict[sample]["xsec"]
+	else:
+		return -1
 def make_nickname(dict):
 	nick = ""
 	nick += dict["process"].replace("_", "")  + "_"
