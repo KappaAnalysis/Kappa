@@ -138,7 +138,10 @@ def get_n_generated_events(sample):
 def get_n_generated_events_from_nick(nick):
 	sample = get_sample_by_nick(nick)
 	dict = load_database(dataset)
-	return dataset[sample]["n_events_generated"]
+	if sample in dict:
+		return dict[sample]["n_events_generated"]
+	else:
+		return -1
 
 def make_nickname(dict):
 	nick = ""
