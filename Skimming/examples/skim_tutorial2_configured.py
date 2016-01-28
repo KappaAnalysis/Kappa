@@ -13,12 +13,12 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
     # Set the global tag and datatype for testing or by grid-control ---------
     data = (datatype == 'data')
     if data:
-        testfile = 'file:///storage/a/berger/kappatest/input/data_AOD_2012A.root'
+        testfile = 'file:///storage/6/fcolombo/kappatest/input/data_AOD_2012A.root'
         if '@' in globaltag:
             globaltag = 'FT53_V21A_AN6'
         maxevents = maxevents or 1000
     else:
-        testfile = 'file:///storage/a/berger/kappatest/input/mc11.root'
+        testfile = 'file:///storage/6/fcolombo/kappatest/input/mc11.root'
         if '@' in globaltag:
             globaltag = 'START53_V27'
         maxevents = maxevents or 1000
