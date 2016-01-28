@@ -23,7 +23,7 @@ def main():
 	# sample
 	parser.add_option("-s", "--sample", help="official Sample Sting")
 	# crosssection
-	parser.add_option("--xsec", help="Sample cross section")
+	parser.add_option("-x", "--xsec", help="Sample cross section")
 
 
 	(options, args) = parser.parse_args()
