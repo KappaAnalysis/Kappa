@@ -58,8 +58,8 @@ def submission():
 	config.JobType.allowUndistributedCMSSW = True
 	config.Site.blacklist = ["T2_BR_SPRACE"]
 	config.Data.inputDBS = 'global'
-	config.Data.splitting = 'FileBased'
-	config.Data.unitsPerJob = 1
+	config.Data.splitting = 'EventAwareLumiBased'
+	config.Data.unitsPerJob = 50000
 	config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(getUsernameFromSiteDB(), date)
 	config.Data.publication = False
 	
