@@ -56,7 +56,7 @@ def submission():
 	config.JobType.psetName = 'kSkimming_run2_cfg.py'
 	#config.JobType.inputFiles = ['Summer15_V5_MC.db']
 	config.JobType.allowUndistributedCMSSW = True
-	
+	config.Site.blacklist = ["T2_BR_SPRACE"]
 	config.Data.inputDBS = 'global'
 	config.Data.splitting = 'FileBased'
 	config.Data.unitsPerJob = 1
