@@ -138,7 +138,7 @@ def get_n_generated_events(sample):
 def get_n_generated_events_from_nick(nick):
 	sample = get_sample_by_nick(nick)
 	dict = load_database(dataset)
-	if sample in dict:
+	if sample in dict and "n_events_generated" in dict[sample]:
 		return dict[sample]["n_events_generated"]
 	else:
 		return -1
@@ -146,10 +146,19 @@ def get_n_generated_events_from_nick(nick):
 def get_xsec(nick):
 	sample = get_sample_by_nick(nick)
 	dict = load_database(dataset)
-	if sample in dict:
+	if sample in dict and "xsec" in dict[sample]:
 		return dict[sample]["xsec"]
 	else:
 		return -1
+
+def get_generator_weight(nick):
+	sample = get_sample_by_nick(nick)
+	dict = load_database(dataset)
+	if sample in dict and "generatorWeight" in dict[sample]:
+		return dict[sample]["generatorWeight"]
+	else:
+		return -1
+
 def make_nickname(dict):
 	nick = ""
 	nick += dict["process"].replace("_", "")  + "_"
