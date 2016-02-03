@@ -30,7 +30,7 @@ queries = {
 		"energy" : "13"
 	},
 	"Fall15_TTJets": {
-		"process" : "^TTJets|^Tbar|^T_tW|TT$",
+		"process" : "^TTJets|^Tbar|^T_tW|^TT|^ST$",
 		"campaign" : "RunIIFall15MiniAODv2",
 		"energy" : "13"
 	},

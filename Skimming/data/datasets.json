@@ -1862,6 +1862,18 @@
         "process": "ST-t", 
         "scenario": "74X"
     }, 
+    "/ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
+        "campaign": "RunIIFall15MiniAODv2", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "powheg-pythia8", 
+        "n_events_generated": "1630900", 
+        "process": "ST", 
+        "scenario": "PU25nsData2015v1", 
+        "xsec": 26.22
+    }, 
     "/ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
         "campaign": "RunIISpring15DR74", 
         "data": false, 
@@ -1904,7 +1916,8 @@
         "generator": "powheg-pythia8", 
         "n_events_generated": "3299200", 
         "process": "ST", 
-        "scenario": "PU25nsData2015v1"
+        "scenario": "PU25nsData2015v1", 
+        "xsec": 44.07
     }, 
     "/ST_t-channel_top_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
         "campaign": "RunIISpring15DR74", 
@@ -1948,7 +1961,8 @@
         "generator": "powheg-pythia8", 
         "n_events_generated": "999400", 
         "process": "ST", 
-        "scenario": "PU25nsData2015v1"
+        "scenario": "PU25nsData2015v1", 
+        "xsec": 35.6
     }, 
     "/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
         "campaign": "RunIISpring15DR74", 
@@ -1992,7 +2006,8 @@
         "generator": "powheg-pythia8", 
         "n_events_generated": "1000000", 
         "process": "ST", 
-        "scenario": "PU25nsData2015v1"
+        "scenario": "PU25nsData2015v1", 
+        "xsec": 35.6
     }, 
     "/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
         "campaign": "RunIISpring15DR74", 
