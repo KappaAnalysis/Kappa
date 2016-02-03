@@ -1870,7 +1870,7 @@
         "format": "MINIAOD", 
         "generator": "powheg-pythia8", 
         "n_events_generated": "1630900", 
-        "process": "ST", 
+        "process": "STt-channelantitop4fleptonDecays", 
         "scenario": "PU25nsData2015v1", 
         "xsec": 26.22
     }, 
@@ -1915,7 +1915,7 @@
         "format": "MINIAOD", 
         "generator": "powheg-pythia8", 
         "n_events_generated": "3299200", 
-        "process": "ST", 
+        "process": "STt-channeltop4fleptonDecays", 
         "scenario": "PU25nsData2015v1", 
         "xsec": 44.07
     }, 
@@ -1960,7 +1960,7 @@
         "format": "MINIAOD", 
         "generator": "powheg-pythia8", 
         "n_events_generated": "999400", 
-        "process": "ST", 
+        "process": "STtWantitop5finclusiveDecays", 
         "scenario": "PU25nsData2015v1", 
         "xsec": 35.6
     }, 
@@ -2005,7 +2005,7 @@
         "format": "MINIAOD", 
         "generator": "powheg-pythia8", 
         "n_events_generated": "1000000", 
-        "process": "ST", 
+        "process": "STtWtop5finclusiveDecays", 
         "scenario": "PU25nsData2015v1", 
         "xsec": 35.6
     }, 

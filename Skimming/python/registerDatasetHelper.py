@@ -71,7 +71,9 @@ def get_generator(pd_name, default=None, data=False):
 		return default
 
 def get_process(pd_name, default=None):
-	if (default == None):
+	if (default != None):
+		return default
+	else:
 		pos = pd_name.find("_")
 		if(pos!=-1):
 			process = pd_name[0:pos]
@@ -98,9 +100,11 @@ def get_process(pd_name, default=None):
 		if(htPos!=-1):
 			length = pd_name[htPos:].find("_")
 			process += "_"+pd_name[htPos: htPos + length]
+		ST_pos = pd_name.find("ST_t")
+		if(ST_pos == 0):
+			length = pd_name[0:pd_name.find("TeV")].rfind("_")
+			process = pd_name[0:length].replace("_", "")
 		return process 
-	else:
-		return default
 
 def get_globaltag(details, default=None):
 	if (default == None):
