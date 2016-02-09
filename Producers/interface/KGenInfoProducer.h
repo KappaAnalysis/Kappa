@@ -83,6 +83,7 @@ public:
 		// Get generator level HT
 		edm::Handle<LHEEventProduct> lheEventProduct;
 		double lheHt = 0.;
+		int lheNOutPartons = 0;
 		if (event.getByLabel(lheSource, lheEventProduct) && lheEventProduct.isValid())
 		{
 			const lhef::HEPEUP& lheEvent = lheEventProduct->hepeup();
@@ -92,9 +93,12 @@ public:
 				int status = lheEvent.ISTUP[idxParticle];
 				if ( status == 1 && ((id >= 1 && id <= 6) || id == 21) ) { // quarks and gluons
 					lheHt += std::sqrt(std::pow(lheParticles[idxParticle][0], 2.) + std::pow(lheParticles[idxParticle][1], 2.));
+					++lheNOutPartons;
 				}
 			}
 		}
+		this->metaEvent->lheHt = lheHt;
+		this->metaEvent->lheNOutPartons = lheNOutPartons;
 		
 		// Get generator event info:
 		edm::Handle<GenEventInfoProduct> hEventInfo;
