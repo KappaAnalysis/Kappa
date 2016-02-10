@@ -5,7 +5,7 @@ queries = {
 		"energy" : "13"
 	},
 	"Fall15_DYJets": {
-		"process" : "^DY([0-9])?JetsToLL",
+		"process" : "^DY([0-9])?JetsTo(LL|TauTau)",
 		"campaign" : "RunIIFall15MiniAODv2",
 		"energy" : "13"
 	},
