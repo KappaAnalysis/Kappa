@@ -33,6 +33,7 @@ public:
 		KBaseMultiProducer<pat::TriggerObjectStandAloneCollection, KTriggerObjects>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector), true)
 	{
 		triggerBits_ = cfg.getParameter<edm::InputTag>("bits");
+		metFilterBits_ = cfg.getParameter<edm::InputTag>("metfilterbits");
 		triggerObjects_ = cfg.getParameter<edm::InputTag>("objects");
 		triggerPrescales_ = cfg.getParameter<edm::InputTag>("prescales");
 
@@ -40,6 +41,7 @@ public:
 		_run_tree->Bronch("triggerObjectMetadata", "KTriggerObjectMetadata", &toMetadata);
 
 		consumescollector.consumes<edm::TriggerResults>(triggerBits_);
+		consumescollector.consumes<edm::TriggerResults>(metFilterBits_);
 		consumescollector.consumes<pat::TriggerObjectStandAloneCollection>(triggerObjects_);
 		consumescollector.consumes<pat::PackedTriggerPrescales>(triggerPrescales_);
 	}
@@ -54,6 +56,25 @@ public:
 		return true;
 	}
 
+	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
+	{
+		KBaseMultiProducer<pat::TriggerObjectStandAloneCollection, KTriggerObjects>::onFirstEvent(event, setup);
+		edm::Handle<edm::TriggerResults> metFilterBits;
+		event.getByLabel(metFilterBits_, metFilterBits);
+		nMetFilters_ = metFilterBits->size();
+		if(nMetFilters_ >=(8* sizeof(int)))
+		{
+			std::cout << "Tried to read " << nMetFilters_ << " but only able to store " << (sizeof(int)*8) << " bits." << std::endl;
+			assert(false);
+		}
+		metFilterNames_ = event.triggerNames(*metFilterBits);
+		for(size_t i = 0; i < nMetFilters_; i++)
+		{
+			toMetadata->metFilterNames.push_back(metFilterNames_.triggerName(i));
+		}
+		return true;
+	}
+
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup) override
 	{
 		edm::Handle<edm::TriggerResults> triggerBits;
@@ -61,6 +82,7 @@ public:
 		edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
 
 		event.getByLabel(triggerBits_, triggerBits);
+		event.getByLabel(metFilterBits_, metFilterBitsHandle_);
 		event.getByLabel(triggerObjects_, triggerObjects);
 		event.getByLabel(triggerPrescales_, triggerPrescales);
 
@@ -251,6 +273,13 @@ protected:
 
 	virtual void fillProduct(const InputType &in, KTriggerObjects &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset) override
 	{
+		out.metFilterBits = 0;
+		for(size_t i = 0; i < nMetFilters_; i++)
+		{
+			if(metFilterBitsHandle_->accept(i))
+				out.metFilterBits = ( out.metFilterBits | ( 1 << i ));
+		}
+
 		if(!signifTriggerBitFired_)
 			return;
 
@@ -279,10 +308,14 @@ protected:
 
 private:
 	edm::InputTag triggerBits_;
+	edm::InputTag metFilterBits_;
+	edm::Handle<edm::TriggerResults> metFilterBitsHandle_;
 	edm::InputTag triggerObjects_;
 	edm::InputTag triggerPrescales_;
 	bool signifTriggerBitFired_;
 	edm::TriggerNames names_;
+	edm::TriggerNames metFilterNames_;
+	size_t nMetFilters_;
 };
 
 #endif

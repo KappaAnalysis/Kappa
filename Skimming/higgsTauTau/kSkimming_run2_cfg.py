@@ -93,6 +93,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
 
 		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
+		if(data and ("Run2015" in nickname)):
+			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
 
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
 	if (cmssw_version_number.startswith("7_6")):

@@ -107,14 +107,36 @@ struct KTriggerObjectMetadata
 		}
 		return static_cast<size_t>(maxFilterIndex);
 	}
+
+	// map for MET Filters and accessor function
+	std::vector<std::string> metFilterNames;
+	size_t metFilterPos(std::string metFilterName)
+	{
+		for(size_t i; i < metFilterNames.size(); ++i)
+		{
+			if(metFilterName == metFilterNames[i])
+				return i;
+		}
+		std::cout << "Met filter Name " << metFilterName << " not found. Available filters are: " << std::endl;
+		for(auto filter: metFilterNames)
+			std::cout << "\t" << filter << std::endl;
+		assert(false);
+	}
+
 };
 
 struct KTriggerObjects
 {
 	KLVs trgObjects;
-
+	int metFilterBits;
 	/// { hlt1:idxFilter1, ..., hlt1:idxFilterN1, hlt2:idxFilter1, ..., hlt2:idxFilterN2, ...}
 	std::vector<std::vector<int> > toIdxFilter;
+
+	bool passesMetFilter(size_t metFilterPos)
+	{
+		return ( ( metFilterBits & ( 1 << metFilterPos ) ) > 0 );
+	}
+
 };
 
 
