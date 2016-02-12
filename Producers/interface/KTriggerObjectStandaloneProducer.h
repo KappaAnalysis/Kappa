@@ -61,14 +61,21 @@ public:
 		KBaseMultiProducer<pat::TriggerObjectStandAloneCollection, KTriggerObjects>::onFirstEvent(event, setup);
 		edm::Handle<edm::TriggerResults> metFilterBits;
 		event.getByLabel(metFilterBits_, metFilterBits);
-		nMetFilters_ = metFilterBits->size();
+		// preselect met filters
+		metFilterNames_ = event.triggerNames(*metFilterBits);
+		for(size_t i = 0; i < metFilterBits->size(); i++)
+		{
+			std::string metFilterName = metFilterNames_.triggerName(i);
+			if(metFilterName.find("Flag") != std::string::npos)
+				selectedMetFilters_.push_back(i);
+		}
+		nMetFilters_ = selectedMetFilters_.size();
 		if(nMetFilters_ >=(8* sizeof(int)))
 		{
 			std::cout << "Tried to read " << nMetFilters_ << " but only able to store " << (sizeof(int)*8) << " bits." << std::endl;
 			assert(false);
 		}
-		metFilterNames_ = event.triggerNames(*metFilterBits);
-		for(size_t i = 0; i < nMetFilters_; i++)
+		for(auto i : selectedMetFilters_)
 		{
 			toMetadata->metFilterNames.push_back(metFilterNames_.triggerName(i));
 		}
@@ -316,6 +323,7 @@ private:
 	edm::TriggerNames names_;
 	edm::TriggerNames metFilterNames_;
 	size_t nMetFilters_;
+	std::vector<size_t> selectedMetFilters_;
 };
 
 #endif
