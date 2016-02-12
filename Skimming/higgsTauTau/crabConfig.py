@@ -25,7 +25,10 @@ def submit(config):
 
 def crab_command(command):
 	for dir in glob('/nfs/dust/cms/user/%s/crab_kappa_skim-%s/*'%(getUsernameFromSiteDB(), date)):
-		crabCommand(command, dir = dir)
+		try:
+			crabCommand(command, dir = dir)
+		except HTTPException as hte:
+			print hte
 
 def check_path(path):
 	if os.path.exists(path):
