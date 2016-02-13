@@ -158,6 +158,16 @@ private:
 			else
 				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(1)), info, level);
 		}
+		else if(in.numberOfDaughters() == 2 && std::abs(in.pdgId()) == 111 &&
+				std::abs(in.daughter(0)->pdgId()) == 22 && std::abs(in.daughter(1)->pdgId()) == 22)
+		{
+			//printf("\tneutral pion, stop recursion. ");
+			//printf("\n");
+			// Neutral pion, save four-momentum in the visible component
+			RMDLV p4;
+			copyP4(in.p4(), p4);
+			info.p4_vis += p4;
+		}
 		else
 		{
 			//printf("\t%lu children, recurse...\n", in.numberOfDaughters());
