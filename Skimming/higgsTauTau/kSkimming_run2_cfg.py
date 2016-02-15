@@ -223,16 +223,27 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		                                                                       "puCorrPtSum",
 		                                                                       "footprintCorrection",
 		                                                                       "photonPtSumOutsideSignalCone",
+		                                                                       "byIsolationMVArun2v1DBoldDMwLTraw",
 		                                                                       "byLooseIsolationMVArun2v1DBoldDMwLT",
 		                                                                       "byMediumIsolationMVArun2v1DBoldDMwLT",
 		                                                                       "byTightIsolationMVArun2v1DBoldDMwLT",
 		                                                                       "byVTightIsolationMVArun2v1DBoldDMwLT",
+		                                                                       "byIsolationMVArun2v1DBnewDMwLTraw",
 		                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
 		                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
 		                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
 		                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
 		                                                                       "againstMuonLoose3",
 		                                                                       "againstMuonTight3",
+		                                                                       "againstElectronMVA5category",
+		                                                                       "againstElectronMVA5raw",
+		                                                                       "againstElectronVLooseMVA5",
+		                                                                       "againstElectronLooseMVA5",
+		                                                                       "againstElectronMediumMVA5",
+		                                                                       "againstElectronTightMVA5",
+		                                                                       "againstElectronVTightMVA5",
+		                                                                       "againstElectronMVA6category",
+		                                                                       "againstElectronMVA6raw",
 		                                                                       "againstElectronVLooseMVA6",
 		                                                                       "againstElectronLooseMVA6",
 		                                                                       "againstElectronMediumMVA6",
@@ -344,6 +355,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.active += cms.vstring('GenJets')
 		if (cmssw_version_number.startswith("7_6")):
 			process.kappaTuple.GenJets.tauGenJets = cms.PSet(src=cms.InputTag("tauGenJets"))
+			process.kappaTuple.GenJets.tauGenJetsSelectorAllHadrons = cms.PSet(src=cms.InputTag("tauGenJetsSelectorAllHadrons"))
 
 	## ------------------------------------------------------------------------
 	## Further information saved to Kappa output 
