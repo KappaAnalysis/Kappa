@@ -112,15 +112,14 @@ struct KTriggerObjectMetadata
 	std::vector<std::string> metFilterNames;
 	size_t metFilterPos(std::string metFilterName)
 	{
-		for(size_t i; i < metFilterNames.size(); ++i)
+		for(size_t i=0; i < metFilterNames.size(); ++i)
 		{
 			if(metFilterName == metFilterNames[i])
 				return i;
 		}
-		std::cout << "Met filter Name " << metFilterName << " not found. Available filters are: " << std::endl;
-		for(auto filter: metFilterNames)
-			std::cout << "\t" << filter << std::endl;
+		std::cout << "Met filter Name " << metFilterName << " not found. " << std::endl;
 		assert(false);
+		return 0;
 	}
 
 };
