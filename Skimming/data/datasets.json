@@ -1838,6 +1838,17 @@
         "process": "MuEG", 
         "scenario": "22Jan2013v1"
     }, 
+    "/MuonEG/Run2015B-16Dec2015-v1/MINIAOD": {
+        "campaign": "Run2015B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "193275", 
+        "process": "MuonEG", 
+        "scenario": "16Dec2015v1"
+    }, 
     "/MuonEG/Run2015B-PromptReco-v1/MINIAOD": {
         "campaign": "Run2015B", 
         "data": true, 
@@ -3680,6 +3691,17 @@
         "process": "SUSYGluGluToHToTauTau_M90", 
         "scenario": "74X"
     }, 
+    "/SingleElectron/Run2015B-16Dec2015-v1/MINIAOD": {
+        "campaign": "Run2015B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "2469468", 
+        "process": "SingleElectron", 
+        "scenario": "16Dec2015v1"
+    }, 
     "/SingleElectron/Run2015B-PromptReco-v1/MINIAOD": {
         "campaign": "Run2015B", 
         "data": true, 
@@ -3789,6 +3811,17 @@
         "n_events_generated": "504556", 
         "process": "SingleMu", 
         "scenario": "PromptRecov1"
+    }, 
+    "/SingleMuon/Run2015B-16Dec2015-v1/MINIAOD": {
+        "campaign": "Run2015B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "2057505", 
+        "process": "SingleMuon", 
+        "scenario": "16Dec2015v1"
     }, 
     "/SingleMuon/Run2015B-PromptReco-v1/MINIAOD": {
         "campaign": "Run2015B", 
@@ -4242,6 +4275,17 @@
         "n_events_generated": "4316637", 
         "process": "Tau", 
         "scenario": "22Jan2013v1"
+    }, 
+    "/Tau/Run2015B-16Dec2015-v1/MINIAOD": {
+        "campaign": "Run2015B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "209851", 
+        "process": "Tau", 
+        "scenario": "16Dec2015v1"
     }, 
     "/Tau/Run2015B-PromptReco-v1/MINIAOD": {
         "campaign": "Run2015B", 
