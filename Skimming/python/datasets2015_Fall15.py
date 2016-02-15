@@ -35,7 +35,7 @@ queries = {
 		"energy" : "13"
 	},
 	"Fall15_WJets": {
-		"process" : "(^W(\d)Jet|^WJets)ToLNu",
+		"process" : "(^W(\d)Jets|^WJets)ToLNu",
 		"campaign" : "RunIIFall15MiniAODv2",
 		"energy" : "13"
 	}
