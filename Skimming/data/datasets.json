@@ -2491,6 +2491,17 @@
         "process": "SUSYGluGluToBBHToTauTau_M2000", 
         "scenario": "74X"
     }, 
+    "/SUSYGluGluToBBHToTauTau_M-200_TuneCUETP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v4/MINIAODSIM": {
+        "campaign": "RunIIFall15MiniAODv2", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "pythia8", 
+        "n_events_generated": "196740", 
+        "process": "SUSYGluGluToBBHToTauTau_M200", 
+        "scenario": "PU25nsData2015v1"
+    }, 
     "/SUSYGluGluToBBHToTauTau_M-200_TuneCUETP8M1_13TeV-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM": {
         "campaign": "RunIISpring15MiniAODv2", 
         "data": false, 
@@ -5627,6 +5638,17 @@
         "process": "WJetsToLNu", 
         "scenario": "74X"
     }, 
+    "/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
+        "campaign": "RunIIFall15MiniAODv2", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "madgraph-pythia8", 
+        "n_events_generated": "47161328", 
+        "process": "WJetsToLNu", 
+        "scenario": "PU25nsData2015v1"
+    }, 
     "/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM": {
         "campaign": "RunIISpring15MiniAODv2", 
         "data": false, 
@@ -6373,6 +6395,17 @@
         "n_events_generated": "60000", 
         "process": "WplusHToTauTau_M130", 
         "scenario": "74X"
+    }, 
+    "/ZHToTauTau_M120_13TeV_powheg_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
+        "campaign": "RunIIFall15MiniAODv2", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "powheg-pythia8", 
+        "n_events_generated": "78392", 
+        "process": "ZHToTauTau_M120", 
+        "scenario": "PU25nsData2015v1"
     }, 
     "/ZHToTauTau_M125_13TeV_powheg_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
         "campaign": "RunIISpring15DR74", 
