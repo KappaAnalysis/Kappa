@@ -25,7 +25,7 @@ queries = {
 		"energy" : "13"
 	},
 	"Fall15_SM_Higgs": {
-		"process" : "(GluGlu|VBF|Wplus|Wminus)HToTauTau",
+		"process" : "(GluGlu|VBF|Wplus|Wminus|Z)HToTauTau",
 		"campaign" : "RunIIFall15MiniAODv2",
 		"energy" : "13"
 	},
