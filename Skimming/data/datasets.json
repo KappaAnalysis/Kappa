@@ -410,8 +410,10 @@
         "format": "MINIAOD", 
         "generator": "amcatnlo-pythia8", 
         "n_events_generated": "28751199", 
+        "generatorWeight": 0.669875541538,
         "process": "DYJetsToLL_M50", 
-        "scenario": "PU25nsData2015v1"
+        "scenario": "PU25nsData2015v1",
+        "xsec" : 6025.2
     }, 
     "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v3/AODSIM": {
         "campaign": "RunIISpring15DR74", 
@@ -1969,7 +1971,7 @@
         "n_events_generated": "1630900", 
         "process": "STt-channelantitop4fleptonDecays", 
         "scenario": "PU25nsData2015v1", 
-        "xsec": 26.22
+        "xsec": 26.2278
     }, 
     "/ST_t-channel_antitop_4f_leptonDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
         "campaign": "RunIISpring15DR74", 
@@ -5124,7 +5126,8 @@
         "generator": "madgraph-pythia8", 
         "n_events_generated": "45442170", 
         "process": "W1JetsToLNu", 
-        "scenario": "PU25nsData2015v1"
+        "scenario": "PU25nsData2015v1",
+        "xsec": 9493
     }, 
     "/W1JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
         "campaign": "Summer12", 
@@ -5647,7 +5650,8 @@
         "generator": "madgraph-pythia8", 
         "n_events_generated": "47161328", 
         "process": "WJetsToLNu", 
-        "scenario": "PU25nsData2015v1"
+        "scenario": "PU25nsData2015v1",
+        "xsec" : 61526.7
     }, 
     "/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM": {
         "campaign": "RunIISpring15MiniAODv2", 
@@ -5711,10 +5715,11 @@
         "energy": "13", 
         "format": "MINIAOD", 
         "generator": "amcatnlo-pythia8", 
-        "generatorWeight": 0.6227349913710752, 
+        "generatorWeight": 0.622734991371, 
         "n_events_generated": "5201691", 
         "process": "WWTo1L1Nu2Q", 
-        "scenario": "PU25nsData2015v1"
+        "scenario": "PU25nsData2015v1",
+        "xsec": 49.997
     }, 
     "/WWTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM": {
         "campaign": "RunIISpring15MiniAODv2", 
@@ -5932,7 +5937,7 @@
         "energy": "13", 
         "format": "MINIAOD", 
         "generator": "amcatnlo-pythia8", 
-        "generatorWeight": 0.6575869385118686, 
+        "generatorWeight": 0.657632384745, 
         "n_events_generated": "12542004", 
         "process": "WZJets", 
         "scenario": "PU25nsData2015v1", 
@@ -5945,9 +5950,11 @@
         "energy": "13", 
         "format": "MINIAOD", 
         "generator": "amcatnlo-pythia8", 
-        "n_events_generated": "19742520", 
+        "n_events_generated": "19742520",
+        "generatorWeight": 0.580781278175,
         "process": "WZTo1L1Nu2Q", 
-        "scenario": "PU25nsData2015v1"
+        "scenario": "PU25nsData2015v1",
+        "xsec": 10.71
     }, 
     "/WZTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
         "campaign": "RunIISpring15DR74", 
@@ -6012,10 +6019,12 @@
         "embedded": false, 
         "energy": "13", 
         "format": "MINIAOD", 
-        "generator": "amcatnlo-pythia8", 
+        "generator": "amcatnlo-pythia8",
+        "generatorWeight": 0.598818548243,
         "n_events_generated": "25850479", 
         "process": "WZTo2L2Q", 
-        "scenario": "PU25nsData2015v1"
+        "scenario": "PU25nsData2015v1",
+        "xsec": 5.595
     }, 
     "/WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/AODSIM": {
         "campaign": "RunIISpring15DR74", 
@@ -6580,8 +6589,10 @@
         "format": "MINIAOD", 
         "generator": "amcatnlo-pythia8", 
         "n_events_generated": "15301695", 
+        "generatorWeight": 0.631337966153, 
         "process": "ZZTo2L2Q", 
-        "scenario": "PU25nsData2015v1"
+        "scenario": "PU25nsData2015v1",
+        "xsec": 3.22
     }, 
     "/ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM": {
         "campaign": "RunIISpring15DR74", 
@@ -6656,7 +6667,7 @@
         "energy": "13", 
         "format": "MINIAOD", 
         "generator": "amcatnlo-pythia8", 
-        "generatorWeight": 0.690102181641695, 
+        "generatorWeight": 0.690102181642, 
         "n_events_generated": "10747136", 
         "process": "ZZTo4L", 
         "scenario": "PU25nsData2015v1", 
