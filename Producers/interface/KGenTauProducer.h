@@ -57,9 +57,9 @@ protected:
 				out.decayMode = 3;
 			else if(info.n_charged == 3)
 				out.decayMode = 4;
-			else
+			else{
 				out.decayMode = 5;
-
+			}
 			// TODO: Can this happen?
 			if( (info.n_charged % 2) == 0)
 				printf("Kappa GenTau producer warning: %d charged particles in tau decay!\n", info.n_charged);
@@ -92,6 +92,12 @@ protected:
 		// from an intermediate gamma emission from another tau
 		if(in.mother()->mother() && std::abs(in.mother()->mother()->pdgId()) == 15)
 			return false;
+#if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
+		// Do not include taus which are produced within jets
+		if(!dynamic_cast<const reco::GenParticle&>(in).statusFlags().isPrompt())
+		    return false;
+#endif
+		
 
 		return true;
 	}
@@ -108,22 +114,24 @@ private:
 		unsigned int n_charged;
 	};
 
-	void walkDecayTree(const reco::GenParticle& in, DecayInfo& info, int level = 0)
+	void walkDecayTree(const reco::GenParticle& in, DecayInfo& info, int level = 0, bool allowNonPromptTauDecayProduct = false )
 	{
 		//for(int i = 0; i < level; ++i) printf(" ");
 		//printf("PDG %d\tstatus %d", in.pdgId(), in.status());
-
+		//std::cout<<"\tpt "<<in.p4().pt()<<"\tphi "<<in.p4().phi()<<"\teta "<<in.p4().eta()<<"\tE "<<in.p4().E()
+		//<<"\tispromptaudecyp:"<<in.statusFlags().isPromptTauDecayProduct();
+		
+		unsigned int lep_daughter_wiht_max_pt = 0;
+		
 		RMDLV p4(0,0,0,0);
 		if(in.numberOfDaughters() == 0)
 		{
 			//printf("\n");
-
 			// Check that the final particle of the chain is a direct tau decay product, avoiding,
 			// for example, particles coming from intermediate gamma emission, which are listed as
 			// tau daughters in prunedGenParticle collections. Method available only from 74X.
 #if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
-			if(in.status() == 1 && !isNeutrino(in.pdgId()) && in.statusFlags().isDirectTauDecayProduct() 
-								       && in.statusFlags().isDirectHardProcessTauDecayProduct())
+			if(in.status() == 1 && !isNeutrino(in.pdgId()) && (in.statusFlags().isPromptTauDecayProduct() || allowNonPromptTauDecayProduct))
 #else
 			if(in.status() == 1 && !isNeutrino(in.pdgId()))
 #endif
@@ -140,29 +148,40 @@ private:
 		}
 		else if(in.numberOfDaughters() == 1)
 		{
-			//printf("\tone child, keeping level... ");
+			//printf("\tone child, keeping level... \n");
 			// Don't increase level since this does not seem to be a "real"
 			// decay but just an intermediate generator step
-			walkDecayTree(static_cast<const reco::GenParticle&>(*in.daughter(0)), info, level);
+			walkDecayTree(static_cast<const reco::GenParticle&>(*in.daughter(0)), info, level, allowNonPromptTauDecayProduct);
 		}
 		else if(in.numberOfDaughters() == 2 && (
 				(std::abs(in.daughter(0)->pdgId()) == 22 && std::abs(in.daughter(1)->pdgId()) == 15) ||
 				(std::abs(in.daughter(0)->pdgId()) == 15 && std::abs(in.daughter(1)->pdgId()) == 22))
 			   )
 		{
-			//printf("\tinterm. gamma emission, keeping level... ");
+			//printf("\tinterm. gamma emission, keeping level... \n");
 			// Don't increase level since this does not seem to be a "real"
 			// decay but just an intermediate emission of a photon
 			// Don't follow photon decay path
 			if (std::abs(in.daughter(0)->pdgId()) == 15)
-				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(0)), info, level);
+				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(0)), info, level, allowNonPromptTauDecayProduct);
 			else
-				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(1)), info, level);
+				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(1)), info, level, allowNonPromptTauDecayProduct);
 		}
+		//else if(in.numberOfDaughters() >= 3 && ( isLepton(in.daughter(0)->pdgId()) &&  isLepton(in.daughter(1)->pdgId()) && isLepton(in.daughter(2)->pdgId())))
+		else if(minthreeLeptondauhhters(in,lep_daughter_wiht_max_pt))
+		{
+			//printf("\tinternal gamma(*) conversion (tau -> l l tau )\n");
+			// Don't increase level since the initial tau is not real.
+			// The inital tau decays into three leptons, which can be illustrated by a virual photon (gamma*).
+			// Take the lepton with the largest pt, which is most likly to be reconstructed as the tau. The others are usally soft 
+			// the loop over the daughters is necessary since also photons can be radiated within this step.
+			 if (std::abs(lep_daughter_wiht_max_pt) == 11 || std::abs(lep_daughter_wiht_max_pt) == 13 ) allowNonPromptTauDecayProduct = true;
+			 walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(lep_daughter_wiht_max_pt)), info, level, allowNonPromptTauDecayProduct);
+		}		
 		else if(in.numberOfDaughters() == 2 && std::abs(in.pdgId()) == 111 &&
 				std::abs(in.daughter(0)->pdgId()) == 22 && std::abs(in.daughter(1)->pdgId()) == 22)
 		{
-			//printf("\tneutral pion, stop recursion. ");
+			//printf("\tneutral pion, stop recursion. \n");
 			//printf("\n");
 			// Neutral pion, save four-momentum in the visible component
 			RMDLV p4;
@@ -173,7 +192,7 @@ private:
 		{
 			//printf("\t%lu children, recurse...\n", in.numberOfDaughters());
 			for(unsigned int i = 0; i < in.numberOfDaughters(); ++i)
-				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(i)), info, level + 1);
+				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(i)), info, level + 1, allowNonPromptTauDecayProduct);
 		}
 	}
 
@@ -181,6 +200,27 @@ private:
 	{
 		return std::abs(pdg_id) == 12 || std::abs(pdg_id) == 14 || std::abs(pdg_id) == 16;
 	}
+	static bool isLepton(int pdg_id)
+	{
+		return std::abs(pdg_id) == 11 || std::abs(pdg_id) == 13 || std::abs(pdg_id) == 15;
+	}
+	static bool minthreeLeptondauhhters(const reco::GenParticle& in, unsigned int &lep_daughter_wiht_max_pt){
+	  int Nakt=0;
+	  float akt_max_pt=-1.0;
+	  for(unsigned int i = 0; i < in.numberOfDaughters(); ++i)
+	    {
+	     if (isLepton(in.daughter(i)->pdgId()))
+	     {
+	       Nakt++; 
+	       if (in.daughter(i)->pt()>akt_max_pt){
+		 lep_daughter_wiht_max_pt = i;
+		 akt_max_pt = in.daughter(i)->pt();
+	       }
+	     }
+	  }	
+	  return Nakt>=3;
+	}
+	  
 };
 
 #endif
