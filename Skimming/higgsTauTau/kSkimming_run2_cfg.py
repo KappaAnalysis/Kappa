@@ -52,7 +52,21 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	from Kappa.Skimming.KSkimming_template_cfg import process
 	## ------------------------------------------------------------------------
-	## Write out edmFile to allos unscheduled modules to work
+	# count number of events before doing anything elese
+	process.p *= process.nEventsTotal
+	process.p *= process.nNegEventsTotal
+
+	# produce selected collections and filter events with not even one Lepton
+	from Kappa.Skimming.KSkimming_preselection import do_preselection
+	do_preselection(process)
+	process.p *= process.goodEventFilter
+
+	process.selectedKappaTaus.cut = cms.string('pt > 20 && abs(eta) < 2.3') 
+	process.selectedKappaMuons.cut = cms.string('pt > 10 && abs(eta) < 2.4')
+	process.selectedKappaElectrons.cut = cms.string('pt > 13 && abs(eta) < 2.5 ')
+	process.goodEventFilter.minNumber = cms.uint32(2)
+	## ------------------------------------------------------------------------
+		# possibility to write out edmDump. Be careful when using unsceduled mode
 	process.load("Kappa.Skimming.edmOut")
 	#process.ep *= process.edmOut
 
@@ -68,15 +82,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
-	process.ep *= process.kappaOut
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	# Important to be evaluated correctly for the following steps
 	process.kappaTuple.active = cms.vstring('TreeInfo')
 	data, isEmbedded, miniaod, process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 
-	process.p *= process.nEventsTotal
-	process.p *= process.nNegEventsTotal
 	## ------------------------------------------------------------------------
 	# General configuration
 	if ((cmssw_version_number.startswith("7_4") and split_cmssw_version[2] >= 14) or (cmssw_version_number.startswith("7_6"))):
@@ -389,6 +400,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	## if needed adapt output filename
+	process.p *= process.kappaOut
 	if outputfilename != '':
 		process.kappaTuple.outputFile = cms.string('%s'%outputfilename)
 
