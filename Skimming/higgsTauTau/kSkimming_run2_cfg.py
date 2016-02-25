@@ -340,6 +340,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.load('JetMETCorrections.Configuration.JetCorrectionServices_cff')
 		process.p *= (process.makeKappaMET)
 
+		# new MVA MET
+		from RecoMET.METPUSubtraction.MVAMETConfiguration_cff import runMVAMET
+		jetCollection = "slimmedJets"
+		runMVAMET( process, jetCollectionPF = jetCollection)
+		process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
+		process.MVAMET.srcLeptons  = cms.VInputTag("slimmedMuons", "slimmedElectrons", "slimmedTaus") # to produce all possible combinations
+		process.MVAMET.requireOS = cms.bool(False)
+
 	## ------------------------------------------------------------------------
 	## GenJets 
 	if not data:

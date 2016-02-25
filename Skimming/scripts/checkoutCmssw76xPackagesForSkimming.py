@@ -59,6 +59,8 @@ def checkoutPackages(args):
 	commands = [
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 		"git cms-merge-topic -u KappaAnalysis:Kappa_CMSSW_763",
+		"git cms-addpkg RecoMET/METPUSubtraction",
+		"git cms-addpkg DataFormats/METReco",
 		#Electron cutBased Id and MVA Id
 		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_747
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_747_Spring15_MVA_tra
