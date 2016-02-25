@@ -94,24 +94,22 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
-	if miniaod:
-		process.load("Kappa.Skimming.KVertices_cff")
-		process.goodOfflinePrimaryVertices.src = cms.InputTag('offlineSlimmedPrimaryVertices')
-		process.p *= ( process.makeVertexes )
-		process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
-		process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
-		if (cmssw_version_number.startswith("7_6")):
-			process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
 
-		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
-		if(data and ("Run2015" in nickname)):
-			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
+	process.load("Kappa.Skimming.KVertices_cff")
+	process.goodOfflinePrimaryVertices.src = cms.InputTag('offlineSlimmedPrimaryVertices')
+	process.p *= ( process.makeVertexes )
+	process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
+	process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
+	if (cmssw_version_number.startswith("7_6")):
+		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
+
+	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
+	if(data and ("Run2015" in nickname)):
+		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
 
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
 	if (cmssw_version_number.startswith("7_6")):
 		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))
-	if not miniaod:
-		process.kappaTuple.active += cms.vstring('TriggerObjects')
 
 	if not isEmbedded and data:
 			process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
@@ -121,15 +119,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.kappaTuple.active+= cms.vstring('GenParticles')      # save GenParticles,
 			process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
 
-			if(miniaod):
-				process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
-				process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
-	# Prune genParticles
-	if not isEmbedded and not data and not miniaod:
-		process.load("Kappa.Skimming.PruneGenParticles_cff")
-	
-	# Special settings for embedded samples
-	# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonTauReplacementWithPFlow
+			process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
+			process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
+
 	if isEmbedded:
 		#process.load('RecoBTag/Configuration/RecoBTag_cff')
 		#process.load('RecoJets/JetAssociationProducers/ak5JTA_cff')
@@ -150,35 +142,18 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.Info.hltBlacklist = hltBlacklist
 
 	## ------------------------------------------------------------------------
-	# Configure PFCandidates and offline PV
-	if(not miniaod):
-		process.load("Kappa.Skimming.KPFCandidates_run2_cff")
-		process.kappaTuple.active += cms.vstring('PFCandidates') # save PFCandidates for deltaBeta corrected
-		process.kappaTuple.PFCandidates.whitelist = cms.vstring( # isolation used for electrons and muons.
-		##	"pfNoPileUpChargedHadrons",    ## switch to pfAllChargedParticles
-			"pfAllChargedParticles",       ## same as pfNoPileUpChargedHadrons +pf_electrons + pf_muons
-			"pfNoPileUpNeutralHadrons",
-			"pfNoPileUpPhotons",
-			"pfPileUpChargedHadrons",
-			)
-		##process.p *= ( process.makePFBRECO * process.makePFCandidatesForDeltaBeta )
-		process.p *= ( process.makeKappaPFCandidates )
 
-	if(miniaod):
-		process.kappaTuple.active += cms.vstring('packedPFCandidates') # save PFCandidates. Not sure for what, because might not be usefull for isolation
-		if (cmssw_version_number.startswith("7_6")):
-			process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
+	process.kappaTuple.active += cms.vstring('packedPFCandidates') # save PFCandidates. Not sure for what, because might not be usefull for isolation
+	if (cmssw_version_number.startswith("7_6")):
+		process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
 	## ------------------------------------------------------------------------
 	# Configure Muons
-	if not miniaod:
-		process.load("Kappa.Skimming.KMuons_run2_cff")
-	if(miniaod):
-		process.load("Kappa.Skimming.KMuons_miniAOD_cff")
-		process.kappaTuple.Muons.muons.src = cms.InputTag("slimmedMuons")
-		process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-		process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
-		process.kappaTuple.Muons.use03ConeForPfIso = cms.bool(True)
+	process.load("Kappa.Skimming.KMuons_miniAOD_cff")
+	process.kappaTuple.Muons.muons.src = cms.InputTag("slimmedMuons")
+	process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+	process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
+	process.kappaTuple.Muons.use03ConeForPfIso = cms.bool(True)
 
 	process.kappaTuple.active += cms.vstring('Muons')
 	process.kappaTuple.Muons.minPt = cms.double(8.0)
@@ -187,127 +162,84 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	# Configure Electrons
 	process.kappaTuple.active += cms.vstring('Electrons')
-	if(miniaod):
-		process.load("Kappa.Skimming.KElectrons_miniAOD_cff")
-		process.kappaTuple.Electrons.electrons.src = cms.InputTag("slimmedElectrons")
-		process.kappaTuple.Electrons.electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-		process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
-		process.kappaTuple.Electrons.electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
-		from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
-		process.kappaTuple.Electrons.srcIds = cms.string("standalone");
+	process.load("Kappa.Skimming.KElectrons_miniAOD_cff")
+	process.kappaTuple.Electrons.electrons.src = cms.InputTag("slimmedElectrons")
+	process.kappaTuple.Electrons.electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+	process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
+	process.kappaTuple.Electrons.electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
+	from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
+	process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
-		process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
-						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
-						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
-						"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
-						"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
+	process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
+					"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
 
-	if not miniaod:
-		process.load("Kappa.Skimming.KElectrons_run2_cff")
-		process.kappaTuple.Electrons.minPt = cms.double(8.0)
-		from Kappa.Skimming.KElectrons_run2_cff import setupElectrons
-
-		process.kappaTuple.Electrons.ids = cms.vstring("cutBasedElectronID_Spring15_25ns_V1_standalone_loose",
-						"cutBasedElectronID_Spring15_25ns_V1_standalone_medium",
-						"cutBasedElectronID_Spring15_25ns_V1_standalone_tight",
-						"cutBasedElectronID_Spring15_25ns_V1_standalone_veto",
-						"ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
 
 	setupElectrons(process)
 	process.p *= ( process.makeKappaElectrons )
 	## ------------------------------------------------------------------------
-	if(miniaod):
-		process.kappaTuple.active += cms.vstring('PatTaus')
-		process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
-		process.kappaTuple.PatTaus.taus.floatDiscrBlacklist = cms.vstring()
-		# just took everything from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV
-		process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring ()
-		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist = cms.vstring(
-		                                                                       "decayModeFinding",
-		                                                                       "decayModeFindingNewDMs",
-		                                                                       "byLooseCombinedIsolationDeltaBetaCorr3Hits",
-		                                                                       "byMediumCombinedIsolationDeltaBetaCorr3Hits",
-		                                                                       "byTightCombinedIsolationDeltaBetaCorr3Hits",
-		                                                                       "byCombinedIsolationDeltaBetaCorrRaw3Hits",
-		                                                                       "chargedIsoPtSum",
-		                                                                       "neutralIsoPtSum",
-		                                                                       "puCorrPtSum",
-		                                                                       "footprintCorrection",
-		                                                                       "photonPtSumOutsideSignalCone",
-		                                                                       "byIsolationMVArun2v1DBoldDMwLTraw",
-		                                                                       "byLooseIsolationMVArun2v1DBoldDMwLT",
-		                                                                       "byMediumIsolationMVArun2v1DBoldDMwLT",
-		                                                                       "byTightIsolationMVArun2v1DBoldDMwLT",
-		                                                                       "byVTightIsolationMVArun2v1DBoldDMwLT",
-		                                                                       "byIsolationMVArun2v1DBnewDMwLTraw",
-		                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
-		                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
-		                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
-		                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
-		                                                                       "againstMuonLoose3",
-		                                                                       "againstMuonTight3",
-		                                                                       "againstElectronMVA5category",
-		                                                                       "againstElectronMVA5raw",
-		                                                                       "againstElectronVLooseMVA5",
-		                                                                       "againstElectronLooseMVA5",
-		                                                                       "againstElectronMediumMVA5",
-		                                                                       "againstElectronTightMVA5",
-		                                                                       "againstElectronVTightMVA5",
-		                                                                       "againstElectronMVA6category",
-		                                                                       "againstElectronMVA6raw",
-		                                                                       "againstElectronVLooseMVA6",
-		                                                                       "againstElectronLooseMVA6",
-		                                                                       "againstElectronMediumMVA6",
-		                                                                       "againstElectronTightMVA6",
-		                                                                       "againstElectronVTightMVA6",
-		                                                                       "byLooseCombinedIsolationDeltaBetaCorr3HitsdR03",
-		                                                                       "byMediumCombinedIsolationDeltaBetaCorr3HitsdR03",
-		                                                                       "byTightCombinedIsolationDeltaBetaCorr3HitsdR03",
-		                                                                       "byLooseIsolationMVArun2v1DBdR03oldDMwLT",
-		                                                                       "byMediumIsolationMVArun2v1DBdR03oldDMwLT",
-		                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
-		                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT"
-		)
-		process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
-	## ------------------------------------------------------------------------
-	# Configure Taus
-	if(not miniaod):
-		process.load("Kappa.Skimming.KTaus_run2_cff")
-		process.kappaTuple.active += cms.vstring('Taus')
-		process.kappaTuple.Taus.minPt = cms.double(8.0)
-		process.p *= ( process.makeKappaTaus )
-
-	# Reduced number of Tau discriminators
-	# The blacklist is to some degree arbitrary to get below 64 binaty tau discriminators
-	# - they may need to be changed as soon as 'official' discriminators for TauID 2014 will be published
-		process.kappaTuple.Taus.taus.binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", ".*raw.*", ".*Raw.*", "^hpsPFTauDiscriminationByVLoose.*", "^hpsPFTauDiscriminationByVTight.*", "^hpsPFTauDiscriminationByMedium.*")
-		process.kappaTuple.Taus.taus.preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFindingNewDMs")
-
+	process.kappaTuple.active += cms.vstring('PatTaus')
+	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
+	process.kappaTuple.PatTaus.taus.floatDiscrBlacklist = cms.vstring()
+	# just took everything from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV
+	process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring ()
+	process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist = cms.vstring(
+	                                                                       "decayModeFinding",
+	                                                                       "decayModeFindingNewDMs",
+	                                                                       "byLooseCombinedIsolationDeltaBetaCorr3Hits",
+	                                                                       "byMediumCombinedIsolationDeltaBetaCorr3Hits",
+	                                                                       "byTightCombinedIsolationDeltaBetaCorr3Hits",
+	                                                                       "byCombinedIsolationDeltaBetaCorrRaw3Hits",
+	                                                                       "chargedIsoPtSum",
+	                                                                       "neutralIsoPtSum",
+	                                                                       "puCorrPtSum",
+	                                                                       "footprintCorrection",
+	                                                                       "photonPtSumOutsideSignalCone",
+	                                                                       "byIsolationMVArun2v1DBoldDMwLTraw",
+	                                                                       "byLooseIsolationMVArun2v1DBoldDMwLT",
+	                                                                       "byMediumIsolationMVArun2v1DBoldDMwLT",
+	                                                                       "byTightIsolationMVArun2v1DBoldDMwLT",
+	                                                                       "byVTightIsolationMVArun2v1DBoldDMwLT",
+	                                                                       "byIsolationMVArun2v1DBnewDMwLTraw",
+	                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
+	                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
+	                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
+	                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
+	                                                                       "againstMuonLoose3",
+	                                                                       "againstMuonTight3",
+	                                                                       "againstElectronMVA5category",
+	                                                                       "againstElectronMVA5raw",
+	                                                                       "againstElectronVLooseMVA5",
+	                                                                       "againstElectronLooseMVA5",
+	                                                                       "againstElectronMediumMVA5",
+	                                                                       "againstElectronTightMVA5",
+	                                                                       "againstElectronVTightMVA5",
+	                                                                       "againstElectronMVA6category",
+	                                                                       "againstElectronMVA6raw",
+	                                                                       "againstElectronVLooseMVA6",
+	                                                                       "againstElectronLooseMVA6",
+	                                                                       "againstElectronMediumMVA6",
+	                                                                       "againstElectronTightMVA6",
+	                                                                       "againstElectronVTightMVA6",
+	                                                                       "byLooseCombinedIsolationDeltaBetaCorr3HitsdR03",
+	                                                                       "byMediumCombinedIsolationDeltaBetaCorr3HitsdR03",
+	                                                                       "byTightCombinedIsolationDeltaBetaCorr3HitsdR03",
+	                                                                       "byLooseIsolationMVArun2v1DBdR03oldDMwLT",
+	                                                                       "byMediumIsolationMVArun2v1DBdR03oldDMwLT",
+	                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
+	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT"
+	)
+	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	## ------------------------------------------------------------------------
 	## Configure Jets
 
 	process.kappaTuple.active += cms.vstring('PileupDensity')
-	if not miniaod:
-		process.load("Kappa.Skimming.KJets_run2_cff")
-		process.kappaTuple.active += cms.vstring('Jets')
-		process.kappaTuple.Jets = process.kappaTupleJets
-		process.kappaTuple.Jets.minPt = cms.double(10.0)
 
-		#Check if working
-		process.p *= (
-			process.ak4PFJetsCHScor *
-		#	process.makePFJets *
-		#	process.makePFJetsCHS *
-		#	process.makeQGTagging *
-		#	process.makeBTagging *
-		#	process.makePUJetID *
-			process.kt6PFJets
-		)
-
-	if miniaod:
-		process.kappaTuple.active += cms.vstring('PatJets')
-		if (cmssw_version_number.startswith("7_6")):
-			process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag("slimmedJets"))
+	process.kappaTuple.active += cms.vstring('PatJets')
+	if (cmssw_version_number.startswith("7_6")):
+		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag("slimmedJets"))
 	if (cmssw_version_number.startswith("7_6")):
 		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
 	process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
@@ -317,55 +249,37 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	## MET
 	process.load("Kappa.Skimming.KMET_run2_cff")
+	from Kappa.Skimming.KMET_run2_cff import configureMVAMetForMiniAOD
+	configureMVAMetForMiniAOD(process)
 
-	if (not miniaod):
-		from Kappa.Skimming.KMET_run2_cff import configureMVAMetForAOD
-		configureMVAMetForAOD(process)
-		process.kappaTuple.active += cms.vstring('GenMET')                  ## produce/save KappaMET
-		process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET and MVA MET
-		## Write MVA MET to KMETs. To check what happens on AOD
-		process.kappaTuple.active += cms.vstring('PatMETs')
-		process.kappaTuple.PatMETs.whitelist = cms.vstring(
-		                                                   "metMVAEM",
-		                                                   "metMVAET",
-		                                                   "metMVAMT",
-		                                                   "metMVATT"
-		                                                    )
-		process.p *= process.makeKappaMET
+	## Standard MET and GenMet from pat::MET
+	process.kappaTuple.active += cms.vstring('PatMET')
+	process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
+	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
 
-	if(miniaod):
-		from Kappa.Skimming.KMET_run2_cff import configureMVAMetForMiniAOD
-		configureMVAMetForMiniAOD(process)
+	## Write MVA MET to KMETs. To check what happens on AOD
+	process.kappaTuple.active += cms.vstring('PatMETs')
+	process.kappaTuple.PatMETs.metMVAEM = cms.PSet(src=cms.InputTag("metMVAEM"))
+	process.kappaTuple.PatMETs.metMVAET = cms.PSet(src=cms.InputTag("metMVAET"))
+	process.kappaTuple.PatMETs.metMVAMT = cms.PSet(src=cms.InputTag("metMVAMT"))
+	process.kappaTuple.PatMETs.metMVATT = cms.PSet(src=cms.InputTag("metMVATT"))
+	process.load('JetMETCorrections.Configuration.JetCorrectionServices_cff')
+	process.p *= (process.makeKappaMET)
 
-		## Standard MET and GenMet from pat::MET
-		process.kappaTuple.active += cms.vstring('PatMET')
-		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
-		process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
-
-		## Write MVA MET to KMETs. To check what happens on AOD
-		process.kappaTuple.active += cms.vstring('PatMETs')
-		process.kappaTuple.PatMETs.metMVAEM = cms.PSet(src=cms.InputTag("metMVAEM"))
-		process.kappaTuple.PatMETs.metMVAET = cms.PSet(src=cms.InputTag("metMVAET"))
-		process.kappaTuple.PatMETs.metMVAMT = cms.PSet(src=cms.InputTag("metMVAMT"))
-		process.kappaTuple.PatMETs.metMVATT = cms.PSet(src=cms.InputTag("metMVATT"))
-		process.load('JetMETCorrections.Configuration.JetCorrectionServices_cff')
-		process.p *= (process.makeKappaMET)
-
-		# new MVA MET
-		from RecoMET.METPUSubtraction.MVAMETConfiguration_cff import runMVAMET
-		jetCollection = "slimmedJets"
-		runMVAMET( process, jetCollectionPF = jetCollection)
-		process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
-		process.MVAMET.srcLeptons  = cms.VInputTag("slimmedMuons", "slimmedElectrons", "slimmedTaus") # to produce all possible combinations
-		process.MVAMET.requireOS = cms.bool(False)
+	# new MVA MET
+	from RecoMET.METPUSubtraction.MVAMETConfiguration_cff import runMVAMET
+	jetCollection = "slimmedJets"
+	runMVAMET( process, jetCollectionPF = jetCollection)
+	process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
+	process.MVAMET.srcLeptons  = cms.VInputTag("slimmedMuons", "slimmedElectrons", "slimmedTaus") # to produce all possible combinations
+	process.MVAMET.requireOS = cms.bool(False)
 
 	## ------------------------------------------------------------------------
 	## GenJets 
 	if not data:
 		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
 		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
-		if(miniaod):
-			process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
+		process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
 		process.p *= ( 
 			process.tauGenJets +
 			process.tauGenJetsSelectorAllHadrons
