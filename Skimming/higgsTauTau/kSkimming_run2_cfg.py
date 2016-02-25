@@ -82,6 +82,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
+	muons = "selectedKappaMuons"
+	electrons = "selectedKappaElectrons"
+	taus = "selectedKappaTaus"
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	# Important to be evaluated correctly for the following steps
@@ -150,13 +153,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	# Configure Muons
 	process.load("Kappa.Skimming.KMuons_miniAOD_cff")
-	process.kappaTuple.Muons.muons.src = cms.InputTag("slimmedMuons")
+	process.kappaTuple.Muons.muons.src = cms.InputTag(muons)
 	process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 	process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
 	process.kappaTuple.Muons.use03ConeForPfIso = cms.bool(True)
+	for src in [ "muPFIsoDepositCharged", "muPFIsoDepositChargedAll", "muPFIsoDepositNeutral", "muPFIsoDepositGamma", "muPFIsoDepositPU"]:
+		setattr(getattr(process, src), "src", cms.InputTag(muons))
 
 	process.kappaTuple.active += cms.vstring('Muons')
-	process.kappaTuple.Muons.minPt = cms.double(8.0)
 	process.p *= ( process.makeKappaMuons )
 
 	## ------------------------------------------------------------------------
@@ -177,7 +181,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 					"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
 
 
-	setupElectrons(process)
+	setupElectrons(process, electrons)
 	process.p *= ( process.makeKappaElectrons )
 	## ------------------------------------------------------------------------
 	process.kappaTuple.active += cms.vstring('PatTaus')
@@ -271,7 +275,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	jetCollection = "slimmedJets"
 	runMVAMET( process, jetCollectionPF = jetCollection)
 	process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
-	process.MVAMET.srcLeptons  = cms.VInputTag("slimmedMuons", "slimmedElectrons", "slimmedTaus") # to produce all possible combinations
+	process.MVAMET.srcLeptons  = cms.VInputTag(muons, electrons, taus) # to produce all possible combinations
 	process.MVAMET.requireOS = cms.bool(False)
 
 	## ------------------------------------------------------------------------
