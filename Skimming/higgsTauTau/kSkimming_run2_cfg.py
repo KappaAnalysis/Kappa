@@ -158,6 +158,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		if (cmssw_version_number.startswith("7_6")):
 			process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
+
+	from RecoMET.METPUSubtraction.localSqlite import loadLocalSqlite
+	loadLocalSqlite(process, "Fall15_25nsV2_DATA.db" if data else "Fall15_25nsV2_MC.db") 
+	jetCollection = "patJetsReapplyJEC"
+
+
 	## ------------------------------------------------------------------------
 	# Configure Muons
 	if not miniaod:
@@ -296,7 +302,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if miniaod:
 		process.kappaTuple.active += cms.vstring('PatJets')
 		if (cmssw_version_number.startswith("7_6")):
-			process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag("slimmedJets"))
+			process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
 	if (cmssw_version_number.startswith("7_6")):
 		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
 	process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
@@ -342,7 +348,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 		# new MVA MET
 		from RecoMET.METPUSubtraction.MVAMETConfiguration_cff import runMVAMET
-		jetCollection = "slimmedJets"
 		runMVAMET( process, jetCollectionPF = jetCollection)
 		process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
 		process.MVAMET.srcLeptons  = cms.VInputTag("slimmedMuons", "slimmedElectrons", "slimmedTaus") # to produce all possible combinations
