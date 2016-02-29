@@ -159,8 +159,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
 
-	from RecoMET.METPUSubtraction.localSqlite import loadLocalSqlite
-	loadLocalSqlite(process, "Fall15_25nsV2_DATA.db" if data else "Fall15_25nsV2_MC.db") 
+	from RecoMET.METPUSubtraction.localSqlite import recorrectJets
+	recorrectJets(process)
 	jetCollection = "patJetsReapplyJEC"
 
 
