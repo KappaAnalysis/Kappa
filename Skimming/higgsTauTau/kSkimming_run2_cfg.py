@@ -248,8 +248,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	## ------------------------------------------------------------------------
 	## Configure Jets
-
 	process.kappaTuple.active += cms.vstring('PileupDensity')
+	process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
+	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
+	if (cmssw_version_number.startswith("7_6")):
+		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
 	process.kappaTuple.active += cms.vstring('PatJets')
 	if (cmssw_version_number.startswith("7_6")):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
