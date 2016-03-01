@@ -75,7 +75,8 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		propagatorToMuonSystem.init(setup);
+		if(!noPropagation)
+			propagatorToMuonSystem.init(setup);
 
 		muonMetadata->hltNames.clear();
 		muonTriggerObjectBitMap.clear();
