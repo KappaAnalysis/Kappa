@@ -149,6 +149,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#process.kappaTuple.active += cms.vstring('packedPFCandidates') # save PFCandidates. Not sure for what, because might not be usefull for isolation
 	#process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
+
+	from RecoMET.METPUSubtraction.localSqlite import recorrectJets
+	recorrectJets(process)
+	jetCollection = "patJetsReapplyJEC"
+
+
 	## ------------------------------------------------------------------------
 	# Configure Muons
 	process.load("Kappa.Skimming.KMuons_miniAOD_cff")
@@ -239,19 +245,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## Configure Jets
 
 	process.kappaTuple.active += cms.vstring('PileupDensity')
-
 	process.kappaTuple.active += cms.vstring('PatJets')
 	if (cmssw_version_number.startswith("7_6")):
-		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag("slimmedJets"))
-	if (cmssw_version_number.startswith("7_6")):
-		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
-	process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
-	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
-
-
-	## ------------------------------------------------------------------------
-	## MET
-	process.load("Kappa.Skimming.KMET_run2_cff")
+		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
 	from Kappa.Skimming.KMET_run2_cff import configureMVAMetForMiniAOD
 	configureMVAMetForMiniAOD(process)
 
@@ -276,6 +272,48 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
 	process.MVAMET.srcLeptons  = cms.VInputTag(muons, electrons, taus) # to produce all possible combinations
 	process.MVAMET.requireOS = cms.bool(False)
+=======
+
+	if (not miniaod):
+		from Kappa.Skimming.KMET_run2_cff import configureMVAMetForAOD
+		configureMVAMetForAOD(process)
+		process.kappaTuple.active += cms.vstring('GenMET')                  ## produce/save KappaMET
+		process.kappaTuple.active += cms.vstring('MET')                       ## produce/save KappaPFMET and MVA MET
+		## Write MVA MET to KMETs. To check what happens on AOD
+		process.kappaTuple.active += cms.vstring('PatMETs')
+		process.kappaTuple.PatMETs.whitelist = cms.vstring(
+		                                                   "metMVAEM",
+		                                                   "metMVAET",
+		                                                   "metMVAMT",
+		                                                   "metMVATT"
+		                                                    )
+		process.p *= process.makeKappaMET
+
+	if(miniaod):
+		from Kappa.Skimming.KMET_run2_cff import configureMVAMetForMiniAOD
+		configureMVAMetForMiniAOD(process)
+
+		## Standard MET and GenMet from pat::MET
+		process.kappaTuple.active += cms.vstring('PatMET')
+		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
+		process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
+
+		## Write MVA MET to KMETs. To check what happens on AOD
+		process.kappaTuple.active += cms.vstring('PatMETs')
+		process.kappaTuple.PatMETs.metMVAEM = cms.PSet(src=cms.InputTag("metMVAEM"))
+		process.kappaTuple.PatMETs.metMVAET = cms.PSet(src=cms.InputTag("metMVAET"))
+		process.kappaTuple.PatMETs.metMVAMT = cms.PSet(src=cms.InputTag("metMVAMT"))
+		process.kappaTuple.PatMETs.metMVATT = cms.PSet(src=cms.InputTag("metMVATT"))
+		process.load('JetMETCorrections.Configuration.JetCorrectionServices_cff')
+		process.p *= (process.makeKappaMET)
+
+		# new MVA MET
+		from RecoMET.METPUSubtraction.MVAMETConfiguration_cff import runMVAMET
+		runMVAMET( process, jetCollectionPF = jetCollection)
+		process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
+		process.MVAMET.srcLeptons  = cms.VInputTag("slimmedMuons", "slimmedElectrons", "slimmedTaus") # to produce all possible combinations
+		process.MVAMET.requireOS = cms.bool(False)
+>>>>>>> CMSSW_7_6_X
 
 	## ------------------------------------------------------------------------
 	## GenJets 
