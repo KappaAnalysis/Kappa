@@ -38,6 +38,7 @@ options.register('testfile', '', VarParsing.multiplicity.singleton, VarParsing.v
 options.register('maxevents', -1, VarParsing.multiplicity.singleton, VarParsing.varType.int, 'maxevents')
 options.register('outputfilename', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Filename for the Outputfile')
 options.register('testsuite', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Run the Kappa test suite. Default: True')
+options.register('preselect', True, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'apply preselection at CMSSW level on leptons')
 options.parseArguments()
 
 cmssw_version_number = tools.get_cmssw_version_number()
@@ -56,15 +57,22 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.p *= process.nEventsTotal
 	process.p *= process.nNegEventsTotal
 
+	muons = "slimmedMuons"
+	electrons = "slimmedElectrons"
+	taus = "slimmedTaus"
 	# produce selected collections and filter events with not even one Lepton
-	from Kappa.Skimming.KSkimming_preselection import do_preselection
-	do_preselection(process)
-	process.p *= process.goodEventFilter
+	if(options.preselection)
+		from Kappa.Skimming.KSkimming_preselection import do_preselection
+		do_preselection(process)
+		process.p *= process.goodEventFilter
 
-	process.selectedKappaTaus.cut = cms.string('pt > 8 && abs(eta) < 2.5') 
-	process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
-	process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
-	process.goodEventFilter.minNumber = cms.uint32(2)
+		process.selectedKappaTaus.cut = cms.string('pt > 8 && abs(eta) < 2.5') 
+		process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
+		process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
+		process.goodEventFilter.minNumber = cms.uint32(2)
+		muons = "selectedKappaMuons"
+		electrons = "selectedKappaElectrons"
+		taus = "selectedKappaTaus"
 	## ------------------------------------------------------------------------
 		# possibility to write out edmDump. Be careful when using unsceduled mode
 	process.load("Kappa.Skimming.edmOut")
@@ -82,9 +90,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
-	muons = "selectedKappaMuons"
-	electrons = "selectedKappaElectrons"
-	taus = "selectedKappaTaus"
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	# Important to be evaluated correctly for the following steps
@@ -313,7 +318,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
 		process.MVAMET.srcLeptons  = cms.VInputTag("slimmedMuons", "slimmedElectrons", "slimmedTaus") # to produce all possible combinations
 		process.MVAMET.requireOS = cms.bool(False)
->>>>>>> CMSSW_7_6_X
 
 	## ------------------------------------------------------------------------
 	## GenJets 
