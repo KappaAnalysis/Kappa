@@ -66,7 +66,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		do_preselection(process)
 		process.p *= process.goodEventFilter
 
-		process.selectedKappaTaus.cut = cms.string('pt > 8 && abs(eta) < 2.5') 
+		process.selectedKappaTaus.cut = cms.string('pt > 15 && abs(eta) < 2.5') 
 		process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
 		process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
 		process.goodEventFilter.minNumber = cms.uint32(2)
