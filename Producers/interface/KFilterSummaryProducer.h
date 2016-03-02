@@ -9,7 +9,7 @@
 #include "../../DataFormats/interface/KInfo.h"
 #include <FWCore/Utilities/interface/InputTag.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 
 #include "DataFormats/FWLite/interface/Handle.h"
 #include "DataFormats/FWLite/interface/Event.h"

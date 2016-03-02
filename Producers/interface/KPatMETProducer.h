@@ -14,7 +14,7 @@
 #include <DataFormats/METReco/interface/PFMET.h>
 #include <DataFormats/PatCandidates/interface/MET.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 
 class KPatMETProducer : public KBaseMultiProducer<edm::View<pat::MET>, KMET>
 {

@@ -10,7 +10,7 @@
 #include "KBaseMultiProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 #include <queue>
 
 class KGenPhotonProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotons>

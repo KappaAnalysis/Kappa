@@ -14,7 +14,7 @@
 #include <RecoEgamma/EgammaTools/interface/ConversionTools.h>
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 #include "EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h"
 #if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
 	#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"

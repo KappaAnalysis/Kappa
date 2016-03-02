@@ -8,7 +8,7 @@
 #include "KBaseMultiLVProducer.h"
 #include <SimDataFormats/TrackingHit/interface/PSimHit.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 
 class KHitProducer : public KBaseMultiVectorProducer<edm::View<PSimHit>, KHits>
 {

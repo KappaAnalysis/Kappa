@@ -11,7 +11,7 @@
 #include <TrackingTools/PatternTools/interface/TwoTrackMinimumDistance.h>
 #include <RecoVertex/KinematicFitPrimitives/interface/KinematicParticleFactoryFromTransientTrack.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 
 #include "KBaseMultiProducer.h"
 #include "Kappa/DataFormats/interface/Hash.h"

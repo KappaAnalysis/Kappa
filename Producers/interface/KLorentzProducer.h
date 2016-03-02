@@ -10,7 +10,7 @@
 #include <DataFormats/METReco/interface/HcalNoiseRBX.h>
 #include <DataFormats/TrackReco/interface/Track.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 
 class KLorentzProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, KLVs>
 {

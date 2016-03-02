@@ -15,7 +15,7 @@
 #include <SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h>
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 
 #include "KInfoProducer.h"
 

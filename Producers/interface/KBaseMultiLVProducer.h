@@ -9,7 +9,7 @@
 
 #include "KBaseMultiProducer.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 
 template<typename T>
 struct KLVSorter

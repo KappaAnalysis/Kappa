@@ -9,7 +9,7 @@
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 
 class KBeamSpotProducer : public KBaseMultiProducer<reco::BeamSpot, KBeamSpot>

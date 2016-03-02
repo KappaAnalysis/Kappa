@@ -8,7 +8,7 @@
 #include "KBaseMultiProducer.h"
 #include <DataFormats/TrackReco/interface/Track.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "../../Producers/interface/Consumes.h"
 
 class KTrackSummaryProducer : public KBaseMultiProducer<edm::View<reco::Track>, KTrackSummary>
 {
