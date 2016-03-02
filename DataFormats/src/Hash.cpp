@@ -14,7 +14,7 @@ int getLVChargeHash(double pt, double eta, double phi, double mass, int charge)
 	return (boost::hash<int>()(roundToSignificantDigits(pt, 8)) ^
 	        boost::hash<int>()(roundToSignificantDigits(eta, 8)) ^
 	        boost::hash<int>()(roundToSignificantDigits(phi, 8)) ^
-	        boost::hash<int>()(roundToSignificantDigits(mass, 8)) ^
+	        boost::hash<int>()(roundToSignificantDigits(mass+pt+phi, 8)) ^
 	        boost::hash<int>()(charge));
 }
 
