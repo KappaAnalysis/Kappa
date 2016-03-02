@@ -172,6 +172,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		setattr(getattr(process, src), "src", cms.InputTag(muons))
 
 	process.kappaTuple.active += cms.vstring('Muons')
+	process.kappaTuple.Muons.noPropagation = cms.bool(True)
 	process.p *= ( process.makeKappaMuons )
 
 	## ------------------------------------------------------------------------
