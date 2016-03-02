@@ -13,6 +13,7 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/BTauReco/interface/JetTag.h>
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 class KJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KJets>
 {

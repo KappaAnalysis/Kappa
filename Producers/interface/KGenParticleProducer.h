@@ -15,6 +15,7 @@
 #include "KBaseMultiProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 #include <bitset>
 
 template<typename TProduct>

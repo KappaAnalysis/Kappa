@@ -12,6 +12,7 @@
 #include <FWCore/Framework/interface/Run.h>
 #include <FWCore/ParameterSet/interface/ParameterSet.h>
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "../../DataFormats/interface/KInfo.h"
 
 // KBaseProducer is the base class for all producers

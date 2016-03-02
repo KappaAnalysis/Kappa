@@ -9,6 +9,7 @@
 #include "KBaseProducer.h"
 
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 #include <FWCore/Utilities/interface/InputTag.h>
 #include <Kappa/DataFormats/interface/Kappa.h>
 

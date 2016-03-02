@@ -12,6 +12,7 @@
 #include <DataFormats/VertexReco/interface/Vertex.h>
 #include <DataFormats/VertexReco/interface/VertexFwd.h>
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 class KTowerProducer : public KBaseMultiLVProducer<CaloTowerCollection, KLVs>
 {

@@ -12,6 +12,7 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/PFMET.h>
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 class KMETProducer : public KBaseMultiProducer<edm::View<reco::PFMET>, KMET>
 {

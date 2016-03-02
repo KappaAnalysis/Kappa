@@ -10,6 +10,7 @@
 #include "../../DataFormats/interface/KJetMET.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 class KPileupDensityProducer : public KBaseMultiProducer<double, KPileupDensity>
 {

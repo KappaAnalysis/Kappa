@@ -7,6 +7,7 @@
 
 #include <DataFormats/PatCandidates/interface/Tau.h>
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 
 class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>

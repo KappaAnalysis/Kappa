@@ -5,6 +5,7 @@
 #define KAPPA_MULTIPRODUCER_H
 
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 #include "KBaseMatchingProducer.h"
 #include "../../DataFormats/interface/KBasic.h"

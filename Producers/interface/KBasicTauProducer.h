@@ -12,6 +12,7 @@
 #include "KBaseMultiLVProducer.h"
 #include "../../DataFormats/interface/KTrack.h"
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 template<typename TTau, typename TTauDiscriminator, typename TProduct>
 // Note: We need to use std::vector here, not edm::View, because otherwise

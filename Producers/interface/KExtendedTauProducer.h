@@ -13,6 +13,7 @@
 #include "KBasicTauProducer.h"
 #include "KTauProducer.h"
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 class KExtendedTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KExtendedTaus>
 {

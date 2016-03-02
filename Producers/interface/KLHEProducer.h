@@ -9,6 +9,7 @@
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 class KLHEProducer : public KBaseMultiProducer<LHEEventProduct, KGenParticles>
 {

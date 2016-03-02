@@ -10,6 +10,7 @@
 #include "KGenParticleProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 class KGenTauProducer : public KBasicGenParticleProducer<KGenTaus>
 {

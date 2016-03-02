@@ -7,6 +7,7 @@
 #define KAPPA_TREE_METADATAPRODUCER_H
 
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 
 class KTreeInfoProducer: public KBaseProducer

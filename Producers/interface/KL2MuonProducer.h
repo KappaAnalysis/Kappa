@@ -15,6 +15,7 @@
 #include <DataFormats/MuonSeed/interface/L3MuonTrajectorySeed.h>
 #include <DataFormats/RecoCandidate/interface/RecoChargedCandidate.h> 
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 #include "DataFormats/RecoCandidate/interface/IsoDeposit.h"
 #include "DataFormats/RecoCandidate/interface/IsoDepositFwd.h"

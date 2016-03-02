@@ -14,6 +14,7 @@
 #include <DataFormats/PatCandidates/interface/MET.h>
 #include "Kappa/DataFormats/interface/Hash.h"
 #include <FWCore/Framework/interface/EDProducer.h>
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 class KPatMETsProducer : public KBaseMultiLVProducer<edm::View<pat::MET>, KMETs>
 {
