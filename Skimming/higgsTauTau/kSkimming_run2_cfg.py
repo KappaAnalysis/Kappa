@@ -157,7 +157,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 
 	from RecoMET.METPUSubtraction.localSqlite import recorrectJets
-	recorrectJets(process)
+	recorrectJets(process, isData=data)
 	jetCollection = "patJetsReapplyJEC"
 
 
