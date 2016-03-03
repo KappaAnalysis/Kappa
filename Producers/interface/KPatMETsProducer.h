@@ -38,7 +38,7 @@ public:
 		KPatMETProducer::fillMET(in, out);
 
 		// save references to lepton selection from MVA MET
-		int hash = 0;
+		unsigned int hash = 0;
 		for(auto name: in.userCandNames())
 		{
 			reco::CandidatePtr aRecoCand = in.userCand( name );
