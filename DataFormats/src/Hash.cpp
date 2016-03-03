@@ -6,7 +6,7 @@
 unsigned int roundToSignificantDigitsAndHash(const double &value, int nDigits, const unsigned int &base)
 {
 	int p = nDigits - (unsigned int)std::log10(value);
-	return base ^ boost::hash<int>()(int(std::floor(value * std::pow(10.0, p) + 0.5)));
+	return base ^ bitShift(boost::hash<int>()(int(std::floor(value * std::pow(10.0, p) + 0.5))), 1);
 }
 
 unsigned int bitShift(const unsigned int &base, const int &digits)
@@ -26,7 +26,7 @@ unsigned int getLVChargeHash(const double &pt, const double &eta, const double &
 	hash = bitShift(hash, 3);
 	hash = roundToSignificantDigitsAndHash(mass, 6, hash);
 	hash = bitShift(hash, 3);
-	hash = boost::hash<int>()(charge);
+	hash = hash ^ boost::hash<int>()(charge);
 	hash = bitShift(hash, 3);
 	return hash;
 }

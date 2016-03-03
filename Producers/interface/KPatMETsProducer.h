@@ -42,6 +42,7 @@ public:
 		for(auto name: in.userCandNames())
 		{
 			reco::CandidatePtr aRecoCand = in.userCand( name );
+			hash = bitShift(hash, 3);
 			hash = hash ^ getLVChargeHash( aRecoCand->p4().Pt(),
 				                           aRecoCand->p4().Eta(),
 				                           aRecoCand->p4().Phi(),
