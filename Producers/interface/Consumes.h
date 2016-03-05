@@ -1,6 +1,8 @@
 #ifndef Consumes_h
 #define Consumes_h
 
+#include "FWCore/Utilities/interface/InputTag.h"
+
 #if CMSSW_MAJOR_VERSION < 6
 namespace edm
 {
@@ -8,13 +10,13 @@ namespace edm
     {
         template<typename T>
         void consumes(edm::InputTag const &in){}
+        
+        template<typename T, int n>
+        void consumes(edm::InputTag const &in){}
     };
 }
 
-edm::ConsumesCollector(){
-    edm::ConsumesCollector cons;
-    return cons;
-}
+edm::ConsumesCollector consumesCollector();
 #endif
 
 #if CMSSW_MAJOR_VERSION >= 6
