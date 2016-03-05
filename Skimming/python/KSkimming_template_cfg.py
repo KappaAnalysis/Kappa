@@ -5,6 +5,8 @@
 #-#   Roger Wolf <roger.wolf@cern.ch>
 
 import FWCore.ParameterSet.Config as cms
+import Kappa.Skimming.tools as tools
+cmssw_version_number = tools.get_cmssw_version_number()
 
 process = cms.Process("KAPPA")
 
@@ -21,6 +23,9 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 50
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) ,
 	allowUnscheduled = cms.untracked.bool(True) )
 
+if (cmssw_version_number.startswith("5_3")):
+	process.options.allowUnscheduled = cms.untracked.bool(False)
+
 ## Source
 process.source = cms.Source("PoolSource",
 	fileNames = cms.untracked.vstring()
@@ -29,10 +34,6 @@ process.source = cms.Source("PoolSource",
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 ## Geometry and Detector Conditions (needed for a few patTuple production steps)
-import Kappa.Skimming.tools as tools
-cmssw_version_number = tools.get_cmssw_version_number()
-split_cmssw_version = cmssw_version_number.split("_") 
-
 if (cmssw_version_number.startswith("7_4") or cmssw_version_number.startswith("7_6")):
 	# see https://twiki.cern.ch/twiki/bin/view/Sandbox/MyRootMakerFrom72XTo74X#DDVectorGetter_vectors_are_empty
 	print "Use GeometryRecoDB and condDBv2"
