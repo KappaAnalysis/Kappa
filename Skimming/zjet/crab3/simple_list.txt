@@ -1,0 +1,15 @@
+
+Zll_DoMuRun2015B-16Dec2015-v1       : /DoubleMuon/Run2015B-16Dec2015-v1/AOD
+Zll_DoMuRun2015C_50ns-16Dec2015-v1  : /DoubleMuon/Run2015C_50ns-16Dec2015-v1/AOD
+Zll_DoMuRun2015D-16Dec2015-v1       : /DoubleMuon/Run2015D-16Dec2015-v1/AOD
+
+Zll_DoElRun2015B-16Dec2015-v1      : /DoubleEG/Run2015B-16Dec2015-v1/AOD
+Zll_DoElRun2015C_25ns-16Dec2015-v1 : /DoubleEG/Run2015C_25ns-16Dec2015-v1/AOD
+Zll_DoElRun2015C_50ns-16Dec2015-v1 : /DoubleEG/Run2015C_50ns-16Dec2015-v1/AOD
+Zll_DoElRun2015D-16Dec2015-v2      : /DoubleEG/Run2015D-16Dec2015-v2/AOD
+
+Zll_DYJetsToLL_M-50_amcatnloFXFX-pythia8_25ns           : /DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM
+Zll_DYJetsToLL_M-50_amcatnloFXFX-pythia8_ext4_25ns      : /DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext4-v1/AODSIM
+Zll_DYJetsToLL_M-50_amcatnloFXFX-pythia8_ptz100_25ns    : /DYJetsToLL_M-50_PtZ-100_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM
+Zll_DYJetsToLL_M-50_amcatnloFXFX-pythia8_HCALDebug_25ns : /DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIIFall15DR76-PU25nsData2015v1_HCALDebug_76X_mcRun2_asymptotic_v12-v1/AODSIM
+Zll_DYJetsToLL_M-50_madgraphMLM-pythia8_25ns            : /DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM 
