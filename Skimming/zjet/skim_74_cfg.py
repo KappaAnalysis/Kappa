@@ -1,7 +1,7 @@
-# Kappa test: CMSSW 7.4.6, 7.6.3
-# Kappa test: scram arch slc6_amd64_gcc491, slc6_amd64_gcc493
-# Kappa test: checkout script zjet/checkout74.sh, zjet/checkout74.sh
-# Kappa test: output skim74.root, skim76.root
+# Kappa test: CMSSW 7.4.6
+# Kappa test: scram arch slc6_amd64_gcc491
+# Kappa test: checkout script zjet/checkout74.sh
+# Kappa test: output skim74.root
 
 import os
 

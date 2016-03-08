@@ -45,6 +45,7 @@ groupConfigsToBeChecked = [
     "Skimming/higgsTauTau/kSkimming_run2_cfg.py",
     "Skimming/zjet/skim_53_cfg.py",
     "Skimming/zjet/skim_74_cfg.py",
+    "Skimming/zjet/skim_76_cfg.py",
 ]
 compareFilesPaths = [
     '/storage/6/fcolombo/kappatest/output/',

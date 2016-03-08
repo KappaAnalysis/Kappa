@@ -1,8 +1,8 @@
 #-# Copyright (c) 2013 - All Rights Reserved
 #-#   Joram Berger <joram.berger@cern.ch>
 
-# Kappa test: CMSSW 5.3.22, 7.2.2, 7.4.14, 7.6.3
-# Kappa test: scram arch slc6_amd64_gcc472, slc6_amd64_gcc481, slc6_amd64_gcc491, slc6_amd64_gcc493
+# Kappa test: CMSSW 5.3.22, 7.2.2, 7.4.14
+# Kappa test: scram arch slc6_amd64_gcc472, slc6_amd64_gcc481, slc6_amd64_gcc491
 # Kappa test: output kappa_mc.root
 
 import FWCore.ParameterSet.Config as cms
