@@ -106,6 +106,17 @@ input_PFCandidates = 'particleFlow'
 input_PFCandidatePtrs = 'particleFlowPtrs'
 input_PrimaryVertices = 'goodOfflinePrimaryVertices'
 
+## in data few events don't have a valid pf collection. They get veto by the following lines
+if data:
+	process.pfFilter = cms.EDFilter('CandViewCountFilter',
+					src = cms.InputTag(input_PFCandidates),
+					minNumber = cms.uint32(1),
+					filter = cms.bool(False) ## Add Filter option
+					)
+	process.path *= (process.pfFilter)
+
+
+
 #  PFCandidates  ###################################################
 	## Good offline PV selection:
 from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
@@ -120,11 +131,16 @@ process.load("CommonTools.ParticleFlow.pfNoPileUpIso_cff")
 process.load("CommonTools.ParticleFlow.pfParticleSelection_cff")
 
 
-	## pf candidate configuration for everything but CHS jets
-process.pfPileUpIso.PFCandidates		= cms.InputTag(input_PFCandidates)
-process.pfPileUpIso.Vertices			= cms.InputTag(input_PrimaryVertices)
-process.pfPileUpIso.checkClosestZVertex	= True
-process.pfNoPileUpIso.bottomCollection	= cms.InputTag(input_PFCandidates)
+## pf candidate configuration for everything but CHS jets
+# Modifications for new particleFlow Pointers
+process.pfPileUp.PFCandidates = cms.InputTag(input_PFCandidatePtrs)
+process.pfPileUpIso.PFCandidates = cms.InputTag(input_PFCandidatePtrs)
+process.pfNoPileUp.bottomCollection = cms.InputTag(input_PFCandidatePtrs)
+process.pfNoPileUpIso.bottomCollection = cms.InputTag(input_PFCandidatePtrs)
+#process.pfPileUpIso.PFCandidates		= cms.InputTag(input_PFCandidates)
+#process.pfPileUpIso.Vertices			= cms.InputTag(input_PrimaryVertices)
+#process.pfPileUpIso.checkClosestZVertex	= True
+#process.pfNoPileUpIso.bottomCollection	= cms.InputTag(input_PFCandidates)
 
 
 	## pf candidate configuration for deltaBeta corrections for muons and electrons
@@ -321,6 +337,16 @@ process.kappaTuple.MET.metEI = cms.PSet(src=cms.InputTag("pfMetEI"))
 #	if channel == 'mm':
 #			process.kappaTuple.MET.metPuppi = cms.PSet(src=cms.InputTag("pfMetPuppi"))
 #			process.kappaTuple.MET.metPuppiNoHF = cms.PSet(src=cms.InputTag("pfMetPuppiNoHF"))
+if not data:
+		process.nEventsTotal.isMC = cms.bool(True)
+		process.nNegEventsTotal.isMC = cms.bool(True)
+		process.nEventsFiltered.isMC = cms.bool(True)
+		process.nNegEventsFiltered.isMC = cms.bool(True)
+
+process.path.insert(0,process.nEventsTotal+process.nNegEventsTotal)
+process.path.insert(-1,process.nEventsFiltered+process.nNegEventsFiltered)
+process.kappaTuple.active += cms.vstring('FilterSummary')
+
 
 	# final information:
 print "------- CONFIGURATION 2 ---------"

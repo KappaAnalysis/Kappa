@@ -52,7 +52,7 @@ class single_crab_job():
 	
 	self.config.Data.inputDBS = 'global'
 	self.config.Data.splitting = 'FileBased'
-	self.config.Data.unitsPerJob = 1
+	self.config.Data.unitsPerJob = 3 ## Now run each job with three files (the job runtime should be still < 8h)
 	self.config.Data.totalUnits =  -1
         self.config.Data.publication = False
 	
@@ -62,8 +62,9 @@ class single_crab_job():
 	#self.config.JobType.disableAutomaticOutputCollection = True
 	self.config.JobType.outputFiles = ['skim76.root']
         #self.config.JobType.sendPythonFolder = True
-        self.config.Data.ignoreLocality = True
-	self.config.Site.whitelist = ['T2_CH_CERN','T2_DE_DESY','T1_DE_KIT','T2_DE_RWTH']
+
+#        self.config.Data.ignoreLocality = True  #switch of xrd acess for now
+#	self.config.Site.whitelist = ['T2_CH_CERN','T2_DE_DESY','T1_DE_KIT','T2_DE_RWTH']
         
         #self.config.JobType.maxMemoryMB = 2500
 
