@@ -337,6 +337,7 @@ process.kappaTuple.MET.metEI = cms.PSet(src=cms.InputTag("pfMetEI"))
 #	if channel == 'mm':
 #			process.kappaTuple.MET.metPuppi = cms.PSet(src=cms.InputTag("pfMetPuppi"))
 #			process.kappaTuple.MET.metPuppiNoHF = cms.PSet(src=cms.InputTag("pfMetPuppiNoHF"))
+process.load("Kappa.CMSSW.EventWeightCountProducer_cff")
 if not data:
 		process.nEventsTotal.isMC = cms.bool(True)
 		process.nNegEventsTotal.isMC = cms.bool(True)
