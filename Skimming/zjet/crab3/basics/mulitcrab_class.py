@@ -37,7 +37,7 @@ class single_crab_job():
     def init_config(self,inputDataset,cmsrun_cfg_file='test.py'):
         self.config = config() ## new empty crab config 
         self.fill_config_defaults()
-	self.config.JobType.psetName = cmsrun_cfg_file ## 
+	self.config.JobType.psetName = cmsrun_cfg_file  
         self.config.Data.inputDataset = inputDataset
       
     def fill_config_defaults(self): ## here are the default values for running crab. Feel free to test some options 
@@ -52,12 +52,13 @@ class single_crab_job():
 	
 	self.config.Data.inputDBS = 'global'
 	self.config.Data.splitting = 'FileBased'
-	self.config.Data.unitsPerJob = 3 ## Now run each job with three files (the job runtime should be still < 8h)
+	self.config.Data.unitsPerJob = 3 
 	self.config.Data.totalUnits =  -1
         self.config.Data.publication = False
 	
         self.config.Data.outLFNDirBase = '/store/user/%s/zjets/skimming/%s'%(getUsernameFromSiteDB(), self.name)
 	self.config.Site.storageSite = "T2_DE_DESY"
+#	self.config.Site.storageSite = "T3_DE_KIT"
 	
 	#self.config.JobType.disableAutomaticOutputCollection = True
 	self.config.JobType.outputFiles = ['skim76.root']
@@ -65,6 +66,7 @@ class single_crab_job():
 
 #        self.config.Data.ignoreLocality = True  #switch of xrd acess for now
 #	self.config.Site.whitelist = ['T2_CH_CERN','T2_DE_DESY','T1_DE_KIT','T2_DE_RWTH']
+	self.config.Site.whitelist = ['T2_*','T1_DE_KIT']
         
         #self.config.JobType.maxMemoryMB = 2500
 
@@ -93,7 +95,7 @@ class multi_crab_job(): ## class which handels multiple crab jobs of the same ki
 	      print job_name," allready initialized. Skip this entry"
 	  else:
 	      print self.workdir
-	      self.jobs[job_name] = single_crab_job(job_name,self.workdir,job_dataset)
+	      self.jobs[job_name] = single_crab_job(job_name,self.workdir,job_dataset,self.cmsrun_cfg_file)
     def submit_jobs(self):  ## Submit all new jobs
       for akt_job in self.jobs.itervalues():
 	if not akt_job.issubmitted:
