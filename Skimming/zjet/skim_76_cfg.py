@@ -1,7 +1,6 @@
-# Kappa test: CMSSW 7.4.6
-# Kappa test: scram arch slc6_amd64_gcc491
-# Kappa test: checkout script zjet/checkout74.sh
-# Kappa test: output skim74.root
+# Kappa test: CMSSW 7.6.3
+# Kappa test: scram arch slc6_amd64_gcc493
+# Kappa test: output skim76.root
 
 import os
 import FWCore.ParameterSet.Config as cms
@@ -11,7 +10,7 @@ import FWCore.ParameterSet.Config as cms
 ########### local setupu ##########
 #input_files='file:/nfs/dust/cms/user/swayand/DO_MU_FILES/AOD/Madgraph.root'
 #input_files='file:/nfs/dust/cms/user/swayand/DO_MU_FILES/AOD/DATARun2015D.root'
-input_files='/store/data/Run2015D/DoubleMuon/AOD/16Dec2015-v1/10000/14C7A2A3-5EA7-E511-B807-7845C4FC3A0D.root'
+input_files='file:///storage/6/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
 maxevents=10
 outputfilename="skim76.root"
 miniaod = False ## not implemented yet 
