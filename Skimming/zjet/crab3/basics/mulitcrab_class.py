@@ -10,6 +10,8 @@ from glob import glob
 import os, shutil
 
 
+
+
 class single_crab_job():
     def __init__(self,name,workdir='crab_jobs/akt_test', dataset_name=None,cmsrun_cfg_file='test.py'):
         self.name = name ## needed for the crab_config 
@@ -24,14 +26,14 @@ class single_crab_job():
 	  self.init_config(dataset_name,cmsrun_cfg_file)
     def submit(self): ## submit the jobs (comand line would be: "crab submit config_name.py"
 	try:
-		crabCommand('submit', config = self.config)
+		crabCommand('submit', config = self.config , proxy=os.environ['X509_USER_PROXY'])
 	except HTTPException as hte:
 		print "Failed submitting task: %s" % (hte.headers)
 	except ClientException as cle:
 		print "Failed submitting task: %s" % (cle)
     def crab_command(self,command): ## run any crab command except submit. E.g. crab status full_path_to_directory
       	try:
-		self.laststatus[command] = crabCommand(command, dir = self.folder)
+		self.laststatus[command] = crabCommand(command, dir = self.folder, proxy=os.environ['X509_USER_PROXY'])
 	except HTTPException as hte:
 		print hte
     def init_config(self,inputDataset,cmsrun_cfg_file='test.py'):
@@ -58,15 +60,16 @@ class single_crab_job():
 	
         self.config.Data.outLFNDirBase = '/store/user/%s/zjets/skimming/%s'%(getUsernameFromSiteDB(), self.name)
 	self.config.Site.storageSite = "T2_DE_DESY"
-#	self.config.Site.storageSite = "T3_DE_KIT"
+#	self.config.Site.storageSite = "T1_DE_KIT"
 	
 	#self.config.JobType.disableAutomaticOutputCollection = True
 	self.config.JobType.outputFiles = ['skim76.root']
         #self.config.JobType.sendPythonFolder = True
 
-#        self.config.Data.ignoreLocality = True  #switch of xrd acess for now
+        self.config.Data.ignoreLocality = True  #switch of xrd acess for now
 #	self.config.Site.whitelist = ['T2_CH_CERN','T2_DE_DESY','T1_DE_KIT','T2_DE_RWTH']
-	self.config.Site.whitelist = ['T2_*','T1_DE_KIT']
+	self.config.Site.whitelist = ['T2_CH_CERN','T2_DE_DESY','T1_DE_KIT','T2_DE_RWTH','T2_US_*']
+#	self.config.Site.whitelist = ['T2_*','T1_DE_KIT']
         
         #self.config.JobType.maxMemoryMB = 2500
 
