@@ -10,7 +10,7 @@ queries = {
 		"energy" : "13"
 	},
 	"Fall15_Dibosons": {
-		"process" : "(W|Z)(W|Z)(Jets)?(To)?",
+		"process" : "(W|Z|V)(W|Z|V)(Jets)?(To)?",
 		"campaign" : "RunIIFall15MiniAODv2",
 		"energy" : "13"
 	},
