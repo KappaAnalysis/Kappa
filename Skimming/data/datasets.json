@@ -327,7 +327,7 @@
         "format": "MINIAOD", 
         "generator": "madgraph-pythia8", 
         "generatorWeight": 1.0, 
-        "n_events_generated": "6069217", 
+        "n_events_generated": "6079415", 
         "process": "DYJetsToLL_M150", 
         "scenario": "PU25nsData2015v1", 
         "xsec": 6.657
