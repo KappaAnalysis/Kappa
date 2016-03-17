@@ -774,7 +774,7 @@ def sendMail(testPaths, branches=None):
 
     msg = Message("""Dear Kappa developers,
 
-the test script found problems in the current state of the Kappa repository.
+this is an automated message sent by the Kappa test script to inform you that problems have been found in one or more of the tested configurations.
 Please have a look at: http://www-ekp.physik.uni-karlsruhe.de/~fcolombo/kappa/test/current/result.html
 
 Tested branches are: %s.
