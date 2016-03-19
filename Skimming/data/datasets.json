@@ -280,7 +280,7 @@
         "energy": "13", 
         "format": "MINIAOD", 
         "generator": "amcatnlo-pythia8", 
-        "generatorWeight": 0.7276132936458299, 
+        "generatorWeight": 0.727613293646, 
         "n_events_generated": "30899063", 
         "process": "DYJetsToLL_M10to50", 
         "scenario": "PU25nsData2015v1", 
@@ -330,7 +330,7 @@
         "n_events_generated": "6079415", 
         "process": "DYJetsToLL_M150", 
         "scenario": "PU25nsData2015v1", 
-        "xsec": 6.657
+        "xsec": 8.096
     }, 
     "/DYJetsToLL_M-50_13TeV-madgraph-pythia8-tauola_v2/Spring14dr-PU_S14_POSTLS170_V6-v1/AODSIM": {
         "campaign": "Spring14dr", 
@@ -463,7 +463,7 @@
         "process": "DYJetsToLL_M50", 
         "scenario": "74X"
     }, 
-    "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
+    "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
         "data": false, 
         "embedded": false, 
@@ -471,7 +471,7 @@
         "format": "MINIAOD", 
         "generator": "madgraph-pythia8", 
         "generatorWeight": 1.0, 
-        "n_events_generated": "9004328", 
+        "n_events_generated": "247269569", 
         "process": "DYJetsToLL_M50", 
         "scenario": "PU25nsData2015v1", 
         "xsec": 6025.2
@@ -4258,7 +4258,7 @@
         "process": "TT", 
         "scenario": "74X"
     }, 
-    "/TT_TuneCUETP8M1_13TeV-powheg-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext3-v1/MINIAODSIM": {
+    "/TT_TuneCUETP8M1_13TeV-powheg-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext4-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
         "data": false, 
         "embedded": false, 
@@ -4266,7 +4266,7 @@
         "format": "MINIAOD", 
         "generator": "powheg-pythia8", 
         "generatorWeight": 1.0, 
-        "n_events_generated": "97994442", 
+        "n_events_generated": "187626200", 
         "process": "TT", 
         "scenario": "PU25nsData2015v1", 
         "xsec": 831.76
@@ -6122,8 +6122,8 @@
         "energy": "13", 
         "format": "MINIAOD", 
         "generator": "amcatnlo-pythia8", 
-        "generatorWeight": 0.598818548243, 
-        "n_events_generated": "25850479", 
+        "generatorWeight": 0.598860222055, 
+        "n_events_generated": "25704656", 
         "process": "WZTo2L2Q", 
         "scenario": "PU25nsData2015v1", 
         "xsec": 5.595
