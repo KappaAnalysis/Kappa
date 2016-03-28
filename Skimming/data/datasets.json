@@ -5212,6 +5212,18 @@
         "process": "W1JetsToLNu", 
         "scenario": "PU_S10"
     }, 
+    "/W2JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
+        "campaign": "RunIIFall15MiniAODv2", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "madgraph-pythia8", 
+        "n_events_generated": "30190119", 
+        "process": "W2JetsToLNu", 
+        "scenario": "PU25nsData2015v1", 
+        "xsec": 3144.5
+    }, 
     "/W2JetsToLNu_TuneZ2Star_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM": {
         "campaign": "Summer12", 
         "data": false, 
