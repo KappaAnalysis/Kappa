@@ -115,7 +115,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 	if(data and ("Run2015" in nickname)):
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
-
+	# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
+	process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
+	
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
 	if (cmssw_version_number.startswith("7_6")):
 		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))
