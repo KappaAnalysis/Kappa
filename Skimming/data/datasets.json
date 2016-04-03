@@ -2572,7 +2572,18 @@
         "process": "SUSYGluGluToBBHToTauTau_M200",
         "xsec" : 1.0,
         "scenario": "74X"
-    },
+    }, 
+    "/SUSYGluGluToBBHToTauTau_M-2300_TuneCUETP8M1_13TeV-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v4/MINIAODSIM": {
+        "campaign": "RunIIFall15MiniAODv2", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "pythia8", 
+        "n_events_generated": "100000", 
+        "process": "SUSYGluGluToBBHToTauTau_M2300", 
+        "scenario": "PU25nsData2015v1"
+    }, 
     "/SUSYGluGluToBBHToTauTau_M-2300_TuneCUETP8M1_13TeV-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM": {
         "campaign": "RunIISpring15MiniAODv2",
         "data": false,
