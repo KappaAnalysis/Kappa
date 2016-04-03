@@ -2582,6 +2582,7 @@
         "generator": "pythia8", 
         "n_events_generated": "100000", 
         "process": "SUSYGluGluToBBHToTauTau_M2300", 
+        "xsec" : 1.0,
         "scenario": "PU25nsData2015v1"
     }, 
     "/SUSYGluGluToBBHToTauTau_M-2300_TuneCUETP8M1_13TeV-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM": {
