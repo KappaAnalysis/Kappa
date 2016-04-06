@@ -6714,7 +6714,7 @@
         "format": "MINIAOD",
         "generator": "powheg-pythia8",
         "n_events_generated": "79452",
-        "process": "ZHToTauTau_M125",
+        "process": "ZHToTauTau_M130",
         "scenario": "PU25nsData2015v1",
         "xsec": 0.047420522360446575
         },
