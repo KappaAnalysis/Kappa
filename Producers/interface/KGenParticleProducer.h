@@ -70,6 +70,7 @@ protected:
 		out.particleinfo |= (flags.fromHardProcess()                    << KGenStatusFlags::fromHardProcess);
 		out.particleinfo |= (flags.isHardProcessTauDecayProduct()       << KGenStatusFlags::isHardProcessTauDecayProduct);
 		out.particleinfo |= (flags.isDirectHardProcessTauDecayProduct() << KGenStatusFlags::isDirectHardProcessTauDecayProduct);
+		out.particleinfo |= (flags.isLastCopy()                         << KGenStatusFlags::isLastCopy);
 #endif
 	}
 

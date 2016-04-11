@@ -80,7 +80,8 @@ namespace KGenStatusFlags { enum Type
 	isHardProcess                      = 7,
 	fromHardProcess                    = 8,
 	isHardProcessTauDecayProduct       = 9,
-	isDirectHardProcessTauDecayProduct = 10
+	isDirectHardProcessTauDecayProduct = 10,
+	isLastCopy                         = 11
 };
 }
 
@@ -130,6 +131,7 @@ struct KGenParticle : public KParticle
 	inline bool isHardProcess()             const { return ((particleinfo & (1 << KGenStatusFlags::isHardProcess))); };
 	inline bool fromHardProcessFinalState() const { return ((particleinfo & (1 << KGenStatusFlags::fromHardProcess)) && status() == 1); };
 	inline bool fromHardProcessDecayed()    const { return ((particleinfo & (1 << KGenStatusFlags::fromHardProcess)) && (particleinfo & (1 << KGenStatusFlags::isDecayedLeptonHadron))); };
+	inline bool isLastCopy()                const { return ((particleinfo & (1 << KGenStatusFlags::isLastCopy))); };
 };
 typedef std::vector<KGenParticle> KGenParticles;
 
