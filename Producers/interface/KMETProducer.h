@@ -28,7 +28,7 @@ public:
 		copyP4(in, out.p4);
 		out.sumEt = in.sumEt();
 
-#if CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2
+#if (CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2) || CMSSW_MAJOR_VERSION >= 8
 		reco::METCovMatrix mat = in.getSignificanceMatrix();
 #else
 		TMatrixD mat = in.getSignificanceMatrix();

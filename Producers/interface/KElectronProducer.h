@@ -16,7 +16,7 @@
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
 #include "EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h"
-#if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
+#if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2) || CMSSW_MAJOR_VERSION >= 8
 	#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 #endif
 
@@ -236,7 +236,7 @@ protected:
 		const reco::GsfElectron* eGSF = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
 
 		double rhoIso = *(rhoIso_h.product());
-#if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2)
+#if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2) || CMSSW_MAJOR_VERSION >= 8
 		bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
 			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 		bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
