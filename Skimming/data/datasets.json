@@ -6214,6 +6214,18 @@
         "scenario": "PU25nsData2015v1",
         "xsec": 5.26
     },
+    "/WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
+        "campaign": "RunIIFall15MiniAODv2",
+        "data": false,
+        "embedded": false,
+        "energy": "13",
+        "format": "MINIAOD",
+        "generator": "amcatno-pythia8",
+        "n_events_generated": "1937499",
+        "process": "WZJToLLLNu",
+        "scenario": "PU25nsData2015v1",
+        "xsec" : 4.708
+    },
     "/WZTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2",
         "data": false,
