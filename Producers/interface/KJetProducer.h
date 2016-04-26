@@ -14,6 +14,8 @@
 #include <DataFormats/BTauReco/interface/JetTag.h>
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
+
 
 class KJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KJets>
 {
@@ -24,6 +26,18 @@ public:
 {
 		names = new KJetMetadata;
 		_run_tree->Bronch("jetMetadata", "KJetMetadata", &names);
+
+		std::vector<std::string> jetnames = cfg.getParameterNamesForType<edm::ParameterSet>();
+		for (auto akt_jet : jetnames ){
+		 std::cout<< akt_jet<<std::endl;
+		 edm::ParameterSet akt_set = cfg.getParameter<edm::ParameterSet>(akt_jet);
+		 edm::InputTag akt_iput_tag = akt_set.getParameter<edm::InputTag>("PUJetID");
+		 std::cout<<akt_iput_tag.label()<<std::endl;
+		 consumescollector.consumes<edm::ValueMap<float> >(edm::InputTag(akt_iput_tag.label(),"fullDiscriminant"));
+		 consumescollector.consumes<edm::ValueMap<int> >(edm::InputTag(akt_iput_tag.label(),"fullId"));
+
+		}
+				
 }
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
