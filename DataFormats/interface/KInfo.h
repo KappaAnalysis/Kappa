@@ -107,6 +107,10 @@ typedef unsigned int run_id;
 typedef unsigned short fill_id;
 typedef int bx_id;
 
+struct KGenEventInfoMetadata
+{
+	std::vector<std::string> lheWeightNames;
+};
 
 struct KGenEventInfo : public KEventInfo
 {
@@ -124,6 +128,7 @@ struct KGenEventInfo : public KEventInfo
 	double x1;            ///< x of the first parton (used for PDF reweighting)
 	double x2;            ///< x of the second parton (used for PDF reweighting)
 	double qScale;        ///< q scale of the process (used for PDF reweighting)
+	std::vector<float> lheWeight;
 };
 
 

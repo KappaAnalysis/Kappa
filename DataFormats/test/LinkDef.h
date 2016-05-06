@@ -199,6 +199,8 @@
 
 #pragma link C++ struct KMuonMetadata+;
 
+#pragma link C++ struct KGenEventInfoMetadata+;
+
 #pragma link C++ struct KJetMetadata+;
 
 #pragma link C++ struct KTauMetadata+;

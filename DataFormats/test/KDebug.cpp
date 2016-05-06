@@ -383,6 +383,13 @@ std::ostream &operator<<(std::ostream &os, const KMuonMetadata &m)
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const KGenEventInfoMetadata &m)
+{
+	for(auto name: lheWeightNames)
+		os << name << std::endl;
+	return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const KElectronMetadata &m)
 {
 	for (std::vector<std::string>::const_iterator it = m.idNames.begin(); it != m.idNames.end(); ++it)

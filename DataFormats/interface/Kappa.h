@@ -105,6 +105,7 @@ REGISTER_NAME_OF_TYPE(KDataLumiInfo,KDataLumiInfo);
 REGISTER_NAME_OF_TYPE(KElectronMetadata,KElectronMetadata);
 REGISTER_NAME_OF_TYPE(KFilterMetadata,KFilterMetadata);
 REGISTER_NAME_OF_TYPE(KMuonMetadata,KMuonMetadata);
+REGISTER_NAME_OF_TYPE(KGenEventInfoMetadata,KGenEventInfoMetadata);
 REGISTER_NAME_OF_TYPE(KJetMetadata,KJetMetadata);
 REGISTER_NAME_OF_TYPE(KTauMetadata,KTauMetadata);
 REGISTER_NAME_OF_TYPE(KTriggerObjectMetadata,KTriggerObjectMetadata);

@@ -51,6 +51,7 @@ std::ostream &operator<<(std::ostream &os, const KDataLumiInfo &info);
 std::ostream &operator<<(std::ostream &os, const KEventInfo &i);
 std::ostream &operator<<(std::ostream &os, const KTauMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KMuonMetadata &m);
+std::ostream &operator<<(std::ostream &os, const KGenEventInfoMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KElectronMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KJetMetadata &m);
 std::ostream &operator<<(std::ostream &os, const KTriggerObjectMetadata &m);

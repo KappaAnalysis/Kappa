@@ -56,6 +56,7 @@ int main() {
 	cout << "* KElectronMetadata: " << KElectronMetadata() << endl << endl;
 	cout << "* KFilterMetadata: " << KFilterMetadata() << endl << endl;
 	cout << "* KMuonMetadata: " << KMuonMetadata() << endl << endl;
+	cout << "* KGenEventInfoMetadata: " << KGenEventInfoMetadata() << endl << endl;
 	cout << "* KJetMetadata: " << KJetMetadata() << endl << endl;
 	cout << "* KTauMetadata: " << KTauMetadata() << endl << endl;
 	cout << "* KTriggerObjectMetadata: " << KTriggerObjectMetadata() << endl << endl;

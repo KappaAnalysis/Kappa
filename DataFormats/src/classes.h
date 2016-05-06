@@ -101,6 +101,7 @@ namespace
 		KElectronMetadata dict_KElectronMetadata;
 		KFilterMetadata dict_KFilterMetadata;
 		KMuonMetadata dict_KMuonMetadata;
+		KGenEventInfoMetadata dict_KGenEventInfoMetadata;
 		KJetMetadata dict_KJetMetadata;
 		KTauMetadata dict_KTauMetadata;
 		KTriggerObjectMetadata dict_KTriggerObjectMetadata;

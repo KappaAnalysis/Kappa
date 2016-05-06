@@ -69,6 +69,7 @@
 	<class name="KElectronMetadata"/>
 	<class name="KFilterMetadata"/>
 	<class name="KMuonMetadata"/>
+	<class name="KGenEventInfoMetadata"/>
 	<class name="KJetMetadata"/>
 	<class name="KTauMetadata"/>
 	<class name="KTriggerObjectMetadata"/>
