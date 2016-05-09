@@ -38,5 +38,10 @@ queries = {
 		"process" : "(^W(\d)Jets|^WJets)ToLNu",
 		"campaign" : "RunIIFall15MiniAODv2",
 		"energy" : "13"
+	},
+	"Fall15_EWK": {
+		"process" : "^EWK(WMinus|WPlus|Z)2Jets",
+		"campaign" : "RunIIFall15MiniAODv2",
+		"energy" : "13"
 	}
 }
