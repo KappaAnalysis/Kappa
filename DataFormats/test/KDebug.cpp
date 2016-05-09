@@ -385,7 +385,7 @@ std::ostream &operator<<(std::ostream &os, const KMuonMetadata &m)
 
 std::ostream &operator<<(std::ostream &os, const KGenEventInfoMetadata &m)
 {
-	for(auto name: lheWeightNames)
+	for(auto name: m.lheWeightNames)
 		os << name << std::endl;
 	return os;
 }
