@@ -29,11 +29,10 @@ public:
 	KDataInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
 		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		currentRun(0),
-		lumiSource(cfg.getParameter<edm::InputTag>("lumiSource")),
 		isEmbedded(cfg.getParameter<bool>("isEmbedded"))
 		{
-		    consumescollector.consumes<LumiSummary>(lumiSource);
-		    consumescollector.consumes<GenFilterInfo>(edm::InputTag("generator", "minVisPtFilter", "EmbeddedRECO"));
+                  lumiSource = consumescollector.consumes<LumiSummary , edm::InLumi >(cfg.getParameter<edm::InputTag>("lumiSource"));
+		  consumescollector.consumes<GenFilterInfo>(edm::InputTag("generator", "minVisPtFilter", "EmbeddedRECO"));
 		}
 
 	static const std::string getLabel() { return "DataInfo"; }
@@ -52,7 +51,7 @@ public:
 
 		// Read luminosity infos
 		edm::Handle<LumiSummary> hLumiSummary;
-		if (lumiBlock.getByLabel(lumiSource, hLumiSummary))
+		if (lumiBlock.getByToken(lumiSource, hLumiSummary))
 		{
 			this->metaLumi->avgInsDelLumi = hLumiSummary->avgInsDelLumi();
 			this->metaLumi->avgInsDelLumiErr = hLumiSummary->avgInsDelLumiErr();
@@ -100,7 +99,7 @@ public:
 
 protected:
 	short currentRun;
-	edm::InputTag lumiSource;
+	edm::EDGetTokenT<LumiSummary> lumiSource;
 	bool isEmbedded;
 };
 
