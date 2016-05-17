@@ -35,7 +35,7 @@ public:
 		  lumiSource = consumescollector.consumes<LumiSummary , edm::InLumi >(cfg.getParameter<edm::InputTag>("lumiSource"));
 #else
 		  lumiSource = cfg.getParameter<edm::InputTag>("lumiSource");
-		  lumiSource = consumescollector.consumes<LumiSummary>(lumiSource);
+		  consumescollector.consumes<LumiSummary>(lumiSource);
 
 #endif
       
