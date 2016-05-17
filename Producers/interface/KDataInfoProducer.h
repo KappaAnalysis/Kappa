@@ -31,7 +31,14 @@ public:
 		currentRun(0),
 		isEmbedded(cfg.getParameter<bool>("isEmbedded"))
 		{
-                  lumiSource = consumescollector.consumes<LumiSummary , edm::InLumi >(cfg.getParameter<edm::InputTag>("lumiSource"));
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
+		  lumiSource = consumescollector.consumes<LumiSummary , edm::InLumi >(cfg.getParameter<edm::InputTag>("lumiSource"));
+#else
+		  lumiSource = cfg.getParameter<edm::InputTag>("lumiSource");
+		  lumiSource = consumescollector.consumes<LumiSummary>(lumiSource);
+
+#endif
+      
 		  consumescollector.consumes<GenFilterInfo>(edm::InputTag("generator", "minVisPtFilter", "EmbeddedRECO"));
 		}
 
