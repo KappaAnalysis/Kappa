@@ -51,7 +51,11 @@ public:
 
 		// Read luminosity infos
 		edm::Handle<LumiSummary> hLumiSummary;
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
 		if (lumiBlock.getByToken(lumiSource, hLumiSummary))
+#else
+		if (lumiBlock.getByLabel(lumiSource, hLumiSummary))
+#endif
 		{
 			this->metaLumi->avgInsDelLumi = hLumiSummary->avgInsDelLumi();
 			this->metaLumi->avgInsDelLumiErr = hLumiSummary->avgInsDelLumiErr();
@@ -99,7 +103,11 @@ public:
 
 protected:
 	short currentRun;
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
 	edm::EDGetTokenT<LumiSummary> lumiSource;
+#else
+	edm::InputTag lumiSource;
+#endif
 	bool isEmbedded;
 };
 
