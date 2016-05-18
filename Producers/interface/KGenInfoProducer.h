@@ -42,7 +42,8 @@ public:
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
 		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource")),
 		lheSource(cfg.getParameter<edm::InputTag>("lheSource")),
-		runInfo(cfg.getParameter<edm::InputTag>("lheSource"))
+		runInfo(cfg.getParameter<edm::InputTag>("lheSource")),
+		lheWeightRegexes(cfg.getParameter<std::vector<std::string>>("lheWeightNames"))
 		{
 			consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
 			consumescollector.consumes<GenEventInfoProduct>(tagSource);
@@ -53,15 +54,6 @@ public:
 
 			genEventInfoMetadata = new KGenEventInfoMetadata();
 			_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
-			for(auto name: cfg.getParameter<std::vector<std::string>>("lheWeightNames"))
-				genEventInfoMetadata->lheWeightNames.push_back(name);
-			if(this->verbosity > 3)
-			{
-				std::cout << "LHEWeightNames: ";
-				for(auto name: genEventInfoMetadata->lheWeightNames)
-					std::cout << name << ", ";
-				std::cout << std::endl;
-			}
 		}
 
 	static const std::string getLabel() { return "GenInfo"; }
@@ -75,16 +67,20 @@ public:
 		if (forceLumi > 0)
 			this->metaLumi->nLumi = forceLumi;
 	{
-		edm::Handle<LHERunInfoProduct> runhandle;
-		lumiBlock.getRun().getByLabel( runInfo, runhandle );
-		LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
-		for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
+		// print available lheWeights
+		if(this->verbosity > 1)
 		{
-			std::cout << iter->tag() << std::endl;
-			std::vector<std::string> lines = iter->lines();
-			for (unsigned int iLine = 0; iLine<lines.size(); iLine++)
+			edm::Handle<LHERunInfoProduct> runhandle;
+			lumiBlock.getRun().getByLabel( runInfo, runhandle );
+			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
+			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
 			{
-				std::cout << lines.at(iLine);
+				std::cout << iter->tag() << std::endl;
+				std::vector<std::string> lines = iter->lines();
+				for (unsigned int iLine = 0; iLine<lines.size(); iLine++)
+				{
+						std::cout << lines.at(iLine);
+				}
 			}
 		}
 	}
@@ -101,6 +97,23 @@ public:
 		if (invalidGenInfo)
 			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
 		return true;
+	}
+
+	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
+	{
+		edm::Handle<LHEEventProduct> lheEventProduct;
+		event.getByLabel(lheSource, lheEventProduct);
+		for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
+		{
+			for(auto validIds : lheWeightRegexes)
+			{
+				if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, validIds))
+				{
+					genEventInfoMetadata->lheWeightNames.push_back(lheEventProduct->weights()[i].id);
+				}
+			}
+		}
+		return KBaseProducerWP::onFirstEvent(event, setup);
 	}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
@@ -206,6 +219,7 @@ protected:
 	std::string binningMode;
 	edm::InputTag tagSource, puInfoSource, lheSource, runInfo;
 	KGenEventInfoMetadata *genEventInfoMetadata;
+	std::vector<std::string> lheWeightRegexes;
 };
 
 template<typename Tmeta>
