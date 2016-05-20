@@ -13,8 +13,10 @@ import sys
 from glob import glob
 import os, shutil
 from Kappa.Skimming.tools import read_grid_control_includes
-# only change here and not three times in this file
-date = "2016-01-29"
+import datetime
+today=datetime.date.today().strftime("%Y-%m-%d")
+date = today # feel free to change
+
 def submit(config):
 	try:
 		crabCommand('submit', config = config)
