@@ -14,6 +14,7 @@
 #include <SimDataFormats/GeneratorProducts/interface/HepMCProduct.h>
 #include <SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h>
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
+#include "SimDataFormats/GeneratorProducts/interface/LHERunInfoProduct.h"
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
 
@@ -40,15 +41,23 @@ public:
 		binningMode(cfg.getParameter<std::string>("binningMode")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
 		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource")),
-		lheSource(cfg.getParameter<edm::InputTag>("lheSource"))
+		lheSource(cfg.getParameter<edm::InputTag>("lheSource")),
+		runInfo(cfg.getParameter<edm::InputTag>("lheSource")),
+		lheWeightRegexes(cfg.getParameter<std::vector<std::string>>("lheWeightNames"))
 		{
 			consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
 			consumescollector.consumes<GenEventInfoProduct>(tagSource);
 			consumescollector.consumes<LHEEventProduct>(lheSource);
 			consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
+			consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
+			consumescollector.consumes<LHERunInfoProduct>(runInfo);
+
+			genEventInfoMetadata = new KGenEventInfoMetadata();
+			_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
 		}
 
 	static const std::string getLabel() { return "GenInfo"; }
+
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
@@ -57,7 +66,24 @@ public:
 			return false;
 		if (forceLumi > 0)
 			this->metaLumi->nLumi = forceLumi;
-
+	{
+		// print available lheWeights
+		if(this->verbosity > 1)
+		{
+			edm::Handle<LHERunInfoProduct> runhandle;
+			lumiBlock.getRun().getByLabel( runInfo, runhandle );
+			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
+			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
+			{
+				std::cout << iter->tag() << std::endl;
+				std::vector<std::string> lines = iter->lines();
+				for (unsigned int iLine = 0; iLine<lines.size(); iLine++)
+				{
+						std::cout << lines.at(iLine);
+				}
+			}
+		}
+	}
 		// Read generator infos
 		edm::Handle<GenRunInfoProduct> hGenInfo;
 		lumiBlock.getRun().getByLabel(tagSource, hGenInfo);
@@ -71,6 +97,23 @@ public:
 		if (invalidGenInfo)
 			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
 		return true;
+	}
+
+	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
+	{
+		edm::Handle<LHEEventProduct> lheEventProduct;
+		event.getByLabel(lheSource, lheEventProduct);
+		for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
+		{
+			for(auto validIds : lheWeightRegexes)
+			{
+				if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, validIds))
+				{
+					genEventInfoMetadata->lheWeightNames.push_back(lheEventProduct->weights()[i].id);
+				}
+			}
+		}
+		return KBaseProducerWP::onFirstEvent(event, setup);
 	}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
@@ -100,7 +143,18 @@ public:
 		}
 		this->metaEvent->lheHt = lheHt;
 		this->metaEvent->lheNOutPartons = lheNOutPartons;
-		
+		// Get LHE renormalization and factorization weights
+		this->metaEvent->lheWeight.clear();
+		for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
+		{
+			for(auto validIds : genEventInfoMetadata->lheWeightNames)
+				if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, validIds))
+				{
+					this->metaEvent->lheWeight.push_back(lheEventProduct->weights()[i].wgt / lheEventProduct->originalXWGTUP() );
+				}
+		}
+		assert( this->metaEvent->lheWeight.size() == this->genEventInfoMetadata->lheWeightNames.size() );
+
 		// Get generator event info:
 		edm::Handle<GenEventInfoProduct> hEventInfo;
 		event.getByLabel(tagSource, hEventInfo);
@@ -163,7 +217,9 @@ protected:
 	bool ignoreExtXSec;
 	int forceLumi;
 	std::string binningMode;
-	edm::InputTag tagSource, puInfoSource, lheSource;
+	edm::InputTag tagSource, puInfoSource, lheSource, runInfo;
+	KGenEventInfoMetadata *genEventInfoMetadata;
+	std::vector<std::string> lheWeightRegexes;
 };
 
 template<typename Tmeta>

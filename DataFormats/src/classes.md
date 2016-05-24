@@ -79,6 +79,7 @@ These classes should be filled once per lumi section.
 + KElectronMetadata
 + KFilterMetadata
 + KMuonMetadata
++ KGenEventInfoMetadata
 + KJetMetadata
 + KTauMetadata
 + KTriggerObjectMetadata

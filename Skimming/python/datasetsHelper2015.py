@@ -13,6 +13,13 @@ def isData(nickname):
 	data = sample_details["data"]
 	return data
 
+def getProcess(nickname):
+	sample = get_sample_by_nick(nickname)
+	dict = load_database(dataset)
+	sample_details = dict[sample]
+	process = sample_details["process"]
+	return process
+
 def getTreeInfo(nickname, globaltag, kappaTag):
 
 	sample = get_sample_by_nick(nickname)

@@ -132,6 +132,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 			process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 			process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
+	if "HToTauTau" in datasetsHelper.getProcess(nickname):
+		process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
 
 	if isEmbedded:
 		#process.load('RecoBTag/Configuration/RecoBTag_cff')
