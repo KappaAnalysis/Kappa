@@ -6,12 +6,14 @@
 #define KAPPA_VERTEXSUMMARYPRODUCER_H
 
 #include "KVertexProducer.h"
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 class KVertexSummaryProducer : public KBaseMultiProducer<edm::View<reco::Vertex>, KVertexSummary>
 {
 public:
-	KVertexSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<edm::View<reco::Vertex>, KVertexSummary>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KVertexSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<edm::View<reco::Vertex>, KVertexSummary>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "VertexSummary"; }
 

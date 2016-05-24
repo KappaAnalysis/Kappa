@@ -14,6 +14,8 @@
 #include <DataFormats/MuonSeed/interface/L2MuonTrajectorySeed.h>
 #include <DataFormats/MuonSeed/interface/L3MuonTrajectorySeed.h>
 #include <DataFormats/RecoCandidate/interface/RecoChargedCandidate.h> 
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 #include "DataFormats/RecoCandidate/interface/IsoDeposit.h"
 #include "DataFormats/RecoCandidate/interface/IsoDepositFwd.h"
@@ -45,8 +47,8 @@ struct KMuonTriggerCandidateProducer_Product
 class KL2MuonTrajectorySeedProducer : public KBaseMultiProducer<std::vector<L2MuonTrajectorySeed>, KL2MuonTrajectorySeedProducer_Product>
 {
 public:
-	KL2MuonTrajectorySeedProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<std::vector<L2MuonTrajectorySeed>, KL2MuonTrajectorySeedProducer_Product>(cfg, _event_tree, _run_tree) {}
+	KL2MuonTrajectorySeedProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<std::vector<L2MuonTrajectorySeed>, KL2MuonTrajectorySeedProducer_Product>(cfg, _event_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector)) {}
 	virtual ~KL2MuonTrajectorySeedProducer() {};
 
 protected:
@@ -68,8 +70,8 @@ protected:
 class KL3MuonTrajectorySeedProducer : public KBaseMultiProducer<std::vector<L3MuonTrajectorySeed>, KL3MuonTrajectorySeedProducer_Product>
 {
 public:
-	KL3MuonTrajectorySeedProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<std::vector<L3MuonTrajectorySeed>, KL3MuonTrajectorySeedProducer_Product>(cfg, _event_tree, _run_tree) {}
+	KL3MuonTrajectorySeedProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<std::vector<L3MuonTrajectorySeed>, KL3MuonTrajectorySeedProducer_Product>(cfg, _event_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector)) {}
 	virtual ~KL3MuonTrajectorySeedProducer() {};
 
 protected:
@@ -93,9 +95,19 @@ protected:
 class KMuonTriggerCandidateProducer : public KBaseMultiLVProducer<edm::View<reco::RecoChargedCandidate>, KMuonTriggerCandidateProducer_Product>
 {
 public:
-	KMuonTriggerCandidateProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::RecoChargedCandidate>, KMuonTriggerCandidateProducer_Product>(cfg, _event_tree, _run_tree)
-		{}
+	KMuonTriggerCandidateProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::RecoChargedCandidate>, KMuonTriggerCandidateProducer_Product>(cfg, _event_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector))
+		{
+			const edm::ParameterSet &psBase = this->psBase;
+			std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+			for (size_t i = 0; i < names.size(); ++i)
+			{
+				const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+				if(pset.existsAs<edm::InputTag>("srcIsolation")) consumescollector.consumes<edm::ValueMap<reco::IsoDeposit>>(pset.getParameter<edm::InputTag>("srcIsolation"));
+				if(pset.existsAs<edm::InputTag>("srcIsolation")) consumescollector.consumes<edm::ValueMap<bool>>(pset.getParameter<edm::InputTag>("srcIsolation"));
+			}
+		}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)

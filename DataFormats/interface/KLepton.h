@@ -85,7 +85,7 @@ struct KLepton : public KLV
 		return std::max(0.0, static_cast<double>(pfIso(0.0)) - std::max(rho * area, 0.0));
 	}
 	
-	int getHash() const
+	unsigned int getHash() const
 	{
 		return getLVChargeHash(p4.Pt(), p4.Eta(), p4.Phi(), p4.mass(), charge());
 	}
@@ -95,8 +95,8 @@ typedef std::vector<KLepton> KLeptons;
 
 struct KLeptonPair
 {
-	int hashLepton1;
-	int hashLepton2;
+	unsigned int hashLepton1;
+	unsigned int hashLepton2;
 	
 	double dca3D;
 	double dca3DError;

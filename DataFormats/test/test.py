@@ -45,6 +45,7 @@ groupConfigsToBeChecked = [
     "Skimming/higgsTauTau/kSkimming_run2_cfg.py",
     "Skimming/zjet/skim_53_cfg.py",
     "Skimming/zjet/skim_74_cfg.py",
+    "Skimming/zjet/skim_76_cfg.py",
 ]
 compareFilesPaths = [
     '/storage/6/fcolombo/kappatest/output/',
@@ -109,7 +110,7 @@ def main(args):
     with open(htmlfile, 'w') as f:
         f.write(html)
     if sendMailOnFail and (opt['dryRun'] or not allOK):
-        sendMail(os.path.abspath('.'), ['development'])
+        sendMail(os.path.abspath('.'), ['CMSSW_7_6_X'])
     print "HTML written to %s, Kappa status:%s ok." % (htmlfile, [' not', ''][allOK])
     return not allOK
 
@@ -716,7 +717,7 @@ function timeAgo(time) {
  <div class="head"><h1>Kappa Test Results</h1></div>
  <div>
  <h2>General Information</h2> <p>Date: {date}<span id="timeago"></span>, run time: {runtime}</p>
- <p>This page is a result of the <a href="https://github.com/KappaAnalysis/Kappa/blob/development/DataFormats/test/test.py">test.py</a> script,
+ <p>This page is a result of the <a href="https://github.com/KappaAnalysis/Kappa/blob/CMSSW_7_6_X/DataFormats/test/test.py">test.py</a> script,
  which is run regularly to test <a href="https://github.com/KappaAnalysis/Kappa">Kappa</a>.</p>
 
  <div class="result {cls}">Kappa is {status}</div>
@@ -773,7 +774,8 @@ def sendMail(testPaths, branches=None):
 
     msg = Message("""Dear Kappa developers,
 
-the test script found problems in the current state of the Kappa repository.
+this is an automated message sent by the Kappa test script to inform you that problems have been found in one or more of the tested configurations.
+
 Please have a look at: http://www-ekp.physik.uni-karlsruhe.de/~fcolombo/kappa/test/current/result.html
 
 Tested branches are: %s.

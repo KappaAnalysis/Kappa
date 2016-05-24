@@ -11,14 +11,19 @@ from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
 from PhysicsTools.SelectorUtils.tools.vid_id_tools import switchOnVIDElectronIdProducer, DataFormat
 from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cff import *
 
-egmGsfElectronIDs.physicsObjectSrc = cms.InputTag('slimmedElectrons')
 
-def setupElectrons(process):
+def setupElectrons(process, electrons):
+	egmGsfElectronIDs.physicsObjectSrc = cms.InputTag(electrons)
 	switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 	my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
 			 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
 	for idmod in my_id_modules:
 		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
+	process.elPFIsoDepositCharged.src = cms.InputTag(electrons)
+	process.elPFIsoDepositChargedAll.src = cms.InputTag(electrons)
+	process.elPFIsoDepositNeutral.src = cms.InputTag(electrons)
+	process.elPFIsoDepositGamma.src = cms.InputTag(electrons)
+	process.elPFIsoDepositPU.src = cms.InputTag(electrons)
 
 ## for electron iso
 from CommonTools.ParticleFlow.Isolation.pfElectronIsolation_cff import *
@@ -41,11 +46,6 @@ electronPFIsolationValuesSequence = cms.Sequence(
 	elPFIsoValueNeutral03PFIdPFIso+
 	elPFIsoValuePU03PFIdPFIso
 )
-elPFIsoDepositCharged.src = cms.InputTag("slimmedElectrons")
-elPFIsoDepositChargedAll.src = cms.InputTag("slimmedElectrons")
-elPFIsoDepositNeutral.src = cms.InputTag("slimmedElectrons")
-elPFIsoDepositGamma.src = cms.InputTag("slimmedElectrons")
-elPFIsoDepositPU.src = cms.InputTag("slimmedElectrons")
 elPFIsoDepositGamma.ExtractorPSet.ComponentName = cms.string("CandViewExtractor")
 
 # electron/muon PF iso sequence

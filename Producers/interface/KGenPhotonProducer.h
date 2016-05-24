@@ -9,13 +9,15 @@
 
 #include "KBaseMultiProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 #include <queue>
 
 class KGenPhotonProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotons>
 {
 public:
-	KGenPhotonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotons>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KGenPhotonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::Candidate>, KGenPhotons>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "GenPhotons"; }
 

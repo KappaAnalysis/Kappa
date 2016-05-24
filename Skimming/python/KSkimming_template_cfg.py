@@ -5,6 +5,8 @@
 #-#   Roger Wolf <roger.wolf@cern.ch>
 
 import FWCore.ParameterSet.Config as cms
+import Kappa.Skimming.tools as tools
+cmssw_version_number = tools.get_cmssw_version_number()
 
 process = cms.Process("KAPPA")
 
@@ -19,7 +21,10 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 50
 
 ## Options and Output Report
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) ,
-	allowUnscheduled = cms.untracked.bool(False) )
+	allowUnscheduled = cms.untracked.bool(True) )
+
+if (cmssw_version_number.startswith("5_3")):
+	process.options.allowUnscheduled = cms.untracked.bool(False)
 
 ## Source
 process.source = cms.Source("PoolSource",
@@ -29,11 +34,7 @@ process.source = cms.Source("PoolSource",
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 ## Geometry and Detector Conditions (needed for a few patTuple production steps)
-import Kappa.Skimming.tools as tools
-cmssw_version_number = tools.get_cmssw_version_number()
-split_cmssw_version = cmssw_version_number.split("_") 
-
-if (cmssw_version_number.startswith("7_4")):
+if (cmssw_version_number.startswith("7_4") or cmssw_version_number.startswith("7_6")):
 	# see https://twiki.cern.ch/twiki/bin/view/Sandbox/MyRootMakerFrom72XTo74X#DDVectorGetter_vectors_are_empty
 	print "Use GeometryRecoDB and condDBv2"
 	process.load("Configuration.Geometry.GeometryRecoDB_cff")
@@ -43,8 +44,6 @@ else:
 	process.load("Configuration.Geometry.GeometryIdeal_cff")
 	process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
-from Configuration.AlCa.autoCond import autoCond
-process.GlobalTag.globaltag = cms.string(autoCond['startup'])
 # print the global tag until it is clear whether this auto global tag is fine
 print "GT from autoCond:", process.GlobalTag.globaltag
 process.load("Configuration.StandardSequences.MagneticField_cff")
@@ -59,6 +58,5 @@ process.kappaTuple.active = cms.vstring()
 process.kappaOut = cms.Sequence(process.kappaTuple)
 
 process.p = cms.Path ()
-process.ep = cms.EndPath()
 process.load("Kappa.CMSSW.EventWeightCountProducer_cff")
 

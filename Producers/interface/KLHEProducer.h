@@ -8,12 +8,14 @@
 #include <SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h>
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 class KLHEProducer : public KBaseMultiProducer<LHEEventProduct, KGenParticles>
 {
 public:
-	KLHEProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree):
-		KBaseMultiProducer<LHEEventProduct, KGenParticles>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KLHEProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector):
+		KBaseMultiProducer<LHEEventProduct, KGenParticles>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 	virtual ~KLHEProducer() {};
 
 	static const std::string getLabel() { return "LHE"; }

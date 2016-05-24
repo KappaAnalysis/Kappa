@@ -13,6 +13,9 @@ import sys
 from glob import glob
 import os, shutil
 from Kappa.Skimming.tools import read_grid_control_includes
+import datetime
+today=datetime.date.today().strftime("%Y-%m-%d")
+date = today # feel free to change
 
 def submit(config):
 	try:
@@ -23,8 +26,11 @@ def submit(config):
 		print "Failed submitting task: %s" % (cle)
 
 def crab_command(command):
-	for dir in glob('/nfs/dust/cms/user/%s/crab_kappa_skim-2015-10-14/*'%(getUsernameFromSiteDB())):
-		crabCommand(command, dir = dir)
+	for dir in glob('/nfs/dust/cms/user/%s/crab_kappa_skim-%s/*'%(getUsernameFromSiteDB(), date)):
+		try:
+			crabCommand(command, dir = dir)
+		except HTTPException as hte:
+			print hte
 
 def check_path(path):
 	if os.path.exists(path):
@@ -45,8 +51,7 @@ def check_path(path):
 def submission():
 	from CRABClient.UserUtilities import config
 	config = config()
-	
-	config.General.workArea = '/nfs/dust/cms/user/%s/crab_kappa_skim-2015-10-14'%(getUsernameFromSiteDB())
+	config.General.workArea = '/nfs/dust/cms/user/%s/crab_kappa_skim-%s'%(getUsernameFromSiteDB(), date)
 	check_path(config.General.workArea)
 	config.General.transferOutputs = True
 	config.General.transferLogs = True
@@ -56,22 +61,22 @@ def submission():
 	config.JobType.psetName = 'kSkimming_run2_cfg.py'
 	#config.JobType.inputFiles = ['Summer15_V5_MC.db']
 	config.JobType.allowUndistributedCMSSW = True
-	
+	config.Site.blacklist = ["T2_BR_SPRACE"]
 	config.Data.inputDBS = 'global'
 	config.Data.splitting = 'FileBased'
 	config.Data.unitsPerJob = 1
-	config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/2015-10-14'%(getUsernameFromSiteDB())
+	config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(getUsernameFromSiteDB(), date)
 	config.Data.publication = False
 	
 	config.Site.storageSite = "T2_DE_DESY"
 	# load nicknames form gc-style config files and write them to a flat nicknames list
-	nicknames = read_grid_control_includes(["samples/13TeV/Data_05Oct2015_miniAODv2.conf", "samples/13TeV/Spring15_miniAODv2.conf"])
-	#nicknames = ['SUSYGluGluToHToTauTauM160_RunIISpring15DR74_Asympt25ns_13TeV_MINIAOD_pythia8']
+	nicknames = read_grid_control_includes(["samples/13TeV/Fall15_SM_Analysis.conf"])
+	#nicknames = ['SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_76X_13TeV_MINIAOD_pythia8']
 
 	# loop over datasets and get repsective nicks
 	for nickname in nicknames:
 		config.General.requestName = nickname
-		config.JobType.pyCfgParams = ['globalTag=74X_dataRun2_reMiniAOD_v0' if isData(nickname) else 'globalTag=74X_mcRun2_asymptotic_v2' ,'kappaTag=KAPPA_2_0_4','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
+		config.JobType.pyCfgParams = ['globalTag=76X_dataRun2_16Dec2015_v0' if isData(nickname) else 'globalTag=76X_mcRun2_asymptotic_RunIIFall15DR76_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
 		p = Process(target=submit, args=(config,))

@@ -12,16 +12,30 @@
 #include "../../DataFormats/interface/KJetMET.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/BTauReco/interface/JetTag.h>
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 class KJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KJets>
 {
 public:
-	KJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KJets>(cfg, _event_tree, _run_tree, getLabel()),
+	KJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<reco::PFJetCollection, KJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		 tagger(cfg.getParameter<std::vector<std::string> >("taggers"))
 {
 		names = new KJetMetadata;
 		_run_tree->Bronch("jetMetadata", "KJetMetadata", &names);
+
+		std::vector<std::string> jetnames = cfg.getParameterNamesForType<edm::ParameterSet>();
+		for (auto akt_jet : jetnames ){
+		 std::cout<< akt_jet<<std::endl;
+		 edm::ParameterSet akt_set = cfg.getParameter<edm::ParameterSet>(akt_jet);
+		 edm::InputTag akt_iput_tag = akt_set.getParameter<edm::InputTag>("PUJetID");
+		 std::cout<<akt_iput_tag.label()<<std::endl;
+		 consumescollector.consumes<edm::ValueMap<float> >(edm::InputTag(akt_iput_tag.label(),"fullDiscriminant"));
+		 consumescollector.consumes<edm::ValueMap<int> >(edm::InputTag(akt_iput_tag.label(),"fullId"));
+
+		}
+				
 }
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
@@ -185,7 +199,7 @@ public:
 
 // energy fraction definitions have changed in CMSSW 7.3.X
 // fractions should add up to unity
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7) 
 		assert(out.neutralHadronFraction >= out.hfHadronFraction);
 		assert(std::abs(out.neutralHadronFraction + out.chargedHadronFraction +
 			out.muonFraction + out.photonFraction + out.electronFraction +

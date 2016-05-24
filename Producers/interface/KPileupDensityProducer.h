@@ -9,12 +9,14 @@
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KJetMET.h"
 #include "../../DataFormats/interface/KDebug.h"
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 class KPileupDensityProducer : public KBaseMultiProducer<double, KPileupDensity>
 {
 public:
-	KPileupDensityProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<double, KPileupDensity>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KPileupDensityProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<double, KPileupDensity>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "PileupDensity"; }
 

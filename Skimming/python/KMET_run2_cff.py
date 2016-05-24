@@ -7,39 +7,10 @@
 
 import FWCore.ParameterSet.Config as cms
 
-## ------------------------------------------------------------------------
-## MVA MET following POG recommendations
-##  - https://twiki.cern.ch/twiki/bin/viewauth/CMS/MVAMet#CMSSW_7_2_X_requires_slc6
-##  - https://github.com/cms-met/cmssw/blob/72X-mvaMETForMiniAOD/RecoMET/METPUSubtraction/test/testMVAMetProducer.py
-##  - MVA MET needs the calibrated jets and the selected leptons as close
-##    in the selection as used for the final analysis. It is in the user's
-##    responsibility to define those and to pass them on to the mvaMet
-##    producer.
-
-## conditions needed for the JEC applied inside the MVA MET
-from JetMETCorrections.Configuration.JetCorrectionProducers_cff import *
-
-## ------------------------------------------------------------------------
-## calibrated jets and Type1 MET corrections as input for mvaMET producer
-##  - NOTE: use "ak5PFL1FastL2L3" for MC / "ak5PFL1FastL2L3Residual" for
-##    data
-
-##  - NOTE: apparently "ak5PFL1FastL2L3" does not work
 from RecoJets.JetProducers.ak4PFJets_cfi import ak4PFJets
+from RecoMET.METPUSubtraction.mvaPFMET_cff import calibratedAK4PFJetsForPFMVAMEt, puJetIdForPFMVAMEt
+from JetMETCorrections.Configuration.JetCorrectors_cff import *
 
-mvaMETJets = cms.EDProducer('PFJetCorrectionProducer',
-    src = cms.InputTag('ak4PFJets'),
-    correctors = cms.vstring("ak4PFL1FastL2L3")
-    )
-
-from RecoJets.JetProducers.pileupjetidproducer_cfi import pileupJetIdEvaluator
-from RecoJets.JetProducers.PileupJetIDParams_cfi import JetIdParams
-from RecoMET.METPUSubtraction.mvaPFMET_cff import calibratedAK4PFJetsForPFMVAMEt #, puJetIdForPFMVAMEt
-# the following two statements have been widely restricted and deactivated since they caused Kappa to crash
-from JetMETCorrections.Type1MET.correctionTermsPfMetType1Type2_cff import corrPfMetType1
-#from JetMETCorrections.Type1MET.correctedMet_cff import *
-
-corrPfMetType1.jetCorrLabel = "ak4PFL1FastL2L3" 
 
 ## ------------------------------------------------------------------------
 ## muons as input for mvaMET producer
@@ -142,12 +113,6 @@ from RecoJets.JetProducers.PileupJetIDParams_cfi import JetIdParams
 
 from RecoMET.METPUSubtraction.mvaPFMET_cff import pfMVAMEt as pfMetMVA
 
-pfMetMVA.inputFileNames = cms.PSet(
-        U     = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru_7_4_X_miniAOD_25NS_July2015.root'),
-        DPhi  = cms.FileInPath('RecoMET/METPUSubtraction/data/gbrphi_7_4_X_miniAOD_25NS_July2015.root'),
-        CovU1 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru1cov_7_4_X_miniAOD_25NS_July2015.root'),
-        CovU2 = cms.FileInPath('RecoMET/METPUSubtraction/data/gbru2cov_7_4_X_miniAOD_25NS_July2015.root') )
-
 metMVAEM = cms.EDProducer('PFMETProducerMVATauTau', 
                              **pfMetMVA.parameters_())#pfMVAMEt.clone()
 metMVAET = cms.EDProducer('PFMETProducerMVATauTau', 
@@ -172,51 +137,12 @@ metMVATT.permuteLeptons = cms.bool(True)
 ## ------------------------------------------------------------------------
 ## Definition of sequences
 
-puJetIdForPFMVAMEt = pileupJetIdEvaluator.clone(
-    algos = cms.VPSet(
-        cms.PSet(
-        tmvaVariables = cms.vstring(
-            "nvtx",
-            "jetPt",
-            "jetEta",
-            "jetPhi",
-            "dZ",
-            "beta",
-            "betaStar",
-            "nCharged",
-            "nNeutrals",
-            "dR2Mean",
-            "ptD",
-            "frac01",
-            "frac02",
-            "frac03",
-            "frac04",
-            "frac05"
-            ),
-        etaBinnedWeights = cms.bool(False),
-        tmvaWeights = cms.string("RecoJets/JetProducers/data/TMVAClassificationCategory_JetID_MET_53X_Dec2012.weights.xml.gz"),
-        tmvaMethod = cms.string("JetID"),
-        tmvaSpectators = cms.vstring(),
-        JetIdParams = JetIdParams,                  
-        impactParTkThreshold = cms.double(0.),
-        version = cms.int32(-1),
-        cutBased = cms.bool(False), 
-        label = cms.string("full")
-        )
-        ),
-    produceJetIds = cms.bool(True),
-    runMvas = cms.bool(True),
-    jets = cms.InputTag("calibratedAK4PFJetsForPFMVAMEt"),#calibratedAK4PFJetsForPFMVAMEt
-    applyJec = cms.bool(True),
-    inputIsCorrected = cms.bool(True),
-    jec     = cms.string("AK4PF"),
-)
 
 
 makeKappaMET = cms.Sequence(
+    ak4PFL1FastL2L3Corrector *
     ak4PFJets *
     calibratedAK4PFJetsForPFMVAMEt *
-    mvaMETJets *
     puJetIdForPFMVAMEt *
     mvaMETMuons *
     mvaMETTausET *
@@ -233,9 +159,6 @@ def configureMVAMetForAOD(process):
 		process.ak4PFJets.src = cms.InputTag("particleFlow")
 		process.ak4PFJets.doAreaFastjet = cms.bool(True)
 		process.pfMetMVA.srcVertices = cms.InputTag("offlinePrimaryVertices")
-		process.puJetIdForPFMVAMEt.jec =  cms.string('AK4PF')
-		process.puJetIdForPFMVAMEt.vertexes = cms.InputTag("offlinePrimaryVertices")
-		process.puJetIdForPFMVAMEt.rho = cms.InputTag("fixedGridRhoFastjetAll")
 		# Todo for miniAOD: find a selector that works in pat Taus and slimmedElectrons
 		process.metMVAEM.srcLeptons = cms.VInputTag("gedGsfElectrons", "muons" )
 		process.metMVAET.srcLeptons = cms.VInputTag("gedGsfElectrons", "hpsPFTauProducer")
@@ -250,17 +173,15 @@ def configureMVAMetForAOD(process):
 		process.metMVAMT.srcPFCandidates = cms.InputTag("particleFlow")
 		process.metMVATT.srcPFCandidates = cms.InputTag("particleFlow")
 		process.makeKappaMET = cms.Sequence( 
+		                process.ak4PFL1FastL2L3Corrector *
 		                process.ak4PFJets * 
 		                process.calibratedAK4PFJetsForPFMVAMEt * 
-		                process.mvaMETJets * 
 		                process.puJetIdForPFMVAMEt * 
 		                process.metMVAEM * 
 		                process.metMVAET * 
 		                process.metMVAMT * 
 		                process.metMVATT )
 
-		## Standard MET and GenMet from pat::MET
-		#process.kappaTuple.active += cms.vstring('PatMET')
 	
 def configureMVAMetForMiniAOD(process):
 		process.ak4PFJets.src = cms.InputTag("packedPFCandidates")
@@ -269,7 +190,6 @@ def configureMVAMetForMiniAOD(process):
 		process.puJetIdForPFMVAMEt.jec =  cms.string('AK4PF')
 		process.puJetIdForPFMVAMEt.vertexes = cms.InputTag("offlineSlimmedPrimaryVertices")
 		process.puJetIdForPFMVAMEt.rho = cms.InputTag("fixedGridRhoFastjetAll")
-		# Todo for miniAOD: find a selector that works in pat Taus and slimmedElectrons
 		process.metMVAEM.srcLeptons = cms.VInputTag("slimmedElectrons", "slimmedMuons" )
 		process.metMVAET.srcLeptons = cms.VInputTag("slimmedElectrons", "slimmedTaus")
 		process.metMVAMT.srcLeptons = cms.VInputTag("slimmedMuons"    , "slimmedTaus")
@@ -283,9 +203,9 @@ def configureMVAMetForMiniAOD(process):
 		process.metMVAMT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.metMVATT.srcPFCandidates = cms.InputTag("packedPFCandidates")
 		process.makeKappaMET = cms.Sequence( 
+		                process.ak4PFL1FastL2L3Corrector *
 		                process.ak4PFJets *
 		                process.calibratedAK4PFJetsForPFMVAMEt * 
-		                process.mvaMETJets * 
 		                process.puJetIdForPFMVAMEt * 
 		                process.metMVAEM * 
 		                process.metMVAET * 
@@ -326,11 +246,6 @@ def configurePFMetForMiniAOD(process, data=False):
 	process.patJets.addGenPartonMatch = cms.bool(False)
 	process.patJets.addPartonJetMatch = cms.bool(False)
 
-	# latest Recommendataion https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETRun2Corrections#type_1_PF_MET_recommended
-	process.corrPfMetType1.type1JetPtThreshold = cms.double(15.0)
-	process.patPFMetT1T2Corr.type1JetPtThreshold = cms.double(15.0)
-	process.patPFMetT1T2CorrNoHF.type1JetPtThreshold = cms.double(15.0)
-
 
 	process.makePFMET = cms.Sequence()
 
@@ -339,23 +254,8 @@ def configurePFMetForMiniAOD(process, data=False):
 
 	process.makePFMET *= cms.Sequence( 
 		                process.ak4PFJets *
-		                process.pfCHS *
-		                process.ak4PFJetsCHS *
 		                process.pfMet *
 		                process.patJetCorrFactors *
 		                process.patJets *
-		                process.patPFMetT1T2Corr *
-		                process.patPFMetTxyCorr *
-		                process.noHFCands *
-		                process.pfCHSNoHF *
-		                process.pfMetNoHF *
-		                process.ak4PFJetsCHSNoHF *
-		                process.patJetCorrFactorsNoHF *
-		                process.patJetsNoHF *
-		                process.selectedPatJetsNoHF *
-		                process.patPFMetNoHF *
-		                process.selectedPatJets *
-		                process.patPFMetT1T2CorrNoHF *
-		                process.patPFMetTxyCorrNoHF *
-		                process.patPFMetT1NoHF
+		                process.patPFMetT1T2Corr 
 		)

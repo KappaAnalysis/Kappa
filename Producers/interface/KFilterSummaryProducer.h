@@ -8,6 +8,8 @@
 #include "KBaseMatchingProducer.h"
 #include "../../DataFormats/interface/KInfo.h"
 #include <FWCore/Utilities/interface/InputTag.h>
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 #include "DataFormats/FWLite/interface/Handle.h"
 #include "DataFormats/FWLite/interface/Event.h"
@@ -17,11 +19,15 @@
 class KFilterSummaryProducer : public KBaseMatchingProducer<KFilterSummary>
 {
 public:
-	KFilterSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseMatchingProducer<KFilterSummary>(cfg, _event_tree, _lumi_tree, getLabel())
+	KFilterSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMatchingProducer<KFilterSummary>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
 	{
 		names = new KFilterMetadata;
 		_lumi_tree->Bronch("filterMetadata", "KFilterMetadata", &names);
+		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelEventsTotal);
+		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelNegEventsTotal);
+		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelEventsFiltered);
+		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelNegEventsFiltered);
 	}
 
 	static const std::string getLabel() { return "FilterSummary"; }
