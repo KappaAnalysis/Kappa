@@ -36,6 +36,7 @@ struct KLepton : public KLV
 {
 	unsigned char leptonInfo;  //< bitset containing the flavour, charge and user bits
 	unsigned char ids;         //< most relevant IDs of the lepton
+	std::size_t internalId;         //< most relevant IDs of the lepton
 	float sumChargedHadronPt;  //< sum pt of charged hadrons for isolation
 	float sumNeutralHadronEt;  //< sum Et of neutral hadrons for isolation
 	float sumPhotonEt;         //< sum Et of photons for isolation

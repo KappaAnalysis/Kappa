@@ -32,6 +32,7 @@
 #include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
+#include "boost/functional/hash.hpp"
 
 class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>
 {
@@ -146,6 +147,8 @@ public:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		out.leptonInfo = KLeptonFlavour::MUON;
+		// hash of pointer as Id
+		out.internalId = hasher(&in);
 		
 		/// momentum:
 		copyP4(in, out.p4);
@@ -314,6 +317,7 @@ private:
 	edm::Handle<trigger::TriggerEvent> triggerEventHandle;
 	edm::Handle<edm::View<reco::Vertex> > VertexHandle;
 	KMuonMetadata *muonMetadata;
+	boost::hash<const reco::Muon*> hasher;
 	
 	std::vector<edm::Handle<edm::ValueMap<double> > > isoVals;
 	bool doPfIsolation;

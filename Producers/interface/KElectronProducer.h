@@ -15,6 +15,7 @@
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
+#include "boost/functional/hash.hpp"
 #include "EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h"
 #if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2) || CMSSW_MAJOR_VERSION >= 8
 	#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
@@ -53,10 +54,10 @@ public:
 			for(size_t j = 0; j < pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").size(); ++j) consumescollector.consumes<edm::ValueMap<double>>(pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").at(j));
 		}
 	}
-    for (size_t j = 0; j < namesOfIds.size(); ++j)
-    {
-        consumescollector.consumes<edm::ValueMap<float> >(edm::InputTag(namesOfIds[j]));
-    }
+	for (size_t j = 0; j < namesOfIds.size(); ++j)
+	{
+		consumescollector.consumes<edm::ValueMap<float> >(edm::InputTag(namesOfIds[j]));
+	}
 }
 
 	static const std::string getLabel() { return "Electrons"; }
@@ -130,6 +131,8 @@ public:
 	{
 		// momentum:
 		copyP4(in, out.p4);
+		// hash of pointer as Id
+		out.internalId = hasher(&in);
 
 		// charge and flavour (lepton type)
 		assert(in.charge() == 1 || in.charge() == -1);
@@ -278,6 +281,7 @@ protected:
 private:
 	std::vector<std::string> namesOfIds;
 	KElectronMetadata *electronMetadata;
+	boost::hash<const pat::Electron*> hasher;
 
 	std::vector<edm::Handle<edm::ValueMap<double> > > isoVals;
 	edm::Handle<reco::ConversionCollection> hConversions;

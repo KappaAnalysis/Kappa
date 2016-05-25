@@ -105,7 +105,7 @@ struct KMET : public KLV
 	float neutralHadronFraction, chargedHadronFraction;
 	float muonFraction;
 	float hfHadronFraction, hfEMFraction;
-	unsigned int leptonSelectionHash;
+	std::size_t leptonSelectionHash;
 	ROOT::Math::SMatrix<double, 2, 2, ROOT::Math::MatRepSym<double, 2> > significance;
 
 };

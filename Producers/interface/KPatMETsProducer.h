@@ -15,6 +15,7 @@
 #include "Kappa/DataFormats/interface/Hash.h"
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
+#include "boost/functional/hash.hpp"
 
 class KPatMETsProducer : public KBaseMultiLVProducer<edm::View<pat::MET>, KMETs>
 {
@@ -38,16 +39,11 @@ public:
 		KPatMETProducer::fillMET(in, out);
 
 		// save references to lepton selection from MVA MET
-		unsigned int hash = 0;
+		std::size_t hash = 0;
 		for(auto name: in.userCandNames())
 		{
 			reco::CandidatePtr aRecoCand = in.userCand( name );
-			hash = bitShift(hash, 3);
-			hash = hash ^ getLVChargeHash( aRecoCand->p4().Pt(),
-				                           aRecoCand->p4().Eta(),
-				                           aRecoCand->p4().Phi(),
-				                           aRecoCand->p4().M(),
-				                           aRecoCand->charge() );
+			boost::hash_combine(hash,aRecoCand.get());
 		}
 		out.leptonSelectionHash = hash;
 	}

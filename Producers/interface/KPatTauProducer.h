@@ -8,6 +8,7 @@
 #include <DataFormats/PatCandidates/interface/Tau.h>
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
+#include "boost/functional/hash.hpp"
 
 
 class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
@@ -157,6 +158,8 @@ virtual bool acceptSingle(const SingleInputType &in) override
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
+		// hash of pointer as Id
+		out.internalId = hasher(&in);
 		fillChargeAndFlavour(in, out);
 		out.tauKey = createTauHash<pat::Tau>(in);
 		fillDiscriminators(in, out);
@@ -213,6 +216,7 @@ private:
 	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist;
 	std::map<std::string, KTauMetadata *> discriminatorMap;
 	std::vector<std::string> names;
+	boost::hash<const pat::Tau*> hasher;
 
 	KLVSorter<KPFCandidate> PFSorter;
 	KLVSorter<KLV> LVSorter;
