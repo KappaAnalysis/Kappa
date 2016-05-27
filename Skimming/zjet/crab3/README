@@ -1,0 +1,41 @@
+## This folder includes scripts and files which to submit crab3 jobs
+
+### INI Step ###
+
+If you have set the $CMSSW_Variables (cmsenv) you can source the script (ini_all.sh) from anywhere.
+source /anywhere/to/basics/ini_all.sh 
+If no cmsenv is not set you have to source within the CMSSW_VERSION/src folder (and all sub directories) 
+e.g. 
+source basics/ini_all.sh (If you are in this foldder)
+
+It set all needed varibales and envioments to run crab3. Have a look into the script basics/ini_all.sh and basics/ini_bash.sh for more details. 
+It also starts a new bash shell (at naf i use default zsh  which won't with crab3). 
+And it prints the common lines which are neede to inilize a grid-proxy
+
+### Run crab step ###
+
+
+A basic we use the class basics/mulitcrab_class.py which is highly inspired by the crab3 of the higgsTauTau package, but with simpler inupts requierments. But of course one can allways add some new functionality.
+The idea is to have for each sumbit round a new run_crab_skim76.py. So if you want to have some job specific changes then make them there, and keep in mind that the basics/mulitcrab_class.py should stay backward compatible (except for the set_default_config part where one can tune grid succes rate of the jobs). The default usecas is
+
+-- submit jobs
+./run_crab_skim76.py -f simple_list.txt
+
+The simple_list.txt contains the dataset one will process in a simple format= "DatasetNick : DataSet/like/in/DAS/AODSIM". You can comment out lines with #. And if you want to add new DataSets you can run ./run_crab_skim76.py -f new_datasets.txt (The dataset nicks must be unique, will give a warning and if the nick is used twice and use the first one as default) 
+
+
+-- chek jobs status 
+./run_crab_skim76.py
+
+## some functionlayt which must be added are the resubmiton of the jobs. At the moment one can modify the run_crab_skim76.py and add a line akt_jobs.crab_command('resubmit'). The same is true for the crab getoutput command.  
+What also could be very usefull is to store the ouput on T3_DE_KIT 
+
+
+### Make free space on dCache ###
+The base class is basics/rm_dcache.py 
+Here only the base class is set up so far. But it works. One can create easily a script rm_dCache_NAF.py or rm_dCach_EKP.py with this class. Pleas have a look in the basics/rm_dcache.py file and the if __name__ == "__main__": method. 
+
+But in principle you can run it also with the base class:
+
+basics/rm_dcache.py -f /pnfs/desy.de/cms/tier2/store/user/swayand/Folder_i_want_to_rm/also_subfolder_are_possible
+

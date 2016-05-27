@@ -11,6 +11,8 @@
 #include <FWCore/Framework/interface/LuminosityBlock.h>
 #include <FWCore/Framework/interface/Run.h>
 #include <FWCore/ParameterSet/interface/ParameterSet.h>
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 #include "../../DataFormats/interface/KInfo.h"
 
 // KBaseProducer is the base class for all producers
@@ -47,7 +49,7 @@ class KBaseProducerWP : public KBaseProducer
 {
 public:
 	virtual ~KBaseProducerWP() {};
-	KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName);
+	KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector);
 	void addProvenance(std::string oldName, std::string newName);
 
 protected:

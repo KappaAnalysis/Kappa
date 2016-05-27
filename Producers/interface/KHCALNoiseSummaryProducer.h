@@ -8,12 +8,14 @@
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/HcalNoiseSummary.h>
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 class KHCALNoiseSummaryProducer : public KBaseMultiProducer<HcalNoiseSummary, KHCALNoiseSummary>
 {
 public:
-	KHCALNoiseSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiProducer<HcalNoiseSummary, KHCALNoiseSummary>(cfg, _event_tree, _run_tree, getLabel()) {}
+	KHCALNoiseSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<HcalNoiseSummary, KHCALNoiseSummary>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "HCALNoiseSummary"; }
 

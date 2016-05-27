@@ -8,7 +8,7 @@ import string
 
 import json
 import re
-
+from Kappa.Skimming.getNumberGeneratedEventsFromDB import getNumberGeneratedEventsFromDB
 cmssw_base = os.environ.get("CMSSW_BASE")
 dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
@@ -71,7 +71,9 @@ def get_generator(pd_name, default=None, data=False):
 		return default
 
 def get_process(pd_name, default=None):
-	if (default == None):
+	if (default != None):
+		return default
+	else:
 		pos = pd_name.find("_")
 		if(pos!=-1):
 			process = pd_name[0:pos]
@@ -94,9 +96,15 @@ def get_process(pd_name, default=None):
 					process = pd_name[0:posMass+length]
 				except:
 					pass
+		htPos = pd_name.find("HT-")
+		if(htPos!=-1):
+			length = pd_name[htPos:].find("_")
+			process += "_"+pd_name[htPos: htPos + length]
+		ST_pos = pd_name.find("ST_t")
+		if(ST_pos == 0):
+			length = pd_name[0:pd_name.find("TeV")].rfind("_")
+			process = pd_name[0:length].replace("_", "")
 		return process 
-	else:
-		return default
 
 def get_globaltag(details, default=None):
 	if (default == None):
@@ -127,6 +135,33 @@ def is_data(prod_camp, default=None):
 			return False
 	else:
 		return default
+
+def get_n_generated_events(sample):
+	return getNumberGeneratedEventsFromDB(sample)
+
+def get_n_generated_events_from_nick(nick):
+	sample = get_sample_by_nick(nick)
+	dict = load_database(dataset)
+	if sample in dict and "n_events_generated" in dict[sample]:
+		return dict[sample]["n_events_generated"]
+	else:
+		return -1
+
+def get_xsec(nick):
+	sample = get_sample_by_nick(nick)
+	dict = load_database(dataset)
+	if sample in dict and "xsec" in dict[sample]:
+		return dict[sample]["xsec"]
+	else:
+		return -1
+
+def get_generator_weight(nick):
+	sample = get_sample_by_nick(nick)
+	dict = load_database(dataset)
+	if sample in dict and "generatorWeight" in dict[sample]:
+		return dict[sample]["generatorWeight"]
+	else:
+		return -1
 
 def make_nickname(dict):
 	nick = ""

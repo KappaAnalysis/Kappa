@@ -13,12 +13,14 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/PatCandidates/interface/MET.h>
 #include "Kappa/DataFormats/interface/Hash.h"
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 class KPatMETsProducer : public KBaseMultiLVProducer<edm::View<pat::MET>, KMETs>
 {
 public:
-	KPatMETsProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<edm::View<pat::MET>, KMETs>(cfg, _event_tree, _run_tree, getLabel()) {
+	KPatMETsProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<pat::MET>, KMETs>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {
 	}
 
 	static const std::string getLabel() { return "PatMETs"; }
@@ -36,10 +38,11 @@ public:
 		KPatMETProducer::fillMET(in, out);
 
 		// save references to lepton selection from MVA MET
-		int hash = 0;
+		unsigned int hash = 0;
 		for(auto name: in.userCandNames())
 		{
 			reco::CandidatePtr aRecoCand = in.userCand( name );
+			hash = bitShift(hash, 3);
 			hash = hash ^ getLVChargeHash( aRecoCand->p4().Pt(),
 				                           aRecoCand->p4().Eta(),
 				                           aRecoCand->p4().Phi(),

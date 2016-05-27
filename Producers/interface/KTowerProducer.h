@@ -11,13 +11,18 @@
 #include <DataFormats/JetReco/interface/CaloJet.h>
 #include <DataFormats/VertexReco/interface/Vertex.h>
 #include <DataFormats/VertexReco/interface/VertexFwd.h>
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 class KTowerProducer : public KBaseMultiLVProducer<CaloTowerCollection, KLVs>
 {
 public:
-	KTowerProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree) :
-		KBaseMultiLVProducer<CaloTowerCollection, KLVs>(cfg, _event_tree, _run_tree, getLabel()),
-		srcPVs(cfg.getParameter<edm::InputTag>("srcPVs")) {}
+	KTowerProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<CaloTowerCollection, KLVs>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+		srcPVs(cfg.getParameter<edm::InputTag>("srcPVs"))
+		{
+			consumescollector.consumes<reco::VertexCollection>(srcPVs);
+		}
 
 	static const std::string getLabel() { return "Tower"; }
 

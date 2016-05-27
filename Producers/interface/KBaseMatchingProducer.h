@@ -7,6 +7,9 @@
 #define KAPPA_MATCHINGPRODUCER_H
 
 #include "KBaseProducer.h"
+
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 #include <FWCore/Utilities/interface/InputTag.h>
 #include <Kappa/DataFormats/interface/Kappa.h>
 
@@ -14,8 +17,8 @@ template<typename Tout>
 class KBaseMatchingProducer : public KBaseProducerWP
 {
 public:
-	KBaseMatchingProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName) :
-		KBaseProducerWP(cfg, _event_tree, _run_tree, producerName),
+	KBaseMatchingProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
+		KBaseProducerWP(cfg, _event_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)),
 		event_tree(_event_tree), matchingCounter(0), producerLabel(producerName),
 		viManual(cfg.getParameter<std::vector<edm::InputTag> >("manual")),
 
@@ -36,14 +39,42 @@ public:
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		addPSetRequests(event, setup);
-		addRegExRequests(event, setup);
+		//addPSetRequests(event, setup);
+		//addRegExRequests(event, setup);
 		if (this->verbosity > 0)
 			std::cout << "KBaseMatchingProducer::onFirstEvent : Accepted number of matched products: " << matchingCounter << std::endl;
 		return KBaseProducerWP::onFirstEvent(event, setup);
 	}
+	
+
 
 protected:
+	bool addPSetRequests()
+	{
+		if (verbosity > 0)
+			std::cout << "Requesting entries: ";
+
+		const edm::ParameterSet &psBase = this->psBase;
+		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+		for (size_t i = 0; i < names.size(); ++i)
+		{
+			if (verbosity > 0)
+				std::cout << "\"" << names[i] << "\" ";
+			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+			// Notify about match
+			if (!onMatchingInput(names[i], names[i], pset, pset.getParameter<edm::InputTag>("src")))
+				return false;
+		}
+		if (verbosity > 0)
+			std::cout << std::endl;
+
+		if (verbosity > 0 && names.size() == 0)
+			std::cout << "Warning! A a PSet was requested but none found. Maybe a config file error?" << std::endl;
+
+		return true;
+	}
+
 	virtual bool onMatchingInput(const std::string targetName, const std::string inputName,
 		const edm::ParameterSet &pset, const edm::InputTag &tag)
 	{
@@ -75,32 +106,6 @@ private:
 
 	std::vector<std::string> vsMatched;
 	std::map<std::string, Tout*> bronchStorage;
-
-	bool addPSetRequests(const edm::Event &event, const edm::EventSetup &setup)
-	{
-		if (verbosity > 0)
-			std::cout << "Requesting entries: ";
-
-		const edm::ParameterSet &psBase = this->psBase;
-		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
-
-		for (size_t i = 0; i < names.size(); ++i)
-		{
-			if (verbosity > 0)
-				std::cout << "\"" << names[i] << "\" ";
-			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-			// Notify about match
-			if (!onMatchingInput(names[i], names[i], pset, pset.getParameter<edm::InputTag>("src")))
-				return false;
-		}
-		if (verbosity > 0)
-			std::cout << std::endl;
-
-		if (verbosity > 0 && names.size() == 0)
-			std::cout << "Warning! A a PSet was requested but none found. Maybe a config file error?" << std::endl;
-
-		return true;
-	}
 
 	bool addRegExRequests(const edm::Event &event, const edm::EventSetup &setup)
 	{

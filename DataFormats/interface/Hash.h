@@ -2,7 +2,8 @@
 #ifndef KDATAFORMAT_HXX
 #define KDATAFORMAT_HXX
 
-int roundToSignificantDigits(double value, int nDigits);
-int getLVChargeHash(double pt, double eta, double phi, double mass, int charge);
+unsigned int roundToSignificantDigitsAndHash(const double &value, int nDigits, const unsigned int &base);
+unsigned int getLVChargeHash(const double &pt, const double &eta, const double &phi, const double &mass, const int &charge);
+unsigned int bitShift(const unsigned int &base, const int &digits);
 
 #endif

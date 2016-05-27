@@ -6,6 +6,8 @@
 #include "KBaseMultiLVProducer.h"
 
 #include <DataFormats/PatCandidates/interface/Tau.h>
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 
 class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
@@ -94,8 +96,8 @@ protected:
 	}
 
 public:
-	KPatTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel()),
+	KPatTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		_lumi_tree_pointer(_lumi_tree)
 	{
 		const edm::ParameterSet &psBase = this->psBase;

@@ -18,6 +18,7 @@ def baseconfig(
 		outputfilename,
 		channel='mm',
 		is_data=None,
+		kappa_verbosity=0,
 	):
 	"""
 	Create the CMSSW/cmsRun config for the z+jet skim
@@ -63,6 +64,7 @@ def baseconfig(
 	print "cmssw version:  ", '.'.join([str(i) for i in cmssw_version])
 	print "channel:        ", channel
 	print "add_puppi:      ", add_puppi
+	print "kappa verbosity:", kappa_verbosity
 	print "---------------------------------"
 	print
 
@@ -103,7 +105,7 @@ def baseconfig(
 		process.kappaTupleDefaultsBlock,
 		outputFile = cms.string(outputfilename),
 	)
-	process.kappaTuple.verbose = 0
+	process.kappaTuple.verbose = kappa_verbosity
 	process.kappaOut = cms.Sequence(process.kappaTuple)
 	process.kappaTuple.active = cms.vstring('VertexSummary', 'BeamSpot')
 	if data:
@@ -113,6 +115,9 @@ def baseconfig(
 
 	if cmssw_version >= (7, 4, 0):
 		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
+	# must be set explicitly for consume emchanic
+	if cmssw_version >= (7, 6, 0):
+		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
 
 	if channel == 'mm':
 		process.kappaTuple.Info.hltWhitelist = cms.vstring(
@@ -362,6 +367,30 @@ def baseconfig(
 	process.path *= (
 		process.kappaOut
 	)
+	# explicit declaration until white/blacklist works again - MF@160119
+	# note: extracted from running on CMSSW < 7_6
+	if cmssw_version >= (7, 6, 0):
+		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src=cms.InputTag("offlineBeamSpot"))
+		process.kappaTuple.VertexSummary.offlinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlinePrimaryVertices"))
+		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("goodOfflinePrimaryVertices"))
+
+		if not data:
+			process.kappaTuple.LV.ak4GenJetsNoNu = cms.PSet(src=cms.InputTag("ak4GenJetsNoNu"))
+			process.kappaTuple.LV.ak5GenJetsNoNu = cms.PSet(src=cms.InputTag("ak5GenJetsNoNu"))
+			process.kappaTuple.LV.ak8GenJetsNoNu = cms.PSet(src=cms.InputTag("ak8GenJetsNoNu"))
+
+		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
+		process.kappaTuple.PileupDensity.pileupDensityCalo = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAllCalo"))
+
+		process.kappaTuple.MET.pfChMet = cms.PSet(src=cms.InputTag("pfChMet"))
+		process.kappaTuple.MET.metCHS = cms.PSet(src=cms.InputTag("pfMETCHS"))
+		process.kappaTuple.MET.metCHSNoHF = cms.PSet(src=cms.InputTag("pfMETCHSNoHF"))
+		process.kappaTuple.MET.met = cms.PSet(src=cms.InputTag("pfMet"))
+		process.kappaTuple.MET.metEI = cms.PSet(src=cms.InputTag("pfMetEI"))
+		if channel == 'mm':
+			process.kappaTuple.MET.metPuppi = cms.PSet(src=cms.InputTag("pfMetPuppi"))
+			process.kappaTuple.MET.metPuppiNoHF = cms.PSet(src=cms.InputTag("pfMetPuppiNoHF"))
+
 	# final information:
 	print "------- CONFIGURATION 2 ---------"
 	print "CMSSW producers:"
@@ -374,7 +403,7 @@ def baseconfig(
 	return process
 
 
-if __name__ == '__main__':
+def main():
 	# run local skim by hand without replacements by grid-control
 	if '@' in '@NICK@':
 		KappaParser = kappaparser.KappaParserZJet()
@@ -429,6 +458,20 @@ if __name__ == '__main__':
 				'nickName': 'DYJetsToLL_M_50_madgraph_13TeV',
 				'channel': 'ee',
 			},
+			'763data15mm': {
+				'files': '/store/data/Run2015D/DoubleMuon/AOD/16Dec2015-v1/10000/14C7A2A3-5EA7-E511-B807-7845C4FC3A0D.root',
+				'globalTag' : '76X_dataRun2_v15',
+				'nickName': 'Zmm_Run2015D-16Dec2015-v1',
+				'channel': 'mm',
+				'is_data': True,
+			},
+			'763mc15mm': {
+				'files': '/store/mc/RunIIFall15DR76/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/AODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/70000/B87B479E-43A7-E511-909A-02163E016749.root',
+				'globalTag' : '76X_dataRun2_v15',
+				'nickName': 'Zmm_DYJetsToLL_M-50_madgraphMLM-pythia8_25ns',
+				'channel': 'mm',
+				'is_data': False,
+			}
 		}
 		KappaParser.parseArgumentsWithTestDict(testdict)
 
@@ -439,8 +482,9 @@ if __name__ == '__main__':
 			nickname=KappaParser.nickName,
 			outputfilename="skim74.root",
 			channel=KappaParser.channel,
+			kappa_verbosity=KappaParser.kappaVerbosity,
 		)
-	## for grid-control:
+	# grid-control:
 	else:
 		process = baseconfig(
 			globaltag='@GLOBALTAG@',
@@ -448,6 +492,11 @@ if __name__ == '__main__':
 			maxevents=-1,
 			nickname='@NICK@',
 			outputfilename='kappatuple.root',
-			channel = gc_var_or_callable_parameter(gc_var_name='@CHANNEL@', callable=baseconfig),
-			is_data = gc_var_or_callable_parameter(gc_var_name='@IS_DATA@', callable=baseconfig),
+			channel=gc_var_or_callable_parameter(gc_var_name='@CHANNEL@', callable=baseconfig),
+			is_data=gc_var_or_callable_parameter(gc_var_name='@IS_DATA@', callable=baseconfig),
+			kappa_verbosity=gc_var_or_callable_parameter(gc_var_name='@KAPPA_VERBOSITY@', callable=baseconfig),
 		)
+	return process
+
+if __name__ == '__main__':
+	process = main()

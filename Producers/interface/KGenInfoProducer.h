@@ -14,6 +14,8 @@
 #include <SimDataFormats/GeneratorProducts/interface/HepMCProduct.h>
 #include <SimDataFormats/GeneratorProducts/interface/GenFilterInfo.h>
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
+#include <FWCore/Framework/interface/EDProducer.h>
+#include "../../Producers/interface/Consumes.h"
 
 #include "KInfoProducer.h"
 
@@ -31,14 +33,20 @@ template<typename Tmeta>
 class KGenInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KGenInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+	KGenInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		ignoreExtXSec(cfg.getParameter<bool>("ignoreExtXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		binningMode(cfg.getParameter<std::string>("binningMode")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
 		puInfoSource(cfg.getParameter<edm::InputTag>("pileUpInfoSource")),
-		lheSource(cfg.getParameter<edm::InputTag>("lheSource")) {}
+		lheSource(cfg.getParameter<edm::InputTag>("lheSource"))
+		{
+			consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
+			consumescollector.consumes<GenEventInfoProduct>(tagSource);
+			consumescollector.consumes<LHEEventProduct>(lheSource);
+			consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
+		}
 
 	static const std::string getLabel() { return "GenInfo"; }
 
@@ -76,6 +84,7 @@ public:
 		// Get generator level HT
 		edm::Handle<LHEEventProduct> lheEventProduct;
 		double lheHt = 0.;
+		int lheNOutPartons = 0;
 		if (event.getByLabel(lheSource, lheEventProduct) && lheEventProduct.isValid())
 		{
 			const lhef::HEPEUP& lheEvent = lheEventProduct->hepeup();
@@ -85,9 +94,12 @@ public:
 				int status = lheEvent.ISTUP[idxParticle];
 				if ( status == 1 && ((id >= 1 && id <= 6) || id == 21) ) { // quarks and gluons
 					lheHt += std::sqrt(std::pow(lheParticles[idxParticle][0], 2.) + std::pow(lheParticles[idxParticle][1], 2.));
+					++lheNOutPartons;
 				}
 			}
 		}
+		this->metaEvent->lheHt = lheHt;
+		this->metaEvent->lheNOutPartons = lheNOutPartons;
 		
 		// Get generator event info:
 		edm::Handle<GenEventInfoProduct> hEventInfo;
@@ -158,11 +170,14 @@ template<typename Tmeta>
 class KHepMCInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KHepMCInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree) :
-		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree),
+	KHepMCInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		forceXSec(cfg.getParameter<double>("forceXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
-		tagSource(cfg.getParameter<edm::InputTag>("genSource")) {}
+		tagSource(cfg.getParameter<edm::InputTag>("genSource"))
+		{
+		    consumescollector.consumes<edm::HepMCProduct>(tagSource);
+		}
 
 	static const std::string getLabel() { return "HepMCInfo"; }
 

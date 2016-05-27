@@ -19,18 +19,22 @@ def register_new_sample(dict, options):
 	pd_name, details, filetype = options.sample.strip("/").split("/")
 	new_entry = {}
 	sample = options.sample
-	new_entry[sample] = {}
-	new_entry[sample]["data"]      = is_data(details, options.data)
-	new_entry[sample]["energy"]    = get_energy(pd_name, details, options.energy, data = new_entry[sample]["data"])
-	new_entry[sample]["campaign"]  = get_campaign(details, options.campaign, energy=new_entry[sample]["energy"])
-	new_entry[sample]["scenario"]  = get_scenario(details, options.scenario, energy=new_entry[sample]["energy"], data=new_entry[sample]["data"])
-	new_entry[sample]["generator"] = get_generator(pd_name, options.generator, data=new_entry[sample]["data"])
-	new_entry[sample]["process"]   = get_process(pd_name, options.process)
-	new_entry[sample]["embedded"]  = is_embedded(filetype, options.embedded)
-	new_entry[sample]["format"]    = get_format(filetype, options.filetype)
+	if(sample in dict):
+		new_entry = dict[sample]
+	else:
+		new_entry = {}
+	new_entry["data"]      = is_data(details, options.data)
+	new_entry["energy"]    = get_energy(pd_name, details, options.energy, data = new_entry["data"])
+	new_entry["campaign"]  = get_campaign(details, options.campaign, energy=new_entry["energy"])
+	new_entry["scenario"]  = get_scenario(details, options.scenario, energy=new_entry["energy"], data=new_entry["data"])
+	new_entry["generator"] = get_generator(pd_name, options.generator, data=new_entry["data"])
+	new_entry["process"]   = get_process(pd_name, options.process)
+	new_entry["embedded"]  = is_embedded(filetype, options.embedded)
+	new_entry["format"]    = get_format(filetype, options.filetype)
+	new_entry["n_events_generated"]    = get_n_generated_events(sample)
 	pprint(new_entry)
-	print make_nickname(new_entry[sample])
-	dict[sample] = new_entry[sample]
+	print make_nickname(new_entry)
+	dict[sample] = new_entry
 	return dict
 
 def confirm(prompt=None, resp=False):
