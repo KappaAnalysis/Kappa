@@ -97,7 +97,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	# General configuration
-	if ((cmssw_version_number.startswith("7_4") and split_cmssw_version[2] >= 14) or (cmssw_version_number.startswith("7_6") or split_cmssw_version[0] >= 8):
+	if ((cmssw_version_number.startswith("7_4") and split_cmssw_version[2] >= 14) or (cmssw_version_number.startswith("7_6") or split_cmssw_version[0] >= 8)):
 		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
@@ -111,7 +111,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
 
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
-	if(data and ("Run2015" in nickname)):
+	if(data and ("Run2015" in nickname or "Run2016" in nickname)):
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
 	# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
 	process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
