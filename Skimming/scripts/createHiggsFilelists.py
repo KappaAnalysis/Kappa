@@ -15,6 +15,7 @@ import Kappa.Skimming.datasets2012 as datasets2012
 import Kappa.Skimming.datasets2013 as datasets2013
 import Kappa.Skimming.datasets2015_miniAODv2 as datasets2015_miniAODv2
 import Kappa.Skimming.datasets2015_Fall15 as datasetsFall15
+import Kappa.Skimming.datasets2016 as datasets2016
 
 
 

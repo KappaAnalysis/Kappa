@@ -1945,6 +1945,17 @@
         "process": "MuonEG", 
         "scenario": "PromptRecov4"
     }, 
+    "/MuonEG/Run2016B-PromptReco-v2/MINIAOD": {
+        "campaign": "Run2016B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "3878079", 
+        "process": "MuonEG", 
+        "scenario": "PromptRecov2"
+    }, 
     "/QCD_Pt-20toInf_MuEnrichedPt15_TuneCUETP8M1_13TeV_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
         "data": false, 
@@ -4006,6 +4017,17 @@
         "process": "SingleElectron", 
         "scenario": "PromptRecov4"
     }, 
+    "/SingleElectron/Run2016B-PromptReco-v2/MINIAOD": {
+        "campaign": "Run2016B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "33670715", 
+        "process": "SingleElectron", 
+        "scenario": "PromptRecov2"
+    }, 
     "/SingleMu/Run2011A-May10ReReco-v1/AOD": {
         "campaign": "Run2011A", 
         "data": true, 
@@ -4126,6 +4148,17 @@
         "n_events_generated": "61066301", 
         "process": "SingleMuon", 
         "scenario": "PromptRecov4"
+    }, 
+    "/SingleMuon/Run2016B-PromptReco-v2/MINIAOD": {
+        "campaign": "Run2016B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "18199235", 
+        "process": "SingleMuon", 
+        "scenario": "PromptRecov2"
     }, 
     "/TTH_HToTauTau_M-110_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
         "campaign": "Summer12", 
@@ -4590,6 +4623,17 @@
         "n_events_generated": "10241352", 
         "process": "Tau", 
         "scenario": "PromptRecov4"
+    }, 
+    "/Tau/Run2016B-PromptReco-v2/MINIAOD": {
+        "campaign": "Run2016B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "6728801", 
+        "process": "Tau", 
+        "scenario": "PromptRecov2"
     }, 
     "/TauParked/Run2012B-22Jan2013-v1/AOD": {
         "campaign": "Run2012B", 
