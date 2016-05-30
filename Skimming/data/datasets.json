@@ -1015,6 +1015,28 @@
         "process": "DoubleMuon", 
         "scenario": "PromptRecov1"
     }, 
+    "/DoubleMuon/Run2015C_25ns-16Dec2015-v1/MINIAOD": {
+        "campaign": "Run2015C_25ns", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "900626", 
+        "process": "DoubleMuon", 
+        "scenario": "16Dec2015v1"
+    }, 
+    "/DoubleMuon/Run2015D-16Dec2015-v1/MINIAOD": {
+        "campaign": "Run2015D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "51342919", 
+        "process": "DoubleMuon", 
+        "scenario": "16Dec2015v1"
+    }, 
     "/EWKWMinus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
         "data": false, 
