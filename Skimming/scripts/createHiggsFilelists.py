@@ -108,7 +108,8 @@ def main():
 		#querielist.append( datasets2012.queries )
 		#querielist.append( datasets2013.queries )
 		#querielist.append( datasets2015_miniAODv2.queries )
-		querielist.append( datasetsFall15.queries )
+		# querielist.append( datasetsFall15.queries )
+		querielist.append( datasets2016.queries )
 
 	dict = load_database(dataset)
 	for queries in querielist:
