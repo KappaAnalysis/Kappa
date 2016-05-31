@@ -30,7 +30,6 @@
 #include <DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerReadoutRecord.h>
 #include <L1Trigger/GlobalTriggerAnalyzer/interface/L1GtUtils.h>
 #include <HLTrigger/HLTcore/interface/HLTConfigProvider.h>
-#include <HLTrigger/HLTcore/interface/HLTPrescaleProvider.h>
 
 #include <DataFormats/METReco/interface/HcalNoiseSummary.h>
 
@@ -61,14 +60,12 @@ public:
 	virtual ~KInfoProducerBase() {};
 
 	static HLTConfigProvider hltConfig;
-	static HLTPrescaleProvider hltPrescale;
 	static std::vector<size_t> hltKappa2FWK;
 	static std::vector<std::string> selectedHLT;
 	static std::vector<std::string> svHLTFailToleranceList;
 };
 
 HLTConfigProvider KInfoProducerBase::hltConfig;
-HLTPrescaleProvider KInfoProducerBase::hltPrescale;
 std::vector<size_t> KInfoProducerBase::hltKappa2FWK;
 std::vector<std::string> KInfoProducerBase::selectedHLT;
 std::vector<std::string> KInfoProducerBase::svHLTFailToleranceList;
@@ -170,7 +167,7 @@ public:
 				return true;
 		}
 		bool hltSetupChanged = false;
-		if (!KInfoProducerBase::hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged) || !KInfoProducerBase::hltPrescale.init(run, setup, tagHLTResults.process(), hltSetupChanged))
+		if (!KInfoProducerBase::hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
 
 		if (verbosity > 0 && hltSetupChanged)
@@ -266,11 +263,13 @@ public:
 			{
 				const std::string &name = metaLumi->hltNames[i];
 				unsigned int prescale = 0;
-				std::pair<int, int> prescale_L1_HLT = KInfoProducerBase::hltPrescale.prescaleValues(event, setup, name);
+/*
+				std::pair<int, int> prescale_L1_HLT = KInfoProducerBase::hltConfig.prescaleValues(event, setup, name);
 				if (prescale_L1_HLT.first < 0 || prescale_L1_HLT.second < 0)
 					prescale = 0;
 				else
 					prescale = prescale_L1_HLT.first * prescale_L1_HLT.second;
+*/
 				if (metaLumi->hltPrescales[i] == 0)
 				{
 					if (verbosity > 0 || printHltList)
