@@ -169,9 +169,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
 
-	from RecoMET.METPUSubtraction.localSqlite import recorrectJets
-	recorrectJets(process, isData=data)
-	jetCollection = "patJetsReapplyJEC"
+	#from Kappa.Skimming.localSqlite import recorrectJets
+	#recorrectJets(process, isData=data)
+	#jetCollection = "patJetsReapplyJEC"
+	jetCollection = "slimmedJets"
 
 
 	## ------------------------------------------------------------------------
@@ -238,13 +239,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "againstMuonLoose3",
 	                                                                       "againstMuonTight3",
-	                                                                       "againstElectronMVA5category",
-	                                                                       "againstElectronMVA5raw",
-	                                                                       "againstElectronVLooseMVA5",
-	                                                                       "againstElectronLooseMVA5",
-	                                                                       "againstElectronMediumMVA5",
-	                                                                       "againstElectronTightMVA5",
-	                                                                       "againstElectronVTightMVA5",
 	                                                                       "againstElectronMVA6category",
 	                                                                       "againstElectronMVA6raw",
 	                                                                       "againstElectronVLooseMVA6",
