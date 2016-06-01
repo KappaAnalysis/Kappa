@@ -55,6 +55,28 @@ public:
 		return KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>::onLumi(lumiBlock, setup);
 	}
 
+	virtual void onFirstObject(const SingleInputType &in, SingleOutputType &out) override
+	{
+		if (KBaseProducer::verbosity > 0)
+		{
+			if( in.jecSetsAvailable())
+			{
+				for (auto set: in.availableJECSets())
+				{
+					std::cout << "KPatJetProducer::onFirstObject: listing all available JEC sets below" << std::endl;
+					std::cout << "Jet Energy Set : " << set << std::endl;
+					for ( auto level : in.availableJECLevels(set))
+					{
+						std::cout << "\t\t Level: " << level << std::endl;
+					}
+				}
+			} else
+			{
+				std::cout << "no JEC sets available" << std::endl;
+			}
+		}
+	}
+
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		copyP4(in, out.p4);
