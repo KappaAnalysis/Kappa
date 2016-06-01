@@ -41,8 +41,18 @@ options.register('testsuite', False, VarParsing.multiplicity.singleton, VarParsi
 options.register('preselect', True, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'apply preselection at CMSSW level on leptons')
 options.parseArguments()
 
-cmssw_version_number = tools.get_cmssw_version_number()
-split_cmssw_version = cmssw_version_number.split("_")
+# check if current release is abov a certain number
+def is_above_cmssw_version(version_to_test):
+	cmssw_version_number = tools.get_cmssw_version_number()
+	split_cmssw_version = [int(i) for i in cmssw_version_number.split("_")[0:2]]
+	for index in range(len(version_to_test)):
+		if(version_to_test[index] > split_cmssw_version[index]):
+			return True
+		elif(version_to_test[index] < split_cmssw_version[index]):
+			return False
+	return True
+
+
 
 def getBaseConfig( globaltag= 'START70_V7::All',
                    testfile=cms.untracked.vstring(""),
@@ -97,7 +107,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	# General configuration
-	if ((cmssw_version_number.startswith("7_4") and split_cmssw_version[2] >= 14) or (cmssw_version_number.startswith("7_6") or split_cmssw_version[0] >= 8)):
+	if is_above_cmssw_version([7,4]):
 		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
@@ -107,7 +117,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.p *= ( process.makeVertexes )
 	process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
 	process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
-	if (cmssw_version_number.startswith("7_6") or split_cmssw_version[0] >= 8):
+
+	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
 
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
@@ -117,7 +128,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
-	if (cmssw_version_number.startswith("7_6") or split_cmssw_version[0] >= 8):
+	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))
 
 	if not isEmbedded and data:
@@ -255,10 +266,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('PileupDensity')
 	process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
 	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
-	if (cmssw_version_number.startswith("7_6") or split_cmssw_version[0] >= 8):
+	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
 	process.kappaTuple.active += cms.vstring('PatJets')
-	if (cmssw_version_number.startswith("7_6") or split_cmssw_version[0] >= 8):
+	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
 	#from Kappa.Skimming.KMET_run2_cff import configureMVAMetForMiniAOD
 	#configureMVAMetForMiniAOD(process)
@@ -291,7 +302,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			)
 		process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
 		process.kappaTuple.active += cms.vstring('GenJets')
-		if (cmssw_version_number.startswith("7_6") or split_cmssw_version[0] >= 8):
+		if is_above_cmssw_version([7,6]):
 			process.kappaTuple.GenJets.tauGenJets = cms.PSet(src=cms.InputTag("tauGenJets"))
 			process.kappaTuple.GenJets.tauGenJetsSelectorAllHadrons = cms.PSet(src=cms.InputTag("tauGenJetsSelectorAllHadrons"))
 
