@@ -47,9 +47,9 @@ def is_above_cmssw_version(version_to_test):
 	split_cmssw_version = [int(i) for i in cmssw_version_number.split("_")[0:2]]
 	for index in range(len(version_to_test)):
 		if(version_to_test[index] > split_cmssw_version[index]):
-			return True
-		elif(version_to_test[index] < split_cmssw_version[index]):
 			return False
+		elif(version_to_test[index] < split_cmssw_version[index]):
+			return True
 	return True
 
 
