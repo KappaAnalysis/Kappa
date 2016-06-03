@@ -363,7 +363,10 @@ std::ostream &operator<<(std::ostream &os, const KEventInfo &i)
 	os << " flags=" << std::bitset<32>(i.bitsUserFlags);
 	os << " minWght=" << i.minVisPtFilterWeight << std::endl;
 	os << "\tTrigger: L1=" << std::bitset<64>(i.bitsL1) << std::endl;
-	os << "\t        HLT=" << std::bitset<64>(i.bitsHLT);
+	os << "\t        HLT=";
+	for (size_t index = 0; index < i.bitsHLT.size(); index++)
+		os << (i.bitsHLT[index]);
+	os << std::endl;
 	return os;
 }
 
@@ -436,7 +439,7 @@ std::ostream &operator<<(std::ostream &os, const KGenEventInfo &i)
 std::ostream &displayHLT(std::ostream &os, const KLumiInfo &metaLumi, const KEventInfo &metaEvent)
 {
 	for (size_t hltIdx = 0; hltIdx < metaLumi.hltNames.size(); ++hltIdx)
-		if (metaEvent.bitsHLT & ((unsigned long long)1 << hltIdx))
+		if (metaEvent.bitsHLT[hltIdx])
 			os << hltIdx << ":" << metaLumi.hltNames[hltIdx] << "(" << metaLumi.hltPrescales[hltIdx] << ")" << " ";
 		os << std::endl;
 	return os;
