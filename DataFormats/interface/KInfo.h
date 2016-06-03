@@ -73,7 +73,7 @@ const unsigned int KEFRecoWarnings = 1 << 4;
 struct KEventInfo
 {
 	unsigned long long bitsL1;     //< trigger bits for the L1 trigger
-	unsigned long long bitsHLT;    //< trigger bits for the HLT trigger according to hltNames
+	std::vector<bool> bitsHLT;    //< trigger bits for the HLT trigger according to hltNames
 	unsigned long long nEvent;     //< event number
 	unsigned int nLumi;            //< lumi-section number
 	unsigned int nRun;             //< run number
@@ -85,13 +85,13 @@ struct KEventInfo
 	{
 		for (size_t i = 0; i < lumiinfo->hltNames.size(); ++i)
 			if (lumiinfo->hltNames[i] == name)
-				return (bitsHLT & (1ull << i)) != 0;
+				return bitsHLT[i];
 		return false; // Named HLT does not exist
 	}
 
 	inline bool hltFired (const size_t pos) const
 	{
-		return (bitsHLT & (1ull << pos)) != 0;
+		return bitsHLT[pos];
 	}
 
 	inline bool userFlag(const unsigned int mask) const

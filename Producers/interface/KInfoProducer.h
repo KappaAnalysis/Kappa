@@ -187,24 +187,8 @@ public:
 				std::cout << "KInfoProducer::onRun :  => Adding trigger: " << name << " with ID: " << hltIdx << " as " << counter
 					<< " with placeholder prescale 0" << std::endl;
 			
-			if (KInfoProducerBase::hltKappa2FWK.size() < 64)
-			{
-				addHLT(hltIdx, name, 0/*, KInfoProducerBase::hltConfig.saveTagsModules(i)*/);
-				++counter;
-			}
-			else
-			{
-				std::cout << "The following HLT bits would have been selected:" << std::endl;
-				unsigned int cntMatch = 0;
-				for (size_t j = 0; j < hltConfig.size(); ++j)
-				{
-					if (regexMatch(hltConfig.triggerName(j), svHLTWhitelist, svHLTBlacklist))
-					{
-						std::cout << "\t" << (++cntMatch) << "\t" << hltConfig.triggerName(j) << std::endl;
-					}
-				}
-				throw cms::Exception("Too many HLT bits selected!");
-			}
+			addHLT(hltIdx, name, 0/*, KInfoProducerBase::hltConfig.saveTagsModules(i)*/);
+			++counter;
 		}
 		if (verbosity > 0)
 			std::cout << "KInfoProducer::onRun : Accepted number of trigger streams: " << counter - 1 << std::endl;
@@ -240,7 +224,7 @@ public:
 			assert(!event.isRealData() || tagHLTResults.process() == "HLT");
 
 		bool triggerPrescaleError = false;
-		metaEvent->bitsHLT = 0;
+		metaEvent->bitsHLT.clear();
 		if (tagHLTResults.label() != "")
 		{
 			// set HLT trigger bits
@@ -248,15 +232,14 @@ public:
 			event.getByLabel(tagHLTResults, hTriggerResults);
 
 			bool hltFAIL = false;
+			metaEvent->bitsHLT.resize(KInfoProducerBase::hltKappa2FWK.size()+1);
 			for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
 			{
 				const size_t idx = KInfoProducerBase::hltKappa2FWK[i];
-				if (hTriggerResults->accept(idx))
-					metaEvent->bitsHLT |= ((unsigned long long)1 << i);
+				metaEvent->bitsHLT[i] = hTriggerResults->accept(idx);
 				hltFAIL = hltFAIL || hTriggerResults->error(idx);
 			}
-			if (hltFAIL)
-				metaEvent->bitsHLT |= 1;
+			metaEvent->bitsHLT[0] = hltFAIL;
 
 			// set and check trigger prescales
 			for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
