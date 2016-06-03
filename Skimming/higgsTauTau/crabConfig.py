@@ -70,13 +70,14 @@ def submission():
 	
 	config.Site.storageSite = "T2_DE_DESY"
 	# load nicknames form gc-style config files and write them to a flat nicknames list
-	nicknames = read_grid_control_includes(["samples/13TeV/2016B_Data.conf"])
+	nicknames = read_grid_control_includes(["samples/13TeV/Spring16_SM_Analysis.conf"])
+	#nicknames = read_grid_control_includes(["samples/13TeV/2016B_Data.conf"])
 	#nicknames = ['SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_76X_13TeV_MINIAOD_pythia8']
 
 	# loop over datasets and get repsective nicks
 	for nickname in nicknames:
 		config.General.requestName = nickname
-		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_Prompt_v8' if isData(nickname) else 'globalTag=76X_mcRun2_asymptotic_RunIIFall15DR76_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
+		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_Prompt_v8' if isData(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_v3' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
 		p = Process(target=submit, args=(config,))
