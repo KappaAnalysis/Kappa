@@ -38,7 +38,7 @@ options.register('testfile', '', VarParsing.multiplicity.singleton, VarParsing.v
 options.register('maxevents', -1, VarParsing.multiplicity.singleton, VarParsing.varType.int, 'maxevents')
 options.register('outputfilename', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Filename for the Outputfile')
 options.register('testsuite', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Run the Kappa test suite. Default: True')
-options.register('preselect', True, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'apply preselection at CMSSW level on leptons')
+options.register('preselect', True, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'apply preselection at CMSSW level on leptons. Never preselect on SM Higgs samples')
 options.parseArguments()
 
 # check if current release is abov a certain number
@@ -71,18 +71,19 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	electrons = "slimmedElectrons"
 	taus = "slimmedTaus"
 	# produce selected collections and filter events with not even one Lepton
-	if(options.preselect):
-		from Kappa.Skimming.KSkimming_preselection import do_preselection
-		do_preselection(process)
+	if not "HToTauTau" in datasetsHelper.getProcess(nickname):
+		if(options.preselect):
+			from Kappa.Skimming.KSkimming_preselection import do_preselection
+			do_preselection(process)
 
-		process.selectedKappaTaus.cut = cms.string('pt > 15 && abs(eta) < 2.5') 
-		process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
-		process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
-		muons = "selectedKappaMuons"
-		electrons = "selectedKappaElectrons"
-		taus = "selectedKappaTaus"
+			process.selectedKappaTaus.cut = cms.string('pt > 15 && abs(eta) < 2.5') 
+			process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
+			process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
+			muons = "selectedKappaMuons"
+			electrons = "selectedKappaElectrons"
+			taus = "selectedKappaTaus"
 	## ------------------------------------------------------------------------
-		# possibility to write out edmDump. Be careful when using unsceduled mode
+	# possibility to write out edmDump. Be careful when using unsceduled mode
 	process.load("Kappa.Skimming.edmOut")
 	process.ep = cms.EndPath()
 	#process.ep *= process.edmOut
