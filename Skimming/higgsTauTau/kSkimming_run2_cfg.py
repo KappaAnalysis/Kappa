@@ -176,6 +176,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#recorrectJets(process, isData=data)
 	#jetCollection = "patJetsReapplyJEC"
 	jetCollection = "slimmedJets"
+	jetCollectionPuppi = "slimmedJetsPuppi"
 
 
 	## ------------------------------------------------------------------------
@@ -268,8 +269,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('PatJets')
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
-	#from Kappa.Skimming.KMET_run2_cff import configureMVAMetForMiniAOD
-	#configureMVAMetForMiniAOD(process)
+		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')

@@ -19,7 +19,8 @@ class KPatJetProducer : public KBaseMultiLVProducer<edm::View<pat::Jet>, KJets >
 {
 public:
 	KPatJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
+		KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+		ids(cfg.getParameter<std::vector<std::string> >("ids"))
 	{
 		genJet = new KGenJet;
 		_event_tree->Bronch("genJet", "KGenJet", &genJet);
@@ -29,26 +30,23 @@ public:
 
 	static const std::string getLabel() { return "PatJets"; }
 
-	std::vector<std::string> bDiscriminators = { "jetBProbabilityBJetTags", "jetProbabilityBJetTags", 
-	                                             "trackCountingHighPurBJetTags", "trackCountingHighEffBJetTags", 
-	                                             "simpleSecondaryVertexHighEffBJetTags", "simpleSecondaryVertexHighPurBJetTags", 
-	                                             "combinedSecondaryVertexBJetTags", "combinedInclusiveSecondaryVertexBJetTags", 
-						     "combinedInclusiveSecondaryVertexV2BJetTags", "pfCombinedInclusiveSecondaryVertexV2BJetTags" };
-	// discriminators are upper case coming from standalone producers. To be compatible with miniAOD, use also upper case here.
 	inline std::string firstLetterUppercase(const std::string input)
 	{
 		char firstpart = toupper(input[0]);
 		return firstpart + input.substr(1, input.size()-1);
 	}
 
+
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		names->tagNames.push_back("puJetIDFullDiscriminant");
-
-		for(auto bDiscriminator : bDiscriminators)
+		for(auto id: ids)
 		{
-			names->tagNames.push_back(firstLetterUppercase(bDiscriminator));
+			if(std::find(names->tagNames.begin(), names->tagNames.end(), id) == names->tagNames.end())
+			{
+				names->tagNames.push_back(id);
+			}
 		}
+
 		//fill the same discriminators also in binary IDs
 		names->idNames = names->tagNames;
 
@@ -110,9 +108,18 @@ public:
 		assert(std::abs(in.chargedEmEnergyFraction() - in.electronEnergyFraction()) < 0.001f);
 
 		// tags
-		out.tags.push_back(in.userFloat("pileupJetId:fullDiscriminant"));
-		for(auto bDiscriminator : bDiscriminators)
-			out.tags.push_back(in.bDiscriminator(bDiscriminator));
+		for(auto id: names->tagNames)
+		{
+			if(in.hasUserFloat(id))
+			{
+				out.tags.push_back(in.userFloat(id));
+			}
+			else
+			{
+				out.tags.push_back(in.bDiscriminator(id));
+			}
+		}
+
 		// write same thing as binary discriminator
 		int digit = 0;
 		out.binaryIds = 0;
@@ -134,6 +141,7 @@ public:
 private:
 	KGenJet* genJet;
 	KJetMetadata *names;
+	std::vector<std::string> ids;
 
 };
 
