@@ -4,6 +4,7 @@
 #define KAPPA_PATTAUPRODUCER_H
 
 #include "KBaseMultiLVProducer.h"
+#include "KTauProducer.h"
 
 #include <DataFormats/PatCandidates/interface/Tau.h>
 #include <FWCore/Framework/interface/EDProducer.h>
@@ -67,32 +68,39 @@ protected:
 			out.floatDiscriminators.push_back(in.tauID(discriminator));
 		}
 	}
-
-
+	
 	virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
 	{
-		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); ++i)
+		for(size_t i = 0; i < in.signalChargedHadrCands().size(); ++i)
 		{
-			KPFCandidate tmp;
-			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
-			out.chargedHadronCandidates.push_back(tmp);
+			const reco::PFCandidate* inCandidate = static_cast<const reco::PFCandidate*>(in.signalChargedHadrCands()[i].get());
+			if (inCandidate)
+			{
+				KPFCandidate outCandidate;
+				KPFCandidateProducer::fillPFCandidate(*inCandidate, outCandidate);
+				out.chargedHadronCandidates.push_back(outCandidate);
+			}
 		}
-		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); ++i)
+		for(size_t i = 0; i < in.signalNeutrHadrCands().size(); ++i)
 		{
 			KLV tmp;
-			copyP4(in.signalPiZeroCandidates()[i].p4(), tmp.p4);
+			copyP4(in.signalNeutrHadrCands()[i].get()->p4(), tmp.p4);
 			out.piZeroCandidates.push_back(tmp);
 		}
-		for(size_t i = 0; i < in.signalPFGammaCands().size(); ++i)
+		for(size_t i = 0; i < in.signalGammaCands().size(); ++i)
 		{
-			KPFCandidate tmp;
-			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
-			out.gammaCandidates.push_back(tmp);
+			const reco::PFCandidate* inCandidate = static_cast<const reco::PFCandidate*>(in.signalGammaCands()[i].get());
+			if (inCandidate)
+			{
+				KPFCandidate outCandidate;
+				KPFCandidateProducer::fillPFCandidate(*inCandidate, outCandidate);
+				out.gammaCandidates.push_back(outCandidate);
+			}
 		}
 
-		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), PFSorter);
-		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), LVSorter);
-		std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), PFSorter);
+		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
+		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());
+		std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), KLVSorter<KPFCandidate>());
 	}
 
 public:
@@ -161,7 +169,13 @@ virtual bool acceptSingle(const SingleInputType &in) override
 		out.tauKey = createTauHash<pat::Tau>(in);
 		fillDiscriminators(in, out);
 		if(in.isPFTau())
-			fillPFCandidates(in, out);
+		{
+			KTauProducer::fillPFCandidates(in, out);
+		}
+		else
+		{
+			KPatTauProducer::fillPFCandidates(in, out);
+		}
 	}
 
 	virtual void onFirstObject(const SingleInputType &in, SingleOutputType &out) override
@@ -213,9 +227,6 @@ private:
 	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist;
 	std::map<std::string, KTauMetadata *> discriminatorMap;
 	std::vector<std::string> names;
-
-	KLVSorter<KPFCandidate> PFSorter;
-	KLVSorter<KLV> LVSorter;
 
 	TTree* _lumi_tree_pointer;
 };
