@@ -110,7 +110,7 @@ def main(args):
     with open(htmlfile, 'w') as f:
         f.write(html)
     if sendMailOnFail and (opt['dryRun'] or not allOK):
-        sendMail(os.path.abspath('.'), ['CMSSW_7_6_X'])
+        sendMail(os.path.abspath('.'), ['master'])
     print "HTML written to %s, Kappa status:%s ok." % (htmlfile, [' not', ''][allOK])
     return not allOK
 
@@ -717,7 +717,7 @@ function timeAgo(time) {
  <div class="head"><h1>Kappa Test Results</h1></div>
  <div>
  <h2>General Information</h2> <p>Date: {date}<span id="timeago"></span>, run time: {runtime}</p>
- <p>This page is a result of the <a href="https://github.com/KappaAnalysis/Kappa/blob/CMSSW_7_6_X/DataFormats/test/test.py">test.py</a> script,
+ <p>This page is a result of the <a href="https://github.com/KappaAnalysis/Kappa/blob/master/DataFormats/test/test.py">test.py</a> script,
  which is run regularly to test <a href="https://github.com/KappaAnalysis/Kappa">Kappa</a>.</p>
 
  <div class="result {cls}">Kappa is {status}</div>

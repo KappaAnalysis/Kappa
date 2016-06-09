@@ -67,7 +67,7 @@ def checkoutPackages(args):
 		#"git cms-merge-topic ikrav:egm_id_747_v2",
 
 		#Check out Kappa
-		"git clone https://github.com/KappaAnalysis/Kappa.git -b CMSSW_7_6_X"
+		"git clone https://github.com/KappaAnalysis/Kappa.git"
 	]
 	execCommands(commands)
 	return
