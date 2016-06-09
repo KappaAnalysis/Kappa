@@ -35,7 +35,16 @@ public:
 	{
 		// Fill additional fields from KTau
 		out.tauKey = createTauHash(in);
+		
+		KTauProducer::fillPFCandidates(in, out);
+	}
 
+	template<class Tin, class Tout>
+	static void fillPFCandidates(const Tin &in, Tout &out)
+	{
+		std::cout << "KPatTauProducer: signalPFChargedHadrCands().size() = " << in.signalPFChargedHadrCands().size() << std::endl;
+		std::cout << "KPatTauProducer: signalPiZeroCandidates().size() = " << in.signalPiZeroCandidates().size() << std::endl;
+		std::cout << "KPatTauProducer: signalPFGammaCands().size() = " << in.signalPFGammaCands().size() << std::endl;
 		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); ++i)
 		{
 			KPFCandidate tmp;
@@ -54,6 +63,10 @@ public:
 			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
 			out.gammaCandidates.push_back(tmp);
 		}
+		
+		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
+		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());
+		std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), KLVSorter<KPFCandidate>());
 	}
 
 protected:
@@ -68,14 +81,7 @@ protected:
 		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>::fillSingle(in, out);
 		// Fill additional fields of KTau
 		KTauProducer::fillTau(in, out);
-		
-		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), PFSorter);
-		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), LVSorter);
-		std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), PFSorter);
 	}
-private:
-	KLVSorter<KPFCandidate> PFSorter;
-	KLVSorter<KLV> LVSorter;
 };
 
 #endif
