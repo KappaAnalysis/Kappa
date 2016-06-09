@@ -31,7 +31,7 @@ typedef std::vector<KCaloJet> KCaloJets;
 struct KBasicJet : public KLV
 {
 	float area;
-	float correction;
+	std::vector<float> corrections;
 
 	float neutralHadronFraction, chargedHadronFraction;
 	float muonFraction, photonFraction, electronFraction;
@@ -45,6 +45,8 @@ struct KJetMetadata
 {
 	std::vector<std::string> tagNames;  //< names of the float value taggers
 	std::vector<std::string> idNames;   //< names of the binary value IDs
+	std::string jecSets;
+	std::vector<std::string> jecLevels;
 };
 
 struct KJet : public KBasicJet

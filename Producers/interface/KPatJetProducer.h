@@ -26,6 +26,7 @@ public:
 		_event_tree->Bronch("genJet", "KGenJet", &genJet);
 		names = new KJetMetadata;
 		_run_tree->Bronch("jetMetadata", "KJetMetadata", &names);
+		jecSet = "patJetCorrFactors";
 	}
 
 	static const std::string getLabel() { return "PatJets"; }
@@ -55,23 +56,32 @@ public:
 
 	virtual void onFirstObject(const SingleInputType &in, SingleOutputType &out) override
 	{
-		if (KBaseProducer::verbosity > 0)
+		if( in.jecSetsAvailable())
 		{
-			if( in.jecSetsAvailable())
+			for(auto set: in.availableJECSets())
 			{
-				for (auto set: in.availableJECSets())
+				if (KBaseProducer::verbosity > 0)
 				{
 					std::cout << "KPatJetProducer::onFirstObject: listing all available JEC sets below" << std::endl;
 					std::cout << "Jet Energy Set : " << set << std::endl;
-					for ( auto level : in.availableJECLevels(set))
-					{
-						std::cout << "\t\t Level: " << level << std::endl;
-					}
 				}
-			} else
-			{
-				std::cout << "no JEC sets available" << std::endl;
 			}
+			if(in.availableJECSets()[0] == jecSet)
+			{
+				std::vector<std::string> levels;
+				for ( auto level : in.availableJECLevels(jecSet))
+				{
+					levels.push_back(level);
+					if (KBaseProducer::verbosity > 0)
+						std::cout << "\t\t Level: " << level << std::endl;
+				}
+				names->jecSets = jecSet;
+				names->jecLevels = levels;
+			}
+		} else
+		{
+			if (KBaseProducer::verbosity > 0)
+				std::cout << "no JEC sets available" << std::endl;
 		}
 	}
 
@@ -90,7 +100,6 @@ public:
 		out.hfHadronFraction = in.HFHadronEnergyFraction();
 		out.hfEMFraction = in.HFEMEnergyFraction();
 		out.flavour = in.hadronFlavour();
-		out.correction = in.jecFactor("Uncorrected");
 
 // energy fraction definitions have changed in CMSSW 7.3.X
 // fractions should add up to unity
@@ -137,12 +146,29 @@ public:
 		const reco::GenJet* recoGenJet = in.genJet();
 		if (recoGenJet == NULL) // catch if null pointer is delivered from pat::Jet::genJet() and use an empty GenJet instead
 			recoGenJet = new reco::GenJet;
+
+		//write out JEC factors to re-correct jets on analysis level if wanted
+		std::vector<float> levels;
+		if (KBaseProducer::verbosity > 3)
+			std::cout << "Getting JEC Set " << jecSet << std::endl;
+		if (in.jecSetAvailable(jecSet))
+		{
+			for(size_t indexLevels = 0; indexLevels < names->jecLevels.size(); indexLevels++)
+			{
+				levels.push_back(static_cast<float>(in.jecFactor(names->jecLevels[indexLevels], "none", jecSet)));
+				if (KBaseProducer::verbosity > 3)
+					std::cout << "Getting JEC Level " << names->jecLevels[indexLevels] <<  ":" << levels[indexLevels] << std::endl;
+			}
+			out.corrections = levels;
+		}
+
 		KGenJetProducer::fillGenJet(*recoGenJet, *genJet); 
 	}
 private:
 	KGenJet* genJet;
 	KJetMetadata *names;
 	std::vector<std::string> ids;
+	std::string jecSet;
 
 };
 

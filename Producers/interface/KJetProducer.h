@@ -195,7 +195,7 @@ public:
 		out.hfEMFraction = in.HFEMEnergyFraction() / sumFractions;
 
 		// JEC factor (a member of PFJet would be better, but if everything is right, this should be equivalent)
-		out.correction = sumFractions;
+		out.corrections.push_back(sumFractions);
 
 // energy fraction definitions have changed in CMSSW 7.3.X
 // fractions should add up to unity
