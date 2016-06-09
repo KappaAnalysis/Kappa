@@ -90,6 +90,7 @@ public:
 		out.hfHadronFraction = in.HFHadronEnergyFraction();
 		out.hfEMFraction = in.HFEMEnergyFraction();
 		out.flavour = in.hadronFlavour();
+		out.correction = in.jecFactor("Uncorrected");
 
 // energy fraction definitions have changed in CMSSW 7.3.X
 // fractions should add up to unity
