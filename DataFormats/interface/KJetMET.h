@@ -46,7 +46,7 @@ struct KBasicJet : public KLV
 };
 typedef std::vector<KBasicJet> KBasicJets;
 
-const std::regex replacement( "(:|,|\.|\ )" ); // remove special characters in comparison to achive compatibility with Artus
+const std::regex replacement( "(:|,)" ); // remove special characters in comparison to achive compatibility with Artus
 struct KJetMetadata
 {
 	std::vector<std::string> tagNames;  //< names of the float value taggers
