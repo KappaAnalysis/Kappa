@@ -49,7 +49,6 @@ struct KJetMetadata
 {
 	std::vector<std::string> tagNames;  //< names of the float value taggers
 	std::vector<std::string> idNames;   //< names of the binary value IDs
-	std::string jecSet;
 	std::vector<std::string> jecLevels;
 
 	inline std::string ReplaceAll(std::string str, const std::string& from, const std::string& to) const
@@ -65,9 +64,6 @@ struct KJetMetadata
 
 	size_t jecLevelNumber(std::string inJecSet, std::string inlevel)
 	{
-		if(inJecSet.compare(inJecSet) != 0)
-			std::cout << "KJetMetadata: JEC Set \"" << inJecSet << "\" != " << jecSet << std::endl;
-			exit(1);
 
 		for(size_t index = 0; index < jecLevels.size(); index++)
 		{
