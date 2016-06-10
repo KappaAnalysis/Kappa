@@ -12,7 +12,7 @@
 #define KAPPA_JETMET_H
 
 #include "KBasic.h"
-
+#include <regex>
 
 struct KCaloJet : public KLV
 {
@@ -46,12 +46,21 @@ struct KBasicJet : public KLV
 };
 typedef std::vector<KBasicJet> KBasicJets;
 
+const std::regex replacement( "(:|,|\.|\ )" ); // remove special characters in comparison to achive compatibility with Artus
 struct KJetMetadata
 {
 	std::vector<std::string> tagNames;  //< names of the float value taggers
 	std::vector<std::string> idNames;   //< names of the binary value IDs
 	std::string jecSet;
 	std::vector<std::string> jecLevels;
+	inline bool tagNamesMatch(const size_t &i, const std::string &name) const
+	{
+		return (name.compare(std::regex_replace(tagNames[i], replacement, "")) != 0);
+	}
+	inline bool idNamesMatch(const size_t &i, const std::string &name) const
+	{
+		return (name.compare(std::regex_replace(idNames[i], replacement, "")) != 0);
+	}
 
 	size_t jecLevelNumber(std::string inJecSet, std::string inlevel)
 	{
@@ -80,7 +89,7 @@ struct KJet : public KBasicJet
 	{
 		for (unsigned int i = 0; i < jetmetadata->tagNames.size(); ++i)
 		{
-			if (jetmetadata->tagNames[i] == name)
+			if (jetmetadata->tagNamesMatch(i, name))
 				return tags[i];
 		}
 		if (!check)
@@ -93,7 +102,7 @@ struct KJet : public KBasicJet
 	{
 		for (unsigned int i = 0; i < jetmetadata->idNames.size(); ++i)
 		{
-			if (jetmetadata->idNames[i] == name)
+			if (jetmetadata->idNamesMatch(i, name))
 				return binaryIds & (1 << i);
 		}
 		if (!check)
