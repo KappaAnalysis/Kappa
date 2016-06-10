@@ -75,7 +75,7 @@ public:
 					if (KBaseProducer::verbosity > 0)
 						std::cout << "\t\t Level: " << level << std::endl;
 				}
-				names->jecSets = jecSet;
+				names->jecSet = jecSet;
 				names->jecLevels = levels;
 			}
 		} else

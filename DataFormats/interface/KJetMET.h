@@ -38,6 +38,11 @@ struct KBasicJet : public KLV
 	float hfHadronFraction, hfEMFraction;
 
 	int nConstituents, nCharged;
+
+	RMFLV uncorrectedP4( size_t level)
+	{
+		return p4 * corrections[level];
+	}
 };
 typedef std::vector<KBasicJet> KBasicJets;
 
@@ -45,8 +50,24 @@ struct KJetMetadata
 {
 	std::vector<std::string> tagNames;  //< names of the float value taggers
 	std::vector<std::string> idNames;   //< names of the binary value IDs
-	std::string jecSets;
+	std::string jecSet;
 	std::vector<std::string> jecLevels;
+
+	size_t jecLevelNumber(std::string inJecSet, std::string inlevel)
+	{
+		if(inJecSet.compare(inJecSet) != 0)
+			std::cout << "KJetMetadata: JEC Set \"" << inJecSet << "\" != " << jecSet << std::endl;
+			exit(1);
+
+		for(size_t index = 0; index < jecLevels.size(); index++)
+		{
+			if (inlevel.compare(jecLevels[index]) == 0)
+				return index;
+		}
+
+		std::cout << "KJetMetadata: Correction factor \"" << inlevel << "\" not available!" << std::endl;
+		exit(1);
+	}
 };
 
 struct KJet : public KBasicJet
