@@ -118,6 +118,9 @@ public:
 			}
 		}
 
+		this->metaEvent->x1 = hEventInfo->pdf()->x.first;
+		this->metaEvent->x2 = hEventInfo->pdf()->x.second;
+		this->metaEvent->qScale = hEventInfo->qScale();
 		this->metaEvent->weight = hEventInfo->weight();
 		this->metaEvent->alphaQCD = hEventInfo->alphaQCD();
 		//metaEvent->alphaQED = hEventInfo->alphaQED();
