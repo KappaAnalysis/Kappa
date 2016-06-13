@@ -49,8 +49,11 @@ public:
 			consumescollector.consumes<GenEventInfoProduct>(tagSource);
 			consumescollector.consumes<LHEEventProduct>(lheSource);
 			consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
-			consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
-			consumescollector.consumes<LHERunInfoProduct>(runInfo);
+			if(lheWeightRegexes.size() > 0)
+			{
+				consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
+				consumescollector.consumes<LHERunInfoProduct>(runInfo);
+			}
 
 			genEventInfoMetadata = new KGenEventInfoMetadata();
 			_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
@@ -68,7 +71,7 @@ public:
 			this->metaLumi->nLumi = forceLumi;
 	{
 		// print available lheWeights
-		if(this->verbosity > 1)
+		if((this->verbosity > 1) && (lheWeightRegexes.size() > 0))
 		{
 			edm::Handle<LHERunInfoProduct> runhandle;
 			lumiBlock.getRun().getByLabel( runInfo, runhandle );
@@ -101,15 +104,19 @@ public:
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		edm::Handle<LHEEventProduct> lheEventProduct;
-		event.getByLabel(lheSource, lheEventProduct);
-		for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
+		std::cout << "regexes: " << lheWeightRegexes.size() << std::endl;
+		if(lheWeightRegexes.size() > 0)
 		{
-			for(auto validIds : lheWeightRegexes)
+			edm::Handle<LHEEventProduct> lheEventProduct;
+			event.getByLabel(lheSource, lheEventProduct);
+			for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
 			{
-				if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, validIds))
+				for(auto validIds : lheWeightRegexes)
 				{
-					genEventInfoMetadata->lheWeightNames.push_back(lheEventProduct->weights()[i].id);
+					if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, validIds))
+					{
+						genEventInfoMetadata->lheWeightNames.push_back(lheEventProduct->weights()[i].id);
+					}
 				}
 			}
 		}
@@ -144,16 +151,19 @@ public:
 		this->metaEvent->lheHt = lheHt;
 		this->metaEvent->lheNOutPartons = lheNOutPartons;
 		// Get LHE renormalization and factorization weights
-		this->metaEvent->lheWeight.clear();
-		for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
+		if(lheWeightRegexes.size() > 0)
 		{
-			for(auto validIds : genEventInfoMetadata->lheWeightNames)
-				if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, validIds))
-				{
-					this->metaEvent->lheWeight.push_back(lheEventProduct->weights()[i].wgt / lheEventProduct->originalXWGTUP() );
-				}
+			this->metaEvent->lheWeight.clear();
+			for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
+			{
+				for(auto validIds : genEventInfoMetadata->lheWeightNames)
+					if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, validIds))
+					{
+						this->metaEvent->lheWeight.push_back(lheEventProduct->weights()[i].wgt / lheEventProduct->originalXWGTUP() );
+					}
+			}
+			assert( this->metaEvent->lheWeight.size() == this->genEventInfoMetadata->lheWeightNames.size() );
 		}
-		assert( this->metaEvent->lheWeight.size() == this->genEventInfoMetadata->lheWeightNames.size() );
 
 		// Get generator event info:
 		edm::Handle<GenEventInfoProduct> hEventInfo;
