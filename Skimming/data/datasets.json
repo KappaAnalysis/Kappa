@@ -570,6 +570,7 @@
         "process": "DYJetsToLL_M50", 
         "scenario": "PUSpring16", 
         "xsec": 6025.2
+    },
     "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/AODSIM": {
         "campaign": "RunIIFall15DR76", 
         "data": false, 
