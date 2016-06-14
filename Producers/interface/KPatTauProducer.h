@@ -71,6 +71,7 @@ protected:
 	
 	virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
 	{
+#if CMSSW_MAJOR_VERSION >= 7
 		for(size_t i = 0; i < in.signalChargedHadrCands().size(); ++i)
 		{
 			KPFCandidate outCandidate;
@@ -89,6 +90,7 @@ protected:
 			KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalGammaCands()[i].get()), outCandidate);
 			out.gammaCandidates.push_back(outCandidate);
 		}
+#endif
 
 		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());
