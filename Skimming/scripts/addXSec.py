@@ -11,7 +11,7 @@ from pprint import pprint
 import json
 
 from Kappa.Skimming.registerDatasetHelper import *
-from Kappa.Skimming.equationparsing import eval_expr
+#from Kappa.Skimming.equationparsing import eval_expr
 cmssw_base = os.environ.get("CMSSW_BASE")
 dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
@@ -29,7 +29,7 @@ def main():
 	(options, args) = parser.parse_args()
 	sample = options.sample
 	xsec = options.xsec
-	xsec = eval_expr(xsec.replace('x', '*').replace(' ', ''))
+	#xsec = eval_expr(xsec.replace('x', '*').replace(' ', ''))
 	dict = load_database(dataset)
 	dict[sample]["xsec"] = float(xsec)
 	import pprint
