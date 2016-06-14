@@ -18,6 +18,8 @@
 /// Provenance information to trace back the branch content to the corresponding EDM product
 struct KProvenance
 {
+	virtual ~KProvenance() {};
+
 	std::vector<std::string> names;         //< product names of the objects in EDM
 	std::vector<std::string> branches;      //< branch names in the Events tree in the same ordering
 };
@@ -28,6 +30,8 @@ const unsigned int KLFPrescaleError = 1 << 0;
 
 struct KLumiInfo
 {
+	virtual ~KLumiInfo() {};
+
 	unsigned int nLumi;                     //< lumi section number
 	unsigned int nRun;                      //< run number
 	unsigned int bitsUserFlags;             //< contains a flag for prescale errors
@@ -38,6 +42,8 @@ struct KLumiInfo
 
 struct KGenLumiInfo : public KLumiInfo
 {
+	virtual ~KGenLumiInfo() {};
+
 	double filterEff;              //< generator filter efficiency
 	double xSectionExt;            //< external process cross section
 	double xSectionInt;            //< internal process cross section
@@ -45,6 +51,8 @@ struct KGenLumiInfo : public KLumiInfo
 
 struct KDataLumiInfo : public KLumiInfo
 {
+	virtual ~KDataLumiInfo() {};
+
 	float avgInsDelLumi;           //< average of the instantaneous delivered luminosity
 	float avgInsDelLumiErr;        //< error on the average of the instantaneous delivered luminosity
 	float avgInsRecLumi;           //< average of the instantaneous recorded luminosity
@@ -72,6 +80,8 @@ const unsigned int KEFRecoWarnings = 1 << 4;
 
 struct KEventInfo
 {
+	virtual ~KEventInfo() {};
+
 	unsigned long long bitsL1;     //< trigger bits for the L1 trigger
 	unsigned long long bitsHLT;    //< trigger bits for the HLT trigger according to hltNames
 	unsigned long long nEvent;     //< event number
@@ -110,6 +120,8 @@ typedef int bx_id;
 
 struct KGenEventInfo : public KEventInfo
 {
+	virtual ~KGenEventInfo() {};
+
 	double weight;                      //< Monte-Carlo weight of the event
 	double binValue;                    //< ?
 	double alphaQCD;                    //< value of alpha_S for this event

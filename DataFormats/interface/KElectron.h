@@ -12,6 +12,8 @@
 
 struct KElectronMetadata
 {
+	virtual ~KElectronMetadata() {};
+
 	std::vector<std::string> idNames;  //< names of configurable electron IDs
 };
 
@@ -31,6 +33,8 @@ namespace KElectronType { enum Type
 
 struct KElectron : public KLepton
 {
+	virtual ~KElectron() {};
+
 	/// identification results
 	std::vector<float> electronIds; //< configurable electron IDs (mainly for MVA IDs)
 
