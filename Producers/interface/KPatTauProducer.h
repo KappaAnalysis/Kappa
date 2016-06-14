@@ -72,15 +72,12 @@ protected:
 	
 	virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
 	{
+#if CMSSW_MAJOR_VERSION >= 7
 		for(size_t i = 0; i < in.signalChargedHadrCands().size(); ++i)
 		{
-			const reco::PFCandidate* inCandidate = static_cast<const reco::PFCandidate*>(in.signalChargedHadrCands()[i].get());
-			if (inCandidate)
-			{
-				KPFCandidate outCandidate;
-				KPFCandidateProducer::fillPFCandidate(*inCandidate, outCandidate);
-				out.chargedHadronCandidates.push_back(outCandidate);
-			}
+			KPFCandidate outCandidate;
+			KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalChargedHadrCands()[i].get()), outCandidate);
+			out.chargedHadronCandidates.push_back(outCandidate);
 		}
 		for(size_t i = 0; i < in.signalNeutrHadrCands().size(); ++i)
 		{
@@ -90,14 +87,11 @@ protected:
 		}
 		for(size_t i = 0; i < in.signalGammaCands().size(); ++i)
 		{
-			const reco::PFCandidate* inCandidate = static_cast<const reco::PFCandidate*>(in.signalGammaCands()[i].get());
-			if (inCandidate)
-			{
-				KPFCandidate outCandidate;
-				KPFCandidateProducer::fillPFCandidate(*inCandidate, outCandidate);
-				out.gammaCandidates.push_back(outCandidate);
-			}
+			KPFCandidate outCandidate;
+			KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalGammaCands()[i].get()), outCandidate);
+			out.gammaCandidates.push_back(outCandidate);
 		}
+#endif
 
 		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());

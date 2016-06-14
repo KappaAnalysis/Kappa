@@ -22,6 +22,12 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		KPackedPFCandidateProducer::fillPackedPFCandidate(in, out);
+	}
+
+	template<class Tin, class Tout>
+	static void fillPackedPFCandidate(const Tin &in, Tout &out)
+	{
 		copyP4(in, out.p4);
 		out.pdgId = in.pdgId();
 
