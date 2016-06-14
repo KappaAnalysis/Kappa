@@ -9,6 +9,8 @@
 /// Particle base class for generator particles or candidates
 struct KParticle : public KLV
 {
+	virtual ~KParticle() {};
+
 	/// bitset containing the status and the signed PDG-ID
 	int pdgId;  ///< PDG-ID of the particle
 
@@ -95,6 +97,8 @@ const unsigned int KGenParticleCustomMask = 1023u << KGenParticleCustomPosition;
 
 struct KMotherDaughterRelation
 {
+	virtual ~KMotherDaugtherRelation() {};
+
 	std::vector<unsigned int> daughterIndices;
 
 	/// return the number of daughters
@@ -114,9 +118,12 @@ struct KMotherDaughterRelation
 	}
 };
 
+
 /// Generator particle
 struct KGenParticle : public KParticle, public KMotherDaughterRelation
 {
+	virtual ~KGenParticle() {};
+
 	unsigned int particleinfo;
 
 	/// Monte-Carlo generator status, cf. [KParticle](md_docs_objects.html#obj-particle)
@@ -143,6 +150,8 @@ typedef std::vector<KGenParticle> KGenParticles;
 /// Generator photon
 struct KGenPhoton : public KLV
 {
+	virtual ~KGenPhoton() {};
+
 	KLV mother;
 	char type;
 	bool isPhoton() const { return (type == 1); }
@@ -154,6 +163,8 @@ typedef std::vector<KGenPhoton> KGenPhotons;
 /// Generator tau
 struct KGenTau : public KGenParticle
 {
+	virtual ~KGenTau() {};
+
 	KLV visible;              //< momentum four-vector of visible particles
 	RMPoint vertex;           //< vertex
 
@@ -188,6 +199,8 @@ typedef std::vector<KGenTau> KGenTaus;
 /// Particle-Flow Candidate
 struct KPFCandidate : public KParticle, public KMotherDaughterRelation
 {
+	virtual ~KPFCandidate() {};
+
 	double deltaP;            //< momentum difference?
 	double ecalEnergy;        //< energy deposited in ECAL
 	double hcalEnergy;        //< energy deposited in HCAL

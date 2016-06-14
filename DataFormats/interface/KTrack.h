@@ -31,6 +31,8 @@ enum KTrackQualityType
     copy from DataFormats/TrackReco/interface/Track.h */
 struct KTrack : public KLV
 {
+	virtual ~KTrack() {};
+
 	/// reference point (formerly known as "vertex", not the PV)
 	RMPoint ref;
 
@@ -178,6 +180,8 @@ typedef std::vector<KTrack> KTracks;
 
 struct KMuonTriggerCandidate : public KTrack
 {
+	virtual ~KMuonTriggerCandidate() {};
+
 	bool isoDecision;
 	float isoQuantity;
 };
@@ -190,6 +194,8 @@ const unsigned char KLeptonPFMask = 1 << 4;
 
 struct KTrackSummary
 {
+	virtual ~KTrackSummary() {};
+
 	unsigned int nTracks;    //< number of tracks in the event
 	unsigned int nTracksHQ;  //< number of high quality tracks in the event
 };

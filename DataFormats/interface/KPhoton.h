@@ -19,6 +19,8 @@ namespace KPhotonId { enum Type
 /// Photon dataformat
 struct KPhoton : public KLV
 {
+	virtual ~KPhoton() {};
+
 	unsigned char ids;         ///< most relevant IDs of the photon
 	float sumChargedHadronPt;  ///< sum pt of charged hadrons for isolation
 	float sumNeutralHadronEt;  ///< sum Et of neutral hadrons for isolation

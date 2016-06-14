@@ -15,6 +15,8 @@
 
 struct KCaloJet : public KLV
 {
+	virtual ~KCaloJet() {};
+
 	float area;          //< jet area
 
 	float fEM;           //< energy fraction in the ECAL
@@ -29,6 +31,8 @@ typedef std::vector<KCaloJet> KCaloJets;
 
 struct KBasicJet : public KLV
 {
+	virtual ~KBasicJet() {};
+
 	float area;
 	std::vector<float> corrections;
 
@@ -47,6 +51,8 @@ typedef std::vector<KBasicJet> KBasicJets;
 
 struct KJetMetadata
 {
+	virtual ~KJetMetadata() {};
+
 	std::vector<std::string> tagNames;  //< names of the float value taggers
 	std::vector<std::string> idNames;   //< names of the binary value IDs
 	std::vector<std::string> jecLevels;
@@ -78,6 +84,8 @@ struct KJetMetadata
 
 struct KJet : public KBasicJet
 {
+	virtual ~KJet() {};
+
 	std::vector<float> tags;            //< float value tags (b-tag, etc.)
 	unsigned int binaryIds;             //< binary value tags (PU jet ID, etc.)
 	int flavour;
@@ -123,12 +131,16 @@ typedef std::vector<KJet> KJets;
 /// This gen jet dataformat is a private one for tau POG studies and might not be stable in future
 struct KGenJet : public KLV
 {
+	virtual ~KGenJet() {};
+
 	int genTauDecayMode;
 };
 typedef std::vector<KGenJet> KGenJets;
 
 struct KMET : public KLV
 {
+	virtual ~KMET() {};
+
 	double sumEt;
 	float photonFraction, electronFraction;
 	float neutralHadronFraction, chargedHadronFraction;
@@ -142,6 +154,8 @@ typedef std::vector<KMET> KMETs;
 
 struct KHCALNoiseSummary
 {
+	virtual ~KHCALNoiseSummary() {};
+
 	bool hasBadRBXTS4TS5;
 	float isolatedNoiseSumE;
 	float isolatedNoiseSumEt;
@@ -159,6 +173,8 @@ struct KHCALNoiseSummary
 
 struct KPileupDensity
 {
+	virtual ~KPileupDensity() {};
+
 	double rho;
 	double sigma;
 };

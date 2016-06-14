@@ -14,6 +14,8 @@
 
 struct KTauMetadata
 {
+	virtual ~KTauMetadata() {};
+
 	std::vector<std::string> binaryDiscriminatorNames; ///< names of tau discriminators with binary values
 	std::vector<std::string> floatDiscriminatorNames;  ///< names of tau discriminators with real (float) values
 };
@@ -24,6 +26,8 @@ struct KTauMetadata
  */
 struct KBasicTau : public KLepton
 {
+	virtual ~KBasicTau() {};
+
 	int decayMode;     ///< hadronic decay mode as identified by HPS algorithm
 	float emFraction;  ///< electromagnetic energy fraction
 
@@ -57,6 +61,8 @@ typedef std::vector<KBasicTau> KBasicTaus;
 /** copy from DataFormats/TauReco/interface/PFTau.h */
 struct KTau : public KBasicTau
 {
+	virtual ~KTau() {};
+
 	/// four-vectors and full PFCandidates
 	KLVs piZeroCandidates;
 	KPFCandidates chargedHadronCandidates;
@@ -78,6 +84,8 @@ typedef std::vector<KTau> KTaus;
  */
 struct KExtendedTau : public KTau
 {
+	virtual ~KExtendedTau() {};
+
 	/// four-vectors
 	KLVs superClusterBarrelCandidates;
 	KLVs superClusterEndcapCandidates;

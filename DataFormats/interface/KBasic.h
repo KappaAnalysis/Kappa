@@ -19,6 +19,8 @@
 
 struct KLV
 {
+	virtual ~KLV() {};
+
 	RMFLV p4;
 };
 typedef std::vector<KLV> KLVs;
@@ -26,6 +28,8 @@ typedef std::vector<KLV> KLVs;
 
 struct KBeamSpot
 {
+	virtual ~KBeamSpot() {};
+
 	RMPoint position;              ///< position of the beam spot
 	char type;                     ///< type of beam (usually unknown): Unknown=-1, Fake=0, LHC=1, Tracker=2
 
@@ -43,6 +47,8 @@ typedef std::vector<KBeamSpot> KBeamSpots;
 
 struct KVertex
 {
+	virtual ~KVertex() {};
+
 	RMPoint position;
 	bool valid;
 	unsigned int nTracks;
@@ -58,6 +64,8 @@ typedef std::vector<KVertex> KVertices;
 
 struct KVertexSummary
 {
+	virtual ~KVertexSummary() {};
+
 	KVertex pv;
 	unsigned int nVertices;
 };
@@ -65,6 +73,8 @@ struct KVertexSummary
 
 struct KTaupairVerticesMap
 {
+	virtual ~KTaupairVerticesMap() {};
+
 	std::vector<int> diTauKey;
 	std::vector<KVertex> vertices;
 };
@@ -73,6 +83,8 @@ typedef std::vector<KTaupairVerticesMap> KTaupairVerticesMaps;
 
 struct KHit
 {
+	virtual ~KHit() {};
+
 	double theta, phi, pAbs, energyLoss;
 };
 typedef std::vector<KHit> KHits;
@@ -80,6 +92,8 @@ typedef std::vector<KHit> KHits;
 
 struct KTriggerObjectMetadata
 {
+	virtual ~KTriggerObjectMetadata() {};
+
 	std::string menu;
 	
 	/// { hlt1:filter1, ..., hlt1:filterN1, hlt2:filter1, ..., hlt2:filterN2, ...}
@@ -126,6 +140,8 @@ struct KTriggerObjectMetadata
 
 struct KTriggerObjects
 {
+	virtual ~KTriggerObjects() {};
+
 	KLVs trgObjects;
 	int metFilterBits;
 	/// { hlt1:idxFilter1, ..., hlt1:idxFilterN1, hlt2:idxFilter1, ..., hlt2:idxFilterN2, ...}
@@ -141,6 +157,8 @@ struct KTriggerObjects
 
 struct KFilterMetadata
 {
+	virtual ~KFilterMetadata() {};
+
 	std::vector<std::string> filternames;
 	unsigned int nEventsTotal;
 	unsigned int nNegEventsTotal;
@@ -150,6 +168,8 @@ struct KFilterMetadata
 
 struct KFilterSummary
 {
+	virtual ~KFilterSummary() {};
+
 	unsigned long presence;
 	unsigned long decision;
 
