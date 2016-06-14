@@ -42,9 +42,6 @@ public:
 	template<class Tin, class Tout>
 	static void fillPFCandidates(const Tin &in, Tout &out)
 	{
-		std::cout << "KPatTauProducer: signalPFChargedHadrCands().size() = " << in.signalPFChargedHadrCands().size() << std::endl;
-		std::cout << "KPatTauProducer: signalPiZeroCandidates().size() = " << in.signalPiZeroCandidates().size() << std::endl;
-		std::cout << "KPatTauProducer: signalPFGammaCands().size() = " << in.signalPFGammaCands().size() << std::endl;
 		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); ++i)
 		{
 			KPFCandidate tmp;
