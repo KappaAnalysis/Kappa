@@ -505,7 +505,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 		ids = cms.vstring( "pileupJetId:fullDiscriminant", 
 				"pfJetProbabilityBJetTags",
-				"pfCombinedInclusiveSecondaryVertexV2BJetTags" 
+				"pfCombinedInclusiveSecondaryVertexV2BJetTags",
 				"pfCombinedMVAV2BJetTags",
 				"pfCombinedCvsLJetTags",
 				"pfCombinedCvsBJetTags",
