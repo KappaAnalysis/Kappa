@@ -98,6 +98,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.source 			  = cms.Source('PoolSource', fileNames=cms.untracked.vstring())
 	process.maxEvents.input	      = maxevents
 	process.kappaTuple.verbose    = cms.int32(0)
+	# uncomment the following option to select only running on certain luminosity blocks. Use only for debugging
+	# process.source.lumisToProcess  = cms.untracked.VLuminosityBlockRange("1:500-1:1000")
 	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
