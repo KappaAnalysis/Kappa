@@ -120,9 +120,9 @@ struct KGenEventInfoMetadata
 		for(size_t index = 0; index < requestedNames.size(); index++)
 		{
 			found = false;
-			for(auto lheWeightName : lheWeightNames)
+			for(size_t lheWeightNameIndex = 0; lheWeightNameIndex < lheWeightNames.size(); lheWeightNameIndex++)
 			{
-				if (lheWeightName.compare(requestedNames[index]) == 0)
+				if (lheWeightNames.at(lheWeightNameIndex).compare(requestedNames[index]) == 0)
 				{
 					resultMap[requestedNames[index]] = index;
 					assert( !found ); // misconfiguration: the requested name matches more than once
