@@ -12,6 +12,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <assert.h>
 
 // RUN METADATA
 
@@ -112,7 +113,7 @@ struct KGenEventInfoMetadata
 	std::vector<std::string> lheWeightNames;
 
 	// function that returns the indices of the lheWeights of interest for efficient access
-	std::map<std::string, size_t> getLheWeightNamesMap(const std::vector<std::string> &requestedNames)
+	std::map<std::string, size_t> getLheWeightNamesMap(const std::vector<std::string> &requestedNames) const
 	{
 		std::map<std::string, size_t> resultMap;
 		bool found = false;
@@ -154,7 +155,7 @@ struct KGenEventInfo : public KEventInfo
 	inline float getLheWeight(size_t index, bool failOnError = true) const
 	{
 		if(failOnError)
-			assert(lheWeight[index] != -999.0); // the user tried to access something that has not been properly filled during the skim
+			assert(lheWeight[index] < -998.9 && lheWeight[index] > 999.1 ); // the user tried to access something that has not been properly filled during the skim
 		return lheWeight[index];
 	}
 };
