@@ -155,10 +155,13 @@ public:
 					if(lheEventProduct->weights()[i].id.compare(validIds) == 0)
 					{
 						this->metaEvent->lheWeight.push_back(lheEventProduct->weights()[i].wgt / lheEventProduct->originalXWGTUP() );
+						break;
 					}
 				}
+				if (this->metaEvent->lheWeight.size() != i+1) // check that exactly one weight has been added
+					this->metaEvent->lheWeight.push_back(-999.0);
 			}
-			assert( this->metaEvent->lheWeight.size() == this->genEventInfoMetadata->lheWeightNames.size() );
+			assert( this->metaEvent->lheWeight.size() == this->genEventInfoMetadata->lheWeightNames.size() ); // crosscheck, should never trigger
 		}
 
 		// Get generator event info:

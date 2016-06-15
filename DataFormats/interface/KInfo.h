@@ -110,6 +110,27 @@ typedef int bx_id;
 struct KGenEventInfoMetadata
 {
 	std::vector<std::string> lheWeightNames;
+
+	// function that returns the indices of the lheWeights of interest for efficient access
+	std::map<std::string, size_t> getLheWeightNamesMap(const std::vector<std::string> &requestedNames)
+	{
+		std::map<std::string, size_t> resultMap;
+		bool found = false;
+		for(size_t index = 0; index < requestedNames.size(); index++)
+		{
+			found = false;
+			for(auto lheWeightName : lheWeightNames)
+			{
+				if (lheWeightName.compare(requestedNames[index]) == 0)
+				{
+					resultMap[requestedNames[index]] = index;
+					assert( !found ); // misconfiguration: the requested name matches more than once
+					found = true;
+				}
+			}
+		}
+		return resultMap;
+	}
 };
 
 struct KGenEventInfo : public KEventInfo
@@ -129,6 +150,13 @@ struct KGenEventInfo : public KEventInfo
 	double x2;            ///< x of the second parton (used for PDF reweighting)
 	double qScale;        ///< q scale of the process (used for PDF reweighting)
 	std::vector<float> lheWeight;
+
+	inline float getLheWeight(size_t index, bool failOnError = true) const
+	{
+		if(failOnError)
+			assert(lheWeight[index] != -999.0); // the user tried to access something that has not been properly filled during the skim
+		return lheWeight[index];
+	}
 };
 
 
