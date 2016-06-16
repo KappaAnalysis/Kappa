@@ -16,8 +16,10 @@ cmssw_base = os.environ.get("CMSSW_BASE")
 dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
 def update_dict(sample, entry):
+	pd_name, details, filetype = sample.strip("/").split("/")
 	# add new column here
-	entry["n_events_generated"]    = get_n_generated_events(sample)
+	#entry["n_events_generated"]    = get_n_generated_events(sample)
+	entry["extension"]             = get_extension(details, entry["data"])
 	return entry
 
 

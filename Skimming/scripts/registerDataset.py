@@ -32,6 +32,7 @@ def register_new_sample(dict, options):
 	new_entry["embedded"]  = is_embedded(filetype, options.embedded)
 	new_entry["format"]    = get_format(filetype, options.filetype)
 	new_entry["n_events_generated"]    = get_n_generated_events(sample)
+	new_entry["extension"] = get_extension(details, options.data)
 	pprint(new_entry)
 	print make_nickname(new_entry)
 	dict[sample] = new_entry

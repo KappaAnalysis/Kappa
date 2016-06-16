@@ -45,7 +45,7 @@ def get_energy(pd_name, details, default=None, data=False):
 			if details.find("2011")!=-1: return "7"
 			if details.find("2012")!=-1: return "8"
 			if details.find("2015")!=-1: return "13"
-			if details.find("2016")!=-1: return "14"
+			if details.find("2016")!=-1: return "13"
 			return "0"
 	else:
 		return default
@@ -163,6 +163,14 @@ def get_generator_weight(nick):
 	else:
 		return -1
 
+def get_extension(details, data=False):
+	if data:
+		return ""
+	else:
+		startpos = details.find("ext")
+		endpos = details.rfind("-v")
+		return details[startpos:endpos]
+
 def make_nickname(dict):
 	nick = ""
 	nick += dict["process"].replace("_", "")  + "_"
@@ -171,6 +179,7 @@ def make_nickname(dict):
 	nick += dict["energy"].replace("_", "")   + "TeV_"
 	nick += dict["format"].replace("_", "") + ("" if (dict["data"] or dict["embedded"]) else "_")
 	nick += dict["generator"].replace("_", "")
+	nick += "_".join(dict["extension"])
 	return nick
 
 def load_database(dataset):
