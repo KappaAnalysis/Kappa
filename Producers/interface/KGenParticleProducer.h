@@ -28,7 +28,7 @@ public:
 
 protected:
 	/// interface for other derived classes like KGenTauProducer, which do not provide information for daughter particles; the list of daughters is filled with an empty  dummy vector in this case
-	virtual void fillSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType& in, typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleOutputType& out)
+	virtual void fillSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType& in, typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleOutputType& out) override
 	{
 		std::vector<reco::Candidate::index> dummy;
 		fillSingle(in, out, dummy);
