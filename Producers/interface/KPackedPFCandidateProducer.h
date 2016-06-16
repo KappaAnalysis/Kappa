@@ -65,8 +65,8 @@ public:
 		out.pdgId = in.pdgId();
 
 		//out.deltaP = in.deltaP(); // not included in packedPFCandidates
-		out.hcalEnergy = in.hcalFraction() * in.energy;
-		out.ecalEnergy = (1 - in.ecalFraction()) * in.energy;
+		//out.hcalEnergy = in.hcalFraction() * in.energy;
+		//out.ecalEnergy = (1 - in.ecalFraction()) * in.energy;
 		out.vertex = in.vertex();
 		if(in.bestTrack())
 			KTrackProducer::fillTrack(*in.bestTrack(), out.track);
