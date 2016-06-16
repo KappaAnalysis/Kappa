@@ -53,7 +53,8 @@ struct KTrack : public KLV
 	inline unsigned int nValidHits() const { return nValidPixelHits + nValidStripHits + nValidMuonHits; };
 	inline unsigned int nValidTrackerHits() const { return nValidPixelHits + nValidStripHits; };
 	inline unsigned int nTrackerLayers() const { return nPixelLayers + nStripLayers; };
-
+	// fit quality
+	inline float chi2overnDOF() const { return chi2 / nDOF; }
 	/// quality bitset
 	unsigned char qualityBits; // for soft muID
 	inline bool quality(KTrackQuality::KTrackQualityType bit) const
