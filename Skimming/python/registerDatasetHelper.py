@@ -179,7 +179,7 @@ def make_nickname(dict):
 	nick += dict["energy"].replace("_", "")   + "TeV_"
 	nick += dict["format"].replace("_", "") + ("" if (dict["data"] or dict["embedded"]) else "_")
 	nick += dict["generator"].replace("_", "")
-	nick += "_".join(dict["extension"])
+	nick += ("_" + dict["extension"] if dict["extension"] != "" else "")
 	return nick
 
 def load_database(dataset):
