@@ -32,6 +32,9 @@ public:
 		out.deltaP = in.deltaP();
 		out.hcalEnergy = in.hcalEnergy();
 		out.ecalEnergy = in.ecalEnergy();
+		out.vertex = in.vertex();
+		if(in.bestTrack())
+			KTrackProducer::fillTrack(*in.bestTrack(), out.track);
 	}
 };
 

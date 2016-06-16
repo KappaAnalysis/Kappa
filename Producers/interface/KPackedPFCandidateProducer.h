@@ -32,9 +32,12 @@ public:
 		out.pdgId = in.pdgId();
 
 		// KParticles are smaller than KPFCandidates
-		//out.deltaP = in.deltaP(); // all not included in packedPFCandidates
-		//out.hcalEnergy = in.hcalEnergy();
-		//out.ecalEnergy = in.ecalEnergy();
+		//out.deltaP = in.deltaP(); // not included in packedPFCandidates
+		out.hcalEnergy = in.hcalFraction() * in.energy;
+		out.ecalEnergy = in.ecalFraction() * in.energy;
+		out.vertex = in.vertex();
+		if(in.bestTrack())
+			KTrackProducer::fillTrack(*in.bestTrack(), out.track);
 	}
 };
 

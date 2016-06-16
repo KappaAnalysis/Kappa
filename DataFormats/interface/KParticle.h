@@ -191,6 +191,8 @@ struct KPFCandidate : public KParticle, public KMotherDaughterRelation
 	double deltaP;            //< momentum difference?
 	double ecalEnergy;        //< energy deposited in ECAL
 	double hcalEnergy;        //< energy deposited in HCAL
+	RMPoint vertex;           //< vertex
+	KTrack track;
 };
 typedef std::vector<KPFCandidate> KPFCandidates;
 
