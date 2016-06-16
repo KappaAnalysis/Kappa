@@ -1,7 +1,12 @@
 queries = {
+	"Spring16_Data": {
+		"data" : True,
+		"scenario" : "PromptRecov2",
+		"energy" : "13"
+	},
 	"Spring16_DYJets": {
 		"process" : "^DY([0-9])?JetsTo(LL|TauTau)",
-		"campaign" : "RunIISpring16MiniAODv1",
+		"campaign" : "RunIISpring16MiniAODv.*",
 		"energy" : "13"
 	},
 	"Spring16_Dibosons": {
@@ -9,6 +14,21 @@ queries = {
 		"campaign" : "RunIISpring16MiniAODv1",
 		"energy" : "13"
 	},
+        "Spring16_SUSY_Sync": {
+                "process" : "SUSYGluGluToHToTauTau_M160$",
+                "campaign" : "RunIISpring16MiniAODv1",
+                "energy" : "13"
+        },
+        "Spring16_SUSY": {
+                "process" : "SUSY",
+                "campaign" : "RunIISpring16MiniAODv1",
+                "energy" : "13"
+        },
+        "Spring16_SM_Higgs": {
+                "process" : "(GluGlu|VBF|Wplus|Wminus|Z)HToTauTau",
+                "campaign" : "RunIISpring16MiniAODv1",
+                "energy" : "13"
+        },
 	"Spring16_QCD": {
 		"process" : "^QCD",
 		"campaign" : "RunIISpring16MiniAODv1",
