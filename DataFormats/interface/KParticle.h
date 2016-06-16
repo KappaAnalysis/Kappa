@@ -93,17 +93,9 @@ const unsigned int KGenParticleFlagsMask =  32767u;
 const unsigned int KGenParticleStatusMask = 127u << KGenParticleStatusPosition;
 const unsigned int KGenParticleCustomMask = 1023u << KGenParticleCustomPosition;
 
-/// Generator particle
-struct KGenParticle : public KParticle
+struct KMotherDaughterRelation
 {
-	unsigned int particleinfo;
 	std::vector<unsigned int> daughterIndices;
-
-	/// Monte-Carlo generator status, cf. [KParticle](md_docs_objects.html#obj-particle)
-	int status() const
-	{
-		return (particleinfo & KGenParticleStatusMask) >> KGenParticleStatusPosition;
-	}
 
 	/// return the number of daughters
 	unsigned long nDaughters() const
@@ -119,6 +111,18 @@ struct KGenParticle : public KParticle
 			return static_cast<long>(daughterIndices.at(i));
 		else
 			return -1;
+	}
+};
+
+/// Generator particle
+struct KGenParticle : public KParticle, public KMotherDaughterRelation
+{
+	unsigned int particleinfo;
+
+	/// Monte-Carlo generator status, cf. [KParticle](md_docs_objects.html#obj-particle)
+	int status() const
+	{
+		return (particleinfo & KGenParticleStatusMask) >> KGenParticleStatusPosition;
 	}
 
 	inline bool isPrompt()           const { return ((particleinfo & (1 << KGenStatusFlags::isPrompt))); };
@@ -182,7 +186,7 @@ typedef std::vector<KGenTau> KGenTaus;
 
 
 /// Particle-Flow Candidate
-struct KPFCandidate : public KParticle
+struct KPFCandidate : public KParticle, public KMotherDaughterRelation
 {
 	double deltaP;            //< momentum difference?
 	double ecalEnergy;        //< energy deposited in ECAL
