@@ -153,7 +153,7 @@ protected:
 			}
 		}
 
-		for (index = 0, lvit = in.begin(), index = 0; lvit < in.end(); ++lvit)
+		for (index = 0, lvit = in.begin(); lvit < in.end(); ++lvit)
 		{
 			if (acceptSingle(*lvit))
 			{
