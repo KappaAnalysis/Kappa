@@ -34,6 +34,8 @@ namespace KLeptonId { enum Type
 
 struct KLepton : public KLV
 {
+	virtual ~KLepton() {};
+
 	unsigned char leptonInfo;  //< bitset containing the flavour, charge and user bits
 	unsigned char ids;         //< most relevant IDs of the lepton
 	std::size_t internalId;         //< most relevant IDs of the lepton
@@ -96,6 +98,8 @@ typedef std::vector<KLepton> KLeptons;
 
 struct KLeptonPair
 {
+	virtual ~KLeptonPair() {};
+
 	unsigned int hashLepton1;
 	unsigned int hashLepton2;
 	

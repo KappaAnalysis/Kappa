@@ -47,11 +47,15 @@ enum KGoodMuonType
 
 struct KMuonMetadata
 {
+	virtual ~KMuonMetadata() {};
+
 	std::vector<std::string> hltNames;  //< names of available HLT paths
 };
 
 struct KMuon : public KLepton
 {
+	virtual ~KMuon() {};
+
 	/// global track in addition to KLepton track == innerTrack, no outer or best track
 	KTrack globalTrack;
 
@@ -123,6 +127,8 @@ typedef std::vector<KMuon> KMuons;
 
 struct KL1Muon : public KLV
 {
+	virtual ~KL1Muon() {};
+
 	// bit    meaning
 	// 0-2    quality
 	// 3      isForward
