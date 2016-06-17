@@ -174,11 +174,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
 
-	#from Kappa.Skimming.localSqlite import recorrectJets
-	#recorrectJets(process, isData=data)
-	#jetCollection = "patJetsReapplyJEC"
-	jetCollection = "slimmedJets"
 	jetCollectionPuppi = "slimmedJetsPuppi"
+	if is_above_cmssw_version([8]):
+		from RecoMET.METPUSubtraction.jet_recorrections import recorrectJets
+		recorrectJets(process, isData=data)
+	else:
+		from RecoMET.METPUSubtraction.localSqlite import recorrectJets
+		recorrectJets(process, isData=data)
+	jetCollection = "patJetsReapplyJEC"
 
 
 	## ------------------------------------------------------------------------
