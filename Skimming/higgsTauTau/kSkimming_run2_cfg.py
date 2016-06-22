@@ -39,6 +39,7 @@ options.register('maxevents', -1, VarParsing.multiplicity.singleton, VarParsing.
 options.register('outputfilename', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Filename for the Outputfile')
 options.register('testsuite', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Run the Kappa test suite. Default: True')
 options.register('preselect', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'apply preselection at CMSSW level on leptons. Never preselect on SM Higgs samples')
+options.register('dumpPython', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'write cmsRun config to dumpPython.py')
 options.parseArguments()
 
 # check if current release is abov a certain number
@@ -308,10 +309,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.kappaTuple.GenJets.tauGenJets = cms.PSet(src=cms.InputTag("tauGenJets"))
 			process.kappaTuple.GenJets.tauGenJetsSelectorAllHadrons = cms.PSet(src=cms.InputTag("tauGenJetsSelectorAllHadrons"))
 
-	## ------------------------------------------------------------------------
-	## Further information saved to Kappa output 
-	# add python config to TreeInfo
-	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
 
 	# add repository revisions to TreeInfo
 	for repo, rev in tools.get_repository_revisions().iteritems():
@@ -335,6 +332,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.p *= process.kappaOut
 	if outputfilename != '':
 		process.kappaTuple.outputFile = cms.string('%s'%outputfilename)
+
+	## ------------------------------------------------------------------------
+	## Further information saved to Kappa output 
+	if(options.dumpPython):
+		f = open("dumpPython.py", "w")
+		f.write(process.dumpPython())
+		f.close()
+
+	# add python config to TreeInfo
+	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
 
 	return process
 
