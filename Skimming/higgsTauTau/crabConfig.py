@@ -52,7 +52,7 @@ def check_path(path):
 def submission():
 	from CRABClient.UserUtilities import config
 	config = config()
-	config.General.workArea = '/nfs/dust/cms/user/%s/kappa/crab_kappa_skim80X_-%s'%(getUsernameFromSiteDB(), date)
+	config.General.workArea = '/nfs/dust/cms/user/%s/kappa/crab_kappa_skim80X-%s'%(getUsernameFromSiteDB(), date)
 	#config.General.workArea = '/net/scratch_cms/institut_3b/%s/kappa/crab_kappa_skim-%s'%(getUsernameFromSiteDB(), date)
 	check_path(config.General.workArea)
 	config.General.transferOutputs = True
