@@ -72,8 +72,8 @@ def submission():
 	
 	config.Site.storageSite = "T2_DE_DESY"
 	# load nicknames form gc-style config files and write them to a flat nicknames list
-	#nicknames = read_grid_control_includes(["samples/13TeV/Fall15_SM_Analysis.conf"])
-	nicknames = ['SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8']
+	nicknames = read_grid_control_includes(["samples/13TeV/Fall15_SM_Analysis.conf"])
+	#nicknames = ['SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8']
 
 	# loop over datasets and get repsective nicks
 	for nickname in nicknames:

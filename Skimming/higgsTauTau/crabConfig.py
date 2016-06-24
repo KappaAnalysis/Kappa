@@ -52,7 +52,7 @@ def check_path(path):
 def submission():
 	from CRABClient.UserUtilities import config
 	config = config()
-	config.General.workArea = '/nfs/dust/cms/user/%s/kappa/crab_kappa_skim-%s'%(getUsernameFromSiteDB(), date)
+	config.General.workArea = '/nfs/dust/cms/user/%s/kappa/crab_kappa_skim80X_-%s'%(getUsernameFromSiteDB(), date)
 	#config.General.workArea = '/net/scratch_cms/institut_3b/%s/kappa/crab_kappa_skim-%s'%(getUsernameFromSiteDB(), date)
 	check_path(config.General.workArea)
 	config.General.transferOutputs = True
@@ -67,7 +67,7 @@ def submission():
 	config.Data.inputDBS = 'global'
 	config.Data.splitting = 'FileBased'
 	config.Data.unitsPerJob = 1
-	config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(getUsernameFromSiteDB(), date)
+	config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/80X_%s'%(getUsernameFromSiteDB(), date)
 	config.Data.publication = False
 	
 	config.Site.storageSite = "T2_DE_DESY"
