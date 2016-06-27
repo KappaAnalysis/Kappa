@@ -1,4 +1,7 @@
 #!/bin/env python
+# usage: script must be called within the folder
+# where the crab directories are. it's not clear
+# why that is, yet
 
 import argparse
 import os
@@ -18,7 +21,7 @@ def checkStatus(path, verbosity=0, dirs_submitted=None, dirs_failed=None, dirs_c
 		
 	if dirs_other is None:	
 		dirs_other = []
-		
+	
 	for dir in os.listdir(path):
 		if os.path.isfile(dir) or dir in dirs_completed:
 			continue
@@ -38,15 +41,19 @@ def checkStatus(path, verbosity=0, dirs_submitted=None, dirs_failed=None, dirs_c
 					else:
 						if not dir in dirs_other:
 							dirs_other.append(dir)
+				elif "Jobs status:" in line:
+					if "failed" in line and not dir in dirs_failed:
+						if dir in dirs_submitted:
+								dirs_submitted.remove(dir)
+						dirs_failed.append(dir)
 		os.system("rm tempStatus.txt")
 	return dirs_submitted, dirs_failed, dirs_completed, dirs_other
 	
-def resubmit(tasks, memory, verbosity=0):		
+def resubmit(tasks, additional_args="", verbosity=0):		
 	for task in tasks:
 		if verbosity > 0:
-			print "resubmitting task "+task+(" using --maxmemory "+str(memory) if memory > 0 else "")
-		memoryOption = ("--maxmemory "+str(memory) if memory > 0 else "")
-		resubmitCommand = "crab resubmit "+memoryOption+" --dir "+task
+			print "resubmitting task "+task+" using "+additional_args
+		resubmitCommand = "crab resubmit "+additional_args+" --dir "+task
 		os.system(resubmitCommand)
 		tasks.remove(task)
 
@@ -94,8 +101,8 @@ if __name__ == "__main__":
 						help="Take output from previous execution of this script into account. [Default: %(default)s]")
 	parser.add_argument("-r","--resubmit", action="store_true", default=False,
 						help="Automatically resubmit failed jobs. [Default: %(default)s]")
-	parser.add_argument("--use-memory", type=int, default=-1,
-						help="Request more memory in units of Mb for your task. [Default: %(default)s]")
+	parser.add_argument("--resubmit-args", default="",
+						help="Additional arguments for job resubmission. [Default: %(default)s]")
 	parser.add_argument("-v","--verbosity", type=int, default=0, choices=[0,1,2],
 						help="Control how much info is printed. [Default: %(default)s]")
 	
@@ -107,7 +114,7 @@ if __name__ == "__main__":
 		submitted, failed, completed, other = checkStatus(args.dir, args.verbosity)
 	
 	if args.resubmit:
-		resubmit(failed,args.use_memory, args.verbosity)
+		resubmit(failed,args.resubmit_args, args.verbosity)
 	
 	writeOutput(args.dir, submitted, failed, completed, other, args.verbosity)
 		
