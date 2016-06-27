@@ -5,91 +5,104 @@
 
 import argparse
 import os
+import json
 
-def checkStatus(path, verbosity=0, dirs_submitted=None, dirs_failed=None, dirs_completed=None, dirs_other=None):
+def checkStatus(path, useExistingInput=False, verbosity=0):
 	if verbosity > 0:
-		print "checkStatus("+path+", "+str(verbosity)+")"
-	
-	if dirs_submitted is None:	
-		dirs_submitted = []
+		print "checkStatus("+path+")"
 		
-	if dirs_failed is None:	
-		dirs_failed = []
-		
-	if dirs_completed is None:	
-		dirs_completed = []
-		
-	if dirs_other is None:	
-		dirs_other = []
+	taskDict = {}
 	
-	for dir in os.listdir(path):
-		if os.path.isfile(dir) or dir in dirs_completed:
-			continue
-		checkCommand = "crab status --dir "+dir
-		os.system(checkCommand+" >> tempStatus.txt")
-		if verbosity > 0:
-			os.system("cat tempStatus.txt")
-		with open("tempStatus.txt") as file:
-			for line in file:
-				if "Task status:" in line:
-					if "SUBMITTED" in line and not dir in dirs_submitted:
-						dirs_submitted.append(dir)
-					elif "FAILED" in line and not "SUBMITFAILED" in line and not dir in dirs_failed:
-						dirs_failed.append(dir)
-					elif "COMPLETED" in line:
-						dirs_completed.append(dir)
-					else:
-						if not dir in dirs_other:
-							dirs_other.append(dir)
-				elif "Jobs status:" in line:
-					if "failed" in line and not dir in dirs_failed:
-						if dir in dirs_submitted:
-								dirs_submitted.remove(dir)
-						dirs_failed.append(dir)
-		os.system("rm tempStatus.txt")
-	return dirs_submitted, dirs_failed, dirs_completed, dirs_other
+	if not useExistingInput:
+		for dir in os.listdir(path):
+			if os.path.isfile(dir):
+				continue
+			status = checkStatusOfSingleTask(dir, verbosity)
+			taskDict = updateJobStatus(taskDict, dir, status, verbosity)
+	else:
+		taskDict = getExistingInputs(path, verbosity)
+		for dir, status in taskDict.iteritems():
+			if "COMPLETED" in status:
+				continue
+			status = checkStatusOfSingleTask(dir, verbosity)
+			taskDict = updateJobStatus(taskDict, dir, status, verbosity)
 	
-def resubmit(tasks, additional_args="", verbosity=0):		
-	for task in tasks:
-		if verbosity > 0:
-			print "resubmitting task "+task+" using "+additional_args
-		resubmitCommand = "crab resubmit "+additional_args+" --dir "+task
-		os.system(resubmitCommand)
-		tasks.remove(task)
+	return taskDict
 
-def writeOutput(path, submitted, failed, completed, other, verbosity=0):
+def checkStatusOfSingleTask(task, verbosity=0):
 	if verbosity > 0:
-		print "writeOutput("+path+", ...)"
+		print "checkStatusOfSingleTask("+task+")"
 		
-	output_submitted = open(path+"/submitted.txt","w")
-	for task in submitted:
-		output_submitted.write(task+"\n")
-		
-	output_submitted.close()
+	checkCommand = "crab status --dir "+task
+	os.system(checkCommand+" >> tempStatus.txt")
+	with open("tempStatus.txt") as file:
+		for line in file:
+			if "Task status:" in line:
+				if "SUBMITTED" in line:
+					status = "SUBMITTED"
+				elif "FAILED" in line:
+					status = "FAILED"
+				elif "COMPLETED" in line:
+					status = "COMPLETED"
+				else:
+					status = "OTHER"
+			elif "Jobs status:" in line:
+				if "failed" in line:
+					status = "FAILED"
+	os.system("rm tempStatus.txt")
 	
-	output_failed = open(path+"/failed.txt","w")
-	for task in failed:
-		output_failed.write(task+"\n")
-		
-	output_failed.close()
-	
-	output_completed = open(path+"/completed.txt","w")
-	for task in completed:
-		output_completed.write(task+"\n")
-		
-	output_completed.close()
-	
-	output_other = open(path+"/other.txt","w")
-	for task in other:
-		output_other.write(task+"\n")
-		
-	output_other.close()
+	return status
 
-def getExistingInputs(path, verbosity=0):#TODO: needs proper implementation
+def updateJobStatus(taskDict, task, newStatus, verbosity=0):
+	if verbosity > 0:
+		print "updateJobStatus(taskDict, "+task+", "+newStatus+")"
+	
+	taskExists = False
+	
+	for key, status in taskDict.iteritems():
+		if key == task:
+			taskExists = True
+			taskDict[task] = newStatus
+	
+	if not taskExists:
+		taskDict.update({task : newStatus})
+	
+	return taskDict
+
+def resubmit(taskDict, additional_args="", verbosity=0):
+	if verbosity > 0:
+		print "resubmit(taskDict, "+additional_args+")"
+	
+	for task, status in taskDict.iteritems():
+		if "FAILED" in status:
+			if verbosity > 1:
+				print "resubmitting task "+task+" using "+additional_args
+			resubmitCommand = "crab resubmit "+additional_args+" --dir "+task
+			os.system(resubmitCommand)
+			updateJobStatus(taskDict, task, "SUBMITTED", verbosity)
+	
+	return taskDict
+
+def writeOutput(path, taskDict, verbosity=0):
+	if verbosity > 0:
+		print "writeOutput("+path+")"
+	
+	with open(path+"/taskStatus.json","w") as output:
+		json.dump(taskDict, output)
+	
+	output.close()
+
+def getExistingInputs(path, verbosity=0):
 	if verbosity > 0:
 		print "getExistingInputs("+path+")"
+
+	taskDict = {}
+
+	with open(path+"/taskStatus.json","r") as input:
+		if os.path.isfile(path+"/taskStatus.json","r"):
+			taskDict = json.load(input)
 	
-	#return submitted, failed, completed, other
+	return taskDict
 
 if __name__ == "__main__":
 	
@@ -109,28 +122,48 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 	
 	if args.use_existing_inputs:
-		print "Not implemented, yet"
+		taskStatus_fromFile = getExistingInputs(args.dir, args.verbosity)
+		taskStatus = checkStatus(args.dir, args.verbosity, taskStatus_fromFile)
 	else:
-		submitted, failed, completed, other = checkStatus(args.dir, args.verbosity)
+		taskStatus = checkStatus(args.dir, args.verbosity)
 	
 	if args.resubmit:
-		resubmit(failed,args.resubmit_args, args.verbosity)
+		taskStatus = resubmit(taskStatus, args.resubmit_args, args.verbosity)
 	
-	writeOutput(args.dir, submitted, failed, completed, other, args.verbosity)
-		
+	writeOutput(args.dir, taskStatus, args.verbosity)
+	
+	submitted = []
+	failed = []
+	completed = []
+	other = []
+	
+	for task, status in taskStatus.iteritems():
+		if "SUBMITTED" in status:
+			submitted.append(task)
+		elif "FAILED" in status:
+			failed.append(task)
+		elif "COMPLETED" in status:
+			completed.append(task)
+		else:
+			other.append(task)
+	
 	if args.verbosity > 0:
 		print "---------- List of tasks with failed jobs ----------"
-		os.system("cat "+args.dir+"/failed.txt")
+		for task in failed:
+			print task
 		print
 		print "---------- List of tasks with other jobs ----------"
-		os.system("cat "+args.dir+"/other.txt")
+		for task in other:
+			print task
 		print
 	if args.verbosity > 1:
 		print "---------- List of tasks with submitted jobs ----------"
-		os.system("cat "+args.dir+"/submitted.txt")
+		for task in submitted:
+			print task
 		print
 		print "---------- List of tasks with completed jobs ----------"
-		os.system("cat "+args.dir+"/completed.txt")
+		for task in completed:
+			print task
 		print
 	
 	print "---------- Summary ----------"
