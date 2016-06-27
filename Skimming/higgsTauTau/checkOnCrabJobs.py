@@ -99,8 +99,7 @@ def getExistingInputs(path, verbosity=0):
 	taskDict = {}
 
 	with open(path+"/taskStatus.json","r") as input:
-		if os.path.isfile(path+"/taskStatus.json","r"):
-			taskDict = json.load(input)
+		taskDict = json.load(input)
 	
 	return taskDict
 
@@ -121,11 +120,7 @@ if __name__ == "__main__":
 	
 	args = parser.parse_args()
 	
-	if args.use_existing_inputs:
-		taskStatus_fromFile = getExistingInputs(args.dir, args.verbosity)
-		taskStatus = checkStatus(args.dir, args.verbosity, taskStatus_fromFile)
-	else:
-		taskStatus = checkStatus(args.dir, args.verbosity)
+	taskStatus = checkStatus(args.dir, args.use_existing_inputs, args.verbosity)
 	
 	if args.resubmit:
 		taskStatus = resubmit(taskStatus, args.resubmit_args, args.verbosity)
