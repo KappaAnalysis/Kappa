@@ -34,7 +34,7 @@ def checkStatusOfSingleTask(task, verbosity=0):
 		print "checkStatusOfSingleTask("+task+")"
 		
 	checkCommand = "crab status --dir "+task
-	os.system(checkCommand+" >> tempStatus.txt")
+	os.system(checkCommand+" >> tempStatus.txt")# TODO: find a way to read output from shell without creating temporary file
 	with open("tempStatus.txt") as file:
 		for line in file:
 			if "Task status:" in line:
@@ -120,12 +120,17 @@ if __name__ == "__main__":
 	
 	args = parser.parse_args()
 	
+	startDir = os.getcwd()
+	os.chdir(args.dir)
+	
 	taskStatus = checkStatus(args.dir, args.use_existing_inputs, args.verbosity)
 	
 	if args.resubmit:
 		taskStatus = resubmit(taskStatus, args.resubmit_args, args.verbosity)
 	
 	writeOutput(args.dir, taskStatus, args.verbosity)
+	
+	os.chdir(startDir)
 	
 	submitted = []
 	failed = []
