@@ -23,16 +23,16 @@ def register_new_sample(dict, options):
 		new_entry = dict[sample]
 	else:
 		new_entry = {}
-	new_entry["data"]      = is_data(details, options.data)
-	new_entry["energy"]    = get_energy(pd_name, details, options.energy, data = new_entry["data"])
-	new_entry["campaign"]  = get_campaign(details, options.campaign, energy=new_entry["energy"])
-	new_entry["scenario"]  = get_scenario(details, options.scenario, energy=new_entry["energy"], data=new_entry["data"])
-	new_entry["generator"] = get_generator(pd_name, options.generator, data=new_entry["data"])
-	new_entry["process"]   = get_process(pd_name, options.process)
-	new_entry["embedded"]  = is_embedded(filetype, options.embedded)
-	new_entry["format"]    = get_format(filetype, options.filetype)
+	new_entry["data"]      = is_data(details)
+	new_entry["energy"]    = get_energy(pd_name, details, data = new_entry["data"])
+	new_entry["campaign"]  = get_campaign(details, energy=new_entry["energy"])
+	new_entry["scenario"]  = get_scenario(details, energy=new_entry["energy"], data=new_entry["data"])
+	new_entry["generator"] = get_generator(pd_name, data=new_entry["data"])
+	new_entry["process"]   = get_process(pd_name)
+	new_entry["embedded"]  = is_embedded(filetype)
+	new_entry["format"]    = get_format(filetype, default=None)
 	new_entry["n_events_generated"]    = get_n_generated_events(sample)
-	new_entry["extension"] = get_extension(details, options.data)
+	new_entry["extension"] = get_extension(details)
 	pprint.pprint(new_entry)
 	print make_nickname(new_entry)
 	dict[sample] = new_entry
@@ -83,25 +83,6 @@ def main():
 
 	# sample
 	parser.add_option("-s", "--sample", help="official Sample Sting")
-	# campaign
-	parser.add_option("-c", "--campaign", help="Production campaign", default=None)
-	# scenario
-	parser.add_option("--scenario", help="PU and BX scenario string", default=None)
-	# energy
-	parser.add_option("-e", "--energy", help="Center of Mass Energy", default=None)
-	# embedded
-	parser.add_option("--embedded", help="embedded flag", default=False, action="store_true")
-	# generator
-	parser.add_option("-g", "--generator", help="generator", default=None)
-	# global tag
-	parser.add_option("--global-tag", help="Global Tag", default=None)
-	# data
-	parser.add_option("-d", "--data", help="is data", default=None)
-	# process
-	parser.add_option("-p", "--process", help="process", default=None)
-	
-	# process
-	parser.add_option("--filetype", help="process", default=None)
 
 	parser.add_option("-i", "--interactive", help="run in interactive mode", action="store_true")
 	parser.add_option("-v", "--verbose", help="verbose output", action="store_true", default=False)
