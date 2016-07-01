@@ -3,9 +3,11 @@
 #-# Copyright (c) 2014 - All Rights Reserved
 #-#   Raphael Friese <Raphael.Friese@cern.ch>
 
+import sys
 import os
 import string
 
+import pprint
 import json
 import re
 from Kappa.Skimming.getNumberGeneratedEventsFromDB import getNumberGeneratedEventsFromDB
@@ -191,20 +193,33 @@ def save_database(dict, dataset):
 	with open(dataset, 'w') as fp:
 		json.dump(dict, fp, sort_keys=True, indent = 4)
 
-def query_result(query):
-	dict = load_database(dataset)
 
+def query_result(query, expect_n_results = 1):
+	dict = load_database(dataset)
+	match = []
 	for sample, values in dict.iteritems():
 		matches = True
 		for name, attribute in values.iteritems():
-			if not name in query: continue
-			if query[name] == '': continue
+			if not name in query: continue # ignore what is not set in the input
+			if (query[name] == "" and str(attribute) == "" ): continue # skip in this case
+			if (query[name] == "" and str(attribute) != "" ): # handle by hand: empty string matches everything. This is undesired for the "extension" property
+				matches = False
+			if query[name] == None: continue
 			if not (re.match('\\b'+str(query[name])+'\\b', str(attribute).replace("_", "")) != None):
 				matches = False
 		if matches:
-			return sample
+			match.append(sample)
 
-def get_sample_by_nick(nickname):
+	if((expect_n_results > 0 ) and (len(match) != expect_n_results)):
+		print "The following query expected " + str(expect_n_results) + " samples, but found " + str(len(match)) + ":"
+		pprint.pprint(query)
+		print "found the following matching samples: "
+		pprint.pprint(match)
+		sys.exit()
+
+	return match
+
+def get_sample_by_nick(nickname, expect_n_results = 1):
 
 	# split nickname
 	split_nick = nickname.split("_")
@@ -214,10 +229,14 @@ def get_sample_by_nick(nickname):
 		"scenario" : split_nick[2],
 		"energy" : split_nick[3].strip("TeV"),
 		"format" : split_nick[4],
-		"generator" : (split_nick[5] if (len(split_nick) > 5) else "")
+		"generator" : (split_nick[5] if (len(split_nick) > 5) else None),
+		"extension" : (split_nick[6] if (len(split_nick) > 6) else "")
 	}
 
 	#query_nick, sample = query_result(query)
-	return query_result(query)
+	if(expect_n_results == 1):
+		return query_result(query)[0]
+	else:
+		return query_result(query)
 	#pd_name, details, filetype = options.sample.strip("/").split("/")
 	#return pd_name, details, filetype
