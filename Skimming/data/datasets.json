@@ -657,19 +657,6 @@
         "process": "DYJetsToLL_M50", 
         "scenario": "74X"
     }, 
-    "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/MINIAODSIM": {
-        "campaign": "RunIISpring16MiniAODv1", 
-        "data": false, 
-        "embedded": false, 
-        "energy": "13", 
-        "extension": "", 
-        "format": "MINIAOD", 
-        "generator": "madgraph-pythia8", 
-        "n_events_generated": "0", 
-        "process": "DYJetsToLL_M50", 
-        "scenario": "PUSpring16", 
-        "xsec": 6025.2
-    }, 
     "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3_ext1-v1/MINIAODSIM": {
         "campaign": "RunIISpring16MiniAODv1", 
         "data": false, 
