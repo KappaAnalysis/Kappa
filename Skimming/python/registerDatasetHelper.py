@@ -240,3 +240,9 @@ def get_sample_by_nick(nickname, expect_n_results = 1):
 		return query_result(query, expect_n_results)
 	#pd_name, details, filetype = options.sample.strip("/").split("/")
 	#return pd_name, details, filetype
+
+def get_nick_list(query, expect_n_results =1):
+	dict = load_database(dataset)
+	cms_names = query_result(query, expect_n_results)
+	nicknames = [make_nickname(dict[cms_name]) for cms_name in cms_names]
+	return nicknames
