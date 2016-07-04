@@ -235,8 +235,8 @@ def get_sample_by_nick(nickname, expect_n_results = 1):
 
 	#query_nick, sample = query_result(query)
 	if(expect_n_results == 1):
-		return query_result(query)[0]
+		return query_result(query, expect_n_results)[0]
 	else:
-		return query_result(query)
+		return query_result(query, expect_n_results)
 	#pd_name, details, filetype = options.sample.strip("/").split("/")
 	#return pd_name, details, filetype
