@@ -72,7 +72,8 @@ def submission():
 	
 	config.Site.storageSite = "T2_DE_DESY"
 	# load nicknames form gc-style config files and write them to a flat nicknames list
-	nicknames = read_grid_control_includes(["samples/13TeV/Spring16_SM_Analysis.conf"])
+	#nicknames = read_grid_control_includes(["samples/13TeV/Spring16_SM_Analysis.conf"])
+	nicknames = read_grid_control_includes(["samples/13TeV/Spring16_SM_Higgs_CPmixing_2.conf"])
 	#nicknames = read_grid_control_includes(["samples/13TeV/2016B_Data.conf"])
 	#nicknames = ['SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_76X_13TeV_MINIAOD_pythia8']
 
