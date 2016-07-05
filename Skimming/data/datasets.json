@@ -1447,7 +1447,7 @@
         "energy": "13", 
         "extension": "", 
         "format": "MINIAOD", 
-        "generator": "", 
+        "generator": "unspecified", 
         "n_events_generated": "1455200", 
         "process": "GluGluH2JetsToTauTau_M125_CPmixing_maxmix_JHU", 
         "scenario": "PUSpring16RAWAODSIM"
@@ -1459,7 +1459,7 @@
         "energy": "13", 
         "extension": "", 
         "format": "MINIAOD", 
-        "generator": "", 
+        "generator": "unspecified", 
         "n_events_generated": "1391200", 
         "process": "GluGluH2JetsToTauTau_M125_CPmixing_pseudoscalar_JHU", 
         "scenario": "PUSpring16RAWAODSIM"
@@ -1471,7 +1471,7 @@
         "energy": "13", 
         "extension": "", 
         "format": "MINIAOD", 
-        "generator": "", 
+        "generator": "unspecified", 
         "n_events_generated": "1455800", 
         "process": "GluGluH2JetsToTauTau_M125_CPmixing_sm_JHU", 
         "scenario": "PUSpring16RAWAODSIM"

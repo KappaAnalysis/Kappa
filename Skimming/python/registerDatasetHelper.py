@@ -68,7 +68,10 @@ def get_generator(pd_name, default=None, data=False):
 			generators.append("madgraph")
 		if "pythia" in pd_name[pos:]:
 			generators.append(pd_name[pos:][pd_name[pos:].find("pythia"):pd_name[pos:].find("pythia")+7])
-		return '-'.join(generators)
+		generator = '-'.join(generators)
+		if generator == "":
+			generator = "unspecified"
+		return generator
 	else:
 		return default
 
