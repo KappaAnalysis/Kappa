@@ -14,3 +14,4 @@ DataFormats/test/libKappa.cpp
 */python/__init__.py
 testcharge
 testdebug
+crab.log
