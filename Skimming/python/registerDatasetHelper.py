@@ -106,6 +106,9 @@ def get_process(pd_name, default=None):
 		if(ST_pos == 0):
 			length = pd_name[0:pd_name.find("TeV")].rfind("_")
 			process = pd_name[0:length].replace("_", "")
+		pos = pd_name.find("CPmixing")
+		if pos != -1:
+			process += "_"+pd_name[pos:]
 		return process 
 
 def get_globaltag(details, default=None):
