@@ -179,8 +179,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if is_above_cmssw_version([8]):
 		from RecoMET.METPUSubtraction.jet_recorrections import recorrectJets
 		from RecoMET.METPUSubtraction.jet_recorrections import loadLocalSqlite
-		loadLocalSqlite(process, sqliteFilename = "Spring16_25nsV3_DATA.db" if data else "Spring16_25nsV3_MC.db",
-		                         tag = 'JetCorrectorParametersCollection_Spring16_25nsV3_DATA_AK4PF' if data else 'JetCorrectorParametersCollection_Spring16_25nsV3_MC_AK4PF')
+		loadLocalSqlite(process, sqliteFilename = "Spring16_25nsV6_DATA.db" if data else "Spring16_25nsV6_MC.db",
+		                         tag = 'JetCorrectorParametersCollection_Spring16_25nsV6_DATA_AK4PF' if data else 'JetCorrectorParametersCollection_Spring16_25nsV6_MC_AK4PF')
 		recorrectJets(process, isData=data)
 	else:
 		from RecoMET.METPUSubtraction.localSqlite import recorrectJets

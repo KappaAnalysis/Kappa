@@ -61,7 +61,7 @@ def submission():
 	
 	config.JobType.pluginName = 'Analysis'
 	config.JobType.psetName = 'kSkimming_run2_cfg.py'
-	config.JobType.inputFiles = ['Spring16_25nsV3_DATA.db', 'Spring16_25nsV3_MC.db']
+	config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
 	config.JobType.allowUndistributedCMSSW = True
 	config.Site.blacklist = ["T2_BR_SPRACE"]
 	config.Data.inputDBS = 'global'
