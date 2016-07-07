@@ -80,6 +80,7 @@ struct KMuon : public KLepton
 	float hcalIso;          //< hcal detector based isolation as given by muon.isolationR03().hadEt
 	float ecalIso;          //< ecal detector basedisolation as given by muon.isolationR03().emEt
 	float pfIso03;          //< PF isolation R = 0.3
+	float pfIso04;          //< PF isolation R = 0.3
 	// deleted: hcalIso03, ecalIso03 and all 05
 
 	/// additional isolation variables for PF isolation which are not stored in a KLepton
@@ -87,6 +88,14 @@ struct KMuon : public KLepton
 	float sumChargedParticlePt;
 	float sumNeutralHadronEtHighThreshold;
 	float sumPhotonEtHighThreshold;
+	float sumChargedParticlePtR04;
+	float sumNeutralHadronEtHighThresholdR04;
+	float sumPhotonEtHighThresholdR04;
+	float sumChargedHadronPtR04;  //< sum pt of charged hadrons for isolation
+	float sumNeutralHadronEtR04;  //< sum Et of neutral hadrons for isolation
+	float sumPhotonEtR04;         //< sum Et of photons for isolation
+	float sumPUPtR04;             //< sum pt of pile-up for isolation
+	float sumChargedAllPtR04;     //< sum pt of charged hadrons for isolation
 
 	/// \f$\eta\f$ and \f$\phi\f$ after the propagation to the muon system, this quantity
 	/// is necessary for the matching to L1 trigger objects
