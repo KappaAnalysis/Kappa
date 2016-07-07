@@ -94,6 +94,13 @@ struct KMuon : public KLepton
 
 	unsigned long long hltMatch;
 
+	/// variables used in muon id
+	float normalizedChiSquare;
+	float chiSquareLocalPos;
+	float trkKink;
+	float validFractionOfTrkHits;
+	float relBestTrkErr;
+
 	/// accessor functions to CMSSW muon bitsets
 	inline bool isGoodMuon(KGoodMuon::KGoodMuonType bit) const { return (isGoodMuonBits & (1 << bit)); };
 	inline bool isGlobalMuon() const     { return (type & (1 << 1)); };

@@ -166,6 +166,7 @@ public:
 			/// ID var from the bestTrack which is not saved entirely
 			out.dxy = in.bestTrack()->dxy(vtx.position()); //dxy from vertex should be using IPTools (e.g. like PAT)
 			out.dz = in.bestTrack()->dz(vtx.position());
+			out.relBestTrkErr = in.bestTrack()->pt() > 0 ? in.bestTrack()->ptError() / in.bestTrack()->pt() : -1;
 		}
 		// propagated values of eta and phi
 		out.eta_propagated = -1000.;
@@ -271,6 +272,12 @@ public:
 		*/
 
 		out.hltMatch = getHLTInfo(out.p4);
+
+		/// store variables used in muon ids
+		out.normalizedChiSquare = in.globalTrack().isNonnull() ? in.globalTrack()->normalizedChi2() : 0;
+		out.chiSquareLocalPos = in.combinedQuality().chi2LocalPosition;
+		out.trkKink = in.combinedQuality().trkKink;
+		out.validFractionOfTrkHits = in.innerTrack().isNonnull() ? in.innerTrack()->validFraction() : 0;
 
 		/// precomputed muon IDs
 		/** https://hypernews.cern.ch/HyperNews/CMS/get/muon/868.html
