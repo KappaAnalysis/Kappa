@@ -43,7 +43,7 @@ struct KLepton : public KLV
 	float sumNeutralHadronEt;  //< sum Et of neutral hadrons for isolation
 	float sumPhotonEt;         //< sum Et of photons for isolation
 	float sumPUPt;             //< sum pt of pile-up for isolation
-	float sumChargedAllPt;     //< sum pt of charged hadrons for isolation
+	float sumChargedAllPt;     //< sum pt of charged hadrons for isolation // TODO: not filled. Remove for next dictchange
 	KTrack track;              //< (main) track of the lepton (e: GSF, mu: inner, tau: lead. PF candidate)
 
 	// access functions for leptonInfo
