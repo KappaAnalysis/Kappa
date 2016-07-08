@@ -74,43 +74,17 @@ def main():
 	parser = optparse.OptionParser(usage="usage: %prog [options]",
 	                               description="Script to extend datasets.json by another sample")
 
-	# title 
-	parser.add_option("-t", "--title", help="Title of the Filelist", default=None)
-	# campaign
-	parser.add_option("-c", "--campaign", help="Production campaign", default=None)
-	# scenario
-	parser.add_option("--scenario", help="PU and BX scenario string", default=None)
-	# energy
-	parser.add_option("-e", "--energy", help="Center of Mass Energy", default=None)
-	# embedded
-	parser.add_option("--embedded", help="embedded flag", default=None)
-	# generator
-	parser.add_option("-g", "--generator", help="generator", default=None)
-	# data
-	parser.add_option("-d", "--data", help="is data", default=None)
-	# process
-	parser.add_option("-p", "--process", help="process", default=None)
-	# soring
-	parser.add_option("--sort-by", help="Output folder and filename scheme. Default: energy/query-name.conf", default="energy/query-name.conf")
-
-
 	parser.add_option("--output", help="output directory", default="../higgsTauTau/samples/")
 
 	(options, args) = parser.parse_args()
 
-	customFilelist = options.campaign or options.scenario or options.energy or options.embedded or options.generator or options.data or options.process
-	querielist = []
-	if customFilelist:
-		querielist.append( createCustomFilelist(options.title, options.campaign, options.data, options.embedded, options.energy, options.generator, options.process, options.scenario))
-
-	else:
-		#querielist.append( datasets2011.queries )
-		#querielist.append( datasets2012.queries )
-		#querielist.append( datasets2013.queries )
-		#querielist.append( datasets2015_miniAODv2.queries )
-		# querielist.append( datasetsFall15.queries )
-		#querielist.append( datasets2016.queries )
-		querielist.append( datasetsSpring16.queries )
+	#querielist.append( datasets2011.queries )
+	#querielist.append( datasets2012.queries )
+	#querielist.append( datasets2013.queries )
+	#querielist.append( datasets2015_miniAODv2.queries )
+	# querielist.append( datasetsFall15.queries )
+	#querielist.append( datasets2016.queries )
+	querielist.append( datasetsSpring16.queries )
 		
 	dict = load_database(dataset)
 	for queries in querielist:
