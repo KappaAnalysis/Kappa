@@ -124,11 +124,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.load("Kappa.Skimming.KVertices_cff")
 	process.goodOfflinePrimaryVertices.src = cms.InputTag('offlineSlimmedPrimaryVertices')
 	process.p *= ( process.makeVertexes )
+	process.load("VertexRefit.TauRefit.RefitVertexProducer_cfi")
+	process.p *= ( process.RefitVertexProducer )
 	process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
-	process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
+	process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary', )
+	#process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices', 'RefitVertexProducer')  # save VertexSummary,
+	#process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary', 'RefitVertexProducer => refittedVerticesSummary')
 
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
+		#process.kappaTuple.VertexSummary.refittedVerticesSummary = cms.PSet(src=cms.InputTag("RefitVertexProducer"))
 
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 	
