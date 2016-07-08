@@ -11,42 +11,42 @@ queries = {
 	},
 	"Spring16_Dibosons": {
 		"process" : "(W|Z|V)(W|Z|V)(Jets)?(To)?",
-		"campaign" : "RunIISpring16MiniAODv1",
+		"campaign" : "RunIISpring16MiniAODv.*",
 		"energy" : "13"
 	},
-        "Spring16_SUSY_Sync": {
-                "process" : "SUSYGluGluToHToTauTau_M160$",
-                "campaign" : "RunIISpring16MiniAODv1",
-                "energy" : "13"
-        },
-        "Spring16_SUSY": {
-                "process" : "SUSY",
-                "campaign" : "RunIISpring16MiniAODv1",
-                "energy" : "13"
-        },
-        "Spring16_SM_Higgs": {
-                "process" : "(GluGlu|VBF|Wplus|Wminus|Z)HToTauTau",
-                "campaign" : "RunIISpring16MiniAODv1",
-                "energy" : "13"
-        },
+    "Spring16_SUSY_Sync": {
+            "process" : "SUSYGluGluToHToTauTau_M160$",
+            "campaign" : "RunIISpring16MiniAODv.*",
+            "energy" : "13"
+    },
+    "Spring16_SUSY": {
+            "process" : "SUSY",
+            "campaign" : "RunIISpring16MiniAODv.*",
+            "energy" : "13"
+    },
+    "Spring16_SM_Higgs": {
+            "process" : "(GluGlu|VBF|Wplus|Wminus|Z)HToTauTau",
+            "campaign" : "RunIISpring16MiniAODv.*",
+            "energy" : "13"
+    },
 	"Spring16_QCD": {
 		"process" : "^QCD",
-		"campaign" : "RunIISpring16MiniAODv1",
+		"campaign" : "RunIISpring16MiniAODv.*",
 		"energy" : "13"
 	},
 	"Spring16_TTJets": {
 		"process" : "^TTJets|^Tbar|^T_tW|^TT|(^ST.*)$",
-		"campaign" : "RunIISpring16MiniAODv1",
+		"campaign" : "RunIISpring16MiniAODv.*",
 		"energy" : "13"
 	},
 	"Spring16_WJets": {
 		"process" : "(^W(\d)Jets|^WJets)ToLNu",
-		"campaign" : "RunIISpring16MiniAODv1",
+		"campaign" : "RunIISpring16MiniAODv.*",
 		"energy" : "13"
 	},
 	"Spring16_EWK": {
 		"process" : "^EWK(WMinus|WPlus|Z)2Jets",
-		"campaign" : "RunIISpring16MiniAODv1",
+		"campaign" : "RunIISpring16MiniAODv.*",
 		"energy" : "13"
 	}
 }

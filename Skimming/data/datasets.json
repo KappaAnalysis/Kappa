@@ -8395,6 +8395,19 @@
         "process": "WplusHToTauTau_M125", 
         "scenario": "74X"
     }, 
+    "/WplusHToTauTau_M125_13TeV_powheg_pythia8/RunIISpring16MiniAODv1-PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/MINIAODSIM": {
+        "campaign": "RunIISpring16MiniAODv1", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "powheg-pythia8", 
+        "n_events_generated": "441504", 
+        "process": "WplusHToTauTau_M125", 
+        "scenario": "PUSpring16", 
+        "xsec": 0.006092559000000001
+    }, 
     "/WplusHToTauTau_M130_13TeV_powheg_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
         "data": false, 
