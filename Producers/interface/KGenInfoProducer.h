@@ -67,6 +67,7 @@ public:
 		if (forceLumi > 0)
 			this->metaLumi->nLumi = forceLumi;
 	{
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 6) || (CMSSW_MAJOR_VERSION > 7) 
 		// print available lheWeights
 		edm::Handle<LHERunInfoProduct> runhandle;
 		if((this->verbosity > 1) && lumiBlock.getRun().getByLabel( runInfo, runhandle ))
@@ -82,6 +83,7 @@ public:
 				}
 			}
 		}
+#endif
 	}
 		// Read generator infos
 		edm::Handle<GenRunInfoProduct> hGenInfo;
