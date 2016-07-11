@@ -32,11 +32,11 @@ process.source = cms.Source("PoolSource",
 			    fileNames=cms.untracked.vstring(input_files)
 			    )
 
-data = @IS_DATA@
-globaltag= '@GLOBALTAG@'
+#data = @IS_DATA@
+#globaltag= '@GLOBALTAG@'
 
-#data = True
-#globaltag='76X_dataRun2_v15'
+data = True
+globaltag='76X_dataRun2_v15'
 
 
 # With the lates JEC correction to be tested: 76X_mcRun2_asymptotic_RunIIFall15DR76_v1 and  76X_dataRun2_16Dec2015_v0
@@ -327,13 +327,6 @@ for name, pset in kappa_jets.iteritems():
 process.kappaTuple.Jets.taggers = cms.vstring(
 #  "puJetIDFullDiscriminant", "puJetIDFullLoose", "puJetIDFullMedium", "puJetIDFullTight"
   ) 
-from JMEAnalysis.JetToolbox.jetToolbox_cff import jetToolbox
-
-jetSequence = 'ak4JetSubs'
-
-jetToolbox( process, 'ak4', jetSequence,  'test', miniAOD=False, PUMethod='CHS', addPruning=False, addSoftDrop=False , addPrunedSubjets=False,  addNsub=False, maxTau=6, addTrimming=False, addFiltering=False, addNsubSubjets=False ) 
-
-
 #print reduce(lambda a, b: a * b, jet_resources + sorted(cmssw_jets.values()))
 #process.path *= reduce(lambda a, b: a * b, jet_resources + sorted(cmssw_jets.values()))
 
@@ -440,6 +433,3 @@ print "Kappa producers:"
 for p in sorted(process.kappaTuple.active):
 	print "  %s" % p
 print "---------------------------------"
-
-
-
