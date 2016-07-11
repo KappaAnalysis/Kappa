@@ -5,7 +5,10 @@
 
 #include "KBaseMultiLVProducer.h"
 #include "KTauProducer.h"
+
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "KPackedPFCandidateProducer.h"
+#endif
 
 #include <DataFormats/PatCandidates/interface/Tau.h>
 #include <FWCore/Framework/interface/EDProducer.h>

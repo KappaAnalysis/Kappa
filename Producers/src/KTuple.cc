@@ -46,7 +46,7 @@
 #include "../interface/KMuonProducer.h"
 #include "../interface/KElectronProducer.h"
 #include "../interface/KPFCandidateProducer.h"
-#if CMSSW_MAJOR_VERSION >= 7
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "../interface/KPackedPFCandidateProducer.h"
 #endif
 #include "../interface/KTaupairVerticesMapProducer.h"

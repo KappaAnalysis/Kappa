@@ -7,6 +7,8 @@
 #ifndef KAPPA_PackedPFCandidatePRODUCER_H
 #define KAPPA_PackedPFCandidatePRODUCER_H
 
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
+
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/ParticleFlowCandidate/interface/PFCandidate.h>
 #include <FWCore/Framework/interface/EDProducer.h>
@@ -38,4 +40,5 @@ public:
 	}
 };
 
+#endif
 #endif
