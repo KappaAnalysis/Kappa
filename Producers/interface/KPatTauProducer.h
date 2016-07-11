@@ -5,6 +5,7 @@
 
 #include "KBaseMultiLVProducer.h"
 #include "KTauProducer.h"
+#include "KPackedPFCandidateProducer.h"
 
 #include <DataFormats/PatCandidates/interface/Tau.h>
 #include <FWCore/Framework/interface/EDProducer.h>

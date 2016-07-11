@@ -22,6 +22,7 @@
 #include "../../Producers/interface/Consumes.h"
 
 #include "KBasicTauProducer.h"
+#include "KPackedPFCandidateProducer.h"
 
 class KTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>
 {
