@@ -22,7 +22,7 @@
 #include "../../Producers/interface/Consumes.h"
 
 #include "KBasicTauProducer.h"
-#include "KPackedPFCandidateProducer.h"
+#include "KPFCandidateProducer.h"
 
 class KTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>
 {
@@ -46,7 +46,7 @@ public:
 		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); ++i)
 		{
 			KPFCandidate tmp;
-			KPackedPFCandidateProducer::fillPackedPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
+			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
 			out.chargedHadronCandidates.push_back(tmp);
 		}
 		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); ++i)
@@ -58,7 +58,7 @@ public:
 		for(size_t i = 0; i < in.signalPFGammaCands().size(); ++i)
 		{
 			KPFCandidate tmp;
-			KPackedPFCandidateProducer::fillPackedPFCandidate(*in.signalPFGammaCands().at(i), tmp);
+			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
 			out.gammaCandidates.push_back(tmp);
 		}
 		
