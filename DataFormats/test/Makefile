@@ -1,7 +1,7 @@
 PROGRAM  = libKappa.so libKappa.a libKappa.o
 
 CXX      = g++
-CXXFLAGS = -O2 -Wall -fPIC $(shell root-config --cflags | sed 's/-I/-isystem /') -I../../../
+CXXFLAGS = -O2 -Wall -fPIC -std=c++11 $(shell root-config --cflags | sed 's/-I/-isystem /') -I../../../
 WARNINGS = -Wextra -Wno-unused-parameter -Wswitch-enum -Wsync-nand \
            -Wtrampolines -Wfloat-equal -Wpacked -Wwrite-strings \
            -Wstrict-overflow=3 -Wredundant-decls -Wdisabled-optimization -Wdouble-promotion \
