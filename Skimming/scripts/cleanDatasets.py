@@ -39,7 +39,7 @@ def main():
 	# sample
 	parser.add_option("-s", "--sample", help="official Sample Sting")
 
-	queue = { "campaign" : "Phys14.*" }
+	queue = { "campaign" : "RunIISpring15DR74.*" }
 
 	(options, args) = parser.parse_args()
 	sample = options.sample
