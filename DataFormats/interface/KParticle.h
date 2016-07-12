@@ -97,7 +97,7 @@ const unsigned int KGenParticleCustomMask = 1023u << KGenParticleCustomPosition;
 
 struct KMotherDaughterRelation
 {
-	//virtual ~KMotherDaugtherRelation() {};
+	virtual ~KMotherDaughterRelation() {};
 
 	std::vector<unsigned int> daughterIndices;
 
