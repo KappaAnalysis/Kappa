@@ -14,6 +14,13 @@ from Kappa.Skimming.registerDatasetHelper import *
 cmssw_base = os.environ.get("CMSSW_BASE")
 dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
+def check_nickname_unique(nickname):
+	if( len(get_sample_by_nick(nickname, expect_n_results = -1)) == 1):
+		print "The nickname is a unique identifier for the Sample"
+		print get_sample_by_nick(nickname, expect_n_results = -1)[0]
+	else:
+		print "The new nickname would not be unique. Please adjust your settings"
+
 def register_new_sample(dict, options):
 	# split sample name
 	pd_name, details, filetype = options.sample.strip("/").split("/")
@@ -34,7 +41,9 @@ def register_new_sample(dict, options):
 	new_entry["n_events_generated"]    = get_n_generated_events(sample)
 	new_entry["extension"] = get_extension(details)
 	pprint.pprint(new_entry)
+	print "The nickname will be: "
 	print make_nickname(new_entry)
+	check_nickname_unique(make_nickname(new_entry))
 	dict[sample] = new_entry
 	return dict
 
