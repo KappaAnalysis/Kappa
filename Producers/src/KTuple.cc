@@ -219,7 +219,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KMuonProducer>(active[i]);
 		addProducer<KElectronProducer>(active[i]);
 		addProducer<KPFCandidateProducer>(active[i]);
-#if CMSSW_MAJOR_VERSION >= 7
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 		addProducer<KPackedPFCandidateProducer>(active[i]);
 #endif
 		addProducer<KBasicJetProducer>(active[i]);

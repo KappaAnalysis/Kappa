@@ -76,7 +76,7 @@ protected:
 	
 	virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
 	{
-#if CMSSW_MAJOR_VERSION >= 7
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 		for(size_t i = 0; i < in.signalChargedHadrCands().size(); ++i)
 		{
 			KPFCandidate outCandidate;
