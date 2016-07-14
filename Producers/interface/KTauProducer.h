@@ -46,7 +46,7 @@ public:
 		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); ++i)
 		{
 			KPFCandidate tmp;
-			KPFCandidateProducer::fillPFCandidate(*in.signalPFGammaCands().at(i), tmp);
+			KPFCandidateProducer::fillPFCandidate(*in.signalPFChargedHadrCands().at(i), tmp);
 			out.chargedHadronCandidates.push_back(tmp);
 		}
 		for(size_t i = 0; i < in.signalPiZeroCandidates().size(); ++i)
