@@ -37,9 +37,9 @@ def writeFilelist(querytuple, dict, options):
 
 	base_folder = options.output
 
-	filename, file_extension = os.path.splitext(options.sort_by)
+	filename, file_extension = os.path.splitext("energy/query-name.conf")
 	filename = os.path.basename( filename)
-	dir_string = os.path.dirname(options.sort_by).split('/')
+	dir_string = os.path.dirname("energy/query-name.conf").split('/')
 	filename = replace_with_dict_values(filename, querytuple)
 	filepath = ''
 	for dir in dir_string:
@@ -78,6 +78,7 @@ def main():
 
 	(options, args) = parser.parse_args()
 
+	querielist = []
 	#querielist.append( datasets2011.queries )
 	#querielist.append( datasets2012.queries )
 	#querielist.append( datasets2013.queries )
