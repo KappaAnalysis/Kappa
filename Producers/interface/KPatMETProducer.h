@@ -35,6 +35,7 @@ public:
 		if(uncor){
 			out.p4 = in.uncorP4();
 			out.sumEt = in.uncorSumEt();
+<<<<<<< HEAD
 				if (verbosity > 0){
 				std::cout << "MET uncorrection enabled."<< std::endl;
 				}
@@ -42,6 +43,8 @@ public:
 			else{
 			std::cout << "Warning: MET is not uncorrected! Use CMSSW 7 or higher to use this feature." << std::endl; 
 			}
+=======
+>>>>>>> parent of 3629a62... Met uncorrection disabled for CMSSW<7
 		}
 		if(in.isPFMET())
 		{
