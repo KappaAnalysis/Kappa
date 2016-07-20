@@ -37,7 +37,7 @@ public:
 			out.p4 = in.uncorP4();
 			out.sumEt = in.uncorSumEt();
 				if (verbosity > 0){
-				std::cout << "MET uncorrection enabled.";
+				std::cout << "MET uncorrection enabled."<< std::endl;
 				}
 			}
 			else{
