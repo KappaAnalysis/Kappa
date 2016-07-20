@@ -33,18 +33,16 @@ public:
 		// fill properties of basic MET
 		KMETProducer::fillMET<pat::MET>(in, out);
 		if(uncor){
-			out.p4 = in.uncorP4();
-			out.sumEt = in.uncorSumEt();
-<<<<<<< HEAD
+			if (CMSSW_MAJOR_VERSION >= 7){
+				out.p4 = in.uncorP4();
+				out.sumEt = in.uncorSumEt();
 				if (verbosity > 0){
-				std::cout << "MET uncorrection enabled."<< std::endl;
+					std::cout << "MET uncorrection enabled."<< std::endl;
 				}
 			}
 			else{
 			std::cout << "Warning: MET is not uncorrected! Use CMSSW 7 or higher to use this feature." << std::endl; 
 			}
-=======
->>>>>>> parent of 3629a62... Met uncorrection disabled for CMSSW<7
 		}
 		if(in.isPFMET())
 		{
