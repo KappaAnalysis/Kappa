@@ -33,16 +33,15 @@ public:
 		// fill properties of basic MET
 		KMETProducer::fillMET<pat::MET>(in, out);
 		if(uncor){
-			if (CMSSW_MAJOR_VERSION >= 7){
+			#if (CMSSW_MAJOR_VERSION >= 7)
 				out.p4 = in.uncorP4();
 				out.sumEt = in.uncorSumEt();
 				if (verbosity > 0){
-					std::cout << "MET uncorrection enabled."<< std::endl;
+					std::cout << "KPatMETProducer::fillMET : MET uncorrection enabled."<< std::endl;
 				}
-			}
-			else{
-			std::cout << "Warning: MET is not uncorrected! Use CMSSW 7 or higher to use this feature." << std::endl; 
-			}
+			#else
+			std::cout << "ERROR: MET is not uncorrected! Use CMSSW 7 or higher to use this feature." << std::endl; 
+			#endif
 		}
 		if(in.isPFMET())
 		{
