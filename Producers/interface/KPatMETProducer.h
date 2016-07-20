@@ -20,17 +20,22 @@ class KPatMETProducer : public KBaseMultiProducer<edm::View<pat::MET>, KMET>
 {
 public:
 	KPatMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiProducer<edm::View<pat::MET>, KMET>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {
+		KBaseMultiProducer<edm::View<pat::MET>, KMET>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+		uncorrected(cfg.getParameter<bool>("uncorrected")){
 		genMet = new KMET;
 		_event_tree->Bronch("genmetTrue", "KMET", &genMet);
 	}
 
 	static const std::string getLabel() { return "PatMET"; }
 
-	static void fillMET(const pat::MET &in, KMET &out)
+	static void fillMET(const pat::MET &in, KMET &out, bool uncor = false)
 	{
 		// fill properties of basic MET
 		KMETProducer::fillMET<pat::MET>(in, out);
+		if(uncor){
+			out.p4 = in.uncorP4();
+			out.sumEt = in.uncorSumEt();
+		}
 		if(in.isPFMET())
 		{
 			// additional PF properties
@@ -56,7 +61,7 @@ protected:
 			return;
 		}
 
-		fillMET(in.at(0), out);
+		fillMET(in.at(0), out, uncorrected);
 		// fill GenMET
 		if (in.at(0).genMET())
 		{
@@ -68,6 +73,7 @@ protected:
 private:
 	TTree* _event_tree_pointer;
 	KMET* genMet;
+	bool uncorrected;
 };
 
 #endif
