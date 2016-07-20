@@ -33,7 +33,6 @@ public:
 		// fill properties of basic MET
 		KMETProducer::fillMET<pat::MET>(in, out);
 		if(uncor){
-			if (CMSSW_MAJOR_VERSION >= 7){
 			out.p4 = in.uncorP4();
 			out.sumEt = in.uncorSumEt();
 				if (verbosity > 0){
