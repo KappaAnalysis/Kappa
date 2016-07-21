@@ -107,6 +107,7 @@ public:
 		assert(std::abs(out.neutralHadronFraction + out.chargedHadronFraction +
 			out.muonFraction + out.photonFraction + out.electronFraction +
 			out.hfEMFraction - 1.0f) < 0.001f);
+		out.genMatch = in.genJet(); // if the jet has a matched generator jet, it's from the hard Process
 #else
 		assert(std::abs(out.neutralHadronFraction + out.chargedHadronFraction +
 			out.muonFraction + out.photonFraction + out.electronFraction +
