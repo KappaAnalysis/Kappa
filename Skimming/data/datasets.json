@@ -5310,7 +5310,7 @@
         "format": "MINIAOD", 
         "generator": "powheg-pythia8", 
         "generatorWeight": 1.0, 
-        "n_events_generated": "187626200", 
+        "n_events_generated": "187576600", 
         "process": "TT", 
         "scenario": "PU25nsData2015v1", 
         "xsec": 831.76
