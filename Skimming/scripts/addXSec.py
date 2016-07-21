@@ -54,7 +54,7 @@ def main():
 	sample = options.sample
 	xsec = float(options.xsec)
 	#xsec = eval_expr(xsec.replace('x', '*').replace(' ', ''))
-	dict = load_database(dataset)
+	dict = database
 	if "xsec" in dict[sample]:
 		print "sample already does have a cross-section of " + str(dict[sample]["xsec"]) + ". Stopping"
 		sys.exit()

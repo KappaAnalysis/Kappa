@@ -149,7 +149,7 @@ def get_n_generated_events(sample):
 
 def get_n_generated_events_from_nick(nick):
 	sample = get_sample_by_nick(nick)
-	dict = load_database(dataset)
+	dict = database
 	if sample in dict and "n_events_generated" in dict[sample]:
 		return dict[sample]["n_events_generated"]
 	else:
@@ -157,7 +157,7 @@ def get_n_generated_events_from_nick(nick):
 
 def get_xsec(nick):
 	sample = get_sample_by_nick(nick)
-	dict = load_database(dataset)
+	dict = database
 	if sample in dict and "xsec" in dict[sample]:
 		return dict[sample]["xsec"]
 	else:
@@ -165,7 +165,7 @@ def get_xsec(nick):
 
 def get_generator_weight(nick):
 	sample = get_sample_by_nick(nick)
-	dict = load_database(dataset)
+	dict = database
 	if sample in dict and "generatorWeight" in dict[sample]:
 		return dict[sample]["generatorWeight"]
 	else:
@@ -201,7 +201,7 @@ def save_database(dict, dataset):
 
 
 def query_result(query, expect_n_results = 1):
-	dict = load_database(dataset)
+	dict = database
 	match = []
 	for sample, values in dict.iteritems():
 		matches = True
@@ -248,7 +248,9 @@ def get_sample_by_nick(nickname, expect_n_results = 1):
 	#return pd_name, details, filetype
 
 def get_nick_list(query, expect_n_results =1):
-	dict = load_database(dataset)
+	dict = database
 	cms_names = query_result(query, expect_n_results)
 	nicknames = [make_nickname(dict[cms_name]) for cms_name in cms_names]
 	return nicknames
+
+database = load_database(dataset)
