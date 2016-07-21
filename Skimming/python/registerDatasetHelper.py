@@ -210,9 +210,11 @@ def query_result(query, expect_n_results = 1):
 			if (query[name] == "" and str(attribute) == "" ): continue # skip in this case
 			if (query[name] == "" and str(attribute) != "" ): # handle by hand: empty string matches everything. This is undesired for the "extension" property
 				matches = False
+				continue
 			if query[name] == None: continue
 			if not (re.match('\\b'+str(query[name])+'\\b', str(attribute).replace("_", "")) != None):
 				matches = False
+				continue
 		if matches:
 			match.append(sample)
 
