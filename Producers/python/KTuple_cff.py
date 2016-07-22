@@ -236,7 +236,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 		whitelist = cms.vstring("slimmedMETs"),
 		blacklist = cms.vstring(),
-
+		uncorrected = cms.bool(False),
 		rename = cms.vstring("slimmedMETs => met", "patPFMet => met"),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
@@ -245,7 +245,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		manual = cms.VInputTag(),
 		whitelist = cms.vstring("slimmedMETs"),
 		blacklist = cms.vstring(),
-
+		uncorrected = cms.bool(False),
 		rename = cms.vstring("slimmedMETs => met"),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
