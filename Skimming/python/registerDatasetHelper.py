@@ -14,6 +14,40 @@ from Kappa.Skimming.getNumberGeneratedEventsFromDB import getNumberGeneratedEven
 cmssw_base = os.environ.get("CMSSW_BASE")
 dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
+import copy
+
+def make_hash(o):
+
+	"""
+	Makes a hash from a dictionary, list, tuple or set to any level, that contains
+	only other hashable types (including any lists, tuples, sets, and
+	dictionaries).
+	"""
+
+	if isinstance(o, (set, tuple, list)):
+		return tuple([make_hash(e) for e in o])    
+	elif not isinstance(o, dict):
+		return hash(o)
+	new_o = copy.deepcopy(o)
+	for k, v in new_o.items():
+		new_o[k] = make_hash(v)
+		return hash(tuple(frozenset(sorted(new_o.items()))))
+
+
+def cached_query(function):
+	cache = {}
+	def wrapper(*args):
+		query_id = make_hash(args)
+		if query_id in cache:
+			return cache[query_id]
+		else:
+			result = function(*args)
+			cache[query_id] = result 
+			return result
+
+	return wrapper
+
+
 def get_campaign(details, default=None, energy=None):
 	if (default == None):
 		campaign = details.split("-")[0]
@@ -199,7 +233,7 @@ def save_database(dict, dataset):
 	with open(dataset, 'w') as fp:
 		json.dump(dict, fp, sort_keys=True, indent = 4)
 
-
+@cached_query
 def query_result(query, expect_n_results = 1):
 	dict = database
 	match = []
