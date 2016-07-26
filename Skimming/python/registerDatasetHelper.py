@@ -246,7 +246,7 @@ def query_result(query, expect_n_results = 1):
 				matches = False
 				continue
 			if query[name] == None: continue
-			if not (re.match('\\b'+str(query[name])+'\\b', str(attribute).replace("_", "")) != None):
+			if not (re.match('\\b'+str(query[name]).replace("_", "")+'\\b', str(attribute).replace("_", "")) != None):
 				matches = False
 				continue
 		if matches:
