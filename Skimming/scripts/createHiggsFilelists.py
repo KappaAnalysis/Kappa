@@ -87,7 +87,7 @@ def main():
 	#querielist.append( datasets2016.queries )
 	querielist.append( datasetsSpring16.queries )
 		
-	dict = load_database(dataset)
+	dict = database
 	for queries in querielist:
 		for query in queries.items():
 			writeFilelist(query, dict, options)

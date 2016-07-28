@@ -43,7 +43,7 @@ def main():
 
 	(options, args) = parser.parse_args()
 	sample = options.sample
-	dict = load_database(dataset)
+	dict = database
 	dict = remove_matching_entries(dict, queue)
 	save_database(dict, dataset)
 

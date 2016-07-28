@@ -8,14 +8,14 @@ import FWCore.ParameterSet.Config as cms
 
 def isData(nickname):
 	sample = get_sample_by_nick(nickname)
-	dict = load_database(dataset)
+	dict = database
 	sample_details = dict[sample]
 	data = sample_details["data"]
 	return data
 
 def getProcess(nickname):
 	sample = get_sample_by_nick(nickname)
-	dict = load_database(dataset)
+	dict = database
 	sample_details = dict[sample]
 	process = sample_details["process"]
 	return process
@@ -23,7 +23,7 @@ def getProcess(nickname):
 def getTreeInfo(nickname, globaltag, kappaTag):
 
 	sample = get_sample_by_nick(nickname)
-	dict = load_database(dataset)
+	dict = database
 	sample_details = dict[sample]
 
 	pd_name, details, filetype = sample.strip("/").split("/")

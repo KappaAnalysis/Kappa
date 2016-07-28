@@ -30,7 +30,7 @@ def main():
 
 	(options, args) = parser.parse_args()
 
-	dict = load_database(dataset)
+	dict = database
 	new_dict = {}
 	for sample, entry in dict.iteritems():
 		new_dict[sample] = update_dict(sample, entry)

@@ -12,14 +12,12 @@ import json
 from Kappa.Skimming.registerDatasetHelper import *
 
 cmssw_base = os.environ.get("CMSSW_BASE")
-dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
 def check_nickname_unique(nickname):
-	if( len(get_sample_by_nick(nickname, expect_n_results = -1)) == 1):
-		print "The nickname is a unique identifier for the Sample"
-		print get_sample_by_nick(nickname, expect_n_results = -1)[0]
+	if( len(get_sample_by_nick(nickname, expect_n_results = -1)) == 0):
+		print "The nickname is a unique identifier."
 	else:
-		print "The new nickname would not be unique. Please adjust your settings"
+		print "The new nickname would not be unique. Please adjust your settings. Was it mayby already in datasets.json?"
 
 def register_new_sample(dict, options):
 	# split sample name
@@ -98,7 +96,7 @@ def main():
 
 	(options, args) = parser.parse_args()
 
-	dict = load_database(dataset)
+	dict = database
 	if options.verbose:
 		pprint(dict)
 	newdict = register_new_sample(dict, options)
