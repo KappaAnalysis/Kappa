@@ -115,6 +115,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# General configuration
 	if is_above_cmssw_version([7,4]):
 		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
+	if "reHlt" in datasetsHelper.getCampaign(nickname):
+		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT2")
+		process.kappaTuple.Info.l1Source = cms.InputTag("")
 
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
 
@@ -130,8 +133,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 	if(data and ("Run2015" in nickname or "Run2016" in nickname)):
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
-	# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
-	process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
+	if "reHlt" in datasetsHelper.getCampaign(nickname):
+		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
+	if not "reHlt" in datasetsHelper.getCampaign(nickname):
+		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
+		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	
 	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
 	if is_above_cmssw_version([7,6]):

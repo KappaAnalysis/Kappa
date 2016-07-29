@@ -53,6 +53,8 @@ def get_campaign(details, default=None, energy=None):
 		campaign = details.split("-")[0]
 		if energy == "8":
 			campaign = campaign.split("_")[0]
+		if "reHLT" in details:
+			campaign = campaign+"reHLT"
 		return campaign
 	else:
 		return default

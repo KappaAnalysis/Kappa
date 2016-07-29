@@ -48,5 +48,9 @@ queries = {
 		"process" : "^EWK(WMinus|WPlus|Z)2Jets",
 		"campaign" : "RunIISpring16MiniAODv.*",
 		"energy" : "13"
+	},
+	"Spring16_reHLT": {
+		"campaign" : "RunIISpring16MiniAODv.*reHLT",
+		"energy" : "13"
 	}
 }
