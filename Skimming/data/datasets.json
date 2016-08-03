@@ -7875,19 +7875,6 @@
         "scenario": "PUSpring16", 
         "xsec": 61526.7
     }, 
-    "/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/MINIAODSIM": {
-        "campaign": "RunIISpring16MiniAODv2", 
-        "data": false, 
-        "embedded": false, 
-        "energy": "13", 
-        "extension": "ext1", 
-        "format": "MINIAOD", 
-        "generator": "amcatnlo-pythia8", 
-        "n_events_generated": "47664429", 
-        "process": "WJetsToLNu", 
-        "scenario": "PUSpring16RAWAODSIM", 
-        "xsec": 61526.7
-    }, 
     "/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14_ext1-v1/MINIAODSIM": {
         "campaign": "RunIISpring16MiniAODv2reHLT", 
         "data": false, 
