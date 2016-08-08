@@ -37,6 +37,7 @@ def register_new_sample(dict, options):
 	new_entry["embedded"]  = is_embedded(filetype)
 	new_entry["format"]    = get_format(filetype, default=None)
 	new_entry["n_events_generated"]    = get_n_generated_events(sample)
+	new_entry["n_files"]               = get_n_files(sample)
 	new_entry["extension"] = get_extension(details)
 	if options.xsec:
 		new_entry["xsec"] = options.xsec

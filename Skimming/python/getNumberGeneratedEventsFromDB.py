@@ -61,8 +61,6 @@ class RestClient(object):
         return opener.open(urllib2.Request(url, None, request_headers)).read()
 
 def getNumberGeneratedEventsFromDB(dataset):
-
-#if __name__ == '__main__':
     url = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
  #   dataset ='/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM'
     import os
@@ -74,4 +72,17 @@ def getNumberGeneratedEventsFromDB(dataset):
     import ast
     answer=ast.literal_eval(rest_client.get(url, api='blocksummaries', params={'dataset': dataset}))
     return str(answer[0]["num_event"])
+
+def getNumberFilesFromDB(dataset):
+    url = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
+ #   dataset ='/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM'
+    import os
+    cert = os.environ['X509_USER_PROXY']
+    if(cert==""):
+      print "X509_USER_PROXY not properly set. Get a voms proxy and set this environment variable"
+      sys.exit()
+    rest_client = RestClient(cert=cert)
+    import ast
+    answer=ast.literal_eval(rest_client.get(url, api='blocksummaries', params={'dataset': dataset}))
+    return str(answer[0]["num_file"])
 

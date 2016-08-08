@@ -10,7 +10,7 @@ import string
 import pprint
 import json
 import re
-from Kappa.Skimming.getNumberGeneratedEventsFromDB import getNumberGeneratedEventsFromDB
+from Kappa.Skimming.getNumberGeneratedEventsFromDB import getNumberGeneratedEventsFromDB, getNumberFilesFromDB
 cmssw_base = os.environ.get("CMSSW_BASE")
 dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
@@ -188,6 +188,17 @@ def get_n_generated_events_from_nick(nick):
 	dict = database
 	if sample in dict and "n_events_generated" in dict[sample]:
 		return dict[sample]["n_events_generated"]
+	else:
+		return -1
+
+def get_n_files(sample):
+	return getNumberFilesFromDB(sample)
+
+def get_n_files_from_nick(nick):
+	sample = get_sample_by_nick(nick)
+	dict = database
+	if sample in dict and "n_files" in dict[sample]:
+		return dict[sample]["n_files"]
 	else:
 		return -1
 

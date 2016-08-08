@@ -19,13 +19,14 @@ def update_dict(sample, entry):
 	pd_name, details, filetype = sample.strip("/").split("/")
 	# add new column here
 	#entry["n_events_generated"]    = get_n_generated_events(sample)
-	entry["extension"]             = get_extension(details, entry["data"])
+	#entry["extension"]             = get_extension(details, entry["data"])
+	entry["n_files"]             = get_n_files( sample)
 	return entry
 
 
 def main():
 	parser = optparse.OptionParser(usage="usage: %prog [options]",
-	                               description="Script to extend datasets.json by another sample")
+	                               description="Script to extend datasets.json by a new attribute")
 
 
 	(options, args) = parser.parse_args()
