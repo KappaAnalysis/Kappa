@@ -15,9 +15,9 @@
 # if possible, run2 configs import the run1 configs and add some extra information
 ## ------------------------------------------------------------------------
 
-# Kappa test: CMSSW 7.6.3
-# Kappa test: scram arch slc6_amd64_gcc493
-# Kappa test: checkout script scripts/checkoutCmssw76xPackagesForSkimming.py
+# Kappa test: CMSSW 7.6.3, 8.0.14
+# Kappa test: scram arch slc6_amd64_gcc493, slc6_amd64_gcc530
+# Kappa test: checkout script scripts/checkoutCmssw76xPackagesForSkimming.py, scripts/checkoutCmssw80xPackagesForSkimming.py
 # Kappa test: output kappaTuple.root
 
 import sys
@@ -369,4 +369,7 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 	else:
 		testPaths = ['/storage/6/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
-		process = getBaseConfig(globaltag=options.globalTag, testfile=cms.untracked.vstring("file://%s/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root" % testPath), outputfilename="kappaTuple.root")
+		if is_above_cmssw_version([8]):
+			process = getBaseConfig(globaltag="80X_mcRun2_asymptotic_2016_v3", testfile=cms.untracked.vstring("file://%s/SUSYGluGluToHToTauTau_M-160_spring16_miniAOD.root" % testPath), nickname='SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8', outputfilename="kappaTuple.root")
+		else:
+			process = getBaseConfig(globaltag=options.globalTag, testfile=cms.untracked.vstring("file://%s/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root" % testPath), outputfilename="kappaTuple.root")
