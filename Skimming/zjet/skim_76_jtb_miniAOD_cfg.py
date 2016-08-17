@@ -17,7 +17,7 @@ input_files='file:///storage/a/afriedel/zjets/data_miniAOD_singleMu_run2015D.roo
 
 maxevents=100
 outputfilename="skim76_jtb.root"
-kappa_verbosity=1
+kappa_verbosity=0
 
 #  Basic Process Setup  ############################################
 process = cms.Process("KAPPA")
@@ -80,11 +80,12 @@ else:
 	process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 
 	
-process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
-process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
+#process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
+#process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
 
 
-	
+process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')	
+process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
 process.kappaTuple.Info.hltWhitelist = cms.vstring(
 	# HLT regex selection can be tested at https://regex101.com (with gm options)
 	# single muon triggers, e.g. HLT_Mu50_v1
@@ -199,7 +200,9 @@ from JMEAnalysis.JetToolbox.jetToolbox_cff import jetToolbox
 jetSequence = 'sequence'
 jetToolbox( process, 'ak4', jetSequence+'ak4CHS',  'out', miniAOD=True, runOnMC= not data, JETCorrPayload = "None", PUMethod='CHS',  addPruning=False, addSoftDrop=False , addPrunedSubjets=False,  addNsub=False, maxTau=6, addTrimming=False, addFiltering=False, addNsubSubjets=False, addPUJetID=True) 
 process.path *= process.sequenceak4CHS
-process.path *= process.AK4PFCHSpileupJetIdCalculator* process.AK4PFCHSpileupJetIdEvaluator
+#process.BTagging = cms.Sequence(process.pfImpactParameterTagInfosAK4PFCHS*process.pfTrackCountingHighEffBJetTagsAK4PFCHS*process.pfSecondaryVertexTagInfosAK4PFCHS)
+#process.path *= process.BTagging
+process.path *= process.AK4PFCHSpileupJetIdCalculator*process.AK4PFCHSpileupJetIdEvaluator
 jetToolbox( process, 'ak4', jetSequence+'ak4Puppi',  'out', miniAOD=True, runOnMC= not data, JETCorrPayload = "None", PUMethod='Puppi',  addPruning=False, addSoftDrop=False , addPrunedSubjets=False,  addNsub=False, maxTau=6, addTrimming=False, addFiltering=False, addNsubSubjets=False) 
 process.path *= process.sequenceak4Puppi
 jetToolbox( process, 'ak4', jetSequence+'ak4',  'out', miniAOD=True, runOnMC= not data, JETCorrPayload = "None", PUMethod='None',  addPruning=False, addSoftDrop=False , addPrunedSubjets=False,  addNsub=False, maxTau=6, addTrimming=False, addFiltering=False, addNsubSubjets=False) 
@@ -210,31 +213,29 @@ jetToolbox( process, 'ak8', jetSequence+'ak8Puppi',  'out', miniAOD=True, runOnM
 process.path *= process.sequenceak8Puppi
 jetToolbox( process, 'ak8', jetSequence+'ak8',  'out', miniAOD=True, runOnMC= not data, JETCorrPayload = "None", PUMethod='None',  addPruning=False, addSoftDrop=False , addPrunedSubjets=False,  addNsub=False, maxTau=6, addTrimming=False, addFiltering=False, addNsubSubjets=False) 
 process.path *= process.sequenceak8
-
+from Kappa.Skimming.KPatJets_miniAOD_cff import setup_PatJets
+patJets = setup_PatJets(process)
 	# create Jet variants
 for param in (4, 8):
 	for algo in ["", "CHS", "Puppi"]:
 		variant_name = "ak%dPFJets%s" % (param, algo)
-		variant_pujetid_name = "ak%dPFJets%s" % (param, algo)
+		variant_patJet_name = "AK%dPF%s" % (param, algo)
+		process.path *= patJets[variant_patJet_name]
 		# Full Kappa jet definition
-		kappa_jets["ak%dPFJets%s"%(param, algo)] = cms.PSet(
-			src = cms.InputTag(variant_name),
-			PUJetID = cms.InputTag(variant_pujetid_name),
-			PUJetID_full = cms.InputTag("full"),
-			QGtagger = cms.InputTag("AK%dPFJets%sQGTagger" % (param, algo)),
-			Btagger = cms.InputTag("ak%dPF%s" % (param, algo)),
+		kappa_jets[variant_name] = cms.PSet(
+			src = cms.InputTag('selectedPatJetsAK4PFCHS')
 			)
 		# GenJets
 	if not data:
 			variant_name = "ak%sGenJetsNoNu" % (param)
 				# GenJets are just KLVs
 			process.kappaTuple.LV.whitelist += cms.vstring(variant_name)
-
 for name, pset in kappa_jets.iteritems():
-	setattr(process.kappaTuple.Jets, name, pset)
+	setattr(process.kappaTuple.PatJets, name, pset)
+#setattr(process.kappaTuple.PatJets, 'bTag', cms.PSet(
+#			src = cms.InputTag('pfCombinedSecondaryVertexV2BJetTagsAK4PFCHS')))
 
-
-process.kappaTuple.active += cms.vstring('Jets', 'PileupDensity')
+process.kappaTuple.active += cms.vstring('PatJets', 'PileupDensity')
 process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
 process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
 
@@ -267,7 +268,6 @@ if not data:
 process.path.insert(0,process.nEventsTotal+process.nNegEventsTotal)
 process.path.insert(-1,process.nEventsFiltered+process.nNegEventsFiltered)
 process.kappaTuple.active += cms.vstring('FilterSummary')
-
 
 	# final information:
 print "------- CONFIGURATION 2 ---------"
