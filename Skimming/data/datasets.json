@@ -710,12 +710,12 @@
         "data": false, 
         "embedded": false, 
         "energy": "13", 
-        "extension": "ext1", 
+        "extension": "", 
         "format": "AOD", 
         "generator": "madgraph-pythia8", 
         "n_events_generated": "247677412", 
         "n_files": "11708", 
-        "process": "DYJetsToLL_M50", 
+        "process": "DYJetsToLLM50", 
         "scenario": "PU25nsData2015v1"
     }, 
     "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext1-v1/MINIAODSIM": {
