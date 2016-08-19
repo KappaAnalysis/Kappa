@@ -46,6 +46,7 @@ struct KElectron : public KLepton
 	float dEtaIn;                 //< deltaEtaSuperClusterTrackAtVtx
 	float dPhiIn;                 //< deltaPhiSuperClusterTrackAtVtx
 	float sigmaIetaIeta;
+	float full5x5_sigmaIetaIeta;
 	float hadronicOverEm;
 	float fbrem;
 	//d0 dz vertexfitprob + missing hits
