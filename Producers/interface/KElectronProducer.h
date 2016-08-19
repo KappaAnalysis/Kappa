@@ -161,7 +161,9 @@ public:
 		out.dEtaIn = in.deltaEtaSuperClusterTrackAtVtx();
 		out.dPhiIn = in.deltaPhiSuperClusterTrackAtVtx();
 		out.sigmaIetaIeta = in.sigmaIetaIeta();
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 1) || CMSSW_MAJOR_VERSION >= 8
 		out.full5x5_sigmaIetaIeta = in.full5x5_sigmaIetaIeta();
+#endif
 		out.hadronicOverEm = in.hadronicOverEm();
 		out.fbrem = in.fbrem();
 		out.eSuperClusterOverP = in.eSuperClusterOverP();
