@@ -31,6 +31,7 @@ protected:
 
 #if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 		pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(in.leadChargedHadrCand().get());
+		out.dz = packedLeadTauCand->dz();
 		if (packedLeadTauCand->bestTrack() != nullptr)
 		{
 			KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track);
