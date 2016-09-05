@@ -12,7 +12,8 @@ import FWCore.ParameterSet.Config as cms
 #input_files='file:/nfs/dust/cms/user/swayand/DO_MU_FILES/AOD/DATARun2015D.root'
 #input_files='file:///storage/6/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
 #input_files='file:///nfs/dust/cms/user/swayand/DO_MU_FILES/CMSSW80X/DYTOLLM50_mcantlo.root'
-input_files='file:///storage/a/afriedel/zjets/data_miniAOD_singleMu_run2015D.root' #do not remove: for Kappa test!
+input_files='file:///storage/a/afriedel/zjets/mc_miniAOD.root' #do not remove: for Kappa test!
+#input_files='file:///storage/a/afriedel/zjets/mc_miniAOD.root' #do not remove: for Kappa test!
 #input_files='dcap://cmssrm-kit.gridka.de:22125/pnfs/gridka.de/cms/store/mc/RunIISpring16DR80/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/20000/1A054918-89FF-E511-B246-0CC47A4D76B2.root'
 
 maxevents=100
@@ -32,9 +33,9 @@ process.options.emptyRunLumiMode = cms.untracked.string('doNotHandleEmptyRunsAnd
 #data = @IS_DATA@
 #globaltag= '@GLOBALTAG@'
 
-data = True
-globaltag='76X_dataRun2_v15'
-#globaltag='76X_mcRun2_asymptotic_v12'
+data = False
+#globaltag='76X_dataRun2_v15'
+globaltag='76X_mcRun2_asymptotic_v12'
 
 #  Config parameters  ##############################################
 	## print information
@@ -73,6 +74,7 @@ process.kappaTuple = cms.EDAnalyzer('KTuple',
 process.kappaTuple.verbose = kappa_verbosity
 process.kappaOut = cms.Sequence(process.kappaTuple)
 process.kappaTuple.active = cms.vstring('VertexSummary', 'BeamSpot')
+process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
 if data:
 	process.kappaTuple.active += cms.vstring('DataInfo')
 else:
@@ -200,8 +202,6 @@ from JMEAnalysis.JetToolbox.jetToolbox_cff import jetToolbox
 jetSequence = 'sequence'
 jetToolbox( process, 'ak4', jetSequence+'ak4CHS',  'out', miniAOD=True, runOnMC= not data, JETCorrPayload = "None", PUMethod='CHS',  addPruning=False, addSoftDrop=False , addPrunedSubjets=False,  addNsub=False, maxTau=6, addTrimming=False, addFiltering=False, addNsubSubjets=False, addPUJetID=True) 
 process.path *= process.sequenceak4CHS
-#process.BTagging = cms.Sequence(process.pfImpactParameterTagInfosAK4PFCHS*process.pfTrackCountingHighEffBJetTagsAK4PFCHS*process.pfSecondaryVertexTagInfosAK4PFCHS)
-#process.path *= process.BTagging
 process.path *= process.AK4PFCHSpileupJetIdCalculator*process.AK4PFCHSpileupJetIdEvaluator
 jetToolbox( process, 'ak4', jetSequence+'ak4Puppi',  'out', miniAOD=True, runOnMC= not data, JETCorrPayload = "None", PUMethod='Puppi',  addPruning=False, addSoftDrop=False , addPrunedSubjets=False,  addNsub=False, maxTau=6, addTrimming=False, addFiltering=False, addNsubSubjets=False) 
 process.path *= process.sequenceak4Puppi
@@ -214,7 +214,7 @@ process.path *= process.sequenceak8Puppi
 jetToolbox( process, 'ak8', jetSequence+'ak8',  'out', miniAOD=True, runOnMC= not data, JETCorrPayload = "None", PUMethod='None',  addPruning=False, addSoftDrop=False , addPrunedSubjets=False,  addNsub=False, maxTau=6, addTrimming=False, addFiltering=False, addNsubSubjets=False) 
 process.path *= process.sequenceak8
 from Kappa.Skimming.KPatJets_miniAOD_cff import setup_PatJets
-patJets = setup_PatJets(process)
+patJets = setup_PatJets(process, data)
 	# create Jet variants
 for param in (4, 8):
 	for algo in ["", "CHS", "Puppi"]:
@@ -252,7 +252,6 @@ if not data:
 	process.kappaTuple.LV.ak8GenJetsNoNu = cms.PSet(src=cms.InputTag("ak8GenJetsNoNu"))
 
 process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
-process.kappaTuple.PileupDensity.pileupDensityCalo = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAllCalo"))
 
 process.kappaTuple.active += cms.vstring('PatMET')
 process.kappaTuple.PatMET.metCHS = cms.PSet(src=cms.InputTag("slimmedMETs"), uncorrected = cms.bool(True))
