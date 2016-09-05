@@ -4,6 +4,8 @@
 #ifndef KAPPA_PARTICLE_H
 #define KAPPA_PARTICLE_H
 
+#include <algorithm>
+
 #include "KBasic.h"
 
 /// Particle base class for generator particles or candidates
@@ -123,6 +125,43 @@ struct KGenParticle : public KParticle
 			return static_cast<long>(daughterIndices.at(i));
 		else
 			return -1;
+	}
+	
+	bool decayTreeContains(std::vector<int> absPdgIds, std::vector<KGenParticle>* genParticles, bool exact = true)
+	{
+		bool contains = exact;
+		
+		for (std::vector<unsigned int>::iterator daughterIndexIt = daughterIndices.begin();
+		     daughterIndexIt != daughterIndices.end(); ++daughterIndexIt)
+		{
+			KGenParticle& genParticle = genParticles->at(*daughterIndexIt);
+			
+			bool tmpContains = false;
+			if ((pdgId != 0) && (genParticle.pdgId == pdgId))
+			{
+				tmpContains = true;
+			}
+			else
+			{
+				std::vector<int>::iterator searchedPdgId = std::find(absPdgIds.begin(), absPdgIds.end(), std::abs(genParticle.pdgId));
+				if (searchedPdgId != absPdgIds.end())
+				{
+					absPdgIds.erase(searchedPdgId);
+					tmpContains = true;
+				}
+			}
+			
+			if (exact)
+			{
+				contains = (contains && tmpContains && genParticle.decayTreeContains(absPdgIds, genParticles, exact));
+			}
+			else
+			{
+				contains = (contains || absPdgIds.empty() || genParticle.decayTreeContains(absPdgIds, genParticles, exact));
+			}
+		}
+		
+		return contains;
 	}
 
 	inline bool isPrompt()           const { return ((particleinfo & (1 << KGenStatusFlags::isPrompt))); };
