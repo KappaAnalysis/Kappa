@@ -59,9 +59,14 @@ protected:
 		for (std::vector<const reco::GenParticle*>::iterator tauDecayProduct = tauDecayProducts.begin();
 		     tauDecayProduct != tauDecayProducts.end(); ++tauDecayProduct)
 		{
-			RMDLV p4(0.0, 0.0, 0.0, 0.0);
-			copyP4((*tauDecayProduct)->p4(), p4);
-			p4_vis += p4;
+			if (((*tauDecayProduct)->status() == 1) &&
+			    ((*tauDecayProduct)->numberOfDaughters() == 0) &&
+			    (! isNeutrino((*tauDecayProduct)->pdgId())))
+			{
+				RMDLV p4(0.0, 0.0, 0.0, 0.0);
+				copyP4((*tauDecayProduct)->p4(), p4);
+				p4_vis += p4;
+			}
 		}
 		*/
 		
@@ -70,6 +75,7 @@ protected:
 		walkDecayTree(dynamic_cast<const reco::GenParticle&>(in), info);
 
 		out.visible.p4 = info.p4_vis;
+		//std::cout << out.visible.p4.mass() << ", " << p4_vis.mass() << std::endl;
 
 		switch(info.mode)
 		{
