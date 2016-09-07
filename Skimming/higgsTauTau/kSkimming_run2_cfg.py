@@ -131,11 +131,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
 
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
-	if(data and ("Run2015" in nickname or "Run2016" in nickname)):
+	if isEmbedded:
+		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
+		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
+	elif(data and ("Run2015" in nickname or "Run2016" in nickname)):
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
 	if "reHLT" in datasetsHelper.get_campaign(nickname):
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
-	if not "reHLT" in datasetsHelper.get_campaign(nickname):
+	if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded:
 		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	
@@ -166,8 +169,13 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
 		process.kappaTuple.active += cms.vstring('DataInfo')
 		process.kappaTuple.active += cms.vstring('GenParticles') # save GenParticles,
-		process.kappaTuple.active += cms.vstring('GenTaus') # save GenParticles,
-		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
+		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
+		process.kappaTuple.active += cms.vstring('GenTaus')
+		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
+		
+		
+		#process.kappaTuple.active += cms.vstring('GenTaus') # save GenParticles,
+		#process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
 
 	## ------------------------------------------------------------------------
 	# Trigger
