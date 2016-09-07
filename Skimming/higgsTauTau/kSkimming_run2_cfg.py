@@ -159,6 +159,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# write out for all processes where available
 	process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
 
+	# save Flag
+	process.kappaTuple.Info.isEmbedded = cms.bool(isEmbedded)
+
 	if isEmbedded:
 		#process.load('RecoBTag/Configuration/RecoBTag_cff')
 		#process.load('RecoJets/JetAssociationProducers/ak5JTA_cff')

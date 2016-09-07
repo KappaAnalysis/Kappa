@@ -9932,5 +9932,19 @@
         "process": "ttHJetToTT_M130", 
         "scenario": "PUSpring16RAWAODSIM", 
         "xsec": 0.024743
+    },
+    "/DoubleMuon/DBS3_DEPLOYMENT_TEST_ERA-DBS3_DEPLOYMENT_TEST_CHILD-v42/MINIAOD": {
+        "campaign": "Run2016D", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "generatorWeight": -1.0, 
+        "n_events_generated": "1", 
+        "n_files": "1", 
+        "process": "MuonEmbedding", 
+        "scenario": "PromptRecov2"
     }
 }
