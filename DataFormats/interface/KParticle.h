@@ -204,7 +204,18 @@ struct KGenTau : public KGenParticle
 	int nPi0s = 0;
 	int genDecayMode()
 	{
-		return ((5 * (nProngs - 1)) + nPi0s);
+		if (isElectronicDecay())
+		{
+			return -1;
+		}
+		else if (isMuonicDecay())
+		{
+			return -2;
+		}
+		else
+		{
+			return ((5 * (nProngs - 1)) + nPi0s);
+		}
 	};
 
 	/// decay mode
