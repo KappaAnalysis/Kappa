@@ -131,18 +131,20 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
 
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
+	
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
-	elif(data and ("Run2015" in nickname or "Run2016" in nickname)):
+	elif(data):
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
+
 	if "reHLT" in datasetsHelper.get_campaign(nickname):
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
 	if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded:
 		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	
-	process.kappaTuple.active += cms.vstring('BeamSpot')                 # save Beamspot,
+	process.kappaTuple.active += cms.vstring('BeamSpot')
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))
 
@@ -156,6 +158,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 			process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 			process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
+
 	# write out for all processes where available
 	process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
 
