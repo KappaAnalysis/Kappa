@@ -79,7 +79,7 @@ struct KTau : public KBasicTau
 	RMFLV sumPiZeroCandidates()
 	{
 		RMFLV p4;
-		for (std::vector<KLV*>::iterator candidate = piZeroCandidates.begin();
+		for (std::vector<KLV>::iterator candidate = piZeroCandidates.begin();
 		     candidate != piZeroCandidates.end(); ++candidate)
 		{
 			p4 += candidate->p4;
