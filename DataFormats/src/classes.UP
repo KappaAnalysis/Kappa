@@ -224,10 +224,10 @@ class LinkdefH(BaseFile):
      ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> >+
    map used by provenance etc.:
      std::map<std::string, int>+;
-*/
+  class ROOT::Math::PtEtaPhiM4D<float>+;
+  class ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> >+;
 
-#pragma link C++ class ROOT::Math::PtEtaPhiM4D<float>+;
-#pragma link C++ class ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> >+;
+*/
 
 #pragma link C++ class ROOT::Math::Cartesian3D<float>+;
 #pragma link C++ class ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float> >+;
