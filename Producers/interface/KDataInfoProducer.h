@@ -38,8 +38,6 @@ public:
 		  consumescollector.consumes<LumiSummary>(lumiSource);
 
 #endif
-      
-		  consumescollector.consumes<GenFilterInfo>(edm::InputTag("generator", "minVisPtFilter", "EmbeddedRECO"));
 		}
 
 	static const std::string getLabel() { return "DataInfo"; }
@@ -96,15 +94,7 @@ public:
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-
-		// get extra information for pf embedded samples
-		if (isEmbedded)
-		{
-			edm::Handle<GenFilterInfo> hGenFilterInfo;
-			event.getByLabel(edm::InputTag("generator", "minVisPtFilter", "EmbeddedRECO"), hGenFilterInfo);
-			this->metaEvent->minVisPtFilterWeight = hGenFilterInfo->filterEfficiency();
-		}
-		else this->metaEvent->minVisPtFilterWeight = 1.0f;
+		this->metaEvent->minVisPtFilterWeight = 1.0f;
 		return KInfoProducer<Tmeta>::onEvent(event, setup);
 	}
 
