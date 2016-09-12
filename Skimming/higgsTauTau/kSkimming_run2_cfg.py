@@ -173,7 +173,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		#process.p *= process.btagging
 		# disable overrideHLTCheck for embedded samples, since it triggers an Kappa error
 		process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
-		process.kappaTuple.active += cms.vstring('DataInfo')
+		process.kappaTuple.active += cms.vstring('GenInfo')
 		process.kappaTuple.active += cms.vstring('GenParticles') # save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 		process.kappaTuple.active += cms.vstring('GenTaus')
@@ -191,8 +191,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 
-	#process.kappaTuple.active += cms.vstring('packedPFCandidates') # save PFCandidates. Not sure for what, because might not be usefull for isolation
-	#process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
+	process.kappaTuple.active += cms.vstring('packedPFCandidates')
+	process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
 
 	jetCollectionPuppi = "slimmedJetsPuppi"
@@ -296,6 +296,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
+		if isEmbedded:
+			process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll","","LHEembeddingCLEAN"))
 	process.kappaTuple.active += cms.vstring('PatJets')
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))

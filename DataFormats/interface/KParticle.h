@@ -254,6 +254,7 @@ struct KPFCandidate : public KParticle
 	double deltaP;            //< momentum difference?
 	double ecalEnergy;        //< energy deposited in ECAL
 	double hcalEnergy;        //< energy deposited in HCAL
+	unsigned short fromFirstPVFlag;
 };
 typedef std::vector<KPFCandidate> KPFCandidates;
 

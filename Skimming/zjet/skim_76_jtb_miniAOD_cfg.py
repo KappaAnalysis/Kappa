@@ -223,7 +223,7 @@ for param in (4, 8):
 		process.path *= patJets[variant_patJet_name]
 		# Full Kappa jet definition
 		kappa_jets[variant_name] = cms.PSet(
-			src = cms.InputTag('selectedPatJetsAK4PFCHS')
+			src = cms.InputTag('selectedPatJets'+variant_patJet_name)
 			)
 		# GenJets
 	if not data:

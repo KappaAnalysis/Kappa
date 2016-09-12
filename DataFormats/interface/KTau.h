@@ -78,35 +78,35 @@ struct KTau : public KBasicTau
 	
 	RMFLV sumPiZeroCandidates()
 	{
-		RMFLV p4;
+		RMFLV sumP4;
 		for (std::vector<KLV>::iterator candidate = piZeroCandidates.begin();
 		     candidate != piZeroCandidates.end(); ++candidate)
 		{
-			p4 += candidate->p4;
+			sumP4 += candidate->p4;
 		}
-		return p4;
+		return sumP4;
 	}
 	
 	RMFLV sumChargedHadronCandidates()
 	{
-		RMFLV p4;
+		RMFLV sumP4;
 		for (std::vector<KPFCandidate>::iterator candidate = chargedHadronCandidates.begin();
 		     candidate != chargedHadronCandidates.end(); ++candidate)
 		{
-			p4 += candidate->p4;
+			sumP4 += candidate->p4;
 		}
-		return p4;
+		return sumP4;
 	}
 	
 	RMFLV sumGammasCandidates()
 	{
-		RMFLV p4;
+		RMFLV sumP4;
 		for (std::vector<KPFCandidate>::iterator candidate = gammaCandidates.begin();
 		     candidate != gammaCandidates.end(); ++candidate)
 		{
-			p4 += candidate->p4;
+			sumP4 += candidate->p4;
 		}
-		return p4;
+		return sumP4;
 	}
 	
 	RMFLV piZeroMomentum()
