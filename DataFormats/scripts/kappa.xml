@@ -2,7 +2,5 @@
 	<lib name="Kappa"/>
 	<client>
 		<environment name="KAPPA_BASE" default="$CMSSW_BASE/src/Kappa"/>
-		<environment name="LIBDIR" default="$KAPPA_BASE/DataFormats/test"/>
-		<environment name="INCLUDE" default="$KAPPA_BASE/DataFormats/test"/>
 	</client>
 </tool>
