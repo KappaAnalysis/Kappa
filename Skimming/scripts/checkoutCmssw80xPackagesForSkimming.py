@@ -58,7 +58,7 @@ def getSysInformation():
 def checkoutPackages(args):
 	commands = [
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
-		"git cms-merge-topic -u KappaAnalysis:CMSSW_8010",
+		"git cms-merge-topic -u KappaAnalysis:CMSSW_8014",
 		"git cms-addpkg RecoMET/METPUSubtraction",
 		"git cms-addpkg DataFormats/METReco",
 		#Electron cutBased Id and MVA Id
