@@ -29,6 +29,3 @@ scram b -v -j 2 || exit 1
 echo "# =================== #"
 echo "# Building standalone #"
 echo "# =================== #"
-
-echo $CMSSW_BASE
-make -C Kappa/DataFormats/test -j2 || exit 1
