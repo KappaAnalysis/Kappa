@@ -296,8 +296,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
-		if isEmbedded:
-			process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll","","LHEembeddingCLEAN"))
 	process.kappaTuple.active += cms.vstring('PatJets')
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
