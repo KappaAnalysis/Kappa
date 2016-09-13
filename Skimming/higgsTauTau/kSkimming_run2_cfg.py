@@ -190,9 +190,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.Info.hltBlacklist = hltBlacklist
 
 	## ------------------------------------------------------------------------
-
-	process.kappaTuple.active += cms.vstring('packedPFCandidates')
-	process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
+	# should not be the default, it blows up the skim a lot
+	#process.kappaTuple.active += cms.vstring('packedPFCandidates')
+	#process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
 
 	jetCollectionPuppi = "slimmedJetsPuppi"
