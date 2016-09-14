@@ -1,8 +1,4 @@
 <lcgdict>
-	<class name="RMFLV"/>
-	<class name="RMFLV_Store"/>
-	<class name="RMDLV"/>
-	<class name="RMDLV_Store"/>
 	<class name="KEventInfo"/>
 	<class name="KGenEventInfo"/>
 	<class name="KBasicJet"/>
