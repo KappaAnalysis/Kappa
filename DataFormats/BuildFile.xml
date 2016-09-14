@@ -1,7 +1,4 @@
 <use name="root" />
-
-<flags GENREFLEX_ARGS="-Isrc/Kappa/DataFormats/interface" />
-<flags REM_CXXFLAGS="-fipa-pta"/>
 <use name="rootrflx" />
 <use name="rootmath" />
 <use name="boost" />

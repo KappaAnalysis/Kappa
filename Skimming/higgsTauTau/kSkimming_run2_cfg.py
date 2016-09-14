@@ -45,7 +45,7 @@ options.parseArguments()
 # check if current release is abov a certain number
 def is_above_cmssw_version(version_to_test):
 	cmssw_version_number = tools.get_cmssw_version_number()
-	split_cmssw_version = [int(i) for i in cmssw_version_number.split("_")[0:2]]
+	split_cmssw_version = [int(i) for i in cmssw_version_number.split("_")[0:3]]
 	for index in range(len(version_to_test)):
 		if(version_to_test[index] > split_cmssw_version[index]):
 			return False
@@ -190,9 +190,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.Info.hltBlacklist = hltBlacklist
 
 	## ------------------------------------------------------------------------
-
-	process.kappaTuple.active += cms.vstring('packedPFCandidates')
-	process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
+	# should not be the default, it blows up the skim a lot
+	#process.kappaTuple.active += cms.vstring('packedPFCandidates')
+	#process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
 
 	jetCollectionPuppi = "slimmedJetsPuppi"
@@ -296,8 +296,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
-		if isEmbedded:
-			process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll","","LHEembeddingCLEAN"))
 	process.kappaTuple.active += cms.vstring('PatJets')
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
@@ -305,8 +303,13 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')
-	process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
-	process.kappaTuple.PatMET.pfmetT1 = cms.PSet(src=cms.InputTag("patpfMETT1"))
+	if is_above_cmssw_version([8,0,14]):
+		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+		runMetCorAndUncFromMiniAOD(process, isData=data  )
+		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs", "", "KAPPA"))
+	else:
+		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
+	#process.kappaTuple.PatMET.pfmetT1 = cms.PSet(src=cms.InputTag("patpfMETT1"))
 	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
 
 	## Write MVA MET to KMETs

@@ -1,0 +1,6 @@
+<tool name="Kappa" version="1.0">
+	<lib name="Kappa"/>
+	<client>
+		<environment name="KAPPA_BASE" default="$CMSSW_BASE/src/Kappa"/>
+	</client>
+</tool>
