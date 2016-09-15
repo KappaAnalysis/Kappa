@@ -125,18 +125,23 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.goodOfflinePrimaryVertices.src = cms.InputTag('offlineSlimmedPrimaryVertices')
 	process.p *= ( process.makeVertexes )
 	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
-	process.load("VertexRefit.TauRefit.RefitVertexProducer_cfi")
-	process.p *= ( process.RefitVertexBS )
-	process.p *= ( process.RefitVertexNoBS )
-	#process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
-	#process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary', )
-	process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices', 'RefitVertexBS', 'RefitVertexNoBS')  # save VertexSummary,
-	process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary', 'RefitVertexBS => refittedVerticesBSSummary', 'RefitVertexNoBS => refittedVerticesNoBSSummary')
+	#process.load("VertexRefit.TauRefit.RefitVertexProducer_cfi")
+	process.load("VertexRefit.TauRefit.MVARefitVertexProducer_cfi")
+	#process.p *= ( process.RefitVertexBS )
+	#process.p *= ( process.RefitVertexNoBS )
+	#process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices', 'RefitVertexBS', 'RefitVertexNoBS')  # save VertexSummary,
+	#process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary', 'RefitVertexBS => refittedVerticesBSSummary', 'RefitVertexNoBS => refittedVerticesNoBSSummary')
+	process.p *= ( process.MVARefitVertexBS )
+	process.p *= ( process.MVARefitVertexNoBS )
+	process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices', 'MVARefitVertexBS', 'MVARefitVertexNoBS')  # save VertexSummary,
+	process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary', 'MVARefitVertexBS => MVARefittedVerticesBSSummary', 'MVARefitVertexNoBS => MVARefittedVerticesNoBSSummary')
 
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
-		process.kappaTuple.VertexSummary.refittedVerticesBSSummary = cms.PSet(src=cms.InputTag("RefitVertexBSProducer"))
-		process.kappaTuple.VertexSummary.refittedVerticesNoBSSummary = cms.PSet(src=cms.InputTag("RefitVertexNoBSProducer"))
+		#process.kappaTuple.VertexSummary.refittedVerticesBSSummary = cms.PSet(src=cms.InputTag("RefitVertexBSProducer"))
+		#process.kappaTuple.VertexSummary.refittedVerticesNoBSSummary = cms.PSet(src=cms.InputTag("RefitVertexNoBSProducer"))
+		process.kappaTuple.VertexSummary.MVARefittedVerticesBSSummary = cms.PSet(src=cms.InputTag("MVARefitVertexBSProducer"))
+		process.kappaTuple.VertexSummary.MVARefittedVerticesNoBSSummary = cms.PSet(src=cms.InputTag("MVARefitVertexNoBSProducer"))
 
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 	
