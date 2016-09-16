@@ -320,14 +320,24 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
 	process.MVAMET.srcLeptons  = cms.VInputTag(muons, electrons, taus) # to produce all possible combinations
 	process.MVAMET.requireOS = cms.bool(False)
-	process.MVAMET.srcMETs = cms.VInputTag( cms.InputTag("slimmedMETs", "", "RECO"),
-                                            cms.InputTag("patpfMET"),
-                                            cms.InputTag("patpfMETT1"),
-                                            cms.InputTag("patpfTrackMET"),
-                                            cms.InputTag("patpfNoPUMET"),
-                                            cms.InputTag("patpfPUCorrectedMET"),
-                                            cms.InputTag("patpfPUMET"),
-                                            cms.InputTag("slimmedMETsPuppi", "", "RECO") )
+	if(data):
+		process.MVAMET.srcMETs = cms.VInputTag( cms.InputTag("slimmedMETs", "", "RECO"),
+                                            	cms.InputTag("patpfMET"),
+                                            	cms.InputTag("patpfMETT1"),
+                                            	cms.InputTag("patpfTrackMET"),
+                                            	cms.InputTag("patpfNoPUMET"),
+                                            	cms.InputTag("patpfPUCorrectedMET"),
+                                            	cms.InputTag("patpfPUMET"),
+                                            	cms.InputTag("slimmedMETsPuppi", "", "RECO") )
+	else:
+		process.MVAMET.srcMETs = cms.VInputTag( cms.InputTag("slimmedMETs", "", "PAT"),
+                                            	cms.InputTag("patpfMET"),
+                                            	cms.InputTag("patpfMETT1"),
+                                            	cms.InputTag("patpfTrackMET"),
+                                            	cms.InputTag("patpfNoPUMET"),
+                                            	cms.InputTag("patpfPUCorrectedMET"),
+                                            	cms.InputTag("patpfPUMET"),
+                                            	cms.InputTag("slimmedMETsPuppi", "", "PAT") )
 
 
 	## ------------------------------------------------------------------------
