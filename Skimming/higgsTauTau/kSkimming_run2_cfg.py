@@ -320,7 +320,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
 	process.MVAMET.srcLeptons  = cms.VInputTag(muons, electrons, taus) # to produce all possible combinations
 	process.MVAMET.requireOS = cms.bool(False)
-	if(data):
+	if (isEmbedded):
+		process.MVAMET.srcMETs = cms.VInputTag( cms.InputTag("slimmedMETs", "", "MERGE"),
+                                            	cms.InputTag("patpfMET"),
+                                            	cms.InputTag("patpfMETT1"),
+                                            	cms.InputTag("patpfTrackMET"),
+                                            	cms.InputTag("patpfNoPUMET"),
+                                            	cms.InputTag("patpfPUCorrectedMET"),
+                                            	cms.InputTag("patpfPUMET"),
+                                            	cms.InputTag("slimmedMETsPuppi", "", "MERGE") )
+	elif(data):
 		process.MVAMET.srcMETs = cms.VInputTag( cms.InputTag("slimmedMETs", "", "RECO"),
                                             	cms.InputTag("patpfMET"),
                                             	cms.InputTag("patpfMETT1"),
@@ -342,7 +351,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	## GenJets 
-	if not data:
+	if not data or isEmbedded:
 		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
 		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
 		process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
