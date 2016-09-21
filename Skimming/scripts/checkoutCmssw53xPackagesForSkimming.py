@@ -12,6 +12,7 @@
 import os
 import sys
 from optparse import OptionParser
+from AddmissingclassesforoldCMSSW import fixes_classes
 
 #################################################################################################################
 
@@ -130,6 +131,7 @@ def main():
 	(options, args) = parser.parse_args()
 	checkoutPackages(args)
 	fixes_forsl6()
+	fixes_classes()
 
 #################################################################################################################
 if __name__ == "__main__":
