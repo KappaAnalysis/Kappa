@@ -9942,10 +9942,11 @@
         "format": "MINIAOD", 
         "generator": "", 
         "generatorWeight": -1.0, 
-        "n_events_generated": "1", 
+        "n_events_generated": "3971096", 
         "n_files": "1", 
         "process": "TauEmbedding", 
-        "scenario": "PromptRecov2"
+        "scenario": "PromptRecov2",
+	"xsec": 684.67
     },
     "/EmbeddingRun2016C/MuTauFinalState-imputDoubleMu_nomirror_miniAOD-v4/USER": {
         "campaign": "Embedding2016C", 
@@ -9956,10 +9957,11 @@
         "format": "MINIAOD", 
         "generator": "", 
         "generatorWeight": -1.0, 
-        "n_events_generated": "1", 
+        "n_events_generated": "1719937", 
         "n_files": "1", 
         "process": "TauEmbedding", 
-        "scenario": "PromptRecov2"
+        "scenario": "PromptRecov2",
+	"xsec": 661.51
     },
     "/EmbeddingRun2016D/MuTauFinalState-imputDoubleMu_nomirror_miniAOD-v4/USER": {
         "campaign": "Embedding2016D", 
@@ -9970,9 +9972,55 @@
         "format": "MINIAOD", 
         "generator": "", 
         "generatorWeight": -1.0, 
-        "n_events_generated": "1", 
+        "n_events_generated": "2887608", 
         "n_files": "1", 
         "process": "TauEmbedding", 
-        "scenario": "PromptRecov2"
+        "scenario": "PromptRecov2",
+	"xsec": 671.54
+    },
+    "/EmbeddingRun2016E/MuTauFinalState-imputDoubleMu_nomirror_miniAOD-v4/USER": {
+        "campaign": "Embedding2016E", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "generatorWeight": -1.0, 
+        "n_events_generated": "2553291", 
+        "n_files": "1", 
+        "process": "TauEmbedding", 
+        "scenario": "PromptRecov2",
+	"xsec": 622.75
+    },
+    "/EmbeddingRun2016F/MuTauFinalState-imputDoubleMu_nomirror_miniAOD-v4/USER": {
+        "campaign": "Embedding2016F", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "generatorWeight": -1.0, 
+        "n_events_generated": "1954752", 
+        "n_files": "1", 
+        "process": "TauEmbedding", 
+        "scenario": "PromptRecov2",
+	"xsec": 610.86
+    },
+    "/EmbeddingRun2016G/MuTauFinalState-imputDoubleMu_nomirror_miniAOD-v4/USER": {
+        "campaign": "Embedding2016G", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "generatorWeight": -1.0, 
+        "n_events_generated": "3346387", 
+        "n_files": "1", 
+        "process": "TauEmbedding", 
+        "scenario": "PromptRecov2",
+	"xsec": 666.666666
     }
 }
