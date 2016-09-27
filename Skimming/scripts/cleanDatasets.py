@@ -35,14 +35,11 @@ def remove_matching_entries(dict, query):
 
 def main():
 	parser = optparse.OptionParser(usage="usage: %prog [options]",
-	                               description="Script to extend datasets.json by another sample")
-	# sample
-	parser.add_option("-s", "--sample", help="official Sample Sting")
+	                               description="Script to remove samples defined by queue from dataset.json. No arguments available, check the code.")
 
-	queue = { "campaign" : "RunIISpring15DR74.*" }
+	queue = { "campaign" : "RunIISpring15Mini.*" }
 
 	(options, args) = parser.parse_args()
-	sample = options.sample
 	dict = database
 	dict = remove_matching_entries(dict, queue)
 	save_database(dict, dataset)
