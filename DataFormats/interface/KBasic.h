@@ -62,6 +62,17 @@ struct KVertex
 typedef std::vector<KVertex> KVertices;
 
 
+struct KRefitVertex : public KVertex
+{
+	virtual ~KRefitVertex() {};
+
+	bool test;
+
+	// need to add hash memeber
+};
+typedef std::vector<KRefitVertex> KRefitVertices;
+
+
 struct KVertexSummary
 {
 	virtual ~KVertexSummary() {};

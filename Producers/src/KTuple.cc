@@ -70,6 +70,7 @@
 #endif
 #include "../interface/KVertexProducer.h"
 #include "../interface/KVertexSummaryProducer.h"
+#include "../interface/KRefitVertexProducer.h"
 /* are these still used?
 #include "../interface/KHepMCPartonProducer.h"
 #include "../interface/KL1MuonProducer.h"
@@ -243,6 +244,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 #endif
 		addProducer<KVertexProducer>(active[i]);
 		addProducer<KVertexSummaryProducer>(active[i]);
+		addProducer<KRefitVertexProducer>(active[i]);
 		addProducer<KTreeInfoProducer >(active[i]);
 /* are these still used?
 		else if (active[i] == "L1Muons")
