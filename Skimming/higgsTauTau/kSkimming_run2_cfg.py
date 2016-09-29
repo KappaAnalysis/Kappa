@@ -412,6 +412,8 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 	elif options.outputfilename:
 		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents, outputfilename=options.outputfilename)
 	
+	elif  str("@NICK@")[0] != '@':
+		process = getBaseConfig(globaltag="@GLOBALTAG@", nickname="@NICK@", outputfilename="kappaTuple.root")
 	# Kappa test suite (cmsRun with no extra options)
 	else:
 		testPaths = ['/storage/6/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input']
