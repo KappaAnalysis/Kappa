@@ -147,6 +147,13 @@ kappaTupleDefaultsBlock = cms.PSet(
 		blacklist = cms.vstring(),
 	),
 
+	RefitVertex = cms.PSet(kappaNoCut, kappaNoRename,
+		manual = cms.VInputTag(),
+
+		whitelist = cms.vstring("offlinePrimaryVertices"),
+		blacklist = cms.vstring(),
+	),
+
 	VertexSummary = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
 

@@ -10,15 +10,16 @@
 #include "KBaseMultiProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
-#include <DataFormats/VertexReco/interface/Vertex.h>
+#include "DataFormats/VertexReco/interface/Vertex.h"
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
+#include "VertexRefit/TauRefit/interface/RefitVertex.h"
 
-class KRefitVertexProducer : public KBaseMultiVectorProducer<edm::View<RefitVertex>, std::vector<KVertex> >
+class KRefitVertexProducer : public KBaseMultiVectorProducer<edm::View<RefitVertex>, KVertices >
 {
 public:
 	KRefitVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiVectorProducer<edm::View<RefitVertex>, std::vector<KVertex> >(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+		KBaseMultiVectorProducer<edm::View<RefitVertex>, KVertices >(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "RefitVertex"; }
 

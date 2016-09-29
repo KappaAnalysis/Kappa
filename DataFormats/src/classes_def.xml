@@ -55,6 +55,8 @@
 	<class name="KTriggerObjects"/>
 	<class name="KVertex"/>
 	<class name="KVertices"/>
+	<class name="KRefitVertex"/>
+	<class name="KRefitVertices"/>
 	<class name="KFilterSummary"/>
 	<class name="KHCALNoiseSummary"/>
 	<class name="KTrackSummary"/>

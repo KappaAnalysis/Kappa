@@ -91,6 +91,8 @@ namespace
 		KTriggerObjects dict_KTriggerObjects;
 		KVertex dict_KVertex;
 		KVertices dict_KVertices;
+		KRefitVertex dict_KRefitVertex;
+		KRefitVertices dict_KRefitVertices;
 		KFilterSummary dict_KFilterSummary;
 		KHCALNoiseSummary dict_KHCALNoiseSummary;
 		KTrackSummary dict_KTrackSummary;
