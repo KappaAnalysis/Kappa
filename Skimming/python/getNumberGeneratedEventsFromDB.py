@@ -60,8 +60,10 @@ class RestClient(object):
         opener = self._build_opener()
         return opener.open(urllib2.Request(url, None, request_headers)).read()
 
-def getNumberGeneratedEventsFromDB(dataset):
+def getNumberGeneratedEventsFromDB(dataset, dbsinstance=None):
     url = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
+    if dbsinstance:
+	url = 'https://cmsweb.cern.ch/dbs/prod/'+dbsinstance+'/DBSReader'
  #   dataset ='/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM'
     import os
     cert = os.environ['X509_USER_PROXY']
@@ -73,8 +75,10 @@ def getNumberGeneratedEventsFromDB(dataset):
     answer=ast.literal_eval(rest_client.get(url, api='blocksummaries', params={'dataset': dataset}))
     return str(answer[0]["num_event"])
 
-def getNumberFilesFromDB(dataset):
+def getNumberFilesFromDB(dataset, dbsinstance=None):
     url = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader'
+    if dbsinstance:
+	url = 'https://cmsweb.cern.ch/dbs/prod/'+dbsinstance+'/DBSReader'
  #   dataset ='/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM'
     import os
     cert = os.environ['X509_USER_PROXY']

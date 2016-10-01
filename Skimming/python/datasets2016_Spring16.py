@@ -1,6 +1,7 @@
 queries = {
 	"Spring16_Data": {
 		"data" : True,
+		"embedded" : False,
 		"scenario" : "PromptRecov2",
 		"energy" : "13"
 	},
@@ -52,5 +53,12 @@ queries = {
 	"Spring16_reHLT": {
 		"campaign" : "RunIISpring16MiniAODv.*reHLT",
 		"energy" : "13"
+	},
+	"Spring16_embedded": {
+	  	"data" : True,
+	  	"embedded" : True,
+		"process" : "EmbeddingRun2016*",
+		"energy" : "13"
 	}
+	
 }
