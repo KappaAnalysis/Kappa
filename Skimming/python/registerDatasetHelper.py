@@ -235,7 +235,7 @@ def make_nickname(dict):
 	nick += dict["campaign"].replace("_", "") + "_"
 	nick += dict["scenario"].replace("_", "") + "_"
 	nick += dict["energy"].replace("_", "")   + "TeV_"
-	nick += dict["format"].replace("_", "") + ("" if (dict["data"] and not dict["embedded"]) else "_")
+	nick += dict["format"].replace("_", "") + ("" if (dict["data"] or dict["embedded"]) else "_")
 	nick += dict["generator"].replace("_", "")
 	nick += ("_" + dict["extension"] if dict["extension"] != "" else "")
 	return nick
