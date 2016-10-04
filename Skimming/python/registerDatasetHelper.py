@@ -151,6 +151,7 @@ def get_process(pd_name, default=None):
 		pos = pd_name.find("CPmixing")
 		if pos != -1:
 			process += "_"+pd_name[pos:]
+		process = process.replace("EmbeddingRun","Embedding") ## Since Run201 is Reserved for Data 
 		return process 
 
 def get_globaltag(details, default=None):

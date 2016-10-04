@@ -1714,7 +1714,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "3668707", 
         "n_files": "11187", 
-        "process": "EmbeddingRun2016B", 
+        "process": "Embedding2016B", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1729,7 +1729,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "3971096", 
         "n_files": "11427", 
-        "process": "EmbeddingRun2016B", 
+        "process": "Embedding2016B", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1744,7 +1744,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "1602420", 
         "n_files": "4918", 
-        "process": "EmbeddingRun2016C", 
+        "process": "Embedding2016C", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1759,7 +1759,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "1719937", 
         "n_files": "4980", 
-        "process": "EmbeddingRun2016C", 
+        "process": "Embedding2016C", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1774,7 +1774,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "2699485", 
         "n_files": "8297", 
-        "process": "EmbeddingRun2016D", 
+        "process": "Embedding2016D", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1789,7 +1789,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "2887608", 
         "n_files": "8376", 
-        "process": "EmbeddingRun2016D", 
+        "process": "Embedding2016D", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1804,7 +1804,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "2464024", 
         "n_files": "7622", 
-        "process": "EmbeddingRun2016E", 
+        "process": "Embedding2016E", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1819,7 +1819,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "2553291", 
         "n_files": "7451", 
-        "process": "EmbeddingRun2016E", 
+        "process": "Embedding2016E", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1834,7 +1834,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "1848679", 
         "n_files": "5728", 
-        "process": "EmbeddingRun2016F", 
+        "process": "Embedding2016F", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1849,7 +1849,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "1954752", 
         "n_files": "5715", 
-        "process": "EmbeddingRun2016F", 
+        "process": "Embedding2016F", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1864,7 +1864,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "3282187", 
         "n_files": "10100", 
-        "process": "EmbeddingRun2016G", 
+        "process": "Embedding2016G", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
@@ -1879,7 +1879,7 @@
         "inputDBS": "phys03", 
         "n_events_generated": "3346387", 
         "n_files": "9717", 
-        "process": "EmbeddingRun2016G", 
+        "process": "Embedding2016G", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
