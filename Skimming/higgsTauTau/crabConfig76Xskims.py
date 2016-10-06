@@ -74,8 +74,7 @@ def submission():
 	
 	config.Site.storageSite = "T2_DE_DESY"
 	# load nicknames form gc-style config files and write them to a flat nicknames list
-	#nicknames = read_grid_control_includes(["samples/13TeV/Fall15_SM_Higgs_CP.conf"])
-	nicknames = read_grid_control_includes(["samples/13TeV/Fall15_Higgs_CP-resubmit.conf"])
+	nicknames = read_grid_control_includes(["samples/13TeV/Fall15_Higgs_CPAnalysis.conf"])
 	#nicknames = read_grid_control_includes(["samples/13TeV/Fall15_SM_Analysis.conf"])
 	#nicknames = ['SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8']
 
