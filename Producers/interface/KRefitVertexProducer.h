@@ -8,35 +8,37 @@
 #define KAPPA_REFITVERTEXPRODUCER_H
 
 #include "KBaseMultiProducer.h"
+#include "KVertexProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
 #include "../../DataFormats/interface/KDebug.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/Candidate/interface/Candidate.h"
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
 #include "VertexRefit/TauRefit/interface/RefitVertex.h"
 
-class KRefitVertexProducer : public KBaseMultiVectorProducer<edm::View<RefitVertex>, KVertices >
+class KRefitVertexProducer : public KBaseMultiVectorProducer<edm::View<RefitVertex>, KRefitVertices >
 {
 public:
 	KRefitVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiVectorProducer<edm::View<RefitVertex>, KVertices >(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+		KBaseMultiVectorProducer<edm::View<RefitVertex>, KRefitVertices >(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "RefitVertex"; }
 
-	static void fillVertex(const SingleInputType &in, SingleOutputType &out)
-	{
-		out.position = in.position();
-		out.valid = in.isValid();
-		out.nTracks = in.tracksSize();
-
-		out.chi2 = in.chi2();
-		out.nDOF = in.ndof();
-		out.covariance = in.covariance();
-	}
 protected:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		fillVertex(in, out);
+		KVertexProducer::fillVertex(in, out);
+
+		// save references to lepton selection from MVA MET
+		std::size_t hash = 0;
+		for(auto name: in.userCandNames())
+		{
+			edm::Ptr<reco::Candidate> aRecoCand = in.userCand( name );
+			boost::hash_combine(hash,aRecoCand.get());
+		}
+		out.leptonSelectionHash = hash;
+
 	}
 };
 
