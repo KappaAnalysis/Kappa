@@ -95,6 +95,8 @@ REGISTER_NAME_OF_TYPE(KTracks,std::vector<KTrack>);
 REGISTER_NAME_OF_TYPE(KTriggerObjects,KTriggerObjects);
 REGISTER_NAME_OF_TYPE(KVertex,KVertex);
 REGISTER_NAME_OF_TYPE(KVertices,std::vector<KVertex>);
+REGISTER_NAME_OF_TYPE(KRefitVertex,KRefitVertex);
+REGISTER_NAME_OF_TYPE(KRefitVertices,std::vector<KRefitVertex>);
 REGISTER_NAME_OF_TYPE(KFilterSummary,KFilterSummary);
 REGISTER_NAME_OF_TYPE(KHCALNoiseSummary,KHCALNoiseSummary);
 REGISTER_NAME_OF_TYPE(KTrackSummary,KTrackSummary);

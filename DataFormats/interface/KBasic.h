@@ -66,7 +66,7 @@ struct KRefitVertex : public KVertex
 {
 	virtual ~KRefitVertex() {};
 
-	bool test;
+	std::size_t leptonSelectionHash;
 
 	// need to add hash memeber
 };
