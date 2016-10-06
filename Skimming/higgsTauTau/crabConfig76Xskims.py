@@ -54,7 +54,8 @@ def check_path(path):
 def submission():
 	from CRABClient.UserUtilities import config
 	config = config()
-	config.General.workArea = '/nfs/dust/cms/user/%s/kappa/crab_kappa_skim76X-%s'%(getUsernameFromSiteDB(), date)
+	#config.General.workArea = '/nfs/dust/cms/user/%s/kappa/crab_kappa_skim76X-%s'%(getUsernameFromSiteDB(), date)
+	config.General.workArea = '/nfs/dust/cms/user/<your-NAF-username>/kappa/crab_kappa_skim76X-%s'% date
 	#config.General.workArea = '/net/scratch_cms/institut_3b/%s/kappa/crab_kappa_skim-%s'%(getUsernameFromSiteDB(), date)
 	check_path(config.General.workArea)
 	config.General.transferOutputs = True
@@ -73,7 +74,9 @@ def submission():
 	
 	config.Site.storageSite = "T2_DE_DESY"
 	# load nicknames form gc-style config files and write them to a flat nicknames list
-	nicknames = read_grid_control_includes(["samples/13TeV/Fall15_SM_Analysis.conf"])
+	#nicknames = read_grid_control_includes(["samples/13TeV/Fall15_SM_Higgs_CP.conf"])
+	nicknames = read_grid_control_includes(["samples/13TeV/Fall15_Higgs_CP-resubmit.conf"])
+	#nicknames = read_grid_control_includes(["samples/13TeV/Fall15_SM_Analysis.conf"])
 	#nicknames = ['SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8']
 
 	# loop over datasets and get repsective nicks
