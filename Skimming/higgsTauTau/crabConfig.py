@@ -7,7 +7,7 @@ from httplib import HTTPException
 from CRABAPI.RawCommand import crabCommand
 from CRABClient.ClientExceptions import ClientException
 from multiprocessing import Process
-from Kappa.Skimming.registerDatasetHelper import get_sample_by_nick
+from Kappa.Skimming.registerDatasetHelper import get_sample_by_nick,get_inputDBS_by_nick,get_n_files_from_nick,get_n_generated_events_from_nick
 from Kappa.Skimming.datasetsHelper2015 import isData
 import sys
 from glob import glob
@@ -26,12 +26,13 @@ def submit(config):
 		print "Failed submitting task: %s" % (cle)
 
 def crab_command(command):
-	for dir in glob('/nfs/dust/cms/user/%s/kappa/crab_kappa_skim-%s/*'%(getUsernameFromSiteDB(), date)):
+	for dir in glob('/nfs/dust/cms/user/%s/kappa/crab_kappa_skim80X-%s/*'%(getUsernameFromSiteDB(), date)):
 	#for dir in glob('/net/scratch_cms/institut_3b/%s/kappa/crab_kappa_skim-%s/*'%(getUsernameFromSiteDB(), date)):
 		try:
-			crabCommand(command, dir = dir)
+                    print dir
+                    crabCommand(command, dir = dir)
 		except HTTPException as hte:
-			print hte
+                    print hte
 
 def check_path(path):
 	if os.path.exists(path):
@@ -49,7 +50,7 @@ def check_path(path):
 			sys.stdout.write(path + " already exists! Delete it now in order to re-initialize it by crab?")
 
 
-def submission():
+def submission(events_per_job):
 	from CRABClient.UserUtilities import config
 	config = config()
 	config.General.workArea = '/nfs/dust/cms/user/%s/kappa/crab_kappa_skim80X-%s'%(getUsernameFromSiteDB(), date)
@@ -64,7 +65,6 @@ def submission():
 	#config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
 	config.JobType.allowUndistributedCMSSW = True
 	config.Site.blacklist = ["T2_BR_SPRACE"]
-	config.Data.inputDBS = 'global'
 	config.Data.splitting = 'FileBased'
 	config.Data.unitsPerJob = 1
 	config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/80X_%s'%(getUsernameFromSiteDB(), date)
@@ -80,6 +80,18 @@ def submission():
 	# loop over datasets and get repsective nicks
 	for nickname in nicknames:
 		config.General.requestName = nickname[:100]
+		config.Data.inputDBS = get_inputDBS_by_nick(nickname)
+		if events_per_job:
+                    nfiles = get_n_files_from_nick(nickname)
+                    nevents = get_n_generated_events_from_nick(nickname)
+                    try:
+                        if int(nfiles) > 0 and int(nevents) > 0:
+                            files_per_job = int(events_per_job) * int(nfiles) / int(nevents)
+                            if files_per_job > 1:
+                                config.Data.unitsPerJob = files_per_job
+                    except:
+                        print "Its not possilbe to make ",events_per_job," events/job for ",nickname," which has Nevents:",nevents," and Nfiles",nfiles," in the database. Just make one file per job" 
+                        
 		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_Prompt_ICHEP16JEC_v0' if isData(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_miniAODv2_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
@@ -92,7 +104,7 @@ if __name__ == "__main__":
 		print "no setting provided"
 		sys.exit()
 	if sys.argv[1] == "submit":
-		submission()
+		submission(sys.argv[2] if len(sys.argv)>2 else None)
 	elif sys.argv[1] in ["status", "resubmit", "kill"]:
 		crab_command(sys.argv[1])
 	else:

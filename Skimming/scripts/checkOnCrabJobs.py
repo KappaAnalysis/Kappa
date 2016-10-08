@@ -35,6 +35,9 @@ def checkStatusOfSingleTask(task, verbosity=0):
 		
 	checkCommand = "crab status --dir "+task
 	os.system(checkCommand+" >> tempStatus.txt")# TODO: find a way to read output from shell without creating temporary file
+	
+	status = "OTHER"
+	
 	with open("tempStatus.txt") as file:
 		for line in file:
 			if "Task status:" in line:
@@ -44,8 +47,6 @@ def checkStatusOfSingleTask(task, verbosity=0):
 					status = "FAILED"
 				elif "COMPLETED" in line:
 					status = "COMPLETED"
-				else:
-					status = "OTHER"
 			elif "Jobs status:" in line:
 				if "failed" in line:
 					status = "FAILED"

@@ -73,12 +73,14 @@ def get_scenario(details, default=None, energy=None, data=False):
 	else:
 		return default
 
-def get_energy(pd_name, details, default=None, data=False):
+def get_energy(pd_name, details, default=None, data=False, isembedded=False):
 	if (default == None):
 		if not data:
 			endpos = pd_name.find("TeV")
 			startpos = pd_name[0:endpos].rfind("_")+1
-			return pd_name[startpos:endpos] 
+			return pd_name[startpos:endpos]
+                elif isembedded:
+                    return "13" 
 		else: 
 			if details.find("2011")!=-1: return "7"
 			if details.find("2012")!=-1: return "8"
@@ -89,10 +91,11 @@ def get_energy(pd_name, details, default=None, data=False):
 		return default
 
 
-def get_generator(pd_name, default=None, data=False):
-	if data:
+def get_generator(pd_name, default=None, data=False, isembedded=False):
+	if data and not isembedded:
 		return ""
-
+        if isembedded:
+            return "pythia8"
 	if (default == None):
 		pos = pd_name.find("TeV")+4
 		generators = []
@@ -148,6 +151,7 @@ def get_process(pd_name, default=None):
 		pos = pd_name.find("CPmixing")
 		if pos != -1:
 			process += "_"+pd_name[pos:]
+		process = process.replace("EmbeddingRun","Embedding") ## Since Run201 is Reserved for Data 
 		return process 
 
 def get_globaltag(details, default=None):
@@ -180,8 +184,8 @@ def is_data(prod_camp, default=None):
 	else:
 		return default
 
-def get_n_generated_events(sample):
-	return getNumberGeneratedEventsFromDB(sample)
+def get_n_generated_events(sample, dbsinstance=None ):
+	return getNumberGeneratedEventsFromDB(sample, dbsinstance)
 
 def get_n_generated_events_from_nick(nick):
 	sample = get_sample_by_nick(nick)
@@ -191,8 +195,8 @@ def get_n_generated_events_from_nick(nick):
 	else:
 		return -1
 
-def get_n_files(sample):
-	return getNumberFilesFromDB(sample)
+def get_n_files(sample, dbsinstance=None):
+	return getNumberFilesFromDB(sample,dbsinstance)
 
 def get_n_files_from_nick(nick):
 	sample = get_sample_by_nick(nick)
@@ -295,6 +299,12 @@ def get_sample_by_nick(nickname, expect_n_results = 1):
 		return query_result(query, expect_n_results)
 	#pd_name, details, filetype = options.sample.strip("/").split("/")
 	#return pd_name, details, filetype
+def get_inputDBS_by_nick(nickname):
+  	akt_sample_key = get_sample_by_nick(nickname)
+  	try:
+	  return str(database[akt_sample_key]['inputDBS'])
+	except:
+	  return 'global'
 
 def get_nick_list(query, expect_n_results =1):
 	dict = database
