@@ -1,0 +1,38 @@
+CXX = g++
+CXX_FLAGS = -Wall -pedantic
+rule compile_cpp
+  command = $CXX $CXX_FLAGS ${opts} -MMD -MT $out -MF $out.d -c $in -o $out
+  description = compile(cpp) $out
+  depfile = $out.d
+  deps = gcc
+
+LINKER_SHARED = gcc
+LINKER_SHARED_FLAGS = -shared -fPIC
+rule link_shared
+  command = $LINKER_SHARED $LINKER_SHARED_FLAGS ${opts} -o $out $in
+  description = link(shared) $out
+
+LINKER_STATIC = gcc-ar
+LINKER_STATIC_FLAGS = rcs
+rule link_static
+  command = rm -f $out && $LINKER_STATIC $LINKER_STATIC_FLAGS ${opts} $out $in
+  description = link(static) $out
+
+rule rootdict
+  command = rootcint -f $out ${include_opts} $in
+  description = rootcint $out
+
+build libKappa_719e2cc944f893836cd90403ba427095.o: compile_cpp libKappa.cpp
+  opts = -pthread -std=c++11 -Wno-deprecated-declarations -m64 -I/home/fred/work/prefix/include/root -fPIC -O3 -I../../..
+build libKappa.cpp: rootdict standalone.h ../src/classes.h LinkDef.h
+  include_opts = -I../../..
+build ../src/KDebug_4442139dbeb0f1e9d10912f2785d12be.o: compile_cpp ../src/KDebug.cpp
+  opts = -pthread -std=c++11 -Wno-deprecated-declarations -m64 -I/home/fred/work/prefix/include/root -fPIC -O3 -I../../..
+build libKappa.so: link_shared libKappa_719e2cc944f893836cd90403ba427095.o ../src/KDebug_4442139dbeb0f1e9d10912f2785d12be.o
+  opts = -L/home/fred/work/prefix/lib/root -lCore -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -pthread -lm -ldl -rdynamic -lstdc++ -lm
+build libKappa_7ccb915dbb28baebdc7485c4fce3eaf0.o: compile_cpp libKappa.cpp
+  opts = -pthread -std=c++11 -Wno-deprecated-declarations -m64 -I/home/fred/work/prefix/include/root -O3 -I../../..
+build ../src/KDebug_a9740e94bef054bbf874968ca434d9bf.o: compile_cpp ../src/KDebug.cpp
+  opts = -pthread -std=c++11 -Wno-deprecated-declarations -m64 -I/home/fred/work/prefix/include/root -O3 -I../../..
+build libKappa.a: link_static libKappa_7ccb915dbb28baebdc7485c4fce3eaf0.o ../src/KDebug_a9740e94bef054bbf874968ca434d9bf.o
+build all: phony libKappa.so libKappa.a
