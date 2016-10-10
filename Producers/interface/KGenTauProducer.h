@@ -9,9 +9,13 @@
 
 #include "KGenParticleProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
-#include <Validation/EventGenerator/interface/TauDecay_GenParticle.h>
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
+
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 1) || (CMSSW_MAJOR_VERSION > 7)
+#include <Validation/EventGenerator/interface/TauDecay_GenParticle.h>
+#endif
+
 
 class KGenTauProducer : public KBasicGenParticleProducer<KGenTaus>
 {
@@ -38,37 +42,6 @@ protected:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		KBasicGenParticleProducer<KGenTaus>::fillSingle(in, out);
-		
-		// official TauPOG analysis of tau decay chain
-		TauDecay_GenParticle genTauDecayAnalyser;
-		
-		unsigned int JAK_ID = 0;
-		unsigned int TauBitMask = 0;
-		bool dores = false;
-		bool dopi0 = false;
-		genTauDecayAnalyser.AnalyzeTau(dynamic_cast<const reco::GenParticle*>(&in), JAK_ID, TauBitMask, dores, dopi0);
-		
-		// decay mode reconstruction
-		out.nProngs = genTauDecayAnalyser.nProng(TauBitMask);
-		out.nPi0s = genTauDecayAnalyser.nPi0(TauBitMask);
-		
-		/* TODO: p4 different from out.visible.p4 below
-		// visible decay products
-		RMDLV p4_vis(0.0, 0.0, 0.0, 0.0);
-		std::vector<const reco::GenParticle*> tauDecayProducts = genTauDecayAnalyser.Get_TauDecayProducts();
-		for (std::vector<const reco::GenParticle*>::iterator tauDecayProduct = tauDecayProducts.begin();
-		     tauDecayProduct != tauDecayProducts.end(); ++tauDecayProduct)
-		{
-			if (((*tauDecayProduct)->status() == 1) &&
-			    ((*tauDecayProduct)->numberOfDaughters() == 0) &&
-			    (! isNeutrino((*tauDecayProduct)->pdgId())))
-			{
-				RMDLV p4(0.0, 0.0, 0.0, 0.0);
-				copyP4((*tauDecayProduct)->p4(), p4);
-				p4_vis += p4;
-			}
-		}
-		*/
 		
 		// custom implementations
 		DecayInfo info;
@@ -111,6 +84,42 @@ protected:
 			out.decayMode |= KGenTau::DescendantMask;
 
 		out.vertex = in.vertex();
+		
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 1) || (CMSSW_MAJOR_VERSION > 7)
+		// official TauPOG analysis of tau decay chain
+		TauDecay_GenParticle genTauDecayAnalyser;
+		
+		unsigned int JAK_ID = 0;
+		unsigned int TauBitMask = 0;
+		bool dores = false;
+		bool dopi0 = false;
+		genTauDecayAnalyser.AnalyzeTau(dynamic_cast<const reco::GenParticle*>(&in), JAK_ID, TauBitMask, dores, dopi0);
+		
+		// decay mode reconstruction
+		out.nProngs = genTauDecayAnalyser.nProng(TauBitMask);
+		out.nPi0s = genTauDecayAnalyser.nPi0(TauBitMask);
+		
+		/* TODO: p4 different from out.visible.p4 above
+		// visible decay products
+		RMDLV p4_vis(0.0, 0.0, 0.0, 0.0);
+		std::vector<const reco::GenParticle*> tauDecayProducts = genTauDecayAnalyser.Get_TauDecayProducts();
+		for (std::vector<const reco::GenParticle*>::iterator tauDecayProduct = tauDecayProducts.begin();
+		     tauDecayProduct != tauDecayProducts.end(); ++tauDecayProduct)
+		{
+			if (((*tauDecayProduct)->status() == 1) &&
+			    ((*tauDecayProduct)->numberOfDaughters() == 0) &&
+			    (! isNeutrino((*tauDecayProduct)->pdgId())))
+			{
+				RMDLV p4(0.0, 0.0, 0.0, 0.0);
+				copyP4((*tauDecayProduct)->p4(), p4);
+				p4_vis += p4;
+			}
+		}
+		*/
+#else
+		out.nProngs = info.n_charged;
+		out.nPi0s = -1; // not filled
+#endif
 	}
 
 	virtual bool acceptSingle(const SingleInputType& in)
