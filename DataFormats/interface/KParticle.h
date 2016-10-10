@@ -199,6 +199,24 @@ struct KGenTau : public KGenParticle
 
 	KLV visible;              //< momentum four-vector of visible particles
 	RMPoint vertex;           //< vertex
+	
+	int nProngs;
+	int nPi0s;
+	int genDecayMode()
+	{
+		if (isElectronicDecay())
+		{
+			return -1;
+		}
+		else if (isMuonicDecay())
+		{
+			return -2;
+		}
+		else
+		{
+			return ((5 * (nProngs - 1)) + nPi0s);
+		}
+	};
 
 	/// decay mode
 	/** bit definition:
