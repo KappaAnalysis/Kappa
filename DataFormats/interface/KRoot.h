@@ -29,8 +29,8 @@ namespace ROOT
 		protected:
 			static RowOffsets<D> offsets;
 		};
-	};
-};
+	}
+}
 #endif
 
 #endif
