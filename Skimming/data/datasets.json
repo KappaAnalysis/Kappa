@@ -1733,6 +1733,21 @@
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
+    "/EmbeddingRun2016B/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
+        "campaign": "TauTauFinalState", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "USER", 
+        "generator": "", 
+        "inputDBS": "phys03", 
+        "n_events_generated": "1319282", 
+        "n_files": "11428", 
+        "process": "Embedding2016B", 
+        "scenario": "imputDoubleMu_mirror_miniAODv5", 
+        "xsec": "390.0"
+    }, 
     "/EmbeddingRun2016C/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElTauFinalState", 
         "data": true, 
@@ -1759,6 +1774,21 @@
         "inputDBS": "phys03", 
         "n_events_generated": "1719937", 
         "n_files": "4980", 
+        "process": "Embedding2016C", 
+        "scenario": "imputDoubleMu_mirror_miniAODv5", 
+        "xsec": "390.0"
+    }, 
+    "/EmbeddingRun2016C/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
+        "campaign": "TauTauFinalState", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "USER", 
+        "generator": "", 
+        "inputDBS": "phys03", 
+        "n_events_generated": "571247", 
+        "n_files": "4970", 
         "process": "Embedding2016C", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
@@ -1793,6 +1823,21 @@
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
+    "/EmbeddingRun2016D/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
+        "campaign": "TauTauFinalState", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "USER", 
+        "generator": "", 
+        "inputDBS": "phys03", 
+        "n_events_generated": "957321", 
+        "n_files": "8353", 
+        "process": "Embedding2016D", 
+        "scenario": "imputDoubleMu_mirror_miniAODv5", 
+        "xsec": "390.0"
+    }, 
     "/EmbeddingRun2016E/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElTauFinalState", 
         "data": true, 
@@ -1819,6 +1864,21 @@
         "inputDBS": "phys03", 
         "n_events_generated": "2553291", 
         "n_files": "7451", 
+        "process": "Embedding2016E", 
+        "scenario": "imputDoubleMu_mirror_miniAODv5", 
+        "xsec": "390.0"
+    }, 
+    "/EmbeddingRun2016E/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
+        "campaign": "TauTauFinalState", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "USER", 
+        "generator": "", 
+        "inputDBS": "phys03", 
+        "n_events_generated": "873477", 
+        "n_files": "7660", 
         "process": "Embedding2016E", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
@@ -1853,6 +1913,21 @@
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
+    "/EmbeddingRun2016F/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
+        "campaign": "TauTauFinalState", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "USER", 
+        "generator": "", 
+        "inputDBS": "phys03", 
+        "n_events_generated": "653449", 
+        "n_files": "5752", 
+        "process": "Embedding2016F", 
+        "scenario": "imputDoubleMu_mirror_miniAODv5", 
+        "xsec": "390.0"
+    }, 
     "/EmbeddingRun2016G/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElTauFinalState", 
         "data": true, 
@@ -1879,6 +1954,21 @@
         "inputDBS": "phys03", 
         "n_events_generated": "3346387", 
         "n_files": "9717", 
+        "process": "Embedding2016G", 
+        "scenario": "imputDoubleMu_mirror_miniAODv5", 
+        "xsec": "390.0"
+    }, 
+    "/EmbeddingRun2016G/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
+        "campaign": "TauTauFinalState", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "USER", 
+        "generator": "", 
+        "inputDBS": "phys03", 
+        "n_events_generated": "1163373", 
+        "n_files": "10191", 
         "process": "Embedding2016G", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
