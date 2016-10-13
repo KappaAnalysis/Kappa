@@ -67,6 +67,8 @@ def checkoutPackages(args):
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/data"),
 		"wget https://github.com/rfriese/cmssw/raw/MVAMET2_beta_0.6/RecoMET/METPUSubtraction/data/weightfile.root",
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
+		"git cms-addpkg PhysicsTools/PatUtils",
+		"sed '/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificanceParams_cfi\ import\ METSignificanceParams_Data' PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py -i",
 		#Electron cutBased Id and MVA Id
 		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_747
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_747_Spring15_MVA_tra
