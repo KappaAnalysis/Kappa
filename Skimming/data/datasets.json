@@ -1731,7 +1731,7 @@
         "n_files": "11427", 
         "process": "Embedding2016B", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": "351.0"
     }, 
     "/EmbeddingRun2016B/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -1776,7 +1776,7 @@
         "n_files": "4980", 
         "process": "Embedding2016C", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": "339.0"
     }, 
     "/EmbeddingRun2016C/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -1821,7 +1821,7 @@
         "n_files": "8376", 
         "process": "Embedding2016D", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": "322.0"
     }, 
     "/EmbeddingRun2016D/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -1866,7 +1866,7 @@
         "n_files": "7451", 
         "process": "Embedding2016E", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": "319.0"
     }, 
     "/EmbeddingRun2016E/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -1911,7 +1911,7 @@
         "n_files": "5715", 
         "process": "Embedding2016F", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": "313.0"
     }, 
     "/EmbeddingRun2016F/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -1956,7 +1956,7 @@
         "n_files": "9717", 
         "process": "Embedding2016G", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": "313.0"
     }, 
     "/EmbeddingRun2016G/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
