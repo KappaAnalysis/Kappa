@@ -58,9 +58,15 @@ def getSysInformation():
 def checkoutPackages(args):
 	commands = [
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
-		"git cms-merge-topic -u KappaAnalysis:CMSSW_8014",
+		# exact copy from https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorking2016#MET
 		"git cms-addpkg RecoMET/METPUSubtraction",
 		"git cms-addpkg DataFormats/METReco",
+		"git remote add -f mvamet https://github.com/rfriese/cmssw.git",
+		"git checkout mvamet/mvamet8020 -b mvamet",
+		"mkdir " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/data"),
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/data"),
+		"wget https://github.com/rfriese/cmssw/raw/MVAMET2_beta_0.6/RecoMET/METPUSubtraction/data/weightfile.root",
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 		#Electron cutBased Id and MVA Id
 		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_747
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_747_Spring15_MVA_tra
