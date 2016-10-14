@@ -76,7 +76,7 @@ def resubmit(taskDict, additional_args="", verbosity=0):
 	
 	for task, status in taskDict.iteritems():
 		if "FAILED" in status:
-			if verbosity > 1:
+			if verbosity > 0:
 				print "resubmitting task "+task+" using "+additional_args
 			resubmitCommand = "crab resubmit "+additional_args+" --dir "+task
 			os.system(resubmitCommand)
@@ -116,7 +116,7 @@ if __name__ == "__main__":
 						help="Automatically resubmit failed jobs. [Default: %(default)s]")
 	parser.add_argument("--resubmit-args", default="",
 						help="Additional arguments for job resubmission. [Default: %(default)s]")
-	parser.add_argument("-v","--verbosity", type=int, default=0, choices=[0,1,2],
+	parser.add_argument("-v","--verbosity", type=int, default=0, choices=[0,1],
 						help="Control how much info is printed. [Default: %(default)s]")
 	
 	args = parser.parse_args()
@@ -148,16 +148,15 @@ if __name__ == "__main__":
 		else:
 			other.append(task)
 	
+	print "---------- List of tasks with failed jobs ----------"
+	for task in failed:
+		print task
+	print
+	print "---------- List of tasks with other jobs ----------"
+	for task in other:
+		print task
+	print
 	if args.verbosity > 0:
-		print "---------- List of tasks with failed jobs ----------"
-		for task in failed:
-			print task
-		print
-		print "---------- List of tasks with other jobs ----------"
-		for task in other:
-			print task
-		print
-	if args.verbosity > 1:
 		print "---------- List of tasks with submitted jobs ----------"
 		for task in submitted:
 			print task
