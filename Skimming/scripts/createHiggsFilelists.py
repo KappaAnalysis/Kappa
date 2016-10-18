@@ -19,10 +19,10 @@ import Kappa.Skimming.datasets2016 as datasets2016
 import Kappa.Skimming.datasets2016_Spring16 as datasetsSpring16
 
 
-def writeFilelist(querytuple, dict, options):
+def writeFilelist(querytuple, database_dict, options):
 	query = querytuple[1]
 	query_result = []
-	for sample, values in dict.iteritems():
+	for sample, values in database_dict.iteritems():
 		matches = True
 		for name, attribute in values.iteritems():
 			if not name in query: continue
@@ -83,14 +83,12 @@ def main():
 	#querielist.append( datasets2012.queries )
 	#querielist.append( datasets2013.queries )
 	#querielist.append( datasets2015_miniAODv2.queries )
-	# querielist.append( datasetsFall15.queries )
+	#querielist.append( datasetsFall15.queries )
 	#querielist.append( datasets2016.queries )
 	querielist.append( datasetsSpring16.queries )
-		
-	dict = database
 	for queries in querielist:
 		for query in queries.items():
-			writeFilelist(query, dict, options)
+			writeFilelist(query, database, options)
 
 
 
