@@ -7,7 +7,7 @@ from httplib import HTTPException
 from CRABAPI.RawCommand import crabCommand
 from CRABClient.ClientExceptions import ClientException
 from multiprocessing import Process
-from Kappa.Skimming.registerDatasetHelper import get_sample_by_nick,get_n_files_from_nick
+from Kappa.Skimming.registerDatasetHelper import get_sample_by_nick,get_n_files_from_nick,get_inputDBS_by_nick
 from Kappa.Skimming.datasetsHelper2015 import isData
 import sys
 from glob import glob
@@ -66,7 +66,6 @@ def submission():
 	#config.JobType.inputFiles = ['Summer15_V5_MC.db']
 	config.JobType.allowUndistributedCMSSW = True
 	config.Site.blacklist = ["T2_BR_SPRACE"]
-	config.Data.inputDBS = 'global'
 	config.Data.splitting = 'FileBased'
 	config.Data.unitsPerJob = 1
 	config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/76X_%s'%(getUsernameFromSiteDB(), date)
@@ -80,6 +79,7 @@ def submission():
 	# loop over datasets and get repsective nicks
 	for nickname in nicknames:
 		config.General.requestName = nickname
+		config.Data.inputDBS = get_inputDBS_by_nick(nickname)
 		config.JobType.pyCfgParams = ['globalTag=76X_dataRun2_16Dec2015_v0' if isData(nickname) else 'globalTag=76X_mcRun2_asymptotic_RunIIFall15DR76_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
@@ -87,7 +87,7 @@ def submission():
 		if float(config.Data.unitsPerJob) > 0 and float(nfiles)/float(config.Data.unitsPerJob) >= job_submission_limit:
 			files_per_job = ceil(float(nfiles)/job_submission_limit)
 			if files_per_job > 1:
-				config.Data.unitsPerJob = files_per_job
+				config.Data.unitsPerJob = int(files_per_job)
 		p = Process(target=submit, args=(config,))
 		p.start()
 		p.join()
