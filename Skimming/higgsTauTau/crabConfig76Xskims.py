@@ -87,7 +87,7 @@ def submission():
 		if float(config.Data.unitsPerJob) > 0 and float(nfiles)/float(config.Data.unitsPerJob) >= job_submission_limit:
 			files_per_job = ceil(float(nfiles)/job_submission_limit)
 			if files_per_job > 1:
-			 config.Data.unitsPerJob = files_per_job
+				config.Data.unitsPerJob = files_per_job
 		p = Process(target=submit, args=(config,))
 		p.start()
 		p.join()

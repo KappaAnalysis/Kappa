@@ -96,7 +96,7 @@ def submission(events_per_job):
         if float(config.Data.unitsPerJob) > 0 and float(nfiles)/float(config.Data.unitsPerJob) >= job_submission_limit:
         	files_per_job = ceil(float(nfiles)/job_submission_limit)
         	if files_per_job > 1:
-        	 config.Data.unitsPerJob = files_per_job
+        		config.Data.unitsPerJob = files_per_job
                         
 		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_Prompt_ICHEP16JEC_v0' if isData(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_miniAODv2_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
