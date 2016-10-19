@@ -57,7 +57,7 @@ queries = {
 	"Spring16_embedded": {
 	  	"data" : True,
 	  	"embedded" : True,
-		"process" : "Embedding2016*",
+		"process" : "Embedding2016",
 		"energy" : "13"
 	}
 	

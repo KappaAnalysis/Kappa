@@ -43,5 +43,11 @@ queries = {
 		"process" : "^EWK(WMinus|WPlus|Z)2Jets",
 		"campaign" : "RunIIFall15MiniAODv2",
 		"energy" : "13"
-	}
+	},
+        "Fall15_embedded": {
+                "data" : True,
+                "embedded" : True,
+                "process" : "Embedding2015D",
+                "energy" : "13"
+        }
 }

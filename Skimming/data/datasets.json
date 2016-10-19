@@ -1703,6 +1703,21 @@
         "scenario": "PUSpring16", 
         "xsec": 10.01
     }, 
+    "/EmbeddingRun2015D/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
+        "campaign": "MuTauFinalState", 
+        "data": true, 
+        "embedded": true, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "USER", 
+        "generator": "", 
+        "inputDBS": "phys03", 
+        "n_events_generated": "1982101", 
+        "n_files": "5647", 
+        "process": "Embedding2015D", 
+        "scenario": "imputDoubleMu_mirror_miniAODv5", 
+        "xsec": "390.0"
+    }, 
     "/EmbeddingRun2016B/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElTauFinalState", 
         "data": true, 
