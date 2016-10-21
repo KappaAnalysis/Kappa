@@ -171,6 +171,7 @@ public:
 			out.eSuperClusterOverP = in.eSuperClusterOverP();
 			out.superclusterEnergy = in.superCluster()->energy();
 			out.superclusterPosition = in.superCluster()->position();
+			// Definition from RecoEgamma/ElectronIdentification/plugins/cuts/GsfDEtaInSeedCut.cc
 			if(in.superCluster()->seed().isNonnull())
 			{
 				out.dEtaInSeed = in.deltaEtaSuperClusterTrackAtVtx() - in.superCluster()->eta() + in.superCluster()->seed()->eta();
