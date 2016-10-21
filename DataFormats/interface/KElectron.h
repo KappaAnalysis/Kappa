@@ -45,6 +45,7 @@ struct KElectron : public KLepton
 	unsigned char electronType;   //< cf. enum KElectronType::Type
 	float dEtaIn;                 //< deltaEtaSuperClusterTrackAtVtx
 	float dPhiIn;                 //< deltaPhiSuperClusterTrackAtVtx
+	float dEtaInSeed;
 	float sigmaIetaIeta;
 	float full5x5_sigmaIetaIeta;
 	float hadronicOverEm;

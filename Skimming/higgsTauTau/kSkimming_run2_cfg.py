@@ -238,7 +238,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
-					"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
+					"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight")
 
 
 	setupElectrons(process, electrons)

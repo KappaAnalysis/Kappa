@@ -16,7 +16,8 @@ def setupElectrons(process, electrons):
 	egmGsfElectronIDs.physicsObjectSrc = cms.InputTag(electrons)
 	switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
 	my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
-			 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
+			 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff',
+			 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff']
 	for idmod in my_id_modules:
 		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 	process.elPFIsoDepositCharged.src = cms.InputTag(electrons)
