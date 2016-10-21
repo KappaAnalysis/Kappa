@@ -58,6 +58,11 @@ def getSysInformation():
 def checkoutPackages(args):
 	commands = [
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
+		#Electron cutBased Id and MVA Id
+		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_8_0
+		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_747_Spring15_MVA_tra
+		#This needs to be checked out first since there are conflicts with MVA MET otherwise and then 63 packages are checked out...
+		"git cms-merge-topic ikrav:egm_id_80X_v1",
 		# exact copy from https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorking2016#MET
 		"git cms-addpkg RecoMET/METPUSubtraction",
 		"git cms-addpkg DataFormats/METReco",
@@ -69,11 +74,9 @@ def checkoutPackages(args):
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 		"git cms-addpkg PhysicsTools/PatUtils",
 		"sed '/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificanceParams_cfi\ import\ METSignificanceParams_Data' PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py -i",
-		#Electron cutBased Id and MVA Id
-		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_747
-		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_747_Spring15_MVA_tra
-		#"git cms-merge-topic ikrav:egm_id_747_v2",
 		"git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit",
+		#because of the MVA MET branch checkout we need to merge the EGamma branch into the mvamet one
+		"git merge ikrav/egm_id_80X_v1 --no-edit"
 
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git"
