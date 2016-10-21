@@ -234,15 +234,18 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 	process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
-	process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
-					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
-					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
-					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
-					"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values",
+	if is_above_cmssw_version([8]):
+		process.kappaTuple.Electrons.ids = cms.vstring("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values",
 					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto",
 					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose",
 					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium",
 					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight")
+	else:
+		process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
+					"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")
 
 
 	setupElectrons(process, electrons)
