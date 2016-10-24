@@ -1988,6 +1988,19 @@
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
         "xsec": "390.0"
     }, 
+    "/GluGluH2JetsToTauTau_M125_13TeV_CPmixing_maxmix_JHU/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v4/MINIAODSIM": {
+        "campaign": "RunIISpring16MiniAODv2", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "unspecified", 
+        "n_events_generated": "1455200", 
+        "n_files": "38", 
+        "process": "GluGluH2JetsToTauTau_M125_CPmixing_maxmix_JHU", 
+        "scenario": "PUSpring16RAWAODSIM"
+    }, 
     "/GluGluH2JetsToTauTau_M125_13TeV_CPmixing_pseudoscalar_JHU/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM": {
         "campaign": "RunIISpring16MiniAODv2", 
         "data": false, 
