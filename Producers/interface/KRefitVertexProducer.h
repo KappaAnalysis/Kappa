@@ -30,7 +30,7 @@ protected:
 	{
 		KVertexProducer::fillVertex(in, out);
 
-		// save references to lepton selection from MVA MET
+		// save references to lepton selection in the refitted vertex
 		std::size_t hash = 0;
 		for(auto name: in.userCandNames())
 		{
