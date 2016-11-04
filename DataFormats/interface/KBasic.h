@@ -68,7 +68,6 @@ struct KRefitVertex : public KVertex
 
 	std::size_t leptonSelectionHash;
 
-	// need to add hash memeber
 };
 typedef std::vector<KRefitVertex> KRefitVertices;
 
