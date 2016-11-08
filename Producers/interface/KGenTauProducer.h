@@ -47,7 +47,7 @@ protected:
 		DecayInfo info;
 		walkDecayTree(dynamic_cast<const reco::GenParticle&>(in), info);
 
-		out.visible.p4 = info.p4_vis;
+		//out.visible.p4 = info.p4_vis; // now set in else statement below
 		//std::cout << out.visible.p4.mass() << ", " << p4_vis.mass() << std::endl;
 
 		switch(info.mode)
@@ -84,39 +84,44 @@ protected:
 			out.decayMode |= KGenTau::DescendantMask;
 
 		out.vertex = in.vertex();
-		
+
 #if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 1) || (CMSSW_MAJOR_VERSION > 7)
 		// official TauPOG analysis of tau decay chain
 		TauDecay_GenParticle genTauDecayAnalyser;
-		
+
 		unsigned int JAK_ID = 0;
 		unsigned int TauBitMask = 0;
 		bool dores = false;
 		bool dopi0 = false;
 		genTauDecayAnalyser.AnalyzeTau(dynamic_cast<const reco::GenParticle*>(&in), JAK_ID, TauBitMask, dores, dopi0);
-		
+
 		// decay mode reconstruction
 		out.nProngs = genTauDecayAnalyser.nProng(TauBitMask);
 		out.nPi0s = genTauDecayAnalyser.nPi0(TauBitMask);
-		
-		/* TODO: p4 different from out.visible.p4 above
+
 		// visible decay products
+		// in very rare cases (~1/9300) different from result of walkDecayTree
 		RMDLV p4_vis(0.0, 0.0, 0.0, 0.0);
 		std::vector<const reco::GenParticle*> tauDecayProducts = genTauDecayAnalyser.Get_TauDecayProducts();
 		for (std::vector<const reco::GenParticle*>::iterator tauDecayProduct = tauDecayProducts.begin();
 		     tauDecayProduct != tauDecayProducts.end(); ++tauDecayProduct)
 		{
-			if (((*tauDecayProduct)->status() == 1) &&
-			    ((*tauDecayProduct)->numberOfDaughters() == 0) &&
-			    (! isNeutrino((*tauDecayProduct)->pdgId())))
+			if (((*tauDecayProduct)->statusFlags().isDirectHardProcessTauDecayProduct() || (*tauDecayProduct)->statusFlags().isPromptTauDecayProduct()) &&
+				(! isNeutrino((*tauDecayProduct)->pdgId())))
 			{
 				RMDLV p4(0.0, 0.0, 0.0, 0.0);
 				copyP4((*tauDecayProduct)->p4(), p4);
 				p4_vis += p4;
 			}
 		}
-		*/
+
+		out.visible.p4 = p4_vis;
+
+		// TODO: also set decay mode with official tools
+		//       but currently not fully understood how
+		//       to do this properly
 #else
+		out.visible.p4 = info.p4_vis;
 		out.nProngs = info.n_charged;
 		out.nPi0s = -1; // not filled
 #endif
@@ -232,8 +237,20 @@ private:
 			copyP4(in.p4(), p4);
 			info.p4_vis += p4;
 		}
-		else if(in.numberOfDaughters() == 2 && std::abs(in.pdgId()) == 111 &&
-				std::abs(in.daughter(0)->pdgId()) == 22 && std::abs(in.daughter(1)->pdgId()) == 22)
+		else if(in.numberOfDaughters() == 3 && std::abs(in.pdgId()) == 111 &&
+				((std::abs(in.daughter(0)->pdgId()) == 22 && std::abs(in.daughter(1)->pdgId()) == 11 && std::abs(in.daughter(2)->pdgId()) == 11) ||
+				(std::abs(in.daughter(0)->pdgId()) == 11 && std::abs(in.daughter(1)->pdgId()) == 22 && std::abs(in.daughter(2)->pdgId()) == 11) ||
+				(std::abs(in.daughter(0)->pdgId()) == 11 && std::abs(in.daughter(1)->pdgId()) == 11 && std::abs(in.daughter(2)->pdgId()) == 22)))
+		{
+			//printf("\tneutral pion, stop recursion. ");
+			//printf("\n");
+			// Neutral pion, save four-momentum in the visible component
+			RMDLV p4;
+			copyP4(in.p4(), p4);
+			info.p4_vis += p4;
+		}
+		else if(in.numberOfDaughters() == 4 && std::abs(in.pdgId()) == 111 &&
+				std::abs(in.daughter(0)->pdgId()) == 11 && std::abs(in.daughter(1)->pdgId()) == 11 && std::abs(in.daughter(2)->pdgId()) == 11 && std::abs(in.daughter(3)->pdgId()) == 11)
 		{
 			//printf("\tneutral pion, stop recursion. ");
 			//printf("\n");
