@@ -45,6 +45,11 @@ queries = {
 		"campaign" : "RunIISpring16MiniAODv2",
 		"energy" : "13"
 	},
+	"Spring16_WG": {
+		"process" : "^WG",
+		"campaign" : "RunIISpring16MiniAODv2",
+		"energy" : "13"
+	},
 	"Spring16_EWK": {
 		"process" : "^EWK(WMinus|WPlus|Z)2Jets",
 		"campaign" : "RunIISpring16MiniAODv2",
