@@ -2,7 +2,7 @@ queries = {
 	"Spring16_Data": {
 		"data" : True,
 		"embedded" : False,
-		"scenario" : "PromptRecov2",
+		"scenario" : "23Sep2016v?",
 		"energy" : "13"
 	},
 	"Spring16_DYJets": {

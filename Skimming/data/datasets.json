@@ -885,6 +885,19 @@
         "process": "DoubleEG", 
         "scenario": "16Dec2015v2"
     }, 
+    "/DoubleEG/Run2016B-23Sep2016-v3/MINIAOD": {
+        "campaign": "Run2016B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "143073268", 
+        "n_files": "1288", 
+        "process": "DoubleEG", 
+        "scenario": "23Sep2016v3"
+    }, 
     "/DoubleEG/Run2016B-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016B", 
         "data": true, 
@@ -898,6 +911,19 @@
         "n_files": "1656", 
         "process": "DoubleEG", 
         "scenario": "PromptRecov2"
+    }, 
+    "/DoubleEG/Run2016C-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "47677856", 
+        "n_files": "569", 
+        "process": "DoubleEG", 
+        "scenario": "23Sep2016v1"
     }, 
     "/DoubleEG/Run2016C-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016C", 
@@ -913,6 +939,19 @@
         "process": "DoubleEG", 
         "scenario": "PromptRecov2"
     }, 
+    "/DoubleEG/Run2016D-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "53324960", 
+        "n_files": "566", 
+        "process": "DoubleEG", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/DoubleEG/Run2016D-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016D", 
         "data": true, 
@@ -927,6 +966,19 @@
         "process": "DoubleEG", 
         "scenario": "PromptRecov2"
     }, 
+    "/DoubleEG/Run2016E-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016E", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "49877710", 
+        "n_files": "531", 
+        "process": "DoubleEG", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/DoubleEG/Run2016E-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016E", 
         "data": true, 
@@ -939,6 +991,32 @@
         "n_files": "581", 
         "process": "DoubleEG", 
         "scenario": "PromptRecov2"
+    }, 
+    "/DoubleEG/Run2016F-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016F", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "34577629", 
+        "n_files": "395", 
+        "process": "DoubleEG", 
+        "scenario": "23Sep2016v1"
+    }, 
+    "/DoubleEG/Run2016G-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016G", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "78797031", 
+        "n_files": "926", 
+        "process": "DoubleEG", 
+        "scenario": "23Sep2016v1"
     }, 
     "/DoubleElectron/Run2011A-16Jan2012-v1/AOD": {
         "campaign": "Run2011A", 
@@ -1473,6 +1551,19 @@
         "process": "DoubleMuon", 
         "scenario": "16Dec2015v1"
     }, 
+    "/DoubleMuon/Run2016B-23Sep2016-v3/MINIAOD": {
+        "campaign": "Run2016B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "82535526", 
+        "n_files": "657", 
+        "process": "DoubleMuon", 
+        "scenario": "23Sep2016v3"
+    }, 
     "/DoubleMuon/Run2016B-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016B", 
         "data": true, 
@@ -1486,6 +1577,19 @@
         "n_files": "963", 
         "process": "DoubleMuon", 
         "scenario": "PromptRecov2"
+    }, 
+    "/DoubleMuon/Run2016C-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "27934629", 
+        "n_files": "326", 
+        "process": "DoubleMuon", 
+        "scenario": "23Sep2016v1"
     }, 
     "/DoubleMuon/Run2016C-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016C", 
@@ -1501,6 +1605,19 @@
         "process": "DoubleMuon", 
         "scenario": "PromptRecov2"
     }, 
+    "/DoubleMuon/Run2016D-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "33861745", 
+        "n_files": "375", 
+        "process": "DoubleMuon", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/DoubleMuon/Run2016D-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016D", 
         "data": true, 
@@ -1515,6 +1632,19 @@
         "process": "DoubleMuon", 
         "scenario": "PromptRecov2"
     }, 
+    "/DoubleMuon/Run2016E-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016E", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "28246946", 
+        "n_files": "314", 
+        "process": "DoubleMuon", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/DoubleMuon/Run2016E-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016E", 
         "data": true, 
@@ -1527,6 +1657,32 @@
         "n_files": "339", 
         "process": "DoubleMuon", 
         "scenario": "PromptRecov2"
+    }, 
+    "/DoubleMuon/Run2016F-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016F", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "20329921", 
+        "n_files": "209", 
+        "process": "DoubleMuon", 
+        "scenario": "23Sep2016v1"
+    }, 
+    "/DoubleMuon/Run2016G-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016G", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "45235604", 
+        "n_files": "544", 
+        "process": "DoubleMuon", 
+        "scenario": "23Sep2016v1"
     }, 
     "/EWKWMinus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
@@ -3045,6 +3201,19 @@
         "process": "MuonEG", 
         "scenario": "PromptRecov4"
     }, 
+    "/MuonEG/Run2016B-23Sep2016-v3/MINIAOD": {
+        "campaign": "Run2016B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "32727796", 
+        "n_files": "369", 
+        "process": "MuonEG", 
+        "scenario": "23Sep2016v3"
+    }, 
     "/MuonEG/Run2016B-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016B", 
         "data": true, 
@@ -3058,6 +3227,19 @@
         "n_files": "480", 
         "process": "MuonEG", 
         "scenario": "PromptRecov2"
+    }, 
+    "/MuonEG/Run2016C-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "15405678", 
+        "n_files": "245", 
+        "process": "MuonEG", 
+        "scenario": "23Sep2016v1"
     }, 
     "/MuonEG/Run2016C-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016C", 
@@ -3073,6 +3255,19 @@
         "process": "MuonEG", 
         "scenario": "PromptRecov2"
     }, 
+    "/MuonEG/Run2016D-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "23482352", 
+        "n_files": "270", 
+        "process": "MuonEG", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/MuonEG/Run2016D-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016D", 
         "data": true, 
@@ -3087,6 +3282,19 @@
         "process": "MuonEG", 
         "scenario": "PromptRecov2"
     }, 
+    "/MuonEG/Run2016E-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016E", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "22519303", 
+        "n_files": "284", 
+        "process": "MuonEG", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/MuonEG/Run2016E-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016E", 
         "data": true, 
@@ -3099,6 +3307,32 @@
         "n_files": "295", 
         "process": "MuonEG", 
         "scenario": "PromptRecov2"
+    }, 
+    "/MuonEG/Run2016F-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016F", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "16002165", 
+        "n_files": "220", 
+        "process": "MuonEG", 
+        "scenario": "23Sep2016v1"
+    }, 
+    "/MuonEG/Run2016G-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016G", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "33854612", 
+        "n_files": "457", 
+        "process": "MuonEG", 
+        "scenario": "23Sep2016v1"
     }, 
     "/QCD_Pt-20toInf_MuEnrichedPt15_TuneCUETP8M1_13TeV_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
@@ -5500,6 +5734,19 @@
         "process": "SingleElectron", 
         "scenario": "PromptRecov4"
     }, 
+    "/SingleElectron/Run2016B-23Sep2016-v3/MINIAOD": {
+        "campaign": "Run2016B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "246440440", 
+        "n_files": "2022", 
+        "process": "SingleElectron", 
+        "scenario": "23Sep2016v3"
+    }, 
     "/SingleElectron/Run2016B-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016B", 
         "data": true, 
@@ -5513,6 +5760,19 @@
         "n_files": "2712", 
         "process": "SingleElectron", 
         "scenario": "PromptRecov2"
+    }, 
+    "/SingleElectron/Run2016C-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "97259854", 
+        "n_files": "1075", 
+        "process": "SingleElectron", 
+        "scenario": "23Sep2016v1"
     }, 
     "/SingleElectron/Run2016C-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016C", 
@@ -5528,6 +5788,19 @@
         "process": "SingleElectron", 
         "scenario": "PromptRecov2"
     }, 
+    "/SingleElectron/Run2016D-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "148167727", 
+        "n_files": "1476", 
+        "process": "SingleElectron", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/SingleElectron/Run2016D-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016D", 
         "data": true, 
@@ -5542,6 +5815,19 @@
         "process": "SingleElectron", 
         "scenario": "PromptRecov2"
     }, 
+    "/SingleElectron/Run2016E-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016E", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "117321545", 
+        "n_files": "1240", 
+        "process": "SingleElectron", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/SingleElectron/Run2016E-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016E", 
         "data": true, 
@@ -5554,6 +5840,32 @@
         "n_files": "1284", 
         "process": "SingleElectron", 
         "scenario": "PromptRecov2"
+    }, 
+    "/SingleElectron/Run2016F-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016F", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "70593532", 
+        "n_files": "829", 
+        "process": "SingleElectron", 
+        "scenario": "23Sep2016v1"
+    }, 
+    "/SingleElectron/Run2016G-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016G", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "153363109", 
+        "n_files": "1833", 
+        "process": "SingleElectron", 
+        "scenario": "23Sep2016v1"
     }, 
     "/SingleMu/Run2011A-May10ReReco-v1/AOD": {
         "campaign": "Run2011A", 
@@ -5699,6 +6011,19 @@
         "process": "SingleMuon", 
         "scenario": "PromptRecov4"
     }, 
+    "/SingleMuon/Run2016B-23Sep2016-v3/MINIAOD": {
+        "campaign": "Run2016B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "158145722", 
+        "n_files": "1277", 
+        "process": "SingleMuon", 
+        "scenario": "23Sep2016v3"
+    }, 
     "/SingleMuon/Run2016B-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016B", 
         "data": true, 
@@ -5712,6 +6037,19 @@
         "n_files": "1742", 
         "process": "SingleMuon", 
         "scenario": "PromptRecov2"
+    }, 
+    "/SingleMuon/Run2016C-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "67441308", 
+        "n_files": "713", 
+        "process": "SingleMuon", 
+        "scenario": "23Sep2016v1"
     }, 
     "/SingleMuon/Run2016C-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016C", 
@@ -5727,6 +6065,19 @@
         "process": "SingleMuon", 
         "scenario": "PromptRecov2"
     }, 
+    "/SingleMuon/Run2016D-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "98017996", 
+        "n_files": "1060", 
+        "process": "SingleMuon", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/SingleMuon/Run2016D-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016D", 
         "data": true, 
@@ -5741,6 +6092,19 @@
         "process": "SingleMuon", 
         "scenario": "PromptRecov2"
     }, 
+    "/SingleMuon/Run2016E-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016E", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "90984718", 
+        "n_files": "886", 
+        "process": "SingleMuon", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/SingleMuon/Run2016E-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016E", 
         "data": true, 
@@ -5753,6 +6117,32 @@
         "n_files": "972", 
         "process": "SingleMuon", 
         "scenario": "PromptRecov2"
+    }, 
+    "/SingleMuon/Run2016F-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016F", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "65489554", 
+        "n_files": "767", 
+        "process": "SingleMuon", 
+        "scenario": "23Sep2016v1"
+    }, 
+    "/SingleMuon/Run2016G-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016G", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "149916849", 
+        "n_files": "1429", 
+        "process": "SingleMuon", 
+        "scenario": "23Sep2016v1"
     }, 
     "/TTH_HToTauTau_M-110_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
         "campaign": "Summer12", 
@@ -6203,6 +6593,19 @@
         "process": "Tau", 
         "scenario": "PromptRecov4"
     }, 
+    "/Tau/Run2016B-23Sep2016-v3/MINIAOD": {
+        "campaign": "Run2016B", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "68727458", 
+        "n_files": "614", 
+        "process": "Tau", 
+        "scenario": "23Sep2016v3"
+    }, 
     "/Tau/Run2016B-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016B", 
         "data": true, 
@@ -6216,6 +6619,19 @@
         "n_files": "896", 
         "process": "Tau", 
         "scenario": "PromptRecov2"
+    }, 
+    "/Tau/Run2016C-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016C", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "36931473", 
+        "n_files": "489", 
+        "process": "Tau", 
+        "scenario": "23Sep2016v1"
     }, 
     "/Tau/Run2016C-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016C", 
@@ -6231,6 +6647,19 @@
         "process": "Tau", 
         "scenario": "PromptRecov2"
     }, 
+    "/Tau/Run2016D-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016D", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "56827771", 
+        "n_files": "544", 
+        "process": "Tau", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/Tau/Run2016D-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016D", 
         "data": true, 
@@ -6245,6 +6674,19 @@
         "process": "Tau", 
         "scenario": "PromptRecov2"
     }, 
+    "/Tau/Run2016E-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016E", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "58348773", 
+        "n_files": "656", 
+        "process": "Tau", 
+        "scenario": "23Sep2016v1"
+    }, 
     "/Tau/Run2016E-PromptReco-v2/MINIAOD": {
         "campaign": "Run2016E", 
         "data": true, 
@@ -6257,6 +6699,32 @@
         "n_files": "663", 
         "process": "Tau", 
         "scenario": "PromptRecov2"
+    }, 
+    "/Tau/Run2016F-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016F", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "40549716", 
+        "n_files": "478", 
+        "process": "Tau", 
+        "scenario": "23Sep2016v1"
+    }, 
+    "/Tau/Run2016G-23Sep2016-v1/MINIAOD": {
+        "campaign": "Run2016G", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "79578661", 
+        "n_files": "927", 
+        "process": "Tau", 
+        "scenario": "23Sep2016v1"
     }, 
     "/TauParked/Run2012B-22Jan2013-v1/AOD": {
         "campaign": "Run2012B", 
@@ -7365,8 +7833,8 @@
         "n_events_generated": "5046183", 
         "n_files": "88", 
         "process": "WGToLNuG", 
-        "xsec": 489.0,
-        "scenario": "PUSpring16"
+        "scenario": "PUSpring16", 
+        "xsec": 489.0
     }, 
     "/WGstarToLNuEE_012Jets_13TeV-madgraph/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM": {
         "campaign": "RunIISpring16MiniAODv2", 
@@ -7379,8 +7847,8 @@
         "n_events_generated": "2226335", 
         "n_files": "53", 
         "process": "WGstarToLNuEE", 
-        "xsec": 3.526,
-        "scenario": "PUSpring16"
+        "scenario": "PUSpring16", 
+        "xsec": 3.526
     }, 
     "/WGstarToLNuMuMu_012Jets_13TeV-madgraph/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM": {
         "campaign": "RunIISpring16MiniAODv2", 
@@ -7393,8 +7861,8 @@
         "n_events_generated": "2219185", 
         "n_files": "53", 
         "process": "WGstarToLNuMuMu", 
-        "xsec": 2.793,
-        "scenario": "PUSpring16"
+        "scenario": "PUSpring16", 
+        "xsec": 2.793
     }, 
     "/WH_ZH_TTH_HToTauTau_M-100_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
         "campaign": "Fall11", 
