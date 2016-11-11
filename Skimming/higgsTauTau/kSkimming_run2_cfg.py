@@ -126,16 +126,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.goodOfflinePrimaryVertices.src = cms.InputTag('offlineSlimmedPrimaryVertices')
 	process.p *= ( process.makeVertexes )
 	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
-	#process.load("VertexRefit.TauRefit.RefitVertexProducer_cfi")
 	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
-	#process.p *= ( process.RefitVertexBS )
-	#process.p *= ( process.RefitVertexNoBS )
-	#process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices', 'RefitVertexBS', 'RefitVertexNoBS')  # save VertexSummary,
-	#process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary', 'RefitVertexBS => refittedVerticesBSSummary', 'RefitVertexNoBS => refittedVerticesNoBSSummary')
 	process.p *= ( process.AdvancedRefitVertexBS )
 	process.p *= ( process.AdvancedRefitVertexNoBS )
-	#process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices', 'AdvancedRefitVertexBS', 'AdvancedRefitVertexNoBS')  # save VertexSummary,
-	#process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary', 'AdvancedRefitVertexBS => AdvancedRefittedVerticesBSSummary', 'AdvancedRefitVertexNoBS => AdvancedRefittedVerticesNoBSSummary')
 	process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary,
 	process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
 	process.kappaTuple.RefitVertex.whitelist = cms.vstring('AdvancedRefitVertexBS', 'AdvancedRefitVertexNoBS')
