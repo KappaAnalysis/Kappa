@@ -73,6 +73,7 @@ def checkoutPackages(args):
 		#https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_747
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_747_Spring15_MVA_tra
 		#"git cms-merge-topic ikrav:egm_id_747_v2",
+		"git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit",
 
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git"
