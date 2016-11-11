@@ -7365,6 +7365,7 @@
         "n_events_generated": "5046183", 
         "n_files": "88", 
         "process": "WGToLNuG", 
+        "xsec": 489.0,
         "scenario": "PUSpring16"
     }, 
     "/WGstarToLNuEE_012Jets_13TeV-madgraph/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM": {
@@ -7378,6 +7379,7 @@
         "n_events_generated": "2226335", 
         "n_files": "53", 
         "process": "WGstarToLNuEE", 
+        "xsec": 3.526,
         "scenario": "PUSpring16"
     }, 
     "/WGstarToLNuMuMu_012Jets_13TeV-madgraph/RunIISpring16MiniAODv2-PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM": {
@@ -7391,6 +7393,7 @@
         "n_events_generated": "2219185", 
         "n_files": "53", 
         "process": "WGstarToLNuMuMu", 
+        "xsec": 2.793,
         "scenario": "PUSpring16"
     }, 
     "/WH_ZH_TTH_HToTauTau_M-100_7TeV-pythia6-tauola/Fall11-PU_S6_START42_V14B-v1/AODSIM": {
