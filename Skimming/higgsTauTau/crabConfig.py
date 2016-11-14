@@ -90,13 +90,13 @@ def submission(events_per_job):
 				if int(nfiles) > 0 and int(nevents) > 0:
 					files_per_job = int(events_per_job) * int(nfiles) / int(nevents)
 					if files_per_job > 1:
-						config.Data.unitsPerJob = files_per_job
+						config.Data.unitsPerJob = int(files_per_job)
 			except:
 				print "Its not possilbe to make ",events_per_job," events/job for ",nickname," which has Nevents:",nevents," and Nfiles",nfiles," in the database. Just make one file per job"
 		if float(config.Data.unitsPerJob) > 0 and float(nfiles)/float(config.Data.unitsPerJob) >= job_submission_limit:
 			files_per_job = ceil(float(nfiles)/job_submission_limit)
 			if files_per_job > 1:
-				config.Data.unitsPerJob = files_per_job
+				config.Data.unitsPerJob = int(files_per_job)
                         
 		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_2016SeptRepro_v4' if isData(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_miniAODv2_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
