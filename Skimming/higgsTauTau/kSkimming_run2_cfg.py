@@ -338,26 +338,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
                                             		cms.InputTag("patpfPUCorrectedMET"),
                                             		cms.InputTag("patpfPUMET"),
                                             		cms.InputTag("slimmedMETsPuppi", "", "MERGE") )
-		elif(data):
-			process.MVAMET.srcMETs = cms.VInputTag( cms.InputTag("slimmedMETs", "", "RECO"),
-                                            		cms.InputTag("patpfMET"),
-                                            		cms.InputTag("patpfMETT1"),
-                                            		cms.InputTag("patpfTrackMET"),
-                                            		cms.InputTag("patpfNoPUMET"),
-                                            		cms.InputTag("patpfPUCorrectedMET"),
-                                            		cms.InputTag("patpfPUMET"),
-                                            		cms.InputTag("slimmedMETsPuppi", "", "RECO") )
-		else:
-			process.MVAMET.srcMETs = cms.VInputTag( cms.InputTag("slimmedMETs", "", "PAT"),
-                                            		cms.InputTag("patpfMET"),
-                                            		cms.InputTag("patpfMETT1"),
-                                            		cms.InputTag("patpfTrackMET"),
-                                            		cms.InputTag("patpfNoPUMET"),
-                                            		cms.InputTag("patpfPUCorrectedMET"),
-                                            		cms.InputTag("patpfPUMET"),
-                                            		cms.InputTag("slimmedMETsPuppi", "", "PAT") )
-
-
 	## ------------------------------------------------------------------------
 	## GenJets 
 	if not data or isEmbedded:
