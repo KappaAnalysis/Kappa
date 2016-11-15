@@ -6391,6 +6391,34 @@
         "process": "TTJets", 
         "scenario": "PU_S6"
     }, 
+    "/TTTo2L2Nu_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM": {
+        "campaign": "RunIISpring16MiniAODv2", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "powheg-pythia8", 
+        "n_events_generated": "75383000", 
+        "n_files": "949", 
+        "process": "TTTo2L2Nu", 
+        "scenario": "PUSpring16",
+        "xsec" : 87.3
+    },
+    "/TTToSemilepton_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM": {
+        "campaign": "RunIISpring16MiniAODv2", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "powheg-pythia8", 
+        "n_events_generated": "157387260", 
+        "n_files": "2008", 
+        "process": "TTToSemilepton", 
+        "scenario": "PUSpring16",
+        "xsec" : 364.3
+    },
     "/TT_TuneCUETP8M1_13TeV-powheg-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext4-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
         "data": false, 
