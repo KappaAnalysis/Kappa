@@ -1018,6 +1018,19 @@
         "process": "DoubleEG", 
         "scenario": "23Sep2016v1"
     }, 
+    "/DoubleEG/Run2016H-PromptReco-v2/MINIAOD": {
+        "campaign": "Run2016H", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "84344490", 
+        "n_files": "1122", 
+        "process": "DoubleEG", 
+        "scenario": "PromptRecov2"
+    }, 
     "/DoubleElectron/Run2011A-16Jan2012-v1/AOD": {
         "campaign": "Run2011A", 
         "data": true, 
@@ -1683,6 +1696,19 @@
         "n_files": "544", 
         "process": "DoubleMuon", 
         "scenario": "23Sep2016v1"
+    }, 
+    "/DoubleMuon/Run2016H-PromptReco-v2/MINIAOD": {
+        "campaign": "Run2016H", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "48093751", 
+        "n_files": "663", 
+        "process": "DoubleMuon", 
+        "scenario": "PromptRecov2"
     }, 
     "/EWKWMinus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
@@ -3333,6 +3359,19 @@
         "n_files": "457", 
         "process": "MuonEG", 
         "scenario": "23Sep2016v1"
+    }, 
+    "/MuonEG/Run2016H-PromptReco-v2/MINIAOD": {
+        "campaign": "Run2016H", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "28705853", 
+        "n_files": "486", 
+        "process": "MuonEG", 
+        "scenario": "PromptRecov2"
     }, 
     "/QCD_Pt-20toInf_MuEnrichedPt15_TuneCUETP8M1_13TeV_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
@@ -5867,6 +5906,19 @@
         "process": "SingleElectron", 
         "scenario": "23Sep2016v1"
     }, 
+    "/SingleElectron/Run2016H-PromptReco-v2/MINIAOD": {
+        "campaign": "Run2016H", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "126863489", 
+        "n_files": "1531", 
+        "process": "SingleElectron", 
+        "scenario": "PromptRecov2"
+    }, 
     "/SingleMu/Run2011A-May10ReReco-v1/AOD": {
         "campaign": "Run2011A", 
         "data": true, 
@@ -6144,6 +6196,19 @@
         "process": "SingleMuon", 
         "scenario": "23Sep2016v1"
     }, 
+    "/SingleMuon/Run2016H-PromptReco-v2/MINIAOD": {
+        "campaign": "Run2016H", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "171134793", 
+        "n_files": "1928", 
+        "process": "SingleMuon", 
+        "scenario": "PromptRecov2"
+    }, 
     "/TTH_HToTauTau_M-110_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM": {
         "campaign": "Summer12", 
         "data": false, 
@@ -6402,9 +6467,9 @@
         "n_events_generated": "75383000", 
         "n_files": "949", 
         "process": "TTTo2L2Nu", 
-        "scenario": "PUSpring16",
-        "xsec" : 87.3
-    },
+        "scenario": "PUSpring16", 
+        "xsec": 87.3
+    }, 
     "/TTToSemilepton_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM": {
         "campaign": "RunIISpring16MiniAODv2", 
         "data": false, 
@@ -6416,9 +6481,9 @@
         "n_events_generated": "157387260", 
         "n_files": "2008", 
         "process": "TTToSemilepton", 
-        "scenario": "PUSpring16",
-        "xsec" : 364.3
-    },
+        "scenario": "PUSpring16", 
+        "xsec": 364.3
+    }, 
     "/TT_TuneCUETP8M1_13TeV-powheg-pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12_ext4-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
         "data": false, 
@@ -6753,6 +6818,19 @@
         "n_files": "927", 
         "process": "Tau", 
         "scenario": "23Sep2016v1"
+    }, 
+    "/Tau/Run2016H-PromptReco-v2/MINIAOD": {
+        "campaign": "Run2016H", 
+        "data": true, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "", 
+        "n_events_generated": "76504267", 
+        "n_files": "1024", 
+        "process": "Tau", 
+        "scenario": "PromptRecov2"
     }, 
     "/TauParked/Run2012B-22Jan2013-v1/AOD": {
         "campaign": "Run2012B", 

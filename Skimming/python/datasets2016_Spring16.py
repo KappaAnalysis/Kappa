@@ -5,6 +5,13 @@ queries = {
 		"scenario" : "23Sep2016v?",
 		"energy" : "13"
 	},
+	"Spring16_Data_PromptReco": {
+		"campaign" : "Run2016H",
+		"data" : True,
+		"embedded" : False,
+		"scenario" : "PromptRecov2",
+		"energy" : "13"
+	},
 	"Spring16_DYJets": {
 		"process" : "^DY([0-9])?JetsTo(LL|TauTau)",
 		"campaign" : "RunIISpring16MiniAODv2",
@@ -15,21 +22,21 @@ queries = {
 		"campaign" : "RunIISpring16MiniAODv2",
 		"energy" : "13"
 	},
-    "Spring16_SUSY_Sync": {
-            "process" : "SUSYGluGluToHToTauTau_M160$",
-            "campaign" : "RunIISpring16MiniAODv.*",
-            "energy" : "13"
-    },
-    "Spring16_SUSY": {
-            "process" : "SUSY",
-            "campaign" : "RunIISpring16MiniAODv(1|2)$",
-            "energy" : "13"
-    },
-    "Spring16_SM_Higgs": {
-            "process" : "((GluGlu|VBF|Wplus|Wminus|Z)HToTauTau)|(ttHJetToTT)",
-            "campaign" : "RunIISpring16MiniAOD.*reHLT",
-            "energy" : "13"
-    },
+	"Spring16_SUSY_Sync": {
+		"process" : "SUSYGluGluToHToTauTau_M160$",
+		"campaign" : "RunIISpring16MiniAODv.*",
+	"energy" : "13"
+	},
+	"Spring16_SUSY": {
+		"process" : "SUSY",
+		"campaign" : "RunIISpring16MiniAODv(1|2)$",
+		"energy" : "13"
+	},
+	"Spring16_SM_Higgs": {
+		"process" : "((GluGlu|VBF|Wplus|Wminus|Z)HToTauTau)|(ttHJetToTT)",
+		"campaign" : "RunIISpring16MiniAOD.*reHLT",
+		"energy" : "13"
+	},
 	"Spring16_QCD": {
 		"process" : "^QCD",
 		"campaign" : "RunIISpring16MiniAODv2",
@@ -60,8 +67,8 @@ queries = {
 		"energy" : "13"
 	},
 	"Spring16_embedded": {
-	  	"data" : True,
-	  	"embedded" : True,
+		"data" : True,
+		"embedded" : True,
 		"process" : "Embedding2016",
 		"energy" : "13"
 	}
