@@ -6325,20 +6325,7 @@
         "n_files": "125", 
         "process": "TTH_HToTauTau_M140", 
         "scenario": "PU_S10"
-    }, 
-    "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau115_ptelec1_20had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
-        "campaign": "StoreResults", 
-        "data": false, 
-        "embedded": true, 
-        "energy": "8", 
-        "extension": "", 
-        "format": "USER", 
-        "generator": "madgraph-tauola", 
-        "n_events_generated": "758691", 
-        "n_files": "235", 
-        "process": "TTJets_FullLeptMGDecays", 
-        "scenario": "Summer12_TTJets"
-    }, 
+    },  
     "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau116_ptmu1_16had1_18_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
         "campaign": "StoreResults", 
         "data": false, 
@@ -6364,33 +6351,7 @@
         "n_files": "237", 
         "process": "TTJets_FullLeptMGDecays", 
         "scenario": "Summer12_TTJets"
-    }, 
-    "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau123_pttau1_18tau2_8_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
-        "campaign": "StoreResults", 
-        "data": false, 
-        "embedded": true, 
-        "energy": "8", 
-        "extension": "", 
-        "format": "USER", 
-        "generator": "madgraph-tauola", 
-        "n_events_generated": "923183", 
-        "n_files": "237", 
-        "process": "TTJets_FullLeptMGDecays", 
-        "scenario": "Summer12_TTJets"
-    }, 
-    "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/StoreResults-Summer12_TTJets_FullLeptMGDecays_DR53X_PU_S10_START53_V7C_v2_PFembedded_trans1_tau132_pthad1_30had2_30_v1-5ef1c0fd428eb740081f19333520fdc8/USER": {
-        "campaign": "StoreResults", 
-        "data": false, 
-        "embedded": true, 
-        "energy": "8", 
-        "extension": "", 
-        "format": "USER", 
-        "generator": "madgraph-tauola", 
-        "n_events_generated": "468406", 
-        "n_files": "119", 
-        "process": "TTJets_FullLeptMGDecays", 
-        "scenario": "Summer12_TTJets"
-    }, 
+    },  
     "/TTJets_FullLeptMGDecays_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7C-v2/AODSIM": {
         "campaign": "Summer12", 
         "data": false, 
