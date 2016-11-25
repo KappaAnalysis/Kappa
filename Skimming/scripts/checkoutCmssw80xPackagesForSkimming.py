@@ -75,7 +75,7 @@ def checkoutPackages(args):
 		"git cms-addpkg PhysicsTools/PatUtils",
 		"sed '/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificanceParams_cfi\ import\ METSignificanceParams_Data' PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py -i",
 		#because of the MVA MET branch checkout we need to merge the EGamma branch into the mvamet one
-		"git merge ikrav/egm_id_80X_v1 --no-edit"
+		"git merge ikrav/egm_id_80X_v1 --no-edit",
 
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git"
