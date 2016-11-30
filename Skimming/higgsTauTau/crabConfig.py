@@ -83,6 +83,7 @@ def submission(events_per_job):
 	for nickname in nicknames:
 		config.General.requestName = nickname[:100]
 		config.Data.inputDBS = get_inputDBS_by_nick(nickname)
+		config.Data.unitsPerJob = 1
 		nfiles = get_n_files_from_nick(nickname)
 		if events_per_job:
 			nevents = get_n_generated_events_from_nick(nickname)
