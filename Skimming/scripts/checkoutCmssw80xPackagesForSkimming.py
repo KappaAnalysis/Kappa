@@ -77,17 +77,16 @@ def checkoutPackages(args):
 		"git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit",
 		#because of the MVA MET branch checkout we need to merge the EGamma branch into the mvamet one
 		"git merge ikrav/egm_id_80X_v2 --no-edit",
+		#fetch xml files for Egamma Id from private repository
+		"git clone https://github.com/ikrav/RecoEgamma-ElectronIdentification.git tempData/RecoEgamma/ElectronIdentification/data",
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/tempData/RecoEgamma/ElectronIdentification/data"),
+		"git checkout egm_id_80X_v1",
+		"cp -r * " + os.path.expandvars("$CMSSW_BASE/src/RecoEgamma/ElectronIdentification/data/"),
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
+		"rm -rf tempData",
 
 		#Check out Kappa
-		"git clone https://github.com/KappaAnalysis/Kappa.git",
-		
-		#in order to complete recipe for electron MVA Id, we need to invoke scram b already in this script
-		"scram b -j 4",
-		"cd " + os.path.expandvars("$CMSSW_BASE/external/slc6_amd64_gcc530/"),
-		"git clone https://github.com/ikrav/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data",
-		"cd " + os.path.expandvars("$CMSSW_BASE/external/slc6_amd64_gcc530/data/RecoEgamma/ElectronIdentification/data"),
-		"git checkout egm_id_80X_v1",
-		"cd " + os.path.expandvars("$CMSSW_BASE/src/")
+		"git clone https://github.com/KappaAnalysis/Kappa.git"
 	]
 	execCommands(commands)
 	return
