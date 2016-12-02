@@ -1898,7 +1898,7 @@
         "n_files": "5647", 
         "process": "Embedding2015D", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": 390.0
     }, 
     "/EmbeddingRun2016B/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElMuFinalState", 
@@ -1913,7 +1913,7 @@
         "n_files": "9604", 
         "process": "Embedding2016B", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "310.8"
+        "xsec": 310.8
     }, 
     "/EmbeddingRun2016B/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElTauFinalState", 
@@ -1928,7 +1928,7 @@
         "n_files": "11187", 
         "process": "Embedding2016B", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "349.1"
+        "xsec": 349.1
     }, 
     "/EmbeddingRun2016B/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "MuTauFinalState", 
@@ -1943,7 +1943,7 @@
         "n_files": "11427", 
         "process": "Embedding2016B", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "369.8"
+        "xsec": 369.8
     }, 
     "/EmbeddingRun2016B/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -1973,7 +1973,7 @@
         "n_files": "4019", 
         "process": "Embedding2016C", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "289.3"
+        "xsec": 289.3
     }, 
     "/EmbeddingRun2016C/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElTauFinalState", 
@@ -1988,7 +1988,7 @@
         "n_files": "4918", 
         "process": "Embedding2016C", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "339.6"
+        "xsec": 339.6
     }, 
     "/EmbeddingRun2016C/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "MuTauFinalState", 
@@ -2003,7 +2003,7 @@
         "n_files": "4980", 
         "process": "Embedding2016C", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "356.7"
+        "xsec": 356.7
     }, 
     "/EmbeddingRun2016C/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -2018,7 +2018,7 @@
         "n_files": "4970", 
         "process": "Embedding2016C", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "241.5"
+        "xsec": 241.5
     }, 
     "/EmbeddingRun2016D/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElMuFinalState", 
@@ -2033,7 +2033,7 @@
         "n_files": "6988", 
         "process": "Embedding2016D", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "305.7"
+        "xsec": 305.7
     }, 
     "/EmbeddingRun2016D/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElTauFinalState", 
@@ -2048,7 +2048,7 @@
         "n_files": "8297", 
         "process": "Embedding2016D", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "347.7"
+        "xsec": 347.7
     }, 
     "/EmbeddingRun2016D/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "MuTauFinalState", 
@@ -2063,7 +2063,7 @@
         "n_files": "8376", 
         "process": "Embedding2016D", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "364.0"
+        "xsec": 364.0
     }, 
     "/EmbeddingRun2016D/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -2078,7 +2078,7 @@
         "n_files": "8353", 
         "process": "Embedding2016D", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "255.7"
+        "xsec": 255.7
     }, 
     "/EmbeddingRun2016E/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElMuFinalState", 
@@ -2093,7 +2093,7 @@
         "n_files": "6346", 
         "process": "Embedding2016E", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": 390.0
     }, 
     "/EmbeddingRun2016E/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElTauFinalState", 
@@ -2108,7 +2108,7 @@
         "n_files": "7622", 
         "process": "Embedding2016E", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": 390.0
     }, 
     "/EmbeddingRun2016E/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "MuTauFinalState", 
@@ -2123,7 +2123,7 @@
         "n_files": "7451", 
         "process": "Embedding2016E", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "319.0"
+        "xsec": 319.0
     }, 
     "/EmbeddingRun2016E/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -2138,7 +2138,7 @@
         "n_files": "7660", 
         "process": "Embedding2016E", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": 390.0
     }, 
     "/EmbeddingRun2016F/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElMuFinalState", 
@@ -2153,7 +2153,7 @@
         "n_files": "4700", 
         "process": "Embedding2016F", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": 390.0
     }, 
     "/EmbeddingRun2016F/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElTauFinalState", 
@@ -2168,7 +2168,7 @@
         "n_files": "5728", 
         "process": "Embedding2016F", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": 390.0
     }, 
     "/EmbeddingRun2016F/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "MuTauFinalState", 
@@ -2183,7 +2183,7 @@
         "n_files": "5715", 
         "process": "Embedding2016F", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "313.0"
+        "xsec": 313.0
     }, 
     "/EmbeddingRun2016F/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -2198,7 +2198,7 @@
         "n_files": "5752", 
         "process": "Embedding2016F", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": 390.0
     }, 
     "/EmbeddingRun2016G/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElMuFinalState", 
@@ -2213,7 +2213,7 @@
         "n_files": "8360", 
         "process": "Embedding2016G", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": 390.0
     }, 
     "/EmbeddingRun2016G/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "ElTauFinalState", 
@@ -2228,7 +2228,7 @@
         "n_files": "10100", 
         "process": "Embedding2016G", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": 390.0
     }, 
     "/EmbeddingRun2016G/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "MuTauFinalState", 
@@ -2243,7 +2243,7 @@
         "n_files": "9717", 
         "process": "Embedding2016G", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "313.0"
+        "xsec": 313.0
     }, 
     "/EmbeddingRun2016G/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER": {
         "campaign": "TauTauFinalState", 
@@ -2258,7 +2258,7 @@
         "n_files": "10191", 
         "process": "Embedding2016G", 
         "scenario": "imputDoubleMu_mirror_miniAODv5", 
-        "xsec": "390.0"
+        "xsec": 390.0
     }, 
     "/GluGluH2JetsToTauTau_M125_13TeV_CPmixing_maxmix_JHU/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v4/MINIAODSIM": {
         "campaign": "RunIISpring16MiniAODv2", 
