@@ -396,7 +396,7 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 
 	# test with user-defined input file
 	if options.testfile:
-		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents)
+		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents, outputfilename=options.outputfilename)
 	
 	# CRAB job-submission
 	elif options.outputfilename:
