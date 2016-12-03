@@ -118,6 +118,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if "reHLT" in datasetsHelper.get_campaign(nickname):
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT2")
 		process.kappaTuple.Info.l1Source = cms.InputTag("")
+	if "H2JetsToTauTau" in datasetsHelper.getProcess(nickname):
+		process.kappaTuple.Info.lheSource = cms.InputTag("source")
 
 	process.kappaTuple.active += cms.vstring('RefitVertex')
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
