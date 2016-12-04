@@ -343,6 +343,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	## GenJets 
 	if not data or isEmbedded:
+		isSignal = (("HToTauTau" in datasetsHelper.getProcess(nickname)) or ("H2JetsToTauTau" in datasetsHelper.getProcess(nickname)))
+		
 		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
 		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
 		process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
@@ -350,9 +352,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.tauGenJets +
 			process.tauGenJetsSelectorAllHadrons
 			)
-		process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
+		if isSignal:
+			process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets", "slimmedGenJets")
+		else:
+			process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
 		process.kappaTuple.active += cms.vstring('GenJets')
 		if is_above_cmssw_version([7,6]):
+			if isSignal:
+				process.kappaTuple.GenJets.genJets = cms.PSet(src=cms.InputTag("slimmedGenJets"))
 			process.kappaTuple.GenJets.tauGenJets = cms.PSet(src=cms.InputTag("tauGenJets"))
 			process.kappaTuple.GenJets.tauGenJetsSelectorAllHadrons = cms.PSet(src=cms.InputTag("tauGenJetsSelectorAllHadrons"))
 
