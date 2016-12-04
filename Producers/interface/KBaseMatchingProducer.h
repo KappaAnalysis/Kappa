@@ -70,7 +70,7 @@ protected:
 			std::cout << std::endl;
 
 		if (verbosity > 0 && names.size() == 0)
-			std::cout << "Warning! A a PSet was requested but none found. Maybe a config file error?" << std::endl;
+			std::cout << "Warning! A PSet was requested but none found. Maybe a config file error?" << std::endl;
 
 		return true;
 	}
