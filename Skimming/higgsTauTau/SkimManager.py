@@ -281,7 +281,7 @@ if __name__ == "__main__":
     
   SKM.submit_gc() 
  # SKM.submit_crab()
- # SKM.status_crab()
+  SKM.status_crab()
   SKM.print_skim()
   
 

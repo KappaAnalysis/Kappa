@@ -261,8 +261,8 @@ if __name__ == "__main__":
   
   
   parser.add_argument("--addDataset", dest="addDataset", help="Add a dataset")
-  parser.add_argument("--inputDBS", dest="inputDBS", help="Add a dataset")
-  parser.add_argument("--xsec", dest="xsec", help="Add a dataset")
+  parser.add_argument("--inputDBS", dest="inputDBS", help="Change the dbs instance, default will be global (for official samples), for private production choose pyhs03")
+  parser.add_argument("--xsec", dest="xsec", help="Add a cross section to this Dataset ")
   
   
   parser.add_argument("--delteDatasets", dest="delteDatasets", help="Delet Datasets which are machted", action='store_true')
