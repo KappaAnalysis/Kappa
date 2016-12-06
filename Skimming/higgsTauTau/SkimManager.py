@@ -85,6 +85,8 @@ class SkimMangerBase:
     
     cfg_dict['CMSSW'] = {}
     cfg_dict['CMSSW']['project area'] = '$CMSSW_BASE/'
+    cfg_dict['CMSSW']['config file'] = 'kSkimming_run2_new_cfg.py'
+    
     cfg_dict['CMSSW']['dataset splitter'] = 'FileBoundarySplitter'
     cfg_dict['CMSSW']['files per job'] = '1'
     cfg_dict['CMSSW']['se runtime'] = 'True'
@@ -133,11 +135,11 @@ class SkimMangerBase:
       self.individualized_gc_cfg(akt_nick, gc_config)
       out_file_name = os.path.join(self.workdir,'gc_cfg',akt_nick[:100]+'.conf')
       out_file = open(out_file_name,'w')
-      for akt_key in ['global','jobs','CMSSW','storage']:
+      for akt_key in ['global','jobs','CMSSW','dataset','storage']:
 	out_file.write('['+akt_key+']\n')
 	for akt_item in gc_config[akt_key]:
 	  out_file.write(akt_item+' = '+gc_config[akt_key][akt_item]+'\n')
-      for akt_key in (set(gc_config.keys()) - set(['global','jobs','CMSSW','storage'])):
+      for akt_key in (set(gc_config.keys()) - set(['global','jobs','CMSSW','dataset','storage'])):
 	out_file.write('['+akt_key+']\n')
 	for akt_item in gc_config[akt_key]:
 	  out_file.write(akt_item+' = '+gc_config[akt_key][akt_item]+'\n')
@@ -158,8 +160,9 @@ class SkimMangerBase:
       gc_config['global']["workdir"] = os.path.join(self.workdir,akt_nick[:100])
       
       gc_config['dataset'] = {}
-      gc_config['dataset']['GLOBALTAG'] = self.get_globa_tag(akt_nick)
       gc_config['dataset']['dbs instance'] = "http://cmsdbsprod.cern.ch/cms_dbs_prod_%s/servlet/DBSServlet"%(self.skimdataset[akt_nick].get("inputDBS",'global'))
+      
+      gc_config['constants']['GLOBALTAG'] = self.get_globa_tag(akt_nick)
 
       
     
