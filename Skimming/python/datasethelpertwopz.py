@@ -65,9 +65,9 @@ class datasethelpertwopz:
       if 'dbs' not in new_dict[akt_nick].keys(): ##In the olde convention the key was the dbs name. 
 	new_dict[akt_nick]['dbs'] = akt_key ## New convention is to keep it dbs name as a subitem
     self.base_dict = new_dict
-  def isSignalSample(self, nick):
+  def isSignal(self, nick):
     """Define here what is used as Signal sample """
-    if 'HToTauTau' in self.base_dict[nick]["process"]:
+    if 'HToTauTau' in self.base_dict[nick]["process"] or 'H2JetsToTauTau' in self.base_dict[nick]["process"] :
       return True
     return False
   def isData(self, nick):
