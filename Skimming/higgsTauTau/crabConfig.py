@@ -8,7 +8,7 @@ from CRABAPI.RawCommand import crabCommand
 from CRABClient.ClientExceptions import ClientException
 from multiprocessing import Process
 from Kappa.Skimming.registerDatasetHelper import get_sample_by_nick,get_inputDBS_by_nick,get_n_files_from_nick,get_n_generated_events_from_nick
-from Kappa.Skimming.datasetsHelper2015 import isData
+from Kappa.Skimming.datasetsHelper2015 import isData, getScenario
 import sys
 from glob import glob
 import os, shutil
@@ -31,10 +31,10 @@ def crab_command(command):
 	for dir in glob('/nfs/dust/cms/user/%s/kappa/crab_kappa_skim80X-%s/*'%(getUsernameFromSiteDB(), date)):
 	#for dir in glob('/net/scratch_cms/institut_3b/%s/kappa/crab_kappa_skim-%s/*'%(getUsernameFromSiteDB(), date)):
 		try:
-                    print dir
-                    crabCommand(command, dir = dir)
+			print dir
+			crabCommand(command, dir = dir)
 		except HTTPException as hte:
-                    print hte
+			print hte
 
 def check_path(path):
 	if os.path.exists(path):
@@ -83,6 +83,7 @@ def submission(events_per_job):
 	for nickname in nicknames:
 		config.General.requestName = nickname[:100]
 		config.Data.inputDBS = get_inputDBS_by_nick(nickname)
+		config.Data.unitsPerJob = 1
 		nfiles = get_n_files_from_nick(nickname)
 		if events_per_job:
 			nevents = get_n_generated_events_from_nick(nickname)
@@ -97,8 +98,8 @@ def submission(events_per_job):
 			files_per_job = ceil(float(nfiles)/job_submission_limit)
 			if files_per_job > 1:
 				config.Data.unitsPerJob = int(files_per_job)
-                        
-		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_2016SeptRepro_v4' if isData(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_miniAODv2_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
+
+		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_2016SeptRepro_v4' if isData(nickname) and "23Sep2016v" in getScenario(nickname) else 'globalTag=80X_dataRun2_Prompt_v14' if isData(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_miniAODv2_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
 		p = Process(target=submit, args=(config,))

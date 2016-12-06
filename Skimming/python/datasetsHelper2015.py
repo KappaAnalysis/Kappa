@@ -20,6 +20,13 @@ def getProcess(nickname):
 	process = sample_details["process"]
 	return process
 
+def getScenario(nickname):
+	sample = get_sample_by_nick(nickname)
+	dict = database
+	sample_details = dict[sample]
+	scenario = sample_details["scenario"]
+	return scenario
+
 def getTreeInfo(nickname, globaltag, kappaTag):
 
 	sample = get_sample_by_nick(nickname)
