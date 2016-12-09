@@ -26,11 +26,8 @@ if not hasattr(sys, 'argv'):
 
 import os
 import FWCore.ParameterSet.Config as cms
-#import Kappa.Skimming.datasetsHelper2015 as datasetsHelper
-from  Kappa.Skimming.datasethelpertwopz import datasethelpertwopz
+from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
 datasetsHelper = datasethelpertwopz(os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json"))
-
-
 import Kappa.Skimming.tools as tools
 
 from FWCore.ParameterSet.VarParsing import VarParsing
@@ -77,19 +74,18 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	taus = "slimmedTaus"
 	isSignal = datasetsHelper.isSignal(nickname)
 	# produce selected collections and filter events with not even one Lepton
-	if (options.preselect) not isSignal:
-		if(options.preselect):
-			from Kappa.Skimming.KSkimming_preselection import do_preselection
-			do_preselection(process)
-			process.p *= process.goodEventFilter
+	if options.preselect and not isSignal:
+		from Kappa.Skimming.KSkimming_preselection import do_preselection
+		do_preselection(process)
+		process.p *= process.goodEventFilter
 
-			process.selectedKappaTaus.cut = cms.string('pt > 15 && abs(eta) < 2.5') 
-			process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
-			process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
-			muons = "selectedKappaMuons"
-			electrons = "selectedKappaElectrons"
-			taus = "selectedKappaTaus"
-			process.goodEventFilter.minNumber = cms.uint32(2)
+		process.selectedKappaTaus.cut = cms.string('pt > 15 && abs(eta) < 2.5') 
+		process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
+		process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
+		muons = "selectedKappaMuons"
+		electrons = "selectedKappaElectrons"
+		taus = "selectedKappaTaus"
+		process.goodEventFilter.minNumber = cms.uint32(2)
 	## ------------------------------------------------------------------------
 	# possibility to write out edmDump. Be careful when using unsceduled mode
 	process.load("Kappa.Skimming.edmOut")
@@ -120,7 +116,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	isreHLT = datasetsHelper.isreHLT(nickname)
 	#####miniaod = datasetsHelper.isMiniaod(nickname) not used anymore, since everything is MiniAOD now
 	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
-	
 	## ------------------------------------------------------------------------
 	# General configuration
 	if is_above_cmssw_version([7,4]):
@@ -128,7 +123,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if isreHLT:
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT2")
 		process.kappaTuple.Info.l1Source = cms.InputTag("")
-	if "H2JetsToTauTau" in datasetsHelper.getProcess(nickname):
+	if isSignal:
 		process.kappaTuple.Info.lheSource = cms.InputTag("source")
 
 	process.kappaTuple.active += cms.vstring('RefitVertex')
@@ -157,7 +152,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
 	elif(data):
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
-
+	
 	#if "reHLT" in datasetsHelper.get_campaign(nickname):
 	#	process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
 	#if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded:
@@ -165,9 +160,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#	process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	if isreHLT:
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
-	if not isreHLT and not isEmbedded:
+	elif not isEmbedded:
 		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
+	
 	process.kappaTuple.active += cms.vstring('BeamSpot')
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))
@@ -436,7 +432,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	return process
 
-if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
+if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg_v2":
 
 	# test with user-defined input file
 	if options.testfile:

@@ -1,11 +1,17 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 import os
-from  Kappa.Skimming.datasethelpertwopz import datasethelpertwopz
+from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
 import argparse
+import datetime
 
-work_dir_default = "/nfs/dust/cms/user/swayand/kappa_skim_workdir/"
-
+def get_workbase():
+  if 'ekpbms' in os.environ["HOSTNAME"]:
+    return("/portal/ekpbms2/home/%s/kappa_skim_workdir/" % os.environ["USER"])
+  elif 'naf' in os.environ["HOSTNAME"]:
+    return("/nfs/dust/cms/user/%s/kappa_skim_workdir/" % os.environ["USER"])
+  elif 'aachen' in os.environ["HOSTNAME"]:
+    return("/net/scratch_cms/institut_3b/%s/kappa_skim_workdir/" % os.environ["USER"])
 
 def crab_cmd(cmd, config=None, proxy=None, crab_dir=None):
   from httplib import HTTPException
@@ -15,26 +21,29 @@ def crab_cmd(cmd, config=None, proxy=None, crab_dir=None):
     if not config:
       return crabCommand(cmd, proxy=proxy, dir=crab_dir)
     else:
-      return crabCommand(cmd, config = config, proxy=proxy)
+      return crabCommand(cmd, config = config,proxy=proxy)
   except HTTPException as hte:
     print "Failed submitting task: %s" % (hte.headers)
   except ClientException as cle:
     print "Failed submitting task: %s" % (cle)
 
 
-class SkimMangerBase:
-  def __init__(self, baseworkdir=work_dir_default, workdir="TEST_SKIM", use_proxy_variable=True):
-    self.workdir = os.path.join(baseworkdir,workdir) 
+class SkimManagerBase:
+  def __init__(self, workbase, workdir="TEST_SKIM", use_proxy_variable=False):
+    self.workdir = os.path.join(workbase,workdir) 
     if not os.path.exists(self.workdir+"/gc_cfg"): 
       os.makedirs(self.workdir+"/gc_cfg")
     self.skimdataset = datasethelpertwopz(os.path.join(self.workdir,"skim_datataset.json"))
     self.skimdataset.keep_input_json = False ## will be updated very often
-    
+    self.configfile = 'kSkimming_run2_cfg_v2.py'
     self.max_crab_jobs_per_nick = 8000 # 10k is the hard limit
     self.voms_proxy = None
     self.UsernameFromSiteDB = None
-    if use_proxy_variable:
+    try:
       self.voms_proxy=os.environ['X509_USER_PROXY']
+    except:
+      pass
+      
   def  __del__(self): 
     self.save_dataset()
   def save_dataset(self):
@@ -85,7 +94,7 @@ class SkimMangerBase:
     
     cfg_dict['CMSSW'] = {}
     cfg_dict['CMSSW']['project area'] = '$CMSSW_BASE/'
-    cfg_dict['CMSSW']['config file'] = 'kSkimming_run2_new_cfg.py'
+    cfg_dict['CMSSW']['config file'] = self.configfile
     
     cfg_dict['CMSSW']['dataset splitter'] = 'FileBoundarySplitter'
     cfg_dict['CMSSW']['files per job'] = '1'
@@ -175,10 +184,10 @@ class SkimMangerBase:
     config.General.transferLogs = True
     config.User.voGroup = 'dcms'
     config.JobType.pluginName = 'Analysis'
-    config.JobType.psetName = 'kSkimming_run2_cfg.py'
+    config.JobType.psetName = self.configfile
     #config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
     config.JobType.allowUndistributedCMSSW = True
-    config.Site.blacklist = ["T2_BR_SPRACE"]
+    config.Site.blacklist = ["T2_BR_SPRACE","T1_RU_JINR"]
     config.Data.splitting = 'FileBased'
     config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
     config.Data.publication = False
@@ -188,7 +197,7 @@ class SkimMangerBase:
   def submit_crab(self):
     from multiprocessing import Process
     for akt_nick in self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "INIT"}):
-      config = self.crab_default_cfg () ## if there are parameters which should only be set for one dataset then its better to start from default again
+      config = self.crab_default_cfg() ## if there are parameters which should only be set for one dataset then its better to start from default again
       self.individualized_crab_cfg(akt_nick, config)
       if config.Data.inputDBS in ['list']:
 	print akt_nick," needs to be run with gc sinc it is not in site db"
@@ -201,11 +210,11 @@ class SkimMangerBase:
       p.start()
       p.join()  ###make no sens for multiprocessing here, since python will wait until p is finished. Solution would be to save all p's and then join them in in a seperate loop. 
     self.save_dataset()
-  def individualized_crab_cfg(akt_nick, config):
+  def individualized_crab_cfg(self, akt_nick, config):
     config.General.requestName = akt_nick[:100]
     config.Data.inputDBS = self.skimdataset[akt_nick].get("inputDBS",'global')
     globalTag = self.get_globa_tag(akt_nick)
-    config.JobType.pyCfgParams = ['globalTag=%s'%globalTag,'kappaTag=KAPPA_2_1_0',str('nickname=%s'%(akt_nick)),str('outputfilename=kappa_%s.root'%(akt_nick)),'testsuite=False']
+    config.JobType.pyCfgParams = [str('globalTag=%s'%globalTag),'kappaTag=KAPPA_2_1_0',str('nickname=%s'%(akt_nick)),str('outputfilename=kappa_%s.root'%(akt_nick)),'testsuite=False']
     config.Data.unitsPerJob = self.files_per_job(akt_nick) 
     config.Data.inputDataset = self.skimdataset[akt_nick]['dbs']
     config.Data.ignoreLocality = self.skimdataset[akt_nick].get("ignoreLocality", True) ## i have very good experince with this option, but feel free to change it (maybe also add larger default black list for this, or start with a whitlist 
@@ -214,7 +223,7 @@ class SkimMangerBase:
   
   
   def files_per_job(self, akt_nick):
-    return 200
+    job_submission_limit=10000
     if self.skimdataset[akt_nick].get("files_per_job", None):
       return int(self.skimdataset[akt_nick]["files_per_job"])
     elif self.skimdataset[akt_nick].get("n_files", None):
@@ -262,12 +271,19 @@ class SkimMangerBase:
        
 
 if __name__ == "__main__":
+  
+  
+  if os.environ.get('SKIM_WORK_BASE') is not None:
+    work_base=os.environ['SKIM_WORK_BASE']
+  else:
+    work_base=get_workbase()
+
   parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)") 
-  
+  def_workdir = "TEST_SKIM"
   def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets_conv.json")
-  parser.add_argument("--input", dest="input", help="input data base (default=%s)"%def_input, default=def_input)
-  
-  
+  parser.add_argument("-i", "--input", dest="inputfile", help="input data base (Default: %s)"%def_input,default=def_input)
+  parser.add_argument("-w", "--workdir", dest="workdir", help="Set work directory  (Default: %s) in work base %s\nWork base can be set by export SKIM_WORK_BASE=workbase or by setting absolute path."%(def_workdir,work_base), default=def_workdir)
+  parser.add_argument("-d", "--date", dest="date", action="store_true", default=False, help="Add current date to workdir folder (Default: %(default)s)")
   parser.add_argument("--query", dest="query", help="Query which each dataset has to fulfill. Works with regex e.g: --query '{\"campaign\" : \"RunIISpring16MiniAOD.*reHLT\"}' \n((!!! For some reasons the most outer question marks must be the \'))")
   parser.add_argument("--nicks", dest="nicks", help="Query which each dataset has to fulfill. Works with regex e.g: --nicks \".*_Run2016(B|C|D).*\"")
   parser.add_argument("--tag", dest="tag", help="Ask for a specific tag of a dataset. Optional arguments are --TagValues")
@@ -276,14 +292,15 @@ if __name__ == "__main__":
   
   parser.add_argument("--print", dest="print_ds", help="Print ", action='store_true')
   args = parser.parse_args()
-  
-  SKM = SkimMangerBase()
+  if args.date:
+    args.workdir+="_"+datetime.date.today().strftime("%Y-%m-%d")
+  SKM = SkimManagerBase(workbase=work_base,workdir=args.workdir)
   
   if args.init:
-    SKM.add_new(args.input, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
+    SKM.add_new(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
     
   SKM.submit_gc() 
- # SKM.submit_crab()
+  SKM.submit_crab()
   SKM.status_crab()
   SKM.print_skim()
   
