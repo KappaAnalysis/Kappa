@@ -33,7 +33,7 @@ class SkimManagerBase:
     self.workdir = os.path.join(workbase,workdir) 
     if not os.path.exists(self.workdir+"/gc_cfg"): 
       os.makedirs(self.workdir+"/gc_cfg")
-    self.skimdataset = datasethelpertwopz(os.path.join(self.workdir,"skim_datataset.json"))
+    self.skimdataset = datasetsHelperTwopz(os.path.join(self.workdir,"skim_datataset.json"))
     self.skimdataset.keep_input_json = False ## will be updated very often
     self.configfile = 'kSkimming_run2_cfg_v2.py'
     self.max_crab_jobs_per_nick = 8000 # 10k is the hard limit
@@ -50,7 +50,7 @@ class SkimManagerBase:
     self.skimdataset.write_to_jsonfile(None)  
     
   def add_new(self, in_dataset_file,  tag_key = None, tag_values_str = None, query = None, nick_regex = None):
-    self.inputdataset = datasethelpertwopz(in_dataset_file)
+    self.inputdataset = datasetsHelperTwopz(in_dataset_file)
     tag_values = None
     if tag_values_str:
       tag_values = tag_values_str.strip('][').replace(' ','').split(',')

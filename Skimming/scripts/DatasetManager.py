@@ -9,8 +9,8 @@ from Kappa.Skimming.tools import read_grid_control_includes
 
 class DataSetManagerBase:
 	def __init__(self, in_dataset_file,  tag_key = None, tag_values_str = None, query = None, nick_regex = None):
-		self.dataset = datasethelpertwopz(in_dataset_file)
-		self.orginal = datasethelpertwopz(in_dataset_file) #Just a copy to compare
+		self.dataset = datasetsHelperTwopz(in_dataset_file)
+		self.orginal = datasetsHelperTwopz(in_dataset_file) #Just a copy to compare
 		
 		
 		self.tag_key = tag_key
