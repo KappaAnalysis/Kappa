@@ -57,6 +57,7 @@ def submission(events_per_job):
 	config = config()
 	config.General.workArea = '/nfs/dust/cms/user/%s/kappa/crab_kappa_skim80X-%s'%(getUsernameFromSiteDB(), date)
 	#config.General.workArea = '/net/scratch_cms/institut_3b/%s/kappa/crab_kappa_skim-%s'%(getUsernameFromSiteDB(), date)
+	#config.General.workArea = '/nfs/dust/cms/user/<your-NAF-username>/kappa/crab_kappa_skim80X-%s'% date  #if CERN-username != NAF-username
 	check_path(config.General.workArea)
 	config.General.transferOutputs = True
 	config.General.transferLogs = True
@@ -102,6 +103,7 @@ def submission(events_per_job):
 		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_2016SeptRepro_v4' if isData(nickname) and "23Sep2016v" in getScenario(nickname) else 'globalTag=80X_dataRun2_Prompt_v14' if isData(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_miniAODv2_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
+		#config.Data.lumiMask = '/nfs/dust/cms/user/<NAF-username>/kappa/crab_kappa_skim80X-<campaign-date>/results/missingLumis.json' # for running of a subset of lumi sections
 		p = Process(target=submit, args=(config,))
 		p.start()
 		p.join()
