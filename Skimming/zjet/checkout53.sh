@@ -11,9 +11,6 @@ git clone git@github.com:KappaAnalysis/Kappa.git -b development
 # RecoJet is now checked out and does not compile out of the box, ignore warnings:
 #echo "<flags CXXFLAGS=\"-Wno-delete-non-virtual-dtor -Wno-error=unused-but-set-variable -Wno-error=unused-variable\"/>" >> RecoJets/JetAnalyzers/BuildFile.xml
 
-#TauRefit (needed for compiling the KRefitVertexProducer)
-git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
-
 #Electron Corrections
 git cms-addpkg EgammaAnalysis/ElectronTools
 cd EgammaAnalysis/ElectronTools/data/
