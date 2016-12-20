@@ -10,3 +10,6 @@ else
 	git cms-merge-topic nhanvtran:puppi-etadep-742p1-v6
 fi
 git clone git@github.com:KappaAnalysis/Kappa.git -b development
+
+#TauRefit (needed for compiling the KRefitVertexProducer)
+git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
