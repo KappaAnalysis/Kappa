@@ -15,6 +15,9 @@
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
+
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
+
 #include "VertexRefit/TauRefit/interface/RefitVertex.h"
 
 class KRefitVertexProducer : public KBaseMultiVectorProducer<edm::View<RefitVertex>, KRefitVertices >
@@ -42,4 +45,5 @@ protected:
 	}
 };
 
+#endif
 #endif
