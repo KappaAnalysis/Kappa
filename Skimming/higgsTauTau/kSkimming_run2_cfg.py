@@ -15,9 +15,9 @@
 # if possible, run2 configs import the run1 configs and add some extra information
 ## ------------------------------------------------------------------------
 
-# Kappa test: CMSSW 8.0.20
-# Kappa test: scram arch slc6_amd64_gcc530
-# Kappa test: checkout script scripts/checkoutCmssw80xPackagesForSkimming.py
+# Kappa test: CMSSW 7.6.3, 8.0.20
+# Kappa test: scram arch slc6_amd64_gcc493, slc6_amd64_gcc530
+# Kappa test: checkout script scripts/checkoutCmssw76xPackagesForSkimming.py, scripts/checkoutCmssw80xPackagesForSkimming.py
 # Kappa test: output kappaTuple.root
 
 import sys
