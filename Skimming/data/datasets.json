@@ -894,7 +894,7 @@
         "format": "MINIAOD", 
         "generator": "", 
         "n_events_generated": "143073268", 
-        "n_files": "1288", 
+        "n_files": "1289", 
         "process": "DoubleEG", 
         "scenario": "23Sep2016v3"
     }, 
@@ -5809,7 +5809,7 @@
         "format": "MINIAOD", 
         "generator": "", 
         "n_events_generated": "97259854", 
-        "n_files": "1075", 
+        "n_files": "1077", 
         "process": "SingleElectron", 
         "scenario": "23Sep2016v1"
     }, 
@@ -6192,7 +6192,7 @@
         "format": "MINIAOD", 
         "generator": "", 
         "n_events_generated": "149916849", 
-        "n_files": "1429", 
+        "n_files": "1430", 
         "process": "SingleMuon", 
         "scenario": "23Sep2016v1"
     }, 
