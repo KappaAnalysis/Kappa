@@ -19,7 +19,6 @@
 # Kappa test: scram arch slc6_amd64_gcc493, slc6_amd64_gcc530
 # Kappa test: checkout script scripts/checkoutCmssw76xPackagesForSkimming.py, scripts/checkoutCmssw80xPackagesForSkimming.py
 # Kappa test: output kappaTuple.root
-
 import sys
 if not hasattr(sys, 'argv'):
 	sys.argv = ["cmsRun", "runFrameworkMC.py"]
@@ -27,7 +26,7 @@ if not hasattr(sys, 'argv'):
 import os
 import FWCore.ParameterSet.Config as cms
 from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
-datasetsHelper = datasethelpertwopz(os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json"))
+datasetsHelper = datasetsHelperTwopz(os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/all_datasets_conv.json"))
 import Kappa.Skimming.tools as tools
 
 from FWCore.ParameterSet.VarParsing import VarParsing
@@ -35,7 +34,7 @@ options = VarParsing('python')
 options.register('globalTag', '76X_mcRun2_asymptotic_RunIIFall15DR76_v1', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'GlobalTag')
 options.register('kappaTag', 'KAPPA_2_0_0', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'KappaTag')
 options.register('nickname', 'SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Dataset Nickname')
-options.register('testfile', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Path for a testfile')
+options.register('testfile', '/portal/ekpbms2/home/jbechtel/PreRAWskimmed_inMINIAOD_0.root', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Path for a testfile')
 options.register('maxevents', -1, VarParsing.multiplicity.singleton, VarParsing.varType.int, 'maxevents')
 options.register('outputfilename', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Filename for the Outputfile')
 options.register('testsuite', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Run the Kappa test suite. Default: True')
@@ -169,15 +168,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))
 
 	if not isEmbedded and data:
-			process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
+		process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
 
 	if not isEmbedded and not data:
-			process.kappaTuple.active+= cms.vstring('GenInfo')           # produce Metadata for MC,
-			process.kappaTuple.active+= cms.vstring('GenParticles')      # save GenParticles,
-			process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
-
-			process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
-			process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
+		process.kappaTuple.active+= cms.vstring('GenInfo')           # produce Metadata for MC,
+		process.kappaTuple.active+= cms.vstring('GenParticles')      # save GenParticles,
+		process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
+		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
+		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
 
 	# write out for all processes where available
 	process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
@@ -436,6 +434,7 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg_v2":
 
 	# test with user-defined input file
 	if options.testfile:
+		print 'read from testfile '+str(options.testfile)
 		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents, outputfilename=options.outputfilename)
 	
 	# CRAB job-submission

@@ -10,7 +10,7 @@ class datasetsHelperTwopz:
 	def __init__(self, in_json_file ) :
 		"""At the moment the in_json_file is absolut mentory, maybe lower this requierment later """
 		self.base_dict = {} # start with empty dict
-		self.keep_input_json = True ## Later one can overwrite the in_put json 
+		self.keep_input_json = True ## Later one can overwrite the input json 
 		self.json_file_name = os.path.basename(in_json_file) 
 		self.json_file_path = os.path.dirname(os.path.abspath(in_json_file)) 
 		if os.path.isfile(os.path.join(self.json_file_path,self.json_file_name)):
@@ -25,6 +25,10 @@ class datasetsHelperTwopz:
 		return self.base_dict.setdefault(key, {})
 	def nicks(self):
 		return self.base_dict.keys()
+
+	def merge(self,new):
+		newdict = new.base_dict
+		self.base_dict.update(newdict)
 		
 	def read_from_jsonfile(self, in_json_file):
 		"""Read the base_dict from input file """
@@ -42,6 +46,8 @@ class datasetsHelperTwopz:
 			return
 		if not os.path.exists(out_json_file) and self.keep_input_json:
 			print "Created "+out_json_file
+		else: 
+			print "Overwritten "+out_json_file
 		out_json = open(out_json_file, 'w')
 		out_json.write(json.dumps(self.base_dict, sort_keys=True, indent=2))
 		out_json.close()
@@ -70,7 +76,7 @@ class datasetsHelperTwopz:
 		self.base_dict = new_dict
 	def isSignal(self, nick):
 		"""Define here what is used as Signal sample """
-		if 'HToTauTau' in self.base_dict[nick]["process"] or 'H2JetsToTauTau' in self.base_dict[nick]["process"] :
+		if 'HToTauTau' in self.base_dict[nick]["process"] or 'H2JetsToTauTau' in self.base_dict[nick]["process"]:
 			return True
 		return False
 	def isData(self, nick):

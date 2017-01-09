@@ -9,10 +9,9 @@ from Kappa.Skimming.tools import read_grid_control_includes
 
 class DataSetManagerBase:
 	def __init__(self, in_dataset_file,  tag_key = None, tag_values_str = None, query = None, nick_regex = None):
+		self.in_dataset_file = in_dataset_file
 		self.dataset = datasetsHelperTwopz(in_dataset_file)
 		self.orginal = datasetsHelperTwopz(in_dataset_file) #Just a copy to compare
-		
-		
 		self.tag_key = tag_key
 		if tag_values_str:
 			self.tag_values = tag_values_str.strip('][').replace(' ','').split(',')
@@ -73,6 +72,21 @@ class DataSetManagerBase:
 		
 	def print_all(self,subkeys):
 		print "AAA"
+	
+	def get_xsec(self, test_string):
+		DY_xsec = 5765.4 
+		if "AllFinalState" in test_string:
+			return DY_xsec
+		elif "ElMu" in test_string:
+			return 0.1739*0.1782*2.*DY_xsec
+		elif "ElTau" in test_string:
+			return 0.6479*0.1782*2.*DY_xsec
+		elif "MuTau" in test_string:
+			return 0.1739*0.6479*2.*DY_xsec
+		elif "TauTau" in test_string:
+			return 0.6479*0.6479*DY_xsec
+		return None
+	
 	def get_energy(self,  test_string):
 		akt_energy = "13"
 		if "14TeV" in test_string: 
@@ -177,7 +191,7 @@ class DataSetManagerBase:
 		new_entry["n_events_generated"]    = "-1"
 		new_entry["n_files"] = "-1"
 		inputDBS = new_entry.get("inputDBS", "global")
-		if inputDBS in ["global","pyhs03","pyhs02","pyhs01"]:
+		if inputDBS in ["global","phys03","phys02","phys01"]:
 			url = 'https://cmsweb.cern.ch/dbs/prod/'+inputDBS+'/DBSReader'
 			from Kappa.Skimming.getNumberGeneratedEventsFromDB import RestClient
 			cert = os.environ['X509_USER_PROXY']
@@ -213,14 +227,17 @@ class DataSetManagerBase:
 	 
 		if inputDBS:
 			new_entry["inputDBS"] = inputDBS ## default will be global
- 
+		if globaltag is not None:
+			new_entry["globalTag"] = globaltag
 		new_entry["data"] = True if "Run20" in dbs else False
 		if "Embedding" in dbs:
-			new_entry["embedded"]  = True ## if not give assume false ;)
-		## Not sure if it is important at all, but lets kepp it 
+			new_entry["embedded"]  = True ## if not given assume false ;)
+		## Not sure if it is important at all, but lets keep it 
 		new_entry["energy"] = self.get_energy(dbs)
 		if not nick_name:
 			pd_name, details, filetype = dbs.strip("/").split("/")
+			if self.get_xsec is not None:
+				new_entry["xsec"] = self.get_xsec(dbs)
 			new_entry["campaign"]  = self.get_campaign(details=details,energy=new_entry["energy"])
 			new_entry["scenario"]  = self.get_scenario(details=details,energy=new_entry["energy"],data=new_entry["data"])
 			new_entry["generator"] = self.get_generator(pd_name, data=new_entry["data"], isembedded=new_entry.get("embedded", False) )
@@ -228,11 +245,10 @@ class DataSetManagerBase:
 			new_entry["format"]    = self.get_format(filetype)
 			new_entry["extension"] = self.get_extension(details,data=new_entry["data"] )
 			nick_name = self.dataset.make_nickname(new_entry)
-	 # except:
-	 #   pass
 		self.set_n_events_files(new_entry)   
 		self.dataset[nick_name] = new_entry
-	def delet_datasets(self):
+		
+	def delete_datasets(self):
 		nicks = self.get_nick_list()
 		for del_nick in nicks:
 			self.dataset.base_dict.pop(del_nick)
@@ -255,48 +271,51 @@ class DataSetManagerBase:
 		nicks = self.get_nick_list()
 		self.dataset.addEntry(entry,nicks)
 
-
-
+	def merge_json(self,newfile):
+		new = datasetsHelperTwopz(newfile)
+		self.dataset.merge(new)
+		
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)") 
 	
-	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets_conv.json")
+	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/empty.json")
 	#def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/test.json")
-	parser.add_argument("--input", dest="inputfile", help="input data base (default=%s)"%def_input, default=def_input)
+	parser.add_argument("-i", "--input", dest="inputfile", help="input data base (default=%s)"%def_input, default=def_input)
 	
-	parser.add_argument("--save", dest="save", help="save data base to file. For local storage please make ./filname.json otherwise $CMSSW_BASE/src/Kappa/Skimming/data/filename.json is used ")
+	parser.add_argument("--save", default=None, dest="save", help="save data base to file. For local storage please make ./filname.json otherwise $CMSSW_BASE/src/Kappa/Skimming/data/filename.json is used ")
 	parser.add_argument("--overwrite", dest="overwrite", help="Allow to overwrite the database", action='store_true')
 	
 	parser.add_argument("--query", dest="query", help="Query which each dataset has to fulfill. Works with regex e.g: --query '{\"campaign\" : \"RunIISpring16MiniAOD.*reHLT\"}' \n((!!! For some reasons the most outer question marks must be the \'))")
 	parser.add_argument("--nicks", dest="nicks", help="Query which each dataset has to fulfill. Works with regex e.g: --nicks \".*_Run2016(B|C|D).*\"")
 	parser.add_argument("--tag", dest="tag", help="Ask for a specific tag of a dataset. Optional arguments are --TagValues")
 	parser.add_argument("--tagvalues", dest="tagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Exetend\" ")
-	
+	parser.add_argument("--mergejson",default=None, dest="mergejson", help="Add new JSON file to merge with input JSON. In case of same keys inputfile will be overwritten with new keys.")
+
 	parser.add_argument("--addentry", dest="addentry", default=None, help="Add a dict entry to all dicts that match query, e.g. --addentry '{\"NewKey\" : \"NewValue\"}' (!!! outer parentheses must be \'), or json file. Existing values with the same Key will be overwritten. [Default : %(default)s]")
 
 	parser.add_argument("--addtag", dest="addtag", help="Add the to this tag the TagValues -> requieres -- addtagvaluesoption\nAlso either the --query or --nicks option must be given (for matching) ")
 	parser.add_argument("--addtagvalues", dest="addtagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Exetend\" ")
 	
-	parser.add_argument("--globaltag", dest="globaltag", default=None, help="Add a global tag [Default : %(default)s]")
+	parser.add_argument("--globaltag", dest="globaltag", default=None, help="Add a global tag to all that [Default : %(default)s]")
 
 	parser.add_argument("--rmtag", dest="rmtag", help="Remove the to this tag the TagValues -> requieres --TagValues option\nAlso either the --query or --nicks option must be given (for matching) ")
-	parser.add_argument("--rmtagvalues", dest="rmtagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Exetend\" ")
+	parser.add_argument("--rmtagvalues", dest="rmtagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Extend\" ")
 	
 	parser.add_argument("--addDataset", dest="addDataset", help="Add a dataset")
-	parser.add_argument("--inputDBS", dest="inputDBS", help="Change the dbs instance, default will be global (for official samples), for private production choose pyhs03")
+	parser.add_argument("--inputDBS", dest="inputDBS", help="Change the dbs instance, default will be global (for official samples), for private production choose phys03")
 	parser.add_argument("--xsec", dest="xsec", help="Add a cross section to this Dataset ")
-	
 	
 	parser.add_argument("--deleteDatasets", dest="deleteDatasets", help="Delete Datasets which are matched", action='store_true')
 	
 	parser.add_argument("--print", dest="print_ds", help="Print ", action='store_true')
 	parser.add_argument("--printkeys", dest="printkeys", help="which keys to print (use komma separated list) (default=%s)"%def_input, default="dbs")
 	
-	
-	
-	
 	args = parser.parse_args()
+		
+	if not os.path.isabs(args.inputfile):
+		args.inputfile=os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/"+args.inputfile)
 	
+		
 	DSM = DataSetManagerBase(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks )
 	#~ nicknames = read_grid_control_includes(["samples/13TeV/Spring16_SM_Analysis.conf"])
 	#~ n=0
@@ -313,23 +332,27 @@ if __name__ == "__main__":
 			
 	#~ print n
 	#~ exit()
-	
+
+	if args.addDataset and (args.addentry or args.addtag or args.rmtag):
+		print "Adding Datasets and adding/removing entries or tags in same instance not supported. Please do separately."
+		exit()
 	if args.addDataset:
-		DSM.add_dataset(dbs=args.addDataset, inputDBS=args.inputDBS,xsec=args.xsec)
-	
-	if args.addentry:
-		DSM.add_entry(entry=args.addentry)
-	if args.addtag:
-		DSM.add_tag_to_nicks(add_tag_key=args.addtag,add_tag_values_str=args.addtagvalues)
-	if args.globaltag:
-		DSM.add_globaltag(add_globaltag=str(args.globaltag))
-	if args.rmtag:
-		DSM.rm_tags(rm_tag_key=args.rmtag,rm_tag_values_str=args.rmtagvalues)
-	 
-		
+		DSM.add_dataset(dbs=args.addDataset, inputDBS=args.inputDBS,xsec=args.xsec,globaltag=args.globaltag)
+	else:
+		if args.addentry:
+			DSM.add_entry(entry=args.addentry)
+		if args.addtag:
+			DSM.add_tag_to_nicks(add_tag_key=args.addtag,add_tag_values_str=args.addtagvalues)
+		if args.globaltag:
+			DSM.add_globaltag(add_globaltag=str(args.globaltag))
+		if args.rmtag:
+			DSM.rm_tags(rm_tag_key=args.rmtag,rm_tag_values_str=args.rmtagvalues)
+		 
+			
 	if args.deleteDatasets: 
-		 DSM.delet_datasets()
-	
+		 DSM.delete_datasets()
+	if args.mergejson:
+		DSM.merge_json(newfile=args.mergejson)
 	DSM.dict_diff()
 	
 	if args.print_ds:
@@ -339,7 +362,8 @@ if __name__ == "__main__":
 		
 # Always show the difference between old an new
 
-	
+	if not os.path.isabs(args.save):
+		args.save=os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/"+args.save)
 # Add the end store the result (default is not to store at all 
 	DSM.save_dataset(args.save, args.overwrite)
 
