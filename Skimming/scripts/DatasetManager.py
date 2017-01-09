@@ -278,7 +278,7 @@ class DataSetManagerBase:
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)") 
 	
-	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/empty.json")
+	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json")
 	#def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/test.json")
 	parser.add_argument("-i", "--input", dest="inputfile", help="input data base (default=%s)"%def_input, default=def_input)
 	
