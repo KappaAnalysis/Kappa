@@ -313,7 +313,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')
-	if is_above_cmssw_version([8,0,14]):
+	# rerun MET sequence to get covariance matrix (not needed for samples produced with 8_0_20 or higher)
+	if is_above_cmssw_version([8,0,14]) and ("80X_mcRun2_asymptotic_2016_miniAODv2_v1" in globaltag or "80X_dataRun2_ICHEP16_repro_v0" in globaltag):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 		runMetCorAndUncFromMiniAOD(process, isData=data  )
 		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs", "", "KAPPA"))
