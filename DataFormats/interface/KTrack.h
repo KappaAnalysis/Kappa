@@ -66,8 +66,9 @@ struct KTrack : public KLV
 		return (qualityBits & (1 << bit));
 	};
 
-	/// distances to primary vertex, beamspot and interaction point
+	/// distances to primary vertex, refitted primary vertex, beamspot and interaction point
 	/// all these function mix float and double precision values
+	// wrt PV
 	float getDxy(const KVertex * pv) const
 	{
 		if (!pv)
@@ -78,6 +79,18 @@ struct KTrack : public KLV
 		) / sqrtf(p4.Perp2());
 	}
 
+	// wrt refitted PV
+	float getDxy(const KRefitVertex * rv) const
+	{
+		if (!rv)
+			return -1.;
+		return (
+			- (ref.x() - rv->position.x()) * p4.y()
+			+ (ref.y() - rv->position.y()) * p4.x()
+		) / sqrtf(p4.Perp2());
+	}
+
+	// wrt BS
 	float getDxy(const KBeamSpot *bs) const
 	{
 		if (!bs)
@@ -88,6 +101,7 @@ struct KTrack : public KLV
 		) / sqrtf(p4.Perp2());
 	}
 
+	// wrt PV
 	float getDz(const KVertex *pv) const
 	{
 		if (!pv)
@@ -98,6 +112,18 @@ struct KTrack : public KLV
 			) * p4.z() / p4.Perp2();
 	}
 
+	// wrt refitted PV
+	float getDz(const KRefitVertex *rv) const
+	{
+		if (!rv)
+			return -1.;
+		return ref.z() - rv->position.z() - (
+				(ref.x() - rv->position.x()) * p4.x() +
+				(ref.y() - rv->position.y()) * p4.y()
+			) * p4.z() / p4.Perp2();
+	}
+
+	// wrt BS
 	float getDz(const KBeamSpot *bs) const
 	{
 		if (!bs)
