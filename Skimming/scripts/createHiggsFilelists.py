@@ -17,6 +17,7 @@ import Kappa.Skimming.datasets2015_miniAODv2 as datasets2015_miniAODv2
 import Kappa.Skimming.datasets2015_Fall15 as datasetsFall15
 import Kappa.Skimming.datasets2016 as datasets2016
 import Kappa.Skimming.datasets2016_Spring16 as datasetsSpring16
+import Kappa.Skimming.datasets2016_Summer16 as datasetsSummer16
 
 
 def writeFilelist(querytuple, database_dict, options):
@@ -85,7 +86,8 @@ def main():
 	#querielist.append( datasets2015_miniAODv2.queries )
 	#querielist.append( datasetsFall15.queries )
 	#querielist.append( datasets2016.queries )
-	querielist.append( datasetsSpring16.queries )
+	#querielist.append( datasetsSpring16.queries )
+	querielist.append( datasetsSummer16.queries )
 	for queries in querielist:
 		for query in queries.items():
 			writeFilelist(query, database, options)
