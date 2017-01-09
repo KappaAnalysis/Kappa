@@ -282,7 +282,7 @@ if __name__ == "__main__":
 	#def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/test.json")
 	parser.add_argument("-i", "--input", dest="inputfile", help="input data base (default=%s)"%def_input, default=def_input)
 	
-	parser.add_argument("--save", default=None, dest="save", help="save data base to file. For local storage please make ./filname.json otherwise $CMSSW_BASE/src/Kappa/Skimming/data/filename.json is used ")
+	parser.add_argument("--save", default="datasets_conv.json", dest="save", help="save data base to file. For local storage please make ./filname.json otherwise $CMSSW_BASE/src/Kappa/Skimming/data/filename.json is used ")
 	parser.add_argument("--overwrite", dest="overwrite", help="Allow to overwrite the database", action='store_true')
 	
 	parser.add_argument("--query", dest="query", help="Query which each dataset has to fulfill. Works with regex e.g: --query '{\"campaign\" : \"RunIISpring16MiniAOD.*reHLT\"}' \n((!!! For some reasons the most outer question marks must be the \'))")
