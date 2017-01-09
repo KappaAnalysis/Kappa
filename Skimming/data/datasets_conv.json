@@ -225,6 +225,10 @@
     "xsec": 1012.5
   }, 
   "DY1JetsToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/DY1JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -233,6 +237,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "62627174", 
     "n_files": "986", 
     "process": "DY1JetsToLL_M50", 
@@ -327,6 +332,10 @@
     "xsec": 332.8
   }, 
   "DY2JetsToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/DY2JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -335,6 +344,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "19970551", 
     "n_files": "291", 
     "process": "DY2JetsToLL_M50", 
@@ -370,6 +380,10 @@
     "scenario": "PU_S10"
   }, 
   "DY3JetsToLLM10to50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/DY3JetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -378,6 +392,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "4964197", 
     "n_files": "59", 
     "process": "DY3JetsToLL_M10to50", 
@@ -441,6 +456,10 @@
     "xsec": 101.8
   }, 
   "DY3JetsToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/DY3JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -449,6 +468,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "5856110", 
     "n_files": "133", 
     "process": "DY3JetsToLL_M50", 
@@ -527,6 +547,10 @@
     "xsec": 54.8
   }, 
   "DY4JetsToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/DY4JetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -535,6 +559,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "4197868", 
     "n_files": "59", 
     "process": "DY4JetsToLL_M50", 
@@ -682,6 +707,10 @@
     "xsec": 18610.0
   }, 
   "DYJetsToLLM10to50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -690,6 +719,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "35291566", 
     "n_files": "555", 
     "process": "DYJetsToLL_M10to50", 
@@ -945,6 +975,10 @@
     "xsec": 5765.4
   }, 
   "DYJetsToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8_ext1": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2/MINIAODSIM", 
@@ -953,6 +987,7 @@
     "extension": "ext1", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "49144274", 
     "n_files": "477", 
     "process": "DYJetsToLL_M50", 
@@ -2212,6 +2247,10 @@
     "xsec": 20.25
   }, 
   "EWKWMinus2JetsWToLNuM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/EWKWMinus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -2220,6 +2259,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "489205", 
     "n_files": "23", 
     "process": "EWKWMinus2Jets_WToLNu_M50", 
@@ -2227,6 +2267,10 @@
     "xsec": 20.25
   }, 
   "EWKWMinus2JetsWToLNuM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8_ext1": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/EWKWMinus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM", 
@@ -2235,6 +2279,7 @@
     "extension": "ext1", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "490330", 
     "n_files": "11", 
     "process": "EWKWMinus2Jets_WToLNu_M50", 
@@ -2242,6 +2287,10 @@
     "xsec": 20.25
   }, 
   "EWKWMinus2JetsWToLNuM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8_ext2": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/EWKWMinus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM", 
@@ -2250,6 +2299,7 @@
     "extension": "ext2", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "3841472", 
     "n_files": "63", 
     "process": "EWKWMinus2Jets_WToLNu_M50", 
@@ -2313,6 +2363,10 @@
     "xsec": 25.62
   }, 
   "EWKWPlus2JetsWToLNuM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/EWKWPlus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -2321,6 +2375,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "496000", 
     "n_files": "26", 
     "process": "EWKWPlus2Jets_WToLNu_M50", 
@@ -2328,6 +2383,10 @@
     "xsec": 25.62
   }, 
   "EWKWPlus2JetsWToLNuM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8_ext1": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/EWKWPlus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM", 
@@ -2336,6 +2395,7 @@
     "extension": "ext1", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "500000", 
     "n_files": "16", 
     "process": "EWKWPlus2Jets_WToLNu_M50", 
@@ -2343,6 +2403,10 @@
     "xsec": 25.62
   }, 
   "EWKWPlus2JetsWToLNuM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8_ext2": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/EWKWPlus2Jets_WToLNu_M-50_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM", 
@@ -2351,6 +2415,7 @@
     "extension": "ext2", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "3939705", 
     "n_files": "140", 
     "process": "EWKWPlus2Jets_WToLNu_M50", 
@@ -2413,6 +2478,10 @@
     "xsec": 3.987
   }, 
   "EWKZ2JetsZToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/EWKZ2Jets_ZToLL_M-50_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -2421,6 +2490,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "150000", 
     "n_files": "6", 
     "process": "EWKZ2Jets_ZToLL_M50", 
@@ -2428,6 +2498,10 @@
     "xsec": 3.987
   }, 
   "EWKZ2JetsZToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8_ext1": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/EWKZ2Jets_ZToLL_M-50_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM", 
@@ -2436,6 +2510,7 @@
     "extension": "ext1", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "150000", 
     "n_files": "6", 
     "process": "EWKZ2Jets_ZToLL_M50", 
@@ -2499,6 +2574,10 @@
     "xsec": 10.01
   }, 
   "EWKZ2Jets_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/EWKZ2Jets_ZToNuNu_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -2507,6 +2586,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "296800", 
     "n_files": "5", 
     "process": "EWKZ2Jets", 
@@ -2514,6 +2594,10 @@
     "xsec": 10.01
   }, 
   "EWKZ2Jets_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8_ext1": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/EWKZ2Jets_ZToNuNu_13TeV-madgraph-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM", 
@@ -2522,6 +2606,7 @@
     "extension": "ext1", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "300000", 
     "n_files": "11", 
     "process": "EWKZ2Jets", 
@@ -3303,6 +3388,10 @@
     "xsec": 2.775744
   }, 
   "GluGluHToTauTauM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -3311,6 +3400,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "1471061", 
     "n_files": "20", 
     "process": "GluGluHToTauTau_M125", 
@@ -4499,6 +4589,10 @@
     "xsec": 720648000.0
   }, 
   "STt-channelantitop4finclusiveDecays_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -4507,6 +4601,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "38811017", 
     "n_files": "406", 
     "process": "STt-channelantitop4finclusiveDecays", 
@@ -4570,6 +4665,10 @@
     "xsec": 80.95
   }, 
   "STt-channeltop4finclusiveDecays_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -4578,6 +4677,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "67240808", 
     "n_files": "723", 
     "process": "STt-channeltop4finclusiveDecays", 
@@ -4696,6 +4796,10 @@
     "xsec": 35.6
   }, 
   "STtWantitop5finclusiveDecays_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8_ext1": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM", 
@@ -4704,6 +4808,7 @@
     "extension": "ext1", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "6933094", 
     "n_files": "144", 
     "process": "STtWantitop5finclusiveDecays", 
@@ -4767,6 +4872,10 @@
     "xsec": 35.6
   }, 
   "STtWtop5finclusiveDecays_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8_ext1": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM", 
@@ -4775,6 +4884,7 @@
     "extension": "ext1", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "6952830", 
     "n_files": "161", 
     "process": "STtWtop5finclusiveDecays", 
@@ -8397,6 +8507,10 @@
     "scenario": "PUSpring16RAWAODSIM"
   }, 
   "TT_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -8405,6 +8519,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "77229341", 
     "n_files": "984", 
     "process": "TT", 
@@ -9264,6 +9379,10 @@
     "xsec": 0.2368736
   }, 
   "VBFHToTauTauM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/VBFHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -9272,6 +9391,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "1499400", 
     "n_files": "48", 
     "process": "VBFHToTauTau_M125", 
@@ -9722,6 +9842,10 @@
     "xsec": 11.95
   }, 
   "VVTo2L2Nu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/VVTo2L2Nu_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -9730,6 +9854,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "2852958", 
     "n_files": "28", 
     "process": "VVTo2L2Nu", 
@@ -9737,6 +9862,10 @@
     "xsec": 11.95
   }, 
   "VVTo2L2Nu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8_ext1": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/VVTo2L2Nu_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM", 
@@ -9745,6 +9874,7 @@
     "extension": "ext1", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "6888511", 
     "n_files": "76", 
     "process": "VVTo2L2Nu", 
@@ -9822,6 +9952,10 @@
     "xsec": 9644.5
   }, 
   "W1JetsToLNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/W1JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -9830,6 +9964,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "45367044", 
     "n_files": "651", 
     "process": "W1JetsToLNu", 
@@ -9907,6 +10042,10 @@
     "xsec": 3144.5
   }, 
   "W2JetsToLNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/W2JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -9915,6 +10054,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "29948103", 
     "n_files": "599", 
     "process": "W2JetsToLNu", 
@@ -10007,6 +10147,10 @@
     "xsec": 954.8
   }, 
   "W3JetsToLNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/W3JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -10015,6 +10159,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "19798117", 
     "n_files": "331", 
     "process": "W3JetsToLNu", 
@@ -10107,6 +10252,10 @@
     "xsec": 485.6
   }, 
   "W4JetsToLNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/W4JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -10115,6 +10264,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "9170576", 
     "n_files": "197", 
     "process": "W4JetsToLNu", 
@@ -10122,6 +10272,10 @@
     "xsec": 485.6
   }, 
   "W4JetsToLNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8_ext2": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/W4JetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM", 
@@ -10130,6 +10284,7 @@
     "extension": "ext2", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "18751462", 
     "n_files": "343", 
     "process": "W4JetsToLNu", 
@@ -10856,6 +11011,10 @@
     "xsec": 61526.7
   }, 
   "WJetsToLNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -10864,6 +11023,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "24120319", 
     "n_files": "300", 
     "process": "WJetsToLNu", 
@@ -10871,6 +11031,10 @@
     "xsec": 61526.7
   }, 
   "WJetsToLNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -10879,6 +11043,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "29705748", 
     "n_files": "422", 
     "process": "WJetsToLNu", 
@@ -10985,6 +11150,10 @@
     "xsec": 1.212
   }, 
   "WWToLNuQQ_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WWToLNuQQ_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -10993,6 +11162,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "1999200", 
     "n_files": "29", 
     "process": "WWToLNuQQ", 
@@ -11000,6 +11170,10 @@
     "xsec": 1.212
   }, 
   "WWToLNuQQ_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg_ext1": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WWToLNuQQ_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/MINIAODSIM", 
@@ -11008,6 +11182,7 @@
     "extension": "ext1", 
     "format": "MINIAOD", 
     "generator": "powheg", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "6998600", 
     "n_files": "90", 
     "process": "WWToLNuQQ", 
@@ -11045,6 +11220,10 @@
     "xsec": 4.708
   }, 
   "WZJToLLLNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WZJToLLLNu_TuneCUETP8M1_13TeV-amcnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11053,6 +11232,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "1930828", 
     "n_files": "59", 
     "process": "WZJToLLLNu", 
@@ -11189,6 +11369,10 @@
     "xsec": 10.71
   }, 
   "WZTo1L1Nu2Q_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WZTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v3/MINIAODSIM", 
@@ -11197,6 +11381,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "24523758", 
     "n_files": "550", 
     "process": "WZTo1L1Nu2Q", 
@@ -11261,6 +11446,10 @@
     "xsec": 3.05
   }, 
   "WZTo1L3Nu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WZTo1L3Nu_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11269,6 +11458,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "1703772", 
     "n_files": "21", 
     "process": "WZTo1L3Nu", 
@@ -11384,6 +11574,10 @@
     "xsec": 0.004915316
   }, 
   "WminusHToTauTauM120_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WminusHToTauTau_M120_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11392,6 +11586,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "60000", 
     "n_files": "1", 
     "process": "WminusHToTauTau_M120", 
@@ -11455,6 +11650,10 @@
     "xsec": 0.003889281
   }, 
   "WminusHToTauTauM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WminusHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11463,6 +11662,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "445200", 
     "n_files": "21", 
     "process": "WminusHToTauTau_M125", 
@@ -11507,6 +11707,10 @@
     "xsec": 0.002967926
   }, 
   "WminusHToTauTauM130_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WminusHToTauTau_M130_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11515,6 +11719,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "60000", 
     "n_files": "8", 
     "process": "WminusHToTauTau_M130", 
@@ -11559,6 +11764,10 @@
     "xsec": 0.00767102
   }, 
   "WplusHToTauTauM120_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WplusHToTauTau_M120_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11567,6 +11776,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "60000", 
     "n_files": "1", 
     "process": "WplusHToTauTau_M120", 
@@ -11631,6 +11841,10 @@
     "xsec": 0.006092559
   }, 
   "WplusHToTauTauM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WplusHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11639,6 +11853,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "428036", 
     "n_files": "18", 
     "process": "WplusHToTauTau_M125", 
@@ -11683,6 +11898,10 @@
     "xsec": 0.004670994
   }, 
   "WplusHToTauTauM130_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WplusHToTauTau_M130_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11691,6 +11910,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "60000", 
     "n_files": "14", 
     "process": "WplusHToTauTau_M130", 
@@ -11734,6 +11954,10 @@
     "xsec": 0.0611821157257
   }, 
   "ZHToTauTauM120_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ZHToTauTau_M120_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11742,6 +11966,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "80000", 
     "n_files": "10", 
     "process": "ZHToTauTau_M120", 
@@ -11805,6 +12030,10 @@
     "xsec": 0.05495872
   }, 
   "ZHToTauTauM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ZHToTauTau_M125_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11813,6 +12042,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "571597", 
     "n_files": "27", 
     "process": "ZHToTauTau_M125", 
@@ -11856,6 +12086,10 @@
     "xsec": 0.0474205223604
   }, 
   "ZHToTauTauM130_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ZHToTauTau_M130_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -11864,6 +12098,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "79452", 
     "n_files": "8", 
     "process": "ZHToTauTau_M130", 
@@ -12012,6 +12247,10 @@
     "xsec": 3.22
   }, 
   "ZZTo2L2Q_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -12020,6 +12259,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "15345572", 
     "n_files": "350", 
     "process": "ZZTo2L2Q", 
@@ -12063,6 +12303,10 @@
     "xsec": 1.212
   }, 
   "ZZTo4L_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ZZTo4L_13TeV_powheg_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -12071,6 +12315,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "powheg-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "6669988", 
     "n_files": "96", 
     "process": "ZZTo4L", 
@@ -12126,6 +12371,10 @@
     "xsec": 0.040128
   }, 
   "ttHJetToTTM120_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ttHJetToTT_M120_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -12134,6 +12383,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "189374", 
     "n_files": "4", 
     "process": "ttHJetToTT_M120", 
@@ -12209,6 +12459,10 @@
     "xsec": 0.024743
   }, 
   "ttHJetToTTM130_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "Moriond17": [
+      "Skim_Base", 
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/ttHJetToTT_M130_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -12217,6 +12471,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "n_events_generated": "192326", 
     "n_files": "6", 
     "process": "ttHJetToTT_M130", 
