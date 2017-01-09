@@ -75,7 +75,7 @@ def submission(events_per_job):
 	
 	config.Site.storageSite = "T2_DE_DESY"
 	# load nicknames form gc-style config files and write them to a flat nicknames list
-	nicknames = read_grid_control_includes(["samples/13TeV/Spring16_SM_Analysis.conf"])
+	nicknames = read_grid_control_includes(["samples/13TeV/Summer16_SM_Analysis.conf"])
 	#nicknames = read_grid_control_includes(["samples/13TeV/Spring16_SM_Higgs_CPmixing_2.conf"])
 	#nicknames = read_grid_control_includes(["samples/13TeV/2016B_Data.conf"])
 	#nicknames = ['SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_76X_13TeV_MINIAOD_pythia8']
@@ -100,7 +100,7 @@ def submission(events_per_job):
 			if files_per_job > 1:
 				config.Data.unitsPerJob = int(files_per_job)
 
-		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_2016SeptRepro_v4' if isData(nickname) and "23Sep2016v" in getScenario(nickname) else 'globalTag=80X_dataRun2_Prompt_v14' if isData(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_miniAODv2_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
+		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_2016SeptRepro_v6' if isData(nickname) and "23Sep2016v" in getScenario(nickname) else 'globalTag=80X_dataRun2_Prompt_v14' if isData(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_TrancheIV_v7' if "PUMoriond17" in getScenario(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_miniAODv2_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
 		config.Data.inputDataset = get_sample_by_nick(nickname)
 		#config.Data.lumiMask = '/nfs/dust/cms/user/<NAF-username>/kappa/crab_kappa_skim80X-<campaign-date>/results/missingLumis.json' # for running of a subset of lumi sections
