@@ -250,7 +250,7 @@ class SkimManagerBase:
 		config.General.transferLogs = True
 		config.User.voGroup = 'dcms'
 		config.JobType.pluginName = 'Analysis'
-		config.JobType.psetName = self.configfile
+		config.JobType.psetName = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/higgsTauTau/",self.configfile)
 		#config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
 		config.JobType.allowUndistributedCMSSW = True
 		config.Site.blacklist = ["T2_BR_SPRACE","T1_RU_JINR"]
@@ -480,7 +480,9 @@ class SkimManagerBase:
 		if os.environ.get('SKIM_WORK_BASE') is not None:
 			return(os.environ['SKIM_WORK_BASE'])
 		else:
-			if 'ekpbms' in os.environ["HOSTNAME"]:
+			if 'ekpbms1' in os.environ["HOSTNAME"]:
+				return("/portal/ekpbms1/home/%s/kappa_skim_workdir/" % os.environ["USER"])
+			elif 'ekpbms2' in os.environ["HOSTNAME"]:
 				return("/portal/ekpbms2/home/%s/kappa_skim_workdir/" % os.environ["USER"])
 			elif 'naf' in os.environ["HOSTNAME"]:
 				return("/nfs/dust/cms/user/%s/kappa_skim_workdir/" % os.environ["USER"])
@@ -507,8 +509,9 @@ class SkimManagerBase:
 if __name__ == "__main__":
 	
 	work_base = SkimManagerBase.get_workbase()
+	print work_base
 	latest_subdir = SkimManagerBase.get_latest_subdir(work_base=work_base)
-	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/all_datasets_conv.json")
+	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets_conv.json")
 
 	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)") 
 	parser.add_argument("-i", "--input", dest="inputfile", default=def_input, help="input data base (Default: %s)"%def_input)

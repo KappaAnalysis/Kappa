@@ -26,7 +26,7 @@ if not hasattr(sys, 'argv'):
 import os
 import FWCore.ParameterSet.Config as cms
 from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
-datasetsHelper = datasetsHelperTwopz(os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/all_datasets_conv.json"))
+datasetsHelper = datasetsHelperTwopz(os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets_conv.json"))
 import Kappa.Skimming.tools as tools
 
 from FWCore.ParameterSet.VarParsing import VarParsing
