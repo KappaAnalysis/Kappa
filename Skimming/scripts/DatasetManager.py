@@ -69,23 +69,6 @@ class DataSetManagerBase:
 			self.dataset.rmTags(rm_tag_key, rm_tag_values_str.strip('[]').replace(' ','').split(',') ,nick_list)
 		else:
 			self.dataset.rmTags(rm_tag_key, None ,nick_list)
-		
-	def print_all(self,subkeys):
-		print "AAA"
-	
-	def get_xsec(self, test_string):
-		DY_xsec = 5765.4 
-		if "AllFinalState" in test_string:
-			return DY_xsec
-		elif "ElMu" in test_string:
-			return 0.1739*0.1782*2.*DY_xsec
-		elif "ElTau" in test_string:
-			return 0.6479*0.1782*2.*DY_xsec
-		elif "MuTau" in test_string:
-			return 0.1739*0.6479*2.*DY_xsec
-		elif "TauTau" in test_string:
-			return 0.6479*0.6479*DY_xsec
-		return None
 	
 	def get_energy(self,  test_string):
 		akt_energy = "13"
@@ -236,8 +219,8 @@ class DataSetManagerBase:
 		new_entry["energy"] = self.get_energy(dbs)
 		if not nick_name:
 			pd_name, details, filetype = dbs.strip("/").split("/")
-			if self.get_xsec is not None:
-				new_entry["xsec"] = self.get_xsec(dbs)
+			if xsec is not None:
+				new_entry["xsec"] = xsec
 			new_entry["campaign"]  = self.get_campaign(details=details,energy=new_entry["energy"])
 			new_entry["scenario"]  = self.get_scenario(details=details,energy=new_entry["energy"],data=new_entry["data"])
 			new_entry["generator"] = self.get_generator(pd_name, data=new_entry["data"], isembedded=new_entry.get("embedded", False) )
