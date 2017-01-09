@@ -262,7 +262,6 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)") 
 	
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json")
-	#def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/test.json")
 	parser.add_argument("-i", "--input", dest="inputfile", help="input data base (default=%s)"%def_input, default=def_input)
 	
 	parser.add_argument("--save", default="datasets_conv.json", dest="save", help="save data base to file. For local storage please make ./filname.json otherwise $CMSSW_BASE/src/Kappa/Skimming/data/filename.json is used ")
@@ -279,7 +278,7 @@ if __name__ == "__main__":
 	parser.add_argument("--addtag", dest="addtag", help="Add the to this tag the TagValues -> requieres -- addtagvaluesoption\nAlso either the --query or --nicks option must be given (for matching) ")
 	parser.add_argument("--addtagvalues", dest="addtagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Exetend\" ")
 	
-	parser.add_argument("--globaltag", dest="globaltag", default=None, help="Add a global tag to all that [Default : %(default)s]")
+	parser.add_argument("--globaltag", dest="globaltag", default=None, help="Add a global tag to all that matches query [Default : %(default)s]")
 
 	parser.add_argument("--rmtag", dest="rmtag", help="Remove the to this tag the TagValues -> requieres --TagValues option\nAlso either the --query or --nicks option must be given (for matching) ")
 	parser.add_argument("--rmtagvalues", dest="rmtagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Extend\" ")
@@ -294,27 +293,21 @@ if __name__ == "__main__":
 	parser.add_argument("--printkeys", dest="printkeys", help="which keys to print (use komma separated list) (default=%s)"%def_input, default="dbs")
 	
 	args = parser.parse_args()
-		
 	if not os.path.isabs(args.inputfile):
-		args.inputfile=os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/"+args.inputfile)
-	
-		
+		if os.path.exists(os.path.join(os.path.abspath(args.inputfile))):
+			args.inputfile=os.path.join(os.path.abspath(args.inputfile))
+		elif os.path.exists(os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/"+args.inputfile)):
+			args.inputfile=os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/"+args.inputfile)
+		else: 
+			print "No input file could be found under either "+os.path.join(os.path.abspath(args.inputfile))+" or "+os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/"+args.inputfile)
+			print "Please specify correct file path."
+			exit()
+		print "Using input database at "+args.inputfile
+	else:
+		if not os.path.exists(args.inputfile):
+			print "Input Database "+args.inputfile+" could not be found. Please specify correct file path."
+			exit()
 	DSM = DataSetManagerBase(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks )
-	#~ nicknames = read_grid_control_includes(["samples/13TeV/Spring16_SM_Analysis.conf"])
-	#~ n=0
-	#~ for nick in DSM.get_nick_list():
-		#~ if not nick in nicknames:
-			#~ print nick
-			#~ n+=1
-	#~ print len(nicknames)
-	#~ print len(DSM.get_nick_list())
-
-	#~ for nick in nicknames:
-		#~ if not nick in DSM.get_nick_list():
-			#~ print nick
-			
-	#~ print n
-	#~ exit()
 
 	if args.addDataset and (args.addentry or args.addtag or args.rmtag):
 		print "Adding Datasets and adding/removing entries or tags in same instance not supported. Please do separately."
