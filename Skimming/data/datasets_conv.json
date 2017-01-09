@@ -3050,7 +3050,7 @@
   }, 
   "EmbeddingMCRunIISummer16DR80_ElMuFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USERpythia8": {
     "Moriond17": [
-      "Skim_Base"
+      "Skim_Embedding_MCRunIISummer16"
     ], 
     "campaign": "ElMuFinalState", 
     "data": false, 
@@ -3070,7 +3070,7 @@
   }, 
   "EmbeddingMCRunIISummer16DR80_ElTauFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USERpythia8": {
     "Moriond17": [
-      "Skim_Base"
+      "Skim_Embedding_MCRunIISummer16"
     ], 
     "campaign": "ElTauFinalState", 
     "data": false, 
@@ -3090,7 +3090,7 @@
   }, 
   "EmbeddingMCRunIISummer16DR80_MuTauFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USERpythia8": {
     "Moriond17": [
-      "Skim_Base"
+      "Skim_Embedding_MCRunIISummer16"
     ], 
     "campaign": "MuTauFinalState", 
     "data": false, 
@@ -3110,7 +3110,7 @@
   }, 
   "EmbeddingMCRunIISummer16DR80_TauTauFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USERpythia8": {
     "Moriond17": [
-      "Skim_Base"
+      "Skim_Embedding_MCRunIISummer16"
     ], 
     "campaign": "TauTauFinalState", 
     "data": false, 
