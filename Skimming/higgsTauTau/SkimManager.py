@@ -463,7 +463,7 @@ class SkimManagerBase:
 		status_json.close()
 		
 		
-	def resubmit_failed(self):
+	def resubmit_failed(self,memory=None):
 		all_subdirs = [os.path.join(self.workdir,d) for d in os.listdir(self.workdir) if os.path.isdir(os.path.join(self.workdir,d))]
 		if os.path.exists(os.path.join(self.workdir,'crab_status.json')):
 			check_json = json.load(open(os.path.join(self.workdir,'crab_status.json')))
@@ -473,7 +473,10 @@ class SkimManagerBase:
 			
 		for subdir in all_subdirs:
 			if os.path.basename(subdir) in check_json['completed']:
-				os.system('crab resubmit -d '+subdir)	
+				if memory is not None:
+					os.system('crab resubmit -d '+subdir+' --maxmemory '+memory)
+				else:
+					os.system('crab resubmit -d '+subdir)
 	
 	@classmethod
 	def get_workbase(self):
@@ -531,7 +534,7 @@ if __name__ == "__main__":
 	parser.add_argument("--crab-status", action='store_true', default=False, dest="status", help="Show crab status of non-finished crab tasks in work base and write to file 'crab_status.json' in workdir. Setting this will not submit any tasks, unless --auto-resubmit is set. Default: %(default)s")
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--auto-remake", action='store_true', default=False, dest="auto_remake", help="Auto remake crab tasks where exception is raised. (Remakes .requestcache file). Must be used with --crab-status. Default: %(default)s")
-	parser.add_argument("--resubmit", action='store_true', default=False, dest="resubmit", help="Resubmit failed tasks (after running --crab-status, otherwise all tasks in workdir will be tried to resubmit). Default: %(default)s")
+	parser.add_argument("--resubmit", default=None, dest="resubmit", help="Resubmit failed tasks. New Maximum Memory can be specified. Default: %(default)s")
 	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status. Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
 
@@ -556,7 +559,7 @@ if __name__ == "__main__":
 	if args.remake:
 		SKM.remake_task(args.inputfile,resubmit=args.auto_resubmit)
 	if args.resubmit:
-		SKM.resubmit_failed()
+		SKM.resubmit_failed(memory=args.resubmit)
 	if args.status:
 		if not os.path.exists(os.path.join(work_base,args.workdir)):
 			print "Workdir does not exist. Please specify exising workdir to get status of jobs."
