@@ -472,7 +472,7 @@ class SkimManagerBase:
 			check_json['completed']=[]
 			
 		for subdir in all_subdirs:
-			if os.path.basename(subdir) in check_json['completed']:
+			if os.path.basename(subdir) not in check_json['completed']:
 				if memory is not None:
 					os.system('crab resubmit -d '+subdir+' --maxmemory '+memory)
 				else:
