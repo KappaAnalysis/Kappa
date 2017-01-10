@@ -230,7 +230,25 @@ class DataSetManagerBase:
 			nick_name = self.dataset.make_nickname(new_entry)
 		self.set_n_events_files(new_entry)   
 		self.dataset[nick_name] = new_entry
-		
+
+	def query_datasets(self,pattern,inputDBS=None, xsec=None, nick_name=None, globaltag=None):
+		from Kappa.Skimming.getNumberGeneratedEventsFromDB import RestClient
+		cert = os.environ['X509_USER_PROXY']
+		if not cert.strip():
+			print "X509_USER_PROXY not properly set. Get a voms proxy and set this environment variable to get N events/files from siteDB"
+			return
+		rest_client = RestClient(cert=cert)
+		url = 'https://cmsweb.cern.ch/dbs/prod/'+inputDBS+'/DBSReader'
+		import ast
+		print pattern
+		dataset_list = [d["dataset"]  for d in ast.literal_eval(rest_client.get(url, api='datasets', params={'dataset': pattern}))]
+		print "Adding missing datasets queried from the pattern: "
+		print pattern
+		print "---------------------------------------------"
+		for dataset in dataset_list:
+			self.add_dataset(dataset, inputDBS=inputDBS, xsec=xsec, nick_name=nick_name, globaltag=globaltag)
+		return
+
 	def delete_datasets(self):
 		nicks = self.get_nick_list()
 		for del_nick in nicks:
@@ -283,8 +301,8 @@ if __name__ == "__main__":
 	parser.add_argument("--rmtag", dest="rmtag", help="Remove the to this tag the TagValues -> requieres --TagValues option\nAlso either the --query or --nicks option must be given (for matching) ")
 	parser.add_argument("--rmtagvalues", dest="rmtagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Extend\" ")
 	
-	parser.add_argument("--addDataset", dest="addDataset", help="Add a dataset")
-	parser.add_argument("--inputDBS", dest="inputDBS", help="Change the dbs instance, default will be global (for official samples), for private production choose phys03")
+	parser.add_argument("--addDatasets", dest="addDatasets", help="Add one or more datasets which match a given DAS pattern with the structure /*/*/*.")
+	parser.add_argument("--inputDBS", dest="inputDBS", default="global", help="Change the dbs instance, default will be global (for official samples), for private production choose phys03")
 	parser.add_argument("--xsec", dest="xsec", help="Add a cross section to this Dataset ")
 	
 	parser.add_argument("--deleteDatasets", dest="deleteDatasets", help="Delete Datasets which are matched", action='store_true')
@@ -309,11 +327,11 @@ if __name__ == "__main__":
 			exit()
 	DSM = DataSetManagerBase(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks )
 
-	if args.addDataset and (args.addentry or args.addtag or args.rmtag):
+	if args.addDatasets and (args.addentry or args.addtag or args.rmtag):
 		print "Adding Datasets and adding/removing entries or tags in same instance not supported. Please do separately."
 		exit()
-	if args.addDataset:
-		DSM.add_dataset(dbs=args.addDataset, inputDBS=args.inputDBS,xsec=args.xsec,globaltag=args.globaltag)
+	if args.addDatasets:
+		DSM.query_datasets(args.addDatasets, inputDBS=args.inputDBS, xsec=args.xsec, globaltag=args.globaltag)
 	else:
 		if args.addentry:
 			DSM.add_entry(entry=args.addentry)
