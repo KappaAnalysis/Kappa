@@ -469,10 +469,10 @@ class SkimManagerBase:
 			check_json = json.load(open(os.path.join(self.workdir,'crab_status.json')))
 		else:
 			check_json = {}
-			check_json['failed']=[]
+			check_json['completed']=[]
 			
 		for subdir in all_subdirs:
-			if os.path.basename(subdir) in check_json['failed']:
+			if os.path.basename(subdir) in check_json['completed']:
 				os.system('crab resubmit -d '+subdir)	
 	
 	@classmethod
