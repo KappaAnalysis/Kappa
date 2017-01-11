@@ -221,7 +221,7 @@ class SkimManagerBase:
 		else:
 			print str(len(self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "INIT"})))+" tasks will be submitted to the crab server. Continue? [Y/n]"
 			self.wait_for_user_confirmation()
-
+		nerror=0
 		for akt_nick in self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "INIT"}):
 			config = self.crab_default_cfg() ## if there are parameters which should only be set for one dataset then its better to start from default again
 			self.individualized_crab_cfg(akt_nick, config)
@@ -230,16 +230,24 @@ class SkimManagerBase:
 				continue 
 			self.skimdataset[akt_nick]['outLFNDirBase'] = config.Data.outLFNDirBase
 			self.skimdataset[akt_nick]['storageSite'] = config.Site.storageSite 
-			self.skimdataset[akt_nick]["SKIM_STATUS"] = "SUBMITTED"
 			self.skimdataset[akt_nick]["crab_name"] = "crab_"+config.General.requestName
 			#~ f = open('config_'+akt_nick+'.py','w')
 			#~ f.write(str(config))
 			#~ f.close
 			#~ continue
-			crab_cmd(cmd='submit',config=config,proxy=self.voms_proxy)
+			
+			try:
+				crab_cmd(cmd='submit',config=config,proxy=self.voms_proxy)
+				self.skimdataset[akt_nick]["SKIM_STATUS"] = "SUBMITTED"
+
+			except exc:
+				nerror+=1
+				print exc
 			#~ p = Process(target=crab_cmd, args=('submit',config,self.voms_proxy))
 			#~ p.start()
 			#~ p.join()  ###make no sens for multiprocessing here, since python will wait until p is finished. Solution would be to save all p's and then join them in in a seperate loop. 
+		if nerror>0:
+			print str(nerror)+' tasks raised an exception. Run again to try to resubmit.'
 		self.save_dataset(filename)
 	
 	def crab_default_cfg(self):
