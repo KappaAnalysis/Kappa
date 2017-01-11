@@ -152,9 +152,25 @@ class SkimManagerBase:
 			#print 'go.py '+out_file_name+' -Gc -m 1'
 			out_file.close()
 			
-	def submit_gc(self):
-		configlist = [c for c in os.listdir(os.path.join(self.workdir,'gc_cfg')) if c[-5:]=='.conf'] 
-		print str(len(configlist))+' Grid Control tasks will be submitted. Continue? [Y/n]'
+	def submit_gc(self, in_dataset_file,  tag_key = None, tag_values_str = None, query = None, nick_regex = None):
+		
+		allconfigs = [c for c in os.listdir(os.path.join(self.workdir,'gc_cfg')) if c[-5:]=='.conf']
+		
+		self.inputdataset = datasetsHelperTwopz(in_dataset_file)
+		tag_values = None
+		if tag_values_str:
+			tag_values = tag_values_str.strip('][').replace(' ','').split(',')
+		
+		configlist = []
+		for new_nick in self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex):
+			for config in allconfigs:
+				if new_nick in config:
+					configlist.append(config)
+					break
+		if len(configlist)==0:
+			print 'No Grid control configs for query could be found. Please run again with --init to create configs.'
+		else:
+			print str(len(configlist))+' Grid Control tasks will be submitted. Continue? [Y/n]'
 		self.wait_for_user_confirmation()
 		for c in configlist:
 			os.system('go.py '+os.path.join(self.workdir,'gc_cfg',c)+' -m 5')
@@ -538,7 +554,7 @@ if __name__ == "__main__":
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--auto-remake", action='store_true', default=False, dest="auto_remake", help="Auto remake crab tasks where exception is raised. (Remakes .requestcache file). Must be used with --crab-status. Default: %(default)s")
 	parser.add_argument("--resubmit", default=None, dest="resubmit", help="Resubmit failed tasks. New Maximum Memory can be specified. Default: %(default)s")
-	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status. Default: %(default)s")
+	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status or --remake. Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
 
 	args = parser.parse_args()
@@ -572,7 +588,7 @@ if __name__ == "__main__":
 	if not (args.status or args.remake or args.resubmit):
 		SKM.create_gc_config()
 		if args.submitgc:
-			SKM.submit_gc()
+			SKM.submit_gc(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
 			#SKM.status_gc(check_completed=args.checkcompleted)
 		else:	
 			SKM.submit_crab()
