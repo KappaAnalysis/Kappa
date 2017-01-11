@@ -150,7 +150,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	if "reHLT" in datasetsHelper.get_campaign(nickname):
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
-	if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded:
+	if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded and "Spring16" in datasetsHelper.get_campaign(nickname):
 		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	

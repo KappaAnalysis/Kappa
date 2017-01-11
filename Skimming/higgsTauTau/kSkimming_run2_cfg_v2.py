@@ -113,6 +113,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	data = datasetsHelper.isData(nickname)
 	isEmbedded = datasetsHelper.isEmbedded(nickname)
 	isreHLT = datasetsHelper.isreHLT(nickname)
+	print nickname
 	#####miniaod = datasetsHelper.isMiniaod(nickname) not used anymore, since everything is MiniAOD now
 	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 	## ------------------------------------------------------------------------
@@ -159,7 +160,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#	process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	if isreHLT:
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
-	elif not isEmbedded:
+	elif not isEmbedded and "Spring16" in str(process.kappaTuple.TreeInfo.parameters.campaign):
 		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	
@@ -435,7 +436,7 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg_v2":
 	# test with user-defined input file
 	if options.testfile:
 		print 'read from testfile '+str(options.testfile)
-		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents, outputfilename=options.outputfilename)
+		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("%s"%options.testfile), maxevents=options.maxevents, outputfilename=options.outputfilename)
 	
 	# CRAB job-submission
 	elif options.outputfilename:
