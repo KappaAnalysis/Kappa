@@ -8,25 +8,13 @@ import subprocess
 import json
 import ast
 
-def crab_cmd(cmd, config=None, proxy=None, crab_dir=None, argument_dict=None):
-	from httplib import HTTPException
-	from CRABAPI.RawCommand import crabCommand
-	from CRABClient.ClientExceptions import ClientException
-	try:
-		if config:
-			return crabCommand(cmd, config = config,proxy=proxy)
-		elif argument_dict:
-			return crabCommand(cmd, **argument_dict)
-		else:
-			return crabCommand(cmd, proxy=proxy, dir=crab_dir)
-			
-	except HTTPException as hte:
-		print "Failed submitting task: %s" % (hte.headers)
-	except ClientException as cle:
-		print "Failed submitting task: %s" % (cle)
-
+from httplib import HTTPException
+from CRABAPI.RawCommand import crabCommand
+from CRABClient.ClientExceptions import ClientException
 
 class SkimManagerBase:
+
+
 	def __init__(self, workbase=".", workdir="TEST_SKIM", use_proxy_variable=False):
 		self.workdir = os.path.join(workbase,workdir)
 		if not os.path.exists(self.workdir+"/gc_cfg"): 
@@ -41,13 +29,18 @@ class SkimManagerBase:
 			self.voms_proxy=os.environ['X509_USER_PROXY']
 		except:
 			pass
-			
-	#~ def  __del__(self): 
-		#~ self.save_dataset()
-		
+
+	def crab_cmd(self, cmd, argument_dict=None):
+		try:
+			return crabCommand(cmd, **argument_dict)
+		except HTTPException as hte:
+			print "Failed",cmd,"of the task: %s" % (hte.headers)
+		except ClientException as cle:
+			print "Failed",cmd,"of the task: %s" % (cle)
+
 	def save_dataset(self,filename=None):
 		self.skimdataset.write_to_jsonfile(filename)  
-		
+
 	def add_new(self, in_dataset_file,  tag_key = None, tag_values_str = None, query = None, nick_regex = None):
 		self.inputdataset = datasetsHelperTwopz(in_dataset_file)
 		tag_values = None
@@ -73,16 +66,17 @@ class SkimManagerBase:
 			from CRABClient.UserUtilities import getUsernameFromSiteDB
 			self.UsernameFromSiteDB = getUsernameFromSiteDB()
 			return self.UsernameFromSiteDB
+
 	def get_global_tag(self, akt_nick):
 		return self.skimdataset[akt_nick].get("globalTag", '80X_dataRun2_2016SeptRepro_v4' if self.skimdataset.isData(akt_nick) else '80X_mcRun2_asymptotic_2016_miniAODv2_v1')
-		
+
 	def gc_default_cfg(self):
 		cfg_dict = {}
 		cfg_dict['global'] = {}
-		cfg_dict['global']['task']  = 'CMSSW'   
+		cfg_dict['global']['task']  = 'CMSSW'
 		cfg_dict['global']['backend']  = 'condor'
 		#cfg_dict['global']['backend']  = 'local'
-		#cfg_dict['global']['backend']  = 'cream'		
+		#cfg_dict['global']['backend']  = 'cream'
 		cfg_dict['global']["workdir create"] = 'True '
 
 		cfg_dict['jobs'] = {}
@@ -90,12 +84,11 @@ class SkimManagerBase:
 		cfg_dict['jobs']['wall time'] = '02:00:00'
 		cfg_dict['jobs']['memory'] = '4000'
 		#cfg_dict['jobs']['jobs'] = '5'
-		
-		
+
 		cfg_dict['CMSSW'] = {}
 		cfg_dict['CMSSW']['project area'] = '$CMSSW_BASE/'
 		cfg_dict['CMSSW']['config file'] = self.configfile
-		
+
 		cfg_dict['CMSSW']['dataset splitter'] = 'FileBoundarySplitter'
 		cfg_dict['CMSSW']['files per job'] = '1'
 		cfg_dict['CMSSW']['se runtime'] = 'True'
@@ -103,23 +96,20 @@ class SkimManagerBase:
 		cfg_dict['CMSSW']['depends'] = 'glite'
 		cfg_dict['CMSSW']['parameter factory'] = "ModularParameterFactory"
 		cfg_dict['CMSSW']['partition lfn modifier dict'] = "\n   <xrootd>    => root://cms-xrd-global.cern.ch//\n   <xrootd:eu> => root://xrootd-cms.infn.it//\n   <xrootd:us> => root://cmsxrootd.fnal.gov//\n   <xrootd:desy> => root://dcache-cms-xrootd.desy.de:1094/\n   <srm:nrg> => srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/\n   <dcap:nrg> => dcap://dcnrgdcap.gridka.de:22125//pnfs/gridka.de/dcms/disk-only/\n   <xrootd:nrg> => root://cmsxrootd.gridka.de//pnfs/gridka.de/dcms/disk-only/\n   <dcap:gridka> => dcap://dccmsdcap.gridka.de:22125//pnfs/gridka.de/cms/disk-only/\n   <xrootd:gridka> => root://cmsxrootd.gridka.de//\n   <dcap:aachen> => dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/\n"
-		
-		
-		
+
 		cfg_dict['storage'] = {}
 		cfg_dict['storage']['se output files'] = 'kappaTuple.root'
 		cfg_dict['storage']['se output pattern'] = "SKIMMING_CMSSW_8_0_21_try2/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
-	
+
 		cfg_dict['condor'] = {}
 		cfg_dict['condor']['JDLData'] = 'Requirements=(TARGET.CLOUDSITE=="BWFORCLUSTER") +REMOTEJOB=True'
 		cfg_dict['condor']['proxy'] = "VomsProxy"
-		
+
 		cfg_dict['local'] = {}
 		cfg_dict['local']['queue randomize'] = 'True'
 		cfg_dict['local']['wms'] = 'OGE'
 		cfg_dict['local']['proxy'] = 'VomsProxy'
 		cfg_dict['local']['submit options'] = '-l os=sld6'
-		
 
 		cfg_dict['wms'] = {}
 		cfg_dict['wms']['submit options'] = '-l distro=sld6'
@@ -130,13 +120,12 @@ class SkimManagerBase:
 		cfg_dict['constants'] = {}
 		cfg_dict['constants']['GC_GLITE_LOCATION'] = '/cvmfs/grid.cern.ch/emi3ui-latest/etc/profile.d/setup-ui-example.sh'
 		#cfg_dict['constants']['X509_USER_PROXY'] = '$X509_USER_PROXY'
-		
 
 		cfg_dict['parameters'] = {}
 		cfg_dict['parameters']['parameters'] = 'transform("FOLDER", "GC_JOB_ID % 100 + 1")'
-		
+
 		return cfg_dict
-		
+
 	def create_gc_config(self):
 		shutil.copyfile(src=os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/higgsTauTau/",self.configfile),dst=os.path.join(self.workdir,'gc_cfg',self.configfile))
 		gc_config = self.gc_default_cfg()
@@ -155,16 +144,16 @@ class SkimManagerBase:
 					out_file.write(akt_item+' = '+gc_config[akt_key][akt_item]+'\n')
 			#print 'go.py '+out_file_name+' -Gc -m 1'
 			out_file.close()
-			
+
 	def submit_gc(self, in_dataset_file,  tag_key = None, tag_values_str = None, query = None, nick_regex = None):
-		
+
 		allconfigs = [c for c in os.listdir(os.path.join(self.workdir,'gc_cfg')) if c[-5:]=='.conf']
-		
+
 		self.inputdataset = datasetsHelperTwopz(in_dataset_file)
 		tag_values = None
 		if tag_values_str:
 			tag_values = tag_values_str.strip('][').replace(' ','').split(',')
-		
+
 		configlist = []
 		for new_nick in self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex):
 			for config in allconfigs:
@@ -178,11 +167,11 @@ class SkimManagerBase:
 		self.wait_for_user_confirmation()
 		for c in configlist:
 			os.system('go.py '+os.path.join(self.workdir,'gc_cfg',c)+' -m 5')
-	
+
 	def status_gc(self,check_completed=False):
 		readfile = open(os.path.join(self.workdir,'completed_untilgc.txt'),'r')
 		clist = readfile.read().splitlines()
-		
+
 		workdirlist = [d for d in os.listdir(os.path.join(self.workdir)) if (os.path.isdir(os.path.join(self.workdir,d)) and d not in clist)]
 		n = len(workdirlist)
 		completed=[]
@@ -215,25 +204,22 @@ class SkimManagerBase:
 		if check_completed:
 			f.close()
 			status_json.close()
-			
-	
-	def individualized_gc_cfg(self, akt_nick ,gc_config):
-		
-			#se_path_base == srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/
-			#se_path_base = 'srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/'
-			se_path_base = "srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/"
-			gc_config['storage']['se path'] = se_path_base+"store/user/%s/higgs-kit/skimming/GC_SKIM/%s/"%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
-			#gc_config['storage']['se output pattern'] = "FULLEMBEDDING_CMSSW_8_0_21/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
-			gc_config['CMSSW']['dataset'] = akt_nick+" : "+self.skimdataset[akt_nick]['dbs']
-			gc_config['CMSSW']['files per job'] = str(self.files_per_job(akt_nick))
-			gc_config['global']["workdir"] = os.path.join(self.workdir,akt_nick[:100])
-			
-			gc_config['dataset'] = {}
-			gc_config['dataset']['dbs instance'] = self.skimdataset[akt_nick].get("inputDBS",'global')
-											   #URL=https://cmsdbsprod.cern.ch:8443/cms_dbs_prod_global_writer/servlet/DBSServlet
-			gc_config['constants']['GLOBALTAG'] = self.get_global_tag(akt_nick)
 
-			
+	def individualized_gc_cfg(self, akt_nick ,gc_config):
+		#se_path_base == srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/
+		#se_path_base = 'srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/'
+		se_path_base = "srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/"
+		gc_config['storage']['se path'] = se_path_base+"store/user/%s/higgs-kit/skimming/GC_SKIM/%s/"%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
+		#gc_config['storage']['se output pattern'] = "FULLEMBEDDING_CMSSW_8_0_21/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
+		gc_config['CMSSW']['dataset'] = akt_nick+" : "+self.skimdataset[akt_nick]['dbs']
+		gc_config['CMSSW']['files per job'] = str(self.files_per_job(akt_nick))
+		gc_config['global']["workdir"] = os.path.join(self.workdir,akt_nick[:100])
+		
+		gc_config['dataset'] = {}
+		gc_config['dataset']['dbs instance'] = self.skimdataset[akt_nick].get("inputDBS",'global')
+										   #URL=https://cmsdbsprod.cern.ch:8443/cms_dbs_prod_global_writer/servlet/DBSServlet
+		gc_config['constants']['GLOBALTAG'] = self.get_global_tag(akt_nick)
+
 	def submit_crab(self,filename=None):
 		if len(self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "INIT"})) == 0:
 			print "\nNo tasks will be submitted to the crab server. Set --init to add new tasks to submit.\n"
@@ -250,22 +236,19 @@ class SkimManagerBase:
 			self.skimdataset[akt_nick]['outLFNDirBase'] = config.Data.outLFNDirBase
 			self.skimdataset[akt_nick]['storageSite'] = config.Site.storageSite 
 			self.skimdataset[akt_nick]["crab_name"] = "crab_"+config.General.requestName
-			#~ f = open('config_'+akt_nick+'.py','w')
-			#~ f.write(str(config))
-			#~ f.close
-			#~ continue
-			
+
 			try:
-				crab_cmd(cmd='submit',config=config,proxy=self.voms_proxy)
+				submit_dict = {"config" : config, "proxy" : self.voms_proxy}
+				self.crab_cmd(cmd='submit',argument_dict=submit_dict)
 				self.skimdataset[akt_nick]["SKIM_STATUS"] = "SUBMITTED"
 
 			except exc:
 				nerror+=1
 				print exc
 		if nerror>0:
-			print str(nerror)+' tasks raised an exception. Run again to try to resubmit.'
+			print nerror,'tasks raised an exception. Run again to try to resubmit.'
 		self.save_dataset(filename)
-	
+
 	def crab_default_cfg(self):
 		from CRABClient.UserUtilities import config
 		config = config()
@@ -284,7 +267,7 @@ class SkimManagerBase:
 		config.Data.publication = False
 		config.Site.storageSite = "T2_DE_DESY"
 		return config
-	
+
 	def individualized_crab_cfg(self, akt_nick, config):
 		config.General.requestName = akt_nick[:100]
 		config.Data.inputDBS = self.skimdataset[akt_nick].get("inputDBS",'global')
@@ -295,7 +278,7 @@ class SkimManagerBase:
 		config.Data.ignoreLocality = self.skimdataset[akt_nick].get("ignoreLocality", True) ## i have very good experince with this option, but feel free to change it (maybe also add larger default black list for this, or start with a whitlist 
 		config.Site.blacklist.extend(self.skimdataset[akt_nick].get("blacklist", []))
 		config.JobType.outputFiles = [str('kappa_%s.root'%(akt_nick))]
-	
+
 	def files_per_job(self, akt_nick):
 		job_submission_limit=10000
 		if self.skimdataset[akt_nick].get("files_per_job", None):
@@ -312,13 +295,14 @@ class SkimManagerBase:
 	def status_crab(self):
 		self.get_status_crab()
 		self.update_status_crab()
-	
+
 	def get_status_crab(self):
 		for akt_nick in self.skimdataset.nicks():
-			if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED",'SUBMIT',"RUNNING","NEW"]:
+			if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED","SUBMIT","RUNNING","NEW","FAILED","UNKNOWN"]:
 				crab_job_dir = os.path.join(self.workdir,self.skimdataset[akt_nick]["crab_name"])
-				self.skimdataset[akt_nick]['last_status'] = crab_cmd('status',None,self.voms_proxy,crab_job_dir)
-	
+				status_dict = {"proxy" : self.voms_proxy, "dir" : crab_job_dir}
+				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd(cmd='status', argument_dict = status_dict)
+
 	def update_status_crab(self):
 		for akt_nick in self.skimdataset.nicks():
 			all_jobs = 0
@@ -334,8 +318,6 @@ class SkimManagerBase:
 			self.skimdataset[akt_nick]['crab_done'] = 0.0 if all_jobs == 0  else round(float(100.0*done_jobs)/float(all_jobs),2)
 			self.skimdataset[akt_nick]['n_jobs'] = max(all_jobs,self.skimdataset[akt_nick].get('n_jobs',0))
 
-		
-		
 	def print_skim(self):
 		print "---------------------------------------------------------"
 	##  for akt_nick in self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "DONE"})
@@ -351,14 +333,13 @@ class SkimManagerBase:
 				if line[0].isdigit():
 					tasks.append(line)
 		return tasks
-	
+
 	def remake_all(self):
 		tasks = self.get_crab_taskIDs()
 		for task in tasks:
 			os.system('crab remake --task='+task)
 
 	def remake_task(self,inputfile,resubmit=False):
-		
 		if os.path.exists(os.path.join(self.workdir,'crab_status.json')):
 			check_json = json.load(open(os.path.join(self.workdir,'crab_status.json')))
 			ntask = len(check_json['exception'])
@@ -398,7 +379,7 @@ class SkimManagerBase:
 					shutil.rmtree(os.path.join(self.workdir,os.path.basename(subdir)))
 					self.add_new(in_dataset_file=inputfile,nick_regex = os.path.basename(subdir)[5:])
 					self.submit_crab()
-	
+
 	def write_crab_status(self,remake=False,in_dataset_file=None,resubmit=False):
 		''''''
 		all_subdirs = [os.path.join(self.workdir,self.skimdataset[dataset]["crab_name"]) for dataset in self.skimdataset.nicks()]
@@ -478,13 +459,15 @@ class SkimManagerBase:
 		status_json = open(os.path.join(self.workdir,'crab_status.json'), 'w')
 		status_json.write(json.dumps(status_dict, sort_keys=True, indent=2))
 		status_json.close()
-		
+
 	def resubmit_failed(self,argument_dict):
-		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if "failed" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"]]
+		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if "failed" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"] and self.skimdataset[dataset]["SKIM_STATUS"] != "COMPLETED"]
 		print "Try to resubmit",len(datasets_to_resubmit),"tasks"
 		for dataset in datasets_to_resubmit:
+			print "Resubmission for",dataset
 			argument_dict["dir"] = os.path.join(self.workdir,str(dataset))
-			crab_cmd("resubmit", argument_dict = argument_dict)
+			self.crab_cmd(cmd="resubmit", argument_dict = argument_dict)
+			print "--------------------------------------------"
 
 	@classmethod
 	def get_workbase(self):
@@ -502,20 +485,21 @@ class SkimManagerBase:
 			else:
 				log.critical("Default workbase could not be found. Please specify working dir as absolute path.")
 				sys.exit()
-	@classmethod	
+
+	@classmethod
 	def get_latest_subdir(self,work_base):
 		all_subdirs = [work_base+d for d in os.listdir(work_base) if os.path.isdir(work_base+d)]
 		return(max(all_subdirs, key=os.path.getmtime))
-	
+
 	@classmethod
 	def wait_for_user_confirmation(self):
 		choice = raw_input().lower()
 		if choice in set(['yes','y','ye', '']):
 			pass
 		elif choice in set(['no','n']):
-		   exit()
+			exit()
 		else:
-		   sys.stdout.write("Please respond with 'yes' or 'no'") 
+			sys.stdout.write("Please respond with 'yes' or 'no'")
 
 if __name__ == "__main__":
 	
