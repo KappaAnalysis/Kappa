@@ -357,29 +357,24 @@ class SkimManagerBase:
 			check_json = {}
 			check_json['exception']=[]
 			print 'crab_status.json could not be found. Please run with --crab-status to create and get list of all jobs that raise exception.'
-			print 'Do you want to remake all crab tasks in current workdir? [Y/n]'
+			print 'Do you want to remake all '+str(len(all_subdirs))+' crab tasks in current workdir? This will delete and recreate those folders in the workdir. [Y/n]'
 			self.wait_for_user_confirmation()
-			ntask = len(all_subdirs)
-			print 'All '+str(ntask)+' tasks in workdir will be remade.'
 		print '\033[94m'+'Getting crab tasks...'+'\033[0m'
 		tasks = self.get_crab_taskIDs()
-		resubmit_message=False
 		idir=1
-		print all_subdirs
 		for subdir in all_subdirs:
 			print '\033[94m'+'('+str(idir)+'/'+str(ntask)+')	REMAKING '+os.path.basename(subdir)+'\033[0m'
 			idir+=1
 			task_exists = False
-			#~ for task in tasks:
-				#~ if os.path.basename(subdir)[5:] in task:
-					#~ task_exists=True
-					#~ os.chdir(self.workdir)
-					#~ shutil.rmtree(os.path.join(self.workdir,os.path.basename(subdir)))
-					#~ os.system('crab remake --task='+task)
-					#~ os.system('crab resubmit -d '+os.path.join(self.workdir,os.path.basename(subdir)))
-					#~ break
+			for task in tasks:
+				if os.path.basename(subdir)[5:] in task:
+					task_exists=True
+					os.chdir(self.workdir)
+					shutil.rmtree(os.path.join(self.workdir,os.path.basename(subdir)))
+					os.system('crab remake --task='+task)
+					os.system('crab resubmit -d '+os.path.join(self.workdir,os.path.basename(subdir)))
+					break
 			if not task_exists:
-				resubmit_message=True
 				#print '\033[91m'+os.path.basename(subdir)+' COULD NOT BE REMADE AS NO MATCHING TASK IS KNOWN TO CRAB.'+'\033[0m'
 				if resubmit:
 					print'\033[94m'+'RESUBMITTING...'+'\033[0m'		
