@@ -5,17 +5,21 @@ from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
 import argparse
 import datetime
 import subprocess
-import json 
+import json
+import ast
 
-def crab_cmd(cmd, config=None, proxy=None, crab_dir=None):
+def crab_cmd(cmd, config=None, proxy=None, crab_dir=None, argument_dict=None):
 	from httplib import HTTPException
 	from CRABAPI.RawCommand import crabCommand
 	from CRABClient.ClientExceptions import ClientException
 	try:
-		if not config:
-			return crabCommand(cmd, proxy=proxy, dir=crab_dir)
-		else:
+		if config:
 			return crabCommand(cmd, config = config,proxy=proxy)
+		elif argument_dict:
+			return crabCommand(cmd, **argument_dict)
+		else:
+			return crabCommand(cmd, proxy=proxy, dir=crab_dir)
+			
 	except HTTPException as hte:
 		print "Failed submitting task: %s" % (hte.headers)
 	except ClientException as cle:
@@ -231,7 +235,6 @@ class SkimManagerBase:
 
 			
 	def submit_crab(self,filename=None):
-		from multiprocessing import Process
 		if len(self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "INIT"})) == 0:
 			print "\nNo tasks will be submitted to the crab server. Set --init to add new tasks to submit.\n"
 		else:
@@ -259,9 +262,6 @@ class SkimManagerBase:
 			except exc:
 				nerror+=1
 				print exc
-			#~ p = Process(target=crab_cmd, args=('submit',config,self.voms_proxy))
-			#~ p.start()
-			#~ p.join()  ###make no sens for multiprocessing here, since python will wait until p is finished. Solution would be to save all p's and then join them in in a seperate loop. 
 		if nerror>0:
 			print str(nerror)+' tasks raised an exception. Run again to try to resubmit.'
 		self.save_dataset(filename)
@@ -276,6 +276,7 @@ class SkimManagerBase:
 		config.JobType.pluginName = 'Analysis'
 		config.JobType.psetName = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/higgsTauTau/",self.configfile)
 		#config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
+		config.JobType.maxMemoryMB = 2500
 		config.JobType.allowUndistributedCMSSW = True
 		config.Site.blacklist = ["T2_BR_SPRACE","T1_RU_JINR"]
 		config.Data.splitting = 'FileBased'
@@ -284,7 +285,6 @@ class SkimManagerBase:
 		config.Site.storageSite = "T2_DE_DESY"
 		return config
 	
-
 	def individualized_crab_cfg(self, akt_nick, config):
 		config.General.requestName = akt_nick[:100]
 		config.Data.inputDBS = self.skimdataset[akt_nick].get("inputDBS",'global')
@@ -295,7 +295,6 @@ class SkimManagerBase:
 		config.Data.ignoreLocality = self.skimdataset[akt_nick].get("ignoreLocality", True) ## i have very good experince with this option, but feel free to change it (maybe also add larger default black list for this, or start with a whitlist 
 		config.Site.blacklist.extend(self.skimdataset[akt_nick].get("blacklist", []))
 		config.JobType.outputFiles = [str('kappa_%s.root'%(akt_nick))]
-	
 	
 	def files_per_job(self, akt_nick):
 		job_submission_limit=10000
@@ -309,6 +308,7 @@ class SkimManagerBase:
 			else:
 				return 1
 		return 1
+
 	def status_crab(self):
 		self.get_status_crab()
 		self.update_status_crab()
@@ -328,7 +328,7 @@ class SkimManagerBase:
 				for job_per_status in self.skimdataset[akt_nick]['last_status'].get('jobsPerStatus',{}).keys():
 					all_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
 					if job_per_status in ['done','finished']:
-						done_jobs = done_jobs+self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]	
+						done_jobs = done_jobs+self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
 			except:
 				pass
 			self.skimdataset[akt_nick]['crab_done'] = 0.0 if all_jobs == 0  else round(float(100.0*done_jobs)/float(all_jobs),2)
@@ -401,9 +401,7 @@ class SkimManagerBase:
 	
 	def write_crab_status(self,remake=False,in_dataset_file=None,resubmit=False):
 		''''''
-		all_subdirs = [os.path.join(self.workdir,d) for d in os.listdir(self.workdir) if os.path.isdir(os.path.join(self.workdir,d))]
-		if os.path.join(self.workdir,'gc_cfg') in all_subdirs:
-			all_subdirs.remove(os.path.join(self.workdir,'gc_cfg'))
+		all_subdirs = [os.path.join(self.workdir,self.skimdataset[dataset]["crab_name"]) for dataset in self.skimdataset.nicks()]
 		completed = []
 		exception = []
 		running = []
@@ -481,22 +479,13 @@ class SkimManagerBase:
 		status_json.write(json.dumps(status_dict, sort_keys=True, indent=2))
 		status_json.close()
 		
-		
-	def resubmit_failed(self,memory=None):
-		all_subdirs = [os.path.join(self.workdir,d) for d in os.listdir(self.workdir) if os.path.isdir(os.path.join(self.workdir,d))]
-		if os.path.exists(os.path.join(self.workdir,'crab_status.json')):
-			check_json = json.load(open(os.path.join(self.workdir,'crab_status.json')))
-		else:
-			check_json = {}
-			check_json['completed']=[]
-			
-		for subdir in all_subdirs:
-			if os.path.basename(subdir) not in check_json['completed']:
-				if memory is not None:
-					os.system('crab resubmit -d '+subdir+' --maxmemory '+memory)
-				else:
-					os.system('crab resubmit -d '+subdir)
-	
+	def resubmit_failed(self,argument_dict):
+		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if "failed" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"]]
+		print "Try to resubmit",len(datasets_to_resubmit),"tasks"
+		for dataset in datasets_to_resubmit:
+			argument_dict["dir"] = os.path.join(self.workdir,str(dataset))
+			crab_cmd("resubmit", argument_dict = argument_dict)
+
 	@classmethod
 	def get_workbase(self):
 		if os.environ.get('SKIM_WORK_BASE') is not None:
@@ -553,7 +542,7 @@ if __name__ == "__main__":
 	parser.add_argument("--crab-status", action='store_true', default=False, dest="status", help="Show crab status of non-finished crab tasks in work base and write to file 'crab_status.json' in workdir. Setting this will not submit any tasks, unless --auto-resubmit is set. Default: %(default)s")
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--auto-remake", action='store_true', default=False, dest="auto_remake", help="Auto remake crab tasks where exception is raised. (Remakes .requestcache file). Must be used with --crab-status. Default: %(default)s")
-	parser.add_argument("--resubmit", default=None, dest="resubmit", help="Resubmit failed tasks. New Maximum Memory can be specified. Default: %(default)s")
+	parser.add_argument("--resubmit-with-options", default=None, dest="resubmit", help="Resubmit failed tasks. Options for crab resubmit can be specified via a python dict, e.g: --resubmit '{\"maxmemory\" : \"3000\", \"maxruntime\" : \"1440\"}'. To avoid options use '{}' Default: %(default)s")
 	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status or --remake. Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
 
@@ -578,7 +567,8 @@ if __name__ == "__main__":
 	if args.remake:
 		SKM.remake_task(args.inputfile,resubmit=args.auto_resubmit)
 	if args.resubmit:
-		SKM.resubmit_failed(memory=args.resubmit)
+		SKM.resubmit_failed(argument_dict=ast.literal_eval(args.resubmit))
+		exit()
 	if args.status:
 		if not os.path.exists(os.path.join(work_base,args.workdir)):
 			print "Workdir does not exist. Please specify exising workdir to get status of jobs."
