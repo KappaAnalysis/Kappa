@@ -24,6 +24,10 @@ class SkimManagerBase:
 		self.configfile = 'kSkimming_run2_cfg_v2.py'
 		self.max_crab_jobs_per_nick = 8000 # 10k is the hard limit
 		self.voms_proxy = None
+		self.site_storage_access_dict = {
+			"T2_DE_DESY" : "dcap://dcache-cms-dcap.desy.de//pnfs/desy.de/cms/tier2/",
+			"T2_DE_RWTH" : "dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/"
+		}
 		self.UsernameFromSiteDB = None
 		try:
 			self.voms_proxy=os.environ['X509_USER_PROXY']
@@ -57,8 +61,8 @@ class SkimManagerBase:
 					self.skimdataset[new_nick] = self.inputdataset[new_nick]
 					self.skimdataset[new_nick]["SKIM_STATUS"] = "INIT"
 					self.skimdataset[new_nick]["GCSKIM_STATUS"] = "INIT"
+		self.save_dataset()
 
-		self.save_dataset() 
 	def getUsernameFromSiteDB_cache(self):
 		if self.UsernameFromSiteDB:
 			return self.UsernameFromSiteDB
@@ -261,7 +265,7 @@ class SkimManagerBase:
 		#config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
 		config.JobType.maxMemoryMB = 2500
 		config.JobType.allowUndistributedCMSSW = True
-		config.Site.blacklist = ["T2_BR_SPRACE","T1_RU_JINR"]
+		config.Site.blacklist = ["T2_BR_SPRACE","T1_RU_*","T2_RU_*","T3_US_UMiss"]
 		config.Data.splitting = 'FileBased'
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
 		config.Data.publication = False
@@ -305,18 +309,19 @@ class SkimManagerBase:
 
 	def update_status_crab(self):
 		for akt_nick in self.skimdataset.nicks():
-			all_jobs = 0
-			done_jobs = 0
-			try:
-				self.skimdataset[akt_nick]["SKIM_STATUS"] = self.skimdataset[akt_nick]['last_status']['status']
-				for job_per_status in self.skimdataset[akt_nick]['last_status'].get('jobsPerStatus',{}).keys():
-					all_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
-					if job_per_status in ['done','finished']:
-						done_jobs = done_jobs+self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
-			except:
-				pass
-			self.skimdataset[akt_nick]['crab_done'] = 0.0 if all_jobs == 0  else round(float(100.0*done_jobs)/float(all_jobs),2)
-			self.skimdataset[akt_nick]['n_jobs'] = max(all_jobs,self.skimdataset[akt_nick].get('n_jobs',0))
+			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED","COMPLETED"]:
+				all_jobs = 0
+				done_jobs = 0
+				try:
+					self.skimdataset[akt_nick]["SKIM_STATUS"] = self.skimdataset[akt_nick]['last_status']['status']
+					for job_per_status in self.skimdataset[akt_nick]['last_status'].get('jobsPerStatus',{}).keys():
+						all_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
+						if job_per_status == 'finished':
+							done_jobs = done_jobs+self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
+				except:
+					pass
+				self.skimdataset[akt_nick]['crab_done'] = 0.0 if all_jobs == 0  else round(float(100.0*done_jobs)/float(all_jobs),2)
+				self.skimdataset[akt_nick]['n_jobs'] = max(all_jobs,self.skimdataset[akt_nick].get('n_jobs',0))
 
 	def print_skim(self):
 		print "---------------------------------------------------------"
@@ -469,6 +474,25 @@ class SkimManagerBase:
 			self.crab_cmd(cmd="resubmit", argument_dict = argument_dict)
 			print "--------------------------------------------"
 
+	def create_filelist(self, filelist_folder_postfix):
+		filelist_folder_name = "SKIM_" + str(datetime.date.today()) + "_" + filelist_folder_postfix
+		skim_path = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data",filelist_folder_name)
+		if not os.path.exists(skim_path):
+			 os.makedirs(skim_path)
+		for dataset in self.skimdataset.nicks():
+			if self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED":
+				print "Getting file list for",self.skimdataset[dataset]["crab_name"]
+				dataset_filelist = subprocess.check_output("crab getoutput --xrootd --dir {DATASET_TASK}".format(
+					DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset]["crab_name"])), shell=True)
+				if "root" in dataset_filelist:
+					filelist = open(skim_path+'/'+dataset+'.txt', 'w')
+					filelist.write(dataset_filelist)
+					filelist.close()
+					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
+					print "List creation successfull!"
+				print "---------------------------------------------------------"
+		print "End of list creation."
+
 	@classmethod
 	def get_workbase(self):
 		if os.environ.get('SKIM_WORK_BASE') is not None:
@@ -527,6 +551,7 @@ if __name__ == "__main__":
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--auto-remake", action='store_true', default=False, dest="auto_remake", help="Auto remake crab tasks where exception is raised. (Remakes .requestcache file). Must be used with --crab-status. Default: %(default)s")
 	parser.add_argument("--resubmit-with-options", default=None, dest="resubmit", help="Resubmit failed tasks. Options for crab resubmit can be specified via a python dict, e.g: --resubmit '{\"maxmemory\" : \"3000\", \"maxruntime\" : \"1440\"}'. To avoid options use '{}' Default: %(default)s")
+	parser.add_argument("--create-filelist", default=None, dest = "create_filelist", help="")
 	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status or --remake. Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
 
@@ -552,6 +577,10 @@ if __name__ == "__main__":
 		SKM.remake_task(args.inputfile,resubmit=args.auto_resubmit)
 	if args.resubmit:
 		SKM.resubmit_failed(argument_dict=ast.literal_eval(args.resubmit))
+		exit()
+	if args.create_filelist:
+		SKM.create_filelist(filelist_folder_postfix=args.create_filelist)
+		SKM.save_dataset()
 		exit()
 	if args.status:
 		if not os.path.exists(os.path.join(work_base,args.workdir)):
