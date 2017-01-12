@@ -16,6 +16,9 @@ struct KParticle : public KLV
 	/// bitset containing the status and the signed PDG-ID
 	int pdgId;  ///< PDG-ID of the particle
 
+	// vertex of production
+	RMPoint vertex;
+	
 	int sign() const
 	{
 		return (pdgId > 0) - (pdgId < 0);
