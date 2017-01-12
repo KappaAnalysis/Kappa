@@ -102,8 +102,8 @@ class SkimManagerBase:
 		cfg_dict['CMSSW']['partition lfn modifier dict'] = "\n   <xrootd>    => root://cms-xrd-global.cern.ch//\n   <xrootd:eu> => root://xrootd-cms.infn.it//\n   <xrootd:us> => root://cmsxrootd.fnal.gov//\n   <xrootd:desy> => root://dcache-cms-xrootd.desy.de:1094/\n   <srm:nrg> => srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/\n   <dcap:nrg> => dcap://dcnrgdcap.gridka.de:22125//pnfs/gridka.de/dcms/disk-only/\n   <xrootd:nrg> => root://cmsxrootd.gridka.de//pnfs/gridka.de/dcms/disk-only/\n   <dcap:gridka> => dcap://dccmsdcap.gridka.de:22125//pnfs/gridka.de/cms/disk-only/\n   <xrootd:gridka> => root://cmsxrootd.gridka.de//\n   <dcap:aachen> => dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/\n"
 
 		cfg_dict['storage'] = {}
-		cfg_dict['storage']['se output files'] = 'kappaTuple.root'
-		cfg_dict['storage']['se output pattern'] = "SKIMMING_CMSSW_8_0_21_try2/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
+		cfg_dict['storage']['se output files'] = 'kappa_@NICK@.root'
+		cfg_dict['storage']['se output pattern'] = "SKIMMING_CMSSW_8_0_21/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
 
 		cfg_dict['condor'] = {}
 		cfg_dict['condor']['JDLData'] = 'Requirements=(TARGET.CLOUDSITE=="BWFORCLUSTER") +REMOTEJOB=True'
@@ -165,10 +165,10 @@ class SkimManagerBase:
 					configlist.append(config)
 					break
 		if len(configlist)==0:
-			print 'No Grid control configs for query could be found. Please run again with --init to create configs.'
+			print 'No Grid control configs for query could be found. Please check query and run again with --init to create configs.'
 		else:
 			print str(len(configlist))+' Grid Control tasks will be submitted. Continue? [Y/n]'
-		self.wait_for_user_confirmation()
+			self.wait_for_user_confirmation()
 		for c in configlist:
 			os.system('go.py '+os.path.join(self.workdir,'gc_cfg',c)+' -m 5')
 
@@ -309,6 +309,7 @@ class SkimManagerBase:
 
 	def update_status_crab(self):
 		for akt_nick in self.skimdataset.nicks():
+
 			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED","COMPLETED"]:
 				all_jobs = 0
 				done_jobs = 0
@@ -317,18 +318,55 @@ class SkimManagerBase:
 					for job_per_status in self.skimdataset[akt_nick]['last_status'].get('jobsPerStatus',{}).keys():
 						all_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
 						if job_per_status == 'finished':
-							done_jobs = done_jobs+self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
+							done_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
 				except:
 					pass
 				self.skimdataset[akt_nick]['crab_done'] = 0.0 if all_jobs == 0  else round(float(100.0*done_jobs)/float(all_jobs),2)
 				self.skimdataset[akt_nick]['n_jobs'] = max(all_jobs,self.skimdataset[akt_nick].get('n_jobs',0))
 
-	def print_skim(self):
+	def print_skim(self,summary=False):
 		print "---------------------------------------------------------"
 	##  for akt_nick in self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "DONE"})
+		if summary:
+			status_dict={}
+			status_dict.setdefault('COMPLETED', [])
+			status_dict.setdefault('RUNNING', [])
+		#	status_dict.setdefault('EXCEPTION', [])
+			status_dict.setdefault('FAILED', [])
+			status_dict.setdefault('UNKNOWN', [])
+			status_dict.setdefault('SUBMITTED', [])
+
 		for akt_nick in self.skimdataset.nicks():
-			self.skimdataset[akt_nick]["GCSKIM_STATUS"] = "INIT"
+			#self.skimdataset[akt_nick]["GCSKIM_STATUS"] = "INIT"
 			print akt_nick," ",self.skimdataset[akt_nick]["SKIM_STATUS"],'\t Done: ',self.skimdataset[akt_nick].get('crab_done', 0.0),'% '
+			
+			if summary:
+				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["COMPLETED"]:
+					status_dict['COMPLETED'].append(akt_nick)
+				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["RUNNING"]:
+					status_dict['RUNNING'].append(akt_nick)
+				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED"]:
+					status_dict['FAILED'].append(akt_nick)
+				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["UNKNOWN"]:
+					status_dict['UNKNOWN'].append(akt_nick)
+				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED"]:
+					status_dict['SUBMITTED'].append(akt_nick)
+
+		if summary:
+			print '\n'+'\033[92m'+'COMPLETED:'+'\033[0m'
+			for nick in status_dict['COMPLETED']:
+				print nick
+			print '\n'+'\033[91m'+'FAILED:'+'\033[0m'
+			for nick in status_dict['FAILED']:
+				print nick
+			print '\n'+'RUNNING:'
+			for nick in status_dict['RUNNING']:
+				print nick
+			print '\n'
+			status_json = open(os.path.join(self.workdir,'skim_summary.json'), 'w')
+			status_json.write(json.dumps(status_dict, sort_keys=True, indent=2))
+			status_json.close()
+				
 	
 	def get_crab_taskIDs(self):
 		output = subprocess.check_output("crab tasks", shell=True)
@@ -345,8 +383,8 @@ class SkimManagerBase:
 			os.system('crab remake --task='+task)
 
 	def remake_task(self,inputfile,resubmit=False):
-		if os.path.exists(os.path.join(self.workdir,'crab_status.json')):
-			check_json = json.load(open(os.path.join(self.workdir,'crab_status.json')))
+		if os.path.exists(os.path.join(self.workdir,'skim_summary.json')):
+			check_json = json.load(open(os.path.join(self.workdir,'skim_summary.json')))
 			ntask = len(check_json['exception'])
 			print str(ntask)+' tasks that raised an exception will be remade. This will delete and recreate those folders in the workdir.'
 			print 'Do you want to continue? [Y/n]'
@@ -358,7 +396,7 @@ class SkimManagerBase:
 				all_subdirs.remove(os.path.join(self.workdir,'gc_cfg'))
 			check_json = {}
 			check_json['exception']=[]
-			print 'crab_status.json could not be found. Please run with --crab-status to create and get list of all jobs that raise exception.'
+			print 'skim_summary.json could not be found. Please run with --crab-status to create and get list of all jobs that raise exception.'
 			print 'Do you want to remake all '+str(len(all_subdirs))+' crab tasks in current workdir? This will delete and recreate those folders in the workdir. [Y/n]'
 			self.wait_for_user_confirmation()
 		print '\033[94m'+'Getting crab tasks...'+'\033[0m'
@@ -379,91 +417,11 @@ class SkimManagerBase:
 			if not task_exists:
 				#print '\033[91m'+os.path.basename(subdir)+' COULD NOT BE REMADE AS NO MATCHING TASK IS KNOWN TO CRAB.'+'\033[0m'
 				if resubmit:
-					print'\033[94m'+'RESUBMITTING...'+'\033[0m'		
+					print'\033[94m'+'RESUBMITTING...'+'\033[0m'
 					#os.chdir(self.workdir)
 					shutil.rmtree(os.path.join(self.workdir,os.path.basename(subdir)))
 					self.add_new(in_dataset_file=inputfile,nick_regex = os.path.basename(subdir)[5:])
 					self.submit_crab()
-
-	def write_crab_status(self,remake=False,in_dataset_file=None,resubmit=False):
-		''''''
-		all_subdirs = [os.path.join(self.workdir,self.skimdataset[dataset]["crab_name"]) for dataset in self.skimdataset.nicks()]
-		completed = []
-		exception = []
-		running = []
-		failed = []
-		ndirs = len(all_subdirs)
-		if remake:
-			tasks = self.show_crab_taskID()
-		if os.path.exists(os.path.join(self.workdir,'crab_status.json')):
-			check_json = json.load(open(os.path.join(self.workdir,'crab_status.json'), 'r'))
-			ncomplete = len(check_json['completed'])
-			for x in check_json['completed']:
-				completed.append(x)
-		else:
-			ncomplete = 0
-			check_json = {}
-			check_json['completed']=[]
-			check_json['running']=[]
-			check_json['exception']=[]
-			check_json['failed']=[]
-		nrequest = ndirs - ncomplete
-
-		print 'Getting status of '+str(nrequest)+' jobs. '+str(ncomplete)+' jobs in this campaign are already completed.'
-		irequest = 1
-		for subdir in all_subdirs:
-			if os.path.basename(subdir) not in completed:
-			#if True:
-			#if os.path.basename(subdir) in check_json['exception']:
-				print '\033[94m'+'('+str(irequest)+'/'+str(nrequest)+')'+'\033[0m'+'	Getting status of '+os.path.basename(subdir)+'...'
-				irequest+=1
-				try:
-					output = subprocess.check_output('crab status -d '+subdir, shell=True)
-					if 'COMPLETED' in output:
-						print '\033[92m'+'COMPLETED'+'\033[0m'
-						completed.append(os.path.basename(subdir))
-					else:
-						if 'FAILED' in output:
-							print '\033[91m'+'FAILED'+'\033[0m'
-							print output
-							if resubmit:
-								print'\033[94m'+'RESUBMITTING...'+'\033[0m'
-								os.system('crab resubmit -d '+subdir)
-								running.append(os.path.basename(subdir))
-							else:
-								failed.append(os.path.basename(subdir))
-
-						else:
-							running.append(os.path.basename(subdir))
-							print output
-							if resubmit:
-								if 'failed' in output:
-									print '\033[94m'+'RESUBMITTING...'+'\033[0m'
-									os.system('crab resubmit -d '+subdir)
-
-				except Exception as exc:
-					print '\033[93m'+'EXCEPTION OCCURED WHILE GETTING STATUS:'+'\033[0m'
-					print exc
-					exception.append(os.path.basename(subdir))
-					if remake:
-						print '\033[93m'+'REMAKING...'+'\033[0m'
-														
-		print '\033[92m'+'COMPLETED:	'+str(round(100*(float(len(completed)))/float(ndirs),2))+'% ('+str(len(completed))+'/'+str(ndirs)+')'+'\033[0m'
-		print 'IDLE/RUNNING:	'+str(round(100*float(len(running))/float(ndirs),2))+'% ('+str(len(running))+'/'+str(ndirs)+')'
-		if len(exception)>0:
-			print '\033[93m'+'EXCEPTION:	'+str(round(100*float(len(exception))/float(ndirs),2))+'% ('+str(len(exception))+'/'+str(ndirs)+')'+'\033[0m'
-		if len(failed)>0:
-			print '\033[91m'+'FAILED:		'+str(round(100*float(len(failed))/float(ndirs),2))+'% ('+str(len(failed))+'/'+str(ndirs)+')'+'\033[0m'+'\033[0m'
-			print 'Run again with --resubmit to resubmit failed tasks.'
-		print 'Check '+os.path.join(self.workdir,'crab_status.json')+' for details.'
-		status_dict={}
-		status_dict.setdefault('completed', []).extend(x for x in completed)
-		status_dict.setdefault('running', []).extend(x for x in running)
-		status_dict.setdefault('exception', []).extend(x for x in exception)
-		status_dict.setdefault('failed', []).extend(x for x in failed)
-		status_json = open(os.path.join(self.workdir,'crab_status.json'), 'w')
-		status_json.write(json.dumps(status_dict, sort_keys=True, indent=2))
-		status_json.close()
 
 	def resubmit_failed(self,argument_dict):
 		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if "failed" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"] and self.skimdataset[dataset]["SKIM_STATUS"] != "COMPLETED"]
@@ -528,7 +486,6 @@ class SkimManagerBase:
 if __name__ == "__main__":
 	
 	work_base = SkimManagerBase.get_workbase()
-	print work_base
 	latest_subdir = SkimManagerBase.get_latest_subdir(work_base=work_base)
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets_conv.json")
 
@@ -547,13 +504,13 @@ if __name__ == "__main__":
 	parser.add_argument("--gc-check-completed", action='store_true', default=False, dest="checkcompleted",help="Check completed.")
 
 	parser.add_argument("--show-task-id", action='store_true', default=False, dest="showID",help="List all current crab task IDs. Default: %(default)s")
-	parser.add_argument("--crab-status", action='store_true', default=False, dest="status", help="Show crab status of non-finished crab tasks in work base and write to file 'crab_status.json' in workdir. Setting this will not submit any tasks, unless --auto-resubmit is set. Default: %(default)s")
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--auto-remake", action='store_true', default=False, dest="auto_remake", help="Auto remake crab tasks where exception is raised. (Remakes .requestcache file). Must be used with --crab-status. Default: %(default)s")
 	parser.add_argument("--resubmit-with-options", default=None, dest="resubmit", help="Resubmit failed tasks. Options for crab resubmit can be specified via a python dict, e.g: --resubmit '{\"maxmemory\" : \"3000\", \"maxruntime\" : \"1440\"}'. To avoid options use '{}' Default: %(default)s")
 	parser.add_argument("--create-filelist", default=None, dest = "create_filelist", help="")
 	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status or --remake. Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
+	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
 
 	args = parser.parse_args()
 	if args.workdir == latest_subdir:
@@ -566,7 +523,7 @@ if __name__ == "__main__":
 	if args.date:
 		args.workdir+="_"+datetime.date.today().strftime("%Y-%m-%d")
 	SKM = SkimManagerBase(workbase=work_base,workdir=args.workdir)
-	
+
 	if args.init:
 		SKM.add_new(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
 	if args.remake_all:
@@ -593,8 +550,8 @@ if __name__ == "__main__":
 		if args.submitgc:
 			SKM.submit_gc(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
 			#SKM.status_gc(check_completed=args.checkcompleted)
-		else:	
+		else:
 			SKM.submit_crab()
 			SKM.status_crab()
-			SKM.print_skim()
+			SKM.print_skim(summary=args.summary)
 	SKM.save_dataset()

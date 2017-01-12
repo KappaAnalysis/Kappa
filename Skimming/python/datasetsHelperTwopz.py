@@ -46,8 +46,8 @@ class datasetsHelperTwopz:
 			return
 		if not os.path.exists(out_json_file) and self.keep_input_json:
 			print "Created "+out_json_file
-		else: 
-			print "Overwritten "+out_json_file
+		#~ else: 
+			#~ print "Overwritten "+out_json_file
 		out_json = open(out_json_file, 'w')
 		out_json.write(json.dumps(self.base_dict, sort_keys=True, indent=2))
 		out_json.close()
