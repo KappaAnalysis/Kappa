@@ -108,7 +108,7 @@ void EventWeightCountProducer::beginLuminosityBlock(const LuminosityBlock & theL
 void EventWeightCountProducer::endLuminosityBlock(LuminosityBlock const& theLuminosityBlock, const EventSetup & theSetup) {}
 
 void EventWeightCountProducer::endLuminosityBlockProduce(LuminosityBlock & theLuminosityBlock, const EventSetup & theSetup) {
-  #if CMSSW_MAJOR_VERSION < 8
+  #if CMSSW_MAJOR_VERSION < 8  || (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 )
   auto_ptr<edm::MergeableCounter> numEventsPtr(new edm::MergeableCounter); 
   numEventsPtr->value = nEvents;
   theLuminosityBlock.put(numEventsPtr);
