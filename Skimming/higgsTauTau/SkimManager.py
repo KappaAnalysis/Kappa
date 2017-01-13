@@ -8,6 +8,7 @@ import subprocess
 import json
 import ast
 import gzip
+import shutil
 
 from httplib import HTTPException
 from CRABAPI.RawCommand import crabCommand
@@ -80,9 +81,9 @@ class SkimManagerBase:
 		cfg_dict['global']["workdir create"] = 'True '
 
 		cfg_dict['jobs'] = {}
-		cfg_dict['jobs']['in flight'] = '4000'
-		cfg_dict['jobs']['wall time'] = '02:00:00'
-		cfg_dict['jobs']['memory'] = '4000'
+		cfg_dict['jobs']['in flight'] = '50'
+		cfg_dict['jobs']['wall time'] = '06:00:00'
+		cfg_dict['jobs']['memory'] = '5000'
 		#cfg_dict['jobs']['jobs'] = '1'
 
 		cfg_dict['CMSSW'] = {}
@@ -98,8 +99,8 @@ class SkimManagerBase:
 		cfg_dict['CMSSW']['partition lfn modifier dict'] = "\n   <xrootd>    => root://cms-xrd-global.cern.ch//\n   <xrootd:eu> => root://xrootd-cms.infn.it//\n   <xrootd:us> => root://cmsxrootd.fnal.gov//\n   <xrootd:desy> => root://dcache-cms-xrootd.desy.de:1094/\n   <srm:nrg> => srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/\n   <dcap:nrg> => dcap://dcnrgdcap.gridka.de:22125//pnfs/gridka.de/dcms/disk-only/\n   <xrootd:nrg> => root://cmsxrootd.gridka.de//pnfs/gridka.de/dcms/disk-only/\n   <dcap:gridka> => dcap://dccmsdcap.gridka.de:22125//pnfs/gridka.de/cms/disk-only/\n   <xrootd:gridka> => root://cmsxrootd.gridka.de//\n   <dcap:aachen> => dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/\n"
 
 		cfg_dict['storage'] = {}
-		cfg_dict['storage']['se output files'] = 'kappa_@NICK@.root'
-		cfg_dict['storage']['se output pattern'] = "/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
+		cfg_dict['storage']['se output files'] = 'kappaTuple.root'
+		cfg_dict['storage']['se output pattern'] = "/@NICK@/@FOLDER@/kappa_@NICK@_@GC_JOB_ID@.@XEXT@"
 
 		cfg_dict['condor'] = {}
 		cfg_dict['condor']['JDLData'] = 'Requirements=(TARGET.CLOUDSITE=="BWFORCLUSTER") +REMOTEJOB=True'
@@ -135,6 +136,12 @@ class SkimManagerBase:
 			self.individualized_gc_cfg(akt_nick, gc_config)
 			out_file_name = os.path.join(self.workdir,'gc_cfg',akt_nick[:100]+'.conf')
 			out_file = open(out_file_name,'w')
+			gc_workdir = os.path.join(self.workdir,akt_nick[:100])
+			if os.path.exists(gc_workdir):
+				print "GC workdir for",akt_nick,"exists. Do you whish to remove? To be removed:"
+				print gc_workdir
+				if self.wait_for_user_confirmation(true_false=True):
+					shutil.rmtree(gc_workdir)
 			for akt_key in ['global','jobs','CMSSW','storage']:
 				out_file.write('['+akt_key+']\n')
 				for akt_item in gc_config[akt_key]:
