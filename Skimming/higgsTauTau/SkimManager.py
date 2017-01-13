@@ -88,7 +88,7 @@ class SkimManagerBase:
 		cfg_dict['jobs']['in flight'] = '4000'
 		cfg_dict['jobs']['wall time'] = '02:00:00'
 		cfg_dict['jobs']['memory'] = '4000'
-		#cfg_dict['jobs']['jobs'] = '5'
+		#cfg_dict['jobs']['jobs'] = '1'
 
 		cfg_dict['CMSSW'] = {}
 		cfg_dict['CMSSW']['project area'] = '$CMSSW_BASE/'
@@ -174,10 +174,44 @@ class SkimManagerBase:
 
 	def prepare_resubmission_with_gc(self):
 		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED","LISTED"]]
-		for dataset in datasets_to_resubmit:
-			pass
-			#TODO: Create a procedure to write out a script with a while loop over the grid-control-tasks (have ask Stefan on Friday...)
+		datasets_to_resubmit = [str(x.strip('crab_')) for x in datasets_to_resubmit]
 
+		self.write_while(datasets_to_submit=datasets_to_resubmit)
+	
+	def write_while(self,datasets_to_submit=None):
+		if os.path.isfile(os.path.join(self.workdir,'while.sh')):
+			out_file = open(os.path.join(self.workdir,'while.sh'),'r')
+			print '\033[94m'+'GC submission script exists with following configs:'+'\033[0m'
+			for line in out_file.readlines():
+				if line[:5]=='go.py':
+					print line.strip('go.py '+os.path.join(self.workdir,'gc_cfg'))
+			out_file.close()
+			print 'Overwrite? [Y/n]'
+			if not self.wait_for_user_confirmation(true_false=True):
+				print '\nScript will not be overwritten. To run with old configs: '
+				print os.path.join(self.workdir,'while.sh')
+				return
+			
+		out_file = open(os.path.join(self.workdir,'while.sh'),'w')
+		out_file.write('#!/bin/bash\n')
+		out_file.write('\n')
+		out_file.write('touch .lock\n')
+		out_file.write('\n')
+		out_file.write('while [ -f ".lock" ]\n')
+		out_file.write('do\n')
+		for dataset in datasets_to_submit:
+			out_file.write('go.py '+os.path.join(self.workdir,'gc_cfg',dataset+'.conf \n'))
+		out_file.write('echo "rm .lock"\n')
+		out_file.write('sleep 2\n')
+		out_file.write('done\n')
+		out_file.close()
+		
+		os.system('chmod u+x '+os.path.join(self.workdir,'while.sh'))
+		
+		print '\033[92m'+'To run GC submission loop: (will run until .lock file is removed) '+'\033[0m'
+		print os.path.join(self.workdir,'while.sh')
+		print ''
+	
 	def status_gc(self,check_completed=False):
 		readfile = open(os.path.join(self.workdir,'completed_untilgc.txt'),'r')
 		clist = readfile.read().splitlines()
@@ -479,6 +513,7 @@ class SkimManagerBase:
 		for dataset in self.skimdataset.nicks():
 			if self.skimdataset[dataset]["SKIM_STATUS"] == "LISTED":
 				self.skimdataset[dataset]["SKIM_STATUS"] = "COMPLETED"
+	
 
 	@classmethod
 	def get_workbase(self):
@@ -503,11 +538,15 @@ class SkimManagerBase:
 		return(max(all_subdirs, key=os.path.getmtime))
 
 	@classmethod
-	def wait_for_user_confirmation(self):
+	def wait_for_user_confirmation(self,true_false=False):
 		choice = raw_input().lower()
 		if choice in set(['yes','y','ye', '']):
+			if true_false:
+				return True
 			pass
 		elif choice in set(['no','n']):
+			if true_false:
+				return False
 			exit()
 		else:
 			sys.stdout.write("Please respond with 'yes' or 'no'")
@@ -542,6 +581,7 @@ if __name__ == "__main__":
 	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status or --remake. Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
 	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
+	parser.add_argument("--resubmit-with-gc", action='store_true', default=False, dest="resubmit_with_gc", help="Resubmits non-completed tasks with Grid Control.")
 
 	args = parser.parse_args()
 	if args.workdir == latest_subdir:
@@ -557,12 +597,15 @@ if __name__ == "__main__":
 
 	if args.init:
 		SKM.add_new(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
+		SKM.create_gc_config()
+		
 	if args.remake_all:
 		SKM.remake_all()
 	if args.showID:
 		print SKM.show_crab_taskID()
 	if args.remake:
 		SKM.remake_task(args.inputfile,resubmit=args.auto_resubmit)
+		exit()
 	if args.resubmit:
 		SKM.resubmit_failed(argument_dict=ast.literal_eval(args.resubmit))
 		exit()
@@ -574,14 +617,16 @@ if __name__ == "__main__":
 		SKM.reset_filelist()
 		SKM.save_dataset()
 		exit()
+	
+	if args.resubmit_with_gc:
+		SKM.prepare_resubmission_with_gc()
+		exit()
 
-	if not (args.remake or args.resubmit):
-		#SKM.create_gc_config()
-		if args.statusgc:
-			#SKM.submit_gc(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
-			SKM.status_gc_new()
-		else:
-			SKM.submit_crab()
-			SKM.status_crab()
-			SKM.print_skim(summary=args.summary)
+	if args.statusgc:
+		#SKM.submit_gc(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
+		SKM.status_gc_new()
+	else:
+		SKM.submit_crab()
+		SKM.status_crab()
+		SKM.print_skim(summary=args.summary)
 	SKM.save_dataset()
