@@ -173,11 +173,9 @@ class SkimManagerBase:
 			os.system('go.py '+os.path.join(self.workdir,'gc_cfg',c)+' -m 5')
 
 	def prepare_resubmission_with_gc(self):
-		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED","LISTED"]]
-		datasets_to_resubmit = [str(x.strip('crab_')) for x in datasets_to_resubmit]
-
+		datasets_to_resubmit = [dataset for dataset in self.skimdataset.nicks() if self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED","LISTED"] and self.skimdataset[dataset]["GCSKIM_STATUS"] not in ["COMPLETED","LISTED"]]
 		self.write_while(datasets_to_submit=datasets_to_resubmit)
-	
+
 	def write_while(self,datasets_to_submit=None):
 		if os.path.isfile(os.path.join(self.workdir,'while.sh')):
 			out_file = open(os.path.join(self.workdir,'while.sh'),'r')
@@ -211,45 +209,8 @@ class SkimManagerBase:
 		print '\033[92m'+'To run GC submission loop with '+str(len(datasets_to_submit))+' datasets (will run until .lock file is removed), run:'+'\033[0m'
 		print os.path.join(self.workdir,'while.sh')
 		print ''
-	
-	def status_gc(self,check_completed=False):
-		readfile = open(os.path.join(self.workdir,'completed_untilgc.txt'),'r')
-		clist = readfile.read().splitlines()
 
-		workdirlist = [d for d in os.listdir(os.path.join(self.workdir)) if (os.path.isdir(os.path.join(self.workdir,d)) and d not in clist)]
-		n = len(workdirlist)
-		completed=[]
-		running=[]
-		#readfile = open(os.path.join(self.workdir,'completed_untilgc.txt'),'r')
-		if check_completed:
-			f = open(os.path.join(self.workdir,'completed.txt'),'w')
-			status_dict={}
-			status_dict.setdefault('completed', []).extend(x for x in completed)
-			status_json = open(os.path.join(self.workdir,'gc_status.json'), 'w')
-		i=1
-		for d in workdirlist:
-			print str(i)+'/'+str(n)+' '+d
-			i+=1
-			if not check_completed:
-				try:
-					os.system('go.py '+os.path.join(self.workdir,d,'current.conf'))
-				except:
-					pass
-			else:
-				try:
-					if 'Task successfully completed' in subprocess.check_output('go.py '+os.path.join(self.workdir,d,'current.conf'), shell=True):
-						print '\033[92m'+os.path.basename(d)+' COMPLETED'+'\033[0m'
-						completed.append(d)
-						status_dict.setdefault('completed', []).extend(x for x in completed)
-						status_json.write(json.dumps(status_dict, sort_keys=True, indent=2))
-						f.write("%s\n" % d)
-				except:
-					pass
-		if check_completed:
-			f.close()
-			status_json.close()
-
-	def status_gc_new(self):
+	def status_gc(self):
 		for dataset in self.skimdataset.nicks():
 			if self.skimdataset[dataset]["GCSKIM_STATUS"] == "SUBMITTED":
 				gc_workdir = os.path.join(self.workdir,dataset[:100])
@@ -424,8 +385,7 @@ class SkimManagerBase:
 			status_json = open(os.path.join(self.workdir,'skim_summary.json'), 'w')
 			status_json.write(json.dumps(status_dict, sort_keys=True, indent=2))
 			status_json.close()
-				
-	
+
 	def get_crab_taskIDs(self):
 		output = subprocess.check_output("crab tasks", shell=True)
 		tasks=[]
@@ -513,7 +473,6 @@ class SkimManagerBase:
 		for dataset in self.skimdataset.nicks():
 			if self.skimdataset[dataset]["SKIM_STATUS"] == "LISTED":
 				self.skimdataset[dataset]["SKIM_STATUS"] = "COMPLETED"
-	
 
 	@classmethod
 	def get_workbase(self):
@@ -552,7 +511,7 @@ class SkimManagerBase:
 			sys.stdout.write("Please respond with 'yes' or 'no'")
 
 if __name__ == "__main__":
-	
+
 	work_base = SkimManagerBase.get_workbase()
 	latest_subdir = SkimManagerBase.get_latest_subdir(work_base=work_base)
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets_conv.json")
@@ -598,7 +557,7 @@ if __name__ == "__main__":
 	if args.init:
 		SKM.add_new(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
 		SKM.create_gc_config()
-		
+
 	if args.remake_all:
 		SKM.remake_all()
 	if args.showID:
@@ -617,16 +576,16 @@ if __name__ == "__main__":
 		SKM.reset_filelist()
 		SKM.save_dataset()
 		exit()
-	
+
 	if args.resubmit_with_gc:
 		SKM.prepare_resubmission_with_gc()
 		exit()
 
 	if args.statusgc:
-		#SKM.submit_gc(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
-		SKM.status_gc_new()
+		SKM.status_gc()
 	else:
 		SKM.submit_crab()
 		SKM.status_crab()
 		SKM.print_skim(summary=args.summary)
+
 	SKM.save_dataset()
