@@ -1,4 +1,19 @@
 {
+   "DYToLLMCRunIISummer16DR80_AllFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USER_unspecified": {
+    "campaign": "AllFinalState", 
+    "data": false, 
+    "dbs": "/DYToLLMCRunIISummer16DR80/AllFinalState-imputFlatPU28to62HcalNZSRAWAODSIM_madgraph_miniAOD-v5/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "unspecified", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v6", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "19963203", 
+    "n_files": "8060", 
+    "process": "DYToLLMCRunIISummer16DR80", 
+    "scenario": "imputFlatPU28to62HcalNZSRAWAODSIM"
+  },  
   "AToZhToLLTauTauM400_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_madgraph": {
     "campaign": "RunIIFall15MiniAODv2", 
     "data": false, 
