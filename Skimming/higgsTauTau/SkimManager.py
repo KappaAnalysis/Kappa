@@ -46,16 +46,11 @@ class SkimManagerBase:
 	def save_dataset(self,filename=None):
 		self.skimdataset.write_to_jsonfile(filename)  
 
-	def add_new(self, in_dataset_file,  tag_key = None, tag_values_str = None, query = None, nick_regex = None):
-		self.inputdataset = datasetsHelperTwopz(in_dataset_file)
-		tag_values = None
-		if tag_values_str:
-			tag_values = tag_values_str.strip('][').replace(' ','').split(',')
-
-		if not tag_key and not query and not nick_regex:
+	def add_new(self, nicks = None):
+		if nicks is None:
 			print "You must select something [see options --query,--nicks  or --tag (with --tagvalues)]"
 		else:
-			for new_nick in self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex):
+			for new_nick in nicks:
 				if new_nick in self.skimdataset.base_dict.keys():
 					print new_nick," already in this skimming campain"
 				else:
@@ -149,21 +144,27 @@ class SkimManagerBase:
 					out_file.write(akt_item+' = '+gc_config[akt_key][akt_item]+'\n')
 			out_file.close()
 
-	def submit_gc(self, in_dataset_file,  tag_key = None, tag_values_str = None, query = None, nick_regex = None):
+	def nick_list(self,in_dataset_file, tag_key = None, tag_values_str = None, query = None, nick_regex = None):
+		
+		self.inputdataset = datasetsHelperTwopz(in_dataset_file)
+		tag_values = None
+		if tag_key is None and query is None and nick_regex is None:
+			return None
+		if tag_values_str:
+			tag_values = tag_values_str.strip('][').replace(' ','').split(',')
+		#nicks = [str(x) for x in self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex)]
+		
+		return(self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex)) 
+	
+	def submit_gc(self, nicks = None):
 
 		allconfigs = [c for c in os.listdir(os.path.join(self.workdir,'gc_cfg')) if c[-5:]=='.conf']
 
-		self.inputdataset = datasetsHelperTwopz(in_dataset_file)
-		tag_values = None
-		if tag_values_str:
-			tag_values = tag_values_str.strip('][').replace(' ','').split(',')
-
 		configlist = []
-		for new_nick in self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex):
-			for config in allconfigs:
-				if new_nick in config:
-					configlist.append(config)
-					break
+		
+		for c in allconfigs:
+			if c[:-5] in nicks:
+				configlist.append(c)
 		if len(configlist)==0:
 			print 'No Grid control configs for query could be found. Please check query and run again with --init to create configs.'
 		else:
@@ -175,7 +176,7 @@ class SkimManagerBase:
 	def prepare_resubmission_with_gc(self):
 		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED","LISTED"]]
 		datasets_to_resubmit = [str(x.strip('crab_')) for x in datasets_to_resubmit]
-
+			
 		self.write_while(datasets_to_submit=datasets_to_resubmit)
 	
 	def write_while(self,datasets_to_submit=None):
@@ -188,7 +189,7 @@ class SkimManagerBase:
 			out_file.close()
 			print 'Overwrite? [Y/n]'
 			if not self.wait_for_user_confirmation(true_false=True):
-				print '\nScript will not be overwritten. To run with old configs: '
+				print '\nScript will not be overwritten. To run with existing configs: '
 				print os.path.join(self.workdir,'while.sh')
 				return
 			
@@ -478,7 +479,7 @@ class SkimManagerBase:
 					print'\033[94m'+'RESUBMITTING...'+'\033[0m'
 					#os.chdir(self.workdir)
 					shutil.rmtree(os.path.join(self.workdir,os.path.basename(subdir)))
-					self.add_new(in_dataset_file=inputfile,nick_regex = os.path.basename(subdir)[5:])
+					self.add_new(nick_list(in_dataset_file=inputfile,nick_regex = os.path.basename(subdir)[5:]))
 					self.submit_crab()
 
 	def resubmit_failed(self,argument_dict):
@@ -593,12 +594,14 @@ if __name__ == "__main__":
 		exit()
 	if args.date:
 		args.workdir+="_"+datetime.date.today().strftime("%Y-%m-%d")
+	
 	SKM = SkimManagerBase(workbase=work_base,workdir=args.workdir)
+	nicks = SKM.nick_list(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
 
 	if args.init:
-		SKM.add_new(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
+		SKM.add_new(nicks)
 		SKM.create_gc_config()
-		
+
 	if args.remake_all:
 		SKM.remake_all()
 	if args.showID:
@@ -619,11 +622,11 @@ if __name__ == "__main__":
 		exit()
 	
 	if args.resubmit_with_gc:
-		SKM.prepare_resubmission_with_gc()
+		SKM.prepare_resubmission_with_gc(nicks = nicks)
 		exit()
 
 	if args.statusgc:
-		#SKM.submit_gc(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
+		SKM.submit_gc(nicks = nicks)
 		SKM.status_gc_new()
 	else:
 		SKM.submit_crab()
