@@ -99,7 +99,7 @@ class SkimManagerBase:
 
 		cfg_dict['storage'] = {}
 		cfg_dict['storage']['se output files'] = 'kappa_@NICK@.root'
-		cfg_dict['storage']['se output pattern'] = "SKIMMING_CMSSW_8_0_21/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
+		cfg_dict['storage']['se output pattern'] = "/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
 
 		cfg_dict['condor'] = {}
 		cfg_dict['condor']['JDLData'] = 'Requirements=(TARGET.CLOUDSITE=="BWFORCLUSTER") +REMOTEJOB=True'
@@ -130,6 +130,7 @@ class SkimManagerBase:
 		shutil.copyfile(src=os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/higgsTauTau/",self.configfile),dst=os.path.join(self.workdir,'gc_cfg',self.configfile))
 		gc_config = self.gc_default_cfg()
 		for akt_nick in self.skimdataset.get_nicks_with_query(query={"GCSKIM_STATUS" : "INIT"}):
+			print "Create a new config for",akt_nick
 			gc_config = self.gc_default_cfg()
 			self.individualized_gc_cfg(akt_nick, gc_config)
 			out_file_name = os.path.join(self.workdir,'gc_cfg',akt_nick[:100]+'.conf')
@@ -155,23 +156,6 @@ class SkimManagerBase:
 		#nicks = [str(x) for x in self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex)]
 		
 		return(self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex)) 
-	
-	def submit_gc(self, nicks = None):
-
-		allconfigs = [c for c in os.listdir(os.path.join(self.workdir,'gc_cfg')) if c[-5:]=='.conf']
-
-		configlist = []
-		
-		for c in allconfigs:
-			if c[:-5] in nicks:
-				configlist.append(c)
-		if len(configlist)==0:
-			print 'No Grid control configs for query could be found. Please check query and run again with --init to create configs.'
-		else:
-			print str(len(configlist))+' Grid Control tasks will be submitted. Continue? [Y/n]'
-			self.wait_for_user_confirmation()
-		for c in configlist:
-			os.system('go.py '+os.path.join(self.workdir,'gc_cfg',c)+' -m 5')
 
 	def prepare_resubmission_with_gc(self, nicks = None):
 		
@@ -530,11 +514,7 @@ if __name__ == "__main__":
 	parser.add_argument("--tagvalues", dest="tagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Exetend\" ")
 	parser.add_argument("--init", dest="init", help="Init or Update the dataset", action='store_true')
 	parser.add_argument("--print", dest="print_ds", help="Print ", action='store_true')
-
-	parser.add_argument("--submit-gc", action='store_true', default=False, dest="submitgc",help="Submit the jobs with grid control. Default: False (Default is to submit via crab). If submit-gc is set, jobs will not be submitted via crab.")
-	parser.add_argument("--status-gc", action='store_true', default=False, dest="statusgc",help="Submit the jobs with grid control. Default: False (Default is to submit via crab). If submit-gc is set, jobs will not be submitted via crab.")
-	parser.add_argument("--gc-check-completed", action='store_true', default=False, dest="checkcompleted",help="Check completed.")
-
+	parser.add_argument("--status-gc", action='store_true', default=False, dest="statusgc",help="")
 	parser.add_argument("--show-task-id", action='store_true', default=False, dest="showID",help="List all current crab task IDs. Default: %(default)s")
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--auto-remake", action='store_true', default=False, dest="auto_remake", help="Auto remake crab tasks where exception is raised. (Remakes .requestcache file). Must be used with --crab-status. Default: %(default)s")
@@ -588,9 +568,8 @@ if __name__ == "__main__":
 		exit()
 
 	if args.statusgc:
-		SKM.submit_gc(nicks = nicks)
 		SKM.status_gc()
-		
+
 	else:
 		SKM.submit_crab()
 		SKM.status_crab()
