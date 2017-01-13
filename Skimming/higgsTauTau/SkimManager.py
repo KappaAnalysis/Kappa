@@ -7,6 +7,7 @@ import datetime
 import subprocess
 import json
 import ast
+import gzip
 
 from httplib import HTTPException
 from CRABAPI.RawCommand import crabCommand
@@ -146,7 +147,6 @@ class SkimManagerBase:
 				out_file.write('['+akt_key+']\n')
 				for akt_item in gc_config[akt_key]:
 					out_file.write(akt_item+' = '+gc_config[akt_key][akt_item]+'\n')
-			#print 'go.py '+out_file_name+' -Gc -m 1'
 			out_file.close()
 
 	def submit_gc(self, in_dataset_file,  tag_key = None, tag_values_str = None, query = None, nick_regex = None):
@@ -171,6 +171,12 @@ class SkimManagerBase:
 			self.wait_for_user_confirmation()
 		for c in configlist:
 			os.system('go.py '+os.path.join(self.workdir,'gc_cfg',c)+' -m 5')
+
+	def prepare_resubmission_with_gc(self):
+		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED","LISTED"]]
+		for dataset in datasets_to_resubmit:
+			pass
+			#TODO: Create a procedure to write out a script with a while loop over the grid-control-tasks (have ask Stefan on Friday...)
 
 	def status_gc(self,check_completed=False):
 		readfile = open(os.path.join(self.workdir,'completed_untilgc.txt'),'r')
@@ -208,6 +214,24 @@ class SkimManagerBase:
 		if check_completed:
 			f.close()
 			status_json.close()
+
+	def status_gc_new(self):
+		for dataset in self.skimdataset.nicks():
+			if self.skimdataset[dataset]["GCSKIM_STATUS"] == "SUBMITTED":
+				gc_workdir = os.path.join(self.workdir,dataset[:100])
+				gc_output_dir = os.path.join(gc_workdir,"output")
+				n_gc_jobs = int(gzip.open(os.path.join(gc_workdir,"params.map.gz"), 'r').read())
+				done_jobs = 0
+				for i in range(n_gc_jobs):
+					job_info_path = os.path.join(gc_output_dir,"job_"+str(i),"job.info")
+					if os.path.exists(job_info_path):
+						job_info = open(job_info_path).read().split("\n")
+						for info_line in job_info:
+							if info_line == "EXITCODE=0":
+								done_jobs += 1
+				if n_gc_jobs == done_jobs:
+					print "GC task completed for",dataset
+					self.skimdataset[dataset]["GCSKIM_STATUS"] = "COMPLETED"
 
 	def individualized_gc_cfg(self, akt_nick ,gc_config):
 		#se_path_base == srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/
@@ -302,7 +326,7 @@ class SkimManagerBase:
 
 	def get_status_crab(self):
 		for akt_nick in self.skimdataset.nicks():
-			if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED","SUBMIT","RUNNING","NEW","FAILED","UNKNOWN"]:
+			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED","COMPLETED","INIT"]:
 				crab_job_dir = os.path.join(self.workdir,self.skimdataset[akt_nick]["crab_name"])
 				status_dict = {"proxy" : self.voms_proxy, "dir" : crab_job_dir}
 				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd(cmd='status', argument_dict = status_dict)
@@ -341,7 +365,7 @@ class SkimManagerBase:
 			print akt_nick," ",self.skimdataset[akt_nick]["SKIM_STATUS"],'\t Done: ',self.skimdataset[akt_nick].get('crab_done', 0.0),'% '
 			
 			if summary:
-				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["COMPLETED"]:
+				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["COMPLETED","LISTED"]:
 					status_dict['COMPLETED'].append(akt_nick)
 				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["RUNNING"]:
 					status_dict['RUNNING'].append(akt_nick)
@@ -424,7 +448,7 @@ class SkimManagerBase:
 					self.submit_crab()
 
 	def resubmit_failed(self,argument_dict):
-		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if "failed" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"] and self.skimdataset[dataset]["SKIM_STATUS"] != "COMPLETED"]
+		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if "failed" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"] and self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED","LISTED"]]
 		print "Try to resubmit",len(datasets_to_resubmit),"tasks"
 		for dataset in datasets_to_resubmit:
 			print "Resubmission for",dataset
@@ -450,6 +474,11 @@ class SkimManagerBase:
 					print "List creation successfull!"
 				print "---------------------------------------------------------"
 		print "End of list creation."
+
+	def reset_filelist(self):
+		for dataset in self.skimdataset.nicks():
+			if self.skimdataset[dataset]["SKIM_STATUS"] == "LISTED":
+				self.skimdataset[dataset]["SKIM_STATUS"] = "COMPLETED"
 
 	@classmethod
 	def get_workbase(self):
@@ -501,6 +530,7 @@ if __name__ == "__main__":
 	parser.add_argument("--print", dest="print_ds", help="Print ", action='store_true')
 
 	parser.add_argument("--submit-gc", action='store_true', default=False, dest="submitgc",help="Submit the jobs with grid control. Default: False (Default is to submit via crab). If submit-gc is set, jobs will not be submitted via crab.")
+	parser.add_argument("--status-gc", action='store_true', default=False, dest="statusgc",help="Submit the jobs with grid control. Default: False (Default is to submit via crab). If submit-gc is set, jobs will not be submitted via crab.")
 	parser.add_argument("--gc-check-completed", action='store_true', default=False, dest="checkcompleted",help="Check completed.")
 
 	parser.add_argument("--show-task-id", action='store_true', default=False, dest="showID",help="List all current crab task IDs. Default: %(default)s")
@@ -508,6 +538,7 @@ if __name__ == "__main__":
 	parser.add_argument("--auto-remake", action='store_true', default=False, dest="auto_remake", help="Auto remake crab tasks where exception is raised. (Remakes .requestcache file). Must be used with --crab-status. Default: %(default)s")
 	parser.add_argument("--resubmit-with-options", default=None, dest="resubmit", help="Resubmit failed tasks. Options for crab resubmit can be specified via a python dict, e.g: --resubmit '{\"maxmemory\" : \"3000\", \"maxruntime\" : \"1440\"}'. To avoid options use '{}' Default: %(default)s")
 	parser.add_argument("--create-filelist", default=None, dest = "create_filelist", help="")
+	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
 	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status or --remake. Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
 	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
@@ -539,17 +570,16 @@ if __name__ == "__main__":
 		SKM.create_filelist(filelist_folder_postfix=args.create_filelist)
 		SKM.save_dataset()
 		exit()
-	if args.status:
-		if not os.path.exists(os.path.join(work_base,args.workdir)):
-			print "Workdir does not exist. Please specify exising workdir to get status of jobs."
-			exit()
-		SKM.write_crab_status(in_dataset_file=args.inputfile,remake=args.remake,resubmit=args.auto_resubmit)
+	if args.reset_filelist:
+		SKM.reset_filelist()
+		SKM.save_dataset()
+		exit()
 
-	if not (args.status or args.remake or args.resubmit):
-		SKM.create_gc_config()
-		if args.submitgc:
-			SKM.submit_gc(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
-			#SKM.status_gc(check_completed=args.checkcompleted)
+	if not (args.remake or args.resubmit):
+		#SKM.create_gc_config()
+		if args.statusgc:
+			#SKM.submit_gc(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
+			SKM.status_gc_new()
 		else:
 			SKM.submit_crab()
 			SKM.status_crab()
