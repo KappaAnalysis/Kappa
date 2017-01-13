@@ -181,7 +181,7 @@ class SkimManagerBase:
 	def write_while(self,datasets_to_submit=None):
 		if os.path.isfile(os.path.join(self.workdir,'while.sh')):
 			out_file = open(os.path.join(self.workdir,'while.sh'),'r')
-			print '\033[94m'+'GC submission script exists with following configs:'+'\033[0m'
+			print '\n\033[92m'+'GC submission script exists with following configs:'+'\033[0m'
 			for line in out_file.readlines():
 				if line[:5]=='go.py':
 					print line.strip('go.py '+os.path.join(self.workdir,'gc_cfg'))
@@ -208,7 +208,7 @@ class SkimManagerBase:
 		
 		os.system('chmod u+x '+os.path.join(self.workdir,'while.sh'))
 		
-		print '\033[92m'+'To run GC submission loop: (will run until .lock file is removed) '+'\033[0m'
+		print '\033[92m'+'To run GC submission loop with '+str(len(datasets_to_submit))+' datasets (will run until .lock file is removed), run:'+'\033[0m'
 		print os.path.join(self.workdir,'while.sh')
 		print ''
 	
