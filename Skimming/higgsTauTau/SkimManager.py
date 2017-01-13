@@ -207,21 +207,26 @@ class SkimManagerBase:
 
 	def status_gc(self):
 		for dataset in self.skimdataset.nicks():
-			if self.skimdataset[dataset]["GCSKIM_STATUS"] == "SUBMITTED":
+			if self.skimdataset[dataset]["GCSKIM_STATUS"] in ["SUBMITTED","INIT"]:
 				gc_workdir = os.path.join(self.workdir,dataset[:100])
-				gc_output_dir = os.path.join(gc_workdir,"output")
-				n_gc_jobs = int(gzip.open(os.path.join(gc_workdir,"params.map.gz"), 'r').read())
-				done_jobs = 0
-				for i in range(n_gc_jobs):
-					job_info_path = os.path.join(gc_output_dir,"job_"+str(i),"job.info")
-					if os.path.exists(job_info_path):
-						job_info = open(job_info_path).read().split("\n")
-						for info_line in job_info:
-							if info_line == "EXITCODE=0":
-								done_jobs += 1
-				if n_gc_jobs == done_jobs:
-					print "GC task completed for",dataset
-					self.skimdataset[dataset]["GCSKIM_STATUS"] = "COMPLETED"
+				if os.path.exists(gc_workdir):
+					if self.skimdataset[dataset]["GCSKIM_STATUS"] == "INIT":
+						print "GC task status set to SUBMITTED for:"
+						print dataset
+						self.skimdataset[dataset]["GCSKIM_STATUS"] = "SUBMITTED"
+					gc_output_dir = os.path.join(gc_workdir,"output")
+					n_gc_jobs = int(gzip.open(os.path.join(gc_workdir,"params.map.gz"), 'r').read())
+					done_jobs = 0
+					for i in range(n_gc_jobs):
+						job_info_path = os.path.join(gc_output_dir,"job_"+str(i),"job.info")
+						if os.path.exists(job_info_path):
+							job_info = open(job_info_path).read().split("\n")
+							for info_line in job_info:
+								if info_line == "EXITCODE=0":
+									done_jobs += 1
+					if n_gc_jobs == done_jobs:
+						print "GC task COMPLETED for",dataset
+						self.skimdataset[dataset]["GCSKIM_STATUS"] = "COMPLETED"
 
 	def individualized_gc_cfg(self, akt_nick ,gc_config):
 		#se_path_base == srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/
@@ -340,7 +345,6 @@ class SkimManagerBase:
 
 	def print_skim(self,summary=False):
 		print "---------------------------------------------------------"
-	##  for akt_nick in self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "DONE"})
 		if summary:
 			status_dict={}
 			status_dict.setdefault('COMPLETED', [])
@@ -351,30 +355,25 @@ class SkimManagerBase:
 			status_dict.setdefault('SUBMITTED', [])
 
 		for akt_nick in self.skimdataset.nicks():
-			#self.skimdataset[akt_nick]["GCSKIM_STATUS"] = "INIT"
 			print akt_nick," ",self.skimdataset[akt_nick]["SKIM_STATUS"],'\t Done: ',self.skimdataset[akt_nick].get('crab_done', 0.0),'% '
 			
 			if summary:
-				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["COMPLETED","LISTED"]:
+				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["COMPLETED","LISTED"] or self.skimdataset[akt_nick]["GCSKIM_STATUS"] in ["COMPLETED","LISTED"]:
 					status_dict['COMPLETED'].append(akt_nick)
-				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["RUNNING"]:
-					status_dict['RUNNING'].append(akt_nick)
-				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED"]:
-					status_dict['FAILED'].append(akt_nick)
-				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["UNKNOWN"]:
-					status_dict['UNKNOWN'].append(akt_nick)
-				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED"]:
+				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED","QUEUED","UNKNOWN"]:
 					status_dict['SUBMITTED'].append(akt_nick)
+				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED"]:
+					status_dict['FAILED'].append(akt_nick)
 
 		if summary:
-			print '\n'+'\033[92m'+'COMPLETED:'+'\033[0m'
+			print '\n'+'\033[92m'+'COMPLETED: '+str(len(status_dict['COMPLETED']))+' tasks'+'\033[0m'
 			for nick in status_dict['COMPLETED']:
 				print nick
-			print '\n'+'\033[91m'+'FAILED:'+'\033[0m'
+			print '\n'+'\033[91m'+'FAILED: '+str(len(status_dict['FAILED']))+' tasks'+'\033[0m'
 			for nick in status_dict['FAILED']:
 				print nick
-			print '\n'+'RUNNING:'
-			for nick in status_dict['RUNNING']:
+			print '\n'+'SUBMITTED: '+str(len(status_dict['SUBMITTED']))+' tasks'
+			for nick in status_dict['SUBMITTED']:
 				print nick
 			print '\n'
 			status_json = open(os.path.join(self.workdir,'skim_summary.json'), 'w')
@@ -520,7 +519,6 @@ if __name__ == "__main__":
 	parser.add_argument("--tag", dest="tag", help="Ask for a specific tag of a dataset. Optional arguments are --TagValues")
 	parser.add_argument("--tagvalues", dest="tagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Exetend\" ")
 	parser.add_argument("--init", dest="init", help="Init or Update the dataset", action='store_true')
-	parser.add_argument("--print", dest="print_ds", help="Print ", action='store_true')
 	parser.add_argument("--status-gc", action='store_true', default=False, dest="statusgc",help="")
 	parser.add_argument("--show-task-id", action='store_true', default=False, dest="showID",help="List all current crab task IDs. Default: %(default)s")
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
