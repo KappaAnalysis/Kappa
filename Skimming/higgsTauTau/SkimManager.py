@@ -479,11 +479,11 @@ class SkimManagerBase:
 								if info_line.startswith("FILE="):
 									file_path_parts = info_line.strip('"').split("  ")[-2:]
 									filelist.write(self.site_storage_access_dict[storage_site]+re.sub(r'.*(store)',r'/store',file_path_parts[1]+file_path_parts[0]+"\n"))
-		#			filelist.close()
-		#			self.skimdataset[dataset]["GCSKIM_STATUS"] = "LISTED"
-		#			print "List creation successfull!"
-		#			print "---------------------------------------------------------"
-		#print "End of list creation."
+					filelist.close()
+					self.skimdataset[dataset]["GCSKIM_STATUS"] = "LISTED"
+					print "List creation successfull!"
+					print "---------------------------------------------------------"
+		print "End of list creation."
 
 	def reset_filelist(self):
 		for dataset in self.skimdataset.nicks():
