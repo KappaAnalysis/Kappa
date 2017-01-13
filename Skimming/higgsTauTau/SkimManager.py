@@ -193,7 +193,7 @@ class SkimManagerBase:
 		out_file.write('while [ -f ".lock" ]\n')
 		out_file.write('do\n')
 		for dataset in datasets_to_submit:
-			out_file.write('go.py '+os.path.join(self.workdir,'gc_cfg',dataset+'.conf \n'))
+			out_file.write('go.py '+os.path.join(self.workdir,'gc_cfg',dataset+'.conf -G\n'))
 		out_file.write('echo "rm .lock"\n')
 		out_file.write('sleep 2\n')
 		out_file.write('done\n')
