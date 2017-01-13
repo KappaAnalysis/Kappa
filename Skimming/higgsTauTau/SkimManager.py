@@ -9,6 +9,7 @@ import json
 import ast
 import gzip
 import shutil
+import re
 
 from httplib import HTTPException
 from CRABAPI.RawCommand import crabCommand
@@ -444,24 +445,45 @@ class SkimManagerBase:
 			self.crab_cmd(cmd="resubmit", argument_dict = argument_dict)
 			print "--------------------------------------------"
 
-	def create_filelist(self, filelist_folder_postfix):
-		filelist_folder_name = "SKIM_" + str(datetime.date.today()) + "_" + filelist_folder_postfix
+	def create_filelist(self):
+		filelist_folder_name = os.path.relpath(self.workdir,SkimManagerBase.get_workbase())
 		skim_path = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data",filelist_folder_name)
 		if not os.path.exists(skim_path):
 			 os.makedirs(skim_path)
 		for dataset in self.skimdataset.nicks():
+			storage_site = self.skimdataset[dataset]["storageSite"]
 			if self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED":
 				print "Getting file list for",self.skimdataset[dataset]["crab_name"]
 				dataset_filelist = subprocess.check_output("crab getoutput --xrootd --dir {DATASET_TASK}".format(
 					DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset]["crab_name"])), shell=True)
 				if "root" in dataset_filelist:
 					filelist = open(skim_path+'/'+dataset+'.txt', 'w')
-					filelist.write(dataset_filelist)
+					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]))
 					filelist.close()
 					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
 					print "List creation successfull!"
 				print "---------------------------------------------------------"
-		print "End of list creation."
+			elif self.skimdataset[dataset]["GCSKIM_STATUS"] == "COMPLETED":
+				gc_output_dir = os.path.join(self.workdir,dataset[:100],"output")
+				n_jobs_info = os.path.join(self.workdir,dataset[:100],"params.map.gz")
+				if os.path.exists(n_jobs_info):
+					print "Getting file list for",self.skimdataset[dataset]["crab_name"]
+					filelist = open(skim_path+'/'+dataset+'.txt', 'w')
+					n_gc_jobs = int(gzip.open(n_jobs_info, 'r').read())
+					done_jobs = 0
+					for i in range(n_gc_jobs):
+						job_info_path = os.path.join(gc_output_dir,"job_"+str(i),"job.info")
+						if os.path.exists(job_info_path):
+							job_info = open(job_info_path).read().split("\n")
+							for info_line in job_info:
+								if info_line.startswith("FILE="):
+									file_path_parts = info_line.strip('"').split("  ")[-2:]
+									filelist.write(self.site_storage_access_dict[storage_site]+re.sub(r'.*(store)',r'/store',file_path_parts[1]+file_path_parts[0]+"\n"))
+		#			filelist.close()
+		#			self.skimdataset[dataset]["GCSKIM_STATUS"] = "LISTED"
+		#			print "List creation successfull!"
+		#			print "---------------------------------------------------------"
+		#print "End of list creation."
 
 	def reset_filelist(self):
 		for dataset in self.skimdataset.nicks():
@@ -524,7 +546,7 @@ if __name__ == "__main__":
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--auto-remake", action='store_true', default=False, dest="auto_remake", help="Auto remake crab tasks where exception is raised. (Remakes .requestcache file). Must be used with --crab-status. Default: %(default)s")
 	parser.add_argument("--resubmit-with-options", default=None, dest="resubmit", help="Resubmit failed tasks. Options for crab resubmit can be specified via a python dict, e.g: --resubmit '{\"maxmemory\" : \"3000\", \"maxruntime\" : \"1440\"}'. To avoid options use '{}' Default: %(default)s")
-	parser.add_argument("--create-filelist", default=None, dest = "create_filelist", help="")
+	parser.add_argument("--create-filelist", action='store_true', default=False, dest = "create_filelist", help="")
 	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
 	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status or --remake. Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
@@ -560,7 +582,7 @@ if __name__ == "__main__":
 		SKM.resubmit_failed(argument_dict=ast.literal_eval(args.resubmit))
 		exit()
 	if args.create_filelist:
-		SKM.create_filelist(filelist_folder_postfix=args.create_filelist)
+		SKM.create_filelist()
 		SKM.save_dataset()
 		exit()
 	if args.reset_filelist:
