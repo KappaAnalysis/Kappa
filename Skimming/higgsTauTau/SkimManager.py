@@ -285,7 +285,7 @@ class SkimManagerBase:
 		#config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
 		config.JobType.maxMemoryMB = 2500
 		config.JobType.allowUndistributedCMSSW = True
-		config.Site.blacklist = ["T2_BR_SPRACE","T1_RU_*","T2_RU_*","T3_US_UMiss"]
+		config.Site.blacklist = ["T3_FR_IPNL","T3_US_UCR","T2_BR_SPRACE","T1_RU_*","T2_RU_*","T3_US_UMiss"]
 		config.Data.splitting = 'FileBased'
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
 		config.Data.publication = False
@@ -322,7 +322,7 @@ class SkimManagerBase:
 
 	def get_status_crab(self):
 		for akt_nick in self.skimdataset.nicks():
-			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED","COMPLETED","INIT"]:
+			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED","COMPLETED","INIT"] and self.skimdataset[akt_nick]["GCSKIM_STATUS"] not in ["LISTED","COMPLETED"]:
 				crab_job_dir = os.path.join(self.workdir,self.skimdataset[akt_nick]["crab_name"])
 				status_dict = {"proxy" : self.voms_proxy, "dir" : crab_job_dir}
 				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd(cmd='status', argument_dict = status_dict)
@@ -437,7 +437,15 @@ class SkimManagerBase:
 					self.submit_crab()
 
 	def resubmit_failed(self,argument_dict):
-		datasets_to_resubmit = [self.skimdataset[dataset]["crab_name"] for dataset in self.skimdataset.nicks() if "failed" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"] and self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED","LISTED"]]
+		datasets_to_resubmit = []
+		for dataset in self.skimdataset.nicks():
+			if self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED","LISTED"] and self.skimdataset[dataset]["GCSKIM_STATUS"] not in ["COMPLETED","LISTED"]:
+				try:
+					if "failed" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"]:
+						datasets_to_resubmit.append(self.skimdataset[dataset]["crab_name"])
+				except:
+					print "Failed to resubmit crab task",dataset,". Possibly a problem with the skim_dataset.json. Try to recover the status of the task properly."
+					pass
 		print "Try to resubmit",len(datasets_to_resubmit),"tasks"
 		for dataset in datasets_to_resubmit:
 			print "Resubmission for",dataset
@@ -463,7 +471,7 @@ class SkimManagerBase:
 					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
 					print "List creation successfull!"
 				print "---------------------------------------------------------"
-			elif self.skimdataset[dataset]["GCSKIM_STATUS"] == "COMPLETED":
+			elif self.skimdataset[dataset]["GCSKIM_STATUS"] == "COMPLETED" and self.skimdataset[dataset]["SKIM_STATUS"] != "LISTED":
 				gc_output_dir = os.path.join(self.workdir,dataset[:100],"output")
 				n_jobs_info = os.path.join(self.workdir,dataset[:100],"params.map.gz")
 				if os.path.exists(n_jobs_info):
