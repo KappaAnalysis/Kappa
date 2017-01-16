@@ -85,6 +85,7 @@ class SkimManagerBase:
 		cfg_dict['jobs']['in flight'] = '50'
 		cfg_dict['jobs']['wall time'] = '06:00:00'
 		cfg_dict['jobs']['memory'] = '5000'
+		cfg_dict['jobs']['max retry'] = '3'
 		#cfg_dict['jobs']['jobs'] = '1'
 
 		cfg_dict['CMSSW'] = {}
