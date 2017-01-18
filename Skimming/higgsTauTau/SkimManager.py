@@ -234,7 +234,7 @@ class SkimManagerBase:
 		#se_path_base == srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/
 		#se_path_base = 'srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/'
 		se_path_base = "srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/"
-		gc_config['storage']['se path'] = se_path_base+"store/user/%s/higgs-kit/skimming/GC_SKIM/%s/"%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
+		gc_config['storage']['se path'] = se_path_base+"store/user/%s/higgs-kit/skimming/GC_SKIM/%s/"%(self.getUsernameFromSiteDB_cache(),datetime.datetime.today().strftime("%y%m%d_%H%M%S"))
 		#gc_config['storage']['se output pattern'] = "FULLEMBEDDING_CMSSW_8_0_21/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
 		gc_config['CMSSW']['dataset'] = akt_nick+" : "+self.skimdataset[akt_nick]['dbs']
 		gc_config['CMSSW']['files per job'] = str(self.files_per_job(akt_nick))

@@ -183,7 +183,8 @@
     "n_events_generated": "39840774", 
     "n_files": "526", 
     "process": "DY1JetsToLL_M10to50", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "DY1JetsToLLM50_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_madgraph-pythia8": {
     "campaign": "RunIIFall15MiniAODv2", 
@@ -308,7 +309,8 @@
     "n_events_generated": "19442927", 
     "n_files": "272", 
     "process": "DY2JetsToLL_M10to50", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "DY2JetsToLLM50_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_madgraph-pythia8": {
     "campaign": "RunIIFall15MiniAODv2", 
@@ -432,7 +434,8 @@
     "n_events_generated": "4964197", 
     "n_files": "59", 
     "process": "DY3JetsToLL_M10to50", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "DY3JetsToLLM50_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_madgraph-pythia8": {
     "campaign": "RunIIFall15MiniAODv2", 
@@ -632,7 +635,8 @@
     "n_events_generated": "2554303", 
     "n_files": "42", 
     "process": "DYBBJetsToLL_M50", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "DYBJetsToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
@@ -650,7 +654,8 @@
     "n_events_generated": "1466840", 
     "n_files": "17", 
     "process": "DYBJetsToLL_M50", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "DYJetsToLLM10To50_Fall11_PUS6_7TeV_AODSIM_madgraph": {
     "campaign": "Fall11", 
@@ -12956,7 +12961,8 @@
     "n_events_generated": "708443", 
     "n_files": "10", 
     "process": "WZTo3LNu", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WZTo3LNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
@@ -12974,7 +12980,8 @@
     "n_events_generated": "2410585", 
     "n_files": "47", 
     "process": "WZTo3LNu", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WZTo3LNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -12992,7 +12999,8 @@
     "n_events_generated": "1993200", 
     "n_files": "39", 
     "process": "WZTo3LNu", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WZToLNu2QorQQ2L_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
@@ -13010,7 +13018,8 @@
     "n_events_generated": "1999600", 
     "n_files": "26", 
     "process": "WZToLNu2QorQQ2L", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WZToLNuQQ_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
     "Moriond17": [
@@ -13028,7 +13037,8 @@
     "n_events_generated": "185447", 
     "n_files": "11", 
     "process": "WZToLNuQQ", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WZ_Summer12_PUS10_8TeV_AODSIM_pythia6tauola": {
     "campaign": "Summer12", 
@@ -13713,7 +13723,8 @@
     "n_events_generated": "8842475", 
     "n_files": "214", 
     "process": "ZZTo2L2Nu", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "ZZTo2L2Q_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_amcatnlo-pythia8": {
     "campaign": "RunIIFall15MiniAODv2", 
