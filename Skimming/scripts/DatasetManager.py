@@ -220,7 +220,7 @@ class DataSetManagerBase:
 		if not nick_name:
 			pd_name, details, filetype = dbs.strip("/").split("/")
 			if xsec is not None:
-				new_entry["xsec"] = xsec
+				new_entry["xsec"] = float(xsec)
 			new_entry["campaign"]  = self.get_campaign(details=details,energy=new_entry["energy"])
 			new_entry["scenario"]  = self.get_scenario(details=details,energy=new_entry["energy"],data=new_entry["data"])
 			new_entry["generator"] = self.get_generator(pd_name, data=new_entry["data"], isembedded=new_entry.get("embedded", False) )
