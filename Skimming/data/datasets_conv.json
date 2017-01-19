@@ -3747,6 +3747,22 @@
     "process": "GluGluToHToTauTau_M125", 
     "scenario": "PU_S6"
   }, 
+  "GluGluToHToTauTauM125_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "campaign": "RunIIFall15MiniAODv2", 
+    "data": false, 
+    "dbs": "/GluGluToHToTauTau_M125_13TeV_amcatnloFXFX_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "76X_mcRun2_asymptotic_v12", 
+    "inputDBS": "global", 
+    "n_events_generated": "5791488", 
+    "n_files": "172", 
+    "process": "GluGluToHToTauTau_M125", 
+    "scenario": "PU25nsData2015v1", 
+    "xsec": 2.775744
+  }, 
   "GluGluToHToTauTauM125_Summer12_PUS10_8TeV_AODSIM_powheg-pythia6": {
     "campaign": "Summer12", 
     "data": false, 
@@ -4754,7 +4770,7 @@
     "n_files": "201", 
     "process": "QCD", 
     "scenario": "PUMoriond17", 
-    "xsec":  720648000.0
+    "xsec": 720648000.0
   }, 
   "STt-channelantitop4finclusiveDecays_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
