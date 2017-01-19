@@ -3115,6 +3115,19 @@
         "process": "GluGluToHToTauTau_M95", 
         "scenario": "PU_S10"
     }, 
+    "/GluGluToHToTauTau_M125_13TeV_amcatnloFXFX_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
+        "campaign": "RunIIFall15MiniAODv2", 
+        "data": false, 
+        "embedded": false, 
+        "energy": "13", 
+        "extension": "", 
+        "format": "MINIAOD", 
+        "generator": "amcatnlo-pythia8", 
+        "n_events_generated": "5791488", 
+        "n_files": "172", 
+        "process": "GluGluToHToTauTau_M125", 
+        "scenario": "PU25nsData2015v1"
+    }, 
     "/GluGluToRadionToHHTo2B2Tau_M-250_narrow_13TeV-madgraph/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM": {
         "campaign": "RunIIFall15MiniAODv2", 
         "data": false, 
