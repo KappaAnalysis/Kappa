@@ -19,19 +19,14 @@
 # Kappa test: scram arch slc6_amd64_gcc493, slc6_amd64_gcc530
 # Kappa test: checkout script scripts/checkoutCmssw76xPackagesForSkimming.py, scripts/checkoutCmssw80xPackagesForSkimming.py
 # Kappa test: output kappaTuple.root
-
 import sys
 if not hasattr(sys, 'argv'):
 	sys.argv = ["cmsRun", "runFrameworkMC.py"]
 
 import os
 import FWCore.ParameterSet.Config as cms
-#import Kappa.Skimming.datasetsHelper2015 as datasetsHelper
-from  Kappa.Skimming.datasethelpertwopz import datasethelpertwopz
-datasetsHelper = datasethelpertwopz(os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json"))
-
-
-
+from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
+datasetsHelper = datasetsHelperTwopz(os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json"))
 import Kappa.Skimming.tools as tools
 
 from FWCore.ParameterSet.VarParsing import VarParsing
@@ -76,20 +71,20 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	muons = "slimmedMuons"
 	electrons = "slimmedElectrons"
 	taus = "slimmedTaus"
+	isSignal = datasetsHelper.isSignal(nickname)
 	# produce selected collections and filter events with not even one Lepton
-	#if not "HToTauTau" in datasetsHelper.getProcess(nickname):
-	if options.preselect and not datasetsHelper.isSignalSample(nickname): ## do not filter Signal Samples (SM Higgs )
-			from Kappa.Skimming.KSkimming_preselection import do_preselection
-			do_preselection(process)
-			process.p *= process.goodEventFilter
+	if options.preselect and not isSignal:
+		from Kappa.Skimming.KSkimming_preselection import do_preselection
+		do_preselection(process)
+		process.p *= process.goodEventFilter
 
-			process.selectedKappaTaus.cut = cms.string('pt > 15 && abs(eta) < 2.5') 
-			process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
-			process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
-			muons = "selectedKappaMuons"
-			electrons = "selectedKappaElectrons"
-			taus = "selectedKappaTaus"
-			process.goodEventFilter.minNumber = cms.uint32(2)
+		process.selectedKappaTaus.cut = cms.string('pt > 15 && abs(eta) < 2.5') 
+		process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
+		process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
+		muons = "selectedKappaMuons"
+		electrons = "selectedKappaElectrons"
+		taus = "selectedKappaTaus"
+		process.goodEventFilter.minNumber = cms.uint32(2)
 	## ------------------------------------------------------------------------
 	# possibility to write out edmDump. Be careful when using unsceduled mode
 	process.load("Kappa.Skimming.edmOut")
@@ -113,16 +108,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	# Important to be evaluated correctly for the following steps
-	
 	#data, isEmbedded, miniaod, process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 	process.kappaTuple.active = cms.vstring('TreeInfo')	
 	data = datasetsHelper.isData(nickname)
 	isEmbedded = datasetsHelper.isEmbedded(nickname)
 	isreHLT = datasetsHelper.isreHLT(nickname)
+	print nickname
 	#####miniaod = datasetsHelper.isMiniaod(nickname) not used anymore, since everything is MiniAOD now
 	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
-	
-
 	## ------------------------------------------------------------------------
 	# General configuration
 	if is_above_cmssw_version([7,4]):
@@ -130,6 +123,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if isreHLT:
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT2")
 		process.kappaTuple.Info.l1Source = cms.InputTag("")
+	if isSignal:
+		process.kappaTuple.Info.lheSource = cms.InputTag("source")
 
 	process.kappaTuple.active += cms.vstring('RefitVertex')
 	process.kappaTuple.active += cms.vstring('VertexSummary')            # save VertexSummary,
@@ -157,11 +152,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
 	elif(data):
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
-
-	##if "reHLT" in datasetsHelper.get_campaign(nickname):
+	
+	#if "reHLT" in datasetsHelper.get_campaign(nickname):
+	#	process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
+	#if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded:
+		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
+	#	process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	if isreHLT:
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
-	if not isreHLT and not isEmbedded:
+	elif not isEmbedded and "Spring16" in str(process.kappaTuple.TreeInfo.parameters.campaign):
 		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	
@@ -170,15 +169,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))
 
 	if not isEmbedded and data:
-			process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
+		process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
 
 	if not isEmbedded and not data:
-			process.kappaTuple.active+= cms.vstring('GenInfo')           # produce Metadata for MC,
-			process.kappaTuple.active+= cms.vstring('GenParticles')      # save GenParticles,
-			process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
-
-			process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
-			process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
+		process.kappaTuple.active+= cms.vstring('GenInfo')           # produce Metadata for MC,
+		process.kappaTuple.active+= cms.vstring('GenParticles')      # save GenParticles,
+		process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
+		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
+		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
 
 	# write out for all processes where available
 	process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
@@ -255,7 +253,19 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 	process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
-	process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
+	if is_above_cmssw_version([8]):
+		process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
+					"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight",
+					"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values")
+	else:
+		process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
@@ -279,19 +289,24 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "byCombinedIsolationDeltaBetaCorrRaw3Hits",
 	                                                                       "chargedIsoPtSum",
 	                                                                       "neutralIsoPtSum",
+	                                                                       "neutralIsoPtSumWeight",
 	                                                                       "puCorrPtSum",
 	                                                                       "footprintCorrection",
 	                                                                       "photonPtSumOutsideSignalCone",
 	                                                                       "byIsolationMVArun2v1DBoldDMwLTraw",
+	                                                                       "byVLooseIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byLooseIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byMediumIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byTightIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byVTightIsolationMVArun2v1DBoldDMwLT",
+	                                                                       "byVVTightIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byIsolationMVArun2v1DBnewDMwLTraw",
+	                                                                       "byVLooseIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
+	                                                                       "byVVTightIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "againstMuonLoose3",
 	                                                                       "againstMuonTight3",
 	                                                                       "againstElectronMVA6category",
@@ -301,13 +316,21 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "againstElectronMediumMVA6",
 	                                                                       "againstElectronTightMVA6",
 	                                                                       "againstElectronVTightMVA6",
+	                                                                       "chargedIsoPtSumdR03",
+	                                                                       "neutralIsoPtSumdR03",
+	                                                                       "neutralIsoPtSumWeightdR03",
+	                                                                       "footprintCorrectiondR03",
+	                                                                       "photonPtSumOutsideSignalConedR03",
 	                                                                       "byLooseCombinedIsolationDeltaBetaCorr3HitsdR03",
 	                                                                       "byMediumCombinedIsolationDeltaBetaCorr3HitsdR03",
 	                                                                       "byTightCombinedIsolationDeltaBetaCorr3HitsdR03",
+	                                                                       "byIsolationMVArun2v1DBdR03oldDMwLTraw",
+	                                                                       "byVLooseIsolationMVArun2v1DBdR03oldDMwLT",
 	                                                                       "byLooseIsolationMVArun2v1DBdR03oldDMwLT",
 	                                                                       "byMediumIsolationMVArun2v1DBdR03oldDMwLT",
 	                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
-	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT"
+	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT",
+	                                                                       "byVVTightIsolationMVArun2v1DBdR03oldDMwLT"
 	)
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	## ------------------------------------------------------------------------
@@ -353,7 +376,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
                                             		cms.InputTag("slimmedMETsPuppi", "", "MERGE") )
 	## ------------------------------------------------------------------------
 	## GenJets 
-	if not data or isEmbedded:
+	if not data or isEmbedded:	
 		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
 		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
 		process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
@@ -361,9 +384,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.tauGenJets +
 			process.tauGenJetsSelectorAllHadrons
 			)
-		process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
+		if isSignal:
+			process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets", "slimmedGenJets")
+		else:
+			process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
 		process.kappaTuple.active += cms.vstring('GenJets')
 		if is_above_cmssw_version([7,6]):
+			if isSignal:
+				process.kappaTuple.GenJets.genJets = cms.PSet(src=cms.InputTag("slimmedGenJets"))
 			process.kappaTuple.GenJets.tauGenJets = cms.PSet(src=cms.InputTag("tauGenJets"))
 			process.kappaTuple.GenJets.tauGenJetsSelectorAllHadrons = cms.PSet(src=cms.InputTag("tauGenJetsSelectorAllHadrons"))
 
@@ -403,11 +431,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	return process
 
-if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
+if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg_v2":
 
 	# test with user-defined input file
 	if options.testfile:
-		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents)
+		print 'read from testfile '+str(options.testfile)
+		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("%s"%options.testfile), maxevents=options.maxevents, outputfilename=options.outputfilename)
 	
 	# CRAB job-submission
 	elif options.outputfilename:

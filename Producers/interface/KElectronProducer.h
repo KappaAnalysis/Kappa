@@ -166,9 +166,27 @@ public:
 #endif
 		out.hadronicOverEm = in.hadronicOverEm();
 		out.fbrem = in.fbrem();
-		out.eSuperClusterOverP = in.eSuperClusterOverP();
-		out.superclusterEnergy = in.superCluster()->energy();
-		out.superclusterPosition = in.superCluster()->position();
+		if(in.superCluster().isNonnull())
+		{
+			out.eSuperClusterOverP = in.eSuperClusterOverP();
+			out.superclusterEnergy = in.superCluster()->energy();
+			out.superclusterPosition = in.superCluster()->position();
+			// Definition from RecoEgamma/ElectronIdentification/plugins/cuts/GsfDEtaInSeedCut.cc
+			if(in.superCluster()->seed().isNonnull())
+			{
+				out.dEtaInSeed = in.deltaEtaSuperClusterTrackAtVtx() - in.superCluster()->eta() + in.superCluster()->seed()->eta();
+			}
+			else
+			{
+				out.dEtaInSeed = std::numeric_limits<float>::max();
+			}
+		}
+		else
+		{
+			out.eSuperClusterOverP = std::numeric_limits<float>::max();
+			out.superclusterEnergy = 0.;
+			out.dEtaInSeed = std::numeric_limits<float>::max();
+		}
 		out.ecalEnergy = in.ecalEnergy();
 		out.ecalEnergyErr = in.ecalEnergyError();
 		out.trackMomentumErr = in.trackMomentumError();

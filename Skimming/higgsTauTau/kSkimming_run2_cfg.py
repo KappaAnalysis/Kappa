@@ -150,7 +150,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	if "reHLT" in datasetsHelper.get_campaign(nickname):
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
-	if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded:
+	if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded and "Spring16" in datasetsHelper.get_campaign(nickname):
 		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	
@@ -244,7 +244,19 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 	process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
-	process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
+	if is_above_cmssw_version([8]):
+		process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
+					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
+					"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium",
+					"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight",
+					"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values")
+	else:
+		process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
@@ -268,19 +280,24 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "byCombinedIsolationDeltaBetaCorrRaw3Hits",
 	                                                                       "chargedIsoPtSum",
 	                                                                       "neutralIsoPtSum",
+	                                                                       "neutralIsoPtSumWeight",
 	                                                                       "puCorrPtSum",
 	                                                                       "footprintCorrection",
 	                                                                       "photonPtSumOutsideSignalCone",
 	                                                                       "byIsolationMVArun2v1DBoldDMwLTraw",
+	                                                                       "byVLooseIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byLooseIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byMediumIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byTightIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byVTightIsolationMVArun2v1DBoldDMwLT",
+	                                                                       "byVVTightIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byIsolationMVArun2v1DBnewDMwLTraw",
+	                                                                       "byVLooseIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
+	                                                                       "byVVTightIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "againstMuonLoose3",
 	                                                                       "againstMuonTight3",
 	                                                                       "againstElectronMVA6category",
@@ -290,13 +307,21 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "againstElectronMediumMVA6",
 	                                                                       "againstElectronTightMVA6",
 	                                                                       "againstElectronVTightMVA6",
+	                                                                       "chargedIsoPtSumdR03",
+	                                                                       "neutralIsoPtSumdR03",
+	                                                                       "neutralIsoPtSumWeightdR03",
+	                                                                       "footprintCorrectiondR03",
+	                                                                       "photonPtSumOutsideSignalConedR03",
 	                                                                       "byLooseCombinedIsolationDeltaBetaCorr3HitsdR03",
 	                                                                       "byMediumCombinedIsolationDeltaBetaCorr3HitsdR03",
 	                                                                       "byTightCombinedIsolationDeltaBetaCorr3HitsdR03",
+	                                                                       "byIsolationMVArun2v1DBdR03oldDMwLTraw",
+	                                                                       "byVLooseIsolationMVArun2v1DBdR03oldDMwLT",
 	                                                                       "byLooseIsolationMVArun2v1DBdR03oldDMwLT",
 	                                                                       "byMediumIsolationMVArun2v1DBdR03oldDMwLT",
 	                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
-	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT"
+	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT",
+	                                                                       "byVVTightIsolationMVArun2v1DBdR03oldDMwLT"
 	)
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	## ------------------------------------------------------------------------
