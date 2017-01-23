@@ -8,6 +8,7 @@
 *~
 *.root
 work.*
+.ninja*
 .svn
 DataFormats/test/libKappa.h
 DataFormats/test/libKappa.cpp

@@ -15,4 +15,3 @@ git clone git@github.com:KappaAnalysis/Kappa.git -b development
 git cms-addpkg EgammaAnalysis/ElectronTools
 cd EgammaAnalysis/ElectronTools/data/
 cat download.url | xargs wget
-

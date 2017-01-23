@@ -1,5 +1,6 @@
 # Kappa test: CMSSW 7.6.3
 # Kappa test: scram arch slc6_amd64_gcc493
+# Kappa test: checkout script scripts/checkoutTauRefit.sh
 # Kappa test: output skim76.root
 
 import os

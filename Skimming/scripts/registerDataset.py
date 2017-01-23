@@ -42,8 +42,8 @@ def register_new_sample(dict, options):
 	new_entry["n_events_generated"]    = get_n_generated_events(sample, options.dbs)
 	new_entry["n_files"]               = get_n_files(sample, options.dbs)
 	new_entry["extension"] = get_extension(details)
-	if options.xsec:
-		new_entry["xsec"] = options.xsec
+	if options.xsec != "":
+		new_entry["xsec"] = float(options.xsec)
 	pprint.pprint(new_entry)
 	print "The nickname will be: "
 	print make_nickname(new_entry)

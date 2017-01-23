@@ -51,6 +51,7 @@ protected:
 		}
 
 		out.pdgId = in.pdgId();
+		out.vertex = in.vertex();
 		out.particleinfo = ((in.status() % 128) << KGenParticleStatusPosition);
 		if (in.status() >= 111)  // Pythia 8 maximum
 			out.particleinfo |= (127 << KGenParticleStatusPosition);
