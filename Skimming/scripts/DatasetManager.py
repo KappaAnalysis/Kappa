@@ -104,7 +104,7 @@ class DataSetManagerBase:
 				
 				
 	def get_generator(self, pd_name, data=False, isembedded=None):
-		if data and not isembedded:
+		if data and isembedded:
 			return ""
 		elif isembedded:
 			return "pythia8"
