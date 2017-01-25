@@ -19,14 +19,14 @@
 # Kappa test: scram arch slc6_amd64_gcc493, slc6_amd64_gcc530
 # Kappa test: checkout script scripts/checkoutCmssw76xPackagesForSkimming.py, scripts/checkoutCmssw80xPackagesForSkimming.py
 # Kappa test: output kappaTuple.root
-
 import sys
 if not hasattr(sys, 'argv'):
 	sys.argv = ["cmsRun", "runFrameworkMC.py"]
 
 import os
 import FWCore.ParameterSet.Config as cms
-import Kappa.Skimming.datasetsHelper2015 as datasetsHelper
+from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
+datasetsHelper = datasetsHelperTwopz(os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json"))
 import Kappa.Skimming.tools as tools
 
 from FWCore.ParameterSet.VarParsing import VarParsing
@@ -71,20 +71,20 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	muons = "slimmedMuons"
 	electrons = "slimmedElectrons"
 	taus = "slimmedTaus"
+	isSignal = datasetsHelper.isSignal(nickname)
 	# produce selected collections and filter events with not even one Lepton
-	if not "HToTauTau" in datasetsHelper.getProcess(nickname):
-		if(options.preselect):
-			from Kappa.Skimming.KSkimming_preselection import do_preselection
-			do_preselection(process)
-			process.p *= process.goodEventFilter
+	if options.preselect and not isSignal:
+		from Kappa.Skimming.KSkimming_preselection import do_preselection
+		do_preselection(process)
+		process.p *= process.goodEventFilter
 
-			process.selectedKappaTaus.cut = cms.string('pt > 15 && abs(eta) < 2.5') 
-			process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
-			process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
-			muons = "selectedKappaMuons"
-			electrons = "selectedKappaElectrons"
-			taus = "selectedKappaTaus"
-			process.goodEventFilter.minNumber = cms.uint32(2)
+		process.selectedKappaTaus.cut = cms.string('pt > 15 && abs(eta) < 2.5')
+		process.selectedKappaMuons.cut = cms.string('pt > 8 && abs(eta) < 2.6')
+		process.selectedKappaElectrons.cut = cms.string('pt > 8 && abs(eta) < 2.7')
+		muons = "selectedKappaMuons"
+		electrons = "selectedKappaElectrons"
+		taus = "selectedKappaTaus"
+		process.goodEventFilter.minNumber = cms.uint32(2)
 	## ------------------------------------------------------------------------
 	# possibility to write out edmDump. Be careful when using unsceduled mode
 	process.load("Kappa.Skimming.edmOut")
@@ -108,17 +108,22 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	# Configure Metadata describing the file
 	# Important to be evaluated correctly for the following steps
+	#data, isEmbedded, miniaod, process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 	process.kappaTuple.active = cms.vstring('TreeInfo')
-	data, isEmbedded, miniaod, process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
-
+	data = datasetsHelper.isData(nickname)
+	isEmbedded = datasetsHelper.isEmbedded(nickname)
+	isreHLT = datasetsHelper.isreHLT(nickname)
+	print nickname
+	#####miniaod = datasetsHelper.isMiniaod(nickname) not used anymore, since everything is MiniAOD now
+	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 	## ------------------------------------------------------------------------
 	# General configuration
 	if is_above_cmssw_version([7,4]):
 		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
-	if "reHLT" in datasetsHelper.get_campaign(nickname):
+	if isreHLT:
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT2")
 		process.kappaTuple.Info.l1Source = cms.InputTag("")
-	if "H2JetsToTauTau" in datasetsHelper.getProcess(nickname):
+	if isSignal:
 		process.kappaTuple.Info.lheSource = cms.InputTag("source")
 
 	process.kappaTuple.active += cms.vstring('RefitVertex')
@@ -141,33 +146,37 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.RefitVertex.AdvancedRefittedVerticesNoBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexNoBSProducer"))
 
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
-	
+
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
 	elif(data):
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
 
-	if "reHLT" in datasetsHelper.get_campaign(nickname):
-		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
-	if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded and "Spring16" in datasetsHelper.get_campaign(nickname):
+	#if "reHLT" in datasetsHelper.get_campaign(nickname):
+	#	process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
+	#if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded:
 		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection" 
+	#	process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
+	if isreHLT:
+		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
+	elif not isEmbedded and "Spring16" in str(process.kappaTuple.TreeInfo.parameters.campaign):
+		# Adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection"
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
-	
+
 	process.kappaTuple.active += cms.vstring('BeamSpot')
 	if is_above_cmssw_version([7,6]):
 		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))
 
 	if not isEmbedded and data:
-			process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
+		process.kappaTuple.active+= cms.vstring('DataInfo')          # produce Metadata for data,
 
 	if not isEmbedded and not data:
-			process.kappaTuple.active+= cms.vstring('GenInfo')           # produce Metadata for MC,
-			process.kappaTuple.active+= cms.vstring('GenParticles')      # save GenParticles,
-			process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
-
-			process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
-			process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
+		process.kappaTuple.active+= cms.vstring('GenInfo')           # produce Metadata for MC,
+		process.kappaTuple.active+= cms.vstring('GenParticles')      # save GenParticles,
+		process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
+		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
+		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
 
 	# write out for all processes where available
 	process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
@@ -188,8 +197,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 		process.kappaTuple.active += cms.vstring('GenTaus')
 		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
-		
-		
+
+
 		#process.kappaTuple.active += cms.vstring('GenTaus') # save GenParticles,
 		#process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("genParticles","","EmbeddedRECO")
 
@@ -338,18 +347,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')
-	# rerun MET sequence to get covariance matrix (not needed for samples produced with 8_0_20 or higher)
-	"""
-	#applies METCorrections for SlimmedMet. Commented out until fixed by MetGroup
-	if is_above_cmssw_version([8,0,14]) and ("80X_mcRun2_asymptotic_2016_miniAODv2_v1" in globaltag or "80X_dataRun2_ICHEP16_repro_v0" in globaltag):
+	if is_above_cmssw_version([8,0,14]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 		runMetCorAndUncFromMiniAOD(process, isData=data  )
 		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs", "", "KAPPA"))
 	else:
 		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
-	"""
-	#write out SlimmedMet without corrections
-	process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
 	#process.kappaTuple.PatMET.pfmetT1 = cms.PSet(src=cms.InputTag("patpfMETT1"))
 	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
 
@@ -374,8 +377,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 	## GenJets 
 	if not data or isEmbedded:
-		isSignal = (("HToTauTau" in datasetsHelper.getProcess(nickname)) or ("H2JetsToTauTau" in datasetsHelper.getProcess(nickname)))
-		
 		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')
 		process.load('PhysicsTools/JetMCAlgos/TauGenJetsDecayModeSelectorAllHadrons_cfi')
 		process.tauGenJets.GenParticles = cms.InputTag("prunedGenParticles")
@@ -419,7 +420,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.outputFile = cms.string('%s'%outputfilename)
 
 	## ------------------------------------------------------------------------
-	## Further information saved to Kappa output 
+	## Further information saved to Kappa output
 	if(options.dumpPython):
 		f = open("dumpPython.py", "w")
 		f.write(process.dumpPython())
@@ -434,12 +435,13 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 
 	# test with user-defined input file
 	if options.testfile:
-		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("file://%s"%options.testfile), maxevents=options.maxevents, outputfilename=options.outputfilename)
-	
+		print 'read from testfile '+str(options.testfile)
+		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, testfile=cms.untracked.vstring("%s"%options.testfile), maxevents=options.maxevents, outputfilename=options.outputfilename)
+
 	# CRAB job-submission
 	elif options.outputfilename:
 		process = getBaseConfig(options.globalTag, nickname=options.nickname, kappaTag=options.kappaTag, maxevents=options.maxevents, outputfilename=options.outputfilename)
-	
+
 	elif  str("@NICK@")[0] != '@':
 		process = getBaseConfig(globaltag="@GLOBALTAG@", nickname="@NICK@", outputfilename="kappaTuple.root")
 	# Kappa test suite (cmsRun with no extra options)
