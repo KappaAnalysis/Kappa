@@ -13,6 +13,7 @@ class datasetsHelperTwopz:
 		self.keep_input_json = True ## Later one can overwrite the input json 
 		self.json_file_name = os.path.basename(in_json_file) 
 		self.json_file_path = os.path.dirname(os.path.abspath(in_json_file)) 
+		self.convert_object_type = False
 		if os.path.isfile(os.path.join(self.json_file_path,self.json_file_name)):
 			self.read_from_jsonfile(os.path.join(self.json_file_path,self.json_file_name))
 		self.convert_dict_to_nickorder() ## do this as default for now (works fine also for already converted dicts)
@@ -58,7 +59,7 @@ class datasetsHelperTwopz:
 		nick += sample_dict["campaign"].replace("_", "") + "_"
 		nick += sample_dict["scenario"].replace("_", "") + "_"
 		nick += sample_dict["energy"].replace("_", "")   + "TeV_"
-		nick += sample_dict["format"].replace("_", "") + ("" if (sample_dict["data"] or sample_dict.get("embedded",False)) else "_")
+		nick += sample_dict["format"].replace("_", "") + ("" if (sample_dict["data"]) else "_")
 		nick += sample_dict["generator"].replace("_", "")
 		nick += ("_" + sample_dict["extension"] if sample_dict["extension"] != "" else "")
 		return nick
@@ -228,7 +229,15 @@ class datasetsHelperTwopz:
 		#~ if type(obj_B) == unicode:
 			#~ obj_B = str(obj_B)
 		if type(obj_A) != type(obj_B):
-			print "Comparing apples with bananas"
+			if not self.convert_object_type:
+				print 'Different file types detected when comparing dicts:'
+				print str(obj_A)+' in new source is '+str(type(obj_A))
+				print str(obj_B)+' in old source is '+str(type(obj_B))
+				print 'Convert everything to <type \'str\'> for file merge? [Y/n]'
+				self.wait_for_user_confirmation()
+				self.convert_object_type = True		
+			obj_A = str(obj_A)
+			obj_B = str(obj_B)
 		elif type(obj_A) == dict:
 			for key in obj_A.keys():
 				if key not in obj_B.keys(): ## if the key is not in b take the hole key as differnces
@@ -270,5 +279,17 @@ class datasetsHelperTwopz:
 		self.dataset_diff_base(dataset.base_dict,self.base_dict,diff_dict)
 		return json.dumps(diff_dict, sort_keys=True, indent=3)		
 
-
+	@classmethod
+	def wait_for_user_confirmation(self,true_false=False):
+		choice = raw_input().lower()
+		if choice in set(['yes','y','ye', '']):
+			if true_false:
+				return True
+			pass
+		elif choice in set(['no','n']):
+			if true_false:
+				return False
+			exit()
+		else:
+			sys.stdout.write("Please respond with 'yes' or 'no'")
 
