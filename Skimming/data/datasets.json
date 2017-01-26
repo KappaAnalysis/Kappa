@@ -13238,7 +13238,7 @@
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
     "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
-    "n_events_generated": "24523758", 
+    "n_events_generated": "24221923", 
     "n_files": "550", 
     "process": "WZTo1L1Nu2Q", 
     "scenario": "PUMoriond17", 
