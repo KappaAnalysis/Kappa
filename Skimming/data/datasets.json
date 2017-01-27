@@ -14350,7 +14350,7 @@
     "n_files": "161", 
     "process": "ZZTo4L", 
     "scenario": "PUMoriond17", 
-    "xsec": 1.256
+    "xsec": 1.212
   }, 
   "ZZTo4L_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
