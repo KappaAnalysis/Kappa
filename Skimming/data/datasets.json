@@ -13418,6 +13418,26 @@
     "scenario": "PUSpring16", 
     "xsec": 5.595
   }, 
+  "WZTo2L2Q_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "Moriond17": [
+      "MC_Summer16", 
+      "Skim_Base"
+    ], 
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "global", 
+    "n_events_generated": "26517272", 
+    "n_files": "441", 
+    "process": "WZTo2L2Q", 
+    "scenario": "PUMoriond17", 
+    "xsec": 5.595
+  }, 
   "WZTo3LNu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
     "Moriond17": [
       "MC_Summer16"
