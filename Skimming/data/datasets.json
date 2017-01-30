@@ -5262,7 +5262,7 @@
     "n_files": "69", 
     "process": "STt-channelantitop4fleptonDecays", 
     "scenario": "PUSpring16", 
-    "xsec": 80.95
+    "xsec": 26.2278
   }, 
   "STt-channelantitop4fleptonDecays_RunIISpring16MiniAODv2_PUSpring16_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -5283,7 +5283,7 @@
     "n_files": "41", 
     "process": "STt-channelantitop4fleptonDecays", 
     "scenario": "PUSpring16", 
-    "xsec": 80.95
+    "xsec": 26.2278
   }, 
   "STt-channeltop4finclusiveDecays_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -5337,7 +5337,7 @@
     "n_files": "105", 
     "process": "STt-channeltop4fleptonDecays", 
     "scenario": "PUSpring16", 
-    "xsec": 136.02
+    "xsec": 44.07
   }, 
   "STt-channeltop4fleptonDecays_RunIISpring16MiniAODv2_PUSpring16_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -5358,7 +5358,7 @@
     "n_files": "41", 
     "process": "STt-channeltop4fleptonDecays", 
     "scenario": "PUSpring16", 
-    "xsec": 136.02
+    "xsec": 44.07
   }, 
   "STtWantitop5finclusiveDecays_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_powheg-pythia8": {
     "campaign": "RunIIFall15MiniAODv2", 
