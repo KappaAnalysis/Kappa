@@ -3765,7 +3765,7 @@
     ], 
     "campaign": "MuTauFinalState", 
     "data": false, 
-    "dbs": "/EmbeddingMCRunIISummer16DR80/MuTauFinalState-imputFlatPU28to62HcalNZSRAWAODSIM_mirror_miniAOD-v5/USER", 
+    "dbs": "/EmbeddingMCRunIISummer16DR80/MuTauFinalState-imputFlatPU28to62HcalNZSRAWAODSIM_mirror_miniAOD-v6/USER", 
     "embedded": true, 
     "energy": "13", 
     "extension": "", 
@@ -3773,11 +3773,11 @@
     "generator": "pythia8", 
     "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v6", 
     "inputDBS": "phys03", 
-    "n_events_generated": "720254", 
-    "n_files": "8060", 
+    "n_events_generated": "2607501", 
+    "n_files": "39961", 
     "process": "EmbeddingMCRunIISummer16DR80", 
     "scenario": "imputFlatPU28to62HcalNZSRAWAODSIM", 
-    "xsec": 1299.173045148
+    "xsec": 1299.173045
   }, 
   "EmbeddingMCRunIISummer16DR80_TauTauFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USER_pythia8": {
     "Moriond17": [
