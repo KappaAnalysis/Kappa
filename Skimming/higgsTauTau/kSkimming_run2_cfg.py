@@ -335,7 +335,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
                                                                 
 	)
 ## now also possible to save all MVA isolation inputs for taus # turn of per default 
-#	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring("decayDistX",
+	"""
+	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring("decayDistX",
 										    "decayDistY",
 										    "decayDistZ",
 										    "decayDistM",
@@ -346,6 +347,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 										    "ptWeightedDrIsolation",
 										    "leadingTrackChi2",
 										    "eRatio")
+	"""
 	
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	process.kappaTuple.PatTaus.verbose = cms.int32(1)
