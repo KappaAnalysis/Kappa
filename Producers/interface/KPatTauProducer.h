@@ -6,6 +6,12 @@
 #include "KBaseMultiLVProducer.h"
 #include "KTauProducer.h"
 
+//#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION >= 21) || (CMSSW_MAJOR_VERSION > 8)
+//#include "RecoTauTag/RecoTau/interface/PFRecoTauClusterVariables.h"
+//#include "Kappa/Producers/donotcompile/PFRecoTauClusterVariables.h"
+
+//#endif
+
 #if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "KPackedPFCandidateProducer.h"
 #endif
@@ -14,6 +20,10 @@
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
 #include "boost/functional/hash.hpp"
+
+#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
+#include "Kappa/Producers/donotcompile/PFRecoTauClusterVariables.h" // can be replaced if there is CMSSW version whic contains this TauIdMVAAuxiliaries class
+#endif
 
 
 class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
@@ -60,19 +70,42 @@ protected:
 
 	virtual void fillDiscriminators(const SingleInputType &in, SingleOutputType &out)
 	{
-		const std::vector<std::pair<std::string, float>> tauIDs = in.tauIDs();
-		int digit = 0;
-		out.binaryDiscriminators = 0;
-		for(auto discriminator: discriminatorMap[names[0]]->binaryDiscriminatorNames)
-		{
-			if(in.tauID(discriminator) > 0.5 )
-				out.binaryDiscriminators |= (1ull << digit);
-			++digit;
-		}
-		for(auto discriminator: discriminatorMap[names[0]]->floatDiscriminatorNames)
-		{
-			out.floatDiscriminators.push_back(in.tauID(discriminator));
-		}
+	  const std::vector<std::pair<std::string, float>> tauIDs = in.tauIDs();
+	  int digit = 0;
+	  out.binaryDiscriminators = 0;
+	  for(auto discriminator: discriminatorMap[names[0]]->binaryDiscriminatorNames)
+	  {
+	    if(in.tauID(discriminator) > 0.5 )
+	    out.binaryDiscriminators |= (1ull << digit);
+	    ++digit;
+	  }
+
+	  out.floatDiscriminators.resize(n_float_dict);
+	  for(auto discriminator=realTauIdfloatmap[names[0]].begin(); discriminator != realTauIdfloatmap[names[0]].end(); discriminator++)
+	  {
+	    out.floatDiscriminators[discriminator->second] = in.tauID(discriminator->first);
+	  }
+#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
+	  for(auto variable = extraTaufloatmap[names[0]].begin();  variable!= extraTaufloatmap[names[0]].end(); variable++)
+	  {  
+	    if (variable->first == EXTRATAUFLOATS::decayDistX ) out.floatDiscriminators[variable->second] = in.flightLength().x();
+	    else if (variable->first == EXTRATAUFLOATS::decayDistY) out.floatDiscriminators[variable->second] = in.flightLength().y();
+	    else if (variable->first == EXTRATAUFLOATS::decayDistZ) out.floatDiscriminators[variable->second] = in.flightLength().z();
+	    else if (variable->first == EXTRATAUFLOATS::decayDistM) out.floatDiscriminators[variable->second] =  std::sqrt(in.flightLength().x()*in.flightLength().x() 
+															     + in.flightLength().y()*in.flightLength().y() 
+															     + in.flightLength().z()*in.flightLength().z());
+	    else if (variable->first == EXTRATAUFLOATS::nPhoton ) out.floatDiscriminators[variable->second] = (float)clusterVariables_.tau_n_photons_total(in);
+	    else if (variable->first == EXTRATAUFLOATS::ptWeightedDetaStrip ) out.floatDiscriminators[variable->second] = clusterVariables_.tau_pt_weighted_deta_strip(in, in.decayMode());
+	    else if (variable->first == EXTRATAUFLOATS::ptWeightedDphiStrip ) out.floatDiscriminators[variable->second] = clusterVariables_.tau_pt_weighted_dphi_strip(in, in.decayMode());
+	    else if (variable->first == EXTRATAUFLOATS::ptWeightedDrSignal ) out.floatDiscriminators[variable->second]  = clusterVariables_.tau_pt_weighted_dr_signal(in, in.decayMode());
+	    else if (variable->first == EXTRATAUFLOATS::ptWeightedDrIsolation) out.floatDiscriminators[variable->second]= clusterVariables_.tau_pt_weighted_dr_iso(in, in.decayMode());
+	    else if (variable->first == EXTRATAUFLOATS::leadingTrackChi2 )  out.floatDiscriminators[variable->second] = in.leadingTrackNormChi2();
+	    else if (variable->first == EXTRATAUFLOATS::eRatio )  out.floatDiscriminators[variable->second] = clusterVariables_.tau_Eratio(in);
+	   }
+#endif
+		
+		
+		
 	}
 	
 	virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
@@ -127,6 +160,14 @@ public:
 			binaryDiscrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("binaryDiscrWhitelist");
 			binaryDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("binaryDiscrBlacklist");
 			floatDiscrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrWhitelist");
+			extrafloatDiscrlist[names[i]] = pset.getUntrackedParameter< std::vector<std::string> >("extrafloatDiscrlist", std::vector<std::string>(0) );
+#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION < 21) || (CMSSW_MAJOR_VERSION < 8 )
+			if (extrafloatDiscrlist[names[i]].size() > 0)
+			  std::cout << "Warining: extrafloatDiscrlist only available in CMSSW_8_0_21 or new" << std::endl;
+#endif
+			
+			
+			
 			floatDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrBlacklist");
 		}
 
@@ -192,7 +233,9 @@ virtual bool acceptSingle(const SingleInputType &in) override
 		// The black/whitelisting mechanism is used to decide if a discriminato is used as binary or float.
 		// The threshold between these two is 0.5
 		out.binaryDiscriminators = 0;
-		out.floatDiscriminators = std::vector<float>(0);
+		n_float_dict = 0;
+		out.floatDiscriminators = std::vector<float>(0); // Will be resized in each event
+		
 		const std::vector<std::pair<std::string, float>> tauIDs = in.tauIDs();
 		for(size_t i = 0; i < names.size(); ++i)
 		{
@@ -207,13 +250,26 @@ virtual bool acceptSingle(const SingleInputType &in) override
 
 				if( KBaseProducer::regexMatch(tauID.first, floatDiscrWhitelist[names[i]], floatDiscrBlacklist[names[i]])) //regexmatch for float discriminators
 				{
-					discriminatorMap[names[i]]->floatDiscriminatorNames.push_back(tauID.first);
+				        realTauIdfloatmap[names[i]][tauID.first] = discriminatorMap[names[i]]->floatDiscriminatorNames.size();
+					discriminatorMap[names[i]]->floatDiscriminatorNames.push_back(tauID.first);		
 					if (this->verbosity > 0)
 						std::cout << "Float tau discriminator " << ": " << tauID.first << std::endl;
 				}
 			}
+			#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
+			for (auto extrafloatDiscr : extrafloatDiscrlist[names[i]]){
+			  EXTRATAUFLOATS add_value = string_to_extraTaufloats(extrafloatDiscr);
+			  if (add_value != EXTRATAUFLOATS::UNKNOWN){
+			    extraTaufloatmap[names[i]][add_value] = discriminatorMap[names[i]]->floatDiscriminatorNames.size();
+			    discriminatorMap[names[i]]->floatDiscriminatorNames.push_back(extrafloatDiscr);
+			  }
+			  
+			}
+			#endif
+			
 			checkMapsize(discriminatorMap[names[i]]->floatDiscriminatorNames, "float Discriminators");
 			checkMapsize(discriminatorMap[names[i]]->binaryDiscriminatorNames, "binary Discriminators");
+			n_float_dict += discriminatorMap[names[i]]->floatDiscriminatorNames.size();
 		}
 	}
 private:
@@ -226,11 +282,40 @@ private:
 		}
 	}
 	std::map<std::string, std::vector<std::string> > preselectionDiscr;
-	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist;
+	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist, extrafloatDiscrlist;
+#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
+	TauIdMVAAuxiliaries clusterVariables_;
+	enum class EXTRATAUFLOATS : int
+        {
+            UNKNOWN = -1, decayDistX = 0, decayDistY = 1, decayDistZ = 2, decayDistM = 3, 
+	    nPhoton = 4, ptWeightedDetaStrip = 5, ptWeightedDphiStrip = 6, ptWeightedDrSignal = 7, 
+	    ptWeightedDrIsolation = 8, leadingTrackChi2 = 9, eRatio = 10
+	};
+	EXTRATAUFLOATS string_to_extraTaufloats(std::string in_string){
+	  if      (in_string == "decayDistX") return EXTRATAUFLOATS::decayDistX;
+	  else if (in_string == "decayDistY") return EXTRATAUFLOATS::decayDistY;
+	  else if (in_string == "decayDistZ") return EXTRATAUFLOATS::decayDistZ;
+	  else if (in_string == "decayDistM") return EXTRATAUFLOATS::decayDistM;
+	  else if (in_string == "nPhoton") return EXTRATAUFLOATS::nPhoton;
+	  else if (in_string == "ptWeightedDetaStrip") return EXTRATAUFLOATS::ptWeightedDetaStrip;
+	  else if (in_string == "ptWeightedDphiStrip") return EXTRATAUFLOATS::ptWeightedDphiStrip;
+	  else if (in_string == "ptWeightedDrSignal") return EXTRATAUFLOATS::ptWeightedDrSignal;
+	  else if (in_string == "ptWeightedDrIsolation") return EXTRATAUFLOATS::ptWeightedDrIsolation;
+	  else if (in_string == "leadingTrackChi2") return EXTRATAUFLOATS::leadingTrackChi2;
+	  else if (in_string == "eRatio") return EXTRATAUFLOATS::eRatio;
+	  std::cout<<"Warining: "<<in_string <<" is not implemented so far !!!!!"<<std::endl;
+	  return EXTRATAUFLOATS::UNKNOWN;
+	}
+	//std::map<std::string, std::map< std::string, int > > extraTaufloatmap;
+	std::map<std::string, std::map< EXTRATAUFLOATS, int > > extraTaufloatmap;
+#endif
+
+	std::map<std::string, std::map< std::string, int > > realTauIdfloatmap;
 	std::map<std::string, KTauMetadata *> discriminatorMap;
 	std::vector<std::string> names;
 	boost::hash<const pat::Tau*> hasher;
-
+        int n_float_dict;
+	
 	TTree* _lumi_tree_pointer;
 };
 

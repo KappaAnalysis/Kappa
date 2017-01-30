@@ -331,8 +331,25 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
 	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT",
 	                                                                       "byVVTightIsolationMVArun2v1DBdR03oldDMwLT"
+                                                                  
+                                                                
 	)
+## now also possible to save all MVA isolation inputs for taus # turn of per default 
+#	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring("decayDistX",
+										    "decayDistY",
+										    "decayDistZ",
+										    "decayDistM",
+										    "nPhoton",
+										    "ptWeightedDetaStrip",
+										    "ptWeightedDphiStrip",
+										    "ptWeightedDrSignal",
+										    "ptWeightedDrIsolation",
+										    "leadingTrackChi2",
+										    "eRatio")
+	
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
+	process.kappaTuple.PatTaus.verbose = cms.int32(1)
+	
 	## ------------------------------------------------------------------------
 	## Configure Jets
 	process.kappaTuple.active += cms.vstring('PileupDensity')
