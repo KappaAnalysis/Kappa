@@ -41,6 +41,7 @@ public:
 	{
 		triggerBits_ = cfg.getParameter<edm::InputTag>("bits");
 		metFilterBits_ = cfg.getParameter<edm::InputTag>("metfilterbits");
+		metFilterBitsList_ = cfg.getParameter<std::vector<std::string>>("metfilterbitslist");
 		triggerObjects_ = cfg.getParameter<edm::InputTag>("objects");
 		triggerPrescales_ = cfg.getParameter<edm::InputTag>("prescales");
 		edm::InputTag l1tauJetSource_test =  cfg.getUntrackedParameter<edm::InputTag>("l1extratauJetSource",edm::InputTag("dummy"));
@@ -58,6 +59,7 @@ public:
 		consumescollector.consumes<edm::TriggerResults>(metFilterBits_);
 		consumescollector.consumes<pat::TriggerObjectStandAloneCollection>(triggerObjects_);
 		consumescollector.consumes<pat::PackedTriggerPrescales>(triggerPrescales_);
+		for(size_t j = 0; j < metFilterBitsList_.size(); j++) consumescollector.consumes<bool>(edm::InputTag(metFilterBitsList_[j]));
 	
 		
 	}
@@ -87,7 +89,7 @@ public:
 				selectedMetFilters_.push_back(i);
 		}
 		nMetFilters_ = selectedMetFilters_.size();
-		if(nMetFilters_ >=(8* sizeof(int)))
+		if(nMetFilters_+metFilterBitsList_.size() >=(8* sizeof(int)))
 		{
 			std::cout << "Tried to read " << nMetFilters_ << " but only able to store " << (sizeof(int)*8) << " bits." << std::endl;
 			assert(false);
@@ -96,6 +98,11 @@ public:
 		{
 			toMetadata->metFilterNames.push_back(metFilterNames_.triggerName(i));
 		}
+		for(auto i : metFilterBitsList_)
+		{
+			toMetadata->metFilterNames.push_back("Flag_"+i);
+		}
+		metFilterBitsListHandle_.resize(metFilterBitsList_.size());
 		return true;
 	}
 
@@ -109,6 +116,10 @@ public:
 		event.getByLabel(metFilterBits_, metFilterBitsHandle_);
 		event.getByLabel(triggerObjects_, triggerObjects);
 		event.getByLabel(triggerPrescales_, triggerPrescales);
+		for(size_t i = 0; i < metFilterBitsList_.size(); i++)
+		{
+			event.getByLabel(edm::InputTag(metFilterBitsList_[i]), metFilterBitsListHandle_[i]);
+		}
 		
 		if (save_l1extratau_) event.getByToken( l1tauJetSource_, l1tauColl_ );
 		
@@ -262,6 +273,12 @@ protected:
 			if(metFilterBitsHandle_->accept(i))
 				out.metFilterBits = ( out.metFilterBits | ( 1 << i ));
 		}
+		for(size_t i = 0; i < metFilterBitsList_.size(); i++)
+		{
+			if(*metFilterBitsListHandle_[i])
+				out.metFilterBits = ( out.metFilterBits | ( 1 << (i+nMetFilters_) ));
+		}
+
 
 		if(!signifTriggerBitFired_)
 			return;
@@ -347,6 +364,8 @@ private:
 	edm::Handle< l1extra::L1JetParticleCollection > l1tauColl_ ;
 	edm::EDGetTokenT< l1extra::L1JetParticleCollection > l1tauJetSource_;
 	std::vector<int> l1extratau_idxs_;
+	std::vector<std::string> metFilterBitsList_;
+	std::vector<edm::Handle<bool>> metFilterBitsListHandle_;
 	
 	
 	

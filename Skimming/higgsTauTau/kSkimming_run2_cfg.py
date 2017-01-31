@@ -145,7 +145,19 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.RefitVertex.AdvancedRefittedVerticesBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexBSProducer"))
 		process.kappaTuple.RefitVertex.AdvancedRefittedVerticesNoBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexNoBSProducer"))
 
+	# setup BadPFMuonFilter and BadChargedCandidateFilter
+	process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
+	process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
+	process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
+	process.BadPFMuonFilter.taggingMode = cms.bool(True)
+
+	process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
+	process.BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons")
+	process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
+	process.BadChargedCandidateFilter.taggingMode = cms.bool(True)
+
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
+	process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
 
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
