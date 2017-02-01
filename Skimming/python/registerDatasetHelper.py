@@ -248,7 +248,7 @@ def load_database(dataset):
 def save_database(dict, dataset):
 
 	with open(dataset, 'w') as fp:
-		json.dump(dict, fp, sort_keys=True, indent = 4)
+		json.dump(dict, fp, sort_keys=True, indent = 2)
 
 @cached_query
 def query_result(query, expect_n_results = 1):
