@@ -142,13 +142,13 @@ public:
 		if (in.isPF())
 			out.leptonInfo |= KLeptonPFMask;
 
-		// electron track
+		reco::Vertex vtx = (*VertexCollection).at(0);
+		// electron track and impact parameter
 		if (in.gsfTrack().isNonnull())
-			KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
-		else if (in.gsfTrack().isNonnull())
 		{
 			KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
-			out.leptonInfo |= KLeptonAlternativeTrackMask;
+			out.dxy = in.gsfTrack()->dxy(vtx.position());
+			out.dz = in.gsfTrack()->dz(vtx.position());
 		}
 
 		// ECAL region: bits are set according to reco::GsfElectron::FiducialFlags

@@ -30,7 +30,6 @@ struct KBasicTau : public KLepton
 
 	int decayMode;     ///< hadronic decay mode as identified by HPS algorithm
 	float emFraction;  ///< electromagnetic energy fraction
-	float dz;
 
 	/// container for tau discriminators with binary values
 	unsigned long long binaryDiscriminators;
