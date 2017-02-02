@@ -95,7 +95,7 @@ PATTauIdUpdater::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   edm::Handle<pat::TauCollection> taus;
   iEvent.getByToken(src,taus);
   
-  //I didin't found a more elegant way, such that one have to loop three times over the tau input collection. 
+  //I didn't found a more elegant way, such that one have to loop three times over the tau input collection. 
   
   
   // First save the old ids
@@ -106,7 +106,7 @@ PATTauIdUpdater::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
   }
   
-   // Second save the new ids or overwrite the some ids values
+   // Second save the new ids or overwrite the some ids if their name is identical to the old one
   for (auto gettoken :  update_PATTauDiscriminators){
     edm::Handle<pat::PATTauDiscriminator> inDiscriminators;
     iEvent.getByToken(gettoken.second, inDiscriminators);
@@ -117,7 +117,7 @@ PATTauIdUpdater::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   }
   
   
-  // Last step make a copy of the original tau, but take the new ids
+  // Last step make a copy of the original tau and save the ids in the previously created map
   auto outTaus = std::make_unique<std::vector<pat::Tau>>();
   outTaus->reserve(taus->size());
   for(unsigned iTau = 0; iTau < taus->size(); iTau++) {
