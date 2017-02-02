@@ -65,6 +65,8 @@ def checkoutPackages(args):
 		"git cms-merge-topic ikrav:egm_id_80X_v2",
 		# additional metfilters
 		"git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter"
+                #packages needed to rerun tau id
+                "git cms-merge-topic -u cms-tau-pog:CMSSW_8_0_X_tau-pog_miniAOD-backport-tauID",
 		# exact copy from https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorking2016#MET
 		"git cms-addpkg RecoMET/METPUSubtraction",
 		"git cms-addpkg DataFormats/METReco",
