@@ -70,7 +70,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	muons = "slimmedMuons"
 	electrons = "slimmedElectrons"
-	taus = "slimmedTaus"
+	#taus = "slimmedTaus"
+	taus = "newslimmedTaus"
 	isSignal = datasetsHelper.isSignal(nickname)
 	# produce selected collections and filter events with not even one Lepton
 	if options.preselect and not isSignal:
@@ -275,8 +276,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	setupElectrons(process, electrons)
 	process.p *= ( process.makeKappaElectrons )
 	## ------------------------------------------------------------------------
+	process.load('RecoTauTag.Configuration.loadRecoTauTagMVAsFromPrepDB_cfi')
+	process.load("Kappa.Skimming.KPatTaus_run2_cff")	
+	process.p *= ( process.makeKappaTaus )
+	
+	
+	
 	process.kappaTuple.active += cms.vstring('PatTaus')
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
+	process.kappaTuple.PatTaus.taus.src = cms.InputTag(taus)
 	process.kappaTuple.PatTaus.taus.floatDiscrBlacklist = cms.vstring()
 	# just took everything from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV
 	process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring ()
@@ -330,12 +338,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "byMediumIsolationMVArun2v1DBdR03oldDMwLT",
 	                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
 	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT",
-	                                                                       "byVVTightIsolationMVArun2v1DBdR03oldDMwLT"
+	                                                                       "byVVTightIsolationMVArun2v1DBdR03oldDMwLT",
+										"rerunDiscriminationByIsolationMVArun2v1raw",
+										"rerunDiscriminationByIsolationMVArun2v1VLoose"
                                                                   
                                                                 
 	)
 ## now also possible to save all MVA isolation inputs for taus # turn of per default 
-	"""
+	
 	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring("decayDistX",
 										    "decayDistY",
 										    "decayDistZ",
@@ -346,8 +356,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 										    "ptWeightedDrSignal",
 										    "ptWeightedDrIsolation",
 										    "leadingTrackChi2",
-										    "eRatio")
-	"""
+										    "eRatio"
+										    )
+
 	
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	process.kappaTuple.PatTaus.verbose = cms.int32(1)
