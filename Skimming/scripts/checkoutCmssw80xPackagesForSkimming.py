@@ -63,6 +63,8 @@ def checkoutPackages(args):
 		#https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_regular_users_common
 		#This needs to be checked out first since there are conflicts with MVA MET otherwise and then 63 packages are checked out...
 		"git cms-merge-topic ikrav:egm_id_80X_v2",
+		# additional metfilters
+		"git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter"
 		# exact copy from https://twiki.cern.ch/twiki/bin/viewauth/CMS/HiggsToTauTauWorking2016#MET
 		"git cms-addpkg RecoMET/METPUSubtraction",
 		"git cms-addpkg DataFormats/METReco",
