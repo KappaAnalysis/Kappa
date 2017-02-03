@@ -70,7 +70,7 @@ class SkimManagerBase:
 			return self.UsernameFromSiteDB
 
 	def get_global_tag(self, akt_nick):
-		return self.skimdataset[akt_nick].get("globalTag", '80X_dataRun2_2016SeptRepro_v4' if self.skimdataset.isData(akt_nick) else '80X_mcRun2_asymptotic_2016_miniAODv2_v1')
+		return self.skimdataset[akt_nick].get("globalTag", '80X_dataRun2_2016SeptRepro_v7' if self.skimdataset.isData(akt_nick) else '80X_mcRun2_asymptotic_2016_TrancheIV_v8')
 
 	def gc_default_cfg(self):
 		cfg_dict = {}
