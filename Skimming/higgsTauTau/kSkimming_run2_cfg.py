@@ -320,13 +320,13 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "byTightIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byVTightIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byVVTightIsolationMVArun2v1DBoldDMwLT",
-	                                                                       "byIsolationMVArun2v1DBnewDMwLTraw",
-	                                                                       "byVLooseIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "byVVTightIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byIsolationMVArun2v1DBnewDMwLTraw",
+#	                                                                       "byVLooseIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byVVTightIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "againstMuonLoose3",
 	                                                                       "againstMuonTight3",
 	                                                                       "againstElectronMVA6category",
@@ -381,7 +381,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 										    "eRatio"
 										    )
 
-	
+
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	process.kappaTuple.PatTaus.verbose = cms.int32(1)
 	
