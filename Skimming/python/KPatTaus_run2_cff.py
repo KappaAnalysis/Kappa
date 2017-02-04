@@ -57,6 +57,8 @@ rerunDiscriminationByIsolationMVANewDMrun2v1raw.mvaName = cms.string("RecoTauTag
 rerunDiscriminationByIsolationMVANewDMrun2v1raw.mvaOpt = cms.string("DBnewDMwLT")
 
 rerunDiscriminationByIsolationMVANewDMrun2v1VLoose = rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose.clone()
+rerunDiscriminationByIsolationMVANewDMrun2v1VLoose.toMultiplex = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1raw')
+rerunDiscriminationByIsolationMVANewDMrun2v1VLoose.key = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1raw:category')
 rerunDiscriminationByIsolationMVANewDMrun2v1VLoose.mvaOutput_normalization = cms.string("RecoTauTag_tauIdMVAIsoDBnewDMwLT2016v1_mvaOutput_normalization")
 rerunDiscriminationByIsolationMVANewDMrun2v1VLoose.mapping[0].cut = cms.string("RecoTauTag_tauIdMVAIsoDBnewDMwLT2016v1_WPEff90")
 
