@@ -72,11 +72,17 @@ class SkimManagerBase:
 	def get_global_tag(self, akt_nick):
 		return self.skimdataset[akt_nick].get("globalTag", '80X_dataRun2_2016SeptRepro_v4' if self.skimdataset.isData(akt_nick) else '80X_mcRun2_asymptotic_2016_miniAODv2_v1')
 
-	def gc_default_cfg(self):
+	def gc_default_cfg(self,backend='freiburg'):
 		cfg_dict = {}
 		cfg_dict['global'] = {}
 		cfg_dict['global']['task']  = 'CMSSW'
-		cfg_dict['global']['backend']  = 'condor'
+		if backend=='freiburg':
+			cfg_dict['global']['backend']  = 'condor'
+		elif backend=='naf':
+			cfg_dict['global']['backend']  = 'local'
+		else:
+			print "Backend not supported. Please choose 'freiburg' or 'naf'."
+			exit()
 		#cfg_dict['global']['backend']  = 'local'
 		#cfg_dict['global']['backend']  = 'cream'
 		cfg_dict['global']["workdir create"] = 'True '
@@ -103,11 +109,10 @@ class SkimManagerBase:
 		cfg_dict['storage'] = {}
 		cfg_dict['storage']['se output files'] = 'kappaTuple.root'
 		cfg_dict['storage']['se output pattern'] = "/@NICK@/@FOLDER@/kappa_@NICK@_@GC_JOB_ID@.@XEXT@"
-
-		cfg_dict['condor'] = {}
-		cfg_dict['condor']['JDLData'] = 'Requirements=(TARGET.CLOUDSITE=="BWFORCLUSTER") +REMOTEJOB=True'
-		cfg_dict['condor']['proxy'] = "VomsProxy"
-
+		if backend=='freiburg':
+			cfg_dict['condor'] = {}
+			cfg_dict['condor']['JDLData'] = 'Requirements=(TARGET.CLOUDSITE=="BWFORCLUSTER") +REMOTEJOB=True'
+			cfg_dict['condor']['proxy'] = "VomsProxy"
 		cfg_dict['local'] = {}
 		cfg_dict['local']['queue randomize'] = 'True'
 		cfg_dict['local']['wms'] = 'OGE'
@@ -129,12 +134,12 @@ class SkimManagerBase:
 
 		return cfg_dict
 
-	def create_gc_config(self):
+	def create_gc_config(self,backend='freiburg'):
 		shutil.copyfile(src=os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/higgsTauTau/",self.configfile),dst=os.path.join(self.workdir,'gc_cfg',self.configfile))
-		gc_config = self.gc_default_cfg()
+		gc_config = self.gc_default_cfg(backend=backend)
 		for akt_nick in self.skimdataset.get_nicks_with_query(query={"GCSKIM_STATUS" : "INIT"}):
 			print "Create a new config for",akt_nick
-			gc_config = self.gc_default_cfg()
+			gc_config = self.gc_default_cfg(backend=backend)
 			self.individualized_gc_cfg(akt_nick, gc_config)
 			out_file_name = os.path.join(self.workdir,'gc_cfg',akt_nick[:100]+'.conf')
 			out_file = open(out_file_name,'w')
@@ -564,6 +569,7 @@ if __name__ == "__main__":
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
 	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
 	parser.add_argument("--resubmit-with-gc", action='store_true', default=False, dest="resubmit_with_gc", help="Resubmits non-completed tasks with Grid Control.")
+	parser.add_argument("-b","--backend", default='freiburg', dest="backend", help="Changes backend for the creation of Grid Control configs. Supported: freiburg, naf. Default: %(default)s")
 
 	args = parser.parse_args()
 	if args.workdir == latest_subdir:
@@ -581,7 +587,7 @@ if __name__ == "__main__":
 
 	if args.init:
 		SKM.add_new(nicks)
-		SKM.create_gc_config()
+		SKM.create_gc_config(backend=args.backend)
 
 	if args.remake_all:
 		SKM.remake_all()
