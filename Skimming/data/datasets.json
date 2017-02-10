@@ -12215,6 +12215,22 @@
     "scenario": "PUSpring16", 
     "xsec": 489.0
   }, 
+  "WGToLNuG_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8_ext2": {
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "ext2", 
+    "format": "MINIAOD", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
+    "inputDBS": "global", 
+    "n_events_generated": "10231994", 
+    "n_files": "124", 
+    "process": "WGToLNuG", 
+    "scenario": "PUMoriond17", 
+    "xsec": 489.0
+  }, 
   "WGstarToLNuEE_RunIISpring16MiniAODv2_PUSpring16_13TeV_MINIAOD_madgraph": {
     "Moriond17": [
       "MC_Spring16", 
@@ -12235,6 +12251,22 @@
     "scenario": "PUSpring16", 
     "xsec": 3.526
   }, 
+  "WGstarToLNuEE_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph": {
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/WGstarToLNuEE_012Jets_13TeV-madgraph/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "madgraph", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
+    "inputDBS": "global", 
+    "n_events_generated": "2249800", 
+    "n_files": "28", 
+    "process": "WGstarToLNuEE", 
+    "scenario": "PUMoriond17", 
+    "xsec": 3.526
+  }, 
   "WGstarToLNuMuMu_RunIISpring16MiniAODv2_PUSpring16_13TeV_MINIAOD_madgraph": {
     "Moriond17": [
       "MC_Spring16", 
@@ -12253,6 +12285,22 @@
     "n_files": "53", 
     "process": "WGstarToLNuMuMu", 
     "scenario": "PUSpring16", 
+    "xsec": 2.793
+  }, 
+  "WGstarToLNuMuMu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph": {
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/WGstarToLNuMuMu_012Jets_13TeV-madgraph/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "madgraph", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
+    "inputDBS": "global", 
+    "n_events_generated": "2218596", 
+    "n_files": "30", 
+    "process": "WGstarToLNuMuMu", 
+    "scenario": "PUMoriond17", 
     "xsec": 2.793
   }, 
   "WHZHTTHHToTauTauM100_Fall11_PUS6_7TeV_AODSIM_pythia6-tauola": {
