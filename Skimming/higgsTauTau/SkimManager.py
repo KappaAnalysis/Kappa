@@ -396,6 +396,13 @@ class SkimManagerBase:
 		for task in tasks:
 			os.system('crab remake --task='+task)
 
+	def kill_all(self):
+		for dirpath,dirnames,fielnames in os.walk(self.workdir):
+			for dirname in dirnames:
+				if "crab" in dirname:
+					crab_dir = os.path.join(dirpath,dirname)
+					os.system('crab kill -d '+crab_dir)
+
 	def remake_task(self,inputfile,resubmit=False):
 		if os.path.exists(os.path.join(self.workdir,'skim_summary.json')):
 			check_json = json.load(open(os.path.join(self.workdir,'skim_summary.json')))
@@ -562,6 +569,7 @@ if __name__ == "__main__":
 	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
 	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status or --remake. Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
+	parser.add_argument("--kill-all", action='store_true', default=False, dest="kill_all", help="kills all tasks. (Remakes .requestcache file). Default: %(default)s")
 	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
 	parser.add_argument("--resubmit-with-gc", action='store_true', default=False, dest="resubmit_with_gc", help="Resubmits non-completed tasks with Grid Control.")
 
@@ -585,18 +593,26 @@ if __name__ == "__main__":
 
 	if args.remake_all:
 		SKM.remake_all()
+
+	if args.kill_all:
+		SKM.kill_all()
+		exit()
+
 	if args.showID:
 		print SKM.show_crab_taskID()
 	if args.remake:
 		SKM.remake_task(args.inputfile,resubmit=args.auto_resubmit)
 		exit()
+
 	if args.resubmit:
 		SKM.resubmit_failed(argument_dict=ast.literal_eval(args.resubmit))
 		exit()
+
 	if args.create_filelist:
 		SKM.create_filelist()
 		SKM.save_dataset()
 		exit()
+
 	if args.reset_filelist:
 		SKM.reset_filelist()
 		SKM.save_dataset()
