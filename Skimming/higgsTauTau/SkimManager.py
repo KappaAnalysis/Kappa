@@ -569,7 +569,7 @@ if __name__ == "__main__":
 	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
 	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status or --remake. Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
-	parser.add_argument("--kill-all", action='store_true', default=False, dest="kill_all", help="kills all tasks. (Remakes .requestcache file). Default: %(default)s")
+	parser.add_argument("--kill-all", action='store_true', default=False, dest="kill_all", help="kills all tasks. Default: %(default)s")
 	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
 	parser.add_argument("--resubmit-with-gc", action='store_true', default=False, dest="resubmit_with_gc", help="Resubmits non-completed tasks with Grid Control.")
 
