@@ -1340,7 +1340,8 @@
   "DoubleEG_Run2016B_23Sep2016v3_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016B", 
     "data": true, 
@@ -1378,7 +1379,8 @@
   "DoubleEG_Run2016C_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016C", 
     "data": true, 
@@ -1416,7 +1418,8 @@
   "DoubleEG_Run2016D_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016D", 
     "data": true, 
@@ -1454,7 +1457,8 @@
   "DoubleEG_Run2016E_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016E", 
     "data": true, 
@@ -1491,7 +1495,8 @@
   "DoubleEG_Run2016F_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016F", 
     "data": true, 
@@ -1510,7 +1515,8 @@
   "DoubleEG_Run2016G_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016G", 
     "data": true, 
@@ -1530,7 +1536,8 @@
     "Moriond17": [
       "Skim_Data_PromptReco", 
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016H", 
     "data": true, 
@@ -2131,7 +2138,8 @@
   "DoubleMuon_Run2016B_23Sep2016v3_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016B", 
     "data": true, 
@@ -2169,7 +2177,8 @@
   "DoubleMuon_Run2016C_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016C", 
     "data": true, 
@@ -2207,7 +2216,8 @@
   "DoubleMuon_Run2016D_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016D", 
     "data": true, 
@@ -2245,7 +2255,8 @@
   "DoubleMuon_Run2016E_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016E", 
     "data": true, 
@@ -2282,7 +2293,8 @@
   "DoubleMuon_Run2016F_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016F", 
     "data": true, 
@@ -2301,7 +2313,8 @@
   "DoubleMuon_Run2016G_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016G", 
     "data": true, 
@@ -2321,7 +2334,8 @@
     "Moriond17": [
       "Skim_Data_PromptReco", 
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016H", 
     "data": true, 
@@ -4945,7 +4959,8 @@
   "MuonEG_Run2016B_23Sep2016v3_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016B", 
     "data": true, 
@@ -4983,7 +4998,8 @@
   "MuonEG_Run2016C_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016C", 
     "data": true, 
@@ -5021,7 +5037,8 @@
   "MuonEG_Run2016D_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016D", 
     "data": true, 
@@ -5059,7 +5076,8 @@
   "MuonEG_Run2016E_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016E", 
     "data": true, 
@@ -5096,7 +5114,8 @@
   "MuonEG_Run2016F_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016F", 
     "data": true, 
@@ -5115,7 +5134,8 @@
   "MuonEG_Run2016G_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016G", 
     "data": true, 
@@ -5135,7 +5155,8 @@
     "Moriond17": [
       "Skim_Data_PromptReco", 
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016H", 
     "data": true, 
@@ -9390,7 +9411,8 @@
   "SingleElectron_Run2016B_23Sep2016v3_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016B", 
     "data": true, 
@@ -9428,7 +9450,8 @@
   "SingleElectron_Run2016C_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016C", 
     "data": true, 
@@ -9466,7 +9489,8 @@
   "SingleElectron_Run2016D_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016D", 
     "data": true, 
@@ -9504,7 +9528,8 @@
   "SingleElectron_Run2016E_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016E", 
     "data": true, 
@@ -9541,7 +9566,8 @@
   "SingleElectron_Run2016F_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016F", 
     "data": true, 
@@ -9560,7 +9586,8 @@
   "SingleElectron_Run2016G_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016G", 
     "data": true, 
@@ -9580,7 +9607,8 @@
     "Moriond17": [
       "Skim_Data_PromptReco", 
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016H", 
     "data": true, 
@@ -9774,7 +9802,8 @@
   "SingleMuon_Run2016B_23Sep2016v3_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016B", 
     "data": true, 
@@ -9812,7 +9841,8 @@
   "SingleMuon_Run2016C_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016C", 
     "data": true, 
@@ -9850,7 +9880,8 @@
   "SingleMuon_Run2016D_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016D", 
     "data": true, 
@@ -9888,7 +9919,8 @@
   "SingleMuon_Run2016E_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016E", 
     "data": true, 
@@ -9925,7 +9957,8 @@
   "SingleMuon_Run2016F_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016F", 
     "data": true, 
@@ -9944,7 +9977,8 @@
   "SingleMuon_Run2016G_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016G", 
     "data": true, 
@@ -9964,7 +9998,8 @@
     "Moriond17": [
       "Skim_Data_PromptReco", 
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016H", 
     "data": true, 
@@ -10662,7 +10697,8 @@
   "Tau_Run2016B_23Sep2016v3_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016B", 
     "data": true, 
@@ -10700,7 +10736,8 @@
   "Tau_Run2016C_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016C", 
     "data": true, 
@@ -10738,7 +10775,8 @@
   "Tau_Run2016D_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016D", 
     "data": true, 
@@ -10776,7 +10814,8 @@
   "Tau_Run2016E_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016E", 
     "data": true, 
@@ -10813,7 +10852,8 @@
   "Tau_Run2016F_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016F", 
     "data": true, 
@@ -10832,7 +10872,8 @@
   "Tau_Run2016G_23Sep2016v1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016G", 
     "data": true, 
@@ -10852,7 +10893,8 @@
     "Moriond17": [
       "Skim_Data_PromptReco", 
       "Skim_Base", 
-      "Skim_Data"
+      "Skim_Data", 
+      "Skim_Data_RerecoGT"
     ], 
     "campaign": "Run2016H", 
     "data": true, 
