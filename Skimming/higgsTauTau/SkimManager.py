@@ -18,7 +18,8 @@ from CRABClient.ClientExceptions import ClientException
 class SkimManagerBase:
 
 
-	def __init__(self, workbase=".", workdir="TEST_SKIM", use_proxy_variable=False):
+	def __init__(self, storage_for_output, workbase=".", workdir="TEST_SKIM", use_proxy_variable=False):
+		self.storage_for_output = storage_for_output
 		self.workdir = os.path.join(workbase,workdir)
 		if not os.path.exists(self.workdir+"/gc_cfg"): 
 			os.makedirs(self.workdir+"/gc_cfg")
@@ -290,7 +291,7 @@ class SkimManagerBase:
 		config.Data.splitting = 'FileBased'
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
 		config.Data.publication = False
-		config.Site.storageSite = "T2_DE_DESY"
+		config.Site.storageSite = self.storage_for_output
 		return config
 
 	def individualized_crab_cfg(self, akt_nick, config):
@@ -572,6 +573,7 @@ if __name__ == "__main__":
 	parser.add_argument("--kill-all", action='store_true', default=False, dest="kill_all", help="kills all tasks. Default: %(default)s")
 	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
 	parser.add_argument("--resubmit-with-gc", action='store_true', default=False, dest="resubmit_with_gc", help="Resubmits non-completed tasks with Grid Control.")
+	parser.add_argument("--storage-for-output",dest="storage_for_output",default="T2_DE_DESY",help="Specifies the storage element you want to write your outputs to. Default: %(default)s")
 
 	args = parser.parse_args()
 	if args.workdir == latest_subdir:
@@ -584,7 +586,7 @@ if __name__ == "__main__":
 	if args.date:
 		args.workdir+="_"+datetime.date.today().strftime("%Y-%m-%d")
 	
-	SKM = SkimManagerBase(workbase=work_base,workdir=args.workdir)
+	SKM = SkimManagerBase(storage_for_output=args.storage_for_output,workbase=work_base,workdir=args.workdir)
 	nicks = SKM.nick_list(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
 
 	if args.init:
