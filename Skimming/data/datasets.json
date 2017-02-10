@@ -12216,6 +12216,9 @@
     "xsec": 489.0
   }, 
   "WGToLNuG_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8_ext2": {
+    "Moriond17": [
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM", 
@@ -12252,6 +12255,9 @@
     "xsec": 3.526
   }, 
   "WGstarToLNuEE_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph": {
+    "Moriond17": [
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WGstarToLNuEE_012Jets_13TeV-madgraph/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -12288,6 +12294,9 @@
     "xsec": 2.793
   }, 
   "WGstarToLNuMuMu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph": {
+    "Moriond17": [
+      "MC_Summer16"
+    ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/WGstarToLNuMuMu_012Jets_13TeV-madgraph/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
