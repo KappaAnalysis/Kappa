@@ -328,6 +328,8 @@ class SkimManagerBase:
 				crab_job_dir = os.path.join(self.workdir,self.skimdataset[akt_nick]["crab_name"])
 				status_dict = {"proxy" : self.voms_proxy, "dir" : crab_job_dir}
 				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd(cmd='status', argument_dict = status_dict)
+				if not self.skimdataset[akt_nick]['last_status']:
+					self.skimdataset[akt_nick]["SKIM_STATUS"] = "EXCEPTION"
 
 	def update_status_crab(self):
 		for akt_nick in self.skimdataset.nicks():
@@ -352,7 +354,7 @@ class SkimManagerBase:
 			status_dict={}
 			status_dict.setdefault('COMPLETED', [])
 			status_dict.setdefault('RUNNING', [])
-		#	status_dict.setdefault('EXCEPTION', [])
+			status_dict.setdefault('EXCEPTION', [])
 			status_dict.setdefault('FAILED', [])
 			status_dict.setdefault('UNKNOWN', [])
 			status_dict.setdefault('SUBMITTED', [])
@@ -367,6 +369,8 @@ class SkimManagerBase:
 					status_dict['SUBMITTED'].append(akt_nick)
 				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED"]:
 					status_dict['FAILED'].append(akt_nick)
+				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION"]:
+					status_dict['EXCEPTION'].append(akt_nick)
 
 		if summary:
 			print '\n'+'\033[92m'+'COMPLETED: '+str(len(status_dict['COMPLETED']))+' tasks'+'\033[0m'
@@ -374,6 +378,9 @@ class SkimManagerBase:
 				print nick
 			print '\n'+'\033[91m'+'FAILED: '+str(len(status_dict['FAILED']))+' tasks'+'\033[0m'
 			for nick in status_dict['FAILED']:
+				print nick
+			print '\n'+'\033[93m'+'EXCEPTION: '+str(len(status_dict['EXCEPTION']))+' tasks'+'\033[0m'
+			for nick in status_dict['EXCEPTION']:
 				print nick
 			print '\n'+'SUBMITTED: '+str(len(status_dict['SUBMITTED']))+' tasks'
 			for nick in status_dict['SUBMITTED']:
@@ -405,45 +412,37 @@ class SkimManagerBase:
 					os.system('crab kill -d '+crab_dir)
 
 	def remake_task(self,inputfile,resubmit=False):
-		if os.path.exists(os.path.join(self.workdir,'skim_summary.json')):
-			check_json = json.load(open(os.path.join(self.workdir,'skim_summary.json')))
-			ntask = len(check_json['exception'])
-			print str(ntask)+' tasks that raised an exception will be remade. This will delete and recreate those folders in the workdir.'
-			print 'Do you want to continue? [Y/n]'
-			self.wait_for_user_confirmation()
-			all_subdirs = [os.path.join(self.workdir,d) for d in os.listdir(self.workdir) if d in check_json['exception'] and os.path.isdir(os.path.join(self.workdir,d))]
-		else:
-			all_subdirs = [os.path.join(self.workdir,d) for d in os.listdir(self.workdir) if os.path.isdir(os.path.join(self.workdir,d))]
-			if os.path.join(self.workdir,'gc_cfg') in all_subdirs:
-				all_subdirs.remove(os.path.join(self.workdir,'gc_cfg'))
-			check_json = {}
-			check_json['exception']=[]
-			print 'skim_summary.json could not be found. Please run with --crab-status to create and get list of all jobs that raise exception.'
-			print 'Do you want to remake all '+str(len(all_subdirs))+' crab tasks in current workdir? This will delete and recreate those folders in the workdir. [Y/n]'
-			self.wait_for_user_confirmation()
+		nicks_to_remake = [nick for nick in self.skimdataset.nicks() if self.skimdataset[nick]["SKIM_STATUS"] == "EXCEPTION"]
+		all_subdirs = [os.path.join(self.workdir,self.skimdataset[akt_nick]["crab_name"]) for akt_nick in nicks_to_remake]
+		print len(all_subdirs),'tasks that raised an exception will be remade. This will delete and recreate those folders in the workdir.'
+		print 'Do you want to continue? [Y/n]'
+		self.wait_for_user_confirmation()
+
 		print '\033[94m'+'Getting crab tasks...'+'\033[0m'
 		tasks = self.get_crab_taskIDs()
 		idir=1
-		for subdir in all_subdirs:
-			print '\033[94m'+'('+str(idir)+'/'+str(ntask)+')	REMAKING '+os.path.basename(subdir)+'\033[0m'
+		for subdir,nick in zip(all_subdirs,nicks_to_remake):
+			print '\033[94m'+'('+str(idir)+'/'+str(len(all_subdirs))+')	REMAKING '+os.path.basename(subdir)+'\033[0m'
 			idir+=1
 			task_exists = False
 			for task in tasks:
-				if os.path.basename(subdir)[5:] in task:
+				if os.path.basename(subdir) in task:
 					task_exists=True
-					os.chdir(self.workdir)
-					shutil.rmtree(os.path.join(self.workdir,os.path.basename(subdir)))
+					if os.path.exists(subdir):
+						shutil.rmtree(subdir)
 					os.system('crab remake --task='+task)
-					os.system('crab resubmit -d '+os.path.join(self.workdir,os.path.basename(subdir)))
+					os.system('crab resubmit -d '+subdir)
+					nicks_to_remake.remove(nick)
 					break
 			if not task_exists:
-				#print '\033[91m'+os.path.basename(subdir)+' COULD NOT BE REMADE AS NO MATCHING TASK IS KNOWN TO CRAB.'+'\033[0m'
 				if resubmit:
-					print'\033[94m'+'RESUBMITTING...'+'\033[0m'
-					#os.chdir(self.workdir)
-					shutil.rmtree(os.path.join(self.workdir,os.path.basename(subdir)))
-					self.add_new(nick_list(in_dataset_file=inputfile,nick_regex = os.path.basename(subdir)[5:]))
-					self.submit_crab()
+					print '\033[94m'+nick+' will be RESUBMITTED by hand'+'\033[0m'
+					if os.path.exists(subdir):
+						shutil.rmtree(subdir)
+					self.skimdataset.base_dict.pop(nick)
+		if len(nicks_to_remake) > 0:
+			self.add_new(nicks_to_remake)
+			self.submit_crab()
 
 	def resubmit_failed(self,argument_dict):
 		datasets_to_resubmit = []
