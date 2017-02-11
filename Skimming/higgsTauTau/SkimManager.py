@@ -467,18 +467,8 @@ class SkimManagerBase:
 			 os.makedirs(skim_path)
 		for dataset in self.skimdataset.nicks():
 			storage_site = self.skimdataset[dataset]["storageSite"]
-			if self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED":
-				print "Getting CRAB file list for",dataset
-				dataset_filelist = subprocess.check_output("crab getoutput --xrootd --dir {DATASET_TASK}".format(
-					DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset]["crab_name"])), shell=True)
-				if "root" in dataset_filelist:
-					filelist = open(skim_path+'/'+dataset+'.txt', 'w')
-					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]))
-					filelist.close()
-					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
-					print "List creation successfull!"
-				print "---------------------------------------------------------"
-			elif self.skimdataset[dataset]["GCSKIM_STATUS"] == "COMPLETED" and self.skimdataset[dataset]["SKIM_STATUS"] != "LISTED":
+			# File list for GC first
+			if self.skimdataset[dataset]["GCSKIM_STATUS"] == "COMPLETED":
 				gc_output_dir = os.path.join(self.workdir,dataset[:100],"output")
 				n_jobs_info = os.path.join(self.workdir,dataset[:100],"params.map.gz")
 				if os.path.exists(n_jobs_info):
@@ -498,6 +488,19 @@ class SkimManagerBase:
 					self.skimdataset[dataset]["GCSKIM_STATUS"] = "LISTED"
 					print "List creation successfull!"
 					print "---------------------------------------------------------"
+			# If GC task not completed, create a crab filelist
+			elif self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED" and self.skimdataset[dataset]["GCSKIM_STATUS"] != "LISTED":
+				print "Getting CRAB file list for",dataset
+				dataset_filelist = subprocess.check_output("crab getoutput --xrootd --dir {DATASET_TASK}".format(
+					DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset]["crab_name"])), shell=True)
+				if "root" in dataset_filelist:
+					filelist = open(skim_path+'/'+dataset+'.txt', 'w')
+					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]))
+					filelist.close()
+					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
+					print "List creation successfull!"
+				print "---------------------------------------------------------"
+
 		print "End of list creation."
 
 	def reset_filelist(self):
