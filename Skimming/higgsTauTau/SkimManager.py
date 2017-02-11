@@ -163,7 +163,6 @@ class SkimManagerBase:
 			return None
 		if tag_values_str:
 			tag_values = tag_values_str.strip('][').replace(' ','').split(',')
-		#nicks = [str(x) for x in self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex)]
 		
 		return(self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex)) 
 
@@ -353,7 +352,6 @@ class SkimManagerBase:
 		if summary:
 			status_dict={}
 			status_dict.setdefault('COMPLETED', [])
-			status_dict.setdefault('RUNNING', [])
 			status_dict.setdefault('EXCEPTION', [])
 			status_dict.setdefault('FAILED', [])
 			status_dict.setdefault('UNKNOWN', [])
@@ -365,9 +363,9 @@ class SkimManagerBase:
 			if summary:
 				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["COMPLETED","LISTED"] or self.skimdataset[akt_nick]["GCSKIM_STATUS"] in ["COMPLETED","LISTED"]:
 					status_dict['COMPLETED'].append(akt_nick)
-				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED","QUEUED","UNKNOWN"]:
+				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED","QUEUED","UNKNOWN","NEW"]:
 					status_dict['SUBMITTED'].append(akt_nick)
-				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED"]:
+				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED","RESUBMITFAILED"]:
 					status_dict['FAILED'].append(akt_nick)
 				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION"]:
 					status_dict['EXCEPTION'].append(akt_nick)
@@ -411,7 +409,14 @@ class SkimManagerBase:
 					crab_dir = os.path.join(dirpath,dirname)
 					os.system('crab kill -d '+crab_dir)
 
-	def remake_task(self,inputfile,resubmit=False):
+	def purge_all(self):
+		for dirpath,dirnames,fielnames in os.walk(self.workdir):
+			for dirname in dirnames:
+				if "crab" in dirname:
+					crab_dir = os.path.join(dirpath,dirname)
+					os.system('crab purge -d '+crab_dir)
+
+	def remake_task(self,inputfile):
 		nicks_to_remake = [nick for nick in self.skimdataset.nicks() if self.skimdataset[nick]["SKIM_STATUS"] == "EXCEPTION"]
 		all_subdirs = [os.path.join(self.workdir,self.skimdataset[akt_nick]["crab_name"]) for akt_nick in nicks_to_remake]
 		print len(all_subdirs),'tasks that raised an exception will be remade. This will delete and recreate those folders in the workdir.'
@@ -566,8 +571,6 @@ if __name__ == "__main__":
 
 	parser.add_argument("--init", dest="init", help="Init or Update the dataset", action='store_true')
 
-	parser.add_argument("--show-task-id", action='store_true', default=False, dest="showID",help="List all current crab task IDs. Default: %(default)s")
-
 	parser.add_argument("--status-gc", action='store_true', default=False, dest="statusgc",help="")
 	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
 
@@ -576,7 +579,8 @@ if __name__ == "__main__":
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
 	parser.add_argument("--kill-all", action='store_true', default=False, dest="kill_all", help="kills all tasks. Default: %(default)s")
-
+	parser.add_argument("--purge-all", action='store_true', default=False, dest="purge_all", help="purges all tasks. Default: %(default)s")
+	
 	parser.add_argument("--create-filelist", action='store_true', default=False, dest = "create_filelist", help="")
 	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
 
@@ -605,10 +609,12 @@ if __name__ == "__main__":
 		SKM.kill_all()
 		exit()
 
-	if args.showID:
-		print SKM.show_crab_taskID()
+	if args.purge_all:
+		SKM.purge_all()
+		exit()
+
 	if args.remake:
-		SKM.remake_task(args.inputfile,resubmit=args.auto_resubmit)
+		SKM.remake_task(args.inputfile)
 		exit()
 
 	if args.resubmit:
