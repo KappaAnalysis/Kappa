@@ -435,11 +435,10 @@ class SkimManagerBase:
 					nicks_to_remake.remove(nick)
 					break
 			if not task_exists:
-				if resubmit:
-					print '\033[94m'+nick+' will be RESUBMITTED by hand'+'\033[0m'
-					if os.path.exists(subdir):
-						shutil.rmtree(subdir)
-					self.skimdataset.base_dict.pop(nick)
+				print '\033[94m'+nick+' will be RESUBMITTED by hand'+'\033[0m'
+				if os.path.exists(subdir):
+					shutil.rmtree(subdir)
+				self.skimdataset.base_dict.pop(nick)
 		if len(nicks_to_remake) > 0:
 			self.add_new(nicks_to_remake)
 			self.submit_crab()
@@ -551,7 +550,8 @@ if __name__ == "__main__":
 	latest_subdir = SkimManagerBase.get_latest_subdir(work_base=work_base)
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json")
 
-	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)") 
+	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)")
+
 	parser.add_argument("-i", "--input", dest="inputfile", default=def_input, help="input data base (Default: %s)"%def_input)
 	parser.add_argument("-w", "--workdir", dest="workdir", help="Set work directory  (Default: Latest modified subdir, i.e. %s) in workbase %s.\nWorkbase can be set by export SKIM_WORK_BASE=workbase or by setting absolute path."%(latest_subdir,work_base), default=latest_subdir)
 	parser.add_argument("-d", "--date", dest="date", action="store_true", default=False, help="Add current date to workdir folder (Default: %(default)s)")
@@ -559,20 +559,23 @@ if __name__ == "__main__":
 	parser.add_argument("--nicks", dest="nicks", help="Query which each dataset has to fulfill. Works with regex e.g: --nicks \".*_Run2016(B|C|D).*\"")
 	parser.add_argument("--tag", dest="tag", help="Ask for a specific tag of a dataset. Optional arguments are --TagValues")
 	parser.add_argument("--tagvalues", dest="tagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Exetend\" ")
+	parser.add_argument("--storage-for-output",dest="storage_for_output",default="T2_DE_DESY",help="Specifies the storage element you want to write your outputs to. Default: %(default)s")
+
 	parser.add_argument("--init", dest="init", help="Init or Update the dataset", action='store_true')
-	parser.add_argument("--status-gc", action='store_true', default=False, dest="statusgc",help="")
+
 	parser.add_argument("--show-task-id", action='store_true', default=False, dest="showID",help="List all current crab task IDs. Default: %(default)s")
-	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
-	parser.add_argument("--auto-remake", action='store_true', default=False, dest="auto_remake", help="Auto remake crab tasks where exception is raised. (Remakes .requestcache file). Must be used with --crab-status. Default: %(default)s")
+
+	parser.add_argument("--status-gc", action='store_true', default=False, dest="statusgc",help="")
+	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
+
 	parser.add_argument("--resubmit-with-options", default=None, dest="resubmit", help="Resubmit failed tasks. Options for crab resubmit can be specified via a python dict, e.g: --resubmit '{\"maxmemory\" : \"3000\", \"maxruntime\" : \"1440\"}'. To avoid options use '{}' Default: %(default)s")
-	parser.add_argument("--create-filelist", action='store_true', default=False, dest = "create_filelist", help="")
-	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
-	parser.add_argument("--auto-resubmit", action='store_true', default=False, dest="auto_resubmit", help="Auto resubmit failed tasks. Must be used with --crab-status or --remake. Default: %(default)s")
+	parser.add_argument("--resubmit-with-gc", action='store_true', default=False, dest="resubmit_with_gc", help="Resubmits non-completed tasks with Grid Control.")
+	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
 	parser.add_argument("--kill-all", action='store_true', default=False, dest="kill_all", help="kills all tasks. Default: %(default)s")
-	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
-	parser.add_argument("--resubmit-with-gc", action='store_true', default=False, dest="resubmit_with_gc", help="Resubmits non-completed tasks with Grid Control.")
-	parser.add_argument("--storage-for-output",dest="storage_for_output",default="T2_DE_DESY",help="Specifies the storage element you want to write your outputs to. Default: %(default)s")
+
+	parser.add_argument("--create-filelist", action='store_true', default=False, dest = "create_filelist", help="")
+	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
 
 	args = parser.parse_args()
 	if args.workdir == latest_subdir:
