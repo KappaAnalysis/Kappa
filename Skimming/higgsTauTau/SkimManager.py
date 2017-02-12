@@ -29,8 +29,8 @@ class SkimManagerBase:
 		self.max_crab_jobs_per_nick = 8000 # 10k is the hard limit
 		self.voms_proxy = None
 		self.site_storage_access_dict = {
-			"T2_DE_DESY" : "dcap://dcache-cms-dcap.desy.de//pnfs/desy.de/cms/tier2/",
-			"T2_DE_RWTH" : "dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/"
+			"T2_DE_DESY" : {"dcap":"dcap://dcache-cms-dcap.desy.de//pnfs/desy.de/cms/tier2/","srm":"srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/"},
+			"T2_DE_RWTH" : {"dcap":"dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/","srm":"srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/"}
 		}
 		self.UsernameFromSiteDB = None
 		try:
@@ -233,8 +233,10 @@ class SkimManagerBase:
 	def individualized_gc_cfg(self, akt_nick ,gc_config):
 		#se_path_base == srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/
 		#se_path_base = 'srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/'
-		se_path_base = "srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/"
-		gc_config['storage']['se path'] = se_path_base+"store/user/%s/higgs-kit/skimming/GC_SKIM/%s/"%(self.getUsernameFromSiteDB_cache(),datetime.datetime.today().strftime("%y%m%d_%H%M%S"))
+		#se_path_base = 'srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/'
+		storageSite = self.skimdataset[akt_nick].get("storageSite",self.storage_for_output)
+		se_path_base = self.site_storage_access_dict[storageSite]["srm"]
+		gc_config['storage']['se path'] = se_path_base+"store/user/%s/higgs-kit/skimming/%s/GC_SKIM/%s/"%(self.getUsernameFromSiteDB_cache(),os.path.basename(self.workdir),datetime.datetime.today().strftime("%y%m%d_%H%M%S"))
 		#gc_config['storage']['se output pattern'] = "FULLEMBEDDING_CMSSW_8_0_21/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
 		gc_config['CMSSW']['dataset'] = akt_nick+" : "+self.skimdataset[akt_nick]['dbs']
 		gc_config['CMSSW']['files per job'] = str(self.files_per_job(akt_nick))
@@ -336,16 +338,23 @@ class SkimManagerBase:
 			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED","COMPLETED"]:
 				all_jobs = 0
 				done_jobs = 0
+				failed_jobs = 0
 				try:
 					self.skimdataset[akt_nick]["SKIM_STATUS"] = self.skimdataset[akt_nick]['last_status']['status']
 					for job_per_status in self.skimdataset[akt_nick]['last_status'].get('jobsPerStatus',{}).keys():
 						all_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
 						if job_per_status == 'finished':
 							done_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
+						elif job_per_satus == 'failed':
+							failed_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
+
+					self.skimdataset[akt_nick]['crab_done'] = 0.0 if all_jobs == 0  else round(float(100.0*done_jobs)/float(all_jobs),2)
+					self.skimdataset[akt_nick]['crab_failed'] = 0.0 if all_jobs == 0  else round(float(100.0*failed_jobs)/float(all_jobs),2)
+					self.skimdataset[akt_nick]['n_jobs'] = max(all_jobs,self.skimdataset[akt_nick].get('n_jobs',0))
+
 				except:
 					pass
-				self.skimdataset[akt_nick]['crab_done'] = 0.0 if all_jobs == 0  else round(float(100.0*done_jobs)/float(all_jobs),2)
-				self.skimdataset[akt_nick]['n_jobs'] = max(all_jobs,self.skimdataset[akt_nick].get('n_jobs',0))
+
 
 	def print_skim(self,summary=False):
 		print "---------------------------------------------------------"
@@ -488,7 +497,7 @@ class SkimManagerBase:
 							for info_line in job_info:
 								if info_line.startswith("FILE="):
 									file_path_parts = info_line.strip('"').split("  ")[-2:]
-									filelist.write(self.site_storage_access_dict[storage_site]+re.sub(r'.*(store)',r'/store',file_path_parts[1]+file_path_parts[0]+"\n"))
+									filelist.write(self.site_storage_access_dict[storage_site]["dcap"]+re.sub(r'.*(store)',r'/store',file_path_parts[1]+file_path_parts[0]+"\n"))
 					filelist.close()
 					self.skimdataset[dataset]["GCSKIM_STATUS"] = "LISTED"
 					print "List creation successfull!"
@@ -496,11 +505,15 @@ class SkimManagerBase:
 			# If GC task not completed, create a crab filelist
 			elif self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED" and self.skimdataset[dataset]["GCSKIM_STATUS"] != "LISTED":
 				print "Getting CRAB file list for",dataset
-				dataset_filelist = subprocess.check_output("crab getoutput --xrootd --dir {DATASET_TASK}".format(
-					DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset]["crab_name"])), shell=True)
+				dataset_filelist = ""
+				try:
+					dataset_filelist = subprocess.check_output("crab getoutput --xrootd --dir {DATASET_TASK}".format(
+						DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset]["crab_name"])), shell=True)
+				except:
+					print "Crab getoutput exited with error. Try again later."
 				if "root" in dataset_filelist:
 					filelist = open(skim_path+'/'+dataset+'.txt', 'w')
-					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]))
+					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]["dcap"]))
 					filelist.close()
 					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
 					print "List creation successfull!"
