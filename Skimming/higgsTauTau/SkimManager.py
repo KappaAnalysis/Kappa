@@ -424,6 +424,23 @@ class SkimManagerBase:
 				if "crab" in dirname:
 					crab_dir = os.path.join(dirpath,dirname)
 					os.system('crab purge -d '+crab_dir)
+	def purge_completed(self):
+                datasets_to_purge = []
+                for dataset in self.skimdataset.nicks():
+                        if self.skimdataset[dataset]["SKIM_STATUS"] in ["COMPLETED"] or self.skimdataset[dataset]["GCSKIM_STATUS"] in ["COMPLETED"]:
+                                try:
+                                        if "finished" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"]:
+                                                datasets_to_purge.append(self.skimdataset[dataset]["crab_name"])
+                                except:
+                                        print "Failed to purge crab task",dataset,". Possibly a problem with the skim_dataset.json. Try to recover the status of the task properly."
+                                        pass
+
+
+                print "Try to purge",len(datasets_to_purge),"tasks"
+                for dataset in datasets_to_purge:
+                        print "Purging for",dataset
+                        os.system('crab purge '+os.path.join(self.workdir,str(dataset)))
+                        print "--------------------------------------------"
 
 	def remake_task(self,inputfile):
 		nicks_to_remake = [nick for nick in self.skimdataset.nicks() if self.skimdataset[nick]["SKIM_STATUS"] == "EXCEPTION"]
@@ -593,6 +610,7 @@ if __name__ == "__main__":
 	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
 	parser.add_argument("--kill-all", action='store_true', default=False, dest="kill_all", help="kills all tasks. Default: %(default)s")
 	parser.add_argument("--purge-all", action='store_true', default=False, dest="purge_all", help="purges all tasks. Default: %(default)s")
+	parser.add_argument("--purge-completed", action='store_true', default=False, dest="purge_completed", help="Purges completed tasks. Default: %(default)s")
 	
 	parser.add_argument("--create-filelist", action='store_true', default=False, dest = "create_filelist", help="")
 	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
@@ -624,6 +642,10 @@ if __name__ == "__main__":
 
 	if args.purge_all:
 		SKM.purge_all()
+		exit()
+
+	if args.purge_completed:
+		SKM.purge_completed()
 		exit()
 
 	if args.remake:
