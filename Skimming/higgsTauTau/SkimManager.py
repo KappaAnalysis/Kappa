@@ -288,7 +288,7 @@ class SkimManagerBase:
 		#config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
 		config.JobType.maxMemoryMB = 2500
 		config.JobType.allowUndistributedCMSSW = True
-		config.Site.blacklist = ["T3_FR_IPNL","T3_US_UCR","T2_BR_SPRACE","T1_RU_*","T2_RU_*","T3_US_UMiss"]
+		config.Site.blacklist = ["T3_FR_IPNL","T3_US_UCR","T2_BR_SPRACE","T1_RU_*","T2_RU_*","T3_US_UMiss","T2_US_Vanderbilt"]
 		config.Data.splitting = 'FileBased'
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
 		config.Data.publication = False
@@ -418,31 +418,29 @@ class SkimManagerBase:
 					crab_dir = os.path.join(dirpath,dirname)
 					os.system('crab kill -d '+crab_dir)
 
-	def purge_all(self):
-		for dirpath,dirnames,fielnames in os.walk(self.workdir):
-			for dirname in dirnames:
-				if "crab" in dirname:
-					crab_dir = os.path.join(dirpath,dirname)
-					os.system('crab purge -d '+crab_dir)
-	def purge_completed(self):
-                datasets_to_purge = []
-                for dataset in self.skimdataset.nicks():
-                        if self.skimdataset[dataset]["SKIM_STATUS"] in ["COMPLETED"] or self.skimdataset[dataset]["GCSKIM_STATUS"] in ["COMPLETED"]:
-                                try:
-                                        if "finished" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"]:
-                                                datasets_to_purge.append(self.skimdataset[dataset]["crab_name"])
-                                except:
-                                        print "Failed to purge crab task",dataset,". Possibly a problem with the skim_dataset.json. Try to recover the status of the task properly."
-                                        pass
+	def purge(self,status_groups_to_perge):
+		status_groups_to_perge = set(status_groups_to_perge.split(","))
+		tasks_to_perge = []
+		if "ALL" in status_groups_to_perge:
+			for dirpath,dirnames,fielnames in os.walk(self.workdir):
+				for dirname in dirnames:
+					if "crab" in dirname:
+						crab_dir = os.path.join(dirpath,dirname)
+						tasks_to_perge.append(crab_dir)
+		elif status_groups_to_perge <= set(["COMPLETED","LISTED","KILLED","FAILED"]):
+			for status in status_groups_to_perge:
+				for dataset_nick in self.skimdataset.nicks():
+					if self.skimdataset[dataset_nick]["SKIM_STATUS"] == status or self.skimdataset[dataset_nick]["GCSKIM_STATUS"] == status:
+						tasks_to_perge.append(self.skimdataset[dataset_nick].get("crab_name","crab_"+dataset_nick[:100]))
+		else:
+			print "You specified an unsuitable status for purging. Please specify from this list: ALL,COMPLETED,LISTED,KILLED,FAILED."
+		print len(tasks_to_perge),"crab task(s) to purge."
+		for task in tasks_to_perge:
+			print "Attempt to purge",task
+			self.crab_cmd("purge",{"dir":os.path.join(self.workdir,task),"cache":True})
+			print "--------------------------------------------"
 
-
-                print "Try to purge",len(datasets_to_purge),"tasks"
-                for dataset in datasets_to_purge:
-                        print "Purging for",dataset
-                        os.system('crab purge '+os.path.join(self.workdir,str(dataset)))
-                        print "--------------------------------------------"
-
-	def remake_task(self,inputfile):
+	def remake_task(self):
 		nicks_to_remake = [nick for nick in self.skimdataset.nicks() if self.skimdataset[nick]["SKIM_STATUS"] == "EXCEPTION"]
 		all_subdirs = [os.path.join(self.workdir,self.skimdataset[akt_nick]["crab_name"]) for akt_nick in nicks_to_remake]
 		print len(all_subdirs),'tasks that raised an exception will be remade. This will delete and recreate those folders in the workdir.'
@@ -606,11 +604,9 @@ if __name__ == "__main__":
 
 	parser.add_argument("--resubmit-with-options", default=None, dest="resubmit", help="Resubmit failed tasks. Options for crab resubmit can be specified via a python dict, e.g: --resubmit '{\"maxmemory\" : \"3000\", \"maxruntime\" : \"1440\"}'. To avoid options use '{}' Default: %(default)s")
 	parser.add_argument("--resubmit-with-gc", action='store_true', default=False, dest="resubmit_with_gc", help="Resubmits non-completed tasks with Grid Control.")
-	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks where exception occured. (Run after --crab-status). Default: %(default)s")
-	parser.add_argument("--remake-all", action='store_true', default=False, dest="remake_all", help="Remakes all tasks. (Remakes .requestcache file). Default: %(default)s")
+	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks for which an exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--kill-all", action='store_true', default=False, dest="kill_all", help="kills all tasks. Default: %(default)s")
-	parser.add_argument("--purge-all", action='store_true', default=False, dest="purge_all", help="purges all tasks. Default: %(default)s")
-	parser.add_argument("--purge-completed", action='store_true', default=False, dest="purge_completed", help="Purges completed tasks. Default: %(default)s")
+	parser.add_argument("--purge", default=None, dest="purge", help="Purges tasks specified groups of tasks defined by their status. Possible groups: ALL,COMPLETED,LISTED,FAILED,KILLED. You may specify multiple groups separated by a comma. Default: %(default)s")
 	
 	parser.add_argument("--create-filelist", action='store_true', default=False, dest = "create_filelist", help="")
 	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
@@ -633,23 +629,16 @@ if __name__ == "__main__":
 		SKM.add_new(nicks)
 		SKM.create_gc_config()
 
-	if args.remake_all:
-		SKM.remake_all()
-
 	if args.kill_all:
 		SKM.kill_all()
 		exit()
 
-	if args.purge_all:
-		SKM.purge_all()
-		exit()
-
-	if args.purge_completed:
-		SKM.purge_completed()
+	if args.purge:
+		SKM.purge(args.purge)
 		exit()
 
 	if args.remake:
-		SKM.remake_task(args.inputfile)
+		SKM.remake_task()
 		exit()
 
 	if args.resubmit:
