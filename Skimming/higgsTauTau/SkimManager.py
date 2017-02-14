@@ -73,87 +73,18 @@ class SkimManagerBase:
 	def get_global_tag(self, akt_nick):
 		return self.skimdataset[akt_nick].get("globalTag", '80X_dataRun2_2016SeptRepro_v7' if self.skimdataset.isData(akt_nick) else '80X_mcRun2_asymptotic_2016_TrancheIV_v8')
 
-	def gc_default_cfg(self):
-		cfg_dict = {}
-		cfg_dict['global'] = {}
-		cfg_dict['global']['task']  = 'CMSSW'
-		cfg_dict['global']['backend']  = 'condor'
-		#cfg_dict['global']['backend']  = 'local'
-		#cfg_dict['global']['backend']  = 'cream'
-		cfg_dict['global']["workdir create"] = 'True '
-
-		cfg_dict['jobs'] = {}
-		cfg_dict['jobs']['in flight'] = '50'
-		cfg_dict['jobs']['wall time'] = '06:00:00'
-		cfg_dict['jobs']['memory'] = '5000'
-		cfg_dict['jobs']['max retry'] = '3'
-		#cfg_dict['jobs']['jobs'] = '1'
-
-		cfg_dict['CMSSW'] = {}
-		cfg_dict['CMSSW']['project area'] = '$CMSSW_BASE/'
-		cfg_dict['CMSSW']['config file'] = self.configfile
-
-		cfg_dict['CMSSW']['dataset splitter'] = 'FileBoundarySplitter'
-		cfg_dict['CMSSW']['files per job'] = '1'
-		cfg_dict['CMSSW']['se runtime'] = 'True'
-		cfg_dict['CMSSW'][';partition lfn modifier'] = '<srm:nrg>' ## comment out per default both can be changed during run, which can improve the succses rate 
-		cfg_dict['CMSSW']['depends'] = 'glite'
-		cfg_dict['CMSSW']['parameter factory'] = "ModularParameterFactory"
-		cfg_dict['CMSSW']['partition lfn modifier dict'] = "\n   <xrootd>    => root://cms-xrd-global.cern.ch//\n   <xrootd:eu> => root://xrootd-cms.infn.it//\n   <xrootd:us> => root://cmsxrootd.fnal.gov//\n   <xrootd:desy> => root://dcache-cms-xrootd.desy.de:1094/\n   <srm:nrg> => srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/\n   <dcap:nrg> => dcap://dcnrgdcap.gridka.de:22125//pnfs/gridka.de/dcms/disk-only/\n   <xrootd:nrg> => root://cmsxrootd.gridka.de//pnfs/gridka.de/dcms/disk-only/\n   <dcap:gridka> => dcap://dccmsdcap.gridka.de:22125//pnfs/gridka.de/cms/disk-only/\n   <xrootd:gridka> => root://cmsxrootd.gridka.de//\n   <dcap:aachen> => dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/\n"
-
-		cfg_dict['storage'] = {}
-		cfg_dict['storage']['se output files'] = 'kappaTuple.root'
-		cfg_dict['storage']['se output pattern'] = "/@NICK@/@FOLDER@/kappa_@NICK@_@GC_JOB_ID@.@XEXT@"
-
-		cfg_dict['condor'] = {}
-		cfg_dict['condor']['JDLData'] = 'Requirements=(TARGET.CLOUDSITE=="BWFORCLUSTER") +REMOTEJOB=True'
-		cfg_dict['condor']['proxy'] = "VomsProxy"
-
-		cfg_dict['local'] = {}
-		cfg_dict['local']['queue randomize'] = 'True'
-		cfg_dict['local']['wms'] = 'OGE'
-		cfg_dict['local']['proxy'] = 'VomsProxy'
-		cfg_dict['local']['submit options'] = '-l os=sld6'
-
-		cfg_dict['wms'] = {}
-		cfg_dict['wms']['submit options'] = '-l distro=sld6'
-
-		#cfg_dict['backend'] = {}
-		#cfg_dict['backend']['ce'] = "cream-ge-2-kit.gridka.de:8443/cream-sge-sl6"
-		
-		cfg_dict['constants'] = {}
-		cfg_dict['constants']['GC_GLITE_LOCATION'] = '/cvmfs/grid.cern.ch/emi3ui-latest/etc/profile.d/setup-ui-example.sh'
-		#cfg_dict['constants']['X509_USER_PROXY'] = '$X509_USER_PROXY'
-
-		cfg_dict['parameters'] = {}
-		cfg_dict['parameters']['parameters'] = 'transform("FOLDER", "GC_JOB_ID % 100 + 1")'
-
-		return cfg_dict
-
-	def create_gc_config(self):
-		shutil.copyfile(src=os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/higgsTauTau/",self.configfile),dst=os.path.join(self.workdir,'gc_cfg',self.configfile))
-		gc_config = self.gc_default_cfg()
-		for akt_nick in self.skimdataset.get_nicks_with_query(query={"GCSKIM_STATUS" : "INIT"}):
-			print "Create a new config for",akt_nick
-			gc_config = self.gc_default_cfg()
-			self.individualized_gc_cfg(akt_nick, gc_config)
-			out_file_name = os.path.join(self.workdir,'gc_cfg',akt_nick[:100]+'.conf')
-			out_file = open(out_file_name,'w')
-			gc_workdir = os.path.join(self.workdir,akt_nick[:100])
-			if os.path.exists(gc_workdir):
-				print "GC workdir for",akt_nick,"exists. Do you whish to remove? To be removed:"
-				print gc_workdir
-				if self.wait_for_user_confirmation(true_false=True):
-					shutil.rmtree(gc_workdir)
-			for akt_key in ['global','jobs','CMSSW','storage']:
-				out_file.write('['+akt_key+']\n')
-				for akt_item in gc_config[akt_key]:
-					out_file.write(akt_item+' = '+gc_config[akt_key][akt_item]+'\n')
-			for akt_key in (set(gc_config.keys()) - set(['global','jobs','CMSSW','storage'])):
-				out_file.write('['+akt_key+']\n')
-				for akt_item in gc_config[akt_key]:
-					out_file.write(akt_item+' = '+gc_config[akt_key][akt_item]+'\n')
-			out_file.close()
+	def files_per_job(self, akt_nick):
+		job_submission_limit=10000
+		if self.skimdataset[akt_nick].get("files_per_job", None):
+			return int(self.skimdataset[akt_nick]["files_per_job"])
+		elif self.skimdataset[akt_nick].get("n_files", None):
+			nfiles = int(self.skimdataset[akt_nick]["n_files"])
+			if nfiles > self.max_crab_jobs_per_nick:
+				from math import ceil
+				return int(ceil(float(nfiles)/float(job_submission_limit)))
+			else:
+				return 1
+		return 1
 
 	def nick_list(self,in_dataset_file, tag_key = None, tag_values_str = None, query = None, nick_regex = None):
 		
@@ -166,86 +97,11 @@ class SkimManagerBase:
 		
 		return(self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex)) 
 
-	def prepare_resubmission_with_gc(self, nicks = None):
-		
-		datasets_to_resubmit = [dataset for dataset in self.skimdataset.nicks() if self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED","LISTED"] and self.skimdataset[dataset]["GCSKIM_STATUS"] not in ["COMPLETED","LISTED"]]
-		if nicks is not None:
-			datasets_to_resubmit = [x for x in datasets_to_resubmit if x in nicks]
-		self.write_while(datasets_to_submit=datasets_to_resubmit)
 
-	def write_while(self,datasets_to_submit=None):
-		if os.path.isfile(os.path.join(self.workdir,'while.sh')):
-			out_file = open(os.path.join(self.workdir,'while.sh'),'r')
-			print '\n\033[92m'+'GC submission script exists with following configs:'+'\033[0m'
-			for line in out_file.readlines():
-				if line[:5]=='go.py':
-					print line.strip('go.py '+os.path.join(self.workdir,'gc_cfg'))
-			out_file.close()
-			print 'Overwrite? [Y/n]'
-			if not self.wait_for_user_confirmation(true_false=True):
-				print '\nScript will not be overwritten. To run with existing configs: '
-				print os.path.join(self.workdir,'while.sh')
-				return
-			
-		out_file = open(os.path.join(self.workdir,'while.sh'),'w')
-		out_file.write('#!/bin/bash\n')
-		out_file.write('\n')
-		out_file.write('touch .lock\n')
-		out_file.write('\n')
-		out_file.write('while [ -f ".lock" ]\n')
-		out_file.write('do\n')
-		for dataset in datasets_to_submit:
-			out_file.write('go.py '+os.path.join(self.workdir,'gc_cfg',dataset+'.conf -G\n'))
-		out_file.write('echo "rm .lock"\n')
-		out_file.write('sleep 2\n')
-		out_file.write('done\n')
-		out_file.close()
-		
-		os.system('chmod u+x '+os.path.join(self.workdir,'while.sh'))
-		
-		print '\033[92m'+'To run GC submission loop with '+str(len(datasets_to_submit))+' datasets (will run until .lock file is removed), run:'+'\033[0m'
-		print os.path.join(self.workdir,'while.sh')
-		print ''
+########## Functions related to management of crab tasks
 
-	def status_gc(self):
-		for dataset in self.skimdataset.nicks():
-			if self.skimdataset[dataset]["GCSKIM_STATUS"] in ["SUBMITTED","INIT"]:
-				gc_workdir = os.path.join(self.workdir,dataset[:100])
-				if os.path.exists(gc_workdir):
-					if self.skimdataset[dataset]["GCSKIM_STATUS"] == "INIT":
-						print "GC task status set to SUBMITTED for:"
-						print dataset
-						self.skimdataset[dataset]["GCSKIM_STATUS"] = "SUBMITTED"
-					gc_output_dir = os.path.join(gc_workdir,"output")
-					n_gc_jobs = int(gzip.open(os.path.join(gc_workdir,"params.map.gz"), 'r').read())
-					done_jobs = 0
-					for i in range(n_gc_jobs):
-						job_info_path = os.path.join(gc_output_dir,"job_"+str(i),"job.info")
-						if os.path.exists(job_info_path):
-							job_info = open(job_info_path).read().split("\n")
-							for info_line in job_info:
-								if info_line == "EXITCODE=0":
-									done_jobs += 1
-					if n_gc_jobs == done_jobs:
-						print "GC task COMPLETED for",dataset
-						self.skimdataset[dataset]["GCSKIM_STATUS"] = "COMPLETED"
 
-	def individualized_gc_cfg(self, akt_nick ,gc_config):
-		#se_path_base == srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/
-		#se_path_base = 'srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/'
-		#se_path_base = 'srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/'
-		storageSite = self.skimdataset[akt_nick].get("storageSite",self.storage_for_output)
-		se_path_base = self.site_storage_access_dict[storageSite]["srm"]
-		gc_config['storage']['se path'] = se_path_base+"store/user/%s/higgs-kit/skimming/%s/GC_SKIM/%s/"%(self.getUsernameFromSiteDB_cache(),os.path.basename(self.workdir),datetime.datetime.today().strftime("%y%m%d_%H%M%S"))
-		#gc_config['storage']['se output pattern'] = "FULLEMBEDDING_CMSSW_8_0_21/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
-		gc_config['CMSSW']['dataset'] = akt_nick+" : "+self.skimdataset[akt_nick]['dbs']
-		gc_config['CMSSW']['files per job'] = str(self.files_per_job(akt_nick))
-		gc_config['global']["workdir"] = os.path.join(self.workdir,akt_nick[:100])
-		
-		gc_config['dataset'] = {}
-		gc_config['dataset']['dbs instance'] = self.skimdataset[akt_nick].get("inputDBS",'global')
-										   #URL=https://cmsdbsprod.cern.ch:8443/cms_dbs_prod_global_writer/servlet/DBSServlet
-		gc_config['constants']['GLOBALTAG'] = self.get_global_tag(akt_nick)
+#### Crab submission functions
 
 	def submit_crab(self,filename=None):
 		if len(self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "INIT"})) == 0:
@@ -266,9 +122,9 @@ class SkimManagerBase:
 
 			try:
 				submit_dict = {"config" : config, "proxy" : self.voms_proxy}
-				self.crab_cmd(cmd='submit',argument_dict=submit_dict)
+				submit_command_output = self.crab_cmd(cmd='submit',argument_dict=submit_dict)
 				self.skimdataset[akt_nick]["SKIM_STATUS"] = "SUBMITTED"
-
+				self.skimdataset[akt_nick]["crab_task"] = submit_command_output["uniquerequestname"]
 			except exc:
 				nerror+=1
 				print exc
@@ -306,18 +162,7 @@ class SkimManagerBase:
 		config.Site.blacklist.extend(self.skimdataset[akt_nick].get("blacklist", []))
 		config.JobType.outputFiles = [str('kappa_%s.root'%(akt_nick))]
 
-	def files_per_job(self, akt_nick):
-		job_submission_limit=10000
-		if self.skimdataset[akt_nick].get("files_per_job", None):
-			return int(self.skimdataset[akt_nick]["files_per_job"])
-		elif self.skimdataset[akt_nick].get("n_files", None):
-			nfiles = int(self.skimdataset[akt_nick]["n_files"])
-			if nfiles > self.max_crab_jobs_per_nick:
-				from math import ceil
-				return int(ceil(float(nfiles)/float(job_submission_limit)))	
-			else:
-				return 1
-		return 1
+#### Functions for status check of crab tasks
 
 	def status_crab(self):
 		self.get_status_crab()
@@ -355,56 +200,7 @@ class SkimManagerBase:
 				except:
 					pass
 
-
-	def print_skim(self,summary=False):
-		print "---------------------------------------------------------"
-		if summary:
-			status_dict={}
-			status_dict.setdefault('COMPLETED', [])
-			status_dict.setdefault('EXCEPTION', [])
-			status_dict.setdefault('FAILED', [])
-			status_dict.setdefault('UNKNOWN', [])
-			status_dict.setdefault('SUBMITTED', [])
-
-		for akt_nick in self.skimdataset.nicks():
-			print akt_nick," ",self.skimdataset[akt_nick]["SKIM_STATUS"],'\t Done: ',self.skimdataset[akt_nick].get('crab_done', 0.0),'% '
-			
-			if summary:
-				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["COMPLETED","LISTED"] or self.skimdataset[akt_nick]["GCSKIM_STATUS"] in ["COMPLETED","LISTED"]:
-					status_dict['COMPLETED'].append(akt_nick)
-				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED","QUEUED","UNKNOWN","NEW"]:
-					status_dict['SUBMITTED'].append(akt_nick)
-				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED","RESUBMITFAILED"]:
-					status_dict['FAILED'].append(akt_nick)
-				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION"]:
-					status_dict['EXCEPTION'].append(akt_nick)
-
-		if summary:
-			print '\n'+'\033[92m'+'COMPLETED: '+str(len(status_dict['COMPLETED']))+' tasks'+'\033[0m'
-			for nick in status_dict['COMPLETED']:
-				print nick
-			print '\n'+'\033[91m'+'FAILED: '+str(len(status_dict['FAILED']))+' tasks'+'\033[0m'
-			for nick in status_dict['FAILED']:
-				print nick
-			print '\n'+'\033[93m'+'EXCEPTION: '+str(len(status_dict['EXCEPTION']))+' tasks'+'\033[0m'
-			for nick in status_dict['EXCEPTION']:
-				print nick
-			print '\n'+'SUBMITTED: '+str(len(status_dict['SUBMITTED']))+' tasks'
-			for nick in status_dict['SUBMITTED']:
-				print nick
-			print '\n'
-			status_json = open(os.path.join(self.workdir,'skim_summary.json'), 'w')
-			status_json.write(json.dumps(status_dict, sort_keys=True, indent=2))
-			status_json.close()
-
-	def get_crab_taskIDs(self):
-		output = subprocess.check_output("crab tasks", shell=True)
-		tasks=[]
-		for line in output.splitlines():
-			if len(line) > 0:
-				if line[0].isdigit():
-					tasks.append(line)
-		return tasks
+#### Functions to allow resubmission and restart of crab tasks
 
 	def remake_all(self):
 		tasks = self.get_crab_taskIDs()
@@ -489,6 +285,239 @@ class SkimManagerBase:
 			self.crab_cmd(cmd="resubmit", argument_dict = argument_dict)
 			print "--------------------------------------------"
 
+#### Crab related helper functions
+
+	def get_crab_taskIDs(self):
+		output = subprocess.check_output("crab tasks", shell=True)
+		tasks=[]
+		for line in output.splitlines():
+			if len(line) > 0:
+				if line[0].isdigit():
+					tasks.append(line)
+		return tasks
+
+########## Functions related to management of grid control tasks
+
+#### Functions for resubmission with grid control for frequently failing crab tasks
+
+	def prepare_resubmission_with_gc(self, nicks = None):
+
+		datasets_to_resubmit = [dataset for dataset in self.skimdataset.nicks() if self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED","LISTED"] and self.skimdataset[dataset]["GCSKIM_STATUS"] not in ["COMPLETED","LISTED"]]
+		if nicks is not None:
+			datasets_to_resubmit = [x for x in datasets_to_resubmit if x in nicks]
+		self.write_while(datasets_to_submit=datasets_to_resubmit)
+
+	def write_while(self,datasets_to_submit=None):
+		if os.path.isfile(os.path.join(self.workdir,'while.sh')):
+			out_file = open(os.path.join(self.workdir,'while.sh'),'r')
+			print '\n\033[92m'+'GC submission script exists with following configs:'+'\033[0m'
+			for line in out_file.readlines():
+				if line[:5]=='go.py':
+					print line.strip('go.py '+os.path.join(self.workdir,'gc_cfg'))
+			out_file.close()
+			print 'Overwrite? [Y/n]'
+			if not self.wait_for_user_confirmation(true_false=True):
+				print '\nScript will not be overwritten. To run with existing configs: '
+				print os.path.join(self.workdir,'while.sh')
+				return
+
+		out_file = open(os.path.join(self.workdir,'while.sh'),'w')
+		out_file.write('#!/bin/bash\n')
+		out_file.write('\n')
+		out_file.write('touch .lock\n')
+		out_file.write('\n')
+		out_file.write('while [ -f ".lock" ]\n')
+		out_file.write('do\n')
+		for dataset in datasets_to_submit:
+			out_file.write('go.py '+os.path.join(self.workdir,'gc_cfg',dataset+'.conf -G\n'))
+		out_file.write('echo "rm .lock"\n')
+		out_file.write('sleep 2\n')
+		out_file.write('done\n')
+		out_file.close()
+
+		os.system('chmod u+x '+os.path.join(self.workdir,'while.sh'))
+
+		print '\033[92m'+'To run GC submission loop with '+str(len(datasets_to_submit))+' datasets (will run until .lock file is removed), run:'+'\033[0m'
+		print os.path.join(self.workdir,'while.sh')
+		print ''
+
+	def create_gc_config(self):
+		shutil.copyfile(src=os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/higgsTauTau/",self.configfile),dst=os.path.join(self.workdir,'gc_cfg',self.configfile))
+		gc_config = self.gc_default_cfg()
+		for akt_nick in self.skimdataset.get_nicks_with_query(query={"GCSKIM_STATUS" : "INIT"}):
+			print "Create a new config for",akt_nick
+			gc_config = self.gc_default_cfg()
+			self.individualized_gc_cfg(akt_nick, gc_config)
+			out_file_name = os.path.join(self.workdir,'gc_cfg',akt_nick[:100]+'.conf')
+			out_file = open(out_file_name,'w')
+			gc_workdir = os.path.join(self.workdir,akt_nick[:100])
+			if os.path.exists(gc_workdir):
+				print "GC workdir for",akt_nick,"exists. Do you whish to remove? To be removed:"
+				print gc_workdir
+				if self.wait_for_user_confirmation(true_false=True):
+					shutil.rmtree(gc_workdir)
+			for akt_key in ['global','jobs','CMSSW','storage']:
+				out_file.write('['+akt_key+']\n')
+				for akt_item in gc_config[akt_key]:
+					out_file.write(akt_item+' = '+gc_config[akt_key][akt_item]+'\n')
+			for akt_key in (set(gc_config.keys()) - set(['global','jobs','CMSSW','storage'])):
+				out_file.write('['+akt_key+']\n')
+				for akt_item in gc_config[akt_key]:
+					out_file.write(akt_item+' = '+gc_config[akt_key][akt_item]+'\n')
+			out_file.close()
+
+	def gc_default_cfg(self):
+		cfg_dict = {}
+		cfg_dict['global'] = {}
+		cfg_dict['global']['task']  = 'CMSSW'
+		cfg_dict['global']['backend']  = 'condor'
+		#cfg_dict['global']['backend']  = 'local'
+		#cfg_dict['global']['backend']  = 'cream'
+		cfg_dict['global']["workdir create"] = 'True '
+
+		cfg_dict['jobs'] = {}
+		cfg_dict['jobs']['in flight'] = '50'
+		cfg_dict['jobs']['wall time'] = '06:00:00'
+		cfg_dict['jobs']['memory'] = '5000'
+		cfg_dict['jobs']['max retry'] = '3'
+		#cfg_dict['jobs']['jobs'] = '1'
+
+		cfg_dict['CMSSW'] = {}
+		cfg_dict['CMSSW']['project area'] = '$CMSSW_BASE/'
+		cfg_dict['CMSSW']['config file'] = self.configfile
+
+		cfg_dict['CMSSW']['dataset splitter'] = 'FileBoundarySplitter'
+		cfg_dict['CMSSW']['files per job'] = '1'
+		cfg_dict['CMSSW']['se runtime'] = 'True'
+		cfg_dict['CMSSW'][';partition lfn modifier'] = '<srm:nrg>' ## comment out per default both can be changed during run, which can improve the succses rate 
+		cfg_dict['CMSSW']['depends'] = 'glite'
+		cfg_dict['CMSSW']['parameter factory'] = "ModularParameterFactory"
+		cfg_dict['CMSSW']['partition lfn modifier dict'] = "\n   <xrootd>    => root://cms-xrd-global.cern.ch//\n   <xrootd:eu> => root://xrootd-cms.infn.it//\n   <xrootd:us> => root://cmsxrootd.fnal.gov//\n   <xrootd:desy> => root://dcache-cms-xrootd.desy.de:1094/\n   <srm:nrg> => srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/\n   <dcap:nrg> => dcap://dcnrgdcap.gridka.de:22125//pnfs/gridka.de/dcms/disk-only/\n   <xrootd:nrg> => root://cmsxrootd.gridka.de//pnfs/gridka.de/dcms/disk-only/\n   <dcap:gridka> => dcap://dccmsdcap.gridka.de:22125//pnfs/gridka.de/cms/disk-only/\n   <xrootd:gridka> => root://cmsxrootd.gridka.de//\n   <dcap:aachen> => dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/\n"
+
+		cfg_dict['storage'] = {}
+		cfg_dict['storage']['se output files'] = 'kappaTuple.root'
+		cfg_dict['storage']['se output pattern'] = "/@NICK@/@FOLDER@/kappa_@NICK@_@GC_JOB_ID@.@XEXT@"
+
+		cfg_dict['condor'] = {}
+		cfg_dict['condor']['JDLData'] = 'Requirements=(TARGET.CLOUDSITE=="BWFORCLUSTER") +REMOTEJOB=True'
+		cfg_dict['condor']['proxy'] = "VomsProxy"
+
+		cfg_dict['local'] = {}
+		cfg_dict['local']['queue randomize'] = 'True'
+		cfg_dict['local']['wms'] = 'OGE'
+		cfg_dict['local']['proxy'] = 'VomsProxy'
+		cfg_dict['local']['submit options'] = '-l os=sld6'
+
+		cfg_dict['wms'] = {}
+		cfg_dict['wms']['submit options'] = '-l distro=sld6'
+
+		#cfg_dict['backend'] = {}
+		#cfg_dict['backend']['ce'] = "cream-ge-2-kit.gridka.de:8443/cream-sge-sl6"
+
+		cfg_dict['constants'] = {}
+		cfg_dict['constants']['GC_GLITE_LOCATION'] = '/cvmfs/grid.cern.ch/emi3ui-latest/etc/profile.d/setup-ui-example.sh'
+		#cfg_dict['constants']['X509_USER_PROXY'] = '$X509_USER_PROXY'
+
+		cfg_dict['parameters'] = {}
+		cfg_dict['parameters']['parameters'] = 'transform("FOLDER", "GC_JOB_ID % 100 + 1")'
+
+		return cfg_dict
+
+	def individualized_gc_cfg(self, akt_nick ,gc_config):
+		#se_path_base == srm://dgridsrm-fzk.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/dcms/disk-only/
+		#se_path_base = 'srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/'
+		#se_path_base = 'srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/'
+		storageSite = self.skimdataset[akt_nick].get("storageSite",self.storage_for_output)
+		se_path_base = self.site_storage_access_dict[storageSite]["srm"]
+		gc_config['storage']['se path'] = se_path_base+"store/user/%s/higgs-kit/skimming/%s/GC_SKIM/%s/"%(self.getUsernameFromSiteDB_cache(),os.path.basename(self.workdir),datetime.datetime.today().strftime("%y%m%d_%H%M%S"))
+		#gc_config['storage']['se output pattern'] = "FULLEMBEDDING_CMSSW_8_0_21/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
+		gc_config['CMSSW']['dataset'] = akt_nick+" : "+self.skimdataset[akt_nick]['dbs']
+		gc_config['CMSSW']['files per job'] = str(self.files_per_job(akt_nick))
+		gc_config['global']["workdir"] = os.path.join(self.workdir,akt_nick[:100])
+
+		gc_config['dataset'] = {}
+		gc_config['dataset']['dbs instance'] = self.skimdataset[akt_nick].get("inputDBS",'global')
+										   #URL=https://cmsdbsprod.cern.ch:8443/cms_dbs_prod_global_writer/servlet/DBSServlet
+		gc_config['constants']['GLOBALTAG'] = self.get_global_tag(akt_nick)
+
+
+#### Function for status check of grid-control tasks.
+
+# Attention: the handling of grid-control tasks is intended to be done manually.
+# Use the while.sh script to submit and to monitor your grid-control tasks.
+# Adapt the grid-control configs listed in this script for example to resubmit jobs with modified parameters (memory,wall-time etc.)
+# Here is only checked, whether the grid-control tasks is SUBMITTED or FINISHED.
+
+	def status_gc(self):
+		for dataset in self.skimdataset.nicks():
+			if self.skimdataset[dataset]["GCSKIM_STATUS"] in ["SUBMITTED","INIT"]:
+				gc_workdir = os.path.join(self.workdir,dataset[:100])
+				if os.path.exists(gc_workdir):
+					if self.skimdataset[dataset]["GCSKIM_STATUS"] == "INIT":
+						print "GC task status set to SUBMITTED for:"
+						print dataset
+						self.skimdataset[dataset]["GCSKIM_STATUS"] = "SUBMITTED"
+					gc_output_dir = os.path.join(gc_workdir,"output")
+					n_gc_jobs = int(gzip.open(os.path.join(gc_workdir,"params.map.gz"), 'r').read())
+					done_jobs = 0
+					for i in range(n_gc_jobs):
+						job_info_path = os.path.join(gc_output_dir,"job_"+str(i),"job.info")
+						if os.path.exists(job_info_path):
+							job_info = open(job_info_path).read().split("\n")
+							for info_line in job_info:
+								if info_line == "EXITCODE=0":
+									done_jobs += 1
+									break
+					if n_gc_jobs == done_jobs:
+						print "GC task COMPLETED for",dataset
+						self.skimdataset[dataset]["GCSKIM_STATUS"] = "COMPLETED"
+
+
+########## Summary function, that prints out statistics on the running tasks
+
+	def print_skim(self,summary=False):
+		print "---------------------------------------------------------"
+		if summary:
+			status_dict={}
+			status_dict.setdefault('COMPLETED', [])
+			status_dict.setdefault('EXCEPTION', [])
+			status_dict.setdefault('FAILED', [])
+			status_dict.setdefault('UNKNOWN', [])
+			status_dict.setdefault('SUBMITTED', [])
+
+		for akt_nick in self.skimdataset.nicks():
+			print akt_nick," ",self.skimdataset[akt_nick]["SKIM_STATUS"],'\t Done: ',self.skimdataset[akt_nick].get('crab_done', 0.0),'% '
+
+			if summary:
+				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["COMPLETED","LISTED"] or self.skimdataset[akt_nick]["GCSKIM_STATUS"] in ["COMPLETED","LISTED"]:
+					status_dict['COMPLETED'].append(akt_nick)
+				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED","QUEUED","UNKNOWN","NEW"]:
+					status_dict['SUBMITTED'].append(akt_nick)
+				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED","RESUBMITFAILED"]:
+					status_dict['FAILED'].append(akt_nick)
+				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION"]:
+					status_dict['EXCEPTION'].append(akt_nick)
+
+		if summary:
+			print '\n'+'\033[92m'+'COMPLETED: '+str(len(status_dict['COMPLETED']))+' tasks'+'\033[0m'
+			for nick in status_dict['COMPLETED']:
+				print nick
+			print '\n'+'\033[91m'+'FAILED: '+str(len(status_dict['FAILED']))+' tasks'+'\033[0m'
+			for nick in status_dict['FAILED']:
+				print nick
+			print '\n'+'\033[93m'+'EXCEPTION: '+str(len(status_dict['EXCEPTION']))+' tasks'+'\033[0m'
+			for nick in status_dict['EXCEPTION']:
+				print nick
+			print '\n'+'SUBMITTED: '+str(len(status_dict['SUBMITTED']))+' tasks'
+			for nick in status_dict['SUBMITTED']:
+				print nick
+			print '\n'
+			status_json = open(os.path.join(self.workdir,'skim_summary.json'), 'w')
+			status_json.write(json.dumps(status_dict, sort_keys=True, indent=2))
+			status_json.close()
+
+########## Functions to create or reset file lists for COMPLETED grid-control or crab tasks
+
 	def create_filelist(self):
 		filelist_folder_name = os.path.relpath(self.workdir,SkimManagerBase.get_workbase())
 		skim_path = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data",filelist_folder_name)
@@ -542,6 +571,8 @@ class SkimManagerBase:
 				self.skimdataset[dataset]["SKIM_STATUS"] = "COMPLETED"
 			elif self.skimdataset[dataset]["GCSKIM_STATUS"] == "LISTED":
 				self.skimdataset[dataset]["GCSKIM_STATUS"] = "COMPLETED"
+
+########## Further general helper functions
 
 	@classmethod
 	def get_workbase(self):
