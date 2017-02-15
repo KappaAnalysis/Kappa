@@ -120,16 +120,12 @@ class SkimManagerBase:
 			self.skimdataset[akt_nick]['storageSite'] = config.Site.storageSite 
 			self.skimdataset[akt_nick]["crab_name"] = "crab_"+config.General.requestName
 
-			try:
-				submit_dict = {"config" : config, "proxy" : self.voms_proxy}
-				submit_command_output = self.crab_cmd(cmd='submit',argument_dict=submit_dict)
+			submit_dict = {"config" : config, "proxy" : self.voms_proxy}
+			submit_command_output = self.crab_cmd(cmd='submit',argument_dict=submit_dict)
+			if submit_command_output:
 				self.skimdataset[akt_nick]["SKIM_STATUS"] = "SUBMITTED"
 				self.skimdataset[akt_nick]["crab_task"] = submit_command_output["uniquerequestname"]
-			except exc:
-				nerror+=1
-				print exc
-		if nerror>0:
-			print nerror,'tasks raised an exception. Run again to try to resubmit.'
+
 		self.save_dataset(filename)
 
 	def crab_default_cfg(self):
@@ -184,28 +180,19 @@ class SkimManagerBase:
 				all_jobs = 0
 				done_jobs = 0
 				failed_jobs = 0
-				try:
+				if self.skimdataset[akt_nick]['last_status']:
 					self.skimdataset[akt_nick]["SKIM_STATUS"] = self.skimdataset[akt_nick]['last_status']['status']
 					for job_per_status in self.skimdataset[akt_nick]['last_status'].get('jobsPerStatus',{}).keys():
 						all_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
 						if job_per_status == 'finished':
 							done_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
-						elif job_per_satus == 'failed':
+						elif job_per_status == 'failed':
 							failed_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
-
 					self.skimdataset[akt_nick]['crab_done'] = 0.0 if all_jobs == 0  else round(float(100.0*done_jobs)/float(all_jobs),2)
 					self.skimdataset[akt_nick]['crab_failed'] = 0.0 if all_jobs == 0  else round(float(100.0*failed_jobs)/float(all_jobs),2)
 					self.skimdataset[akt_nick]['n_jobs'] = max(all_jobs,self.skimdataset[akt_nick].get('n_jobs',0))
 
-				except:
-					pass
-
 #### Functions to allow resubmission and restart of crab tasks
-
-	def remake_all(self):
-		tasks = self.get_crab_taskIDs()
-		for task in tasks:
-			os.system('crab remake --task='+task)
 
 	def kill_all(self):
 		for dirpath,dirnames,fielnames in os.walk(self.workdir):
@@ -238,7 +225,7 @@ class SkimManagerBase:
 
 	def remake_task(self):
 		nicks_to_remake = [nick for nick in self.skimdataset.nicks() if self.skimdataset[nick]["SKIM_STATUS"] == "EXCEPTION"]
-		all_subdirs = [os.path.join(self.workdir,self.skimdataset[akt_nick]["crab_name"]) for akt_nick in nicks_to_remake]
+		all_subdirs = [os.path.join(self.workdir,self.skimdataset[akt_nick].get("crab_name","crab_"+akt_nick[:100])) for akt_nick in nicks_to_remake]
 		print len(all_subdirs),'tasks that raised an exception will be remade. This will delete and recreate those folders in the workdir.'
 		print 'Do you want to continue? [Y/n]'
 		self.wait_for_user_confirmation()
@@ -249,17 +236,17 @@ class SkimManagerBase:
 		for subdir,nick in zip(all_subdirs,nicks_to_remake):
 			print '\033[94m'+'('+str(idir)+'/'+str(len(all_subdirs))+')	REMAKING '+os.path.basename(subdir)+'\033[0m'
 			idir+=1
-			task_exists = False
-			for task in tasks:
-				if os.path.basename(subdir) in task:
-					task_exists=True
-					if os.path.exists(subdir):
-						shutil.rmtree(subdir)
-					os.system('crab remake --task='+task)
-					os.system('crab resubmit -d '+subdir)
-					nicks_to_remake.remove(nick)
-					break
-			if not task_exists:
+			task_name = self.skimdataset[akt_nick].get("crab_task","NO_TASK_NAME_FOUND")
+			if task_name in tasks:
+				pass
+			#		if os.path.exists(subdir):
+			#			shutil.rmtree(subdir)
+			#		os.system('crab remake --task='+task)
+			#		os.system('crab resubmit -d '+subdir)
+			#		nicks_to_remake.remove(nick)
+			#		break
+			else:
+				print '\033[94m'+'No task name found for '+nick+'\033[0m'
 				print '\033[94m'+nick+' will be RESUBMITTED by hand'+'\033[0m'
 				if os.path.exists(subdir):
 					shutil.rmtree(subdir)
