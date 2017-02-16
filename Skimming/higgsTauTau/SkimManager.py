@@ -125,6 +125,8 @@ class SkimManagerBase:
 			if submit_command_output:
 				self.skimdataset[akt_nick]["SKIM_STATUS"] = "SUBMITTED"
 				self.skimdataset[akt_nick]["crab_task"] = submit_command_output["uniquerequestname"]
+			else:
+				self.skimdataset[akt_nick]["SKIM_STATUS"] = "EXCEPTION"
 
 		self.save_dataset(filename)
 
@@ -180,7 +182,7 @@ class SkimManagerBase:
 				all_jobs = 0
 				done_jobs = 0
 				failed_jobs = 0
-				if self.skimdataset[akt_nick]['last_status']:
+				if self.skimdataset[akt_nick].get('last_status',False):
 					self.skimdataset[akt_nick]["SKIM_STATUS"] = self.skimdataset[akt_nick]['last_status']['status']
 					for job_per_status in self.skimdataset[akt_nick]['last_status'].get('jobsPerStatus',{}).keys():
 						all_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
