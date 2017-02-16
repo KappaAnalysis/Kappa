@@ -463,45 +463,49 @@ class SkimManagerBase:
 ########## Summary function, that prints out statistics on the running tasks
 
 	def print_skim(self,summary=False):
-		print "---------------------------------------------------------"
-		if summary:
-			status_dict={}
-			status_dict.setdefault('COMPLETED', [])
-			status_dict.setdefault('EXCEPTION', [])
-			status_dict.setdefault('FAILED', [])
-			status_dict.setdefault('UNKNOWN', [])
-			status_dict.setdefault('SUBMITTED', [])
+		status_dict={}
+		status_dict.setdefault('COMPLETED', [])
+		status_dict.setdefault('EXCEPTION', [])
+		status_dict.setdefault('FAILED', [])
+		status_dict.setdefault('SUBMITTED', [])
 
 		for akt_nick in self.skimdataset.nicks():
-			print akt_nick," ",self.skimdataset[akt_nick]["SKIM_STATUS"],'\t Done: ',self.skimdataset[akt_nick].get('crab_done', 0.0),'% '
 
-			if summary:
-				if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["COMPLETED","LISTED"] or self.skimdataset[akt_nick]["GCSKIM_STATUS"] in ["COMPLETED","LISTED"]:
-					status_dict['COMPLETED'].append(akt_nick)
-				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED","QUEUED","UNKNOWN","NEW"]:
-					status_dict['SUBMITTED'].append(akt_nick)
-				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED","RESUBMITFAILED"]:
-					status_dict['FAILED'].append(akt_nick)
-				elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION"]:
-					status_dict['EXCEPTION'].append(akt_nick)
+			if self.skimdataset[akt_nick]["SKIM_STATUS"] in ["COMPLETED","LISTED"] or self.skimdataset[akt_nick]["GCSKIM_STATUS"] in ["COMPLETED","LISTED"]:
+				status_dict['COMPLETED'].append(akt_nick)
+			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["SUBMITTED","QUEUED","UNKNOWN","NEW"]:
+				status_dict['SUBMITTED'].append(akt_nick)
+			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED","RESUBMITFAILED"]:
+				status_dict['FAILED'].append(akt_nick)
+			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION"]:
+				status_dict['EXCEPTION'].append(akt_nick)
 
 		if summary:
+			print "-----------------------------------------------"
+			print "--------------- CRAB STATISTICS ---------------"
+			print "-----------------------------------------------"
 			print '\n'+'\033[92m'+'COMPLETED: '+str(len(status_dict['COMPLETED']))+' tasks'+'\033[0m'
 			for nick in status_dict['COMPLETED']:
 				print nick
 			print '\n'+'\033[91m'+'FAILED: '+str(len(status_dict['FAILED']))+' tasks'+'\033[0m'
 			for nick in status_dict['FAILED']:
-				print nick
+				self.print_statistics(nick)
 			print '\n'+'\033[93m'+'EXCEPTION: '+str(len(status_dict['EXCEPTION']))+' tasks'+'\033[0m'
 			for nick in status_dict['EXCEPTION']:
-				print nick
+				self.print_statistics(nick)
 			print '\n'+'SUBMITTED: '+str(len(status_dict['SUBMITTED']))+' tasks'
 			for nick in status_dict['SUBMITTED']:
-				print nick
+				self.print_statistics(nick)
 			print '\n'
-			status_json = open(os.path.join(self.workdir,'skim_summary.json'), 'w')
-			status_json.write(json.dumps(status_dict, sort_keys=True, indent=2))
-			status_json.close()
+
+		status_json = open(os.path.join(self.workdir,'skim_summary.json'), 'w')
+		status_json.write(json.dumps(status_dict, sort_keys=True, indent=2))
+		status_json.close()
+
+	def print_statistics(self,nick):
+		done_string = '\033[92m'+'\t Done: '+str(self.skimdataset[nick].get('crab_done', 0.0))+'% '+'\033[0m'
+		failed_string = '\033[91m'+'\t Failed: '+str(self.skimdataset[nick].get('crab_failed', 0.0))+'% '+'\033[0m'
+		print nick,done_string,failed_string
 
 ########## Functions to create or reset file lists for COMPLETED grid-control or crab tasks
 
