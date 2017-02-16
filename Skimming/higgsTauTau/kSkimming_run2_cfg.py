@@ -419,8 +419,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if is_above_cmssw_version([8,0]):
 		if (isEmbedded):
 			process.MVAMET.srcMETs = cms.VInputTag( cms.InputTag("slimmedMETs", "", "MERGE"),
-                                            		cms.InputTag("patpfMET"),
-                                            		cms.InputTag("patpfMETT1"),
                                             		cms.InputTag("patpfTrackMET"),
                                             		cms.InputTag("patpfNoPUMET"),
                                             		cms.InputTag("patpfPUCorrectedMET"),
