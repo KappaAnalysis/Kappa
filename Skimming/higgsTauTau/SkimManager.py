@@ -373,6 +373,7 @@ class SkimManagerBase:
 
 		cfg_dict['CMSSW'] = {}
 		cfg_dict['CMSSW']['project area'] = '$CMSSW_BASE/'
+		cfg_dict['CMSSW']['area files'] = '-.* -config lib module */data *.xml *.sql *.cf[if] *.py *.h'
 		cfg_dict['CMSSW']['config file'] = self.configfile
 
 		cfg_dict['CMSSW']['dataset splitter'] = 'FileBoundarySplitter'
