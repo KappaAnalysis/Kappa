@@ -169,7 +169,7 @@ class SkimManagerBase:
 	def get_status_crab(self):
 		for akt_nick in self.skimdataset.nicks():
 			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED","COMPLETED","INIT"] and self.skimdataset[akt_nick]["GCSKIM_STATUS"] not in ["LISTED","COMPLETED"]:
-				crab_job_dir = os.path.join(self.workdir,self.skimdataset[akt_nick]["crab_name"])
+				crab_job_dir = os.path.join(self.workdir,self.skimdataset[akt_nick].get("crab_name","crab_"+akt_nick[:100]))
 				status_dict = {"proxy" : self.voms_proxy, "dir" : crab_job_dir}
 				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd(cmd='status', argument_dict = status_dict)
 				if not self.skimdataset[akt_nick]['last_status']:
@@ -519,7 +519,7 @@ class SkimManagerBase:
 			 os.makedirs(skim_path)
 		for dataset in self.skimdataset.nicks():
 			storage_site = self.skimdataset[dataset].get("storageSite",self.storage_for_output)
-			if not self.skimdataset[dataset]["storageSite"]:
+			if not self.skimdataset[dataset].get("storageSite"):
 				self.skimdataset[dataset]["storageSite"] = self.storage_for_output
 			# File list for GC first
 			if self.skimdataset[dataset]["GCSKIM_STATUS"] == "COMPLETED":
@@ -548,7 +548,7 @@ class SkimManagerBase:
 				dataset_filelist = ""
 				try:
 					dataset_filelist = subprocess.check_output("crab getoutput --xrootd --dir {DATASET_TASK}".format(
-						DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset]["crab_name"])), shell=True)
+						DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100]))), shell=True)
 				except:
 					print "Crab getoutput exited with error. Try again later."
 				if "root" in dataset_filelist:
