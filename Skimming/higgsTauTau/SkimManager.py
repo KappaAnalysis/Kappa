@@ -517,7 +517,9 @@ class SkimManagerBase:
 		if not os.path.exists(skim_path):
 			 os.makedirs(skim_path)
 		for dataset in self.skimdataset.nicks():
-			storage_site = self.skimdataset[dataset]["storageSite"]
+			storage_site = self.skimdataset[dataset].get("storageSite",self.storage_for_output)
+			if not self.skimdataset[dataset]["storageSite"]:
+				self.skimdataset[dataset]["storageSite"] = self.storage_for_output
 			# File list for GC first
 			if self.skimdataset[dataset]["GCSKIM_STATUS"] == "COMPLETED":
 				gc_output_dir = os.path.join(self.workdir,dataset[:100],"output")
