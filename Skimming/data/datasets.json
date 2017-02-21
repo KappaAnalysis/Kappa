@@ -1697,6 +1697,25 @@
     "process": "DoubleEG", 
     "scenario": "PromptRecov2"
   }, 
+  "DoubleEG_Run2016H_PromptRecov3_13TeV_MINIAOD": {
+    "Moriond17": [
+      "Skim_Data_RerecoGT"
+    ], 
+    "campaign": "Run2016H", 
+    "data": true, 
+    "dbs": "/DoubleEG/Run2016H-PromptReco-v3/MINIAOD", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_Prompt_v16", 
+    "inputDBS": "global", 
+    "n_events_generated": "2460002", 
+    "n_files": "39", 
+    "process": "DoubleEG", 
+    "scenario": "PromptRecov3", 
+    "xsec": 1.0
+  }, 
   "DoubleElectron_Run2011A_16Jan2012v1_7TeV_AOD": {
     "campaign": "Run2011A", 
     "data": true, 
@@ -2638,6 +2657,25 @@
     "n_files": "663", 
     "process": "DoubleMuon", 
     "scenario": "PromptRecov2"
+  }, 
+  "DoubleMuon_Run2016H_PromptRecov3_13TeV_MINIAOD": {
+    "Moriond17": [
+      "Skim_Data_RerecoGT"
+    ], 
+    "campaign": "Run2016H", 
+    "data": true, 
+    "dbs": "/DoubleMuon/Run2016H-PromptReco-v3/MINIAOD", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_Prompt_v16", 
+    "inputDBS": "global", 
+    "n_events_generated": "1219733", 
+    "n_files": "20", 
+    "process": "DoubleMuon", 
+    "scenario": "PromptRecov3", 
+    "xsec": 1.0
   }, 
   "EWKWMinus2JetsWToLNuM50_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_madgraph-pythia8": {
     "campaign": "RunIIFall15MiniAODv2", 
@@ -5603,6 +5641,25 @@
     "n_files": "486", 
     "process": "MuonEG", 
     "scenario": "PromptRecov2"
+  }, 
+  "MuonEG_Run2016H_PromptRecov3_13TeV_MINIAOD": {
+    "Moriond17": [
+      "Skim_Data_RerecoGT"
+    ], 
+    "campaign": "Run2016H", 
+    "data": true, 
+    "dbs": "/MuonEG/Run2016H-PromptReco-v3/MINIAOD", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_Prompt_v16", 
+    "inputDBS": "global", 
+    "n_events_generated": "770494", 
+    "n_files": "16", 
+    "process": "MuonEG", 
+    "scenario": "PromptRecov3", 
+    "xsec": 1.0
   }, 
   "QCD_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "campaign": "RunIIFall15MiniAODv2", 
@@ -10216,6 +10273,25 @@
     "process": "SingleElectron", 
     "scenario": "PromptRecov2"
   }, 
+  "SingleElectron_Run2016H_PromptRecov3_13TeV_MINIAOD": {
+    "Moriond17": [
+      "Skim_Data_RerecoGT"
+    ], 
+    "campaign": "Run2016H", 
+    "data": true, 
+    "dbs": "/SingleElectron/Run2016H-PromptReco-v3/MINIAOD", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_Prompt_v16", 
+    "inputDBS": "global", 
+    "n_events_generated": "3191585", 
+    "n_files": "40", 
+    "process": "SingleElectron", 
+    "scenario": "PromptRecov3", 
+    "xsec": 1.0
+  }, 
   "SingleMu_Run2011A_May10ReRecov1_7TeV_AOD": {
     "campaign": "Run2011A", 
     "data": true, 
@@ -10750,6 +10826,25 @@
     "n_files": "1928", 
     "process": "SingleMuon", 
     "scenario": "PromptRecov2"
+  }, 
+  "SingleMuon_Run2016H_PromptRecov3_13TeV_MINIAOD": {
+    "Moriond17": [
+      "Skim_Data_RerecoGT"
+    ], 
+    "campaign": "Run2016H", 
+    "data": true, 
+    "dbs": "/SingleMuon/Run2016H-PromptReco-v3/MINIAOD", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_Prompt_v16", 
+    "inputDBS": "global", 
+    "n_events_generated": "4393222", 
+    "n_files": "52", 
+    "process": "SingleMuon", 
+    "scenario": "PromptRecov3", 
+    "xsec": 1.0
   }, 
   "TTHHToTauTauM110_Summer12_PUS10_8TeV_AODSIM_pythia6": {
     "campaign": "Summer12", 
@@ -11789,6 +11884,25 @@
     "n_files": "1024", 
     "process": "Tau", 
     "scenario": "PromptRecov2"
+  }, 
+  "Tau_Run2016H_PromptRecov3_13TeV_MINIAOD": {
+    "Moriond17": [
+      "Skim_Data_RerecoGT"
+    ], 
+    "campaign": "Run2016H", 
+    "data": true, 
+    "dbs": "/Tau/Run2016H-PromptReco-v3/MINIAOD", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_Prompt_v16", 
+    "inputDBS": "global", 
+    "n_events_generated": "1898072", 
+    "n_files": "25", 
+    "process": "Tau", 
+    "scenario": "PromptRecov3", 
+    "xsec": 1.0
   }, 
   "Tbar_Fall11_PUS6_7TeV_AODSIM_powheg-tauola": {
     "campaign": "Fall11", 
