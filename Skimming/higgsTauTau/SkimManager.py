@@ -396,7 +396,7 @@ class SkimManagerBase:
 		cfg_dict['storage']['se output files'] = 'kappaTuple.root'
 		cfg_dict['storage']['se output pattern'] = "/@NICK@/@FOLDER@/kappa_@NICK@_@GC_JOB_ID@.@XEXT@"
 
-		if backend="freiburg":
+		if backend=="freiburg":
 			cfg_dict['condor'] = {}
 			cfg_dict['condor']['JDLData'] = 'Requirements=(TARGET.CLOUDSITE=="BWFORCLUSTER") +REMOTEJOB=True accounting_group=cms.higgs'
 			cfg_dict['condor']['proxy'] = "VomsProxy"
@@ -558,13 +558,13 @@ class SkimManagerBase:
 				filelist = open(filelist_path, 'w')
 
 				number_jobs = self.skimdataset[dataset]["n_jobs"]
-				every_100_list = [i+1 for i in range(number_jobs)[::100]]
-				every_100_next_list = every_100_list[1:]
+				every_100_current_list = [i+1 for i in range(number_jobs)[::100]]
+				every_100_next_list = [i for i in range(number_jobs)[::100][1:]]
 				every_100_next_list.append(number_jobs)
 
-				for current,next in zip(every_100_list,every_100_next_list):
+				for current,next in zip(every_100_current_list,every_100_next_list):
 					dataset_filelist = ""
-					if current != next:
+					if current <= next:
 						try:
 							dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids {RANGE} --dir {DATASET_TASK}".format(RANGE = str(current)+'-'+str(next),DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100]))), shell=True)
 						except:
