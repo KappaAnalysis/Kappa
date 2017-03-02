@@ -144,7 +144,7 @@ class SkimManagerBase:
 		#config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
 		config.JobType.maxMemoryMB = 2500
 		config.JobType.allowUndistributedCMSSW = True
-		config.Site.blacklist = ["T3_FR_IPNL","T3_US_UCR","T2_BR_SPRACE","T1_RU_*","T2_RU_*","T3_US_UMiss","T2_US_Vanderbilt"]
+		config.Site.blacklist = ["T3_FR_IPNL","T3_US_UCR","T2_BR_SPRACE","T1_RU_*","T2_RU_*","T3_US_UMiss","T2_US_Vanderbilt","T2_EE_Estonia"]
 		config.Data.splitting = 'FileBased'
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
 		config.Data.publication = False
@@ -235,12 +235,12 @@ class SkimManagerBase:
 		self.wait_for_user_confirmation()
 
 		print '\033[94m'+'Getting crab tasks...'+'\033[0m'
-		tasks = self.get_crab_taskIDs()
+		tasks = [] #self.get_crab_taskIDs()
 		idir=1
 		for subdir,nick in zip(all_subdirs,nicks_to_remake):
 			print '\033[94m'+'('+str(idir)+'/'+str(len(all_subdirs))+')	REMAKING '+os.path.basename(subdir)+'\033[0m'
 			idir+=1
-			task_name = self.skimdataset[akt_nick].get("crab_task","NO_TASK_NAME_FOUND")
+			task_name = "blub" #self.skimdataset[akt_nick].get("crab_task","NO_TASK_NAME_FOUND")
 			if task_name in tasks:
 				pass
 			#		if os.path.exists(subdir):
@@ -554,16 +554,28 @@ class SkimManagerBase:
 			# If GC task not completed, create a crab filelist
 			elif self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED" and self.skimdataset[dataset]["GCSKIM_STATUS"] != "LISTED":
 				print "Getting CRAB file list for",dataset
-				dataset_filelist = ""
-				try:
-					dataset_filelist = subprocess.check_output("crab getoutput --xrootd --dir {DATASET_TASK}".format(
-						DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100]))), shell=True)
-				except:
-					print "Crab getoutput exited with error. Try again later."
-				if "root" in dataset_filelist:
-					filelist = open(skim_path+'/'+dataset+'.txt', 'w')
-					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]["dcap"]))
-					filelist.close()
+				filelist_path = skim_path+'/'+dataset+'.txt'
+				filelist = open(filelist_path, 'w')
+
+				number_jobs = self.skimdataset[dataset]["n_jobs"]
+				every_100_list = [i+1 for i in range(number_jobs)[::100]]
+				every_100_next_list = every_100_list[1:]
+				every_100_next_list.append(number_jobs)
+
+				for current,next in zip(every_100_list,every_100_next_list):
+					dataset_filelist = ""
+					if current != next:
+						try:
+							dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids {RANGE} --dir {DATASET_TASK}".format(RANGE = str(current)+'-'+str(next),DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100]))), shell=True)
+						except:
+							print "Crab getoutput exited with error. Try again later."
+							break
+						if "root" in dataset_filelist:
+							filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]["dcap"]))
+				filelist.close()
+
+				filelist_check = open(filelist_path, 'r')
+				if len(filelist_check.readlines()) == number_jobs:
 					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
 					print "List creation successfull!"
 				print "---------------------------------------------------------"
