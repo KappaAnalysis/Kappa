@@ -270,7 +270,7 @@ protected:
 		out.metFilterBits = 0;
 		for(size_t i = 0; i < nMetFilters_; i++)
 		{
-			if(metFilterBitsHandle_->accept(i))
+			if(metFilterBitsHandle_->accept(selectedMetFilters_[i]))
 				out.metFilterBits = ( out.metFilterBits | ( 1 << i ));
 		}
 		for(size_t i = 0; i < metFilterBitsList_.size(); i++)
