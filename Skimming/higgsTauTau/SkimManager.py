@@ -89,7 +89,6 @@ class SkimManagerBase:
 		return 1
 
 	def nick_list(self,in_dataset_file, tag_key = None, tag_values_str = None, query = None, nick_regex = None):
-		
 		self.inputdataset = datasetsHelperTwopz(in_dataset_file)
 		tag_values = None
 		if tag_key is None and query is None and nick_regex is None:
@@ -556,28 +555,33 @@ class SkimManagerBase:
 				print "Getting CRAB file list for",dataset
 				filelist_path = skim_path+'/'+dataset+'.txt'
 				filelist = open(filelist_path, 'w')
+				dataset_filelist = ""
 
 				number_jobs = self.skimdataset[dataset]["n_jobs"]
-				every_100_current_list = [i+1 for i in range(number_jobs)[::100]]
-				every_100_next_list = [i for i in range(number_jobs)[::100][1:]]
-				every_100_next_list.append(number_jobs)
+				crab_number_folders = [str(i / 1000).zfill(4) for i in range(number_jobs+1)[::1000]]
+				crab_numer_folder_regex = re.compile('|'.join(crab_number_folders))
 
-				for current,next in zip(every_100_current_list,every_100_next_list):
-					dataset_filelist = ""
-					if current <= next:
-						try:
-							dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids {RANGE} --dir {DATASET_TASK}".format(RANGE = str(current)+'-'+str(next),DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100]))), shell=True)
-						except:
-							print "Crab getoutput exited with error. Try again later."
-							break
-						if "root" in dataset_filelist:
-							filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]["dcap"]))
-				filelist.close()
+				try:
+					crab_dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids 1-10 --dir {DATASET_TASK}".format(DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100]))), shell=True).strip('\n').split('\n')
+					sample_file_path = crab_dataset_filelist[0]
+					job_id_match = re.findall(r'_\d+.root',sample_file_path)[0]
+					sample_file_path =  sample_file_path.replace(job_id_match,"_{JOBID}.root")
+					crab_number_folder_match = re.findall('|'.join(crab_number_folders),sample_file_path)[0]
+					sample_file_path =  sample_file_path.replace(crab_number_folder_match,"{CRAB_NUMBER_FOLDER}")
+
+					for jobid in range(1,number_jobs+1):
+						dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[jobid/1000],JOBID=jobid)+'\n'
+					dataset_filelist = dataset_filelist.strip('\n')
+					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]["dcap"]))
+					filelist.close()
+				except:
+					print "Getting output from crab exited with error. Try again later."
 
 				filelist_check = open(filelist_path, 'r')
 				if len(filelist_check.readlines()) == number_jobs:
 					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
 					print "List creation successfull!"
+				filelist_check.close()
 				print "---------------------------------------------------------"
 
 		print "End of list creation."
