@@ -3059,14 +3059,14 @@
     "scenario": "imputDoubleMu_mirror_miniAODv5", 
     "xsec": 356.7
   }, 
-  "Embedding2016C_MuTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
+  "Embedding2016C_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
+	"Moriond17": [
       "Skim_Base", 
       "Skim_Embedding_Rereco"
     ], 
     "campaign": "MuTauFinalState", 
     "data": true, 
-    "dbs": "/EmbeddingRun2016C/MuTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER", 
+    "dbs": "/EmbeddingRun2016C/MuTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v2/USER", 
     "embedded": true, 
     "energy": "13", 
     "extension": "", 
@@ -3074,10 +3074,10 @@
     "generator": "", 
     "globalTag": "80X_dataRun2_2016SeptRepro_v4", 
     "inputDBS": "phys03", 
-    "n_events_generated": "1633848", 
-    "n_files": "4785", 
+    "n_events_generated": "1583897", 
+    "n_files": "2317", 
     "process": "Embedding2016C", 
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1", 
+    "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
     "xsec": 390.0
   }, 
   "Embedding2016C_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
