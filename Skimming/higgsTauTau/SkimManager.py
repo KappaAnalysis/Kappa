@@ -518,7 +518,7 @@ class SkimManagerBase:
 			elif 'naf' in os.environ["HOSTNAME"]:
 				return("/nfs/dust/cms/user/%s/kappa_skim_workdir/" % os.environ["USER"])
 			elif 'aachen' in os.environ["HOSTNAME"]:
-				return("/net/scratch_cms/institut_3b/%s/kappa_skim_workdir/" % os.environ["USER"])
+				return("/net/scratch_cms3b/%s/kappa_skim_workdir/" % os.environ["USER"])
 			else:
 				log.critical("Default workbase could not be found. Please specify working dir as absolute path.")
 				sys.exit()
@@ -546,7 +546,10 @@ class SkimManagerBase:
 if __name__ == "__main__":
 
 	work_base = SkimManagerBase.get_workbase()
-	latest_subdir = SkimManagerBase.get_latest_subdir(work_base=work_base)
+	if not os.path.exists(work_base):
+		os.makedirs(work_base)
+	
+	latest_subdir = None # SkimManagerBase.get_latest_subdir(work_base=work_base)
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json")
 
 	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)") 
