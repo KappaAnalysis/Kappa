@@ -152,8 +152,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
+
 	elif(data):
-		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
+		if "03Feb2017" in str(process.kappaTuple.TreeInfo.parameters.scenario):
+			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "PAT")
+		else:
+			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
 
 	#if "reHLT" in datasetsHelper.get_campaign(nickname):
 	#	process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
