@@ -144,9 +144,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
 		process.BadChargedCandidateFilter.taggingMode = cms.bool(True)
 
-		process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
+		
 		process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
-
+	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
+		
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
