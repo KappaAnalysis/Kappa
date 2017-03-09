@@ -104,3 +104,14 @@ def read_grid_control_dataset(filename):
 		if not nick[0].startswith(";"):
 			nicks.append(nick[0])
 	return nicks
+
+def is_above_cmssw_version(version_to_test):
+	cmssw_version_number = get_cmssw_version_number()
+	split_cmssw_version = [int(i) for i in cmssw_version_number.split("_")[0:3]]
+	for index in range(len(version_to_test)):
+		if(version_to_test[index] > split_cmssw_version[index]):
+			return False
+		elif(version_to_test[index] < split_cmssw_version[index]):
+			return True
+	return True
+

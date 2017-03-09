@@ -42,19 +42,6 @@ options.register('preselect', False, VarParsing.multiplicity.singleton, VarParsi
 options.register('dumpPython', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'write cmsRun config to dumpPython.py')
 options.parseArguments()
 
-# check if current release is abov a certain number
-def is_above_cmssw_version(version_to_test):
-	cmssw_version_number = tools.get_cmssw_version_number()
-	split_cmssw_version = [int(i) for i in cmssw_version_number.split("_")[0:3]]
-	for index in range(len(version_to_test)):
-		if(version_to_test[index] > split_cmssw_version[index]):
-			return False
-		elif(version_to_test[index] < split_cmssw_version[index]):
-			return True
-	return True
-
-
-
 def getBaseConfig( globaltag= 'START70_V7::All',
                    testfile=cms.untracked.vstring(""),
                    maxevents=100, ## -1 = all in file
@@ -119,7 +106,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 	## ------------------------------------------------------------------------
 	# General configuration
-	if is_above_cmssw_version([7,4]):
+	if tools.is_above_cmssw_version([7,4]):
 		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
 	if isreHLT:
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT2")
@@ -141,24 +128,26 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
 	process.kappaTuple.RefitVertex.whitelist = cms.vstring('AdvancedRefitVertexBS', 'AdvancedRefitVertexNoBS')
 
-	if is_above_cmssw_version([7,6]):
+	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
 		process.kappaTuple.RefitVertex.AdvancedRefittedVerticesBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexBSProducer"))
 		process.kappaTuple.RefitVertex.AdvancedRefittedVerticesNoBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexNoBSProducer"))
 
-	# setup BadPFMuonFilter and BadChargedCandidateFilter
-	process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
-	process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
-	process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
-	process.BadPFMuonFilter.taggingMode = cms.bool(True)
-
-	process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
-	process.BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons")
-	process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
-	process.BadChargedCandidateFilter.taggingMode = cms.bool(True)
-
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
-	process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
+
+	# setup BadPFMuonFilter and BadChargedCandidateFilter
+	if tools.is_above_cmssw_version([8]):
+		process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
+		process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
+		process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
+		process.BadPFMuonFilter.taggingMode = cms.bool(True)
+
+		process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
+		process.BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons")
+		process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
+		process.BadChargedCandidateFilter.taggingMode = cms.bool(True)
+
+		process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
 
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
@@ -178,7 +167,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 
 	process.kappaTuple.active += cms.vstring('BeamSpot')
-	if is_above_cmssw_version([7,6]):
+	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))
 
 	if not isEmbedded and data:
@@ -228,7 +217,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 
 	jetCollectionPuppi = "slimmedJetsPuppi"
-	if is_above_cmssw_version([8]):
+	if tools.is_above_cmssw_version([8]):
 		from RecoMET.METPUSubtraction.jet_recorrections import recorrectJets
 		#from RecoMET.METPUSubtraction.jet_recorrections import loadLocalSqlite
 		#loadLocalSqlite(process, sqliteFilename = "Spring16_25nsV6_DATA.db" if data else "Spring16_25nsV6_MC.db",
@@ -266,7 +255,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 	process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
-	if is_above_cmssw_version([8]):
+	if tools.is_above_cmssw_version([8]):
 		process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
 					"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
@@ -390,16 +379,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('PileupDensity')
 	process.kappaTuple.PileupDensity.whitelist = cms.vstring("fixedGridRhoFastjetAll")
 	process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll => pileupDensity")
-	if is_above_cmssw_version([7,6]):
+	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
 	process.kappaTuple.active += cms.vstring('PatJets')
-	if is_above_cmssw_version([7,6]):
+	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')
-	if is_above_cmssw_version([8,0,14]):
+	if tools.is_above_cmssw_version([8,0,14]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 		runMetCorAndUncFromMiniAOD(process, isData=data  )
 		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs", "", "KAPPA"))
@@ -416,7 +405,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
 	process.MVAMET.srcLeptons  = cms.VInputTag(muons, electrons, taus) # to produce all possible combinations
 	process.MVAMET.requireOS = cms.bool(False)
-	if is_above_cmssw_version([8,0]):
+	if tools.is_above_cmssw_version([8,0]):
 		if (isEmbedded):
 			process.MVAMET.srcMETs = cms.VInputTag( cms.InputTag("slimmedMETs", "", "MERGE"),
                                             		cms.InputTag("patpfTrackMET"),
@@ -439,7 +428,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		else:
 			process.kappaTuple.GenJets.whitelist = cms.vstring("tauGenJets")
 		process.kappaTuple.active += cms.vstring('GenJets')
-		if is_above_cmssw_version([7,6]):
+		if tools.is_above_cmssw_version([7,6]):
 			if isSignal:
 				process.kappaTuple.GenJets.genJets = cms.PSet(src=cms.InputTag("slimmedGenJets"))
 			process.kappaTuple.GenJets.tauGenJets = cms.PSet(src=cms.InputTag("tauGenJets"))
@@ -498,7 +487,7 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 	else:
 		testPaths = ['/storage/6/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
-		if is_above_cmssw_version([8]):
+		if tools.is_above_cmssw_version([8]):
 			process = getBaseConfig(globaltag="80X_mcRun2_asymptotic_2016_v3", testfile=cms.untracked.vstring("file://%s/SUSYGluGluToHToTauTau_M-160_spring16_miniAOD.root" % testPath), nickname='SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8', outputfilename="kappaTuple.root")
 		else:
 			process = getBaseConfig(globaltag=options.globalTag, testfile=cms.untracked.vstring("file://%s/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root" % testPath), outputfilename="kappaTuple.root")
