@@ -86,7 +86,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	else:
 		process.source 			  = cms.Source('PoolSource', fileNames=cms.untracked.vstring())
 	process.maxEvents.input	      = maxevents
-	process.kappaTuple.verbose    = cms.int32(1)
+	process.kappaTuple.verbose    = cms.int32(0)
 	# uncomment the following option to select only running on certain luminosity blocks. Use only for debugging
 	# process.source.lumisToProcess  = cms.untracked.VLuminosityBlockRange("1:500-1:1000")
 	process.kappaTuple.profile    = cms.bool(True)
@@ -98,11 +98,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# Important to be evaluated correctly for the following steps
 	#data, isEmbedded, miniaod, process.kappaTuple.TreeInfo.parameters = datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 	process.kappaTuple.active = cms.vstring('TreeInfo')
-	process.kappaTuple.active += cms.vstring('LHE')
-	process.kappaTuple.LHE.whitelist = cms.vstring('source')  # save VertexSummary,
-	process.kappaTuple.LHE.rename = cms.vstring('source => LHEafter')
-	if tools.is_above_cmssw_version([7,6]):
-		process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("externalLHEProducer"))
 
 	data = datasetsHelper.isData(nickname)
 	isEmbedded = datasetsHelper.isEmbedded(nickname)
@@ -189,6 +184,13 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
+		
+		if ("HToTauTau" in nickname) or ("H2JetsToTauTau" in nickname):
+			process.kappaTuple.active += cms.vstring('LHE')
+			process.kappaTuple.LHE.whitelist = cms.vstring('source')
+			process.kappaTuple.LHE.rename = cms.vstring('source => LHEafter')
+			if tools.is_above_cmssw_version([7, 6]):
+				process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("externalLHEProducer"))
 
 	# write out for all processes where available
 	process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
