@@ -47,7 +47,7 @@ groupConfigsToBeChecked = [
     "Skimming/zjet/skim_76_cfg.py",
 ]
 compareFilesPaths = [
-    '/storage/6/fcolombo/kappatest/output/',
+    '/storage/b/fs6-mirror/fcolombo/kappatest/output/',
     '/nfs/dust/cms/user/fcolombo/kappatest/output/',
 ]
 compareFilesPath = compareFilesPaths[0]
