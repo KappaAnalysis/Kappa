@@ -3421,7 +3421,7 @@
     "xsec": 390.0
   }, 
   "Embedding2016B_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
-	"Moriond17": [
+    "Moriond17": [
       "Skim_Base", 
       "Skim_Embedding_Rereco"
     ], 
@@ -3582,9 +3582,9 @@
     "process": "Embedding2016C", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv1", 
     "xsec": 390.0
-  },
+  }, 
   "Embedding2016C_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
-	"Moriond17": [
+    "Moriond17": [
       "Skim_Base", 
       "Skim_Embedding_Rereco"
     ], 
@@ -3747,7 +3747,7 @@
     "xsec": 390.0
   }, 
   "Embedding2016D_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
-	"Moriond17": [
+    "Moriond17": [
       "Skim_Base", 
       "Skim_Embedding_Rereco"
     ], 
@@ -4362,7 +4362,8 @@
   "GluGluH2JetsToTauTauM125CPmixingmaxmixJHU_RunIISpring16MiniAODv2_PUSpring16RAWAODSIM_13TeV_MINIAOD_unspecified": {
     "Moriond17": [
       "MC_Spring16_v1", 
-      "Skim_Base"
+      "Skim_Base", 
+      "Skim_Spring16_MC_Signal"
     ], 
     "campaign": "RunIISpring16MiniAODv2", 
     "data": false, 
@@ -4382,7 +4383,8 @@
   "GluGluH2JetsToTauTauM125CPmixingpseudoscalarJHU_RunIISpring16MiniAODv2_PUSpring16RAWAODSIM_13TeV_MINIAOD_unspecified": {
     "Moriond17": [
       "MC_Spring16_v1", 
-      "Skim_Base"
+      "Skim_Base", 
+      "Skim_Spring16_MC_Signal"
     ], 
     "campaign": "RunIISpring16MiniAODv2", 
     "data": false, 
@@ -4402,7 +4404,8 @@
   "GluGluH2JetsToTauTauM125CPmixingsmJHU_RunIISpring16MiniAODv2_PUSpring16RAWAODSIM_13TeV_MINIAOD_unspecified": {
     "Moriond17": [
       "MC_Spring16", 
-      "Skim_Base"
+      "Skim_Base", 
+      "Skim_Spring16_MC_Signal"
     ], 
     "campaign": "RunIISpring16MiniAODv2", 
     "data": false, 
@@ -4791,7 +4794,8 @@
   }, 
   "GluGluToHToTauTauM125_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_amcatnlo-pythia8": {
     "Fall15": [
-      "Skim_Fall15_Full"
+      "Skim_Fall15_Full", 
+      "Skim_Fall15_MC_Signal"
     ], 
     "campaign": "RunIIFall15MiniAODv2", 
     "data": false, 
@@ -12755,6 +12759,10 @@
     "scenario": "PU_S6"
   }, 
   "VBFHToTauTauM125_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "Fall15": [
+      "Skim_Fall15_Full", 
+      "Skim_Fall15_MC_Signal"
+    ], 
     "campaign": "RunIIFall15MiniAODv2", 
     "data": false, 
     "dbs": "/VBFHToTauTau_M125_13TeV_amcatnloFXFX_pythia8/RunIIFall15MiniAODv2-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/MINIAODSIM", 
@@ -12762,6 +12770,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "globalTag": "76X_mcRun2_asymptotic_v12", 
     "inputDBS": "global", 
     "n_events_generated": "1998200", 
     "n_files": "56", 
@@ -12832,6 +12841,9 @@
     "xsec": 0.237207
   }, 
   "VBFHToTauTauM125_RunIISpring16MiniAODv2reHLT_PUSpring16RAWAODSIM_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "Moriond17": [
+      "Skim_Spring16_MC_Signal"
+    ], 
     "campaign": "RunIISpring16MiniAODv2reHLT", 
     "data": false, 
     "dbs": "/VBFHToTauTau_M125_13TeV_amcatnloFXFX_pythia8/RunIISpring16MiniAODv2-PUSpring16RAWAODSIM_reHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM", 
@@ -12839,6 +12851,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_miniAODv2_v1", 
     "inputDBS": "global", 
     "n_events_generated": "1998200", 
     "n_files": "17", 
