@@ -10,7 +10,7 @@ import FWCore.ParameterSet.Config as cms
 ########### local setupu ##########
 #input_files='file:/nfs/dust/cms/user/swayand/DO_MU_FILES/AOD/Madgraph.root'
 #input_files='file:/nfs/dust/cms/user/swayand/DO_MU_FILES/AOD/DATARun2015D.root'
-#input_files='file:///storage/6/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
+#input_files='file:///storage/b/fs6-mirror/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
 #input_files='file:///nfs/dust/cms/user/swayand/DO_MU_FILES/CMSSW80X/DYTOLLM50_mcantlo.root'
 #input_files='file:///storage/a/afriedel/zjets/mc_miniAOD.root' #do not remove: for Kappa test!
 input_files='file:///storage/jbod/tberger/testfiles/data/Run2016D/DoubleMuon/MINIAOD/PromptReco-v2/2459F4AD-F944-E611-96E5-02163E0129EA.root'
