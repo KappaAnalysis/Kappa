@@ -4214,7 +4214,7 @@
     "n_files": "172", 
     "process": "GluGluToHToTauTau_M125", 
     "scenario": "PU25nsData2015v1", 
-    "xsec": 2.775744
+    "xsec": 3.0469376
   }, 
   "GluGluToHToTauTauM125_Summer12_PUS10_8TeV_AODSIM_powheg-pythia6": {
     "campaign": "Summer12", 
