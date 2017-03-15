@@ -57,8 +57,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	muons = "slimmedMuons"
 	electrons = "slimmedElectrons"
-	#taus = "slimmedTaus"
-	taus = "newslimmedTaus"
+	# new tau id only available for 8_0_20 (I believe) and above
+	if tools.is_above_cmssw_version([8,0,20]):
+		taus = "newslimmedTaus"
+	else:
+		taus = "slimmedTaus"
 	isSignal = datasetsHelper.isSignal(nickname)
 	# produce selected collections and filter events with not even one Lepton
 	if options.preselect and not isSignal:
@@ -289,11 +292,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	setupElectrons(process, electrons)
 	process.p *= ( process.makeKappaElectrons )
 	## ------------------------------------------------------------------------
-	process.load('RecoTauTag.Configuration.loadRecoTauTagMVAsFromPrepDB_cfi')
-	process.load("Kappa.Skimming.KPatTaus_run2_cff")	
-	process.p *= ( process.makeKappaTaus )
-	
-	
+	# new tau id only available for 8_0_20 (I believe) and above
+	if tools.is_above_cmssw_version([8,0,20]):
+		process.load('RecoTauTag.Configuration.loadRecoTauTagMVAsFromPrepDB_cfi')
+		process.load("Kappa.Skimming.KPatTaus_run2_cff")	
+		process.p *= ( process.makeKappaTaus )
 	
 	process.kappaTuple.active += cms.vstring('PatTaus')
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
@@ -336,7 +339,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "againstElectronLooseMVA6",
 	                                                                       "againstElectronMediumMVA6",
 	                                                                       "againstElectronTightMVA6",
-	                                                                       "againstElectronVTightMVA6",
+	                                                                       "againstElectronVTightMVA6"#,
 #	                                                                       "chargedIsoPtSumdR03",
 #	                                                                       "neutralIsoPtSumdR03",
 #	                                                                       "neutralIsoPtSumWeightdR03",
@@ -352,20 +355,23 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 #	                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
 #	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT",
 #	                                                                       "byVVTightIsolationMVArun2v1DBdR03oldDMwLT",
-										"rerunDiscriminationByIsolationMVAOldDMrun2v1raw",
-										"rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose",
-                                                                                "rerunDiscriminationByIsolationMVAOldDMrun2v1Loose",
-                                                                                "rerunDiscriminationByIsolationMVAOldDMrun2v1Medium",
-                                                                                "rerunDiscriminationByIsolationMVAOldDMrun2v1Tight",
-                                                                                "rerunDiscriminationByIsolationMVAOldDMrun2v1VTight",
-                                                                                "rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight",
-                                                                                "rerunDiscriminationByIsolationMVANewDMrun2v1raw",
-                                                                                "rerunDiscriminationByIsolationMVANewDMrun2v1VLoose",
-                                                                                "rerunDiscriminationByIsolationMVANewDMrun2v1Loose",
-                                                                                "rerunDiscriminationByIsolationMVANewDMrun2v1Medium",
-                                                                                "rerunDiscriminationByIsolationMVANewDMrun2v1Tight",
-                                                                                "rerunDiscriminationByIsolationMVANewDMrun2v1VTight",
-                                                                                "rerunDiscriminationByIsolationMVANewDMrun2v1VVTight"
+	)
+	if tools.is_above_cmssw_version([8,0,20]):
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1raw",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1Loose",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1Medium",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1Tight",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1VTight",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1raw",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1VLoose",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1Loose",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1Medium",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1Tight",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1VTight",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1VVTight"
 	)
 ## now also possible to save all MVA isolation inputs for taus # turn of per default 
 	
