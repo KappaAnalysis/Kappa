@@ -94,7 +94,7 @@ def checkoutPackages(args):
 		"rm -rf tempData",
 
 		#Check out Kappa
-		"git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges"
+		"git clone https://github.com/KappaAnalysis/Kappa.git"
 	]
 	execCommands(commands)
 	return
