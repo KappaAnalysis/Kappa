@@ -57,7 +57,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	muons = "slimmedMuons"
 	electrons = "slimmedElectrons"
-	taus = "slimmedTaus"
+	# new tau id only available for 8_0_20 (I believe) and above
+	if tools.is_above_cmssw_version([8,0,20]):
+		taus = "newslimmedTaus"
+	else:
+		taus = "slimmedTaus"
 	isSignal = datasetsHelper.isSignal(nickname)
 	# produce selected collections and filter events with not even one Lepton
 	if options.preselect and not isSignal:
@@ -152,8 +156,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
+
 	elif(data):
-		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
+		if "03Feb2017" in str(process.kappaTuple.TreeInfo.parameters.scenario):
+			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "PAT")
+		else:
+			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
 
 	#if "reHLT" in datasetsHelper.get_campaign(nickname):
 	#	process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
@@ -284,8 +292,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	setupElectrons(process, electrons)
 	process.p *= ( process.makeKappaElectrons )
 	## ------------------------------------------------------------------------
+	# new tau id only available for 8_0_20 (I believe) and above
+	if tools.is_above_cmssw_version([8,0,20]):
+		process.load('RecoTauTag.Configuration.loadRecoTauTagMVAsFromPrepDB_cfi')
+		process.load("Kappa.Skimming.KPatTaus_run2_cff")	
+		process.p *= ( process.makeKappaTaus )
+	
 	process.kappaTuple.active += cms.vstring('PatTaus')
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
+	process.kappaTuple.PatTaus.taus.src = cms.InputTag(taus)
 	process.kappaTuple.PatTaus.taus.floatDiscrBlacklist = cms.vstring()
 	# just took everything from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV
 	process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring ()
@@ -309,13 +324,13 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "byTightIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byVTightIsolationMVArun2v1DBoldDMwLT",
 	                                                                       "byVVTightIsolationMVArun2v1DBoldDMwLT",
-	                                                                       "byIsolationMVArun2v1DBnewDMwLTraw",
-	                                                                       "byVLooseIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "byVVTightIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byIsolationMVArun2v1DBnewDMwLTraw",
+#	                                                                       "byVLooseIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
+#	                                                                       "byVVTightIsolationMVArun2v1DBnewDMwLT",
 	                                                                       "againstMuonLoose3",
 	                                                                       "againstMuonTight3",
 	                                                                       "againstElectronMVA6category",
@@ -324,27 +339,42 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	                                                                       "againstElectronLooseMVA6",
 	                                                                       "againstElectronMediumMVA6",
 	                                                                       "againstElectronTightMVA6",
-	                                                                       "againstElectronVTightMVA6",
-	                                                                       "chargedIsoPtSumdR03",
-	                                                                       "neutralIsoPtSumdR03",
-	                                                                       "neutralIsoPtSumWeightdR03",
-	                                                                       "footprintCorrectiondR03",
-	                                                                       "photonPtSumOutsideSignalConedR03",
-	                                                                       "byLooseCombinedIsolationDeltaBetaCorr3HitsdR03",
-	                                                                       "byMediumCombinedIsolationDeltaBetaCorr3HitsdR03",
-	                                                                       "byTightCombinedIsolationDeltaBetaCorr3HitsdR03",
-	                                                                       "byIsolationMVArun2v1DBdR03oldDMwLTraw",
-	                                                                       "byVLooseIsolationMVArun2v1DBdR03oldDMwLT",
-	                                                                       "byLooseIsolationMVArun2v1DBdR03oldDMwLT",
-	                                                                       "byMediumIsolationMVArun2v1DBdR03oldDMwLT",
-	                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
-	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT",
-	                                                                       "byVVTightIsolationMVArun2v1DBdR03oldDMwLT"
-                                                                  
-                                                                
+	                                                                       "againstElectronVTightMVA6"#,
+#	                                                                       "chargedIsoPtSumdR03",
+#	                                                                       "neutralIsoPtSumdR03",
+#	                                                                       "neutralIsoPtSumWeightdR03",
+#	                                                                       "footprintCorrectiondR03",
+#	                                                                       "photonPtSumOutsideSignalConedR03",
+#	                                                                       "byLooseCombinedIsolationDeltaBetaCorr3HitsdR03",
+#	                                                                       "byMediumCombinedIsolationDeltaBetaCorr3HitsdR03",
+#	                                                                       "byTightCombinedIsolationDeltaBetaCorr3HitsdR03",
+#	                                                                       "byIsolationMVArun2v1DBdR03oldDMwLTraw",
+#	                                                                       "byVLooseIsolationMVArun2v1DBdR03oldDMwLT",
+#	                                                                       "byLooseIsolationMVArun2v1DBdR03oldDMwLT",
+#	                                                                       "byMediumIsolationMVArun2v1DBdR03oldDMwLT",
+#	                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
+#	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT",
+#	                                                                       "byVVTightIsolationMVArun2v1DBdR03oldDMwLT",
+	)
+	if tools.is_above_cmssw_version([8,0,20]):
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1raw",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1Loose",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1Medium",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1Tight",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1VTight",
+																		"rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1raw",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1VLoose",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1Loose",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1Medium",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1Tight",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1VTight",
+																		"rerunDiscriminationByIsolationMVANewDMrun2v1VVTight"
 	)
 ## now also possible to save all MVA isolation inputs for taus # turn of per default 
-	"""
+	
 	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring("decayDistX",
 										    "decayDistY",
 										    "decayDistZ",
@@ -355,9 +385,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 										    "ptWeightedDrSignal",
 										    "ptWeightedDrIsolation",
 										    "leadingTrackChi2",
-										    "eRatio")
-	"""
-	
+										    "eRatio"
+										    )
+
+
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	process.kappaTuple.PatTaus.verbose = cms.int32(1)
 	
@@ -395,8 +426,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if tools.is_above_cmssw_version([8,0]):
 		if (isEmbedded):
 			process.MVAMET.srcMETs = cms.VInputTag( cms.InputTag("slimmedMETs", "", "MERGE"),
-                                            		cms.InputTag("patpfMET"),
-                                            		cms.InputTag("patpfMETT1"),
                                             		cms.InputTag("patpfTrackMET"),
                                             		cms.InputTag("patpfNoPUMET"),
                                             		cms.InputTag("patpfPUCorrectedMET"),
