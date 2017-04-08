@@ -17,6 +17,8 @@
 	<class name="KGenJets"/>
 	<class name="KGenParticle"/>
 	<class name="KGenParticles"/>
+	<class name="KLHEParticle"/>
+	<class name="KLHEParticles"/>
 	<class name="KGenPhoton"/>
 	<class name="KGenPhotons"/>
 	<class name="KGenTau"/>

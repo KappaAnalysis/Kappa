@@ -13,6 +13,9 @@
 typedef ROOT::Math::PtEtaPhiM4D<float> RMFLV_Store;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > RMFLV;
 
+typedef ROOT::Math::PxPyPzE4D<float> CartesianRMFLV_Store;
+typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > CartesianRMFLV;
+
 typedef ROOT::Math::PtEtaPhiM4D<double> RMDLV_Store;
 typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > RMDLV;
 

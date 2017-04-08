@@ -11,11 +11,11 @@
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
 
-class KLHEProducer : public KBaseMultiProducer<LHEEventProduct, KGenParticles>
+class KLHEProducer : public KBaseMultiProducer<LHEEventProduct, KLHEParticles>
 {
 public:
 	KLHEProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector):
-		KBaseMultiProducer<LHEEventProduct, KGenParticles>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+		KBaseMultiProducer<LHEEventProduct, KLHEParticles>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 	virtual ~KLHEProducer() {};
 
 	static const std::string getLabel() { return "LHE"; }
@@ -26,25 +26,28 @@ protected:
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		for (int i = 0; i < in.hepeup().NUP; i++)
+		// https://github.com/cms-cvs-history/SimDataFormats-GeneratorProducts/blob/master/interface/LesHouches.h#L128-L263
+		
+		for (int indexParticle = 0; indexParticle < in.hepeup().NUP; indexParticle++)
 		{
-			//if (in.hepeup().ISTUP[i] < 0)
-			//	continue;
-
-			KGenParticle p;
-
-			// kinematics
-			lhef::HEPEUP::FiveVector fv = in.hepeup().PUP[i];
-			p.p4.SetPxPyPzE(fv[0], fv[1], fv[2], fv[3]);
-
-			// particle id and status
-			p.pdgId = in.hepeup().IDUP[i];
-			p.particleinfo = ((in.hepeup().ISTUP[i] % 128) << KGenParticleStatusPosition);
-			if (in.hepeup().ISTUP[i] >= 111)  // Pythia 8 maximum
-				p.particleinfo |= (127 << KGenParticleStatusPosition);
-
-			out.push_back(p);
+			KLHEParticle particle;
+			
+			lhef::HEPEUP::FiveVector momentum = in.hepeup().PUP[indexParticle];
+			particle.p4.SetPxPyPzE(momentum[0], momentum[1], momentum[2], momentum[3]);
+			
+			particle.pdgId = in.hepeup().IDUP[indexParticle];
+			particle.status = in.hepeup().ISTUP[indexParticle];
+			particle.firstLastMotherIDs = in.hepeup().MOTHUP[indexParticle];
+			particle.colourLineIndices = in.hepeup().ICOLUP[indexParticle];
+			particle.spinInfo = in.hepeup().SPINUP[indexParticle];
+			
+			out.push_back(particle);
 		}
+		
+		out.subprocessCode = in.hepeup().IDPRUP;
+		out.pdfScale = in.hepeup().SCALUP;
+		out.alphaEM = in.hepeup().AQEDUP;
+		out.alphaQCD = in.hepeup().AQCDUP;
 	}
 };
 

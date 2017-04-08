@@ -53,6 +53,8 @@ namespace
 		KGenJets dict_KGenJets;
 		KGenParticle dict_KGenParticle;
 		KGenParticles dict_KGenParticles;
+		KLHEParticle dict_KLHEParticle;
+		KLHEParticles dict_KLHEParticles;
 		KGenPhoton dict_KGenPhoton;
 		KGenPhotons dict_KGenPhotons;
 		KGenTau dict_KGenTau;

@@ -86,6 +86,25 @@ std::ostream &operator<<(std::ostream &os, const KGenParticle &p)
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const KLHEParticle &p)
+{
+	os << "(px=" << p.p4.px() << ", py=" << p.p4.py() << ", pz="
+	   << p.p4.pz() << ", E=" << p.p4.E()  << ", m=" << p.p4.M() << ")"
+	   << ", pdgid=" << p.pdgId << ", status=" << p.status;
+	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const KLHEParticles &particles)
+{
+	for (KLHEParticles::const_iterator p = particles.begin(); p != particles.end(); ++p)
+	{
+		os << *p << std::endl;
+	}
+	os << "subprocessCode=" << particles.subprocessCode
+	   << ", pdfScale=" << particles.pdfScale << ", alphaEM=" << particles.alphaEM << ", alphaQCD=" << particles.alphaQCD;
+	return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const KGenPhoton &p)
 {
 	os << static_cast<const KLV>(p) << std::endl;

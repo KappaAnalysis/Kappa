@@ -101,6 +101,10 @@
 #pragma link C++ class std::vector<KGenParticle>+;
 #pragma link C++ typedef KGenParticles;
 
+#pragma link C++ struct KLHEParticle+;
+#pragma link C++ class std::vector<KLHEParticle>+;
+#pragma link C++ typedef KLHEParticles;
+
 #pragma link C++ struct KGenPhoton+;
 #pragma link C++ class std::vector<KGenPhoton>+;
 #pragma link C++ typedef KGenPhotons;

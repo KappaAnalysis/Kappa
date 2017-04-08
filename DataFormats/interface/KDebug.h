@@ -19,6 +19,8 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s);
 std::ostream &operator<<(std::ostream &os, const KTrack &trk);
 std::ostream &operator<<(std::ostream &os, const KParticle &p);
 std::ostream &operator<<(std::ostream &os, const KGenParticle &p);
+std::ostream &operator<<(std::ostream &os, const KLHEParticle &p);
+std::ostream &operator<<(std::ostream &os, const KLHEParticles &particles);
 std::ostream &operator<<(std::ostream &os, const KGenPhoton &p);
 std::ostream &operator<<(std::ostream &os, const KElectron &e);
 std::ostream &operator<<(std::ostream &os, const KCaloJet &jet);

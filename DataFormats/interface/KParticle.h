@@ -260,5 +260,29 @@ struct KPFCandidate : public KParticle
 };
 typedef std::vector<KPFCandidate> KPFCandidates;
 
+// does not derive from KLV because it needs a four-momenta as px, py, pz, E (e.g. for incoming partons with pT=0)
+// https://github.com/cms-cvs-history/SimDataFormats-GeneratorProducts/blob/master/interface/LesHouches.h#L128-L263
+struct KLHEParticle
+{
+	virtual ~KLHEParticle() {};
+	
+	CartesianRMFLV p4; // PUP
+	int pdgId; // IDUP
+	int status; // ISTUP
+	std::pair<int, int> firstLastMotherIDs; // MOTHUP
+	std::pair<int, int> colourLineIndices; // ICOLUP
+	double spinInfo; // SPINUP
+};
+
+struct KLHEParticles : public std::vector<KLHEParticle>
+{
+	virtual ~KLHEParticles() {};
+	
+	int subprocessCode; // IDPRUP
+	double pdfScale; // SCALUP
+	double alphaEM; // AQEDUP
+	double alphaQCD; // AQCDUP
+};
+
 #endif
 
