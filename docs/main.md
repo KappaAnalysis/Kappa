@@ -344,7 +344,7 @@ To add a new object to Kappa, it needs:
   * a default config in [Producers/python/KTuple_cff.py](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers/python/KTuple_cff.py)
   * debug output in [DataFormats/test/KDebug.cpp](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/test/KDebug.cpp)
   * an entry in [Producers/src/KTuple.cc](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/Producers/src/KTuple.cc)
-  * an entry in [DataFormats/src/classes.md](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/src/classes.md)
+  * an entry in [DataFormats/src/classes.h](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/src/classes.h)
       * run [DataFormats/src/classes.UP](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/src/classes.UP) afterwards (from within its directory)
   * the corresponding lines in [DataFormats/test/LinkDef.h](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/test/LinkDef.h)
   * the documentation in [docs/objects.md](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/docs/objects.md)
