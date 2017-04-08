@@ -33,7 +33,6 @@ std::ostream &operator<<(std::ostream &os, const KExtendedTau &tau);
 std::ostream &operator<<(std::ostream &os, const KGenTau &tau);
 std::ostream &operator<<(std::ostream &os, const KGenJet &jet);
 std::ostream &operator<<(std::ostream &os, const KVertex &vertex);
-std::ostream &operator<<(std::ostream &os, const KRefitVertex &vertex);
 std::ostream &operator<<(std::ostream &os, const KVertexSummary &vs);
 std::ostream &operator<<(std::ostream &os, const KTaupairVerticesMap &pvs);
 std::ostream &operator<<(std::ostream &os, const KTriggerObjects &to);
