@@ -28,8 +28,8 @@ protected:
 	{
 		for (int i = 0; i < in.hepeup().NUP; i++)
 		{
-			if (in.hepeup().ISTUP[i] < 0)
-				continue;
+			//if (in.hepeup().ISTUP[i] < 0)
+			//	continue;
 
 			KGenParticle p;
 

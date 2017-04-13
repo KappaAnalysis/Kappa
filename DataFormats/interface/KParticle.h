@@ -13,7 +13,6 @@ struct KParticle : public KLV
 {
 	virtual ~KParticle() {};
 
-	/// bitset containing the status and the signed PDG-ID
 	int pdgId;  ///< PDG-ID of the particle
 
 	// vertex of production

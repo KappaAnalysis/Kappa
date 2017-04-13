@@ -63,9 +63,9 @@ from RecoEgamma.ElectronIdentification.egmGsfElectronIDs_cff import *
 def setupElectrons(process):
 	switchOnVIDElectronIdProducer(process, DataFormat.AOD)
 	my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
-			 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff',
-			 'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
-			 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff']
+			 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff']
+	if tools.is_above_cmssw_version([8]):
+		my_id_modules.extend(['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff', 'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff'])
 	for idmod in my_id_modules:
 		setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
 

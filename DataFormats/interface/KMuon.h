@@ -66,8 +66,6 @@ struct KMuon : public KLepton
 	/// ID var from track: nValidPixelHits, nTrackerLayers
 	/// ID var from globalTrack: normalizedChi2=chi2/nDOF, nValidMuonHits
 	/// ID var from the bestTrack which is not saved entirely:
-	float dxy; //< dxy from vertex using IPTools like PAT
-	float dz;  //< dz from vertex using bestTrack->dz(vtx)
 
 	/// muon system information
 	short nMatchedStations;

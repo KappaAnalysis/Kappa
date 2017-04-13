@@ -11,7 +11,7 @@ import FWCore.ParameterSet.Config as cms
 ########### local setupu ##########
 #input_files='file:/nfs/dust/cms/user/swayand/DO_MU_FILES/AOD/Madgraph.root'
 #input_files='file:/nfs/dust/cms/user/swayand/DO_MU_FILES/AOD/DATARun2015D.root'
-input_files='file:///storage/6/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
+input_files='file:///storage/b/fs6-mirror/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
 maxevents=10
 outputfilename="skim76.root"
 miniaod = False ## not implemented yet 

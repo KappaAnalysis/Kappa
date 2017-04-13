@@ -10,9 +10,9 @@ import FWCore.ParameterSet.Config as cms
 ########### local setupu ##########
 #input_files='file:/nfs/dust/cms/user/swayand/DO_MU_FILES/AOD/Madgraph.root'
 #input_files='file:/nfs/dust/cms/user/swayand/DO_MU_FILES/AOD/DATARun2015D.root'
-#input_files='file:///storage/6/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
+#input_files='file:///storage/b/fs6-mirror/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
 #input_files='file:///nfs/dust/cms/user/swayand/DO_MU_FILES/CMSSW80X/DYTOLLM50_mcantlo.root'
-input_files='file:///storage/6/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
+input_files='file:///storage/b/fs6-mirror/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
 #input_files='dcap://cmssrm-kit.gridka.de:22125/pnfs/gridka.de/cms/store/mc/RunIISpring16DR80/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/20000/1A054918-89FF-E511-B246-0CC47A4D76B2.root'
 
 maxevents=10

@@ -7,7 +7,7 @@
 
 import FWCore.ParameterSet.Config as cms
 
-testfile = 'file:///storage/6/fcolombo/kappatest/input/mc11.root'
+testfile = 'file:///storage/b/fs6-mirror/fcolombo/kappatest/input/mc11.root'
 globaltag = 'START53_V27::All'
 maxevents = 100
 print "GT:", globaltag, "| maxevents:", maxevents, "| file:", testfile
