@@ -1182,6 +1182,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "generatorWeight": 0.6698118340036534, 
     "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
     "inputDBS": "global", 
     "n_events_generated": "28968252", 

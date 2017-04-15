@@ -31,8 +31,16 @@ class SkimManagerBase:
 		self.max_crab_jobs_per_nick = 8000 # 10k is the hard limit
 		self.voms_proxy = None
 		self.site_storage_access_dict = {
-			"T2_DE_DESY" : {"dcap":"dcap://dcache-cms-dcap.desy.de//pnfs/desy.de/cms/tier2/","srm":"srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/"},
-			"T2_DE_RWTH" : {"dcap":"dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/","srm":"srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/"}
+			"T2_DE_DESY" : {
+				"dcap" : "dcap://dcache-cms-dcap.desy.de//pnfs/desy.de/cms/tier2/",
+				"srm" : "srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/",
+				"xrootd" : " root://dcache-cms-xrootd.desy.de:1094/",
+			},
+			"T2_DE_RWTH" : {
+				"dcap" : "dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/",
+				"srm" : "srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/",
+				"xrootd" : " root://grid-vo-cms.physik.rwth-aachen.de:1094/",
+			}
 		}
 		self.UsernameFromSiteDB = None
 		try:
@@ -572,7 +580,7 @@ class SkimManagerBase:
 					for jobid in range(1,number_jobs+1):
 						dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[jobid/1000],JOBID=jobid)+'\n'
 					dataset_filelist = dataset_filelist.strip('\n')
-					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]["dcap"]))
+					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]["xrootd"]))
 					filelist.close()
 				except:
 					print "Getting output from crab exited with error. Try again later."
