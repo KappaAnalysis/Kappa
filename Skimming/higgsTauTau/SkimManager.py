@@ -553,7 +553,7 @@ class SkimManagerBase:
 							for info_line in job_info:
 								if info_line.startswith("FILE="):
 									file_path_parts = info_line.strip('"').split("  ")[-2:]
-									filelist.write(self.site_storage_access_dict[storage_site]["dcap"]+re.sub(r'.*(store)',r'/store',file_path_parts[1]+file_path_parts[0]+"\n"))
+									filelist.write(self.site_storage_access_dict[storage_site]["xrootd"]+re.sub(r'.*(store)',r'/store',file_path_parts[1]+file_path_parts[0]+"\n"))
 					filelist.close()
 					self.skimdataset[dataset]["GCSKIM_STATUS"] = "LISTED"
 					print "List creation successfull!"
