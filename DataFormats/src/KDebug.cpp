@@ -96,7 +96,7 @@ std::ostream &operator<<(std::ostream &os, const KLHEParticle &p)
 
 std::ostream &operator<<(std::ostream &os, const KLHEParticles &particles)
 {
-	for (KLHEParticles::const_iterator p = particles.begin(); p != particles.end(); ++p)
+	for (std::vector<KLHEParticle>::const_iterator p = particles.particles.begin(); p != particles.particles.end(); ++p)
 	{
 		os << *p << std::endl;
 	}

@@ -21,7 +21,10 @@ public:
 	static const std::string getLabel() { return "LHE"; }
 
 protected:
-	virtual void clearProduct(OutputType &output) { output.clear(); }
+	virtual void clearProduct(OutputType &output)
+	{
+		output.particles.clear();
+	}
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
@@ -41,7 +44,7 @@ protected:
 			particle.colourLineIndices = in.hepeup().ICOLUP[indexParticle];
 			particle.spinInfo = in.hepeup().SPINUP[indexParticle];
 			
-			out.push_back(particle);
+			out.particles.push_back(particle);
 		}
 		
 		out.subprocessCode = in.hepeup().IDPRUP;

@@ -274,10 +274,11 @@ struct KLHEParticle
 	double spinInfo; // SPINUP
 };
 
-struct KLHEParticles : public std::vector<KLHEParticle>
+struct KLHEParticles
 {
 	virtual ~KLHEParticles() {};
 	
+	std::vector<KLHEParticle> particles;
 	int subprocessCode; // IDPRUP
 	double pdfScale; // SCALUP
 	double alphaEM; // AQEDUP
