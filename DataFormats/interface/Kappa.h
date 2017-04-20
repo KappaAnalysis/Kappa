@@ -58,7 +58,7 @@ REGISTER_NAME_OF_TYPE(KGenJets,std::vector<KGenJet>);
 REGISTER_NAME_OF_TYPE(KGenParticle,KGenParticle);
 REGISTER_NAME_OF_TYPE(KGenParticles,std::vector<KGenParticle>);
 REGISTER_NAME_OF_TYPE(KLHEParticle,KLHEParticle);
-REGISTER_NAME_OF_TYPE(KLHEParticles,std::vector<KLHEParticle>);
+REGISTER_NAME_OF_TYPE(KLHEParticles,KLHEParticles);
 REGISTER_NAME_OF_TYPE(KGenPhoton,KGenPhoton);
 REGISTER_NAME_OF_TYPE(KGenPhotons,std::vector<KGenPhoton>);
 REGISTER_NAME_OF_TYPE(KGenTau,KGenTau);
