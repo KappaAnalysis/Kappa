@@ -1191,6 +1191,25 @@
     "scenario": "PUMoriond17", 
     "xsec": 5765.4
   }, 
+  "DYJetsToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8_ext2": {
+    "Moriond17": [
+      "Skim_Moriond17_MC_BG"
+    ], 
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext2-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "ext2", 
+    "format": "MINIAOD", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
+    "inputDBS": "global", 
+    "n_events_generated": "122055388", 
+    "n_files": "1451", 
+    "process": "DYJetsToLL_M50", 
+    "scenario": "PUMoriond17", 
+    "xsec": 5765.4
+  }, 
   "DYJetsToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8_ext1": {
     "Moriond17": [
       "Skim_Base", 
