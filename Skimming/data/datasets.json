@@ -4026,6 +4026,23 @@
     "scenario": "imputSep16DoubleMu_mirror_miniAODv1", 
     "xsec": 390.0
   }, 
+  "Embedding2016F_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
+    "campaign": "ElTauFinalState", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2016F/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v2/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_2016SeptRepro_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "1733082", 
+    "n_files": "2717", 
+    "process": "Embedding2016F", 
+    "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
+    "xsec": 390.0
+  }, 
   "Embedding2016F_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
       "Skim_Embedding_PromptReco"
