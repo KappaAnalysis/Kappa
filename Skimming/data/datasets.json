@@ -15,7 +15,7 @@
     "n_files": "3", 
     "process": "AToZhToLLTauTau_M400", 
     "scenario": "PU25nsData2015v1"
-  }, 
+  },
   "ChargedHiggsHplusTBHplusToTauNuM200_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_amcatnlo-pythia8": {
     "Fall15": [
       "Skim_Fall15_Full"
@@ -3451,7 +3451,7 @@
     "n_files": "5471", 
     "process": "Embedding2016B", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 873.6719856665
   }, 
   "Embedding2016B_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -3614,7 +3614,7 @@
     "n_files": "2317", 
     "process": "Embedding2016C", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 838.4929787168
   }, 
   "Embedding2016C_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -3777,7 +3777,7 @@
     "n_files": "3768", 
     "process": "Embedding2016D", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 838.3655754843
   }, 
   "Embedding2016D_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -3941,7 +3941,7 @@
     "n_files": "3713", 
     "process": "Embedding2016E", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 771.8279137749
   }, 
   "Embedding2016E_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -4122,7 +4122,7 @@
     "n_files": "2781", 
     "process": "Embedding2016F", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 806.5932938117
   }, 
   "Embedding2016F_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -4286,7 +4286,7 @@
     "n_files": "7308", 
     "process": "Embedding2016G", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 857.9876893225
   }, 
   "Embedding2016G_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -4384,13 +4384,13 @@
     "extension": "", 
     "format": "USER", 
     "generator": "", 
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7", 
+    "globalTag": "80X_dataRun2_Prompt_v16", 
     "inputDBS": "phys03", 
     "n_events_generated": "6325743", 
     "n_files": "9280", 
     "process": "Embedding2016H", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 1091.3702363335
   }, 
   "EmbeddingMCRunIISummer16DR80_ElMuFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USER_pythia8": {
     "Moriond17": [
