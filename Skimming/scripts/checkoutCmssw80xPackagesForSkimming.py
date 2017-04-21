@@ -93,9 +93,8 @@ def checkoutPackages(args):
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 		"rm -rf tempData",
 
-        #Remove the .git folder as it is not needed and contains a lot of useless data
-        "rm -rf RecoEgamma/ElectronIdentification/data/.git"
-
+	        #Remove the .git folder as it is not needed and contains a lot of useless data
+        	"rm -rf RecoEgamma/ElectronIdentification/data/.git",
 		#Check out Kappa
 		"git clone https://github.com/KappaAnalysis/Kappa.git"
 	]
