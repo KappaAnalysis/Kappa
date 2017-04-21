@@ -15,7 +15,7 @@
     "n_files": "3", 
     "process": "AToZhToLLTauTau_M400", 
     "scenario": "PU25nsData2015v1"
-  },
+  }, 
   "ChargedHiggsHplusTBHplusToTauNuM200_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_amcatnlo-pythia8": {
     "Fall15": [
       "Skim_Fall15_Full"
@@ -1202,6 +1202,7 @@
     "extension": "ext2", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "generatorWeight": 0.6700323954563973, 
     "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
     "inputDBS": "global", 
     "n_events_generated": "122055388", 
