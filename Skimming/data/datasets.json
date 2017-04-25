@@ -3408,7 +3408,7 @@
     "n_files": "5489", 
     "process": "Embedding2016B", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 767.1
   }, 
   "Embedding2016B_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -3588,7 +3588,7 @@
     "n_files": "2393", 
     "process": "Embedding2016C", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 679.7
   }, 
   "Embedding2016C_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -3768,7 +3768,7 @@
     "n_files": "4061", 
     "process": "Embedding2016D", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 685.5
   }, 
   "Embedding2016D_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -3948,7 +3948,7 @@
     "n_files": "3736", 
     "process": "Embedding2016E", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 647.0
   }, 
   "Embedding2016E_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -4129,7 +4129,7 @@
     "n_files": "2717", 
     "process": "Embedding2016F", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 557.0
   }, 
   "Embedding2016F_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -4310,7 +4310,7 @@
     "n_files": "7266", 
     "process": "Embedding2016G", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
+    "xsec": 637.0
   }, 
   "Embedding2016G_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
