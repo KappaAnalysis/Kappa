@@ -4,6 +4,7 @@ import os, shutil
 from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
 import argparse
 import datetime
+from time import gmtime, strftime
 import subprocess
 import json
 import ast
@@ -646,13 +647,13 @@ if __name__ == "__main__":
 	if not os.path.exists(work_base):
 		os.makedirs(work_base)
 	
-	latest_subdir = None # SkimManagerBase.get_latest_subdir(work_base=work_base)
+	latest_subdir = SkimManagerBase.get_latest_subdir(work_base=work_base)
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json")
 
 	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)")
 
 	parser.add_argument("-i", "--input", dest="inputfile", default=def_input, help="input data base (Default: %s)"%def_input)
-	parser.add_argument("-w", "--workdir", dest="workdir", help="Set work directory  (Default: Latest modified subdir, i.e. %s) in workbase %s.\nWorkbase can be set by export SKIM_WORK_BASE=workbase or by setting absolute path."%(latest_subdir,work_base), default=latest_subdir)
+	parser.add_argument("-w", "--workdir", dest="workdir", default=os.path.join(work_base,strftime("%Y-%m-%d-%H-%M-%S", gmtime()))+"_kappa-skim",help="Set work directory  (Default: %(default)s)")
 	parser.add_argument("-d", "--date", dest="date", action="store_true", default=False, help="Add current date to workdir folder (Default: %(default)s)")
 	parser.add_argument("--query", dest="query", help="Query which each dataset has to fulfill. Works with regex e.g: --query '{\"campaign\" : \"RunIISpring16MiniAOD.*reHLT\"}' \n((!!! For some reasons the most outer question marks must be the \'))")
 	parser.add_argument("--nicks", dest="nicks", help="Query which each dataset has to fulfill. Works with regex e.g: --nicks \".*_Run2016(B|C|D).*\"")
@@ -677,10 +678,14 @@ if __name__ == "__main__":
 	parser.add_argument("-b","--backend", default='freiburg', dest="backend", help="Changes backend for the creation of Grid Control configs. Supported: freiburg, naf. Default: %(default)s")
 
 	args = parser.parse_args()
-	if args.workdir == latest_subdir:
-		print "\nWorkdir not specified. Latest subdir in workbase will be used: "+latest_subdir
-		print "Continue? [Y/n]"
-		SkimManagerBase.wait_for_user_confirmation()
+ 
+	if args.workdir == parser.get_default("workdir"):
+		print '\nNo workdir specified. Do you want to continue the existing skim in '+latest_subdir+' ? [Y/n] (Selecting no will create new workdir)'
+		if SkimManagerBase.wait_for_user_confirmation(true_false=True):
+			args.workdir=latest_subdir
+		else:
+			print 'New workdir will be created: '+args.workdir
+		
 	if not os.path.exists(args.inputfile):
 		print 'No input file found'
 		exit()
