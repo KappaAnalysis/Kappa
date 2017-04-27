@@ -1,13 +1,35 @@
 #!/bin/sh
+
+echo "# very specific tests of input files"
+
+echo ":: /etc/yum.repos.d/cernvm.repo "
+echo /etc/yum.repos.d/cernvm.repo
+echo
+echo ":: /etc/cvmfs/default.local"
+echo /etc/cvmfs/default.local
+echo
+echo ":: /etc/cvmfs/domain.d/cern.ch.local"
+echo /etc/cvmfs/domain.d/cern.ch.local
+echo 
+echo ":: /etc/cvmfs/keys"
+echo /etc/cvmfs/keys
+echo
+echo "/etc/cvmfs/run-cvmfs.sh"
+echo /etc/cvmfs/run-cvmfs.sh
+echo
+echo "###################"
 echo "# ================= #"
 echo "# ls cvmfs"
 echo "# ================= #"
 ls /etc/cvmfs/
+
+echo ""
 echo "# ================= #"
 echo "# run-cvmfs.sh"
 echo "# ================= #"
 cat /etc/cvmfs/run-cvmfs.sh
 echo "# ================= #"
+echo ""
 /etc/cvmfs/run-cvmfs.sh
 
 # export SCRAM_ARCH=slc6_amd64_gcc481
