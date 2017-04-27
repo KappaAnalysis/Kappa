@@ -3,19 +3,19 @@
 echo "# very specific tests of input files"
 
 echo ":: /etc/yum.repos.d/cernvm.repo "
-echo /etc/yum.repos.d/cernvm.repo
+cat /etc/yum.repos.d/cernvm.repo
 echo
 echo ":: /etc/cvmfs/default.local"
-echo /etc/cvmfs/default.local
+cat /etc/cvmfs/default.local
 echo
 echo ":: /etc/cvmfs/domain.d/cern.ch.local"
-echo /etc/cvmfs/domain.d/cern.ch.local
+cat /etc/cvmfs/domain.d/cern.ch.local
 echo 
 echo ":: /etc/cvmfs/keys"
-echo /etc/cvmfs/keys
+cat /etc/cvmfs/keys
 echo
 echo "/etc/cvmfs/run-cvmfs.sh"
-echo /etc/cvmfs/run-cvmfs.sh
+cat /etc/cvmfs/run-cvmfs.sh
 echo
 echo "###################"
 echo "# ================= #"
