@@ -293,7 +293,7 @@ class SkimManagerBase:
 			process_queue = Queue()
 			print "Resubmission for",dataset
 			argument_dict["dir"] = os.path.join(self.workdir,str(dataset))
-			p = Process(target=self.crab_cmd,args=[{"cmd":"resubmit", "args" : argument_dict},process_queue])
+			p = Process(target=self.crab_cmd,args=[{"cmd":"resubmitold", "args" : argument_dict},process_queue])
 			p.start()
 			p.join()
 			print "--------------------------------------------"
