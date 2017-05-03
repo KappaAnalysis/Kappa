@@ -189,7 +189,7 @@ class SkimManagerBase:
 			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED","COMPLETED","INIT"] and self.skimdataset[akt_nick]["GCSKIM_STATUS"] not in ["LISTED","COMPLETED"]:
 				crab_job_dir = os.path.join(self.workdir,self.skimdataset[akt_nick].get("crab_name","crab_"+akt_nick[:100]))
 				status_dict = {"proxy" : self.voms_proxy, "dir" : crab_job_dir}
-				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd({"cmd": "status", "args" : status_dict})
+				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd({"cmd": "statusold", "args" : status_dict})
 				if not self.skimdataset[akt_nick]['last_status']:
 					self.skimdataset[akt_nick]["SKIM_STATUS"] = "EXCEPTION"
 
