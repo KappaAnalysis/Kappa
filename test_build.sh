@@ -56,7 +56,10 @@ echo "# ================= #"
 #cp -r /home/travis/* Kappa/
 cd ../../
 curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/master/Skimming/scripts/${CHECKOUTSCRIPT}
-python ${CHECKOUTSCRIPT}
+git config --global user.github greyxray
+git config --global user.email 'greyxray@gmail.com'
+git config --global user.name 'kappa test'
+printf "no\n" | python ${CHECKOUTSCRIPT}
 cd $CMSSW_BASE 
 
 
