@@ -33,7 +33,7 @@ cd src/
 mkdir Kappa
 cp -r /home/travis/* Kappa/
 
-git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit"
+git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
 
 echo "# ================= #"
 echo "# Building in CMSSW #"
