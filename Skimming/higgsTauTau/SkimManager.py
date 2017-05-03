@@ -4,12 +4,14 @@ import os, shutil
 from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
 import argparse
 import datetime
+from time import gmtime, strftime
 import subprocess
 import json
 import ast
 import gzip
 import shutil
 import re
+from multiprocessing import Process, Queue
 
 from httplib import HTTPException
 from CRABAPI.RawCommand import crabCommand
@@ -48,13 +50,16 @@ class SkimManagerBase:
 		except:
 			pass
 
-	def crab_cmd(self, cmd, argument_dict=None):
+	def crab_cmd(self, configuration, process_queue=None):
 		try:
-			return crabCommand(cmd, **argument_dict)
+			output = crabCommand(configuration["cmd"], **configuration["args"])
+			if process_queue:
+				process_queue.put(output)
+			return output
 		except HTTPException as hte:
-			print "Failed",cmd,"of the task: %s" % (hte.headers)
+			print "Failed",configuration["cmd"],"of the task: %s" % (hte.headers)
 		except ClientException as cle:
-			print "Failed",cmd,"of the task: %s" % (cle)
+			print "Failed",configuration["cmd"],"of the task: %s" % (cle)
 
 	def save_dataset(self,filename=None):
 		self.skimdataset.write_to_jsonfile(filename)  
@@ -130,7 +135,11 @@ class SkimManagerBase:
 			self.skimdataset[akt_nick]["crab_name"] = "crab_"+config.General.requestName
 
 			submit_dict = {"config" : config, "proxy" : self.voms_proxy}
-			submit_command_output = self.crab_cmd(cmd='submit',argument_dict=submit_dict)
+			process_queue = Queue()
+			p = Process(target=self.crab_cmd, args=[{"cmd":"submit","args" :submit_dict},process_queue])
+			p.start()
+			p.join()
+			submit_command_output = process_queue.get()
 			if submit_command_output:
 				self.skimdataset[akt_nick]["SKIM_STATUS"] = "SUBMITTED"
 				self.skimdataset[akt_nick]["crab_task"] = submit_command_output["uniquerequestname"]
@@ -180,7 +189,7 @@ class SkimManagerBase:
 			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED","COMPLETED","INIT"] and self.skimdataset[akt_nick]["GCSKIM_STATUS"] not in ["LISTED","COMPLETED"]:
 				crab_job_dir = os.path.join(self.workdir,self.skimdataset[akt_nick].get("crab_name","crab_"+akt_nick[:100]))
 				status_dict = {"proxy" : self.voms_proxy, "dir" : crab_job_dir}
-				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd(cmd='status', argument_dict = status_dict)
+				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd({"cmd": "status", "args" : status_dict})
 				if not self.skimdataset[akt_nick]['last_status']:
 					self.skimdataset[akt_nick]["SKIM_STATUS"] = "EXCEPTION"
 
@@ -230,8 +239,11 @@ class SkimManagerBase:
 			print "You specified an unsuitable status for purging. Please specify from this list: ALL,COMPLETED,LISTED,KILLED,FAILED."
 		print len(tasks_to_perge),"crab task(s) to purge."
 		for task in tasks_to_perge:
+			process_queue = Queue()
 			print "Attempt to purge",task
-			self.crab_cmd("purge",{"dir":os.path.join(self.workdir,task),"cache":True})
+			p = Process(target=self.crab_cmd,args=[{"cmd":"purge","args":{"dir":os.path.join(self.workdir,task),"cache":True}},process_queue])
+			p.start()
+			p.join()
 			print "--------------------------------------------"
 
 	def remake_task(self):
@@ -278,9 +290,12 @@ class SkimManagerBase:
 					pass
 		print "Try to resubmit",len(datasets_to_resubmit),"tasks"
 		for dataset in datasets_to_resubmit:
+			process_queue = Queue()
 			print "Resubmission for",dataset
 			argument_dict["dir"] = os.path.join(self.workdir,str(dataset))
-			self.crab_cmd(cmd="resubmit", argument_dict = argument_dict)
+			p = Process(target=self.crab_cmd,args=[{"cmd":"resubmit", "args" : argument_dict},process_queue])
+			p.start()
+			p.join()
 			print "--------------------------------------------"
 
 #### Crab related helper functions
@@ -553,7 +568,7 @@ class SkimManagerBase:
 							for info_line in job_info:
 								if info_line.startswith("FILE="):
 									file_path_parts = info_line.strip('"').split("  ")[-2:]
-									filelist.write(self.site_storage_access_dict[storage_site]["dcap"]+re.sub(r'.*(store)',r'/store',file_path_parts[1]+file_path_parts[0]+"\n"))
+									filelist.write(self.site_storage_access_dict[storage_site]["xrootd"]+re.sub(r'.*(store)',r'/store',file_path_parts[1]+file_path_parts[0]+"\n"))
 					filelist.close()
 					self.skimdataset[dataset]["GCSKIM_STATUS"] = "LISTED"
 					print "List creation successfull!"
@@ -646,13 +661,13 @@ if __name__ == "__main__":
 	if not os.path.exists(work_base):
 		os.makedirs(work_base)
 	
-	latest_subdir = None # SkimManagerBase.get_latest_subdir(work_base=work_base)
+	latest_subdir = SkimManagerBase.get_latest_subdir(work_base=work_base)
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json")
 
 	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)")
 
 	parser.add_argument("-i", "--input", dest="inputfile", default=def_input, help="input data base (Default: %s)"%def_input)
-	parser.add_argument("-w", "--workdir", dest="workdir", help="Set work directory  (Default: Latest modified subdir, i.e. %s) in workbase %s.\nWorkbase can be set by export SKIM_WORK_BASE=workbase or by setting absolute path."%(latest_subdir,work_base), default=latest_subdir)
+	parser.add_argument("-w", "--workdir", dest="workdir", default=os.path.join(work_base,strftime("%Y-%m-%d-%H-%M-%S", gmtime()))+"_kappa-skim",help="Set work directory  (Default: %(default)s)")
 	parser.add_argument("-d", "--date", dest="date", action="store_true", default=False, help="Add current date to workdir folder (Default: %(default)s)")
 	parser.add_argument("--query", dest="query", help="Query which each dataset has to fulfill. Works with regex e.g: --query '{\"campaign\" : \"RunIISpring16MiniAOD.*reHLT\"}' \n((!!! For some reasons the most outer question marks must be the \'))")
 	parser.add_argument("--nicks", dest="nicks", help="Query which each dataset has to fulfill. Works with regex e.g: --nicks \".*_Run2016(B|C|D).*\"")
@@ -677,10 +692,14 @@ if __name__ == "__main__":
 	parser.add_argument("-b","--backend", default='freiburg', dest="backend", help="Changes backend for the creation of Grid Control configs. Supported: freiburg, naf. Default: %(default)s")
 
 	args = parser.parse_args()
-	if args.workdir == latest_subdir:
-		print "\nWorkdir not specified. Latest subdir in workbase will be used: "+latest_subdir
-		print "Continue? [Y/n]"
-		SkimManagerBase.wait_for_user_confirmation()
+ 
+	if args.workdir == parser.get_default("workdir"):
+		print '\nNo workdir specified. Do you want to continue the existing skim in '+latest_subdir+' ? [Y/n] (Selecting no will create new workdir)'
+		if SkimManagerBase.wait_for_user_confirmation(true_false=True):
+			args.workdir=latest_subdir
+		else:
+			print 'New workdir will be created: '+args.workdir
+		
 	if not os.path.exists(args.inputfile):
 		print 'No input file found'
 		exit()
