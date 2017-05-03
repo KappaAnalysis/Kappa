@@ -35,6 +35,8 @@
 	<class name="KLeptonPairs"/>
 	<class name="KMET"/>
 	<class name="KMETs"/>
+	<class name="std::map<KMETUncertainty::Type, RMFLV>"/>
+	<class name="std::map<KMETUncertainty::Type, double>"/>
 	<class name="KMuon"/>
 	<class name="KMuons"/>
 	<class name="KMuonTriggerCandidate"/>
