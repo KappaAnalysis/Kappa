@@ -5,7 +5,7 @@ services:
 env:
   - TEST_CMSSW_VERSION=CMSSW_5_3_29 SCRAM_ARCH=slc6_amd64_gcc472 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.py
   - TEST_CMSSW_VERSION=CMSSW_7_6_3 SCRAM_ARCH=slc6_amd64_gcc493 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.py
-  - TEST_CMSSW_VERSION=CMSSW_8_0_14 SCRAM_ARCH=slc6_amd64_gcc530 CHECKOUTSCRIPT=checkoutCmssw80xPackagesForSkimming.py
+  - TEST_CMSSW_VERSION=CMSSW_8_0_26_patch1 SCRAM_ARCH=slc6_amd64_gcc530 CHECKOUTSCRIPT=checkoutCmssw80xPackagesForSkimming.py
 compiler:
   - gcc
 before_install:

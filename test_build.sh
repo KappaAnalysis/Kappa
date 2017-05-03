@@ -50,7 +50,13 @@ cd ${TEST_CMSSW_VERSION}
 
 cmsenv
 echo "# ================= #"
-echo "# download checkout script"
+echo "# xrootd"
+echo "# ================= #"
+xrootd -d l -f root://eosuser.cern.ch://eos/user/o/ohlushch/kappatest_inputfiles/input/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root
+echo
+
+echo "# ================= #"
+echo "# download checkout script for Kappa"
 echo "# ================= #"
 #mkdir Kappa
 #cp -r /home/travis/* Kappa/
@@ -61,12 +67,11 @@ git config --global user.email 'greyxray@gmail.com'
 git config --global user.name 'kappa test'
 printf "no\n" | python ${CHECKOUTSCRIPT}
 cd $CMSSW_BASE 
-
-
+echo
+echo
 echo "# ================= #"
 echo "# Building in CMSSW #"
 echo "# ================= #"
-
 scram b -v -j 2 || exit 1
 
 echo "# =================== #"
