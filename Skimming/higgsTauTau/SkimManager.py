@@ -585,7 +585,7 @@ class SkimManagerBase:
 				crab_numer_folder_regex = re.compile('|'.join(crab_number_folders))
 
 				try:
-					crab_dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids 1-10 --dir {DATASET_TASK}".format(DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100]))), shell=True).strip('\n').split('\n')
+					crab_dataset_filelist = subprocess.check_output("crab getoutputold --xrootd --jobids 1-10 --dir {DATASET_TASK} --proxy $X509_USER_PROXY".format(DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100]))), shell=True).strip('\n').split('\n')
 					sample_file_path = crab_dataset_filelist[0]
 					job_id_match = re.findall(r'_\d+.root',sample_file_path)[0]
 					sample_file_path =  sample_file_path.replace(job_id_match,"_{JOBID}.root")
