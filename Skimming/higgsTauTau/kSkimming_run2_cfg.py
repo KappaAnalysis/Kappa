@@ -59,7 +59,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	electrons = "slimmedElectrons"
 	# new tau id only available for 8_0_20 (I believe) and above
 	if tools.is_above_cmssw_version([8,0,20]):
-		taus = "newslimmedTaus"
+		taus = "NewTauIDsEmbedded"
 	else:
 		taus = "slimmedTaus"
 	isSignal = datasetsHelper.isSignal(nickname)
@@ -289,8 +289,31 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# new tau id only available for 8_0_20 (I believe) and above
 	if tools.is_above_cmssw_version([8,0,20]):
 		process.load('RecoTauTag.Configuration.loadRecoTauTagMVAsFromPrepDB_cfi')
-		process.load("Kappa.Skimming.KPatTaus_run2_cff")	
+		process.load("Kappa.Skimming.KPatTaus_run2_cff")
 		process.p *= ( process.makeKappaTaus )
+
+		# embed new id's into new tau collection
+		embedID = cms.EDProducer("PATTauIDEmbedder",
+			src = cms.InputTag('slimmedTaus'),
+			tauIDSources = cms.PSet(
+				rerunDiscriminationByIsolationMVAOldDMrun2v1raw = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1raw'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1Loose = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1Loose'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1Medium = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1Medium'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1Tight = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1Tight'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1VTight = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1VTight'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1raw = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1raw'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1VLoose = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1VLoose'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1Loose = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1Loose'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1Medium = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1Medium'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1Tight = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1Tight'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1VTight = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1VTight'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1VVTight = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1VVTight')
+			),
+		)
+		setattr(process, taus, embedID)
+		process.p *= getattr(process, taus)
 	
 	process.kappaTuple.active += cms.vstring('PatTaus')
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
@@ -299,88 +322,87 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# just took everything from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV
 	process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring ()
 	process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist = cms.vstring(
-	                                                                       "decayModeFinding",
-	                                                                       "decayModeFindingNewDMs",
-	                                                                       "byLooseCombinedIsolationDeltaBetaCorr3Hits",
-	                                                                       "byMediumCombinedIsolationDeltaBetaCorr3Hits",
-	                                                                       "byTightCombinedIsolationDeltaBetaCorr3Hits",
-	                                                                       "byCombinedIsolationDeltaBetaCorrRaw3Hits",
-	                                                                       "chargedIsoPtSum",
-	                                                                       "neutralIsoPtSum",
-	                                                                       "neutralIsoPtSumWeight",
-	                                                                       "puCorrPtSum",
-	                                                                       "footprintCorrection",
-	                                                                       "photonPtSumOutsideSignalCone",
-	                                                                       "byIsolationMVArun2v1DBoldDMwLTraw",
-	                                                                       "byVLooseIsolationMVArun2v1DBoldDMwLT",
-	                                                                       "byLooseIsolationMVArun2v1DBoldDMwLT",
-	                                                                       "byMediumIsolationMVArun2v1DBoldDMwLT",
-	                                                                       "byTightIsolationMVArun2v1DBoldDMwLT",
-	                                                                       "byVTightIsolationMVArun2v1DBoldDMwLT",
-	                                                                       "byVVTightIsolationMVArun2v1DBoldDMwLT",
-#	                                                                       "byIsolationMVArun2v1DBnewDMwLTraw",
-#	                                                                       "byVLooseIsolationMVArun2v1DBnewDMwLT",
-#	                                                                       "byLooseIsolationMVArun2v1DBnewDMwLT",
-#	                                                                       "byMediumIsolationMVArun2v1DBnewDMwLT",
-#	                                                                       "byTightIsolationMVArun2v1DBnewDMwLT",
-#	                                                                       "byVTightIsolationMVArun2v1DBnewDMwLT",
-#	                                                                       "byVVTightIsolationMVArun2v1DBnewDMwLT",
-	                                                                       "againstMuonLoose3",
-	                                                                       "againstMuonTight3",
-	                                                                       "againstElectronMVA6category",
-	                                                                       "againstElectronMVA6raw",
-	                                                                       "againstElectronVLooseMVA6",
-	                                                                       "againstElectronLooseMVA6",
-	                                                                       "againstElectronMediumMVA6",
-	                                                                       "againstElectronTightMVA6",
-	                                                                       "againstElectronVTightMVA6"#,
-#	                                                                       "chargedIsoPtSumdR03",
-#	                                                                       "neutralIsoPtSumdR03",
-#	                                                                       "neutralIsoPtSumWeightdR03",
-#	                                                                       "footprintCorrectiondR03",
-#	                                                                       "photonPtSumOutsideSignalConedR03",
-#	                                                                       "byLooseCombinedIsolationDeltaBetaCorr3HitsdR03",
-#	                                                                       "byMediumCombinedIsolationDeltaBetaCorr3HitsdR03",
-#	                                                                       "byTightCombinedIsolationDeltaBetaCorr3HitsdR03",
-#	                                                                       "byIsolationMVArun2v1DBdR03oldDMwLTraw",
-#	                                                                       "byVLooseIsolationMVArun2v1DBdR03oldDMwLT",
-#	                                                                       "byLooseIsolationMVArun2v1DBdR03oldDMwLT",
-#	                                                                       "byMediumIsolationMVArun2v1DBdR03oldDMwLT",
-#	                                                                       "byTightIsolationMVArun2v1DBdR03oldDMwLT",
-#	                                                                       "byVTightIsolationMVArun2v1DBdR03oldDMwLT",
-#	                                                                       "byVVTightIsolationMVArun2v1DBdR03oldDMwLT",
+				"decayModeFindingNewDMs",
+				"byLooseCombinedIsolationDeltaBetaCorr3Hits",
+				"byMediumCombinedIsolationDeltaBetaCorr3Hits",
+				"byTightCombinedIsolationDeltaBetaCorr3Hits",
+				"byCombinedIsolationDeltaBetaCorrRaw3Hits",
+				"chargedIsoPtSum",
+				"neutralIsoPtSum",
+				"neutralIsoPtSumWeight",
+				"puCorrPtSum",
+				"footprintCorrection",
+				"photonPtSumOutsideSignalCone",
+				"byIsolationMVArun2v1DBoldDMwLTraw",
+				"byVLooseIsolationMVArun2v1DBoldDMwLT",
+				"byLooseIsolationMVArun2v1DBoldDMwLT",
+				"byMediumIsolationMVArun2v1DBoldDMwLT",
+				"byTightIsolationMVArun2v1DBoldDMwLT",
+				"byVTightIsolationMVArun2v1DBoldDMwLT",
+				"byVVTightIsolationMVArun2v1DBoldDMwLT",
+			#	"byIsolationMVArun2v1DBnewDMwLTraw",
+			#	"byVLooseIsolationMVArun2v1DBnewDMwLT",
+			#	"byLooseIsolationMVArun2v1DBnewDMwLT",
+			#	"byMediumIsolationMVArun2v1DBnewDMwLT",
+			#	"byTightIsolationMVArun2v1DBnewDMwLT",
+			#	"byVTightIsolationMVArun2v1DBnewDMwLT",
+			#	"byVVTightIsolationMVArun2v1DBnewDMwLT",
+				"againstMuonLoose3",
+				"againstMuonTight3",
+				"againstElectronMVA6category",
+				"againstElectronMVA6raw",
+				"againstElectronVLooseMVA6",
+				"againstElectronLooseMVA6",
+				"againstElectronMediumMVA6",
+				"againstElectronTightMVA6",
+				"againstElectronVTightMVA6"#,
+			#	"chargedIsoPtSumdR03",
+			#	"neutralIsoPtSumdR03",
+			#	"neutralIsoPtSumWeightdR03",
+			#	"footprintCorrectiondR03",
+			#	"photonPtSumOutsideSignalConedR03",
+			#	"byLooseCombinedIsolationDeltaBetaCorr3HitsdR03",
+			#	"byMediumCombinedIsolationDeltaBetaCorr3HitsdR03",
+			#	"byTightCombinedIsolationDeltaBetaCorr3HitsdR03",
+			#	"byIsolationMVArun2v1DBdR03oldDMwLTraw",
+			#	"byVLooseIsolationMVArun2v1DBdR03oldDMwLT",
+			#	"byLooseIsolationMVArun2v1DBdR03oldDMwLT",
+			#	"byMediumIsolationMVArun2v1DBdR03oldDMwLT",
+			#	"byTightIsolationMVArun2v1DBdR03oldDMwLT",
+			#	"byVTightIsolationMVArun2v1DBdR03oldDMwLT",
+			#	"byVVTightIsolationMVArun2v1DBdR03oldDMwLT",
 	)
 	if tools.is_above_cmssw_version([8,0,20]):
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
-																		"rerunDiscriminationByIsolationMVAOldDMrun2v1raw",
-																		"rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose",
-																		"rerunDiscriminationByIsolationMVAOldDMrun2v1Loose",
-																		"rerunDiscriminationByIsolationMVAOldDMrun2v1Medium",
-																		"rerunDiscriminationByIsolationMVAOldDMrun2v1Tight",
-																		"rerunDiscriminationByIsolationMVAOldDMrun2v1VTight",
-																		"rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight",
-																		"rerunDiscriminationByIsolationMVANewDMrun2v1raw",
-																		"rerunDiscriminationByIsolationMVANewDMrun2v1VLoose",
-																		"rerunDiscriminationByIsolationMVANewDMrun2v1Loose",
-																		"rerunDiscriminationByIsolationMVANewDMrun2v1Medium",
-																		"rerunDiscriminationByIsolationMVANewDMrun2v1Tight",
-																		"rerunDiscriminationByIsolationMVANewDMrun2v1VTight",
-																		"rerunDiscriminationByIsolationMVANewDMrun2v1VVTight"
+					"rerunDiscriminationByIsolationMVAOldDMrun2v1raw",
+					"rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose",
+					"rerunDiscriminationByIsolationMVAOldDMrun2v1Loose",
+					"rerunDiscriminationByIsolationMVAOldDMrun2v1Medium",
+					"rerunDiscriminationByIsolationMVAOldDMrun2v1Tight",
+					"rerunDiscriminationByIsolationMVAOldDMrun2v1VTight",
+					"rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight",
+					"rerunDiscriminationByIsolationMVANewDMrun2v1raw",
+					"rerunDiscriminationByIsolationMVANewDMrun2v1VLoose",
+					"rerunDiscriminationByIsolationMVANewDMrun2v1Loose",
+					"rerunDiscriminationByIsolationMVANewDMrun2v1Medium",
+					"rerunDiscriminationByIsolationMVANewDMrun2v1Tight",
+					"rerunDiscriminationByIsolationMVANewDMrun2v1VTight",
+					"rerunDiscriminationByIsolationMVANewDMrun2v1VVTight"
 	)
 ## now also possible to save all MVA isolation inputs for taus # turn of per default 
 	
 	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring("decayDistX",
-										    "decayDistY",
-										    "decayDistZ",
-										    "decayDistM",
-										    "nPhoton",
-										    "ptWeightedDetaStrip",
-										    "ptWeightedDphiStrip",
-										    "ptWeightedDrSignal",
-										    "ptWeightedDrIsolation",
-										    "leadingTrackChi2",
-										    "eRatio"
-										    )
+				"decayDistY",
+				"decayDistZ",
+				"decayDistM",
+				"nPhoton",
+				"ptWeightedDetaStrip",
+				"ptWeightedDphiStrip",
+				"ptWeightedDrSignal",
+				"ptWeightedDrIsolation",
+				"leadingTrackChi2",
+				"eRatio"
+	)
 
 
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
