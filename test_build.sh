@@ -1,8 +1,8 @@
 #!/bin/sh
-
+echo
 echo "# very specific tests of input files"
-
-echo ":: /etc/yum.repos.d/cernvm.repo "
+echo "Testing most probably included in the image files"
+echo "1) /etc/yum.repos.d/cernvm.repo "
 cat /etc/yum.repos.d/cernvm.repo
 echo
 echo ":: /etc/cvmfs/default.local"
@@ -49,11 +49,16 @@ scram project ${TEST_CMSSW_VERSION}
 cd ${TEST_CMSSW_VERSION}
 
 cmsenv
+echo "# ================= #"
+echo "# download checkout script"
+echo "# ================= #"
+#mkdir Kappa
+#cp -r /home/travis/* Kappa/
+cd ../../
+curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/master/Skimming/scripts/${CHECKOUTSCRIPT}
+python ${CHECKOUTSCRIPT}
+cd $CMSSW_BASE 
 
-cd src/
-
-mkdir Kappa
-cp -r /home/travis/* Kappa/
 
 echo "# ================= #"
 echo "# Building in CMSSW #"
@@ -64,3 +69,7 @@ scram b -v -j 2 || exit 1
 echo "# =================== #"
 echo "# Building standalone #"
 echo "# =================== #"
+
+echo $CMSSW_BASE
+#make -C Kappa/DataFormats/test -j2 || exit 1
+
