@@ -247,7 +247,7 @@ class SkimManagerBase:
 			print "--------------------------------------------"
 
 	def remake_task(self):
-		nicks_to_remake = [nick for nick in self.skimdataset.nicks() if self.skimdataset[nick]["SKIM_STATUS"] == "EXCEPTION"]
+		nicks_to_remake = [nick for nick in self.skimdataset.nicks() if self.skimdataset[nick]["SKIM_STATUS"] in ["SUBMITFAILED","EXCEPTION"]]
 		all_subdirs = [os.path.join(self.workdir,self.skimdataset[akt_nick].get("crab_name","crab_"+akt_nick[:100])) for akt_nick in nicks_to_remake]
 		print len(all_subdirs),'tasks that raised an exception will be remade. This will delete and recreate those folders in the workdir.'
 		print 'Do you want to continue? [Y/n]'
@@ -511,7 +511,7 @@ class SkimManagerBase:
 				status_dict['SUBMITTED'].append(akt_nick)
 			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED","RESUBMITFAILED"]:
 				status_dict['FAILED'].append(akt_nick)
-			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION"]:
+			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION","SUBMITFAILED","KILLED"]:
 				status_dict['EXCEPTION'].append(akt_nick)
 
 		if summary:

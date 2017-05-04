@@ -3394,6 +3394,9 @@
     "xsec": 390.0
   }, 
   "Embedding2016B_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
+    "Moriond17": [
+      "Skim_Moriond17_Embedding"
+    ], 
     "campaign": "ElTauFinalState", 
     "data": true, 
     "dbs": "/EmbeddingRun2016B/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v2/USER", 
@@ -3453,7 +3456,8 @@
   "Embedding2016B_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Embedding_Rereco"
+      "Skim_Embedding_Rereco", 
+      "Skim_Moriond17_Embedding"
     ], 
     "campaign": "MuTauFinalState", 
     "data": true, 
@@ -3490,6 +3494,25 @@
     "process": "Embedding2016B", 
     "scenario": "imputDoubleMu_mirror_miniAODv5", 
     "xsec": "260.5"
+  }, 
+  "Embedding2016B_TauTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
+    "Moriond17": [
+      "Skim_Moriond17_Embedding"
+    ], 
+    "campaign": "TauTauFinalState", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2016B/TauTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v2/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_2016SeptRepro_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "1331777", 
+    "n_files": "5461", 
+    "process": "Embedding2016B", 
+    "scenario": "imputSep16DoubleMu_mirror_miniAODv2"
   }, 
   "Embedding2016C_ElMuFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -3574,6 +3597,9 @@
     "xsec": 390.0
   }, 
   "Embedding2016C_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
+    "Moriond17": [
+      "Skim_Moriond17_Embedding"
+    ], 
     "campaign": "ElTauFinalState", 
     "data": true, 
     "dbs": "/EmbeddingRun2016C/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v2/USER", 
@@ -3633,7 +3659,8 @@
   "Embedding2016C_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Embedding_Rereco"
+      "Skim_Embedding_Rereco", 
+      "Skim_Moriond17_Embedding"
     ], 
     "campaign": "MuTauFinalState", 
     "data": true, 
@@ -3754,6 +3781,9 @@
     "xsec": 390.0
   }, 
   "Embedding2016D_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
+    "Moriond17": [
+      "Skim_Moriond17_Embedding"
+    ], 
     "campaign": "ElTauFinalState", 
     "data": true, 
     "dbs": "/EmbeddingRun2016D/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v2/USER", 
@@ -3813,7 +3843,8 @@
   "Embedding2016D_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Embedding_Rereco"
+      "Skim_Embedding_Rereco", 
+      "Skim_Moriond17_Embedding"
     ], 
     "campaign": "MuTauFinalState", 
     "data": true, 
@@ -3934,6 +3965,9 @@
     "xsec": 390.0
   }, 
   "Embedding2016E_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
+    "Moriond17": [
+      "Skim_Moriond17_Embedding"
+    ], 
     "campaign": "ElTauFinalState", 
     "data": true, 
     "dbs": "/EmbeddingRun2016E/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v2/USER", 
@@ -3994,7 +4028,8 @@
   "Embedding2016E_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Embedding_Rereco"
+      "Skim_Embedding_Rereco", 
+      "Skim_Moriond17_Embedding"
     ], 
     "campaign": "MuTauFinalState", 
     "data": true, 
@@ -4115,6 +4150,9 @@
     "xsec": 390.0
   }, 
   "Embedding2016F_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
+    "Moriond17": [
+      "Skim_Moriond17_Embedding"
+    ], 
     "campaign": "ElTauFinalState", 
     "data": true, 
     "dbs": "/EmbeddingRun2016F/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v2/USER", 
@@ -4175,7 +4213,8 @@
   "Embedding2016F_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Embedding_Rereco"
+      "Skim_Embedding_Rereco", 
+      "Skim_Moriond17_Embedding"
     ], 
     "campaign": "MuTauFinalState", 
     "data": true, 
@@ -4296,6 +4335,9 @@
     "xsec": 390.0
   }, 
   "Embedding2016G_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
+    "Moriond17": [
+      "Skim_Moriond17_Embedding"
+    ], 
     "campaign": "ElTauFinalState", 
     "data": true, 
     "dbs": "/EmbeddingRun2016G/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v2/USER", 
@@ -4356,7 +4398,8 @@
   "Embedding2016G_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
       "Skim_Base", 
-      "Skim_Embedding_Rereco"
+      "Skim_Embedding_Rereco", 
+      "Skim_Moriond17_Embedding"
     ], 
     "campaign": "MuTauFinalState", 
     "data": true, 
@@ -4436,6 +4479,25 @@
     "scenario": "imputPromptDoubleMu_mirror_miniAODv1", 
     "xsec": 390.0
   }, 
+  "Embedding2016H_ElTauFinalState_imputPromptDoubleMumirrorminiAODv2_13TeV_USER": {
+    "Moriond17": [
+      "Skim_Moriond17_Embedding"
+    ], 
+    "campaign": "ElTauFinalState", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2016H/ElTauFinalState-imputPromptDoubleMu_mirror_miniAOD-v2/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_Prompt_v16", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "5830114", 
+    "n_files": "9066", 
+    "process": "Embedding2016H", 
+    "scenario": "imputPromptDoubleMu_mirror_miniAODv2"
+  }, 
   "Embedding2016H_MuTauFinalState_imputPromptDoubleMumirrorminiAODv1_13TeV_USER": {
     "Moriond17": [
       "Skim_Base", 
@@ -4461,7 +4523,8 @@
     "Moriond17": [
       "Skim_Base", 
       "Skim_Embedding_Rereco", 
-      "Skim_Embedding_PromptReco"
+      "Skim_Embedding_PromptReco", 
+      "Skim_Moriond17_Embedding"
     ], 
     "campaign": "MuTauFinalState", 
     "data": true, 
