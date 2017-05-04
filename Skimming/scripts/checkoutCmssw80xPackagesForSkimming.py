@@ -69,17 +69,21 @@ def checkoutPackages(args):
 		"git cms-merge-topic -u ikrav:egm_id_80X_v2",
 		# additional metfilters
 		"git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter",
-                #packages needed to rerun tau id
-                "git cms-merge-topic -u cms-tau-pog:CMSSW_8_0_X_tau-pog_miniAOD-backport-tauID",
+		"git cms-merge-topic cms-met:METRecipe_8020 -u",
+		"git cms-merge-topic cms-met:METRecipe_80X_part2 -u",
+		"sed -i '/produces<edm::PtrVector<reco::Muon>>/a \	  produces<bool>();' RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc",
+		"sed -i '/iEvent.put(std::move(out),/a \	iEvent.put(std::auto_ptr<bool>(new bool(found)));' RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc",
+		#packages needed to rerun tau id
+		"git cms-merge-topic -u cms-tau-pog:CMSSW_8_0_X_tau-pog_miniAOD-backport-tauID",
 
 		#correct jet corrections for mvamet
-                "git cms-merge-topic -u cms-met:METRecipe_8020",
+		"git cms-merge-topic -u cms-met:METRecipe_8020",
 		#Mvamet package based on Summer16 Training
 		"git cms-merge-topic -u macewindu009:mvamet8026",
 		#copy training weightfile
-                "mkdir " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/data"),
-                "cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/data"),
-                "wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root",
+		"mkdir " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/data"),
+		"cd " + os.path.expandvars("$CMSSW_BASE/src/RecoMET/METPUSubtraction/data"),
+		"wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root",
 
 		"cd " + os.path.expandvars("$CMSSW_BASE/src/"),
 		"sed '/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificanceParams_cfi\ import\ METSignificanceParams_Data' PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py -i",

@@ -150,7 +150,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
 		process.BadChargedCandidateFilter.taggingMode = cms.bool(True)
 
-		process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
+		process.load('RecoMET.METFilters.badGlobalMuonTaggersMiniAOD_cff')
+		#switch on tagging mode:
+		process.badGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
+		process.cloneGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
+
+		process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter","badGlobalMuonTaggerMAOD","cloneGlobalMuonTaggerMAOD")
 
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
