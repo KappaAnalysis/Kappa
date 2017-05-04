@@ -13224,7 +13224,8 @@
   }, 
   "VBFHToTauTauM125_RunIISpring16MiniAODv2reHLT_PUSpring16RAWAODSIM_13TeV_MINIAOD_amcatnlo-pythia8": {
     "Moriond17": [
-      "Skim_Spring16_MC_Signal"
+      "Skim_Spring16_MC_Signal", 
+      "Skim_Moriond17_MC_Signal"
     ], 
     "campaign": "RunIISpring16MiniAODv2reHLT", 
     "data": false, 
