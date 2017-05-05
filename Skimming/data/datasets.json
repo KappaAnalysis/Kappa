@@ -3497,7 +3497,9 @@
   }, 
   "Embedding2016B_TauTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
-      "Skim_Moriond17_Embedding"
+      "Skim_Moriond17_Embedding",
+      "Skim_Base", 
+      "Skim_Embedding_Rereco"
     ], 
     "campaign": "TauTauFinalState", 
     "data": true, 
@@ -3512,7 +3514,8 @@
     "n_events_generated": "1331777", 
     "n_files": "5461", 
     "process": "Embedding2016B", 
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv2"
+    "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
+    "xsec": 390.0
   }, 
   "Embedding2016C_ElMuFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -4481,8 +4484,10 @@
   }, 
   "Embedding2016H_ElTauFinalState_imputPromptDoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
-      "Skim_Moriond17_Embedding"
-    ], 
+      "Skim_Moriond17_Embedding",
+      "Skim_Base", 
+      "Skim_Embedding_PromptReco"
+       ], 
     "campaign": "ElTauFinalState", 
     "data": true, 
     "dbs": "/EmbeddingRun2016H/ElTauFinalState-imputPromptDoubleMu_mirror_miniAOD-v2/USER", 
@@ -4496,7 +4501,8 @@
     "n_events_generated": "5830114", 
     "n_files": "9066", 
     "process": "Embedding2016H", 
-    "scenario": "imputPromptDoubleMu_mirror_miniAODv2"
+    "scenario": "imputPromptDoubleMu_mirror_miniAODv2", 
+    "xsec": 600.0
   }, 
   "Embedding2016H_MuTauFinalState_imputPromptDoubleMumirrorminiAODv1_13TeV_USER": {
     "Moriond17": [
