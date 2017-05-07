@@ -293,7 +293,7 @@ class SkimManagerBase:
 			process_queue = Queue()
 			print "Resubmission for",dataset
 			argument_dict["dir"] = os.path.join(self.workdir,str(dataset))
-			p = Process(target=self.crab_cmd,args=[{"cmd":"resubmitold", "args" : argument_dict},process_queue])
+			p = Process(target=self.crab_cmd,args=[{"cmd":"resubmit", "args" : argument_dict},process_queue])
 			p.start()
 			p.join()
 			print "--------------------------------------------"
@@ -585,7 +585,7 @@ class SkimManagerBase:
 				crab_numer_folder_regex = re.compile('|'.join(crab_number_folders))
 
 				try:
-					crab_dataset_filelist = subprocess.check_output("crab getoutputold --xrootd --jobids 1-10 --dir {DATASET_TASK} --proxy $X509_USER_PROXY".format(DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100]))), shell=True).strip('\n').split('\n')
+					crab_dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids 1-{MAXID} --dir {DATASET_TASK} --proxy $X509_USER_PROXY".format(DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100])),MAXID=min(number_jobs,5)), shell=True).strip('\n').split('\n')
 					sample_file_path = crab_dataset_filelist[0]
 					job_id_match = re.findall(r'_\d+.root',sample_file_path)[0]
 					sample_file_path =  sample_file_path.replace(job_id_match,"_{JOBID}.root")
@@ -637,7 +637,7 @@ class SkimManagerBase:
 
 	@classmethod
 	def get_latest_subdir(self,work_base):
-		all_subdirs = [work_base+d for d in os.listdir(work_base) if os.path.isdir(work_base+d)]
+		all_subdirs = [os.path.join(work_base,d) for d in os.listdir(work_base) if os.path.isdir(work_base+d)]
 		return(max(all_subdirs, key=os.path.getmtime))
 
 	@classmethod
