@@ -52,7 +52,7 @@ cmsenv
 echo "# ================= #"
 echo "# wget"
 echo "# ================= #"
-curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download .
+curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download
 ls
 echo
 echo "# ================= #"
