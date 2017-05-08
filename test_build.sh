@@ -53,8 +53,10 @@ echo "# ================= #"
 echo "# curl -O"
 echo "# ================= #"
 echo "curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download /home"
-curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
-echo"ls "
+# single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
+curl -o short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
+tar -xvf short_rootfiles.tar
+echo "ls"
 ls 
 echo
 echo "# ================= #"
