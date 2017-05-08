@@ -50,9 +50,16 @@ cd ${TEST_CMSSW_VERSION}
 
 cmsenv
 echo "# ================= #"
+echo "# wget"
+echo "# ================= #"
+wget https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download .
+ls
+echo
+echo "# ================= #"
 echo "# xrootd"
 echo "# ================= #"
 xrootd -d l -f root://eosuser.cern.ch://eos/user/o/ohlushch/kappatest_inputfiles/input/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root
+#root -l root://eosuser.cern.ch://eos/user/o/ohlushch/kappatest_inputfiles/input/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root
 echo
 
 git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
