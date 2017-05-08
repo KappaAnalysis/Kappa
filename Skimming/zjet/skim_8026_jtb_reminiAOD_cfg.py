@@ -4,6 +4,7 @@
 
 import os
 import FWCore.ParameterSet.Config as cms
+import Kappa.Producers.EventWeightCountProducer_cff
 
 ## for local runs you can modify the next section
 ## also check if the global tag is up to date 
@@ -13,14 +14,16 @@ import FWCore.ParameterSet.Config as cms
 #input_files='file:///storage/6/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
 #input_files='file:///nfs/dust/cms/user/swayand/DO_MU_FILES/CMSSW80X/DYTOLLM50_mcantlo.root'
 #input_files='file:///storage/a/afriedel/zjets/mc_miniAOD.root' #do not remove: for Kappa test!
-#input_files='file:///storage/jbod/tberger/testfiles/MC/RunIISummer16MiniAODv2/DYToLL_0J_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/00F8A837-BCD2-E611-B180-0025907B4FC2.root'
+input_files='file:///storage/jbod/tberger/testfiles/MC/RunIISummer16MiniAODv2/DYToLL_0J_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/00F8A837-BCD2-E611-B180-0025907B4FC2.root'
 #input_files='file:///storage/jbod/tberger/testfiles/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/0676A750-64EE-E611-A942-0025905B85D2.root'
-input_files='file:///storage/jbod/tberger/testfiles/PickedEvents_Met_Xcheck.root'
+#input_files='file:///storage/jbod/tberger/testfiles/PickedEvents_Met_Xcheck.root'
+#input_files='file:/afs/cern.ch/user/t/tberger/public/pickeventsMu_H.root'
+#input_files='file:///afs/cern.ch/user/k/kirschen/public/forJERC/PickedEvents_Met_Xcheck.root'
 #input_files='file:///storage/a/afriedel/zjets/mc_miniAOD.root' #do not remove: for Kappa test!
 #input_files='dcap://cmssrm-kit.gridka.de:22125/pnfs/gridka.de/cms/store/mc/RunIISpring16DR80/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/20000/1A054918-89FF-E511-B246-0CC47A4D76B2.root'
 
 maxevents=100
-outputfilename="skim8026_jtb_MET.root"
+outputfilename="skim8026_jtb_met.root"
 kappa_verbosity=0
 
 #  Basic Process Setup  ############################################
@@ -36,13 +39,13 @@ process.source = cms.Source("PoolSource",
 			    )
 process.options.emptyRunLumiMode = cms.untracked.string('doNotHandleEmptyRunsAndLumis')
 
-#data = @IS_DATA@
-#globaltag= '@GLOBALTAG@'
+data = @IS_DATA@
+globaltag= '@GLOBALTAG@'
 
-data = True
+#data = True
 #data = False
 #globaltag='80X_mcRun2_asymptotic_2016_TrancheIV_v6'
-globaltag='80X_dataRun2_2016SeptRepro_v7'
+#globaltag='80X_dataRun2_2016SeptRepro_v7'
 #globaltag='80X_dataRun2_Prompt_v10'
 
 #  Config parameters  ##############################################
@@ -61,7 +64,7 @@ print
 
 # message logger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 50
+process.MessageLogger.cerr.FwkReport.reportEvery = 1
 process.MessageLogger.default = cms.untracked.PSet(
 	ERROR=cms.untracked.PSet(limit=cms.untracked.int32(5))
 	)
@@ -255,7 +258,7 @@ process.kappaTuple.PileupDensity.rename = cms.vstring("fixedGridRhoFastjetAll =>
 
 process.packedPFCandidatesCHS = cms.EDFilter('CandPtrSelector',
     src = cms.InputTag('packedPFCandidates'),
-    cut = cms.string('fromPV(0) > 0')
+    cut = cms.string('fromPV() > 0')
     )
 	# Apply an additional correction for the ECAL gain switch
     # issue [1].  The correction for bad muons had been already
@@ -273,11 +276,10 @@ runMetCorAndUncFromMiniAOD(process, isData=data, pfCandColl='packedPFCandidatesC
 #runMetCorAndUncFromMiniAOD(process, isData=data, )
 
 # Now you are creating the e/g corrected MET on top of the bad muon corrected MET (on re-miniaod)
-from PhysicsTools.PatUtils.tools.corMETFromMuonAndEG import corMETFromMuonAndEG
-
-corMETFromMuonAndEG(process,
-                    pfCandCollection="", #not needed                                                                                                                                \
-                                                                                                                                                                                     
+if data:
+	from PhysicsTools.PatUtils.tools.corMETFromMuonAndEG import corMETFromMuonAndEG
+	corMETFromMuonAndEG(process,
+                    pfCandCollection="", #not needed    
                     electronCollection="slimmedElectronsBeforeGSFix",
                     photonCollection="slimmedPhotonsBeforeGSFix",
                     corElectronCollection="slimmedElectrons",
@@ -288,85 +290,65 @@ corMETFromMuonAndEG(process,
                     runOnMiniAOD=True,
                     postfix="MuEGClean"
                     )
-process.path *= process.fullPatMetSequence
-process.slimmedMETsMuEGClean = process.slimmedMETs.clone(
+	process.path *= process.fullPatMetSequence
+	process.slimmedMETsMuEGClean = process.slimmedMETs.clone(
 			src = cms.InputTag('patPFMetT1MuEGClean'),
 			rawVariation = cms.InputTag('patPFMetRawMuEGClean'),
 			t1Uncertainties = cms.InputTag('patPFMetT1%sMuEGClean')
 			)
-del process.slimmedMETsMuEGClean.caloMET
+	del process.slimmedMETsMuEGClean.caloMET
 
-#    metTag = cms.InputTag('slimmedMETsMuEGClean', processName=process.name_())
+if not data:
+	# Now you are creating the bad muon corrected MET
+	process.load('RecoMET.METFilters.badGlobalMuonTaggersMiniAOD_cff')
+	process.badGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
+	process.cloneGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
+	from PhysicsTools.PatUtils.tools.muonRecoMitigation import muonRecoMitigation 
+	muonRecoMitigation(process = process,
+					pfCandCollection = "packedPFCandidatesCHS", #input PF Candidate Collection
+					runOnMiniAOD = True, #To determine if you are running on AOD or MiniAOD
+					selection="", #You can use a custom selection for your bad muons. Leave empty if you would like to use the bad muon recipe definition.
+					muonCollection="", #The muon collection name where your custom selection will be applied to. Leave empty if you would like to use the bad muon recipe definition.
+					cleanCollName="cleanMuonsPFCandidatesCHS", #output pf candidate collection name
+					cleaningScheme="all", #Options are: "all", "computeAllApplyBad","computeAllApplyClone". Decides which (or both) bad muon collections to be used for MET cleaning coming from the bad muon recipe.
+					postfix="" #Use if you would like to add a post fix to your muon / pf collections
+					)
+	
+	runMetCorAndUncFromMiniAOD(process, 
+							isData=data,
+							pfCandColl="cleanMuonsPFCandidatesCHS",
+							recoMetFromPFCs=True,
+							postfix="MuEGClean"
+							)
+	#process.mucorMET = cms.Sequence(                     
+	#	process.badGlobalMuonTaggerMAOD *
+	#	process.cloneGlobalMuonTaggerMAOD *
+	#	process.badMuons * # If you are using cleaning mode "all", uncomment this line
+	#	process.cleanMuonsPFCandidatesCHS *
+	#	process.fullPatMetSequenceMuClean
+	#	)
 
 process.path *= process.slimmedMETsMuEGClean
-### End of MET recipe
-
+	
 process.kappaTuple.active += cms.vstring('PatMET')
 process.kappaTuple.PatMET.metCHS = cms.PSet(src=cms.InputTag("slimmedMETsMuEGClean"), uncorrected = cms.bool(True))
 #process.kappaTuple.PatMET.metCHScorr = cms.PSet(src=cms.InputTag("slimmedMETsMuEGClean"), uncorrected = cms.bool(False))
 #process.kappaTuple.PatMET.metCHSnoEG = cms.PSet(src=cms.InputTag("slimmedMETs"), uncorrected = cms.bool(True))
-process.kappaTuple.PatMET.metUncleaned = cms.PSet(src=cms.InputTag("slimmedMETsUncorrected"), uncorrected = cms.bool(True))
-process.kappaTuple.PatMET.metPF = cms.PSet(src=cms.InputTag("slimmedMETsMuEGClean","","PAT"), uncorrected = cms.bool(True))
+if data: 
+	process.kappaTuple.PatMET.metUncleaned = cms.PSet(src=cms.InputTag("slimmedMETsUncorrected"), uncorrected = cms.bool(True))
+	process.kappaTuple.PatMET.metPF = cms.PSet(src=cms.InputTag("slimmedMETsMuEGClean","","PAT"), uncorrected = cms.bool(True))
+else:
+	process.kappaTuple.PatMET.metPF = cms.PSet(src=cms.InputTag("slimmedMETs","","PAT"), uncorrected = cms.bool(True))
+
 #process.kappaTuple.PatMET.metPFcorr = cms.PSet(src=cms.InputTag("slimmedMETsMuEGClean","","PAT"), uncorrected = cms.bool(False))
 process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"), uncorrected = cms.bool(True))
 process.kappaTuple.PatMET.uncorrected = cms.bool(True) #Uncorrect MET -> Correcting step in excalibur for calibration purpose
 
-process.kappaTuple.active += cms.vstring('packedPFCandidates')
-process.kappaTuple.packedPFCandidates.pfcandiates = cms.PSet(src=cms.InputTag("packedPFCandidates","","PAT"))
+### End of MET recipe
+#process.kappaTuple.active += cms.vstring('packedPFCandidates')
+#process.kappaTuple.packedPFCandidates.pfcandiates = cms.PSet(src=cms.InputTag("packedPFCandidates","","PAT"))
 #process.kappaTuple.active += cms.vstring('packedPFCandidates')
 #process.kappaTuple.packedPFCandidates.pfcandiatesCHS = cms.PSet(src=cms.InputTag("packedPFCandidatesCHS","","PAT"))
-
-
-##################testmet##########################
-#to check later on!    
-    
-#if data:
-
-        # Apply an additional correction for the ECAL gain switch
-        # issue [1].  The correction for bad muons had been already
-        # applied by filtering the collection of PF candidates stored in
-        # MiniAOD [2].
-        # [1] https://twiki.cern.ch/twiki/bin/view/CMSPublic/ReMiniAOD03Feb2017Notes?rev=19#MET_Recipes
-        # [2] https://indico.cern.ch/event/602633/contributions/2462363/
-
-#    process.slimmedMETsMuEGClean = process.slimmedMETs.clone(
-#            src = cms.InputTag('patPFMetT1MuEGClean'),
-#            rawVariation = cms.InputTag('patPFMetRawMuEGClean'),
-#            t1Uncertainties = cms.InputTag('patPFMetT1%sMuEGClean')
-#        )
-#    del process.slimmedMETsMuEGClean.caloMET
-#        
-#    metTag = cms.InputTag('slimmedMETsMuEGClean', processName=process.name_())
-    
-#else:
-        # Apply corrections for bad muons [1-2]
-        # [1] https://twiki.cern.ch/twiki/bin/view/CMSPublic/ReMiniAOD03Feb2017Notes?rev=19#MET_Recipes
-        # [2] https://hypernews.cern.ch/HyperNews/CMS/get/met/525.html
-#    process.load('RecoMET.METFilters.badGlobalMuonTaggersMiniAOD_cff')
-#    process.badGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
-#    process.cloneGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
-#        
-#    from PhysicsTools.PatUtils.tools.muonRecoMitigation import muonRecoMitigation
-#    muonRecoMitigation(
-#        process=process,
-#        pfCandCollection='packedPFCandidatesCHS',
-#        runOnMiniAOD=True,
-#        selection='',
-#        muonCollection='',
-#        cleanCollName='cleanMuonsPFCandidates',
-#        cleaningScheme='all',
-#        postfix=''
-#		)
-        
-#        from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import \
-#            runMetCorAndUncFromMiniAOD
-#        runMetCorAndUncFromMiniAOD(
-#            process, isData=runOnData, pfCandColl='cleanMuonsPFCandidates', recoMetFromPFCs=True
-#        )
-        
-#metTag = cms.InputTag('slimmedMETs', processName=process.name_())
-
-
 
 #  Kappa  Output ###########################################################
 process.path *= (process.kappaOut)

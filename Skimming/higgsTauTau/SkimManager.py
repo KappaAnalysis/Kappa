@@ -11,6 +11,7 @@ import ast
 import gzip
 import shutil
 import re
+from multiprocessing import Process, Queue
 
 from httplib import HTTPException
 from CRABAPI.RawCommand import crabCommand
@@ -49,13 +50,16 @@ class SkimManagerBase:
 		except:
 			pass
 
-	def crab_cmd(self, cmd, argument_dict=None):
+	def crab_cmd(self, configuration, process_queue=None):
 		try:
-			return crabCommand(cmd, **argument_dict)
+			output = crabCommand(configuration["cmd"], **configuration["args"])
+			if process_queue:
+				process_queue.put(output)
+			return output
 		except HTTPException as hte:
-			print "Failed",cmd,"of the task: %s" % (hte.headers)
+			print "Failed",configuration["cmd"],"of the task: %s" % (hte.headers)
 		except ClientException as cle:
-			print "Failed",cmd,"of the task: %s" % (cle)
+			print "Failed",configuration["cmd"],"of the task: %s" % (cle)
 
 	def save_dataset(self,filename=None):
 		self.skimdataset.write_to_jsonfile(filename)  
@@ -131,7 +135,11 @@ class SkimManagerBase:
 			self.skimdataset[akt_nick]["crab_name"] = "crab_"+config.General.requestName
 
 			submit_dict = {"config" : config, "proxy" : self.voms_proxy}
-			submit_command_output = self.crab_cmd(cmd='submit',argument_dict=submit_dict)
+			process_queue = Queue()
+			p = Process(target=self.crab_cmd, args=[{"cmd":"submit","args" :submit_dict},process_queue])
+			p.start()
+			p.join()
+			submit_command_output = process_queue.get()
 			if submit_command_output:
 				self.skimdataset[akt_nick]["SKIM_STATUS"] = "SUBMITTED"
 				self.skimdataset[akt_nick]["crab_task"] = submit_command_output["uniquerequestname"]
@@ -181,7 +189,7 @@ class SkimManagerBase:
 			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED","COMPLETED","INIT"] and self.skimdataset[akt_nick]["GCSKIM_STATUS"] not in ["LISTED","COMPLETED"]:
 				crab_job_dir = os.path.join(self.workdir,self.skimdataset[akt_nick].get("crab_name","crab_"+akt_nick[:100]))
 				status_dict = {"proxy" : self.voms_proxy, "dir" : crab_job_dir}
-				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd(cmd='status', argument_dict = status_dict)
+				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd({"cmd": "statusold", "args" : status_dict})
 				if not self.skimdataset[akt_nick]['last_status']:
 					self.skimdataset[akt_nick]["SKIM_STATUS"] = "EXCEPTION"
 
@@ -231,12 +239,15 @@ class SkimManagerBase:
 			print "You specified an unsuitable status for purging. Please specify from this list: ALL,COMPLETED,LISTED,KILLED,FAILED."
 		print len(tasks_to_perge),"crab task(s) to purge."
 		for task in tasks_to_perge:
+			process_queue = Queue()
 			print "Attempt to purge",task
-			self.crab_cmd("purge",{"dir":os.path.join(self.workdir,task),"cache":True})
+			p = Process(target=self.crab_cmd,args=[{"cmd":"purge","args":{"dir":os.path.join(self.workdir,task),"cache":True}},process_queue])
+			p.start()
+			p.join()
 			print "--------------------------------------------"
 
 	def remake_task(self):
-		nicks_to_remake = [nick for nick in self.skimdataset.nicks() if self.skimdataset[nick]["SKIM_STATUS"] == "EXCEPTION"]
+		nicks_to_remake = [nick for nick in self.skimdataset.nicks() if self.skimdataset[nick]["SKIM_STATUS"] in ["SUBMITFAILED","EXCEPTION"]]
 		all_subdirs = [os.path.join(self.workdir,self.skimdataset[akt_nick].get("crab_name","crab_"+akt_nick[:100])) for akt_nick in nicks_to_remake]
 		print len(all_subdirs),'tasks that raised an exception will be remade. This will delete and recreate those folders in the workdir.'
 		print 'Do you want to continue? [Y/n]'
@@ -279,9 +290,12 @@ class SkimManagerBase:
 					pass
 		print "Try to resubmit",len(datasets_to_resubmit),"tasks"
 		for dataset in datasets_to_resubmit:
+			process_queue = Queue()
 			print "Resubmission for",dataset
 			argument_dict["dir"] = os.path.join(self.workdir,str(dataset))
-			self.crab_cmd(cmd="resubmit", argument_dict = argument_dict)
+			p = Process(target=self.crab_cmd,args=[{"cmd":"resubmit", "args" : argument_dict},process_queue])
+			p.start()
+			p.join()
 			print "--------------------------------------------"
 
 #### Crab related helper functions
@@ -497,7 +511,7 @@ class SkimManagerBase:
 				status_dict['SUBMITTED'].append(akt_nick)
 			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED","RESUBMITFAILED"]:
 				status_dict['FAILED'].append(akt_nick)
-			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION"]:
+			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION","SUBMITFAILED","KILLED"]:
 				status_dict['EXCEPTION'].append(akt_nick)
 
 		if summary:
@@ -571,7 +585,7 @@ class SkimManagerBase:
 				crab_numer_folder_regex = re.compile('|'.join(crab_number_folders))
 
 				try:
-					crab_dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids 1-10 --dir {DATASET_TASK}".format(DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100]))), shell=True).strip('\n').split('\n')
+					crab_dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids 1-{MAXID} --dir {DATASET_TASK} --proxy $X509_USER_PROXY".format(DATASET_TASK=os.path.join(self.workdir,self.skimdataset[dataset].get("crab_name","crab_"+dataset[:100])),MAXID=min(number_jobs,5)), shell=True).strip('\n').split('\n')
 					sample_file_path = crab_dataset_filelist[0]
 					job_id_match = re.findall(r'_\d+.root',sample_file_path)[0]
 					sample_file_path =  sample_file_path.replace(job_id_match,"_{JOBID}.root")
@@ -623,7 +637,7 @@ class SkimManagerBase:
 
 	@classmethod
 	def get_latest_subdir(self,work_base):
-		all_subdirs = [work_base+d for d in os.listdir(work_base) if os.path.isdir(work_base+d)]
+		all_subdirs = [os.path.join(work_base,d) for d in os.listdir(work_base) if os.path.isdir(work_base+d)]
 		return(max(all_subdirs, key=os.path.getmtime))
 
 	@classmethod

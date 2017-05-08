@@ -150,7 +150,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
 		process.BadChargedCandidateFilter.taggingMode = cms.bool(True)
 
-		process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
+		# in reMiniAOD data these filters are already present; only need to run the dedicated module for MC and older data
+		if not "03Feb2017" in str(process.kappaTuple.TreeInfo.parameters.scenario):
+			process.load('RecoMET.METFilters.badGlobalMuonTaggersMiniAOD_cff')
+			#switch on tagging mode:
+			process.badGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
+			process.cloneGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
+
+			process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter","badGlobalMuonTaggerMAOD","cloneGlobalMuonTaggerMAOD")
+		else:
+			process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
 
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
