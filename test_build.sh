@@ -50,10 +50,12 @@ cd ${TEST_CMSSW_VERSION}
 
 cmsenv
 echo "# ================= #"
-echo "# wget"
+echo "# curl -O"
 echo "# ================= #"
-curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download
-ls
+echo "curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download /home"
+curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download /home
+echo"ls /home"
+ls /home
 echo
 echo "# ================= #"
 echo "# xrootd"
