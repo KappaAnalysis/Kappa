@@ -331,6 +331,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# just took everything from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV
 	process.kappaTuple.PatTaus.taus.preselectOnDiscriminators = cms.vstring ()
 	process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist = cms.vstring(
+				"decayModeFinding",
 				"decayModeFindingNewDMs",
 				"byLooseCombinedIsolationDeltaBetaCorr3Hits",
 				"byMediumCombinedIsolationDeltaBetaCorr3Hits",
