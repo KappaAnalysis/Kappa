@@ -9,8 +9,8 @@ import FWCore.ParameterSet.Config as cms
 import os
 
 testfile = 'file:/home/short/short_mc11.root'
-if not os.path.exists(testfile): 
-    print "File could not be riched. Aborting."
+if not os.path.exists(testfile.split(':')[1]): 
+    print "File could not be riched. Aborting. Make shure you have:", testfile.split(':')[1]
     exit(1)
 globaltag = 'START53_V27::All'
 maxevents = 50
