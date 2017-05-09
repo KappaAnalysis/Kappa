@@ -63,21 +63,30 @@ cmsenv
 
 echo "number of processors:"
 cat /proc/cpuinfo | awk '/^processor/{print $3}'
+echo
 
 echo "# ================= #"
 echo "# curl -O root files"
 echo "# ================= #"
-echo "curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download /home"
-# single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
+echo "curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download" # single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
 curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
+echo
+
+echo "ls /home:"
 ls /home
-tar -xvf /home/short_rootfiles.tar /home
-ls /home
+echo
+
+echo "tar -xvf /home/short_rootfiles.tar /home/"
+tar -xvf /home/short_rootfiles.tar -C /home/
+echo
+
 echo "\nCurrect dir:"
 pwd
 ls
-echo "Content of ~/short:"
-ls ~/short 
+echo
+
+echo "Content of /home:"
+ls /home 
 echo
 exit 1
 
@@ -105,7 +114,7 @@ cd $CMSSW_BASE
 echo "# ================= #"
 echo "# Building in CMSSW_BASE #"
 echo "# ================= #"
-scram b -v -j 4 || exit 1
+scram b -v -j 2 || exit 1
 cd src/Kappa
 mkdir kappa_run
 cd kappa_run
