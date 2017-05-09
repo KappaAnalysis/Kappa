@@ -6,10 +6,14 @@
 # Kappa test: checkout script scripts/checkoutDummy.sh, scripts/checkoutTauRefit.sh
 
 import FWCore.ParameterSet.Config as cms
+import os
 
-testfile = 'file:///storage/b/fs6-mirror/fcolombo/kappatest/input/mc11.root'
+testfile = 'file:/home/short/short_mc11.root'
+if not os.path.exists(testfile): 
+    print "File could not be riched. Aborting."
+    exit(1)
 globaltag = 'START53_V27::All'
-maxevents = 100
+maxevents = 50
 print "GT:", globaltag, "| maxevents:", maxevents, "| file:", testfile
 
 # Basic process setup -----------------------------------------------------
