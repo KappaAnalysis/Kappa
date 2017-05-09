@@ -160,7 +160,7 @@ class SkimManagerBase:
 		#config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
 		config.JobType.maxMemoryMB = 2500
 		config.JobType.allowUndistributedCMSSW = True
-		config.Site.blacklist = ["T3_FR_IPNL","T3_US_UCR","T2_BR_SPRACE","T1_RU_*","T2_RU_*","T3_US_UMiss","T2_US_Vanderbilt","T2_EE_Estonia"]
+		config.Site.blacklist = ["T3_FR_IPNL","T3_US_UCR","T2_BR_SPRACE","T1_RU_*","T2_RU_*","T3_US_UMiss","T2_US_Vanderbilt","T2_EE_Estonia", "T2_TW_*"]
 		config.Data.splitting = 'FileBased'
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
 		config.Data.publication = False
