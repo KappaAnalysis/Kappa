@@ -134,14 +134,14 @@ cd kappa_run
 echo "# =================== #"
 echo "# Test Config #"
 echo "# =================== #"
-ls $CMSSW_BASE/src/Kappa/Skimming/examples/
-cat $CMSSW_BASE/src/Kappa/Skimming/examples/skim_tutorial1_basic.py
+ls $CMSSW_BASE/src/Kappa/Skimming/examples/travis
+cat $CMSSW_BASE/src/Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
 echo
 
 echo "# =================== #"
 echo "# Test python #"
 echo "# =================== #"
-python $CMSSW_BASE/src/Kappa/Skimming/examples/skim_tutorial1_basic.py
+python $CMSSW_BASE/src/Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
 #higgsTauTau/kSkimming_run2_cfg.py
 
 echo "# =================== #"
