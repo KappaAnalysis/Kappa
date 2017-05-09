@@ -61,10 +61,16 @@ echo "# curl -O root files"
 echo "# ================= #"
 echo "curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download /home"
 # single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
-curl -o short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
+curl -o short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download /home
 tar -xvf short_rootfiles.tar
+
+echo "\nCurrect dir:"
 pwd
+echo
+echo "Content of ~/short:"
 ls ~/short 
+echo
+exit 1
 
 #echo "# ================= #"
 #echo "# xrootd"
