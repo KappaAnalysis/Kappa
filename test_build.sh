@@ -70,25 +70,12 @@ echo "# curl -O root files"
 echo "# ================= #"
 echo "curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download" # single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
 curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
-echo
-
-echo "ls /home:"
-ls /home
-echo
-
 echo "tar -xvf /home/short_rootfiles.tar /home/"
 tar -xvf /home/short_rootfiles.tar -C /home/
 echo
-
-echo "\nCurrect dir:"
-pwd
-ls
+echo "Content /home/short:"
+ls /home/short
 echo
-
-echo "Content of /home:"
-ls /home 
-echo
-exit 1
 
 #echo "# ================= #"
 #echo "# xrootd"
@@ -115,14 +102,10 @@ echo "# ================= #"
 echo "# Building in CMSSW_BASE #"
 echo "# ================= #"
 scram b -v -j 2 || exit 1
-cd src/Kappa
-mkdir kappa_run
-cd kappa_run
 
 echo "# =================== #"
-echo "# Test standalone #"
+echo "# Env var checks #"
 echo "# =================== #"
-
 uname -a
 echo "HOSTNAME=$HOSTNAME"
 echo "SHELL=$SHELL"
@@ -139,6 +122,13 @@ echo "CMSSW_BASE=$CMSSW_BASE"
 echo "CMSSW_RELEASE_BASE=$CMSSW_RELEASE_BASE"
 
 echo "# =================== #"
+echo "# Test standalone #"
+echo "# =================== #"
+cd src/Kappa
+mkdir kappa_run
+cd kappa_run
+
+echo "# =================== #"
 echo "# Test Config #"
 echo "# =================== #"
 python $CMSSW_BASE/Kappa/Skimming/examples/skim_tutorial1_basic.py
@@ -149,7 +139,6 @@ echo "# Test cmsRun #"
 echo "# =================== #"
 python $CMSSW_BASE/Kappa/Skimming/examples/skim_tutorial1_basic.py
 #higgsTauTau/kSkimming_run2_cfg.py
-
 
 echo "# =================== #"
 echo "# Test Output root file #"
