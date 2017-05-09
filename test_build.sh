@@ -101,7 +101,7 @@ cd $CMSSW_BASE
 echo "# ================= #"
 echo "# Building in CMSSW_BASE #"
 echo "# ================= #"
-scram b -v -j 2 || exit 1
+#scram b -v -j 2 || exit 1
 
 echo "# =================== #"
 echo "# Env var checks #"
@@ -121,9 +121,6 @@ echo "CMSSW_GIT_HASH=$CMSSW_GIT_HASH"
 echo "CMSSW_BASE=$CMSSW_BASE"
 echo "CMSSW_RELEASE_BASE=$CMSSW_RELEASE_BASE"
 
-echo "# =================== #"
-echo "# Test standalone #"
-echo "# =================== #"
 cd src/Kappa
 mkdir kappa_run
 cd kappa_run
@@ -131,6 +128,12 @@ cd kappa_run
 echo "# =================== #"
 echo "# Test Config #"
 echo "# =================== #"
+ls $CMSSW_BASE/
+ls $CMSSW_BASE/Kappa
+ls $CMSSW_BASE/Kappa/Skimming/
+ls $CMSSW_BASE/Kappa/Skimming/examples/
+head $CMSSW_BASE/Kappa/Skimming/examples/skim_tutorial1_basic.py
+exit(1)
 python $CMSSW_BASE/Kappa/Skimming/examples/skim_tutorial1_basic.py
 #higgsTauTau/kSkimming_run2_cfg.py
 
