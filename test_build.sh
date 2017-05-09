@@ -143,7 +143,7 @@ python $CMSSW_BASE/src/Kappa/Skimming/examples/skim_tutorial1_basic.py
 echo "# =================== #"
 echo "# Test cmsRun #"
 echo "# =================== #"
-cmsRun $CMSSW_BASE/src/Kappa/Skimming/examples/skim_tutorial1_basic.py
+cmsRun $CMSSW_BASE/src/Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
 #higgsTauTau/kSkimming_run2_cfg.py
 
 echo "# =================== #"
