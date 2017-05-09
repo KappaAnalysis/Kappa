@@ -68,11 +68,13 @@ echo
 echo "# ================= #"
 echo "# curl -O root files"
 echo "# ================= #"
-echo "curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download" # single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
-curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
-echo "tar -xvf /home/short_rootfiles.tar /home/"
-tar -xvf /home/short_rootfiles.tar -C /home/
-echo
+echo "HOME:" $HOME
+ls $HOME
+# echo "curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download" # single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
+# curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
+# echo "tar -xvf /home/short_rootfiles.tar /home/"
+# tar -xvf /home/short_rootfiles.tar -C /home/
+# echo
 echo "Content /home/short:"
 ls /home/short
 echo
