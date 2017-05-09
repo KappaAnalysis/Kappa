@@ -20,5 +20,6 @@ script:
   - docker run --privileged -e TEST_CMSSW_VERSION=${TEST_CMSSW_VERSION}
                             -e SCRAM_ARCH=${SCRAM_ARCH}
                             -e CHECKOUTSCRIPT=${CHECKOUTSCRIPT}
-                            -v ${TRAVIS_BUILD_DIR}:/home/travis /home/short:/home/short claria/cvmfs-cms /bin/bash 
+                            -v ${TRAVIS_BUILD_DIR}:/home/travis 
+                            -v '/home/short:/home/short' claria/cvmfs-cms /bin/bash 
                             -c "cd /home/; /home/travis/test_build.sh"
