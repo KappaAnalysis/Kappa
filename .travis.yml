@@ -12,9 +12,9 @@ before_install:
   - docker pull claria/cvmfs-cms
 before_script:
   - echo $HOME
-  - curl -o $HOME/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
+  - sudo curl -o $HOME/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
   - echo $HOME
-  - tar -xvf $HOME/short_rootfiles.tar -C /home/
+  - sudo tar -xvf $HOME/short_rootfiles.tar -C /home/
   - ls $HOME/short
 script:
   - docker run --privileged -e TEST_CMSSW_VERSION=${TEST_CMSSW_VERSION}
