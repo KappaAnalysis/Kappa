@@ -44,27 +44,34 @@ cat $VO_CMS_SW_DIR/cmsset_default.sh
 echo "# ================= #"
 . $VO_CMS_SW_DIR/cmsset_default.sh
 
+echo "# ================= #"
+echo "# Compiling CMSSW"
+echo "# ================= #"
 scram project ${TEST_CMSSW_VERSION}
 
 cd ${TEST_CMSSW_VERSION}
 
 cmsenv
+
+echo "number of processors:"
+cat /proc/cpuinfo | awk '/^processor/{print $3}'
+
 echo "# ================= #"
-echo "# curl -O"
+echo "# curl -O root files"
 echo "# ================= #"
 echo "curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download /home"
 # single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
 curl -o short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
 tar -xvf short_rootfiles.tar
-echo "ls"
-ls 
-echo
-echo "# ================= #"
-echo "# xrootd"
-echo "# ================= #"
-xrootd -d l -f root://eosuser.cern.ch://eos/user/o/ohlushch/kappatest_inputfiles/input/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root
+pwd
+ls ~/short 
+
+#echo "# ================= #"
+#echo "# xrootd"
+#echo "# ================= #"
+#xrootd -d l -f root://eosuser.cern.ch://eos/user/o/ohlushch/kappatest_inputfiles/input/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root
 #root -l root://eosuser.cern.ch://eos/user/o/ohlushch/kappatest_inputfiles/input/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root
-echo
+#echo
 
 echo "# ================= #"
 echo "# download checkout script for Kappa"
@@ -77,18 +84,55 @@ git config --global user.github greyxray
 git config --global user.email 'greyxray@gmail.com'
 git config --global user.name 'kappa test'
 printf "no\n" | python ${CHECKOUTSCRIPT}
+test ! -z $CMSSW_BASE
 cd $CMSSW_BASE 
-echo
-echo
+
 echo "# ================= #"
-echo "# Building in CMSSW #"
+echo "# Building in CMSSW_BASE #"
 echo "# ================= #"
-scram b -v -j 2 || exit 1
+scram b -v -j 4 || exit 1
+cd src/Kappa
+mkdir kappa_run
+cd kappa_run
 
 echo "# =================== #"
-echo "# Building standalone #"
+echo "# Test standalone #"
 echo "# =================== #"
 
-echo $CMSSW_BASE
+uname -a
+echo "HOSTNAME=$HOSTNAME"
+echo "SHELL=$SHELL"
+python --version
+
+echo "python:" $(which python)
+echo "PYTHONSTARTUP=$PYTHONSTARTUP"
+echo "PYTHONPATH=$PYTHONPATH"
+echo "SCRAM_ARCH=$SCRAM_ARCH"
+echo "VO_CMS_SW_DIR=$VO_CMS_SW_DIR"
+echo "CMSSW_VERSION=$CMSSW_VERSION"
+echo "CMSSW_GIT_HASH=$CMSSW_GIT_HASH"
+echo "CMSSW_BASE=$CMSSW_BASE"
+echo "CMSSW_RELEASE_BASE=$CMSSW_RELEASE_BASE"
+
+echo "# =================== #"
+echo "# Test Config #"
+echo "# =================== #"
+python $CMSSW_BASE/Kappa/Skimming/examples/skim_tutorial1_basic.py
+#higgsTauTau/kSkimming_run2_cfg.py
+
+echo "# =================== #"
+echo "# Test cmsRun #"
+echo "# =================== #"
+python $CMSSW_BASE/Kappa/Skimming/examples/skim_tutorial1_basic.py
+#higgsTauTau/kSkimming_run2_cfg.py
+
+
+echo "# =================== #"
+echo "# Test Output root file #"
+echo "# =================== #"
+ls -l kappa.root
+test -f kappa.root
+
+echo "The end"
 #make -C Kappa/DataFormats/test -j2 || exit 1
 
