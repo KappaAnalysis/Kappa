@@ -130,19 +130,20 @@ cd kappa_run
 echo "# =================== #"
 echo "# Test Config #"
 echo "# =================== #"
-ls $CMSSW_BASE/src
-ls $CMSSW_BASE/src/Kappa
-ls $CMSSW_BASE/src/Kappa/Skimming/
 ls $CMSSW_BASE/src/Kappa/Skimming/examples/
-head $CMSSW_BASE/Kappa/src/Skimming/examples/skim_tutorial1_basic.py
+cat $CMSSW_BASE/src/Kappa/Skimming/examples/skim_tutorial1_basic.py
+echo
 
+echo "# =================== #"
+echo "# Test python #"
+echo "# =================== #"
 python $CMSSW_BASE/src/Kappa/Skimming/examples/skim_tutorial1_basic.py
 #higgsTauTau/kSkimming_run2_cfg.py
 
 echo "# =================== #"
 echo "# Test cmsRun #"
 echo "# =================== #"
-python $CMSSW_BASE/src/Kappa/Skimming/examples/skim_tutorial1_basic.py
+cmsRun $CMSSW_BASE/src/Kappa/Skimming/examples/skim_tutorial1_basic.py
 #higgsTauTau/kSkimming_run2_cfg.py
 
 echo "# =================== #"
