@@ -5,7 +5,7 @@ services:
 env:
   #- TEST_CMSSW_VERSION=CMSSW_5_3_29 SCRAM_ARCH=slc6_amd64_gcc472 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.py
   #- TEST_CMSSW_VERSION=CMSSW_7_6_3 SCRAM_ARCH=slc6_amd64_gcc493 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.py SKIMMING_SCRIPT=Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
-  - TEST_CMSSW_VERSION=CMSSW_7_6_3 SCRAM_ARCH=slc6_amd64_gcc493 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.py SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py
+  - TEST_CMSSW_VERSION=CMSSW_7_6_3 SCRAM_ARCH=slc6_amd64_gcc493 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.py SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=false
   #- TEST_CMSSW_VERSION=CMSSW_8_0_26_patch1 SCRAM_ARCH=slc6_amd64_gcc530 CHECKOUTSCRIPT=checkoutCmssw80xPackagesForSkimming.py
 compiler:
   - gcc
@@ -22,6 +22,7 @@ script:
                             -e SCRAM_ARCH=${SCRAM_ARCH}
                             -e CHECKOUTSCRIPT=${CHECKOUTSCRIPT}
                             -e SKIMMING_SCRIPT=${SKIMMING_SCRIPT}
+                            -e ADDITIONAL_OUTPUT=${ADDITIONAL_OUTPUT}
                             -v ${TRAVIS_BUILD_DIR}:/home/travis 
                             -v '/home/short:/home/short' claria/cvmfs-cms /bin/bash 
                             -c "cd /home/; /home/travis/test_build.sh"
