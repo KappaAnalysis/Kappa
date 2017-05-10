@@ -53,11 +53,16 @@ echo
 echo "ls /cvmfs/cms.cern.ch/SITECONF/local"
 ls /cvmfs/cms.cern.ch/SITECONF/local
 echo
-echo "ls /cvmfs/cms.cern.ch/SITECONF/local/JobConfig"
-ls /cvmfs/cms.cern.ch/SITECONF/local/JobConfig
+echo "ls /cvmfs/cms.cern.ch/SITECONF/local"
+ls /cvmfs/cms.cern.ch/SITECONF/local
+echo
+echo "ls /cvmfs/cms.cern.ch/SITECONF/local/local"
+ls /cvmfs/cms.cern.ch/SITECONF/local/local
 echo
 echo " cat /cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml"
-cat /cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml
+cat /cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml || {
+    printf "\n Could not cat site-local-config.xml" 
+} 
 echo
 echo
 exit(1)
@@ -104,6 +109,12 @@ fi
 echo "Content /home/short:"
 ls /home/short
 echo
+echo "Content /home:"
+ls /home/short
+echo
+echo "Content ~"
+ls ~
+echo
 
 #echo "# ================= #"
 #echo "# xrootd"
@@ -123,7 +134,10 @@ git config --global user.github greyxray
 git config --global user.email 'greyxray@gmail.com'
 git config --global user.name 'kappa test'
 printf "no\n" | python ${CHECKOUTSCRIPT}
+echo
+echo "test ! -z \$CMSSW_BASE"
 test ! -z $CMSSW_BASE
+echo
 cd $CMSSW_BASE 
 
 echo "# ================= #"
@@ -152,6 +166,7 @@ echo "CMSSW_RELEASE_BASE=$CMSSW_RELEASE_BASE"
 cd src/Kappa
 mkdir kappa_run
 cd kappa_run
+echo
 
 echo "# =================== #"
 echo "# Cat the Config #"
@@ -166,6 +181,7 @@ echo "# =================== #"
 python $CMSSW_BASE/src/$SKIMMING_SCRIPT
 #Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
 #higgsTauTau/kSkimming_run2_cfg.py
+echo
 
 echo "# =================== #"
 echo "# Test cmsRun #"
@@ -173,6 +189,7 @@ echo "# =================== #"
 cmsRun $CMSSW_BASE/src/$SKIMMING_SCRIPT
 #Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
 #higgsTauTau/kSkimming_run2_cfg.py
+echo
 
 echo "# =================== #"
 echo "# Test Output root file #"
