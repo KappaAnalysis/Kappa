@@ -25,13 +25,13 @@ echo "# ================= #"
     echo ":: /etc/cvmfs/config.d/cms.cern.ch.local"
     cat /etc/cvmfs/config.d/cms.cern.ch.local || {
     echo "No /etc/cvmfs/config.d/cms.cern.ch.local was found"
-    # cat >/etc/cvmfs/config.d/cms.cern.ch.local <<EOL
-    # # Important setting for CMS, jobs will not work properly without!
-    # # export CMS_LOCAL_SITE=T2_DE_DESY
-    # export CMS_LOCAL_SITE=/cvmfs/cms.cern.ch/SITECONF/T2_DE_DESY
-    # # This only needed if you did not configure Squids in /etc/default.[conf|local]
-    # #CVMFS_HTTP_PROXY="http://<Squid1-url>:<port>|http://<Squid2-url>:<port>[|...]"" > /etc/cvmfs/config.d/cms.cern.ch.local
-    # EOL
+    cat >/etc/cvmfs/config.d/cms.cern.ch.local <<EOL
+    # Important setting for CMS, jobs will not work properly without!
+    # export CMS_LOCAL_SITE=T2_DE_DESY
+    export CMS_LOCAL_SITE=/cvmfs/cms.cern.ch/SITECONF/T2_DE_DESY
+    # This only needed if you did not configure Squids in /etc/default.[conf|local]
+    #CVMFS_HTTP_PROXY="http://<Squid1-url>:<port>|http://<Squid2-url>:<port>[|...]"" > /etc/cvmfs/config.d/cms.cern.ch.local
+    EOL
     }
     echo 
 
