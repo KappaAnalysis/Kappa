@@ -41,23 +41,23 @@ echo
 echo "# ================= #"
 echo "# Find site-local-config.xml"
 echo "# ================= #"
-echo "ls /cvmfs"
-ls /cvmfs
+echo "ls -ltr /cvmfs"
+ls -ltr /cvmfs
 echo
-echo "ls /cvmfs/cms.cern.ch"
-ls /cvmfs/cms.cern.ch
+echo "ls-ltr  /cvmfs/cms.cern.ch"
+ls -ltr /cvmfs/cms.cern.ch
 echo
-echo "ls /cvmfs/cms.cern.ch/SITECONF"
-ls /cvmfs/cms.cern.ch/SITECONF
+echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF"
+ls -ltr /cvmfs/cms.cern.ch/SITECONF
 echo
-echo "ls /cvmfs/cms.cern.ch/SITECONF/local"
-ls /cvmfs/cms.cern.ch/SITECONF/local
+echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF/local"
+ls -ltr /cvmfs/cms.cern.ch/SITECONF/local
 echo
-echo "ls /cvmfs/cms.cern.ch/SITECONF/local"
-ls /cvmfs/cms.cern.ch/SITECONF/local
+echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF/local/local"
+ls -ltr /cvmfs/cms.cern.ch/SITECONF/local/local
 echo
-echo "ls /cvmfs/cms.cern.ch/SITECONF/local/local"
-ls /cvmfs/cms.cern.ch/SITECONF/local/local
+echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF/local/JobConfig"
+ls -ltr /cvmfs/cms.cern.ch/SITECONF/local/JobConfig
 echo
 echo " cat /cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml"
 cat /cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml || {
