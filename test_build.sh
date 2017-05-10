@@ -7,9 +7,9 @@
 # cat /etc/yum.repos.d/cernvm.repo
 # echo
 
-# echo ":: /etc/cvmfs/default.local"
-# cat /etc/cvmfs/default.local
-# echo
+ echo ":: /etc/cvmfs/default.local"
+ cat /etc/cvmfs/default.local
+ echo
 
 # echo ":: /etc/cvmfs/domain.d/cern.ch.local"
 # cat /etc/cvmfs/domain.d/cern.ch.local
@@ -59,12 +59,15 @@ echo
 echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF/local/JobConfig"
 ls -ltr /cvmfs/cms.cern.ch/SITECONF/local/JobConfig
 echo
-echo " cat /cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml"
-cat /cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml || {
-    printf "\n Could not cat site-local-config.xml" 
+
+sitelocaltocheck=/cvmfs/cms.cern.ch/SITECONF/T2_DE_DESY/JobConfig/site-local-config.xml
+#sitelocaltocheck=/cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml
+printf " cat \"%s\".\n" "$sitelocaltocheck"
+cat $sitelocaltocheck || {
+    printf "\n Could not cat  \"%s\".\n" "$sitelocaltocheck"
+    exit(1)
 } 
-echo
-echo
+printf "\n Much wow, could cat  \"%s\".\n" "$sitelocaltocheck"
 exit(1)
 # export SCRAM_ARCH=slc6_amd64_gcc481
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
