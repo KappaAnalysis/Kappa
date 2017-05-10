@@ -27,9 +27,10 @@ echo "# ================= #"
     echo "No /etc/cvmfs/config.d/cms.cern.ch.local was found"
     # cat >/etc/cvmfs/config.d/cms.cern.ch.local <<EOL
     # # Important setting for CMS, jobs will not work properly without!
-    # export CMS_LOCAL_SITE=T2_DE_DESY
+    # # export CMS_LOCAL_SITE=T2_DE_DESY
+    # export CMS_LOCAL_SITE=/cvmfs/cms.cern.ch/SITECONF/T2_DE_DESY
     # # This only needed if you did not configure Squids in /etc/default.[conf|local]
-    # e="http://<Squid1-url>:<port>|http://<Squid2-url>:<port>[|...]"" > /etc/cvmfs/config.d/cms.cern.ch.local
+    # #CVMFS_HTTP_PROXY="http://<Squid1-url>:<port>|http://<Squid2-url>:<port>[|...]"" > /etc/cvmfs/config.d/cms.cern.ch.local
     # EOL
     }
     echo 
@@ -69,6 +70,7 @@ echo
 echo "# ================= #"
 echo "# Find site-local-config.xml"
 echo "# ================= #"
+    thesite=T2_DE_DESY
     echo "ls -ltr /cvmfs"
     ls -ltr /cvmfs
     echo
@@ -78,17 +80,14 @@ echo "# ================= #"
     echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF"
     ls -ltr /cvmfs/cms.cern.ch/SITECONF
     echo
-    echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF/local"
-    ls -ltr /cvmfs/cms.cern.ch/SITECONF/local
+    echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF/${thesite}"
+    ls -ltr /cvmfs/cms.cern.ch/SITECONF/$thesite
     echo
-    echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF/local/local"
-    ls -ltr /cvmfs/cms.cern.ch/SITECONF/local/local
-    echo
-    echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF/local/JobConfig"
-    ls -ltr /cvmfs/cms.cern.ch/SITECONF/local/JobConfig
+    echo "ls -ltr /cvmfs/cms.cern.ch/SITECONF/${thesite}/JobConfig"
+    ls -ltr /cvmfs/cms.cern.ch/SITECONF/$thesite/JobConfig
     echo
 
-    sitelocaltocheck=/cvmfs/cms.cern.ch/SITECONF/T2_DE_DESY/JobConfig/site-local-config.xml
+    sitelocaltocheck=/cvmfs/cms.cern.ch/SITECONF/$thesite/JobConfig/site-local-config.xml
     #sitelocaltocheck=/cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml
     printf " cat \"%s\".\n" "$sitelocaltocheck"
     cat $sitelocaltocheck || {
