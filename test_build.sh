@@ -1,14 +1,6 @@
 #!/bin/sh
 
 echo "# ================= #"
-echo "# run-cvmfs.sh"
-echo "# ================= #"
-    /etc/cvmfs/run-cvmfs.sh
-echo "# ================= #"
-echo
-
-
-echo "# ================= #"
 echo "# Environment checks after mount"
 echo "# ================= #"
     # echo
@@ -73,6 +65,16 @@ EOL
     echo
 echo "# ================= #"
 echo
+
+
+echo "# ================= #"
+echo "# Mounting: run-cvmfs.sh"
+echo "# ================= #"
+    /etc/cvmfs/run-cvmfs.sh
+echo "# ================= #"
+echo
+
+
 
 echo "# ================= #"
 echo "# Find site-local-config.xml"
