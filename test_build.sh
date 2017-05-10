@@ -30,24 +30,46 @@
 # ls /etc/cvmfs/
 # echo
 
-# echo "# ================= #"
-# echo "# run-cvmfs.sh"
-# echo "# ================= #"
-# cat /etc/cvmfs/run-cvmfs.sh
-# echo "# ================= #"
-# echo
-
+echo "# ================= #"
+echo "# run-cvmfs.sh"
+echo "# ================= #"
+cat /etc/cvmfs/run-cvmfs.sh
 /etc/cvmfs/run-cvmfs.sh
+echo "# ================= #"
+echo
 
+echo "# ================= #"
+echo "# Find site-local-config.xml"
+echo "# ================= #"
+echo "ls /cvmfs"
+ls /cvmfs
+echo
+echo "ls /cvmfs/cms.cern.ch"
+ls /cvmfs/cms.cern.ch
+echo
+echo "ls /cvmfs/cms.cern.ch/SITECONF"
+ls /cvmfs/cms.cern.ch/SITECONF
+echo
+echo "ls /cvmfs/cms.cern.ch/SITECONF/local"
+ls /cvmfs/cms.cern.ch/SITECONF/local
+echo
+echo "ls /cvmfs/cms.cern.ch/SITECONF/local/JobConfig"
+ls /cvmfs/cms.cern.ch/SITECONF/local/JobConfig
+echo
+echo " cat /cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml"
+cat /cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml
+echo
+echo
+exit(1)
 # export SCRAM_ARCH=slc6_amd64_gcc481
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 
 mkdir -p /home/build && cd /home/build
 
-# echo "# ================= #"
-# echo "# cmsset_default.sh"
-# echo "# ================= #"
-# cat $VO_CMS_SW_DIR/cmsset_default.sh
+echo "# ================= #"
+echo "# cmsset_default.sh"
+echo "# ================= #"
+cat $VO_CMS_SW_DIR/cmsset_default.sh
 
 echo "# ================= #"
 . $VO_CMS_SW_DIR/cmsset_default.sh
