@@ -107,7 +107,7 @@ cd $CMSSW_BASE
 echo "# ================= #"
 echo "# Building in CMSSW_BASE #"
 echo "# ================= #"
-#scram b -v -j 2 || exit 1
+scram b -v -j 2 || exit 1
 
 echo "# =================== #"
 echo "# Env var checks #"
