@@ -90,10 +90,11 @@ echo "# ================= #"
     sitelocaltocheck=/cvmfs/cms.cern.ch/SITECONF/$thesite/JobConfig/site-local-config.xml
     #sitelocaltocheck=/cvmfs/cms.cern.ch/SITECONF/local/JobConfig/site-local-config.xml
     printf " cat \"%s\".\n" "$sitelocaltocheck"
-    cat $sitelocaltocheck || {
-        printf "\n Could not cat  \"%s\".\n" "$sitelocaltocheck"
-        exit(1)
-    } 
+    cat $sitelocaltocheck 
+    #     cat $sitelocaltocheck || {
+    #         printf "\n Could not cat  \"%s\".\n" "$sitelocaltocheck"
+    #         exit
+    #     } 
     printf "\n Much wow, could cat  \"%s\".\n" "$sitelocaltocheck"
 echo "# ================= #"
 echo
