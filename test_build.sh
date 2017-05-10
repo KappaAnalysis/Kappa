@@ -32,6 +32,9 @@ echo "# ================= #"
     # This only needed if you did not configure Squids in /etc/default.[conf|local]
     #CVMFS_HTTP_PROXY="http://<Squid1-url>:<port>|http://<Squid2-url>:<port>[|...]"" > /etc/cvmfs/config.d/cms.cern.ch.local
 EOL
+    echo "Was created as:"
+    cat /etc/cvmfs/config.d/cms.cern.ch.local
+    export /etc/cvmfs/config.d/cms.cern.ch.local
     }
     echo 
 
