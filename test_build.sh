@@ -10,6 +10,9 @@
  echo ":: /etc/cvmfs/default.local"
  cat /etc/cvmfs/default.local
  echo
+ echo $CMS_LOCAL_SITE
+ export $CMS_LOCAL_SITE=T2_DE_DESY
+ echo $CMS_LOCAL_SITE
 
 # echo ":: /etc/cvmfs/domain.d/cern.ch.local"
 # cat /etc/cvmfs/domain.d/cern.ch.local
@@ -68,7 +71,7 @@ cat $sitelocaltocheck || {
     exit(1)
 } 
 printf "\n Much wow, could cat  \"%s\".\n" "$sitelocaltocheck"
-exit(1)
+
 # export SCRAM_ARCH=slc6_amd64_gcc481
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 
