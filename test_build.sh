@@ -73,7 +73,7 @@ echo
 echo "# ================= #"
 echo "# Find site-local-config.xml"
 echo "# ================= #"
-    thesite=T2_DE_DESY
+    thesite=local
     echo "ls -ltr /cvmfs"
     ls -ltr /cvmfs
     echo
