@@ -7,16 +7,23 @@
 # cat /etc/yum.repos.d/cernvm.repo
 # echo
 
- echo ":: /etc/cvmfs/default.local"
- cat /etc/cvmfs/default.local
- echo
- echo $CMS_LOCAL_SITE
- export $CMS_LOCAL_SITE=T2_DE_DESY
- echo $CMS_LOCAL_SITE
+echo ":: /etc/cvmfs/default.local"
+cat /etc/cvmfs/default.local
+echo
 
-# echo ":: /etc/cvmfs/domain.d/cern.ch.local"
-# cat /etc/cvmfs/domain.d/cern.ch.local
-# echo 
+echo ":: /etc/cvmfs/config.d/cms.cern.ch.local"
+cat /etc/cvmfs/config.d/cms.cern.ch.local
+echo 
+
+echo ":: /etc/cvmfs/domain.d/cern.ch.local"
+cat /etc/cvmfs/domain.d/cern.ch.local
+echo 
+
+echo ":: CMS_LOCAL_SITE"
+echo $CMS_LOCAL_SITE
+export $CMS_LOCAL_SITE=T2_DE_DESY
+echo $CMS_LOCAL_SITE
+echo
 
 # echo ":: /etc/cvmfs/keys"
 # cat /etc/cvmfs/keys
