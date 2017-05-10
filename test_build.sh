@@ -34,7 +34,11 @@ echo "# ================= #"
 EOL
     echo "Was created as:"
     cat /etc/cvmfs/config.d/cms.cern.ch.local
-    export /etc/cvmfs/config.d/cms.cern.ch.local
+    
+    echo "and Was soursed as:"
+    source /etc/cvmfs/config.d/cms.cern.ch.local
+    echo "testing:"
+    echo $CMS_LOCAL_SITE
     }
     echo 
 
