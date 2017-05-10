@@ -132,29 +132,33 @@ mkdir kappa_run
 cd kappa_run
 
 echo "# =================== #"
-echo "# Test Config #"
+echo "# Cat the Config #"
 echo "# =================== #"
-ls $CMSSW_BASE/src/Kappa/Skimming/examples/travis
-cat $CMSSW_BASE/src/Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
+cat $CMSSW_BASE/src/$SKIMMING_SCRIPT
+#Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
 echo
 
 echo "# =================== #"
 echo "# Test python #"
 echo "# =================== #"
-python $CMSSW_BASE/src/Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
+python $CMSSW_BASE/src/$SKIMMING_SCRIPT
+#Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
 #higgsTauTau/kSkimming_run2_cfg.py
 
 echo "# =================== #"
 echo "# Test cmsRun #"
 echo "# =================== #"
-cmsRun $CMSSW_BASE/src/Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
+cmsRun $CMSSW_BASE/src/$SKIMMING_SCRIPT
+#Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
 #higgsTauTau/kSkimming_run2_cfg.py
 
 echo "# =================== #"
 echo "# Test Output root file #"
 echo "# =================== #"
-ls -l kappa.root
-test -f kappa.root
+ls -l *.root
+echo
+echo "test -f *.root"
+test -f *.root
 
 echo "The end"
 #make -C Kappa/DataFormats/test -j2 || exit 1
