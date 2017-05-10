@@ -24,6 +24,7 @@ echo "# ================= #"
 
     echo ":: /etc/cvmfs/config.d/cms.cern.ch.local"
     cat /etc/cvmfs/config.d/cms.cern.ch.local || {
+    echo "No /etc/cvmfs/config.d/cms.cern.ch.local was found"
     # cat >/etc/cvmfs/config.d/cms.cern.ch.local <<EOL
     # # Important setting for CMS, jobs will not work properly without!
     # export CMS_LOCAL_SITE=T2_DE_DESY
