@@ -43,11 +43,11 @@ options.register('dumpPython', False, VarParsing.multiplicity.singleton, VarPars
 options.parseArguments()
 
 def getBaseConfig( globaltag= 'START70_V7::All',
-                   testfile=cms.untracked.vstring(""),
-                   maxevents=100, ## -1 = all in file
-                   nickname = 'SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8',
-                   kappaTag = 'Kappa_2_0_0',
-				   outputfilename = ''):
+	testfile=cms.untracked.vstring(""),
+	maxevents=50,
+	nickname = 'SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8',
+	kappaTag = 'Kappa_2_0_0',
+	outputfilename = ''):
 
 	from Kappa.Skimming.KSkimming_template_cfg import process
 	## ------------------------------------------------------------------------
@@ -549,6 +549,15 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 		testPaths = ['/storage/b/fs6-mirror/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input', '/home/short']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
 		if tools.is_above_cmssw_version([8]):
-			process = getBaseConfig(globaltag="80X_mcRun2_asymptotic_2016_v3", testfile=cms.untracked.vstring("file:%s/SUSYGluGluToHToTauTau_M-160_spring16_miniAOD.root" % testPath), nickname='SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8', outputfilename="kappaTuple.root")
+			process = getBaseConfig(
+				globaltag="80X_mcRun2_asymptotic_2016_v3",
+				testfile=cms.untracked.vstring("file:%s/"%testPath + (testPath == '/home/short')*"short_" + "SUSYGluGluToHToTauTau_M-160_spring16_miniAOD.root"),
+				nickname='SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8',
+				outputfilename="kappaTuple.root"
+				)
 		else:
-			process = getBaseConfig(globaltag=options.globalTag, testfile=cms.untracked.vstring("file:%s/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root" % testPath), outputfilename="kappaTuple.root")
+			process = getBaseConfig(
+				globaltag=options.globalTag,
+				testfile=cms.untracked.vstring("file:%s/"%testPath + (testPath == '/home/short')*"short_" + "SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root"),
+				outputfilename="kappaTuple.root"
+				)
