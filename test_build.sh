@@ -3,7 +3,7 @@
 echo "# ================= #"
 echo "# Checking wget "
 echo "# ================= #"
-if which wget; then 
+if ! which wget; then 
     echo "No wget. Will install"; 
     yum install wget -y
     if ! which wget; then 
@@ -11,7 +11,8 @@ if which wget; then
         exit 1
     fi
 else
-    echo "wget found"; 
+    echo "wget found:"; 
+    which wget;
 fi
 
 echo "# ================= #"
