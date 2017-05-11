@@ -13,16 +13,23 @@ def getBaseConfig(globaltag, testfile="", maxevents=0, datatype='data'):
     """Testing config for skims with Kappa"""
     # Set the global tag and datatype for testing or by grid-control ---------
     data = (datatype == 'data')
+    testPaths = [
+        '/home/short',
+        '/storage/b/fs6-mirror/fcolombo/kappatest/input', 
+        '/nfs/dust/cms/user/fcolombo/kappatest/input', 
+        '/nfs/dust/cms/user/glusheno/kappatest/input']
+    testPath = [p for p in testPaths if os.path.exists(p)][0]
+
     if data:
-        testfile = 'file:///storage/b/fs6-mirror/fcolombo/kappatest/input/data_AOD_2012A.root'
+        testfile = "file:%s/"%testPath + (testPath == '/home/short')*"short_" + 'data_AOD_2012A.root'
         if '@' in globaltag:
             globaltag = 'FT53_V21A_AN6'
-        maxevents = maxevents or 1000
+        maxevents = maxevents or (50 + (not testPath == '/home/short')*950)
     else:
-        testfile = 'file:///storage/b/fs6-mirror/fcolombo/kappatest/input/mc11.root'
+        testfile = "file:%s/"%testPath + (testPath == '/home/short')*"short_" + 'mc11.root'
         if '@' in globaltag:
             globaltag = 'START53_V27'
-        maxevents = maxevents or 1000
+        maxevents = maxevents or (50 + (not testPath == '/home/short')*950)
         datatype = 'mc'
     print "GT:", globaltag, "| TYPE:", datatype, "| maxevents:", maxevents, "| file:", testfile
 

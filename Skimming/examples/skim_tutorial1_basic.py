@@ -8,12 +8,16 @@
 import FWCore.ParameterSet.Config as cms
 import os
 
-testfile = 'file:/home/short/short_mc11.root'
-if not os.path.exists(testfile): 
-    print "File could not be riched. Aborting."
-    exit(1)
+testPaths = [
+	'/home/short',
+	'/storage/b/fs6-mirror/fcolombo/kappatest/input', 
+	'/nfs/dust/cms/user/fcolombo/kappatest/input', 
+	'/nfs/dust/cms/user/glusheno/kappatest/input']
+testPath = [p for p in testPaths if os.path.exists(p)][0]
+testfile = "file:%s/"%testPath + (testPath == '/home/short')*"short_" + 'mc11.root'
+
 globaltag = 'START53_V27::All'
-maxevents = 50
+maxevents = 50 + (not testPath == '/home/short')*50
 print "GT:", globaltag, "| maxevents:", maxevents, "| file:", testfile
 
 # Basic process setup -----------------------------------------------------
