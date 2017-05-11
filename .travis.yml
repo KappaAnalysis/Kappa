@@ -21,7 +21,7 @@ env:
   #- TEST_CMSSW_VERSION=CMSSW_5_3_22 SCRAM_ARCH=slc6_amd64_gcc472 CHECKOUTSCRIPT=zjet/checkout53.sh    SKIMMING_SCRIPT=Kappa/Skimming/zjet/skim_53_cfg.py ADDITIONAL_OUTPUT=false
   # skim_74_cfg.py - re-do path to checkout script
   #- TEST_CMSSW_VERSION=CMSSW_7_4_6 SCRAM_ARCH=slc6_amd64_gcc491 CHECKOUTSCRIPT=zjet/checkout74.sh    SKIMMING_SCRIPT=Kappa/Skimming/zjet/skim_74_cfg.py ADDITIONAL_OUTPUT=false
-	# skim_76_cfg.py
+  # skim_76_cfg.py
   - TEST_CMSSW_VERSION=CMSSW_7_6_3 SCRAM_ARCH=slc6_amd64_gcc493 CHECKOUTSCRIPT=checkoutTauRefit.sh    SKIMMING_SCRIPT=Kappa/Skimming/zjet/skim_76_cfg.py ADDITIONAL_OUTPUT=false  
 compiler:
   - gcc
