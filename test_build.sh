@@ -15,9 +15,13 @@ else
     which wget;
 fi
 
-#X11/Xlib.h
+echo "# ================= #"
+echo "# Installing X11/Xlib.h "
+echo "# ================= #"
+curl -o /etc/yum.repos.d/cernca.repo -O https://raw.githubusercontent.com/cms-sw/cms-docker/9944f18ae1aa0546f39443e86fb839340c14d28a/slc7-builder/cernca.repo   
+curl -o /etc/pki/rpm-gpg/GPG-KEY-EUGridPMA-RPM-3 -O https://raw.githubusercontent.com/cms-sw/cms-docker/9944f18ae1aa0546f39443e86fb839340c14d28a/slc7-builder/GPG-KEY-EUGridPMA-RPM-3
+yum install -y libX11 libX11-devel
 #yum groupinstall X11
-
 yum clean all
 
 echo "# ================= #"
