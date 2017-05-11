@@ -15,6 +15,11 @@ else
     which wget;
 fi
 
+#X11/Xlib.h
+#yum groupinstall X11
+
+yum clean all
+
 echo "# ================= #"
 echo "# Setting /etc/cvmfs/config.d/cms.cern.ch.local BEFORE the mount "
 echo "# ================= #"
