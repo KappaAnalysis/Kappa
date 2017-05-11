@@ -14122,7 +14122,7 @@
     "generator": "madgraph-pythia8", 
     "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
     "n_events_generated": "29878415", 
-    "n_files": "599", 
+    "n_files": "596", 
     "process": "W2JetsToLNu", 
     "scenario": "PUMoriond17", 
     "xsec": 3144.5
