@@ -3,15 +3,42 @@ language: cpp
 services:
   - docker
 env:
-  - TEST_CMSSW_VERSION=CMSSW_5_3_29 SCRAM_ARCH=slc6_amd64_gcc472
-  - TEST_CMSSW_VERSION=CMSSW_7_6_3 SCRAM_ARCH=slc6_amd64_gcc493
-  - TEST_CMSSW_VERSION=CMSSW_8_0_14 SCRAM_ARCH=slc6_amd64_gcc530
+  - TEST_CMSSW_VERSION=CMSSW_8_0_26_patch1 SCRAM_ARCH=slc6_amd64_gcc530 CHECKOUTSCRIPT=checkoutCmssw80xPackagesForSkimming.py SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=false
+  - TEST_CMSSW_VERSION=CMSSW_7_6_3         SCRAM_ARCH=slc6_amd64_gcc493 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.py SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=false
+  #- TEST_CMSSW_VERSION=CMSSW_5_3_29 SCRAM_ARCH=slc6_amd64_gcc472 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.py SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=false
+  # skim_tutorial1_basic.py
+  - TEST_CMSSW_VERSION=CMSSW_7_4_14 SCRAM_ARCH=slc6_amd64_gcc491 CHECKOUTSCRIPT=checkoutTauRefit.py SKIMMING_SCRIPT=Kappa/Skimming/examples/skim_tutorial1_basic.py ADDITIONAL_OUTPUT=false
+  - TEST_CMSSW_VERSION=CMSSW_5_3_22 SCRAM_ARCH=slc6_amd64_gcc472 CHECKOUTSCRIPT=checkoutDummy.sh    SKIMMING_SCRIPT=Kappa/Skimming/examples/skim_tutorial1_basic.py ADDITIONAL_OUTPUT=false
+  - TEST_CMSSW_VERSION=CMSSW_5_3_22 SCRAM_ARCH=slc6_amd64_gcc472 CHECKOUTSCRIPT=checkoutDummy.sh    SKIMMING_SCRIPT=Kappa/Skimming/examples/skim_tutorial1_basic.py ADDITIONAL_OUTPUT=false
+  # skim_tutorial2_configured
+  - TEST_CMSSW_VERSION=CMSSW_7_4_14 SCRAM_ARCH=slc6_amd64_gcc491 CHECKOUTSCRIPT=checkoutTauRefit.py SKIMMING_SCRIPT=Kappa/Skimming/examples/skim_tutorial2_configured.py ADDITIONAL_OUTPUT=false
+  - TEST_CMSSW_VERSION=CMSSW_5_3_22 SCRAM_ARCH=slc6_amd64_gcc472 CHECKOUTSCRIPT=checkoutDummy.sh    SKIMMING_SCRIPT=Kappa/Skimming/examples/skim_tutorial2_configured.py ADDITIONAL_OUTPUT=false
+  # skim_tutorial4_full.py - empty
+  # skim_tutorial9_HEPMC.py - configuration loads a hepmc file and converts it to kappa skimmed file. does not run properly
+  #
+  # zjet/
+  # skim_53_cfg.py - re-do path to checkout script
+  #- TEST_CMSSW_VERSION=CMSSW_5_3_22 SCRAM_ARCH=slc6_amd64_gcc472 CHECKOUTSCRIPT=zjet/checkout53.sh    SKIMMING_SCRIPT=Kappa/Skimming/zjet/skim_53_cfg.py ADDITIONAL_OUTPUT=false
+  # skim_74_cfg.py - re-do path to checkout script
+  #- TEST_CMSSW_VERSION=CMSSW_7_4_6 SCRAM_ARCH=slc6_amd64_gcc491 CHECKOUTSCRIPT=zjet/checkout74.sh    SKIMMING_SCRIPT=Kappa/Skimming/zjet/skim_74_cfg.py ADDITIONAL_OUTPUT=false
+  # skim_76_cfg.py
+  - TEST_CMSSW_VERSION=CMSSW_7_6_3 SCRAM_ARCH=slc6_amd64_gcc493 CHECKOUTSCRIPT=checkoutTauRefit.sh    SKIMMING_SCRIPT=Kappa/Skimming/zjet/skim_76_cfg.py ADDITIONAL_OUTPUT=false  
 compiler:
   - gcc
 before_install:
   - docker pull claria/cvmfs-cms
+before_script:
+  - echo $HOME
+  - sudo curl -o $HOME/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
+  - echo $HOME
+  - sudo tar -xvf $HOME/short_rootfiles.tar -C /home/
+  - sudo ls /home/short
 script:
   - docker run --privileged -e TEST_CMSSW_VERSION=${TEST_CMSSW_VERSION}
                             -e SCRAM_ARCH=${SCRAM_ARCH}
-                            -v ${TRAVIS_BUILD_DIR}:/home/travis claria/cvmfs-cms /bin/bash 
+                            -e CHECKOUTSCRIPT=${CHECKOUTSCRIPT}
+                            -e SKIMMING_SCRIPT=${SKIMMING_SCRIPT}
+                            -e ADDITIONAL_OUTPUT=${ADDITIONAL_OUTPUT}
+                            -v ${TRAVIS_BUILD_DIR}:/home/travis 
+                            -v '/home/short:/home/short' claria/cvmfs-cms /bin/bash 
                             -c "cd /home/; /home/travis/test_build.sh"

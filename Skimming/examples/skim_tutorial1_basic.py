@@ -6,6 +6,7 @@
 # Kappa test: checkout script scripts/checkoutDummy.sh, scripts/checkoutTauRefit.sh
 
 import FWCore.ParameterSet.Config as cms
+import os
 
 testPaths = [
 	'/home/short',
