@@ -7,9 +7,16 @@
 
 import FWCore.ParameterSet.Config as cms
 
-testfile = 'file:///storage/b/fs6-mirror/fcolombo/kappatest/input/mc11.root'
+testPaths = [
+	'/home/short',
+	'/storage/b/fs6-mirror/fcolombo/kappatest/input', 
+	'/nfs/dust/cms/user/fcolombo/kappatest/input', 
+	'/nfs/dust/cms/user/glusheno/kappatest/input']
+testPath = [p for p in testPaths if os.path.exists(p)][0]
+testfile = "file:%s/"%testPath + (testPath == '/home/short')*"short_" + 'mc11.root'
+
 globaltag = 'START53_V27::All'
-maxevents = 100
+maxevents = 50 + (not testPath == '/home/short')*50
 print "GT:", globaltag, "| maxevents:", maxevents, "| file:", testfile
 
 # Basic process setup -----------------------------------------------------
