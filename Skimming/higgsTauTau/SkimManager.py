@@ -162,7 +162,7 @@ class SkimManagerBase:
 		config.JobType.allowUndistributedCMSSW = True
 		config.Site.blacklist = ["T3_FR_IPNL","T3_US_UCR","T2_BR_SPRACE","T1_RU_*","T2_RU_*","T3_US_UMiss","T2_US_Vanderbilt","T2_EE_Estonia"]
 		config.Data.splitting = 'FileBased'
-		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir))
+		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir.rstrip("/")))
 		config.Data.publication = False
 		config.Site.storageSite = self.storage_for_output
 		return config
@@ -450,7 +450,7 @@ class SkimManagerBase:
 		#se_path_base = 'srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/'
 		storageSite = self.skimdataset[akt_nick].get("storageSite",self.storage_for_output)
 		se_path_base = self.site_storage_access_dict[storageSite]["srm"]
-		gc_config['storage']['se path'] = se_path_base+"store/user/%s/higgs-kit/skimming/%s/GC_SKIM/%s/"%(self.getUsernameFromSiteDB_cache(),os.path.basename(self.workdir),datetime.datetime.today().strftime("%y%m%d_%H%M%S"))
+		gc_config['storage']['se path'] = se_path_base+"store/user/%s/higgs-kit/skimming/%s/GC_SKIM/%s/"%(self.getUsernameFromSiteDB_cache(),os.path.basename(self.workdir.rstrip("/")),datetime.datetime.today().strftime("%y%m%d_%H%M%S"))
 		#gc_config['storage']['se output pattern'] = "FULLEMBEDDING_CMSSW_8_0_21/@NICK@/@FOLDER@/@XBASE@_@GC_JOB_ID@.@XEXT@"
 		gc_config['CMSSW']['dataset'] = akt_nick+" : "+self.skimdataset[akt_nick]['dbs']
 		gc_config['CMSSW']['files per job'] = str(self.files_per_job(akt_nick))
