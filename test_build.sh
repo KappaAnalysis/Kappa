@@ -1,5 +1,18 @@
 #!/bin/sh
 
+echo "# ================= #"
+echo "# Checking wget "
+echo "# ================= #"
+if which wget; then 
+    echo "No wget. Will install"; 
+    yum install wget -y
+    if ! which wget; then 
+        echo "Could not get wget"
+        exit 1
+    fi
+else
+    echo "wget found"; 
+fi
 
 echo "# ================= #"
 echo "# Setting /etc/cvmfs/config.d/cms.cern.ch.local BEFORE the mount "
@@ -138,7 +151,7 @@ echo "# ================= #"
 echo "# curl -O root files"
 echo "# ================= #"
     files=(/home/short/*)
-    if [${#files[@]} -gt 0 ]
+    if [ ${#files[@]} -gt 0 ]
     then
         echo "curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download" # single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
         curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
