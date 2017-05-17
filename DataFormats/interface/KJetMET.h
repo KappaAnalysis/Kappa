@@ -138,6 +138,56 @@ struct KGenJet : public KLV
 };
 typedef std::vector<KGenJet> KGenJets;
 
+// copied from https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_X/DataFormats/PatCandidates/interface/MET.h#L151-L158
+// make sure it's up to date with the current enum found in MET.h
+//
+// suggestion from http://stackoverflow.com/questions/261963/how-can-i-iterate-over-an-enum/26910769#26910769 used
+// to create "iterable enum"
+namespace KMETUncertainty { enum Type
+{
+	JetResUp = 0,
+	JetResDown = 1,
+	JetEnUp = 2,
+	JetEnDown = 3,
+	MuonEnUp = 4,
+	MuonEnDown = 5,
+	ElectronEnUp = 6,
+	ElectronEnDown = 7,
+	TauEnUp = 8,
+	TauEnDown = 9,
+	UnclusteredEnUp = 10,
+	UnclusteredEnDown = 11,
+	PhotonEnUp = 12,
+	PhotonEnDown = 13,
+	NoShift = 14,
+	METUncertaintySize = 15,
+	JetResUpSmear = 16,
+	JetResDownSmear = 17,
+	METFullUncertaintySize = 18
+};
+
+static const std::vector<Type> All = {JetResUp,
+									  JetResDown,
+									  JetEnUp,
+									  JetEnDown,
+									  MuonEnUp,
+									  MuonEnDown,
+									  ElectronEnUp,
+									  ElectronEnDown,
+									  TauEnUp,
+									  TauEnDown,
+									  UnclusteredEnUp,
+									  UnclusteredEnDown,
+									  PhotonEnUp,
+									  PhotonEnDown,
+									  NoShift,
+									  METUncertaintySize,
+									  JetResUpSmear,
+									  JetResDownSmear,
+									  METFullUncertaintySize
+									 };
+}
+
 struct KMET : public KLV
 {
 	virtual ~KMET() {};
@@ -150,6 +200,8 @@ struct KMET : public KLV
 	std::size_t leptonSelectionHash;
 	ROOT::Math::SMatrix<double, 2, 2, ROOT::Math::MatRepSym<double, 2> > significance;
 
+	std::map<KMETUncertainty::Type, RMFLV> p4_shiftedByUncertainties;
+	std::map<KMETUncertainty::Type, double> sumEt_shiftedByUncertainties;
 };
 typedef std::vector<KMET> KMETs;
 

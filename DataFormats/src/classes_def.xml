@@ -17,6 +17,8 @@
 	<class name="KGenJets"/>
 	<class name="KGenParticle"/>
 	<class name="KGenParticles"/>
+	<class name="KLHEParticle"/>
+	<class name="KLHEParticles"/>
 	<class name="KGenPhoton"/>
 	<class name="KGenPhotons"/>
 	<class name="KGenTau"/>
@@ -33,6 +35,8 @@
 	<class name="KLeptonPairs"/>
 	<class name="KMET"/>
 	<class name="KMETs"/>
+	<class name="std::map<KMETUncertainty::Type, RMFLV>"/>
+	<class name="std::map<KMETUncertainty::Type, double>"/>
 	<class name="KMuon"/>
 	<class name="KMuons"/>
 	<class name="KMuonTriggerCandidate"/>

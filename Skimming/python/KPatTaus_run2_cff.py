@@ -33,7 +33,7 @@ rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose.key = cms.InputTag('rerunDisc
 rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose.loadMVAfromDB = cms.bool(True)
 rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose.mvaOutput_normalization = cms.string("RecoTauTag_tauIdMVAIsoDBoldDMwLT2016v1_mvaOutput_normalization")
 rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose.mapping = cms.VPSet(
-			cms.PSet(
+		cms.PSet(
 			category = cms.uint32(0),
 			cut = cms.string("RecoTauTag_tauIdMVAIsoDBoldDMwLT2016v1_WPEff90"),
 			variable = cms.string("pt"),
@@ -73,45 +73,23 @@ rerunDiscriminationByIsolationMVANewDMrun2v1VTight.mapping[0].cut = cms.string("
 rerunDiscriminationByIsolationMVANewDMrun2v1VVTight = rerunDiscriminationByIsolationMVANewDMrun2v1VLoose.clone()
 rerunDiscriminationByIsolationMVANewDMrun2v1VVTight.mapping[0].cut = cms.string("RecoTauTag_tauIdMVAIsoDBnewDMwLT2016v1_WPEff40")
 
-# create new tau collection including new ids
-newslimmedTaus = cms.EDProducer("PATTauIdUpdater",
-				  src = cms.InputTag("slimmedTaus"),
-				  update_PATTauDiscriminators = cms.VInputTag(
-				    cms.InputTag("rerunDiscriminationByIsolationMVAOldDMrun2v1raw"),
-				    cms.InputTag("rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose"),
-				    cms.InputTag("rerunDiscriminationByIsolationMVAOldDMrun2v1Loose"),
-				    cms.InputTag("rerunDiscriminationByIsolationMVAOldDMrun2v1Medium"),
-				    cms.InputTag("rerunDiscriminationByIsolationMVAOldDMrun2v1Tight"),
-				    cms.InputTag("rerunDiscriminationByIsolationMVAOldDMrun2v1VTight"),
-				    cms.InputTag("rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight"),
-                                    cms.InputTag("rerunDiscriminationByIsolationMVANewDMrun2v1raw"),
-                                    cms.InputTag("rerunDiscriminationByIsolationMVANewDMrun2v1VLoose"),
-                                    cms.InputTag("rerunDiscriminationByIsolationMVANewDMrun2v1Loose"),
-                                    cms.InputTag("rerunDiscriminationByIsolationMVANewDMrun2v1Medium"),
-                                    cms.InputTag("rerunDiscriminationByIsolationMVANewDMrun2v1Tight"),
-                                    cms.InputTag("rerunDiscriminationByIsolationMVANewDMrun2v1VTight"),
-                                    cms.InputTag("rerunDiscriminationByIsolationMVANewDMrun2v1VVTight")
-				   )
-				  )
-
 ## ------------------------------------------------------------------------
 ## Definition of sequences
 
 ## run this to get latest greatest HPS taus
 makeKappaTaus = cms.Sequence(
-  rerunDiscriminationByIsolationMVAOldDMrun2v1raw +
-  rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose +
-  rerunDiscriminationByIsolationMVAOldDMrun2v1Loose +
-  rerunDiscriminationByIsolationMVAOldDMrun2v1Medium +
-  rerunDiscriminationByIsolationMVAOldDMrun2v1Tight +
-  rerunDiscriminationByIsolationMVAOldDMrun2v1VTight +
-  rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight +
-  rerunDiscriminationByIsolationMVANewDMrun2v1raw +
-  rerunDiscriminationByIsolationMVANewDMrun2v1VLoose +
-  rerunDiscriminationByIsolationMVANewDMrun2v1Loose +
-  rerunDiscriminationByIsolationMVANewDMrun2v1Medium +
-  rerunDiscriminationByIsolationMVANewDMrun2v1Tight +
-  rerunDiscriminationByIsolationMVANewDMrun2v1VTight +
-  rerunDiscriminationByIsolationMVANewDMrun2v1VVTight +
-  newslimmedTaus
-    )
+	rerunDiscriminationByIsolationMVAOldDMrun2v1raw +
+	rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose +
+	rerunDiscriminationByIsolationMVAOldDMrun2v1Loose +
+	rerunDiscriminationByIsolationMVAOldDMrun2v1Medium +
+	rerunDiscriminationByIsolationMVAOldDMrun2v1Tight +
+	rerunDiscriminationByIsolationMVAOldDMrun2v1VTight +
+	rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight +
+	rerunDiscriminationByIsolationMVANewDMrun2v1raw +
+	rerunDiscriminationByIsolationMVANewDMrun2v1VLoose +
+	rerunDiscriminationByIsolationMVANewDMrun2v1Loose +
+	rerunDiscriminationByIsolationMVANewDMrun2v1Medium +
+	rerunDiscriminationByIsolationMVANewDMrun2v1Tight +
+	rerunDiscriminationByIsolationMVANewDMrun2v1VTight +
+	rerunDiscriminationByIsolationMVANewDMrun2v1VVTight
+)

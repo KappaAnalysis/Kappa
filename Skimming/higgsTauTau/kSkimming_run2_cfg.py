@@ -52,7 +52,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	from Kappa.Skimming.KSkimming_template_cfg import process
 	## ------------------------------------------------------------------------
 
-	# count number of events before doing anything elese
+	# count number of events before doing anything else
 	process.p *= process.nEventsTotal
 	process.p *= process.nNegEventsTotal
 
@@ -61,7 +61,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	# new tau id only available for 8_0_20 (I believe) and above
 	if tools.is_above_cmssw_version([8,0,20]):
-		taus = "newslimmedTaus"
+		taus = "NewTauIDsEmbedded"
 	else:
 		taus = "slimmedTaus"
 	isSignal = datasetsHelper.isSignal(nickname)
@@ -286,11 +286,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	if tools.is_above_cmssw_version([8]):
 		process.kappaTuple.Electrons.ids = cms.vstring(
-			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
-			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
-			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
-			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
-			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values",
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto",
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose",
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium",
@@ -314,8 +309,31 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# new tau id only available for 8_0_20 (I believe) and above
 	if tools.is_above_cmssw_version([8,0,20]):
 		process.load('RecoTauTag.Configuration.loadRecoTauTagMVAsFromPrepDB_cfi')
-		process.load("Kappa.Skimming.KPatTaus_run2_cff")	
-		process.p *= (process.makeKappaTaus)
+		process.load("Kappa.Skimming.KPatTaus_run2_cff")
+		process.p *= ( process.makeKappaTaus )
+
+		# embed new id's into new tau collection
+		embedID = cms.EDProducer("PATTauIDEmbedder",
+			src = cms.InputTag('slimmedTaus'),
+			tauIDSources = cms.PSet(
+				rerunDiscriminationByIsolationMVAOldDMrun2v1raw = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1raw'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1Loose = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1Loose'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1Medium = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1Medium'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1Tight = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1Tight'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1VTight = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1VTight'),
+				rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1raw = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1raw'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1VLoose = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1VLoose'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1Loose = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1Loose'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1Medium = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1Medium'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1Tight = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1Tight'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1VTight = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1VTight'),
+				rerunDiscriminationByIsolationMVANewDMrun2v1VVTight = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1VVTight')
+			),
+		)
+		setattr(process, taus, embedID)
+		process.p *= getattr(process, taus)
 	
 	process.kappaTuple.active += cms.vstring('PatTaus')
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()

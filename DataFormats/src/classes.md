@@ -38,6 +38,7 @@ Plural forms are standard vectors of the classes with singular class names.
 + KLV                    KLVs
 + KGenJet                KGenJets
 + KGenParticle           KGenParticles
++ KLHEParticle           KLHEParticles
 + KGenPhoton             KGenPhotons
 + KGenTau                KGenTaus
 + KHit                   KHits

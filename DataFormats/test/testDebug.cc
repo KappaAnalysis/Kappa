@@ -26,6 +26,7 @@ int main() {
 	cout << "* KLV: " << KLV() << endl << endl;
 	cout << "* KGenJet: " << KGenJet() << endl << endl;
 	cout << "* KGenParticle: " << KGenParticle() << endl << endl;
+	cout << "* KLHEParticle: " << KLHEParticle() << endl << endl;
 	cout << "* KGenPhoton: " << KGenPhoton() << endl << endl;
 	cout << "* KGenTau: " << KGenTau() << endl << endl;
 	cout << "* KHit: " << KHit() << endl << endl;

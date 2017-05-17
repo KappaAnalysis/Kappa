@@ -54,6 +54,23 @@ public:
 			out.hfHadronFraction = in.Type6EtFraction();
 			out.hfEMFraction = in.Type7EtFraction();
 		}
+		#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 6) || (CMSSW_MAJOR_VERSION > 7)
+			// retrieve and save shifted four vector and sumEt of MET for all uncertainties
+			for (const auto metUnc : KMETUncertainty::All)
+			{
+				// The following 'uncertainties' result in runtime errors.
+				// No idea for what purpose they exist in pat::MET::METUncertainty
+				if (metUnc == KMETUncertainty::NoShift ||
+					metUnc == KMETUncertainty::METUncertaintySize ||
+					metUnc == KMETUncertainty::JetResUpSmear ||
+					metUnc == KMETUncertainty::JetResDownSmear ||
+					metUnc == KMETUncertainty::METFullUncertaintySize)
+					continue;
+				// For now, only type-1 corrected MET (default) is saved.
+				copyP4(in.shiftedP4(static_cast<pat::MET::METUncertainty>(metUnc)),out.p4_shiftedByUncertainties[static_cast<KMETUncertainty::Type>(metUnc)]);
+				out.sumEt_shiftedByUncertainties[static_cast<KMETUncertainty::Type>(metUnc)] = in.shiftedSumEt(static_cast<pat::MET::METUncertainty>(metUnc));
+			}
+		#endif
 	}
 
 protected:
