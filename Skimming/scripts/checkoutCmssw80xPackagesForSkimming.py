@@ -100,7 +100,7 @@ def checkoutPackages(args):
 		#Remove the .git folder as it is not needed and contains a lot of useless data
 		"rm -rf RecoEgamma/ElectronIdentification/data/.git",
 		#Check out Kappa
-		"git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges"
+		"git clone https://github.com/KappaAnalysis/Kappa.git"
 	]
 	execCommands(commands)
 	return
