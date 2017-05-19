@@ -4994,7 +4994,8 @@
     "n_events_generated": "499400", 
     "n_files": "8", 
     "process": "GluGluHToWWTo2L2Nu_M120", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.075
   }, 
   "GluGluHToWWTo2L2NuM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -5013,7 +5014,8 @@
     "n_events_generated": "492200", 
     "n_files": "7", 
     "process": "GluGluHToWWTo2L2Nu_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.001
   }, 
   "GluGluHToWWTo2L2NuM130_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -5032,7 +5034,8 @@
     "n_events_generated": "500000", 
     "n_files": "10", 
     "process": "GluGluHToWWTo2L2Nu_M130", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 0.935
   }, 
   "GluGluToHToTauTauM100_Fall11_PUS6_7TeV_AODSIM_powheg-pythia6": {
     "campaign": "Fall11", 
@@ -13871,7 +13874,8 @@
     "n_events_generated": "500000", 
     "n_files": "9", 
     "process": "VBFHToWWTo2L2Nu_M120", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 0.0893
   }, 
   "VBFHToWWTo2L2NuM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -13890,7 +13894,8 @@
     "n_events_generated": "499200", 
     "n_files": "7", 
     "process": "VBFHToWWTo2L2Nu_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 0.0858
   }, 
   "VBFHToWWTo2L2NuM130_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -13909,7 +13914,8 @@
     "n_events_generated": "498469", 
     "n_files": "7", 
     "process": "VBFHToWWTo2L2Nu_M130", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 0.0825
   }, 
   "VBFHiggs0MToTauTauM125p6_Summer12_PUS10_8TeV_AODSIM_JHUGenV4": {
     "campaign": "Summer12", 
