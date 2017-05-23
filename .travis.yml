@@ -3,7 +3,7 @@ language: cpp
 services:
   - docker
 env:
-  - TEST_CMSSW_VERSION=CMSSW_8_0_26_patch1 SCRAM_ARCH=slc6_amd64_gcc530 CHECKOUTSCRIPT=checkoutCmssw80xPackagesForSkimming.py SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=false
+  #- TEST_CMSSW_VERSION=CMSSW_8_0_26_patch1 SCRAM_ARCH=slc6_amd64_gcc530 CHECKOUTSCRIPT=checkoutCmssw80xPackagesForSkimming.py SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=false
   - TEST_CMSSW_VERSION=CMSSW_7_6_3         SCRAM_ARCH=slc6_amd64_gcc493 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.py SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=false
   #- TEST_CMSSW_VERSION=CMSSW_5_3_29 SCRAM_ARCH=slc6_amd64_gcc472 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.py SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=false
   # skim_tutorial1_basic.py - checkoutDummy.sh and checkoutTauRefit.py are not available
