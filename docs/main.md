@@ -297,7 +297,7 @@ or in the [change log](https://github.com/KappaAnalysis/Kappa/compare/71f3f8e...
 ### [DataFormats](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats)
 Data formats for objects that can be skimmed with Kappa
    * [DataFormats/interface](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/interface)
-   * the file names and class names tell you the object it defines according to the [naming scheme](#main-naming)
+   * the file names and class names tell you the object it defines according to the [naming scheme](#naming-scheme-main-naming)
    * these are the variables and functions you can use in the analysis
        * many classes come with functions that can combine information of the variables
    * [DataFormats/src/classes.UP](https://github.com/KappaAnalysis/Kappa/tree/dictchanges/DataFormats/src/classes.UP)
