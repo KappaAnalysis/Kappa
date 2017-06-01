@@ -161,6 +161,7 @@ protected:
 		}
 #endif
 
+		std::sort(out.isolationChargedHadronCandidates.begin(), out.isolationChargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());
 		std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), KLVSorter<KPFCandidate>());
