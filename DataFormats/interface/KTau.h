@@ -68,6 +68,10 @@ struct KTau : public KBasicTau
 	KPFCandidates chargedHadronCandidates;
 	KPFCandidates gammaCandidates;
 
+	KPFCandidates isolationChargedHadronCandidates;
+	KPFCandidates jet_hps_chargedHadronCandidates;
+	KTracks jet_hps_chargedHadronCandidates_tracks;
+
 	int tauKey;
 
 	inline unsigned long nCandidates()

@@ -105,18 +105,54 @@ protected:
 	virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
 	{
 #if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
+		std::vector<pat::PackedCandidate const*> tau_picharge;
+
 		for(size_t i = 0; i < in.signalChargedHadrCands().size(); ++i)
 		{
+			pat::PackedCandidate const* single_pion = dynamic_cast<pat::PackedCandidate const*>(in.signalChargedHadrCands()[i].get());
+			tau_picharge.push_back(single_pion);
+
 			KPFCandidate outCandidate;
 			KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalChargedHadrCands()[i].get()), outCandidate);
 			out.chargedHadronCandidates.push_back(outCandidate);
 		}
+
+		for(size_t i = 0; i < in.isolationChargedHadrCands().size(); ++i)
+		{
+			pat::PackedCandidate const* single_pion = dynamic_cast<pat::PackedCandidate const*>(in.isolationChargedHadrCands()[i].get());
+			tau_picharge.push_back(single_pion);
+
+			KPFCandidate outCandidate;
+			KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.isolationChargedHadrCands()[i].get()), outCandidate);
+			out.isolationChargedHadronCandidates.push_back(outCandidate);
+		}
+		out.jet_hps_chargedHadronCandidates = out.chargedHadronCandidates;
+		out.jet_hps_chargedHadronCandidates.insert(out.jet_hps_chargedHadronCandidates.end(), out.isolationChargedHadronCandidates.begin(), out.isolationChargedHadronCandidates.end());
+
+		for(unsigned pi_i = 0 ; pi_i < tau_picharge.size() ; pi_i++)
+		{
+			if (tau_picharge[pi_i]->bestTrack() != nullptr)
+			{
+				out.jet_hps_chargedHadronCandidates_tracks.push_back(KTrack());
+				KTrackProducer::fillTrack(*tau_picharge[pi_i]->bestTrack(), out.jet_hps_chargedHadronCandidates_tracks.back());
+			}
+			else// at least fill reference point
+			{
+				//dout("no associated track ");
+				out.jet_hps_chargedHadronCandidates_tracks.back().ref.SetXYZ(tau_picharge[pi_i]->vertex().x(), tau_picharge[pi_i]->vertex().y(), tau_picharge[pi_i]->vertex().z());
+			}
+		}
+
 		for(size_t i = 0; i < in.signalNeutrHadrCands().size(); ++i)
 		{
+			pat::PackedCandidate const* single_pion = dynamic_cast<pat::PackedCandidate const*>(in.isolationChargedHadrCands()[i].get());
+			tau_picharge.push_back(single_pion);
+
 			KLV tmp;
 			copyP4(in.signalNeutrHadrCands()[i].get()->p4(), tmp.p4);
 			out.piZeroCandidates.push_back(tmp);
 		}
+
 		for(size_t i = 0; i < in.signalGammaCands().size(); ++i)
 		{
 			KPFCandidate outCandidate;
