@@ -146,19 +146,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 						out.isolationChargedHadronCandidates.push_back(outCandidate);
 					}
 
-					out.jet_hps_chargedHadronCandidates = out.chargedHadronCandidates;
-					out.jet_hps_chargedHadronCandidates.insert(out.jet_hps_chargedHadronCandidates.end(), out.isolationChargedHadronCandidates.begin(), out.isolationChargedHadronCandidates.end());
-
-					for(unsigned pi_i = 0; pi_i < tau_picharge.size() ; pi_i++)
-					{
-						out.jet_hps_chargedHadronCandidates_tracks.push_back(KTrack());
-						if (tau_picharge[pi_i]->bestTrack() != nullptr)
-							KTrackProducer::fillTrack(*tau_picharge[pi_i]->bestTrack(), out.jet_hps_chargedHadronCandidates_tracks.back());
-							//out.map_pions_to_tracks[&(out.chargedHadronCandidates[pi_i])] = &(out.jet_hps_chargedHadronCandidates_tracks.back());
-						else
-							out.jet_hps_chargedHadronCandidates_tracks.back().ref.SetXYZ(tau_picharge[pi_i]->vertex().x(), tau_picharge[pi_i]->vertex().y(), tau_picharge[pi_i]->vertex().z());
-					}
-
 					std::sort(out.isolationChargedHadronCandidates.begin(), out.isolationChargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 				}
 
@@ -202,7 +189,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				_lumi_tree_pointer->Bronch(names[i].c_str(), "KTauMetadata", &discriminatorMap[names[i]]);
 
 				const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-				dout(pset);
 				kshortinformation[names[i]] =  pset.getUntrackedParameter<bool>("kshortinformation", false);
 				preselectionDiscr[names[i]] = pset.getParameter< std::vector<std::string> >("preselectOnDiscriminators");
 				binaryDiscrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("binaryDiscrWhitelist");
