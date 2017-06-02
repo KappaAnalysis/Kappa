@@ -6,8 +6,7 @@
 
 #include <algorithm>
 
-#include "KBasic.h"
-
+// #include "KTrack.h"
 /// Particle base class for generator particles or candidates
 struct KParticle : public KLV
 {
@@ -257,6 +256,7 @@ struct KPFCandidate : public KParticle
 	double ecalEnergy;        //< energy deposited in ECAL
 	double hcalEnergy;        //< energy deposited in HCAL
 	unsigned short fromFirstPVFlag;
+	KTrack bestTrack;
 };
 typedef std::vector<KPFCandidate> KPFCandidates;
 
