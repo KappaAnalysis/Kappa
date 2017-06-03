@@ -8452,6 +8452,22 @@
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
   }, 
+  "SUSYGluGluToBBHToTauTauM3200_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-3200_TuneCUETP8M1_13TeV-amcatnlo-pythia8/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "493000", 
+    "n_files": "986", 
+    "process": "SUSYGluGluToBBHToTauTau_M3200", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
   "SUSYGluGluToBBHToTauTauM350QshDown_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
     "campaign": "agilbertSummer16", 
     "data": false, 
