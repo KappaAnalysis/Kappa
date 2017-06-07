@@ -7146,6 +7146,38 @@
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
   }, 
+  "SUSYGluGluToBBHToTauTauM1200QshDown_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-1200_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshDown/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M1200_QshDown", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
+  "SUSYGluGluToBBHToTauTauM1200QshUp_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-1200_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshUp/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "497500", 
+    "n_files": "995", 
+    "process": "SUSYGluGluToBBHToTauTau_M1200_QshUp", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
   "SUSYGluGluToBBHToTauTauM1200_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
       "Skim_Fall15_Full"
@@ -7204,6 +7236,22 @@
     "process": "SUSYGluGluToBBHToTauTau_M1200", 
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
+  }, 
+  "SUSYGluGluToBBHToTauTauM1200_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-1200_TuneCUETP8M1_13TeV-amcatnlo-pythia8/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "498500", 
+    "n_files": "997", 
+    "process": "SUSYGluGluToBBHToTauTau_M1200", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
   }, 
   "SUSYGluGluToBBHToTauTauM120_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
@@ -7264,6 +7312,38 @@
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
   }, 
+  "SUSYGluGluToBBHToTauTauM130QshDown_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-130_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshDown/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M130_QshDown", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
+  "SUSYGluGluToBBHToTauTauM130QshUp_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-130_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshUp/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "497500", 
+    "n_files": "995", 
+    "process": "SUSYGluGluToBBHToTauTau_M130_QshUp", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
   "SUSYGluGluToBBHToTauTauM130_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
       "Skim_Fall15_Full"
@@ -7322,6 +7402,22 @@
     "process": "SUSYGluGluToBBHToTauTau_M130", 
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
+  }, 
+  "SUSYGluGluToBBHToTauTauM130_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-130_TuneCUETP8M1_13TeV-amcatnlo-pythia8/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "487000", 
+    "n_files": "974", 
+    "process": "SUSYGluGluToBBHToTauTau_M130", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
   }, 
   "SUSYGluGluToBBHToTauTauM1400_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
@@ -7639,6 +7735,38 @@
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
   }, 
+  "SUSYGluGluToBBHToTauTauM1800QshDown_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-1800_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshDown/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M1800_QshDown", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
+  "SUSYGluGluToBBHToTauTauM1800QshUp_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-1800_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshUp/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "498500", 
+    "n_files": "997", 
+    "process": "SUSYGluGluToBBHToTauTau_M1800_QshUp", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
   "SUSYGluGluToBBHToTauTauM1800_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
       "Skim_Fall15_Full"
@@ -7697,6 +7825,22 @@
     "process": "SUSYGluGluToBBHToTauTau_M1800", 
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
+  }, 
+  "SUSYGluGluToBBHToTauTauM1800_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-1800_TuneCUETP8M1_13TeV-amcatnlo-pythia8/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "498500", 
+    "n_files": "997", 
+    "process": "SUSYGluGluToBBHToTauTau_M1800", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
   }, 
   "SUSYGluGluToBBHToTauTauM180_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
@@ -7816,6 +7960,38 @@
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
   }, 
+  "SUSYGluGluToBBHToTauTauM200QshDown_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-200_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshDown/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M200_QshDown", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
+  "SUSYGluGluToBBHToTauTauM200QshUp_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-200_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshUp/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M200_QshUp", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
   "SUSYGluGluToBBHToTauTauM200_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
       "Skim_Fall15_Full"
@@ -7874,6 +8050,22 @@
     "process": "SUSYGluGluToBBHToTauTau_M200", 
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
+  }, 
+  "SUSYGluGluToBBHToTauTauM200_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-200_TuneCUETP8M1_13TeV-amcatnlo-pythia8/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M200", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
   }, 
   "SUSYGluGluToBBHToTauTauM2300_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
@@ -8170,6 +8362,38 @@
     "scenario": "PUMoriond17", 
     "xsec": 1.0
   }, 
+  "SUSYGluGluToBBHToTauTauM3200QshDown_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-3200_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshDown/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "499000", 
+    "n_files": "998", 
+    "process": "SUSYGluGluToBBHToTauTau_M3200_QshDown", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
+  "SUSYGluGluToBBHToTauTauM3200QshUp_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-3200_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshUp/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "489500", 
+    "n_files": "979", 
+    "process": "SUSYGluGluToBBHToTauTau_M3200_QshUp", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
   "SUSYGluGluToBBHToTauTauM3200_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
       "Skim_Fall15_Full"
@@ -8227,6 +8451,54 @@
     "process": "SUSYGluGluToBBHToTauTau_M3200", 
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
+  }, 
+  "SUSYGluGluToBBHToTauTauM3200_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-3200_TuneCUETP8M1_13TeV-amcatnlo-pythia8/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "493000", 
+    "n_files": "986", 
+    "process": "SUSYGluGluToBBHToTauTau_M3200", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
+  "SUSYGluGluToBBHToTauTauM350QshDown_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-350_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshDown/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M350_QshDown", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
+  "SUSYGluGluToBBHToTauTauM350QshUp_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-350_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshUp/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "499000", 
+    "n_files": "998", 
+    "process": "SUSYGluGluToBBHToTauTau_M350_QshUp", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
   }, 
   "SUSYGluGluToBBHToTauTauM350_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
@@ -8286,6 +8558,22 @@
     "process": "SUSYGluGluToBBHToTauTau_M350", 
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
+  }, 
+  "SUSYGluGluToBBHToTauTauM350_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-350_TuneCUETP8M1_13TeV-amcatnlo-pythia8/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M350", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
   }, 
   "SUSYGluGluToBBHToTauTauM400_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
@@ -8544,6 +8832,38 @@
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
   }, 
+  "SUSYGluGluToBBHToTauTauM700QshDown_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-700_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshDown/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M700_QshDown", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
+  "SUSYGluGluToBBHToTauTauM700QshUp_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-700_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshUp/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "499500", 
+    "n_files": "999", 
+    "process": "SUSYGluGluToBBHToTauTau_M700_QshUp", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
   "SUSYGluGluToBBHToTauTauM700_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
       "Skim_Fall15_Full"
@@ -8603,18 +8923,18 @@
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
   }, 
-  "SUSYGluGluToBBHToTauTauM700_agilbert_miniaod_13TeV_USER_amcatnlo-pythia8": {
-    "campaign": "agilbert", 
+  "SUSYGluGluToBBHToTauTauM700_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
     "data": false, 
-    "dbs": "/SUSYGluGluToBBHToTauTau_M-700_TuneCUETP8M1_13TeV-amcatnlo-pythia8/agilbert-miniaod-prod-100517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-700_TuneCUETP8M1_13TeV-amcatnlo-pythia8/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
     "energy": "13", 
     "extension": "", 
     "format": "USER", 
     "generator": "amcatnlo-pythia8", 
     "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
     "inputDBS": "phys03", 
-    "n_events_generated": "483000", 
-    "n_files": "483", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
     "process": "SUSYGluGluToBBHToTauTau_M700", 
     "scenario": "miniaod", 
     "xsec": 1.0
@@ -8677,6 +8997,38 @@
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
   }, 
+  "SUSYGluGluToBBHToTauTauM80QshDown_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-80_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshDown/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M80_QshDown", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
+  "SUSYGluGluToBBHToTauTauM80QshUp_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-80_TuneCUETP8M1_13TeV-amcatnlo-pythia8-QshUp/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "498500", 
+    "n_files": "997", 
+    "process": "SUSYGluGluToBBHToTauTau_M80_QshUp", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
+  }, 
   "SUSYGluGluToBBHToTauTauM80_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
       "Skim_Fall15_Full"
@@ -8735,6 +9087,22 @@
     "process": "SUSYGluGluToBBHToTauTau_M80", 
     "scenario": "PUMoriond17", 
     "xsec": "1.0"
+  }, 
+  "SUSYGluGluToBBHToTauTauM80_agilbertSummer16_miniaod_13TeV_USER_amcatnlo-pythia8": {
+    "campaign": "agilbertSummer16", 
+    "data": false, 
+    "dbs": "/SUSYGluGluToBBHToTauTau_M-80_TuneCUETP8M1_13TeV-amcatnlo-pythia8/agilbert-miniaod-prod-150517-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "500000", 
+    "n_files": "1000", 
+    "process": "SUSYGluGluToBBHToTauTau_M80", 
+    "scenario": "miniaod", 
+    "xsec": 1.0
   }, 
   "SUSYGluGluToBBHToTauTauM900_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
