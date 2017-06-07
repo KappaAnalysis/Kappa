@@ -6489,7 +6489,8 @@
     "n_events_generated": "21948126", 
     "n_files": "502", 
     "process": "QCD", 
-    "scenario": "PU25nsData2015v1"
+    "scenario": "PU25nsData2015v1",
+    "xsec": 381304
   }, 
   "QCD_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8": {
     "Moriond17": [
