@@ -5926,8 +5926,8 @@
     "n_events_generated": "125304", 
     "n_files": "76", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
-    "xsec": "1"
+    "scenario": "RunIISummer16MiniAODv2",
+    "xsec": 1.0
   }, 
   "MuEG_Run2012A_22Jan2013v1_8TeV_AOD": {
     "campaign": "Run2012A", 
