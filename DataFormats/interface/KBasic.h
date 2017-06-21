@@ -53,7 +53,6 @@ struct KBeamSpot
 	double sigmaZ;                 ///< sigma in z direction
 
 	ROOT::Math::SMatrix<double, 7, 7, ROOT::Math::MatRepSym<double, 7> > covariance;
-	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > rotatedCovariance3D;
 };
 typedef std::vector<KBeamSpot> KBeamSpots;
 
