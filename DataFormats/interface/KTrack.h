@@ -34,7 +34,7 @@ struct KTrack : public KLV
 	virtual ~KTrack() {};
 
 	/// reference point (formerly known as "vertex", not the PV)
-	RMPoint ref, innerPosition;
+	RMPoint ref;
 
 	/// charge and fit quality
 	short charge;
