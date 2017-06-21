@@ -36,6 +36,7 @@ public:
 		out.errPt = in.ptError();
 		out.errEta = in.etaError();
 		out.errPhi = in.phiError();
+		out.innerPosition  = in.innerPosition();
 
 		// Reference point:
 		out.ref = in.referencePoint();

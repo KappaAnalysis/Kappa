@@ -34,10 +34,10 @@ struct KTrack : public KLV
 	virtual ~KTrack() {};
 
 	/// reference point (formerly known as "vertex", not the PV)
-	RMPoint ref;
+	RMPoint ref, innerPosition;
 
 	/// charge and fit quality
-	char charge;
+	short charge;
 	float chi2, nDOF;
 	float errPt, errEta, errPhi, errDxy, errDz;  ///< errors on four vector and distances
 	float d2D, d3D;      ///< impact parameters dxy and d calculated considering the magnetic field
