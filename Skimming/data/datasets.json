@@ -4918,22 +4918,28 @@
     "scenario": "imputPromptDoubleMu_miniAODv2", 
     "xsec": 780.0
   }, 
-  "Embedding2016H_TauTauFinalState_imputPromptDoubleMumirrorminiAODv2_13TeV_USER": {
+  "Embedding2016H_TauTauFinalState_imputPromptDoubleMumirrorminiAODv3_13TeV_USER": {
+	  "Moriond17": [
+      "Skim_Base", 
+      "Skim_Embedding_Rereco", 
+      "Skim_Embedding_PromptReco", 
+      "Skim_Moriond17_Embedding"
+    ], 
     "campaign": "TauTauFinalState", 
     "data": true, 
-    "dbs": "/EmbeddingRun2016H/TauTauFinalState-imputPromptDoubleMu_mirror_miniAOD-v2/USER", 
+    "dbs": "/EmbeddingRun2016H/TauTauFinalState-imputPromptDoubleMu_mirror_miniAOD-v3/USER", 
     "embedded": true, 
     "energy": "13", 
     "extension": "", 
     "format": "USER", 
     "generator": "", 
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7", 
+    "globalTag": "80X_dataRun2_Prompt_v16", 
     "inputDBS": "phys03", 
-    "n_events_generated": "0", 
-    "n_files": "0", 
+    "n_events_generated": "2216097", 
+    "n_files": "9218", 
     "process": "Embedding2016H", 
-    "scenario": "imputPromptDoubleMu_mirror_miniAODv2", 
-    "xsec": 816.8
+    "scenario": "imputPromptDoubleMu_mirror_miniAODv3", 
+    "xsec": 821.9
   }, 
   "EmbeddingMCRunIISummer16DR80_ElMuFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USER_pythia8": {
     "Moriond17": [
