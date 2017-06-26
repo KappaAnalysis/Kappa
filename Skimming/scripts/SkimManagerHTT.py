@@ -636,9 +636,12 @@ class SkimManagerBase:
 				sys.exit()
 
 	@classmethod
-	def get_latest_subdir(self,work_base):
+	def get_latest_subdir(self, work_base):
 		all_subdirs = [os.path.join(work_base,d) for d in os.listdir(work_base) if os.path.isdir(work_base+d)]
-		return(max(all_subdirs, key=os.path.getmtime))
+		if len(all_subdirs) == 0:
+			return None
+		else:
+			return max(all_subdirs, key=os.path.getmtime)
 
 	@classmethod
 	def wait_for_user_confirmation(self,true_false=False):
@@ -694,6 +697,8 @@ if __name__ == "__main__":
  
 	if args.workdir == parser.get_default("workdir"):
 		latest_subdir = SkimManagerBase.get_latest_subdir(work_base=work_base)
+		if latest_subdir is None:
+			latest_subdir = args.workdir
 		print '\nNo workdir specified. Do you want to continue the existing skim in '+latest_subdir+' ? [Y/n] (Selecting no will create new workdir)'
 		if SkimManagerBase.wait_for_user_confirmation(true_false=True):
 			args.workdir=latest_subdir
