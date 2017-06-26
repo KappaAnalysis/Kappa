@@ -4919,7 +4919,7 @@
     "xsec": 780.0
   }, 
   "Embedding2016H_TauTauFinalState_imputPromptDoubleMumirrorminiAODv3_13TeV_USER": {
-	  "Moriond17": [
+    "Moriond17": [
       "Skim_Base", 
       "Skim_Embedding_Rereco", 
       "Skim_Embedding_PromptReco", 
@@ -5042,6 +5042,22 @@
     "scenario": "PUSpring16RAWAODSIM", 
     "xsec": 1.397
   }, 
+  "GluGluH2JetsToTauTauM125CPmixingmaxmixJHU_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_unspecified": {
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/GluGluH2JetsToTauTau_M125_13TeV_CPmixing_maxmix_JHU/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "unspecified", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_miniAODv2_v1", 
+    "inputDBS": "global", 
+    "n_events_generated": "1496800", 
+    "n_files": "35", 
+    "process": "GluGluH2JetsToTauTau_M125_CPmixing_maxmix_JHU", 
+    "scenario": "PUMoriond17", 
+    "xsec": 3.0469376
+  }, 
   "GluGluH2JetsToTauTauM125CPmixingpseudoscalarJHU_RunIISpring16MiniAODv2_PUSpring16RAWAODSIM_13TeV_MINIAOD_unspecified": {
     "Moriond17": [
       "MC_Spring16_v1", 
@@ -5062,6 +5078,22 @@
     "process": "GluGluH2JetsToTauTau_M125_CPmixing_pseudoscalar_JHU", 
     "scenario": "PUSpring16RAWAODSIM", 
     "xsec": 2.097
+  }, 
+  "GluGluH2JetsToTauTauM125CPmixingpseudoscalarJHU_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_unspecified": {
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/GluGluH2JetsToTauTau_M125_13TeV_CPmixing_pseudoscalar_JHU/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "unspecified", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_miniAODv2_v1", 
+    "inputDBS": "global", 
+    "n_events_generated": "1478400", 
+    "n_files": "39", 
+    "process": "GluGluH2JetsToTauTau_M125_CPmixing_pseudoscalar_JHU", 
+    "scenario": "PUMoriond17", 
+    "xsec": 3.0469376
   }, 
   "GluGluH2JetsToTauTauM125CPmixingsmJHU_RunIISpring16MiniAODv2_PUSpring16RAWAODSIM_13TeV_MINIAOD_unspecified": {
     "Moriond17": [
@@ -5246,6 +5278,22 @@
     "n_files": "37", 
     "process": "GluGluHToTauTau_M125", 
     "scenario": "PUSpring16RAWAODSIM", 
+    "xsec": 3.0469376
+  }, 
+  "GluGluHToTauTauM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg": {
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/GluGluHToTauTau_M125_13TeV_powheg_herwigpp/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "powheg", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_miniAODv2_v1", 
+    "inputDBS": "global", 
+    "n_events_generated": "1499536", 
+    "n_files": "19", 
+    "process": "GluGluHToTauTau_M125", 
+    "scenario": "PUMoriond17", 
     "xsec": 3.0469376
   }, 
   "GluGluHToTauTauM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
