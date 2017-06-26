@@ -255,12 +255,13 @@ class DataSetManagerBase:
 			self.dataset.base_dict.pop(del_nick)
 	def print_skim(self, keys_to_print):
 		nicks = self.get_nick_list()
+		print "---------------------------------------------------------"
 		for nick in nicks:
 			print nick
 			for item_to_print in keys_to_print:
 				if item_to_print in self.dataset.base_dict[nick].keys():
-					print item_to_print,"\t:\t",self.dataset.base_dict[nick][item_to_print]
-					print "---------------------------------------------------------"
+					print "%15s : %s" % (item_to_print, self.dataset.base_dict[nick][item_to_print])
+			print "---------------------------------------------------------"
 			
 
 	def add_entry(self, entry):
