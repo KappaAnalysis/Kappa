@@ -661,7 +661,6 @@ if __name__ == "__main__":
 	if not os.path.exists(work_base):
 		os.makedirs(work_base)
 	
-	latest_subdir = SkimManagerBase.get_latest_subdir(work_base=work_base)
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json")
 
 	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)")
@@ -694,6 +693,7 @@ if __name__ == "__main__":
 	args = parser.parse_args()
  
 	if args.workdir == parser.get_default("workdir"):
+		latest_subdir = SkimManagerBase.get_latest_subdir(work_base=work_base)
 		print '\nNo workdir specified. Do you want to continue the existing skim in '+latest_subdir+' ? [Y/n] (Selecting no will create new workdir)'
 		if SkimManagerBase.wait_for_user_confirmation(true_false=True):
 			args.workdir=latest_subdir
