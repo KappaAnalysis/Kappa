@@ -116,6 +116,7 @@ if [ "$ADDITIONAL_OUTPUT" = true ]; then
     echo
 fi
 
+    echo "which git:" && which git
 
 # export SCRAM_ARCH=slc6_amd64_gcc481
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
@@ -150,6 +151,7 @@ echo
     git config --global user.github greyxray
     git config --global user.email 'greyxray@gmail.com'
     git config --global user.name 'kappa test'
+    echo "which git:" && which git
 exit 1
 
 echo "# ================= #"
