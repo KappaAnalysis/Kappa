@@ -138,7 +138,11 @@ echo "# ================= #"
     . $VO_CMS_SW_DIR/cmsset_default.sh
 echo "# ================= #"
 echo
-
+    git config --global user.github greyxray
+    git config --global user.email 'greyxray@gmail.com'
+    git config --global user.name 'kappa test'
+    echo "which git:" && which git
+exit 1
 echo "# ================= #"
 echo "# Compiling CMSSW"
 echo "# ================= #"
