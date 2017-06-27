@@ -196,7 +196,9 @@ echo "# ================= #"
     ls
     echo "pwd:"
     pwd
-    . ${CHECKOUTSCRIPT}
+    cat ${CHECKOUTSCRIPT}
+    chmod +x  ${CHECKOUTSCRIPT}
+    ./${CHECKOUTSCRIPT}  
     printf "no\n" | source ${CHECKOUTSCRIPT} || {
         echo "The ${CHECKOUTSCRIPT} could not be executed"
         exit 1
