@@ -196,7 +196,7 @@ echo "# ================= #"
     ls
     echo "pwd:"
     pwd
-    sudo -s
+    . ${CHECKOUTSCRIPT}
     printf "no\n" | source ${CHECKOUTSCRIPT} || {
         echo "The ${CHECKOUTSCRIPT} could not be executed"
         exit 1
