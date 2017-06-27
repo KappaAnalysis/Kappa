@@ -1,16 +1,19 @@
 #!/bin/bash
 set -e # exit on errors
 
+echo "set param"
 export SCRAM_ARCH=slc6_amd64_gcc493
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh
 
+echo "set cmssw"
 scramv1 project CMSSW CMSSW_7_6_3
 cd CMSSW_7_6_3/src
 eval `scramv1 runtime -sh`
 
 # Re-configure git if needed
 set +e
+echo "set git config"
 git_github="$(git config --global --get-all user.github)"
 git_email="$(git config --global --get-all user.email)"
 git_name="$(git config --global --get-all user.name)" 
