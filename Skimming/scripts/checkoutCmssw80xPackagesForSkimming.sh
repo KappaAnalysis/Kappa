@@ -9,6 +9,28 @@ scramv1 project CMSSW CMSSW_8_0_26_patch1
 cd CMSSW_8_0_26_patch1/src
 eval `scramv1 runtime -sh`
 
+# Re-configure git if needed
+set +e
+git_github="$(git config --global --get-all user.github)"
+git_email="$(git config --global --get-all user.email)"
+git_name="$(git config --global --get-all user.name)" 
+echo "git config before:" $git_github $git_email $git_name
+
+while getopts :g:e:n: option
+do
+	case "${option}"
+	in
+	g) git config --global user.github ${OPTARG};;
+	e) git config --global user.email ${OPTARG};;
+	n) git config --global user.name "\"${OPTARG}\"";;
+	esac
+done
+
+git_github=`git config --get user.github`
+git_email=`git config --get user.email`
+git_name=`git config --get-all user.name`
+echo "git config after:" $git_github $git_email $git_name
+set -e
 
 cd $CMSSW_BASE/src
 #Electron cutBased Id and MVA Id
@@ -55,4 +77,7 @@ rm -rf RecoEgamma/ElectronIdentification/data/.git
 #Check out Kappa
 git clone https://github.com/KappaAnalysis/Kappa.git
 
-scram b -j 4
+scram b -j 4 -v || {
+      echo "The ${CMSSW_BASE} with Kappa could not be built"
+      exit 1
+}

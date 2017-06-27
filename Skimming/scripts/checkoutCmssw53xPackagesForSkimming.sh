@@ -9,6 +9,28 @@ scramv1 project CMSSW CMSSW_5_3_35
 cd CMSSW_5_3_35/src
 eval `scramv1 runtime -sh`
 
+# Re-configure git if needed
+set +e
+git_github="$(git config --global --get-all user.github)"
+git_email="$(git config --global --get-all user.email)"
+git_name="$(git config --global --get-all user.name)" 
+echo "git config before:" $git_github $git_email $git_name
+
+while getopts :g:e:n: option
+do
+	case "${option}"
+	in
+	g) git config --global user.github ${OPTARG};;
+	e) git config --global user.email ${OPTARG};;
+	n) git config --global user.name "\"${OPTARG}\"";;
+	esac
+done
+
+git_github=`git config --get user.github`
+git_email=`git config --get user.email`
+git_name=`git config --get-all user.name`
+echo "git config after:" $git_github $git_email $git_name
+set -e
 
 cd $CMSSW_BASE/src
 # do the git cms-addpkg before starting with checking out cvs repositories
@@ -59,4 +81,7 @@ cp Kappa/Skimming/higgsTauTau/kappa_sl6_fix/myJetAna.cc  RecoJets/JetAnalyzers/s
 # fixes for classes
 cp Kappa/Skimming/higgsTauTau/kappa_fixmissing_class/classes_def.xml Kappa/DataFormats/src/classes_def.xml
 
-scram b -j 4
+scram b -j 4 -v || {
+      echo "The ${CMSSW_BASE} with Kappa could not be built"
+      exit 1
+}
