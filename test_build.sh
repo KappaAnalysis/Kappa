@@ -117,37 +117,6 @@ if [ "$ADDITIONAL_OUTPUT" = true ]; then
 fi
 
 
-# export SCRAM_ARCH=slc6_amd64_gcc481
-export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
-mkdir -p /home/build && cd /home/build
-
-if [ "$ADDITIONAL_OUTPUT" = true ]; then
-    echo "# ================= #"
-    echo "# cmsset_default.sh"
-    echo "# ================= #"
-        cat $VO_CMS_SW_DIR/cmsset_default.sh
-    echo "# ================= #"
-    echo
-    echo "number of processors:"
-    cat /proc/cpuinfo | awk '/^processor/{print $3}'
-    echo
-fi
-
-echo "# ================= #"
-    . $VO_CMS_SW_DIR/cmsset_default.sh
-echo "# ================= #"
-echo
-
-echo "# ================= #"
-echo "# Compiling CMSSW"
-echo "# ================= #"
-    scram project ${TEST_CMSSW_VERSION}
-    cd ${TEST_CMSSW_VERSION}
-    cmsenv
-echo "# ================= #"
-echo
-
-
 echo "# ================= #"
 echo "# curl -O root files"
 echo "# ================= #"
