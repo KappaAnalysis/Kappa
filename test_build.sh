@@ -192,6 +192,10 @@ echo "# ================= #"
     git config --global user.github greyxray
     git config --global user.email 'greyxray@gmail.com'
     git config --global user.name 'kappa test'
+    echo "ls:"
+    ls
+    echo "pwd:"
+    pwd
     printf "no\n" | source ${CHECKOUTSCRIPT} || {
         echo "The ${CHECKOUTSCRIPT} could not be executed"
         exit 1
