@@ -116,6 +116,9 @@ if [ "$ADDITIONAL_OUTPUT" = true ]; then
     echo
 fi
 
+    git config --global user.github greyxray
+    git config --global user.email 'greyxray@gmail.com'
+    git config --global user.name 'kappa test'
 
 # export SCRAM_ARCH=slc6_amd64_gcc481
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
