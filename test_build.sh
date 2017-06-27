@@ -205,10 +205,10 @@ echo
 echo "# ================= #"
 echo "# Building in CMSSW_BASE #"
 echo "# ================= #"
-    scram b -v -j 2 || {
-        echo "The ${CMSSW_BASE} with Kappa could not be built"
-        exit 1
-    }
+    #scram b -v -j 2 || {
+    #    echo "The ${CMSSW_BASE} with Kappa could not be built"
+    #    exit 1
+    #}
 echo "# ================= #"
 echo
 
@@ -235,6 +235,13 @@ if [ "$ADDITIONAL_OUTPUT" = true ]; then
     echo "# ================= #"
     echo
 fi
+
+echo"PWD:"
+pwd
+echo "LS:"
+ls
+echo "LS:SRC"
+ls src
 
 cd src/Kappa
 mkdir kappa_run
