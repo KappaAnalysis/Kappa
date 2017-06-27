@@ -187,7 +187,7 @@ echo "# Download checkout script for Kappa"
 echo "# ================= #"
     #mkdir Kappa
     #cp -r /home/travis/* Kappa/
-    cd ../../
+    cd /home/build
     curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/master/Skimming/scripts/${CHECKOUTSCRIPT}
     git config --global user.github greyxray
     git config --global user.email 'greyxray@gmail.com'
