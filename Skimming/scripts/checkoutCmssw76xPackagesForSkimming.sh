@@ -22,5 +22,8 @@ git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
 
 #Check out Kappa
 git clone https://github.com/KappaAnalysis/Kappa.git
-
+echo "PWD:"
+pwd
+echo "ls:"
+ls
 #scram b -j 4

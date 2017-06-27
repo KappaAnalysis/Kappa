@@ -236,7 +236,7 @@ if [ "$ADDITIONAL_OUTPUT" = true ]; then
     echo
 fi
 
-echo"PWD:"
+echo "PWD:"
 pwd
 echo "LS:"
 ls
