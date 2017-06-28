@@ -179,6 +179,7 @@ echo "# ================= #"
         exit 1
     }
     echo "sourced"
+    echo "pwd:" && pwd
     source $VO_CMS_SW_DIR/cmsset_default.sh;
     eval `scramv1 runtime -sh`
 
