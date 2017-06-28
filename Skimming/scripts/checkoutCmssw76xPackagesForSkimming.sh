@@ -9,7 +9,8 @@ source $VO_CMS_SW_DIR/cmsset_default.sh
 echo "set cmssw"
 scramv1 project CMSSW CMSSW_7_6_3
 cd CMSSW_7_6_3/src
-eval `scramv1 runtime -sh`
+#eval `scramv1 runtime -sh`
+cmsenv
 
 echo "Checking system variables"
 echo "PYTHONSTARTUP=$PYTHONSTARTUP"
