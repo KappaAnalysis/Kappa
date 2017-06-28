@@ -1,5 +1,5 @@
-#!/bin/sh
-echo "what is 0: $0"
+#!/bin/bash
+echo "what is \$0: $0"
 set -e # exit on errors
 
 echo "set param"
@@ -7,24 +7,11 @@ export SCRAM_ARCH=slc6_amd64_gcc493
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 . $VO_CMS_SW_DIR/cmsset_default.sh
 
-type scramv1
-type scram
-
-echo "set cmssw"
-eval `scramv1 project CMSSW CMSSW_7_6_3`
+echo "Set CMSSW"
+scramv1 project CMSSW CMSSW_7_6_3
 cd CMSSW_7_6_3/src
 eval `scramv1 runtime -sh`
-echo "cmssw setting is done"
-
-echo "Checking system variables"
-echo "PYTHONSTARTUP=$PYTHONSTARTUP"
-echo "PYTHONPATH=$PYTHONPATH"
-echo "SCRAM_ARCH=$SCRAM_ARCH"
-echo "VO_CMS_SW_DIR=$VO_CMS_SW_DIR"
-echo "CMSSW_VERSION=$CMSSW_VERSION"
-echo "CMSSW_GIT_HASH=$CMSSW_GIT_HASH"
-echo "CMSSW_BASE=$CMSSW_BASE"
-echo "CMSSW_RELEASE_BASE=$CMSSW_RELEASE_BASE"
+echo "CMSSW setting is done"
 
 # Re-configure git if needed
 set +e
@@ -63,9 +50,7 @@ git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
 #Check out Kappa
 git clone https://github.com/KappaAnalysis/Kappa.git
 
-# scram b -j 4 -v || {
-#       echo "The ${CMSSW_BASE} with Kappa could not be built"
-#       exit 1
-# }
-cd $CMSSW_BASE/src
-echo "pwd:" && pwd
+scram b -j 4 -v || {
+      echo "The ${CMSSW_BASE} with Kappa could not be built"
+      exit 1
+}
