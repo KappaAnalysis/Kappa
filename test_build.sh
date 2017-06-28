@@ -173,11 +173,11 @@ echo "# ================= #"
     curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/tests_short/Skimming/scripts/${CHECKOUTSCRIPT}
     chmod +x ${CHECKOUTSCRIPT}
     cat ${CHECKOUTSCRIPT}
-    printf "no\n" | ./${CHECKOUTSCRIPT} -g 'greyxray' -e 'greyxray@gmail.com' -n 'kappa test' || {
+    printf "no\n" | source ${CHECKOUTSCRIPT} -g 'greyxray' -e 'greyxray@gmail.com' -n 'kappa test' || {
         echo "The ${CHECKOUTSCRIPT} could not be executed"
         exit 1
     }
-    echo
+    echo "sourced"
     cd $CMSSW_BASE
     echo "Checking system variables"
     echo "PYTHONSTARTUP=$PYTHONSTARTUP"
