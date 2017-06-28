@@ -179,6 +179,15 @@ echo "# ================= #"
     }
     echo
     cd $CMSSW_BASE
+    echo "Checking system variables"
+    echo "PYTHONSTARTUP=$PYTHONSTARTUP"
+    echo "PYTHONPATH=$PYTHONPATH"
+    echo "SCRAM_ARCH=$SCRAM_ARCH"
+    echo "VO_CMS_SW_DIR=$VO_CMS_SW_DIR"
+    echo "CMSSW_VERSION=$CMSSW_VERSION"
+    echo "CMSSW_GIT_HASH=$CMSSW_GIT_HASH"
+    echo "CMSSW_BASE=$CMSSW_BASE"
+    echo "CMSSW_RELEASE_BASE=$CMSSW_RELEASE_BASE"
 echo "# ================= #"
 echo
 
