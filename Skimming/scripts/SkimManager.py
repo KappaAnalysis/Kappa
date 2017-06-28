@@ -591,12 +591,13 @@ class SkimManagerBase:
 					sample_file_path =  sample_file_path.replace(job_id_match,"_{JOBID}.root")
 					crab_number_folder_match = re.findall('|'.join(crab_number_folders),sample_file_path)[0]
 					sample_file_path =  sample_file_path.replace(crab_number_folder_match,"{CRAB_NUMBER_FOLDER}")
-
+					print "Found", number_jobs, " output files."
 					for jobid in range(1,number_jobs+1):
 						dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[jobid/1000],JOBID=jobid)+'\n'
 					dataset_filelist = dataset_filelist.strip('\n')
 					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/",self.site_storage_access_dict[storage_site]["xrootd"]))
 					filelist.close()
+					print "Saved filelist in \"%s\"." % filelist_path
 				except:
 					print "Getting output from crab exited with error. Try again later."
 
