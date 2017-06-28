@@ -4,7 +4,7 @@ set -e # exit on errors
 echo "set param"
 export SCRAM_ARCH=slc6_amd64_gcc493
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
-source $VO_CMS_SW_DIR/cmsset_default.sh
+. ./$VO_CMS_SW_DIR/cmsset_default.sh
 
 type scramv1
 type scram

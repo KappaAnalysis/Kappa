@@ -173,6 +173,7 @@ echo "# ================= #"
     curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/tests_short/Skimming/scripts/${CHECKOUTSCRIPT}
     chmod +x ${CHECKOUTSCRIPT}
     cat ${CHECKOUTSCRIPT}
+    exec bash
     printf "no\n" | . ./${CHECKOUTSCRIPT} -g 'greyxray' -e 'greyxray@gmail.com' -n 'kappa test' || {
         echo "The ${CHECKOUTSCRIPT} could not be executed"
         exit 1
