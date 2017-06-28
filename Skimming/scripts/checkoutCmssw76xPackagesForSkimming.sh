@@ -67,4 +67,5 @@ git clone https://github.com/KappaAnalysis/Kappa.git
 #       echo "The ${CMSSW_BASE} with Kappa could not be built"
 #       exit 1
 # }
-
+cd $CMSSW_BASE/src
+echo "pwd:" && pwd

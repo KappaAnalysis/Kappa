@@ -179,7 +179,9 @@ echo "# ================= #"
         exit 1
     }
     echo "sourced"
-    cd $CMSSW_BASE
+    source $VO_CMS_SW_DIR/cmsset_default.sh;
+    eval `scramv1 runtime -sh`
+
     echo "Checking system variables"
     echo "PYTHONSTARTUP=$PYTHONSTARTUP"
     echo "PYTHONPATH=$PYTHONPATH"
@@ -189,6 +191,7 @@ echo "# ================= #"
     echo "CMSSW_GIT_HASH=$CMSSW_GIT_HASH"
     echo "CMSSW_BASE=$CMSSW_BASE"
     echo "CMSSW_RELEASE_BASE=$CMSSW_RELEASE_BASE"
+    cd $CMSSW_BASE
 echo "# ================= #"
 echo
 
