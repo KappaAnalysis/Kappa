@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 echo "what is 0: $0"
 echo "# ================= #"
 echo "# Checking wget "
@@ -119,7 +119,6 @@ fi
 
 # export SCRAM_ARCH=slc6_amd64_gcc481
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
-
 if [ "$ADDITIONAL_OUTPUT" = true ]; then
     echo "# ================= #"
     echo "# cmsset_default.sh"
@@ -178,22 +177,16 @@ echo "# ================= #"
         echo "The ${CHECKOUTSCRIPT} could not be executed"
         exit 1
     }
-    echo "sourced"
-    echo "pwd:" && pwd
+echo "# ================= #"
+echo
+
+echo "# ================= #"
+echo "# Set CMSSW variables"
+echo "# ================= #"
     source $VO_CMS_SW_DIR/cmsset_default.sh;
     echo "cd TEST_CMSSW_VERSION"
     cd $TEST_CMSSW_VERSION/src
     eval `scramv1 runtime -sh`
-
-    echo "Checking system variables"
-    echo "PYTHONSTARTUP=$PYTHONSTARTUP"
-    echo "PYTHONPATH=$PYTHONPATH"
-    echo "SCRAM_ARCH=$SCRAM_ARCH"
-    echo "VO_CMS_SW_DIR=$VO_CMS_SW_DIR"
-    echo "CMSSW_VERSION=$CMSSW_VERSION"
-    echo "CMSSW_GIT_HASH=$CMSSW_GIT_HASH"
-    echo "CMSSW_BASE=$CMSSW_BASE"
-    echo "CMSSW_RELEASE_BASE=$CMSSW_RELEASE_BASE"
     cd $CMSSW_BASE
 echo "# ================= #"
 echo
@@ -226,8 +219,8 @@ echo "# =================== #"
 echo "# Cat the Config #"
 echo "# =================== #"
     cat $CMSSW_BASE/src/$SKIMMING_SCRIPT || {
-    echo "The ${CMSSW_BASE}/src/${SKIMMING_SCRIPT} could not be read"
-    exit 1
+        echo "The ${CMSSW_BASE}/src/${SKIMMING_SCRIPT} could not be read"
+        exit 1
     }
     #Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
 echo "# ================= #"
@@ -236,7 +229,7 @@ echo
 echo "# =================== #"
 echo "# Test python #"
 echo "# =================== #"
-    cd src/Kappa && mkdir kappa_run && cd kappa_run
+    cd $CMSSW_BASE/src/Kappa && mkdir kappa_run && cd kappa_run
     python $CMSSW_BASE/src/$SKIMMING_SCRIPT || {
         echo "Possible python syntax error "
         #exit 5

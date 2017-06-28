@@ -4,7 +4,7 @@ services:
   - docker
 env:
   #- TEST_CMSSW_VERSION=CMSSW_8_0_26_patch1 SCRAM_ARCH=slc6_amd64_gcc530 CHECKOUTSCRIPT=checkoutCmssw80xPackagesForSkimming.sh SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=false
-  - TEST_CMSSW_VERSION=CMSSW_7_6_3         SCRAM_ARCH=slc6_amd64_gcc493 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.sh SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=true
+  - TEST_CMSSW_VERSION=CMSSW_7_6_3 SCRAM_ARCH=slc6_amd64_gcc493 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.sh SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=true
   #- TEST_CMSSW_VERSION=CMSSW_5_3_29 SCRAM_ARCH=slc6_amd64_gcc472 CHECKOUTSCRIPT=checkoutCmssw76xPackagesForSkimming.sh SKIMMING_SCRIPT=Kappa/Skimming/higgsTauTau/kSkimming_run2_cfg.py ADDITIONAL_OUTPUT=false
   # skim_tutorial1_basic.py - checkoutDummy.sh and checkoutTauRefit.py are not available
   #- TEST_CMSSW_VERSION=CMSSW_7_4_14 SCRAM_ARCH=slc6_amd64_gcc491 CHECKOUTSCRIPT=checkoutTauRefit.py SKIMMING_SCRIPT=Kappa/Skimming/examples/skim_tutorial1_basic.py ADDITIONAL_OUTPUT=false
@@ -39,6 +39,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 script:
   - docker run --privileged -e TEST_CMSSW_VERSION=${TEST_CMSSW_VERSION}
+                            -e SCRAM_ARCH=${SCRAM_ARCH}
                             -e CHECKOUTSCRIPT=${CHECKOUTSCRIPT}
                             -e SKIMMING_SCRIPT=${SKIMMING_SCRIPT}
                             -e ADDITIONAL_OUTPUT=${ADDITIONAL_OUTPUT}
