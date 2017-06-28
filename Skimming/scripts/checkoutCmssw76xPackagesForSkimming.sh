@@ -11,7 +11,7 @@ type scramv1
 type scram
 
 echo "set cmssw"
-scramv1 project CMSSW CMSSW_7_6_3
+eval `scramv1 project CMSSW CMSSW_7_6_3`
 cd CMSSW_7_6_3/src
 eval `scramv1 runtime -sh`
 echo "cmssw setting is done"

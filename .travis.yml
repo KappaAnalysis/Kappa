@@ -43,6 +43,6 @@ script:
                             -e CHECKOUTSCRIPT=${CHECKOUTSCRIPT}
                             -e SKIMMING_SCRIPT=${SKIMMING_SCRIPT}
                             -e ADDITIONAL_OUTPUT=${ADDITIONAL_OUTPUT}
-                            -v ${TRAVIS_BUILD_DIR}:/home/travis 
+                            -v ${TRAVIS_BUILD_DIR}:/home/travis
                             -v '/home/short:/home/short' claria/cvmfs-cms /bin/bash 
                             -c "cd /home/; source /home/travis/test_build.sh"
