@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "what is 0: $0"
 set -e # exit on errors
 
 echo "set param"
