@@ -181,6 +181,8 @@ echo "# ================= #"
     echo "sourced"
     echo "pwd:" && pwd
     source $VO_CMS_SW_DIR/cmsset_default.sh;
+    echo "cd TEST_CMSSW_VERSION"
+    cd $TEST_CMSSW_VERSION/src
     eval `scramv1 runtime -sh`
 
     echo "Checking system variables"

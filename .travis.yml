@@ -39,7 +39,6 @@ before_script:
   - sleep 3 # give xvfb some time to start
 script:
   - docker run --privileged -e TEST_CMSSW_VERSION=${TEST_CMSSW_VERSION}
-                            -e SCRAM_ARCH=${SCRAM_ARCH}
                             -e CHECKOUTSCRIPT=${CHECKOUTSCRIPT}
                             -e SKIMMING_SCRIPT=${SKIMMING_SCRIPT}
                             -e ADDITIONAL_OUTPUT=${ADDITIONAL_OUTPUT}
