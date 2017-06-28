@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo "what is 0: $0"
 echo "# ================= #"
 echo "# Checking wget "
