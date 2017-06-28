@@ -174,10 +174,6 @@ echo "# ================= #"
     chmod +x ${CHECKOUTSCRIPT}
     cat ${CHECKOUTSCRIPT}
     set -x
-    source ./${CHECKOUTSCRIPT}
-echo "# ================= #"
-echo "# basic attempt to checkout script for Kappa"
-echo "# ================= #"
     printf "no\n" | . ./${CHECKOUTSCRIPT} -g 'greyxray' -e 'greyxray@gmail.com' -n 'kappa test' || {
         echo "The ${CHECKOUTSCRIPT} could not be executed"
         exit 1
