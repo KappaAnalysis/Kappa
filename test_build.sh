@@ -188,7 +188,6 @@ echo "# ================= #"
     cd $TEST_CMSSW_VERSION/src
     eval `scramv1 runtime -sh`
     cd $CMSSW_BASE/src
-}
 echo "# ================= #"
 echo
 
