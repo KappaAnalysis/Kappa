@@ -169,7 +169,7 @@ echo "# ================= #"
 echo "# Download checkout script for Kappa"
 echo "# ================= #"
     mkdir -p /home/build && cd /home/build
-    curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/tests_short/Skimming/scripts/${CHECKOUTSCRIPT}
+    curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/master/Skimming/scripts/${CHECKOUTSCRIPT}
     chmod +x ${CHECKOUTSCRIPT}
     cat ${CHECKOUTSCRIPT}
     set -x
@@ -187,7 +187,11 @@ echo "# ================= #"
     echo "cd TEST_CMSSW_VERSION"
     cd $TEST_CMSSW_VERSION/src
     eval `scramv1 runtime -sh`
-    cd $CMSSW_BASE
+    cd $CMSSW_BASE/src
+    scram b -j 4 -v || {
+      echo "The ${CMSSW_BASE} with Kappa could not be built"
+      exit 1
+}
 echo "# ================= #"
 echo
 
