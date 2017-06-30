@@ -85,7 +85,7 @@ cp Kappa/Skimming/higgsTauTau/kappa_sl6_fix/myJetAna.cc  RecoJets/JetAnalyzers/s
 # fixes for classes
 cp Kappa/Skimming/higgsTauTau/kappa_fixmissing_class/classes_def.xml Kappa/DataFormats/src/classes_def.xml
 
-scram b -j 4 -v || {
+scram b -v -j 4 || {
       echo "The ${CMSSW_BASE} with Kappa could not be built"
       exit 1
 }

@@ -188,9 +188,6 @@ echo "# ================= #"
     cd $TEST_CMSSW_VERSION/src
     eval `scramv1 runtime -sh`
     cd $CMSSW_BASE/src
-    scram b -j 4 -v || {
-      echo "The ${CMSSW_BASE} with Kappa could not be built"
-      exit 1
 }
 echo "# ================= #"
 echo

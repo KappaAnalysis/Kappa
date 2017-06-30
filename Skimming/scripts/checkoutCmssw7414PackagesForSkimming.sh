@@ -71,7 +71,7 @@ git cms-merge-topic ikrav:egm_id_7.4.12_v1
 #Check out Kappa
 git clone https://github.com/KappaAnalysis/Kappa.git
 
-scram b -j 4 -v || {
+scram b -v -j 4 || {
       echo "The ${CMSSW_BASE} with Kappa could not be built"
       exit 1
 }

@@ -81,7 +81,7 @@ rm -rf RecoEgamma/ElectronIdentification/data/.git
 #Check out Kappa
 git clone https://github.com/KappaAnalysis/Kappa.git
 
-scram b -j 4 -v || {
+scram b -v -j 4 || {
       echo "The ${CMSSW_BASE} with Kappa could not be built"
       exit 1
 }
