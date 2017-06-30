@@ -1,14 +1,40 @@
-#!/bin/bash
+#!/bin/sh
 set -e # exit on errors
 
+echo "set param"
 export SCRAM_ARCH=slc6_amd64_gcc493
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
-source $VO_CMS_SW_DIR/cmsset_default.sh
+. $VO_CMS_SW_DIR/cmsset_default.sh
 
+echo "Set CMSSW"
 scramv1 project CMSSW CMSSW_7_6_3
 cd CMSSW_7_6_3/src
 eval `scramv1 runtime -sh`
+echo "CMSSW setting is done"
 
+# Re-configure git if needed
+set +e
+echo "set git config"
+git_github="$(git config --global --get-all user.github)"
+git_email="$(git config --global --get-all user.email)"
+git_name="$(git config --global --get-all user.name)" 
+echo "git config before:" $git_github $git_email $git_name
+
+while getopts :g:e:n: option
+do
+	case "${option}"
+	in
+	g) git config --global user.github ${OPTARG};;
+	e) git config --global user.email ${OPTARG};;
+	n) git config --global user.name "\"${OPTARG}\"";;
+	esac
+done
+
+git_github=`git config --get user.github`
+git_email=`git config --get user.email`
+git_name=`git config --get-all user.name`
+echo "git config after:" $git_github $git_email $git_name
+set -e
 
 cd $CMSSW_BASE/src
 git cms-merge-topic -u KappaAnalysis:Kappa_CMSSW_763
@@ -23,4 +49,7 @@ git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
 #Check out Kappa
 git clone https://github.com/KappaAnalysis/Kappa.git
 
-scram b -j 4
+scram b -j 4 -v || {
+      echo "The ${CMSSW_BASE} with Kappa could not be built"
+      exit 1
+}
