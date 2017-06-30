@@ -1,5 +1,4 @@
-#!/bin/bash
-echo "what is \$0: $0"
+#!/bin/sh
 set -e # exit on errors
 
 echo "set param"
