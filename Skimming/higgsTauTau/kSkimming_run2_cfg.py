@@ -113,7 +113,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	data = datasetsHelper.isData(nickname)
 	isEmbedded = datasetsHelper.isEmbedded(nickname)
-	isreHLT = datasetsHelper.isreHLT(nickname)
 	print nickname
 	#####miniaod = datasetsHelper.isMiniaod(nickname) not used anymore, since everything is MiniAOD now
 	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
@@ -123,9 +122,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# General configuration
 	if tools.is_above_cmssw_version([7,4]):
 		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
-	if isreHLT:
-		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT2")
-		process.kappaTuple.Info.l1Source = cms.InputTag("")
 	if isSignal:
 		process.kappaTuple.Info.lheSource = cms.InputTag("source")
 
@@ -145,7 +141,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
 	# setup BadPFMuonFilter and BadChargedCandidateFilter
-	if tools.is_above_cmssw_version([8]):
+	if tools.is_above_cmssw_version([8]) and not tools.is_above_cmssw_version([8]): 
 		process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 		process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
 		process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
@@ -163,27 +159,23 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.badGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
 			process.cloneGlobalMuonTaggerMAOD.taggingMode = cms.bool(True)
 
-			process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter", "BadPFMuonFilter", "badGlobalMuonTaggerMAOD", "cloneGlobalMuonTaggerMAOD")
-		else:
-			process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
+#			process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter", "BadPFMuonFilter", "badGlobalMuonTaggerMAOD", "cloneGlobalMuonTaggerMAOD")
+#		else:
+#			process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
 
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
 	elif data:
-		if "03Feb2017" in str(process.kappaTuple.TreeInfo.parameters.scenario):
+		if tools.is_above_cmssw_version([9]):
+			process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
+			#process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "RECO")
+		elif "03Feb2017" in str(process.kappaTuple.TreeInfo.parameters.scenario):
 			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "PAT")
 		else:
 			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
-
-	#if "reHLT" in datasetsHelper.get_campaign(nickname):
-	#	process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
-	#if not "reHLT" in datasetsHelper.get_campaign(nickname) and not isEmbedded:
-	#	# adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection"
-	#	process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
-	if isreHLT:
-		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
-	elif not isEmbedded and "Spring16" in str(process.kappaTuple.TreeInfo.parameters.campaign):
+			process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "RECO")
+	if not isEmbedded and "Spring16" in str(process.kappaTuple.TreeInfo.parameters.campaign):
 		# adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection"
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 
@@ -245,16 +237,19 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
 	jetCollectionPuppi = "slimmedJetsPuppi"
-	if tools.is_above_cmssw_version([8]):
+	if tools.is_above_cmssw_version([9]):
+		jetCollection = "slimmedJets"
+	elif tools.is_above_cmssw_version([8]):
 		from RecoMET.METPUSubtraction.jet_recorrections import recorrectJets
 		#from RecoMET.METPUSubtraction.jet_recorrections import loadLocalSqlite
 		#loadLocalSqlite(process, sqliteFilename = "Spring16_25nsV6_DATA.db" if data else "Spring16_25nsV6_MC.db",
 		#                         tag = 'JetCorrectorParametersCollection_Spring16_25nsV6_DATA_AK4PF' if data else 'JetCorrectorParametersCollection_Spring16_25nsV6_MC_AK4PF')
 		recorrectJets(process, isData=data)
+		jetCollection = "patJetsReapplyJEC"
 	else:
 		from RecoMET.METPUSubtraction.localSqlite import recorrectJets
 		recorrectJets(process, isData=data)
-	jetCollection = "patJetsReapplyJEC"
+		jetCollection = "patJetsReapplyJEC"
 
 	## ------------------------------------------------------------------------
 
@@ -477,7 +472,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')
-	if tools.is_above_cmssw_version([8,0,14]):
+	if tools.is_above_cmssw_version([9]):
+		pass
+	elif tools.is_above_cmssw_version([8,0,14]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 		runMetCorAndUncFromMiniAOD(process, isData=data  )
 		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs", "", "KAPPA"))
@@ -486,23 +483,24 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#process.kappaTuple.PatMET.pfmetT1 = cms.PSet(src=cms.InputTag("patpfMETT1"))
 	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
 
-	## Write MVA MET to KMETs
-	process.kappaTuple.active += cms.vstring('PatMETs')
-	# new MVA MET
-	from RecoMET.METPUSubtraction.MVAMETConfiguration_cff import runMVAMET
-	runMVAMET( process, jetCollectionPF = jetCollection)
-	process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
-	process.MVAMET.srcLeptons  = cms.VInputTag(muons, electrons, taus) # to produce all possible combinations
-	process.MVAMET.requireOS = cms.bool(False)
-	if tools.is_above_cmssw_version([8,0]) and isEmbedded:
-		process.MVAMET.srcMETs = cms.VInputTag(
-			cms.InputTag("slimmedMETs", "", "MERGE"),
-			cms.InputTag("patpfTrackMET"),
-			cms.InputTag("patpfNoPUMET"),
-			cms.InputTag("patpfPUCorrectedMET"),
-			cms.InputTag("patpfPUMET"),
-			cms.InputTag("slimmedMETsPuppi", "", "MERGE")
-			)
+	if not tools.is_above_cmssw_version([9]):
+		## Write MVA MET to KMETs
+		process.kappaTuple.active += cms.vstring('PatMETs')
+		# new MVA MET
+		from RecoMET.METPUSubtraction.MVAMETConfiguration_cff import runMVAMET
+		runMVAMET( process, jetCollectionPF = jetCollection)
+		process.kappaTuple.PatMETs.MVAMET = cms.PSet(src=cms.InputTag("MVAMET", "MVAMET"))
+		process.MVAMET.srcLeptons  = cms.VInputTag(muons, electrons, taus) # to produce all possible combinations
+		process.MVAMET.requireOS = cms.bool(False)
+		if tools.is_above_cmssw_version([8,0]) and isEmbedded:
+			process.MVAMET.srcMETs = cms.VInputTag(
+				cms.InputTag("slimmedMETs", "", "MERGE"),
+				cms.InputTag("patpfTrackMET"),
+				cms.InputTag("patpfNoPUMET"),
+				cms.InputTag("patpfPUCorrectedMET"),
+				cms.InputTag("patpfPUMET"),
+				cms.InputTag("slimmedMETsPuppi", "", "MERGE")
+				)
 
 	## ------------------------------------------------------------------------
 
@@ -541,12 +539,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.p *= process.nEventsFiltered
 	process.p *= process.nNegEventsFiltered
-	process.kappaTuple.active += cms.vstring('FilterSummary')
 
 	## ------------------------------------------------------------------------
 
 	## if needed adapt output filename
-	process.p *= process.kappaOut
+	process.ep *= process.kappaOut
 	if outputfilename != '':
 		process.kappaTuple.outputFile = cms.string('%s'%outputfilename)
 

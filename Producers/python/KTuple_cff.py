@@ -110,13 +110,13 @@ kappaTupleDefaultsBlock = cms.PSet(
 	),
 
 	TriggerObjectStandalone = cms.PSet(kappaNoRegEx, kappaNoCut,
-			metfilterbits = cms.InputTag("TriggerResults", "", "PAT"),
+			metfilterbits = cms.InputTag("TriggerResults"),
 			metfilterbitslist = cms.vstring(),
 			bits = cms.InputTag("TriggerResults","","HLT"),
-			objects = cms.InputTag("selectedPatTrigger"),
+			objects = cms.InputTag("slimmedPatTrigger"),
 			prescales = cms.InputTag("patTrigger"),
 		triggerObjects = cms.PSet(
-			src = cms.InputTag("selectedPatTrigger"),
+			src = cms.InputTag("slimmedPatTrigger"),
 			)
 	),
 	Tracks = cms.PSet(kappaNoRename,
