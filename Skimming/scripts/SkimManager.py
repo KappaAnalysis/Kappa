@@ -107,7 +107,7 @@ class SkimManagerBase:
 		if tag_key is None and query is None and nick_regex is None:
 			return None
 		if tag_values_str:
-			tag_values = tag_values_str.strip('][').replace(' ', '').split(', ')
+			tag_values = tag_values_str.strip('][').replace(' ', '').split(',')
 		
 		return(self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex))
 
