@@ -36,12 +36,12 @@ class SkimManagerBase:
 			"T2_DE_DESY" : {
 				"dcap" : "dcap://dcache-cms-dcap.desy.de//pnfs/desy.de/cms/tier2/",
 				"srm" : "srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/",
-				"xrootd" : " root://dcache-cms-xrootd.desy.de:1094/",
+				"xrootd" : "root://dcache-cms-xrootd.desy.de:1094/",
 			},
 			"T2_DE_RWTH" : {
 				"dcap" : "dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/",
 				"srm" : "srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/",
-				"xrootd" : " root://grid-vo-cms.physik.rwth-aachen.de:1094/",
+				"xrootd" : "root://grid-vo-cms.physik.rwth-aachen.de:1094/",
 			}
 		}
 		self.UsernameFromSiteDB = None
