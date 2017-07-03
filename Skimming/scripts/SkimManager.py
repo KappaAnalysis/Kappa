@@ -543,7 +543,7 @@ class SkimManagerBase:
 
 ########## Functions to create or reset file lists for COMPLETED grid-control or crab tasks
 
-	def create_filelist(self):
+	def create_filelist(self, force=False):
 		filelist_folder_name = os.path.relpath(self.workdir,SkimManagerBase.get_workbase())
 		skim_path = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data",filelist_folder_name)
 		if not os.path.exists(skim_path):
@@ -574,13 +574,16 @@ class SkimManagerBase:
 					print "List creation successfull!"
 					print "---------------------------------------------------------"
 			# If GC task not completed, create a crab filelist
-			elif self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED" and self.skimdataset[dataset]["GCSKIM_STATUS"] != "LISTED":
+			elif force or (self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED" and self.skimdataset[dataset]["GCSKIM_STATUS"] != "LISTED"):
 				print "Getting CRAB file list for",dataset
 				filelist_path = skim_path+'/'+dataset+'.txt'
 				filelist = open(filelist_path, 'w')
 				dataset_filelist = ""
 
 				number_jobs = self.skimdataset[dataset]["n_jobs"]
+				if (number_jobs == 0) and force:
+					number_jobs = int(self.skimdataset[dataset]["n_files"])
+				
 				crab_number_folders = [str(i / 1000).zfill(4) for i in range(number_jobs+1)[::1000]]
 				crab_numer_folder_regex = re.compile('|'.join(crab_number_folders))
 
@@ -591,7 +594,7 @@ class SkimManagerBase:
 					sample_file_path =  sample_file_path.replace(job_id_match,"_{JOBID}.root")
 					crab_number_folder_match = re.findall('|'.join(crab_number_folders),sample_file_path)[0]
 					sample_file_path =  sample_file_path.replace(crab_number_folder_match,"{CRAB_NUMBER_FOLDER}")
-					print "Found", number_jobs, " output files."
+					print "Found", number_jobs-1, "output files."
 					for jobid in range(1,number_jobs+1):
 						dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[jobid/1000],JOBID=jobid)+'\n'
 					dataset_filelist = dataset_filelist.strip('\n')
@@ -667,7 +670,7 @@ if __name__ == "__main__":
 	
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json")
 
-	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)")
+	parser = argparse.ArgumentParser(description="Tools for modify the dataset data base (aka datasets.json)")
 
 	parser.add_argument("-i", "--input", dest="inputfile", default=def_input, help="input data base (Default: %s)"%def_input)
 	parser.add_argument("-w", "--workdir", dest="workdir", default=os.path.join(work_base,strftime("%Y-%m-%d-%H-%M-%S", gmtime()))+"_kappa-skim",help="Set work directory  (Default: %(default)s)")
@@ -691,6 +694,8 @@ if __name__ == "__main__":
 	
 	parser.add_argument("--create-filelist", action='store_true', default=False, dest = "create_filelist", help="")
 	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
+	
+	parser.add_argument("-f", "--force", action='store_true', default=False, dest="force", help="Force current action (e.g. creation of filelists).")
 
 	parser.add_argument("-b","--backend", default='freiburg', dest="backend", help="Changes backend for the creation of Grid Control configs. Supported: freiburg, naf. Default: %(default)s")
 
@@ -736,7 +741,7 @@ if __name__ == "__main__":
 		exit()
 
 	if args.create_filelist:
-		SKM.create_filelist()
+		SKM.create_filelist(args.force)
 		SKM.save_dataset()
 		exit()
 
