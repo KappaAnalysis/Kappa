@@ -68,8 +68,8 @@ struct KTrack : public KLV
 
 	/// distances to primary vertex, refitted primary vertex, beamspot and interaction point
 	/// all these function mix float and double precision values
-	// wrt PV
-	float getDxy(const KVertex * pv) const
+	template<class T>
+	float getDxy(const T* pv) const
 	{
 		if (!pv)
 			return -1.;
@@ -79,30 +79,8 @@ struct KTrack : public KLV
 		) / sqrtf(p4.Perp2());
 	}
 
-	// wrt refitted PV
-	float getDxy(const KRefitVertex * rv) const
-	{
-		if (!rv)
-			return -1.;
-		return (
-			- (ref.x() - rv->position.x()) * p4.y()
-			+ (ref.y() - rv->position.y()) * p4.x()
-		) / sqrtf(p4.Perp2());
-	}
-
-	// wrt BS
-	float getDxy(const KBeamSpot *bs) const
-	{
-		if (!bs)
-			return -1.;
-		return (
-			- (ref.x() - bs->position.x()) * p4.y()
-			+ (ref.y() - bs->position.y()) * p4.x()
-		) / sqrtf(p4.Perp2());
-	}
-
-	// wrt PV
-	float getDz(const KVertex *pv) const
+	template<class T>
+	float getDz(const T* pv) const
 	{
 		if (!pv)
 			return -1.;
@@ -112,35 +90,14 @@ struct KTrack : public KLV
 			) * p4.z() / p4.Perp2();
 	}
 
-	// wrt refitted PV
-	float getDz(const KRefitVertex *rv) const
-	{
-		if (!rv)
-			return -1.;
-		return ref.z() - rv->position.z() - (
-				(ref.x() - rv->position.x()) * p4.x() +
-				(ref.y() - rv->position.y()) * p4.y()
-			) * p4.z() / p4.Perp2();
-	}
-
-	// wrt BS
-	float getDz(const KBeamSpot *bs) const
-	{
-		if (!bs)
-			return -1.;
-		return ref.z() - bs->position.z() - (
-				(ref.x() - bs->position.x()) * p4.x() +
-				(ref.y() - bs->position.y()) * p4.y()
-			) * p4.z() / p4.Perp2();
-	}
-
 	/*
 		mode:
 			0 - dxy
 			1 - dxy/error(track)
 			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
 	*/
-	float getIP(const KVertex *pv, unsigned int mode = 0) const
+	template<class T>
+	float getIP(const T* pv, unsigned int mode = 0) const
 	{
 		if (!pv)
 			return -10000.;
@@ -161,41 +118,6 @@ struct KTrack : public KLV
 
 				float vtxErr2 = static_cast<float>(ROOT::Math::Similarity(pv->covariance, orthog)) / p4.Perp2();
 				return getDxy(pv) / sqrtf(errDxy * errDxy + vtxErr2);
-			}
-			default:
-				return -10000.;
-		}
-		return -10000.;
-	}
-
-	/*
-		mode:
-			0 - dxy
-			1 - dxy/error(track)
-			2 - dxy/sqrt(error(track)**2 + error(vertex)**2)
-	*/
-	float getIP(const KBeamSpot *bs, unsigned int mode = 0) const
-	{
-		if (!bs)
-			return -10000.;
-
-		//double error = static_cast<double>(errDxy);
-		switch (mode)
-		{
-			case 0:
-				return getDxy(bs);
-			case 1:
-				return getDxy(bs) / errDxy;
-			case 2:
-			{
-				ROOT::Math::SVector<double, 7> orthog;
-				orthog[0] = p4.y();
-				orthog[1] = -p4.x();
-				for (unsigned int i = 2; i < 7; i++)
-					orthog[i] = 0;
-
-				float vtxErr2 = static_cast<float>(ROOT::Math::Similarity(bs->covariance, orthog)) / p4.Perp2();
-				return getDxy(bs) / sqrtf(errDxy * errDxy + vtxErr2);
 			}
 			default:
 				return -10000.;
