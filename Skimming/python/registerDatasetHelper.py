@@ -274,7 +274,7 @@ def query_result(query, expect_n_results = 1):
 		pprint.pprint(query)
 		print "found the following matching samples: "
 		pprint.pprint(match)
-		sys.exit()
+		sys.exit(1)
 
 	return match
 
