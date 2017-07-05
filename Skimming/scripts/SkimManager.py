@@ -22,7 +22,7 @@ class SkimManagerBase:
 
 	def __init__(self, storage_for_output, workbase=".", workdir="TEST_SKIM", use_proxy_variable=False):
 		self.storage_for_output = storage_for_output
-		self.workdir = os.path.join(workbase, workdir)
+		self.workdir = os.path.join(workbase, os.path.abspath(workdir))
 		if not os.path.exists(self.workdir+"/gc_cfg"):
 			os.makedirs(self.workdir+"/gc_cfg")
 		self.skimdataset = datasetsHelperTwopz(os.path.join(self.workdir, "skim_dataset.json"))
