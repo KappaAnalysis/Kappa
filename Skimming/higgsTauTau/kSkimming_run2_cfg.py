@@ -141,7 +141,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
 	# setup BadPFMuonFilter and BadChargedCandidateFilter
-	if tools.is_above_cmssw_version([8]) and not tools.is_above_cmssw_version([8]): 
+	if tools.is_above_cmssw_version([8]) and not tools.is_above_cmssw_version([9]): 
 		process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 		process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
 		process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
