@@ -42,7 +42,6 @@ public:
 		triggerBits_ = cfg.getParameter<edm::InputTag>("bits");
 		metFilterBits_ = cfg.getParameter<edm::InputTag>("metfilterbits");
 		metFilterBitsList_ = cfg.getParameter<std::vector<std::string>>("metfilterbitslist");
-		triggerObjects_ = cfg.getParameter<edm::InputTag>("objects");
 		triggerPrescales_ = cfg.getParameter<edm::InputTag>("prescales");
 		edm::InputTag l1tauJetSource_test =  cfg.getUntrackedParameter<edm::InputTag>("l1extratauJetSource",edm::InputTag("dummy"));
 		save_l1extratau_=false;
@@ -57,7 +56,6 @@ public:
 
 		consumescollector.consumes<edm::TriggerResults>(triggerBits_);
 		consumescollector.consumes<edm::TriggerResults>(metFilterBits_);
-		consumescollector.consumes<pat::TriggerObjectStandAloneCollection>(triggerObjects_);
 		consumescollector.consumes<pat::PackedTriggerPrescales>(triggerPrescales_);
 		for(size_t j = 0; j < metFilterBitsList_.size(); j++)
 			consumescollector.consumes<bool>(edm::InputTag(metFilterBitsList_[j]));
@@ -109,14 +107,10 @@ public:
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup) override
 	{
-		edm::Handle<edm::TriggerResults> triggerBits;
-		edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects;
-		edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
 		
-		event.getByLabel(triggerBits_, triggerBits);
+		event.getByLabel(triggerBits_, triggerBitsHandle_);
 		event.getByLabel(metFilterBits_, metFilterBitsHandle_);
-		event.getByLabel(triggerObjects_, triggerObjects);
-		event.getByLabel(triggerPrescales_, triggerPrescales);
+		event.getByLabel(triggerPrescales_, triggerPrescalesHandle_);
 
 		for(size_t i = 0; i < metFilterBitsList_.size(); i++)
 		{
@@ -128,16 +122,16 @@ public:
 		
 		//if (save_l1extratau_) event.getByLabel( tauJetSource_, tauColl_ );
 
-		names_ = event.triggerNames(*triggerBits);
+		names_ = event.triggerNames(*triggerBitsHandle_);
 
 		std::vector<size_t> triggerBitsFired;
 
-		for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
+		for (unsigned int i = 0, n = triggerBitsHandle_->size(); i < n; ++i) 
 		{
 			if(verbosity>0)
-				std::cout<< i << " Trigger " << names_.triggerName(i) << ", prescale " << triggerPrescales->getPrescaleForIndex(i) << ": " << (triggerBits->accept(i) ? "PASS" : "fail (or not run)") << std::endl;
+				std::cout<< i << " Trigger " << names_.triggerName(i) << ", prescale " << triggerPrescalesHandle_->getPrescaleForIndex(i) << ": " << (triggerBitsHandle_->accept(i) ? "PASS" : "fail (or not run)") << std::endl;
 
-			if(triggerBits->accept(i))
+			if(triggerBitsHandle_->accept(i))
 				triggerBitsFired.push_back(i);
 		}
 
@@ -289,7 +283,7 @@ protected:
 		out.toIdxFilter.resize(toMetadata->toFilter.size()); // the idx of this vector corresponds to one common trigger filter ojbect 
 		for(auto obj : in)
 		{
-			obj.unpackNamesAndLabels( *event_, *metFilterBitsHandle_); 
+			obj.unpackFilterLabels( *event_, *triggerBitsHandle_);
 			std::vector<int>  akt_filter_indices = getFilterIndices(obj.filterLabels());
 			if (akt_filter_indices.empty())
 			  continue;
@@ -323,6 +317,8 @@ protected:
 private:
 	edm::InputTag triggerBits_;
 	edm::InputTag metFilterBits_;
+	edm::Handle<edm::TriggerResults> triggerBitsHandle_;
+	edm::Handle<pat::PackedTriggerPrescales> triggerPrescalesHandle_;
 	edm::Handle<edm::TriggerResults> metFilterBitsHandle_;
 	const edm::Event *event_;
 	
@@ -335,7 +331,6 @@ private:
 	
 	
 	
-	edm::InputTag triggerObjects_;
 	edm::InputTag triggerPrescales_;
 	bool signifTriggerBitFired_;
 	edm::TriggerNames names_;
