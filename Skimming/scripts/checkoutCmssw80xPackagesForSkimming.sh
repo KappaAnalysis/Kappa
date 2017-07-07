@@ -78,6 +78,9 @@ rm -rf tempData
 
 #Remove the .git folder as it is not needed and contains a lot of useless data
 rm -rf RecoEgamma/ElectronIdentification/data/.git
+#Remove Fireworks and SimGeneral - they are only checked out due to failed merge attempts
+rm -rf Fireworks
+rm -rf SimGeneral
 #Check out Kappa
 git clone https://github.com/KappaAnalysis/Kappa.git
 
