@@ -283,7 +283,9 @@ protected:
 		out.toIdxFilter.resize(toMetadata->toFilter.size()); // the idx of this vector corresponds to one common trigger filter ojbect 
 		for(auto obj : in)
 		{
+#if (CMSSW_MAJOR_VERSION >= 9)
 			obj.unpackFilterLabels( *event_, *triggerBitsHandle_);
+#endif
 			std::vector<int>  akt_filter_indices = getFilterIndices(obj.filterLabels());
 			if (akt_filter_indices.empty())
 			  continue;
