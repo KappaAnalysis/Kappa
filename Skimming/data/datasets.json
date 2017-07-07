@@ -3936,22 +3936,6 @@
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
     "xsec": 825.4
   }, 
-  "Embedding2016D_ElectronEmbedding_imputDoubleMumirrorminiAODv2_13TeV_USER": {
-    "campaign": "ElectronEmbedding", 
-    "data": true, 
-    "dbs": "", 
-    "embedded": true, 
-    "energy": "13", 
-    "extension": "", 
-    "format": "USER", 
-    "generator": "", 
-    "inputDBS": "phys03", 
-    "n_events_generated": "3291890", 
-    "n_files": "4290", 
-    "process": "Embedding2016D", 
-    "scenario": "imputDoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
-  }, 
   "Embedding2016D_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
       "Skim_Embedding_PromptReco"
