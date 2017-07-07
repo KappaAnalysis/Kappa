@@ -3727,22 +3727,6 @@
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
     "xsec": 857.1
   }, 
-  "Embedding2016C_ElectronEmbedding_imputDoubleMumirrorminiAODv2_13TeV_USER": {
-    "campaign": "ElectronEmbedding", 
-    "data": true, 
-    "dbs": "", 
-    "embedded": true, 
-    "energy": "13", 
-    "extension": "", 
-    "format": "USER", 
-    "generator": "", 
-    "inputDBS": "phys03", 
-    "n_events_generated": "1855825", 
-    "n_files": "2308", 
-    "process": "Embedding2016C", 
-    "scenario": "imputDoubleMu_mirror_miniAODv2", 
-    "xsec": 390.0
-  }, 
   "Embedding2016C_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
       "Skim_Embedding_PromptReco"
@@ -5046,6 +5030,23 @@
     "process": "EmbeddingMCRunIISummer16DR80", 
     "scenario": "imputFlatPU28to62HcalNZSRAWAODSIM", 
     "xsec": 1299.173045
+  }, 
+  "EmbeddingMCRunIISummer16DR80_MuonEmbedding_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USER_pythia8": {
+    "campaign": "MuonEmbedding", 
+    "data": false, 
+    "dbs": "/EmbeddingMCRunIISummer16DR80/MuonEmbedding-imputFlatPU28to62HcalNZSRAWAODSIM_mirror_miniAOD-v7/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v6", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "402086", 
+    "n_files": "4031", 
+    "process": "EmbeddingMCRunIISummer16DR80", 
+    "scenario": "imputFlatPU28to62HcalNZSRAWAODSIM", 
+    "xsec": 390.0
   }, 
   "EmbeddingMCRunIISummer16DR80_TauTauFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USER_pythia8": {
     "Moriond17": [
