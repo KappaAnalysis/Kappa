@@ -178,6 +178,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if not isEmbedded and "Spring16" in str(process.kappaTuple.TreeInfo.parameters.campaign):
 		# adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection"
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
+	
+	if not tools.is_above_cmssw_version([9]):
+		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.InputTag("selectedPatTrigger")
 
 	process.kappaTuple.active += cms.vstring('BeamSpot')
 	if tools.is_above_cmssw_version([7,6]):
