@@ -15,7 +15,7 @@
 #include "../../Producers/interface/Consumes.h"
 #include "boost/functional/hash.hpp"
 
-#if ((CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21 && CMSSW_REVISION < 28) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0))
+#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
 #include "RecoTauTag/RecoTau/interface/PFRecoTauClusterVariables.h"
 #endif
 
@@ -82,7 +82,7 @@ protected:
 		{
 			out.floatDiscriminators[discriminator->second] = in.tauID(discriminator->first);
 		}
-#if ((CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21 && CMSSW_REVISION < 28) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0))
+#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
 		for(auto variable = extraTaufloatmap[names[0]].begin();  variable!= extraTaufloatmap[names[0]].end(); variable++)
 		{  
 			if (variable->first == EXTRATAUFLOATS::decayDistX ) out.floatDiscriminators[variable->second] = in.flightLength().x();
@@ -155,7 +155,7 @@ public:
 			binaryDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("binaryDiscrBlacklist");
 			floatDiscrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrWhitelist");
 			extrafloatDiscrlist[names[i]] = pset.getUntrackedParameter< std::vector<std::string> >("extrafloatDiscrlist", std::vector<std::string>(0) );
-#if ((CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21 && CMSSW_REVISION < 28) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0))
+#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION < 21) || (CMSSW_MAJOR_VERSION < 8 )
 			if (extrafloatDiscrlist[names[i]].size() > 0)
 				std::cout << "Warining: extrafloatDiscrlist only available in CMSSW_8_0_21 or new" << std::endl;
 #endif
@@ -246,7 +246,7 @@ virtual bool acceptSingle(const SingleInputType &in) override
 						std::cout << "Float tau discriminator " << ": " << tauID.first << std::endl;
 				}
 			}
-#if ((CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) && CMSSW_REVISION < 28 || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0))
+#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
 			for (auto extrafloatDiscr : extrafloatDiscrlist[names[i]]){
 				EXTRATAUFLOATS add_value = string_to_extraTaufloats(extrafloatDiscr);
 				if (add_value != EXTRATAUFLOATS::UNKNOWN){
@@ -271,7 +271,7 @@ private:
 	}
 	std::map<std::string, std::vector<std::string> > preselectionDiscr;
 	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist, extrafloatDiscrlist;
-#if ((CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21 && CMSSW_REVISION < 28) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0))
+#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
 	TauIdMVAAuxiliaries clusterVariables_;
 	enum class EXTRATAUFLOATS : int
 	{
