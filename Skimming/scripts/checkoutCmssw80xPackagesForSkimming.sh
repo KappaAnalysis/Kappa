@@ -50,8 +50,6 @@ git cms-merge-topic -u ikrav:egm_id_80X_v2
 git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter
 git cms-merge-topic cms-met:METRecipe_8020 -u
 git cms-merge-topic cms-met:METRecipe_80X_part2 -u
-sed -i "/produces<edm::PtrVector<reco::Muon>>/a \	  produces<bool>();" RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc
-sed -i "/iEvent.put(std::move(out),/a \	iEvent.put(std::auto_ptr<bool>(new bool(found)));" RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc
 #packages needed to rerun tau id
 git cms-merge-topic -u cms-tau-pog:CMSSW_8_0_X_tau-pog_miniAOD-backport-tauID
 
@@ -65,7 +63,6 @@ cd $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
 wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root
 
 cd $CMSSW_BASE/src
-sed "/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificanceParams_cfi\ import\ METSignificanceParams_Data" PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py -i
 git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
 #fetch xml files for Egamma Id from private repository
 git clone https://github.com/ikrav/RecoEgamma-ElectronIdentification.git tempData/RecoEgamma/ElectronIdentification/data
@@ -81,6 +78,15 @@ rm -rf RecoEgamma/ElectronIdentification/data/.git
 #Remove Fireworks and SimGeneral - they are only checked out due to failed merge attempts
 rm -rf Fireworks
 rm -rf SimGeneral
+rm -rf RecoEgamma
+sed -i '/Fireworks/d' .git/info/sparse-checkout
+sed -i '/SimGeneral/d' .git/info/sparse-checkout
+sed -i '/RecoEgamma/d' .git/info/sparse-checkout
+git read-tree -mu HEAD
+# do the sed's afterwards -> bevore, the read-tree fails
+sed -i "/produces<edm::PtrVector<reco::Muon>>/a \	  produces<bool>();" RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc
+sed -i "/iEvent.put(std::move(out),/a \	iEvent.put(std::auto_ptr<bool>(new bool(found)));" RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc
+sed "/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificanceParams_cfi\ import\ METSignificanceParams_Data" PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py -i
 #Check out Kappa
 git clone https://github.com/KappaAnalysis/Kappa.git
 
