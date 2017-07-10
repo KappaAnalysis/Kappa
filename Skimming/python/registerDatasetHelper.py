@@ -11,6 +11,7 @@ import pprint
 import json
 import re
 from Kappa.Skimming.getNumberGeneratedEventsFromDB import getNumberGeneratedEventsFromDB, getNumberFilesFromDB
+from Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
 cmssw_base = os.environ.get("CMSSW_BASE")
 dataset = os.path.join(cmssw_base, "src/Kappa/Skimming/data/datasets.json")
 
@@ -280,25 +281,14 @@ def query_result(query, expect_n_results = 1):
 
 def get_sample_by_nick(nickname, expect_n_results = 1):
 
-	# split nickname
-	split_nick = nickname.split("_")
-	query = {
-		"process" : "^"+split_nick[0]+"$",
-		"campaign" : "^"+split_nick[1]+"$",
-		"scenario" : "^"+split_nick[2]+"$",
-		"energy" : "^"+split_nick[3].strip("TeV")+"$",
-		"format" : "^"+split_nick[4]+"$",
-		"generator" : ("^"+split_nick[5]+"$" if (len(split_nick) > 5) else None),
-		"extension" : ("^"+split_nick[6]+"$" if (len(split_nick) > 6) else "")
-	}
+        database = datasetsHelperTwopz(dataset)
+        nicklist = database.get_nicks_with_regex(nickname)
+        if len(nicklist) != expect_n_results:
+            print "Error: expected and retrieved number of matching nicknames aren't equal."
+            exit(1)
+        else:
+            return nicklist[0]
 
-	#query_nick, sample = query_result(query)
-	if(expect_n_results == 1):
-		return query_result(query, expect_n_results)[0]
-	else:
-		return query_result(query, expect_n_results)
-	#pd_name, details, filetype = options.sample.strip("/").split("/")
-	#return pd_name, details, filetype
 def get_inputDBS_by_nick(nickname):
   	akt_sample_key = get_sample_by_nick(nickname)
   	try:
