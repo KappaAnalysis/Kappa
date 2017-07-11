@@ -104,19 +104,13 @@ kappaTupleDefaultsBlock = cms.PSet(
 		rename_blacklist = cms.vstring(),
 	),
 
-	TriggerObjects = cms.PSet(kappaNoRegEx,
-		hltTag = cms.InputTag("hltTriggerSummaryAOD"),
-		triggerObjects = cms.vstring(),
-	),
-
 	TriggerObjectStandalone = cms.PSet(kappaNoRegEx, kappaNoCut,
-			metfilterbits = cms.InputTag("TriggerResults", "", "PAT"),
+			metfilterbits = cms.InputTag("TriggerResults"),
 			metfilterbitslist = cms.vstring(),
 			bits = cms.InputTag("TriggerResults","","HLT"),
-			objects = cms.InputTag("selectedPatTrigger"),
 			prescales = cms.InputTag("patTrigger"),
 		triggerObjects = cms.PSet(
-			src = cms.InputTag("selectedPatTrigger"),
+			src = cms.InputTag("slimmedPatTrigger"),
 			)
 	),
 	Tracks = cms.PSet(kappaNoRename,
