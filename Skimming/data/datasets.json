@@ -3483,6 +3483,23 @@
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
     "xsec": 864.7
   }, 
+  "Embedding2016B_ElectronEmbedding_imputDoubleMumirrorminiAODv5_13TeV_USER": {
+    "campaign": "ElectronEmbedding", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2016B/ElectronEmbedding-imputDoubleMu_mirror_miniAOD-v5/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_2016SeptRepro_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "4438793", 
+    "n_files": "5488", 
+    "process": "Embedding2016B", 
+    "scenario": "imputDoubleMu_mirror_miniAODv5", 
+    "xsec": 390.0
+  }, 
   "Embedding2016B_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
       "Skim_Embedding_PromptReco"
@@ -3727,6 +3744,23 @@
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
     "xsec": 857.1
   }, 
+  "Embedding2016C_ElectronEmbedding_imputDoubleMumirrorminiAODv2_13TeV_USER": {
+    "campaign": "ElectronEmbedding", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2016C/ElectronEmbedding-imputDoubleMu_mirror_miniAOD-v2/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_2016SeptRepro_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "1855825", 
+    "n_files": "2308", 
+    "process": "Embedding2016C", 
+    "scenario": "imputDoubleMu_mirror_miniAODv2", 
+    "xsec": 390.0
+  }, 
   "Embedding2016C_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
       "Skim_Embedding_PromptReco"
@@ -3966,6 +4000,23 @@
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
     "xsec": 825.4
   }, 
+  "Embedding2016D_ElectronEmbedding_imputDoubleMumirrorminiAODv5_13TeV_USER": {
+    "campaign": "ElectronEmbedding", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2016D/ElectronEmbedding-imputDoubleMu_mirror_miniAOD-v5/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_2016SeptRepro_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "3291890", 
+    "n_files": "4097", 
+    "process": "Embedding2016D", 
+    "scenario": "imputDoubleMu_mirror_miniAODv5", 
+    "xsec": 390.0
+  }, 
   "Embedding2016D_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
       "Skim_Embedding_PromptReco"
@@ -4204,6 +4255,23 @@
     "process": "Embedding2016E", 
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
     "xsec": 825.4
+  }, 
+  "Embedding2016E_ElectronEmbedding_imputDoubleMumirrorminiAODv5_13TeV_USER": {
+    "campaign": "ElectronEmbedding", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2016E/ElectronEmbedding-imputDoubleMu_mirror_miniAOD-v5/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_2016SeptRepro_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "2995438", 
+    "n_files": "3745", 
+    "process": "Embedding2016E", 
+    "scenario": "imputDoubleMu_mirror_miniAODv5", 
+    "xsec": 390.0
   }, 
   "Embedding2016E_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
@@ -4445,6 +4513,23 @@
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
     "xsec": 852.5
   }, 
+  "Embedding2016F_ElectronEmbedding_imputDoubleMumirrorminiAODv5_13TeV_USER": {
+    "campaign": "ElectronEmbedding", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2016F/ElectronEmbedding-imputDoubleMu_mirror_miniAOD-v5/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_2016SeptRepro_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "2236114", 
+    "n_files": "2798", 
+    "process": "Embedding2016F", 
+    "scenario": "imputDoubleMu_mirror_miniAODv5", 
+    "xsec": 390.0
+  }, 
   "Embedding2016F_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
       "Skim_Embedding_PromptReco"
@@ -4685,6 +4770,23 @@
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2", 
     "xsec": 863.8
   }, 
+  "Embedding2016G_ElectronEmbedding_imputDoubleMumirrorminiAODv5_13TeV_USER": {
+    "campaign": "ElectronEmbedding", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2016G/ElectronEmbedding-imputDoubleMu_mirror_miniAOD-v5/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_2016SeptRepro_v7", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "5893865", 
+    "n_files": "7312", 
+    "process": "Embedding2016G", 
+    "scenario": "imputDoubleMu_mirror_miniAODv5", 
+    "xsec": 390.0
+  }, 
   "Embedding2016G_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
     "Moriond17": [
       "Skim_Embedding_PromptReco"
@@ -4886,6 +4988,23 @@
     "process": "Embedding2016H", 
     "scenario": "imputPromptDoubleMu_mirror_miniAODv2", 
     "xsec": 836.0
+  }, 
+  "Embedding2016H_ElectronEmbedding_imputDoubleMumirrorminiAODv5_13TeV_USER": {
+    "campaign": "ElectronEmbedding", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2016H/ElectronEmbedding-imputDoubleMu_mirror_miniAOD-v5/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "80X_dataRun2_Prompt_v16", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "7398279", 
+    "n_files": "9215", 
+    "process": "Embedding2016H", 
+    "scenario": "imputDoubleMu_mirror_miniAODv5", 
+    "xsec": 390.0
   }, 
   "Embedding2016H_MuTauFinalState_imputPromptDoubleMumirrorminiAODv1_13TeV_USER": {
     "Moriond17": [
