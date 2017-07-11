@@ -544,6 +544,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.p *= process.nEventsFiltered
 	process.p *= process.nNegEventsFiltered
+	process.kappaTuple.active += cms.vstring('FilterSummary')
 
 	## ------------------------------------------------------------------------
 
