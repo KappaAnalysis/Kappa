@@ -82,7 +82,6 @@ public:
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
 		svHLTWhitelist(cfg.getParameter<std::vector<std::string> >("hltWhitelist")),
 		svHLTBlacklist(cfg.getParameter<std::vector<std::string> >("hltBlacklist")),
-		tagNoiseHCAL(cfg.getParameter<edm::InputTag>("noiseHCAL")),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		tagErrorsAndWarnings(cfg.getParameter<edm::InputTag>("errorsAndWarnings")),
 		avoidEaWCategories(cfg.getParameter<std::vector<std::string> >("errorsAndWarningsAvoidCategories")),
@@ -101,21 +100,19 @@ public:
 			svHLTFailToleranceList.push_back(list[i]);
 		}
 		consumescollector.consumes<L1GlobalTriggerReadoutRecord>(tagL1Results);
-		consumescollector.consumes<edm::TriggerResults>(tagHLTResults);
-		consumescollector.consumes<HcalNoiseSummary>(tagNoiseHCAL);
+	 	tagHLTResultsToken = consumescollector.consumes<edm::TriggerResults>(tagHLTResults);
 		consumescollector.consumes<std::vector<edm::ErrorSummaryEntry>>(tagErrorsAndWarnings);
 	}
 	virtual ~KInfoProducer() {};
 
 	static const std::string getLabel() { return "Info"; }
 
-	inline void addHLT(const int idx, const std::string name, const int prescale/*, std::vector<std::string> filterNamesForHLT*/)
+	inline void addHLT(const int idx, const std::string name, const int prescale)
 	{
 		KInfoProducerBase::hltKappa2FWK.push_back(idx);
 		hltNames.push_back(name);
 		selectedHLT.push_back(name);
 		hltPrescales.push_back(prescale);
-		//filterNames.push_back(filterNamesForHLT);
 	}
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
@@ -123,49 +120,8 @@ public:
 		KInfoProducerBase::hltKappa2FWK.clear();
 		hltNames.clear();
 		hltPrescales.clear();
-		//filterNames.clear();
 		addHLT(0, "fail", 42/*, std::vector<std::string>()*/);
 
-		// For running over GEN step only:
-		if (tagHLTResults.label() == "")
-			return true;
-
-		if (tagHLTResults.process() == "")
-		{
-			if (verbosity > 0)
-				std::cout << "tagHLTResults is empty" << std::endl
-					<< " -> trying to determine the process name automatically: ";
-
-			const edm::ProcessHistory& processHistory(run.processHistory());
-			for (edm::ProcessHistory::const_iterator it = processHistory.begin(); it != processHistory.end(); ++it)
-			{
-				if (verbosity > 0)
-					std::cout << it->processName();
-				edm::ProcessConfiguration processConfiguration;
-				if (processHistory.getConfigurationForProcess(it->processName(), processConfiguration))
-				{
-					edm::ParameterSet processPSet;
-					if (edm::pset::Registry::instance()->getMapped(processConfiguration.parameterSetID(), processPSet))
-					{
-						if (processPSet.exists("hltTriggerSummaryAOD"))
-						{
-							tagHLTResults = edm::InputTag(tagHLTResults.label(), "", it->processName());
-							if (verbosity > 0)
-								std::cout << "*";
-						}
-					}
-				}
-				if (verbosity > 0)
-					std::cout << " ";
-			}
-			if (verbosity > 0)
-				std::cout << std::endl;
-			std::cout << "Taking trigger from process " << tagHLTResults.process()
-				<< " (label = " << tagHLTResults.label() << ")" << std::endl;
-			this->addProvenance(tagHLTResults.process(), "");
-			if (tagHLTResults.process() == "")
-				return true;
-		}
 		bool hltSetupChanged = false;
 		if (!KInfoProducerBase::hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
@@ -205,7 +161,6 @@ public:
 
 		metaLumi->hltNames = hltNames;
 		metaLumi->hltPrescales = hltPrescales;
-		//metaLumi->filterNames = filterNames;
 
 		return true;
 	}
@@ -221,71 +176,17 @@ public:
 		// always be HLT.
 		// Disable the overrideHLTCheck for embedded data
 		if (!overrideHLTCheck)
-			assert(!event.isRealData() || tagHLTResults.process() == "HLT");
+			assert(!event.isRealData() || tagHLTResults.process() == "HLT" || tagHLTResults.process() == "RECO");
 
 		bool triggerPrescaleError = false;
 		metaEvent->bitsHLT.clear();
-		if (tagHLTResults.label() != "")
-		{
-			// set HLT trigger bits
-			edm::Handle<edm::TriggerResults> hTriggerResults;
-			event.getByLabel(tagHLTResults, hTriggerResults);
-
-			bool hltFAIL = false;
-			metaEvent->bitsHLT.resize(KInfoProducerBase::hltKappa2FWK.size()+1);
-			for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
-			{
-				const size_t idx = KInfoProducerBase::hltKappa2FWK[i];
-				metaEvent->bitsHLT[i] = hTriggerResults->accept(idx);
-				hltFAIL = hltFAIL || hTriggerResults->error(idx);
-			}
-			metaEvent->bitsHLT[0] = hltFAIL;
-
-			// set and check trigger prescales
-			for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
-			{
-				const std::string &name = metaLumi->hltNames[i];
-				unsigned int prescale = 0;
-/*
-				std::pair<int, int> prescale_L1_HLT = KInfoProducerBase::hltConfig.prescaleValues(event, setup, name);
-				if (prescale_L1_HLT.first < 0 || prescale_L1_HLT.second < 0)
-					prescale = 0;
-				else
-					prescale = prescale_L1_HLT.first * prescale_L1_HLT.second;
-*/
-				if (metaLumi->hltPrescales[i] == 0)
-				{
-					if (verbosity > 0 || printHltList)
-						std::cout << "KInfoProducer::onEvent :  => Adding prescale for trigger: '" << name
-							<< " with value: " << prescale << std::endl;
-					metaLumi->hltPrescales[i] = prescale;
-				}
-				if (metaLumi->hltPrescales[i] != prescale)
-				{
-					if (this->verbosity > 0)
-						std::cout << "KInfoProducer::onEvent :  !!!!!!!!!!! the prescale of " << name << " has changed with respect to the beginning of the luminosity section from " << metaLumi->hltPrescales[i] << " to " << prescale << std::endl;
-					triggerPrescaleError = true;
-				}
-			}
-		}
-		else
-		{
-			for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
-				metaLumi->hltPrescales[i] = 1;
-		}
+		
+		for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
+			metaLumi->hltPrescales[i] = 1;
 
 		// Set L1 trigger bits
 		metaEvent->bitsL1 = 0;
 		bool bPhysicsDeclared = true;
-		if (tagL1Results.label() != "")
-		{
-			edm::Handle<L1GlobalTriggerReadoutRecord> hL1Result;
-			event.getByLabel(tagL1Results, hL1Result);
-			for (size_t i = 0; i < hL1Result->technicalTriggerWord().size(); ++i)
-				if (hL1Result->technicalTriggerWord().at(i))
-					metaEvent->bitsL1 |= ((unsigned long long)1 << i);
-			bPhysicsDeclared = (hL1Result->gtFdlWord().physicsDeclared() == 1);
-		}
 
 		// User flags
 		metaEvent->bitsUserFlags = 0;
@@ -298,42 +199,29 @@ public:
 		if (triggerPrescaleError)
 			metaLumi->bitsUserFlags |= KLFPrescaleError;
 
-		if (tagNoiseHCAL.label() != "")
-		{
-			// HCAL noise
-			edm::Handle<HcalNoiseSummary> noiseSummary;
-			event.getByLabel(tagNoiseHCAL, noiseSummary);
-			if (noiseSummary->passLooseNoiseFilter())
-				metaEvent->bitsUserFlags |= KEFHCALLooseNoise;
-			if (noiseSummary->passTightNoiseFilter())
-				metaEvent->bitsUserFlags |= KEFHCALTightNoise;
-		}
-
 		edm::Handle<std::vector<edm::ErrorSummaryEntry> > errorsAndWarnings;
 
-		if (tagErrorsAndWarnings.label() != "" && event.getByLabel(tagErrorsAndWarnings, errorsAndWarnings))
+		event.getByLabel(tagErrorsAndWarnings, errorsAndWarnings);
+		if (errorsAndWarnings.failedToGet())
 		{
-			if (errorsAndWarnings.failedToGet())
+			metaEvent->bitsUserFlags |= KEFRecoErrors;
+			metaEvent->bitsUserFlags |= KEFRecoWarnings;
+		}
+		else
+		{
+			for (std::vector<edm::ErrorSummaryEntry>::const_iterator it = errorsAndWarnings->begin(); it != errorsAndWarnings->end(); it++)
 			{
-				metaEvent->bitsUserFlags |= KEFRecoErrors;
-				metaEvent->bitsUserFlags |= KEFRecoWarnings;
-			}
-			else
-			{
-				for (std::vector<edm::ErrorSummaryEntry>::const_iterator it = errorsAndWarnings->begin(); it != errorsAndWarnings->end(); it++)
-				{
-					if (avoidEaWCategories.size() != 0 && std::find(avoidEaWCategories.begin(), avoidEaWCategories.end(), it->category) != avoidEaWCategories.end())
-						continue;
-					if (it->severity.getLevel() == edm::ELseverityLevel::ELsev_error || it->severity.getLevel() == edm::ELseverityLevel::ELsev_error)
-						metaEvent->bitsUserFlags |= KEFRecoErrors;
-					if (it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning || it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning)
-						metaEvent->bitsUserFlags |= KEFRecoWarnings;
+				if (avoidEaWCategories.size() != 0 && std::find(avoidEaWCategories.begin(), avoidEaWCategories.end(), it->category) != avoidEaWCategories.end())
+					continue;
+				if (it->severity.getLevel() == edm::ELseverityLevel::ELsev_error || it->severity.getLevel() == edm::ELseverityLevel::ELsev_error)
+					metaEvent->bitsUserFlags |= KEFRecoErrors;
+				if (it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning || it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning)
+					metaEvent->bitsUserFlags |= KEFRecoWarnings;
 
-					if (printErrorsAndWarnings && (it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning || it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning))
-						std::cout << "warning: " << it->category << ", " << it->module << ", " << it->count << "\n";
-					if (printErrorsAndWarnings && (it->severity.getLevel() == edm::ELseverityLevel::ELsev_error || it->severity.getLevel() == edm::ELseverityLevel::ELsev_error))
-						std::cout << "error: " << it->category << ", " << it->module << ", " << it->count << "\n";
-				}
+				if (printErrorsAndWarnings && (it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning || it->severity.getLevel() == edm::ELseverityLevel::ELsev_warning))
+					std::cout << "warning: " << it->category << ", " << it->module << ", " << it->count << "\n";
+				if (printErrorsAndWarnings && (it->severity.getLevel() == edm::ELseverityLevel::ELsev_error || it->severity.getLevel() == edm::ELseverityLevel::ELsev_error))
+					std::cout << "error: " << it->category << ", " << it->module << ", " << it->count << "\n";
 			}
 		}
 
@@ -343,9 +231,10 @@ public:
 protected:
 	std::string tauDiscrProcessName;
 	edm::InputTag tagL1Results, tagHLTResults;
+	edm::EDGetTokenT<edm::TriggerResults> tagHLTResultsToken;
 	std::vector<std::string> svHLTWhitelist, svHLTBlacklist;
 
-	edm::InputTag tagNoiseHCAL, tagHLTrigger;
+	edm::InputTag tagHLTrigger;
 	edm::InputTag tagErrorsAndWarnings;
 	std::vector<std::string> avoidEaWCategories;
 	bool printErrorsAndWarnings;
@@ -354,7 +243,6 @@ protected:
 
 	std::vector<std::string> hltNames;
 	std::vector<unsigned int> hltPrescales;
-	//std::vector<std::vector<std::string> > filterNames;
 
 	typename Tmeta::typeLumi *metaLumi;
 	typename Tmeta::typeEvent *metaEvent;
