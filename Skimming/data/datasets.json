@@ -5641,6 +5641,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "generatorWeight": 0.5526638404499845, 
     "globalTag": "76X_mcRun2_asymptotic_v12", 
     "inputDBS": "global", 
     "n_events_generated": "5791488", 
