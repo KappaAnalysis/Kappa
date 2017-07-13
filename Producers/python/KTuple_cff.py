@@ -334,7 +334,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
 			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
-			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
 			vertexcollection = cms.InputTag("offlinePrimaryVertices"),
 			isoValInputTags = cms.VInputTag(
 				cms.InputTag('muPFIsoValueChargedAll04PFIso'),

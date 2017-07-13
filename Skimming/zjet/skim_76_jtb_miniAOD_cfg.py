@@ -155,7 +155,6 @@ process.load("Kappa.Skimming.KMuons_miniAOD_cff")
 process.kappaTuple.Muons.minPt = 8.0
 process.kappaTuple.Muons.muons.src = cms.InputTag("slimmedMuons")
 process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
 process.kappaTuple.Muons.doPfIsolation = cms.bool(False)
 for src in [ "muPFIsoDepositCharged", "muPFIsoDepositChargedAll", "muPFIsoDepositNeutral", "muPFIsoDepositGamma", "muPFIsoDepositPU"]:
 	setattr(getattr(process, src), "src", cms.InputTag("slimmedMuons"))

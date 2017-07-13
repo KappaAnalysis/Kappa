@@ -260,7 +260,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.load("Kappa.Skimming.KMuons_miniAOD_cff")
 	process.kappaTuple.Muons.muons.src = cms.InputTag(muons)
 	process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-	process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
 	process.kappaTuple.Muons.use03ConeForPfIso = cms.bool(True)
 	process.kappaTuple.Muons.doPfIsolation = cms.bool(False)
 	for src in [ "muPFIsoDepositCharged", "muPFIsoDepositChargedAll", "muPFIsoDepositNeutral", "muPFIsoDepositGamma", "muPFIsoDepositPU"]:
