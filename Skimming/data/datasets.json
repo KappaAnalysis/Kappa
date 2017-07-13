@@ -1856,6 +1856,10 @@
     "xsec": 1.0
   }, 
   "DoubleEG_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
+    "Analysis2017": [
+      "Skim_Data", 
+      "Skim_Base"
+    ], 
     "campaign": "Run2017B", 
     "data": true, 
     "dbs": "/DoubleEG/Run2017B-23Jun2017-v1/MINIAOD", 
@@ -2837,6 +2841,10 @@
     "xsec": 1.0
   }, 
   "DoubleMuon_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
+    "Analysis2017": [
+      "Skim_Data", 
+      "Skim_Base"
+    ], 
     "campaign": "Run2017B", 
     "data": true, 
     "dbs": "/DoubleMuon/Run2017B-23Jun2017-v1/MINIAOD", 
@@ -6981,6 +6989,10 @@
     "xsec": 1.0
   }, 
   "MuonEG_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
+    "Analysis2017": [
+      "Skim_Data", 
+      "Skim_Base"
+    ], 
     "campaign": "Run2017B", 
     "data": true, 
     "dbs": "/MuonEG/Run2017B-23Jun2017-v1/MINIAOD", 
@@ -12388,6 +12400,10 @@
     "xsec": 1.0
   }, 
   "SingleElectron_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
+    "Analysis2017": [
+      "Skim_Data", 
+      "Skim_Base"
+    ], 
     "campaign": "Run2017B", 
     "data": true, 
     "dbs": "/SingleElectron/Run2017B-23Jun2017-v1/MINIAOD", 
@@ -12962,6 +12978,10 @@
     "xsec": 1.0
   }, 
   "SingleMuon_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
+    "Analysis2017": [
+      "Skim_Data", 
+      "Skim_Base"
+    ], 
     "campaign": "Run2017B", 
     "data": true, 
     "dbs": "/SingleMuon/Run2017B-23Jun2017-v1/MINIAOD", 
@@ -14105,6 +14125,10 @@
     "xsec": 1.0
   }, 
   "Tau_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
+    "Analysis2017": [
+      "Skim_Data", 
+      "Skim_Base"
+    ], 
     "campaign": "Run2017B", 
     "data": true, 
     "dbs": "/Tau/Run2017B-23Jun2017-v1/MINIAOD", 
