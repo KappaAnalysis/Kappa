@@ -53,6 +53,7 @@ public:
 	void addProvenance(std::string oldName, std::string newName);
 
 protected:
+	edm::ConsumesCollector& consumescollector_;
 	const edm::ParameterSet psBase;
 	KProvenance *provenance;
 };

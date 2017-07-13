@@ -137,7 +137,9 @@ bool KBaseProducer::fail(const std::ostream &s)
 	return false;
 }
 
-KBaseProducerWP::KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) : psBase(cfg)
+KBaseProducerWP::KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
+	consumescollector_(consumescollector),
+	psBase(cfg)
 {
 	provenance = new KProvenance();
 	_lumi_tree->Bronch(("provenance_" + producerName).c_str(), "KProvenance", &provenance);
