@@ -257,8 +257,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 			addProducer<KL2MuonTrajectorySeedProducer>(psConfig, active[i]);
 		else if (active[i] == "L3MuonTrajectorySeed")
 			addProducer<KL3MuonTrajectorySeedProducer>(psConfig, active[i]);
-		else if (active[i] == "MuonTriggerCandidates")
-			addProducer<KMuonTriggerCandidateProducer>(psConfig, active[i]);
 */
 		if (producers.size() > nProducers + 1)
 		{
