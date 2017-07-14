@@ -101,7 +101,7 @@ public:
 		}
 		consumescollector.consumes<L1GlobalTriggerReadoutRecord>(tagL1Results);
 	 	tagHLTResultsToken = consumescollector.consumes<edm::TriggerResults>(tagHLTResults);
-		consumescollector.consumes<std::vector<edm::ErrorSummaryEntry>>(tagErrorsAndWarnings);
+		tokenErrorsAndWarnings = consumescollector.consumes<std::vector<edm::ErrorSummaryEntry>>(tagErrorsAndWarnings);
 	}
 	virtual ~KInfoProducer() {};
 
@@ -201,7 +201,7 @@ public:
 
 		edm::Handle<std::vector<edm::ErrorSummaryEntry> > errorsAndWarnings;
 
-		event.getByLabel(tagErrorsAndWarnings, errorsAndWarnings);
+		event.getByToken(tokenErrorsAndWarnings, errorsAndWarnings);
 		if (errorsAndWarnings.failedToGet())
 		{
 			metaEvent->bitsUserFlags |= KEFRecoErrors;
@@ -236,6 +236,7 @@ protected:
 
 	edm::InputTag tagHLTrigger;
 	edm::InputTag tagErrorsAndWarnings;
+	edm::EDGetTokenT<std::vector<edm::ErrorSummaryEntry>> tokenErrorsAndWarnings;
 	std::vector<std::string> avoidEaWCategories;
 	bool printErrorsAndWarnings;
 	bool printHltList;
