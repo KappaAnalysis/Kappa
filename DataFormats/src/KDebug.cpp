@@ -36,7 +36,6 @@ std::ostream &operator<<(std::ostream &os, const KBeamSpot &bs)
 {
 	os << bs.position << " beta*=" << bs.betaStar;
 	os << " beamWidth=(" << bs.beamWidthX << ", " << bs.beamWidthY << ")";
-	os << " dx/dz=" << bs.dxdz << " dy/dz=" << bs.dydz << " sigmaZ=" << bs.sigmaZ;
 	return os;
 }
 
@@ -264,7 +263,7 @@ std::ostream &operator<<(std::ostream &os, const KTriggerObjects &to)
 
 std::ostream &operator<<(std::ostream &os, const KPileupDensity &pu)
 {
-	return os << "rho=" << pu.rho << " sigma=" << pu.sigma;
+	return os << "rho=" << pu.rho;
 }
 
 std::ostream &operator<<(std::ostream &os, const KHit &hit)

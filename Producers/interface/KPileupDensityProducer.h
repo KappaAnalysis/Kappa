@@ -21,18 +21,11 @@ public:
 	static const std::string getLabel() { return "PileupDensity"; }
 
 protected:
-	virtual void clearProduct(OutputType &output) { output.rho = 0; output.sigma = 0; }
+	virtual void clearProduct(OutputType &output) { output.rho = 0; }
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		out.rho = in;
-
-		edm::InputTag tmpLabel(tag->label(), "sigma", tag->process());
-		edm::Handle<double> hSigma;
-		if (this->cEvent->getByLabel(tmpLabel, hSigma))
-			out.sigma = *hSigma;
-		else
-			out.sigma = 0;
 	}
 };
 
