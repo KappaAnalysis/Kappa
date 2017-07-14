@@ -54,11 +54,11 @@ public:
 		toMetadata = new KTriggerObjectMetadata;
 		_run_tree->Bronch("triggerObjectMetadata", "KTriggerObjectMetadata", &toMetadata);
 
-		consumescollector.consumes<edm::TriggerResults>(triggerBits_);
-		consumescollector.consumes<edm::TriggerResults>(metFilterBits_);
-		consumescollector.consumes<pat::PackedTriggerPrescales>(triggerPrescales_);
+		this->triggerBitsToken_ = consumescollector.consumes<edm::TriggerResults>(triggerBits_);
+		this->metFilterBitsToken_ = consumescollector.consumes<edm::TriggerResults>(metFilterBits_);
+		this->triggerPrescalesToken_ = consumescollector.consumes<pat::PackedTriggerPrescales>(triggerPrescales_);
 		for(size_t j = 0; j < metFilterBitsList_.size(); j++)
-			consumescollector.consumes<bool>(edm::InputTag(metFilterBitsList_[j]));
+			this->metFilterBitsListTokens_.push_back(consumescollector.consumes<bool>(edm::InputTag(metFilterBitsList_[j])));
 	
 		
 	}
@@ -78,7 +78,7 @@ public:
 	{
 		KBaseMultiProducer<pat::TriggerObjectStandAloneCollection, KTriggerObjects>::onFirstEvent(event, setup);
 		edm::Handle<edm::TriggerResults> metFilterBits;
-		event.getByLabel(metFilterBits_, metFilterBits);
+		event.getByToken(this->metFilterBitsToken_, metFilterBits);
 		// preselect met filters
 		metFilterNames_ = event.triggerNames(*metFilterBits);
 		for(size_t i = 0; i < metFilterBits->size(); i++)
@@ -108,19 +108,17 @@ public:
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup) override
 	{
 		
-		event.getByLabel(triggerBits_, triggerBitsHandle_);
-		event.getByLabel(metFilterBits_, metFilterBitsHandle_);
-		event.getByLabel(triggerPrescales_, triggerPrescalesHandle_);
+		event.getByToken(this->triggerBitsToken_, triggerBitsHandle_);
+		event.getByToken(this->metFilterBitsToken_, metFilterBitsHandle_);
+		event.getByToken(this->triggerPrescalesToken_, triggerPrescalesHandle_);
 
-		for(size_t i = 0; i < metFilterBitsList_.size(); i++)
+		for(size_t i = 0; i < this->metFilterBitsListTokens_.size(); i++)
 		{
-			event.getByLabel(edm::InputTag(metFilterBitsList_[i]), metFilterBitsListHandle_[i]);
+			event.getByToken(this->metFilterBitsListTokens_[i], metFilterBitsListHandle_[i]);
 		}
-		
+
 		if (save_l1extratau_) event.getByToken( l1tauJetSource_, l1tauColl_ );
 		event_ = &(event);
-		
-		//if (save_l1extratau_) event.getByLabel( tauJetSource_, tauColl_ );
 
 		names_ = event.triggerNames(*triggerBitsHandle_);
 
@@ -322,6 +320,9 @@ private:
 	edm::Handle<edm::TriggerResults> triggerBitsHandle_;
 	edm::Handle<pat::PackedTriggerPrescales> triggerPrescalesHandle_;
 	edm::Handle<edm::TriggerResults> metFilterBitsHandle_;
+	edm::EDGetTokenT<edm::TriggerResults> triggerBitsToken_;
+	edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescalesToken_;
+	edm::EDGetTokenT<edm::TriggerResults> metFilterBitsToken_;
 	const edm::Event *event_;
 	
 	bool save_l1extratau_;
@@ -330,6 +331,7 @@ private:
 	std::vector<int> l1extratau_idxs_;
 	std::vector<std::string> metFilterBitsList_;
 	std::vector<edm::Handle<bool>> metFilterBitsListHandle_;
+	std::vector<edm::EDGetTokenT<bool>> metFilterBitsListTokens_;
 	
 	
 	
