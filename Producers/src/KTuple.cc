@@ -62,7 +62,7 @@
 #include "../interface/KExtendedTauProducer.h"
 #include "../interface/KTowerProducer.h"
 #include "../interface/KTrackProducer.h"
-#include "../interface/KLeptonPairProducer.h"
+// #include "../interface/KLeptonPairProducer.h" not used in an config atm
 #include "../interface/KTrackSummaryProducer.h"
 #include "../interface/KTriggerObjectProducer.h"
 #if CMSSW_MAJOR_VERSION >= 7
@@ -238,7 +238,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KTaupairVerticesMapProducer>(active[i]);
 		addProducer<KTowerProducer>(active[i]);
 		addProducer<KTrackProducer>(active[i]);
-		addProducer<KLeptonPairProducer>(active[i]);
+//		addProducer<KLeptonPairProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);
 		addProducer<KTriggerObjectProducer>(active[i]);
 #if CMSSW_MAJOR_VERSION >= 7
