@@ -24,14 +24,14 @@ public:
 	{
 		names = new KFilterMetadata;
 		_lumi_tree->Bronch("filterMetadata", "KFilterMetadata", &names);
-		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelEventsTotal);
-		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelNegEventsTotal);
-		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelEventsFiltered);
-		consumescollector.consumes<edm::MergeableCounter,edm::InLumi>(labelNegEventsFiltered);
+		tokenEventsTotal = consumescollector.consumes<edm::MergeableCounter>(labelEventsTotal);
+		tokenNegEventsTotal = consumescollector.consumes<edm::MergeableCounter>(labelNegEventsTotal);
+		tokenEventsFiltered = consumescollector.consumes<edm::MergeableCounter>(labelEventsFiltered);
+		tokenNegEventsFiltered = consumescollector.consumes<edm::MergeableCounter>(labelNegEventsFiltered);
 	}
 
 	static const std::string getLabel() { return "FilterSummary"; }
-
+/*
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		summary->presence = 0;
@@ -76,20 +76,21 @@ public:
 
 		return true;
 	}
+*/
 	virtual bool endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup) override
 	{
 		edm::Handle<edm::MergeableCounter> nEventsTotal, nNegEventsTotal, nEventsFiltered, nNegEventsFiltered;
 
-		lumiBlock.getByLabel(labelEventsTotal, nEventsTotal);
+		lumiBlock.getByToken(tokenEventsTotal, nEventsTotal);
 		names->nEventsTotal = nEventsTotal->value;
 
-		lumiBlock.getByLabel(labelNegEventsTotal, nNegEventsTotal);
+		lumiBlock.getByToken(tokenNegEventsTotal, nNegEventsTotal);
 		names->nNegEventsTotal = nNegEventsTotal->value;
 
-		lumiBlock.getByLabel(labelEventsFiltered, nEventsFiltered);
+		lumiBlock.getByToken(tokenEventsFiltered, nEventsFiltered);
 		names->nEventsFiltered = nEventsFiltered->value;
 
-		lumiBlock.getByLabel(labelNegEventsFiltered, nNegEventsFiltered);
+		lumiBlock.getByToken(tokenNegEventsFiltered, nNegEventsFiltered);
 		names->nNegEventsFiltered = nNegEventsFiltered->value;
 
 		return true;
@@ -97,6 +98,7 @@ public:
 	}
 
 private:
+/*
 	struct NameAndTagComparison
 	{
 		edm::InputTag tag;
@@ -110,14 +112,19 @@ private:
 	std::vector<NameAndTagComparison> namesAndTags;
 	std::string provenance;
 	KFilterSummary *summary;
-	KFilterMetadata *names;
 	std::vector<edm::InputTag> tags;
-
+*/
+	KFilterMetadata *names;
 	std::string labelEventsTotal = "nEventsTotal";
 	std::string labelNegEventsTotal = "nNegEventsTotal";
 	std::string labelEventsFiltered = "nEventsFiltered";
 	std::string labelNegEventsFiltered = "nNegEventsFiltered";
 
+	edm::EDGetTokenT<edm::MergeableCounter> tokenEventsTotal;
+	edm::EDGetTokenT<edm::MergeableCounter> tokenNegEventsTotal;
+	edm::EDGetTokenT<edm::MergeableCounter> tokenEventsFiltered;
+	edm::EDGetTokenT<edm::MergeableCounter> tokenNegEventsFiltered;
+/*
 	virtual bool onMatchingInput(const std::string targetName, const std::string inputName,
 		const edm::ParameterSet &pset, const edm::InputTag &tag)
 	{
@@ -130,6 +137,7 @@ private:
 		provenance += tag.encode() + ",";
 		return true;
 	}
+*/
 };
 
 #endif
