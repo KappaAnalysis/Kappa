@@ -331,9 +331,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 	),
 
 	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
-		muons = cms.PSet(
-			src = cms.InputTag("muons"),
-			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
 			vertexcollection = cms.InputTag("offlinePrimaryVertices"),
 			isoValInputTags = cms.VInputTag(
 				cms.InputTag('muPFIsoValueChargedAll04PFIso'),
@@ -343,6 +340,9 @@ kappaTupleDefaultsBlock = cms.PSet(
 			# Cuts for PF isolation
 			pfIsoVetoCone = cms.double(0.01),
 			pfIsoVetoMinPt = cms.double(0.5),
+		muons = cms.PSet(
+			src = cms.InputTag("muons"),
+			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
 		),
 		muonTriggerObjects = cms.vstring(
 			# HLT_MuX (2010)
@@ -460,17 +460,17 @@ kappaTupleDefaultsBlock = cms.PSet(
 		kappaNoRegEx,
 		ids = cms.VInputTag(),
 		srcIds = cms.string("pat"),
-		electrons = cms.PSet(
-			src = cms.InputTag("patElectrons"),
-			allConversions = cms.InputTag("allConversions"),
-			offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
-			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
-			isoValInputTags = cms.VInputTag(
+		allConversions = cms.InputTag("allConversions"),
+		offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
+		vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
+		rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
+		isoValInputTags = cms.VInputTag(
 				cms.InputTag('elPFIsoValueChargedAll04PFIdPFIso'),
 				cms.InputTag('elPFIsoValueGamma04PFIdPFIso'),
 				cms.InputTag('elPFIsoValueNeutral04PFIdPFIso'),
 				cms.InputTag('elPFIsoValuePU04PFIdPFIso')),
-			rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
+		electrons = cms.PSet(
+			src = cms.InputTag("patElectrons"),
 		),
 	),
 
