@@ -45,12 +45,12 @@ public:
 		runInfo(cfg.getParameter<edm::InputTag>("lheSource")),
 		lheWeightRegexes(cfg.getParameter<std::vector<std::string>>("lheWeightNames"))
 		{
-			consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
-			consumescollector.consumes<GenEventInfoProduct>(tagSource);
-			consumescollector.consumes<LHEEventProduct>(lheSource);
-			consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
-			consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
-			consumescollector.consumes<LHERunInfoProduct>(runInfo);
+			this->tokenGenRunInfo = consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
+			this->tokenSource = consumescollector.consumes<GenEventInfoProduct>(tagSource);
+			this->tokenLhe = consumescollector.consumes<LHEEventProduct>(lheSource);
+			this->tokenPuInfo = consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
+			this->tokenLHERunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
+			this->tokenRunInfo = consumescollector.consumes<LHERunInfoProduct>(runInfo);
 
 			genEventInfoMetadata = new KGenEventInfoMetadata();
 			_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
@@ -70,7 +70,7 @@ public:
 #if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 6) || (CMSSW_MAJOR_VERSION > 7) 
 		// print available lheWeights
 		edm::Handle<LHERunInfoProduct> runhandle;
-		if((this->verbosity > 1) && lumiBlock.getRun().getByLabel( runInfo, runhandle ))
+		if((this->verbosity > 1) && lumiBlock.getRun().getByToken( tokenRunInfo, runhandle ))
 		{
 			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
 			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
@@ -87,7 +87,7 @@ public:
 	}
 		// Read generator infos
 		edm::Handle<GenRunInfoProduct> hGenInfo;
-		lumiBlock.getRun().getByLabel(tagSource, hGenInfo);
+		lumiBlock.getRun().getByToken(this->tokenGenRunInfo, hGenInfo);
 
 		const bool invalidGenInfo = !hGenInfo.isValid();
 		this->metaLumi->filterEff = invalidGenInfo ? -1 : hGenInfo->filterEfficiency();
@@ -103,7 +103,7 @@ public:
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		edm::Handle<LHEEventProduct> lheEventProduct;
-		if(lheWeightRegexes.size() > 0 && event.getByLabel(lheSource, lheEventProduct))
+		if(lheWeightRegexes.size() > 0 && event.getByToken(tokenLhe, lheEventProduct))
 		{
 			for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
 			{
@@ -131,7 +131,7 @@ public:
 		edm::Handle<LHEEventProduct> lheEventProduct;
 		double lheHt = 0.;
 		int lheNOutPartons = 0;
-		if (event.getByLabel(lheSource, lheEventProduct) && lheEventProduct.isValid())
+		if (event.getByToken(tokenLhe, lheEventProduct) && lheEventProduct.isValid())
 		{
 			const lhef::HEPEUP& lheEvent = lheEventProduct->hepeup();
 			std::vector<lhef::HEPEUP::FiveVector> lheParticles = lheEvent.PUP;
@@ -147,7 +147,7 @@ public:
 		this->metaEvent->lheHt = lheHt;
 		this->metaEvent->lheNOutPartons = lheNOutPartons;
 		// Get LHE renormalization and factorization weights
-		if((lheWeightRegexes.size() > 0) && event.getByLabel(lheSource, lheEventProduct) && lheEventProduct.isValid())
+		if((lheWeightRegexes.size() > 0) && event.getByToken(tokenLhe, lheEventProduct) && lheEventProduct.isValid())
 		{
 			this->metaEvent->lheWeight.clear();
 			for(size_t j = 0; j < genEventInfoMetadata->lheWeightNames.size(); j++)
@@ -172,7 +172,7 @@ public:
 
 		// Get generator event info:
 		edm::Handle<GenEventInfoProduct> hEventInfo;
-		event.getByLabel(tagSource, hEventInfo);
+		event.getByToken(tokenSource, hEventInfo);
 
 		this->metaEvent->binValue = -1;
 		if (hEventInfo->binningValues().size() > 0)
@@ -201,7 +201,7 @@ public:
 		this->metaEvent->nPUp1 = 0;
 		this->metaEvent->nPUp2 = 0;
 		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
-		if (event.getByLabel(puInfoSource, puHandles) && puHandles.isValid())
+		if (event.getByToken(tokenPuInfo, puHandles) && puHandles.isValid())
 		{
 			for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
 			{
@@ -224,7 +224,7 @@ public:
 		{
 			// in some versions of CMSSW it's not a vector:
 			edm::Handle<PileupSummaryInfo> puHandle;
-			if (event.getByLabel(puInfoSource, puHandle) && puHandle.isValid())
+			if (event.getByToken(tokenPuInfo, puHandle) && puHandle.isValid())
 				this->metaEvent->nPU = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
 		}
 
@@ -238,6 +238,13 @@ protected:
 	edm::InputTag tagSource, puInfoSource, lheSource, runInfo;
 	KGenEventInfoMetadata *genEventInfoMetadata;
 	std::vector<std::string> lheWeightRegexes;
+
+	edm::EDGetTokenT<GenRunInfoProduct> tokenGenRunInfo;
+	edm::EDGetTokenT<GenEventInfoProduct> tokenSource;
+	edm::EDGetTokenT<LHEEventProduct> tokenLhe;
+	edm::EDGetTokenT<std::vector<PileupSummaryInfo>> tokenPuInfo;
+	edm::EDGetTokenT<LHERunInfoProduct> tokenLHERunInfo;
+	edm::EDGetTokenT<LHERunInfoProduct> tokenRunInfo;
 };
 
 template<typename Tmeta>
@@ -250,7 +257,7 @@ public:
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource"))
 		{
-		    consumescollector.consumes<edm::HepMCProduct>(tagSource);
+		    tokenSource = consumescollector.consumes<edm::HepMCProduct>(tagSource);
 		}
 
 	static const std::string getLabel() { return "HepMCInfo"; }
@@ -278,7 +285,7 @@ public:
 
 		// Get generator event info:
 		edm::Handle<edm::HepMCProduct> hEventInfo;
-		event.getByLabel(tagSource, hEventInfo);
+		event.getByToken(this->tokenSource, hEventInfo);
 		const HepMC::GenEvent &hepmc = hEventInfo->getHepMCData();
 
 		this->metaEvent->binValue = hepmc.event_scale();
@@ -303,6 +310,7 @@ protected:
 	double forceXSec;
 	int forceLumi;
 	edm::InputTag tagSource;
+	edm::EDGetTokenT<edm::HepMCProduct> tokenSource;
 };
 
 #endif
