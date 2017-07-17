@@ -21,14 +21,18 @@
 	#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 #endif
 
-
 class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>
 {
 public:
 	KElectronProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
 		KBaseMultiLVProducer<edm::View<pat::Electron>,
 		KElectrons>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
-		namesOfIds(cfg.getParameter<std::vector<std::string> >("ids")),
+		tagConversionSource(cfg.getParameter<edm::InputTag>("allConversions")),
+		beamSpotSource(cfg.getParameter<edm::InputTag>("offlineBeamSpot")),
+		VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
+		rhoIsoTag(cfg.getParameter<edm::InputTag>("rhoIsoInputTag")),
+		isoValInputTags(cfg.getParameter<std::vector<edm::InputTag> >("isoValInputTags")),
+		tagOfIds(cfg.getParameter<std::vector<edm::InputTag> >("ids")),
 		srcIds_(cfg.getParameter<std::string>("srcIds")),
 		doPfIsolation_(true),
 		doCutbasedIds_(true)
@@ -39,24 +43,23 @@ public:
 	doMvaIds_ = (srcIds_ == "pat");
 	doAuxIds_ = (srcIds_ == "standalone");
 
+	this->tokenConversionSource = consumescollector.consumes<reco::ConversionCollection>(tagConversionSource);
+	this->tokenBeamSpot = consumescollector.consumes<reco::BeamSpot>(beamSpotSource);
+	this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
+	this->tokenRhoIso = consumescollector.consumes<double>(rhoIsoTag);
+
 	const edm::ParameterSet &psBase = this->psBase;
 	std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
 
 	for (size_t i = 0; i < names.size(); ++i)
 	{
 		const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-		if(pset.existsAs<edm::InputTag>("allConversions")) consumescollector.consumes<reco::ConversionCollection>(pset.getParameter<edm::InputTag>("allConversions"));
-		if(pset.existsAs<edm::InputTag>("offlineBeamSpot")) consumescollector.consumes<reco::BeamSpot>(pset.getParameter<edm::InputTag>("offlineBeamSpot"));
-		if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
-		if(pset.existsAs<edm::InputTag>("rhoIsoInputTag")) consumescollector.consumes<double>(pset.getParameter<edm::InputTag>("rhoIsoInputTag"));
-		if(pset.existsAs<std::vector<edm::InputTag>>("isoValInputTags"))
-		{
-			for(size_t j = 0; j < pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").size(); ++j) consumescollector.consumes<edm::ValueMap<double>>(pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").at(j));
-		}
+		for(size_t j = 0; j < this->isoValInputTags.size(); ++j)
+			tokenIsoValInputTags.push_back(consumescollector.consumes<edm::ValueMap<double>>(this->isoValInputTags.at(j)));
 	}
-	for (size_t j = 0; j < namesOfIds.size(); ++j)
+	for (size_t j = 0; j < tagOfIds.size(); ++j)
 	{
-		consumescollector.consumes<edm::ValueMap<float> >(edm::InputTag(namesOfIds[j]));
+		tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(tagOfIds[j]));
 	}
 }
 
@@ -64,9 +67,9 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		for (std::vector<std::string>::const_iterator id = namesOfIds.begin(); id != namesOfIds.end(); ++id)
+		for (size_t j = 0; j < tagOfIds.size(); ++j)
 		{
-			electronMetadata->idNames.push_back(*id);
+			electronMetadata->idNames.push_back(this->tagOfIds[j].label());
 		}
 		return KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::onLumi(lumiBlock, setup);
 	}
@@ -75,52 +78,29 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Get additional objects for the cutbased IDs
-		edm::InputTag tagConversionSource = pset.getParameter<edm::InputTag>("allConversions");
-		cEvent->getByLabel(tagConversionSource, hConversions);
+		cEvent->getByToken(this->tokenConversionSource, this->hConversions);
 
-		edm::InputTag beamSpotSource = pset.getParameter<edm::InputTag>("offlineBeamSpot");
-		cEvent->getByLabel(beamSpotSource, BeamSpot);
+		cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 
-		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
-		cEvent->getByLabel(VertexCollectionSource, VertexCollection);
+		cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
 
-		std::vector<edm::InputTag>  isoValInputTags = pset.getParameter<std::vector<edm::InputTag> >("isoValInputTags");
-		isoVals.resize(isoValInputTags.size());
-		for (size_t j = 0; j < isoValInputTags.size(); ++j)
+		this->isoVals.resize(this->isoValInputTags.size());
+		for (size_t j = 0; j < this->isoValInputTags.size(); ++j)
 		{
-			cEvent->getByLabel(isoValInputTags[j], isoVals[j]);
-			if (isoVals[j].failedToGet())
+			cEvent->getByToken(this->tokenIsoValInputTags[j], this->isoVals[j]);
+			if (this->isoVals[j].failedToGet())
 			{
 				doPfIsolation_ = false;
 			}
 		}
 		
-		cEvent->getByLabel(pset.getParameter<edm::InputTag>("rhoIsoInputTag"), rhoIso_h);
-		/*art::Handle<StepPointMCCollection> stepsHandle;
-		event.getByLabel("g4run","tracker",stepsHandle);
-		StepPointMCCollection const& steps(*stepsHandle);
-		*/
-		/*try {
-			iEvent.getByLabel(l1GTReadoutRecTag_,L1GTRR);
-		} catch (...) {;}
-		if ( L1GTRR.isValid() ) { // exists
-		
-		edm::Handle<edm::TriggerResults> trh;
-		try {iEvent.getByLabel(triggerInputTag_,trh);}
-			catch( cms::Exception& ex ) { LogWarning("HWWTreeDumper") << "Trigger results: " << triggerInputTag_ << " not found"; }
-		if (!trh.isValid())
-			throw cms::Exception("ProductNotValid") << "TriggerResults product not valid";
-		*/
+		cEvent->getByToken(tokenRhoIso, rhoIso_h);
 
-		// Continue with main product: PAT-electrons
-		
 		// Prepare IDs for miniAOD
-		edm::InputTag electronIdsInputTag;
-		electronIDValueMap.resize(namesOfIds.size());
-		for (size_t j = 0; j < namesOfIds.size(); ++j)
+		electronIDValueMap.resize(tokenOfIds.size());
+		for (size_t j = 0; j < tokenOfIds.size(); ++j)
 		{
-			electronIdsInputTag = edm::InputTag(namesOfIds[j]);
-			cEvent->getByLabel(electronIdsInputTag, electronIDValueMap[j]);
+			cEvent->getByToken(this->tokenOfIds[j], this->electronIDValueMap[j]);
 		}
 		
 		// call base class
@@ -232,7 +212,7 @@ protected:
 	virtual void doAuxIds(const SingleInputType &in, SingleOutputType &out)
 	{
 		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
-		for (size_t i = 0; i < namesOfIds.size(); ++i)
+		for (size_t i = 0; i < tagOfIds.size(); ++i)
 		{
 			out.electronIds.push_back((*(electronIDValueMap)[i])[pe]);
 		}
@@ -244,9 +224,9 @@ protected:
 		 * Full instructions in Producer/KElectrons_cff
 		 */
 		out.electronIds.clear();
-		for (size_t i = 0; i < namesOfIds.size(); ++i)
+		for (size_t i = 0; i < tagOfIds.size(); ++i)
 		{
-			out.electronIds.push_back(in.electronID(namesOfIds[i]));
+			out.electronIds.push_back(in.electronID(tagOfIds[i].label()));
 		}
 	}
 
@@ -293,14 +273,13 @@ protected:
 		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
 		
 		// isolation values (PF is used for IDs later)
-		out.sumChargedHadronPt = (*(isoVals)[0])[pe];
-		out.sumPhotonEt        = (*(isoVals)[1])[pe];
-		out.sumNeutralHadronEt = (*(isoVals)[2])[pe];
-		out.sumPUPt            = (*(isoVals)[3])[pe];
+		out.sumChargedHadronPt = (*(this->isoVals)[0])[pe];
+		out.sumPhotonEt        = (*(this->isoVals)[1])[pe];
+		out.sumNeutralHadronEt = (*(this->isoVals)[2])[pe];
+		out.sumPUPt            = (*(this->isoVals)[3])[pe];
 	}
 
 private:
-	std::vector<std::string> namesOfIds;
 	KElectronMetadata *electronMetadata;
 	boost::hash<const pat::Electron*> hasher;
 
@@ -309,6 +288,21 @@ private:
 	edm::Handle<reco::BeamSpot> BeamSpot;
 	edm::Handle<reco::VertexCollection> VertexCollection;
 	edm::Handle<double> rhoIso_h;
+
+	edm::InputTag tagConversionSource;
+	edm::InputTag beamSpotSource;
+	edm::InputTag VertexCollectionSource;
+	edm::InputTag rhoIsoTag;
+	std::vector<edm::InputTag>  isoValInputTags;
+	std::vector<edm::InputTag> tagOfIds;
+
+	edm::EDGetTokenT<reco::ConversionCollection> tokenConversionSource;
+	edm::EDGetTokenT<reco::BeamSpot> tokenBeamSpot;
+	edm::EDGetTokenT<reco::VertexCollection> tokenVertexCollection;
+	edm::EDGetTokenT<double> tokenRhoIso; 
+	std::vector<edm::EDGetTokenT<edm::ValueMap<double>>> tokenIsoValInputTags ;
+	std::vector<edm::EDGetTokenT<edm::ValueMap<float>>> tokenOfIds;
+
 	std::string srcIds_;
 	bool doPfIsolation_;
 	bool doCutbasedIds_;

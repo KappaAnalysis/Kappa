@@ -174,7 +174,7 @@ process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJet
 from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 process.kappaTuple.Electrons.srcIds = cms.string("standalone");
 
-process.kappaTuple.Electrons.ids = cms.vstring("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
+process.kappaTuple.Electrons.ids = cms.VInputTag("egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
 				"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
 				"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
 				"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
