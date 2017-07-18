@@ -331,17 +331,17 @@ kappaTupleDefaultsBlock = cms.PSet(
 	),
 
 	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
-			vertexcollection = cms.InputTag("offlinePrimaryVertices"),
+			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
 			isoValInputTags = cms.VInputTag(
 				cms.InputTag('muPFIsoValueChargedAll04PFIso'),
 				cms.InputTag('muPFIsoValueGamma04PFIso'),
 				cms.InputTag('muPFIsoValueNeutral04PFIso'),
 				cms.InputTag('muPFIsoValuePU04PFIso')),
 			# Cuts for PF isolation
-			pfIsoVetoCone = cms.double(0.01),
-			pfIsoVetoMinPt = cms.double(0.5),
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
+			pfIsoVetoCone = cms.double(0.01),
+			pfIsoVetoMinPt = cms.double(0.5),
 			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
 		),
 		muonTriggerObjects = cms.vstring(
