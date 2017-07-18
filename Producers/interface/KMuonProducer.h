@@ -31,6 +31,7 @@
 #include <TrackingTools/Records/interface/TransientTrackRecord.h>
 #include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 #include <FWCore/Framework/interface/EDProducer.h>
+#include <DataFormats/VertexReco/interface/Vertex.h>
 #include "../../Producers/interface/Consumes.h"
 #include "boost/functional/hash.hpp"
 
@@ -60,14 +61,14 @@ public:
 		_lumi_tree->Bronch("muonMetadata", "KMuonMetadata", &muonMetadata);
 
         this->HLTTriggerToken = consumescollector.consumes<trigger::TriggerEvent>(tagHLTrigger);
-		this->VertexCollectionToken = consumescollector.consumes<reco::Vertex>(VertexCollectionSource);
+		this->VertexCollectionToken = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
         const edm::ParameterSet &psBase = this->psBase;
         std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
 
         for (size_t i = 0; i < names.size(); ++i)
         {
             const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-            if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<edm::View<reco::Vertex>>(pset.getParameter<edm::InputTag>("vertexcollection"));
+            if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
 			for(size_t j = 0; j < isoValInputTags.size(); ++j)
 				isoValTokens.push_back(consumescollector.consumes<edm::ValueMap<double>>(isoValInputTags.at(j)));
         }
@@ -150,8 +151,7 @@ public:
 		if (in.globalTrack().isNonnull())
 			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack);
 
-		edm::View<reco::Vertex> vertices = *VertexHandle;
-		reco::Vertex vtx = vertices.at(0);
+		reco::Vertex vtx = VertexHandle->at(0);
 		if (in.muonBestTrack().isNonnull()) // && &vtx != NULL) TODO
 		{
 			/// ID var from the bestTrack which is not saved entirely
@@ -309,7 +309,7 @@ private:
 	edm::InputTag VertexCollectionSource;
 	std::vector<edm::InputTag>  isoValInputTags;
 	edm::EDGetTokenT<trigger::TriggerEvent> HLTTriggerToken;
-	edm::EDGetTokenT<reco::Vertex> VertexCollectionToken;
+	edm::EDGetTokenT<reco::VertexCollection> VertexCollectionToken;
 	std::vector<edm::EDGetTokenT<edm::ValueMap<double>>> isoValTokens;
 	double hltMaxdR, hltMaxdPt_Pt;
 	double pfIsoVetoCone, pfIsoVetoMinPt;
@@ -318,7 +318,7 @@ private:
 	PropagateToMuon propagatorToMuonSystem;
 	edm::Handle<edm::ValueMap<reco::IsoDeposit> > isoDepsPF;
 	edm::Handle<trigger::TriggerEvent> triggerEventHandle;
-	edm::Handle<edm::View<reco::Vertex> > VertexHandle;
+	edm::Handle<reco::VertexCollection> VertexHandle;
 	KMuonMetadata *muonMetadata;
 	boost::hash<const reco::Muon*> hasher;
 	
