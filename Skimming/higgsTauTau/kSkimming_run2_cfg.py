@@ -138,6 +138,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
 
+	process.kappaTuple.active += cms.vstring('Info')
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
 	# setup BadPFMuonFilter and BadChargedCandidateFilter
@@ -163,6 +164,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		else:
 			process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
 
+	process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
@@ -180,7 +182,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 	
 	if not tools.is_above_cmssw_version([9]):
-		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.InputTag("selectedPatTrigger")
+		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("selectedPatTrigger"))
+		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
 
 	process.kappaTuple.active += cms.vstring('BeamSpot')
 	if tools.is_above_cmssw_version([7,6]):
