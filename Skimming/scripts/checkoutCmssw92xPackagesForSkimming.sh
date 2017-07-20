@@ -8,8 +8,19 @@ scramv1 project CMSSW CMSSW_9_2_4
 cd CMSSW_9_2_4/src
 eval `scramv1 runtime -sh`
 
+export KAPPA_BRANCH="master"
+while getopts :b:g:e:n: option
+do
+	case "${option}"
+	in
+	b) export KAPPA_BRANCH=${OPTARG};;
+	g) git config --global user.github ${OPTARG};;
+	e) git config --global user.email ${OPTARG};;
+	n) git config --global user.name "\"${OPTARG}\"";;
+	esac
+done
 
-#cd $CMSSW_BASE/src
+cd $CMSSW_BASE/src
 ##Electron cutBased Id and MVA Id
 ##https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_8_0
 ##https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_regular_users_common
@@ -52,6 +63,6 @@ git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
 ##Remove the .git folder as it is not needed and contains a lot of useless data
 #rm -rf RecoEgamma/ElectronIdentification/data/.git
 #Check out Kappa
-git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges
+git clone https://github.com/KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
 
 scram b -j 4
