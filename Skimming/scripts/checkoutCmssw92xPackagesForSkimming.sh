@@ -52,6 +52,6 @@ git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
 ##Remove the .git folder as it is not needed and contains a lot of useless data
 #rm -rf RecoEgamma/ElectronIdentification/data/.git
 #Check out Kappa
-git clone https://github.com/KappaAnalysis/Kappa.git
+git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges
 
 scram b -j 4

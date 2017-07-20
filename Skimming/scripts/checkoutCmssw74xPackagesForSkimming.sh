@@ -68,7 +68,7 @@ git cms-merge-topic -u cms-met:METCorUnc74X
 git cms-merge-topic ikrav:egm_id_747_v2
 
 #Check out Kappa
-git clone https://github.com/KappaAnalysis/Kappa.git
+git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges
 
 scram b -v -j 4 || {
       echo "The ${CMSSW_BASE} with Kappa could not be built"

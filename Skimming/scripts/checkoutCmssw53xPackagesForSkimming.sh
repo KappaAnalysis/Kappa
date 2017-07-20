@@ -73,7 +73,7 @@ git-cms-addpkg CommonTools/ParticleFlow
 git cms-addpkg PhysicsTools/JetMCAlgos
 
 #Check out Kappa
-git clone https://github.com/KappaAnalysis/Kappa.git
+git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges
 
 
 # fixes for SLC6

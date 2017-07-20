@@ -88,7 +88,7 @@ sed -i "/produces<edm::PtrVector<reco::Muon>>/a \	  produces<bool>();" RecoMET/M
 sed -i "/iEvent.put(std::move(out),/a \	iEvent.put(std::auto_ptr<bool>(new bool(found)));" RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc
 sed "/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificanceParams_cfi\ import\ METSignificanceParams_Data" PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py -i
 #Check out Kappa
-git clone https://github.com/KappaAnalysis/Kappa.git
+git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges
 
 scram b -v -j 4 || {
       echo "The ${CMSSW_BASE} with Kappa could not be built"

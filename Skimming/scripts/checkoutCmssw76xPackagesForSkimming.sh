@@ -47,7 +47,7 @@ git cms-addpkg DataFormats/METReco
 git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
 
 #Check out Kappa
-git clone https://github.com/KappaAnalysis/Kappa.git
+git clone https://github.com/KappaAnalysis/Kappa.git -b dictchanges
 
 scram b -v -j 4 || {
       echo "The ${CMSSW_BASE} with Kappa could not be built"
