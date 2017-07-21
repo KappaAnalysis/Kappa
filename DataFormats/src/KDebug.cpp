@@ -60,9 +60,9 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 std::ostream &operator<<(std::ostream &os, const KTrack &trk)
 {
 	os << static_cast<const KLV>(trk);
-	os << "+-(" << trk.errPt << ", " << trk.errEta << ", " << trk.errPhi << ")" << std::endl;
+	os << "+-(" << trk.errPt() << ", " << trk.errEta() << ", " << trk.errPhi() << ")" << std::endl;
 	os << "\tcharge=" << int(trk.charge) << " chi2/nDOF=" << trk.chi2 << "/" << trk.nDOF;
-	os << " ref=" << trk.ref << "+-(" << trk.errDxy << ",, " << trk.errDz << ")" << std::endl;
+	os << " ref=" << trk.ref << "+-(" << trk.errDxy() << ", " << trk.errDz() << ")" << std::endl;
 	os << "\thits: nPX=" << trk.nValidPixelHits << " nST=" << trk.nValidStripHits;
 	os << " nMU=" << trk.nValidMuonHits << " nIN=" << trk.nInnerHits;
 	os << "; layers: nPX=" << trk.nPixelLayers << " nST=" << trk.nStripLayers;

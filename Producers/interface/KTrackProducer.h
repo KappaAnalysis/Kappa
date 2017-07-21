@@ -37,9 +37,6 @@ public:
 	{
 		// Momentum:
 		out.p4.SetCoordinates(in.pt(), in.eta(), in.phi(), 0);
-		out.errPt = in.ptError();
-		out.errEta = in.etaError();
-		out.errPhi = in.phiError();
 
 		// Reference point:
 		out.ref = in.referencePoint();
@@ -49,8 +46,6 @@ public:
 		out.chi2 = in.chi2();
 		out.nDOF = in.ndof();
 		out.qualityBits = in.qualityMask();
-		out.errDxy = in.dxyError();
-		out.errDz = in.dzError();
 
 		// hit pattern information
 		out.nValidPixelHits = in.hitPattern().numberOfValidPixelHits();

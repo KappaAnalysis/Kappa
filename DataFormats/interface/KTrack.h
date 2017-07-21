@@ -41,10 +41,33 @@ struct KTrack : public KLV
 	/// charge and fit quality
 	short charge;
 	float chi2, nDOF;
-	float errPt, errEta, errPhi, errDxy, errDz;  ///< errors on four vector and distances
 	float d2D, d3D;      ///< impact parameters dxy and d calculated considering the magnetic field
 	float err3D, err2D;  ///< errors on the dxy (2D) and d (3D) impact parameters
 	KVertex ipVertex;
+	
+	// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L757-L819
+	float errPt() const
+	{
+		return (charge != 0) ?
+		       std::sqrt(p4.Pt() * p4.Pt() * p4.P() * p4.P() / charge / charge * helixCovariance(reco::Track::i_qoverp, reco::Track::i_qoverp) + 2 * p4.Pt() * p4.P() / charge * p4.Pz() * helixCovariance(reco::Track::i_qoverp, reco::Track::i_lambda) + p4.Pz() * p4.Pz() * helixCovariance(reco::Track::i_lambda, reco::Track::i_lambda)) :
+		       1.e6;
+	}
+	float errEta() const
+	{
+		return std::sqrt(helixCovariance(reco::Track::i_lambda, reco::Track::i_lambda)) * p4.P() / p4.Pt();
+	}
+	float errPhi() const
+	{
+		return std::sqrt(helixCovariance(reco::Track::i_phi, reco::Track::i_phi));
+	}
+	float errDxy() const
+	{
+		return std::sqrt(helixCovariance(reco::Track::i_dxy, reco::Track::i_dxy));
+	}
+	float errDz() const
+	{
+		return std::sqrt(helixCovariance(reco::Track::i_dsz, reco::Track::i_dsz)) * p4.P() / p4.Pt();
+	}
 
 	/// number of hits or tracker layers in detector components (used for lepton IDs)
 	/// DataFormats/TrackReco/interface/HitPattern.h (numberOf...)
@@ -135,13 +158,13 @@ struct KTrack : public KLV
 		if (!pv)
 			return -10000.;
 
-		//double error = static_cast<double>(errDxy);
+		//double error = static_cast<double>(errDxy());
 		switch (mode)
 		{
 			case 0:
 				return getDxy(pv);
 			case 1:
-				return getDxy(pv) / errDxy;
+				return getDxy(pv) / errDxy();
 			case 2:
 			{
 				ROOT::Math::SVector<double, 3> orthog;
@@ -150,7 +173,7 @@ struct KTrack : public KLV
 				orthog[2] = 0;
 
 				float vtxErr2 = static_cast<float>(ROOT::Math::Similarity(pv->covariance, orthog)) / p4.Perp2();
-				return getDxy(pv) / sqrtf(errDxy * errDxy + vtxErr2);
+				return getDxy(pv) / sqrtf(errDxy() * errDxy() + vtxErr2);
 			}
 			default:
 				return -10000.;
