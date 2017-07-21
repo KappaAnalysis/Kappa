@@ -104,6 +104,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
 		{
+			cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
+
 			#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 				std::vector<pat::PackedCandidate const*> tau_picharge;
 
@@ -118,7 +120,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 						outCandidate.bestTrack = KTrack();
 						if (single_pion->bestTrack() != nullptr)
-							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack);
+							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, theB);
 						else
 							outCandidate.bestTrack.ref.SetXYZ(single_pion->vertex().x(), single_pion->vertex().y(), single_pion->vertex().z());
 					}
@@ -138,7 +140,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 						outCandidate.bestTrack = KTrack();
 						if (single_pion->bestTrack() != nullptr)
-							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack);
+							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, theB);
 						else
 							outCandidate.bestTrack.ref.SetXYZ(single_pion->vertex().x(), single_pion->vertex().y(), single_pion->vertex().z());
 
@@ -173,10 +175,12 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		KPatTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
 			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+			VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
 			_lumi_tree_pointer(_lumi_tree)
 		{
+			this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
 			const edm::ParameterSet &psBase = this->psBase;
-			 names = psBase.getParameterNamesForType<edm::ParameterSet>();
+			names = psBase.getParameterNamesForType<edm::ParameterSet>();
 			if(names.size() != 1)
 			{
 				std::cout << "Currently the PatTau Producer only supports one PSet" << std::endl;
@@ -189,6 +193,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				_lumi_tree_pointer->Bronch(names[i].c_str(), "KTauMetadata", &discriminatorMap[names[i]]);
 
 				const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+
 				kshortinformation[names[i]] =  pset.getUntrackedParameter<bool>("kshortinformation", false);
 				preselectionDiscr[names[i]] = pset.getParameter< std::vector<std::string> >("preselectOnDiscriminators");
 				binaryDiscrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("binaryDiscrWhitelist");
@@ -204,6 +209,12 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		}
 
 		static const std::string getLabel() { return "PatTaus"; }
+
+		virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
+		{
+			setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->theB);
+			return true;
+		}
 
 		virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 		{
@@ -346,6 +357,14 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		std::vector<std::string> names;
 		boost::hash<const pat::Tau*> hasher;
 		int n_float_dict;
+
+		edm::Handle<reco::VertexCollection> VertexCollection;
+
+		edm::InputTag VertexCollectionSource;
+
+		edm::EDGetTokenT<reco::VertexCollection> tokenVertexCollection;
+
+		edm::ESHandle<TransientTrackBuilder> theB;
 
 		TTree* _lumi_tree_pointer;
 };

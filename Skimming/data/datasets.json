@@ -6535,7 +6535,7 @@
   }, 
   "QCD_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_pythia8": {
     "Moriond17": [
-      "MC_Summer16"
+      "MC_Summer16","KaonsAnalysis"
     ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
