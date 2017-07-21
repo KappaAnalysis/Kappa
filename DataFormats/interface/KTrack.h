@@ -9,7 +9,9 @@
 
 #include "KBasic.h"
 
+#include <DataFormats/TrackReco/interface/Track.h>
 #include <Math/GenVector/VectorUtil.h>
+#include <TMath.h>
 
 /** Data format definition for KTracks and KLeptons
 
@@ -66,6 +68,28 @@ struct KTrack : public KLV
 		if (bit < 0) return false;
 		return (qualityBits & (1 << bit));
 	};
+	
+	// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L3-L49
+	std::vector<float> helixParameters()
+	{
+		KVertex origin;
+		std::vector<float> parameters = { qOverP(), lambda(), phi(), getDxy(&origin), getDsz(&origin) };
+		return parameters;
+	}
+	ROOT::Math::SMatrix<float, reco::Track::dimension, reco::Track::dimension, ROOT::Math::MatRepSym<float, reco::Track::dimension> > helixCovariance;
+	
+	float qOverP() const
+	{
+		return charge / p4.P();
+	}
+	float lambda() const
+	{
+		return TMath::PiOver2() - p4.Theta();
+	}
+	float phi() const
+	{
+		return p4.Phi();
+	}
 
 	/// distances to primary vertex, refitted primary vertex, beamspot and interaction point
 	/// all these function mix float and double precision values
@@ -89,6 +113,14 @@ struct KTrack : public KLV
 				(ref.x() - pv->position.x()) * p4.x() +
 				(ref.y() - pv->position.y()) * p4.y()
 			) * p4.z() / p4.Perp2();
+	}
+
+	template<class T>
+	float getDsz(const T* pv) const
+	{
+		if (!pv)
+			return -1.;
+		return getDz(pv) * std::cos(lambda());
 	}
 
 	/*

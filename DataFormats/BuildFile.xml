@@ -3,6 +3,7 @@
 <use name="rootmath" />
 <use name="boost" />
 <use name="boost_system" />
+<use name="DataFormats/TrackReco"/>
 
 <export>
 	<use name="rootrflx" />
