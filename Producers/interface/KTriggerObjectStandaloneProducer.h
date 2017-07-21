@@ -42,7 +42,6 @@ public:
 		triggerBits_ = cfg.getParameter<edm::InputTag>("bits");
 		metFilterBits_ = cfg.getParameter<edm::InputTag>("metfilterbits");
 		metFilterBitsList_ = cfg.getParameter<std::vector<std::string>>("metfilterbitslist");
-		triggerObjects_ = cfg.getParameter<edm::InputTag>("objects");
 		triggerPrescales_ = cfg.getParameter<edm::InputTag>("prescales");
 		edm::InputTag l1tauJetSource_test =  cfg.getUntrackedParameter<edm::InputTag>("l1extratauJetSource",edm::InputTag("dummy"));
 		save_l1extratau_=false;
@@ -57,9 +56,9 @@ public:
 
 		consumescollector.consumes<edm::TriggerResults>(triggerBits_);
 		consumescollector.consumes<edm::TriggerResults>(metFilterBits_);
-		consumescollector.consumes<pat::TriggerObjectStandAloneCollection>(triggerObjects_);
 		consumescollector.consumes<pat::PackedTriggerPrescales>(triggerPrescales_);
-		for(size_t j = 0; j < metFilterBitsList_.size(); j++) consumescollector.consumes<bool>(edm::InputTag(metFilterBitsList_[j]));
+		for(size_t j = 0; j < metFilterBitsList_.size(); j++)
+			consumescollector.consumes<bool>(edm::InputTag(metFilterBitsList_[j]));
 	
 		
 	}
@@ -108,33 +107,31 @@ public:
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup) override
 	{
-		edm::Handle<edm::TriggerResults> triggerBits;
-		edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects;
-		edm::Handle<pat::PackedTriggerPrescales> triggerPrescales;
 		
-		event.getByLabel(triggerBits_, triggerBits);
+		event.getByLabel(triggerBits_, triggerBitsHandle_);
 		event.getByLabel(metFilterBits_, metFilterBitsHandle_);
-		event.getByLabel(triggerObjects_, triggerObjects);
-		event.getByLabel(triggerPrescales_, triggerPrescales);
+		event.getByLabel(triggerPrescales_, triggerPrescalesHandle_);
+
 		for(size_t i = 0; i < metFilterBitsList_.size(); i++)
 		{
 			event.getByLabel(edm::InputTag(metFilterBitsList_[i]), metFilterBitsListHandle_[i]);
 		}
 		
 		if (save_l1extratau_) event.getByToken( l1tauJetSource_, l1tauColl_ );
+		event_ = &(event);
 		
 		//if (save_l1extratau_) event.getByLabel( tauJetSource_, tauColl_ );
 
-		names_ = event.triggerNames(*triggerBits);
+		names_ = event.triggerNames(*triggerBitsHandle_);
 
 		std::vector<size_t> triggerBitsFired;
 
-		for (unsigned int i = 0, n = triggerBits->size(); i < n; ++i) 
+		for (unsigned int i = 0, n = triggerBitsHandle_->size(); i < n; ++i) 
 		{
 			if(verbosity>0)
-				std::cout<< i << " Trigger " << names_.triggerName(i) << ", prescale " << triggerPrescales->getPrescaleForIndex(i) << ": " << (triggerBits->accept(i) ? "PASS" : "fail (or not run)") << std::endl;
+				std::cout<< i << " Trigger " << names_.triggerName(i) << ", prescale " << triggerPrescalesHandle_->getPrescaleForIndex(i) << ": " << (triggerBitsHandle_->accept(i) ? "PASS" : "fail (or not run)") << std::endl;
 
-			if(triggerBits->accept(i))
+			if(triggerBitsHandle_->accept(i))
 				triggerBitsFired.push_back(i);
 		}
 
@@ -260,10 +257,7 @@ public:
 	  
 protected:
 	KTriggerObjectMetadata *toMetadata;
-	//KTriggerObjects *trgObjects;
 	std::map<size_t, std::vector<int>> toFWK2Kappa;
-	//int objectIndex;
-	int iLoop;
 
 	virtual void fillProduct(const InputType &in, KTriggerObjects &out, const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset) override
 	{
@@ -283,15 +277,15 @@ protected:
 		if(!signifTriggerBitFired_)
 			return;
 
-		//objectIndex = 0;
-		iLoop = 0;
 		toFWK2Kappa.clear();
 		out.trgObjects.clear();
 		out.toIdxFilter.clear();
 		out.toIdxFilter.resize(toMetadata->toFilter.size()); // the idx of this vector corresponds to one common trigger filter ojbect 
 		for(auto obj : in)
 		{
-			//std::vector<std::string> filterLabels  = obj.filterLabels();
+#if (CMSSW_MAJOR_VERSION >= 9)
+			obj.unpackFilterLabels( *event_, *triggerBitsHandle_);
+#endif
 			std::vector<int>  akt_filter_indices = getFilterIndices(obj.filterLabels());
 			if (akt_filter_indices.empty())
 			  continue;
@@ -300,50 +294,17 @@ protected:
 			KLV triggerObject;
 			copyP4(obj.p4(), triggerObject.p4);
 			save_triggerObject_for_indices(out,triggerObject, akt_filter_indices);
-
-			//out.trgObjects.push_back(triggerObject);
-			
-			//for (auto currentIndex : akt_filter_indices){
-			   // if (toFWK2Kappa.count(currentIndex) == 0) {
-		           //      std::vector<int> toFWK2KappaSize;
-		            //     toFWK2KappaSize.push_back(objectIndex);
-			//	 toFWK2Kappa.insert(std::make_pair(currentIndex, toFWK2KappaSize));
-		         //   }
-		          //  else {
-		           //   toFWK2Kappa[currentIndex].push_back(objectIndex);
-		          //  }
-		            //std::cout<<"ccc"<<std::endl;
-		          //  out.toIdxFilter[currentIndex] = toFWK2Kappa[currentIndex];
-		//	}
-			
-			//std::cout<<"dddd"<<std::endl;
-			//objectIndex++;
-			
-			
-			
-			//obj.unpackPathNames(names_);
-			//  fillMetadata(obj, out, name);
-			//std::cout<<"!!!! "<<filterIndex<<" "<<toFWK2Kappa.size()<<std::endl;
-
-			//auto pathNamesAll = obj.pathNames(false);
-	
-			iLoop++;
 		}
 		
 		if (save_l1extratau_)
 		{
 			  for( l1extra::L1JetParticleCollection::const_iterator tauItr = l1tauColl_->begin() ; tauItr != l1tauColl_->end() ;++tauItr )
 			  {
-			   // std::cout << "  p4 (" << tauItr->px()  << ", " << tauItr->py() << ", " << tauItr->pz()<< ", " << tauItr->energy()<< ") et " << tauItr->et()<< " eta " << tauItr->eta()<< " phi " << tauItr->phi() << std::endl ;
-			//  
-			// KInfoProducerBase::hltConfig.saveTagsModules(hltIdx)  
-			 //size_t currentIndex = toMetadata->getMinFilterIndex(i) + KInfoProducerBase::hltConfig.saveTagsModules(hltIdx).size();
 			    KLV triggerObject;
 			    copyP4(tauItr->p4(), triggerObject.p4);
 			    save_triggerObject_for_indices(out,triggerObject, l1extratau_idxs_);
 
 		       }
-		   // std::cout<<"BBBBBBBBBBBBBBBBBBBBBBBBB"<<std::endl;
 		}
 		if (verbosity > 2)
 		  print_saved_objects(out);
@@ -358,7 +319,10 @@ protected:
 private:
 	edm::InputTag triggerBits_;
 	edm::InputTag metFilterBits_;
+	edm::Handle<edm::TriggerResults> triggerBitsHandle_;
+	edm::Handle<pat::PackedTriggerPrescales> triggerPrescalesHandle_;
 	edm::Handle<edm::TriggerResults> metFilterBitsHandle_;
+	const edm::Event *event_;
 	
 	bool save_l1extratau_;
 	edm::Handle< l1extra::L1JetParticleCollection > l1tauColl_ ;
@@ -369,27 +333,30 @@ private:
 	
 	
 	
-	edm::InputTag triggerObjects_;
 	edm::InputTag triggerPrescales_;
 	bool signifTriggerBitFired_;
 	edm::TriggerNames names_;
 	edm::TriggerNames metFilterNames_;
 	size_t nMetFilters_;
 	std::vector<size_t> selectedMetFilters_;
-	void save_triggerObject_for_indices(KTriggerObjects &out, KLV &triggerObject, std::vector<int> &indices){
-	  int objectindex = out.trgObjects.size(); // the new object will be stored 
-	  out.trgObjects.push_back(triggerObject);
-	  for (auto currentIndex : indices){
-	     	if (toFWK2Kappa.count(currentIndex) == 0) {
-		    std::vector<int> toFWK2KappaSize;
-		    toFWK2KappaSize.push_back(objectindex);
-		    toFWK2Kappa.insert(std::make_pair(currentIndex, toFWK2KappaSize));
-		            }
-		else {
-		     toFWK2Kappa[currentIndex].push_back(objectindex);
+	void save_triggerObject_for_indices(KTriggerObjects &out, KLV &triggerObject, std::vector<int> &indices)
+	{
+		int objectindex = out.trgObjects.size(); // the new object will be stored 
+		out.trgObjects.push_back(triggerObject);
+		for (auto currentIndex : indices)
+		{
+			if (toFWK2Kappa.count(currentIndex) == 0)
+			{
+				std::vector<int> toFWK2KappaSize;
+				toFWK2KappaSize.push_back(objectindex);
+				toFWK2Kappa.insert(std::make_pair(currentIndex, toFWK2KappaSize));
+			}
+			else
+			{
+				toFWK2Kappa[currentIndex].push_back(objectindex);
+			}
+			out.toIdxFilter[currentIndex] = toFWK2Kappa[currentIndex]; 
 		}
-		out.toIdxFilter[currentIndex] = toFWK2Kappa[currentIndex]; 
-	   }
 	}
 	
 	void print_saved_objects(KTriggerObjects &out){

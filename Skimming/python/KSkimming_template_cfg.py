@@ -49,9 +49,9 @@ print "GT from autoCond:", process.GlobalTag.globaltag
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
 ## Kappa
-process.load('Kappa.Producers.KTuple_cff')
+from Kappa.Producers.KTuple_cff import kappaTupleDefaultsBlock
 process.kappaTuple = cms.EDAnalyzer('KTuple',
-    process.kappaTupleDefaultsBlock,
+    kappaTupleDefaultsBlock,
     outputFile = cms.string("kappaTuple.root"),
 )
 process.kappaTuple.active = cms.vstring()

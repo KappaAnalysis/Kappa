@@ -255,12 +255,13 @@ class DataSetManagerBase:
 			self.dataset.base_dict.pop(del_nick)
 	def print_skim(self, keys_to_print):
 		nicks = self.get_nick_list()
+		print "---------------------------------------------------------"
 		for nick in nicks:
 			print nick
-			for item_to_print in keys_to_print:
+			for item_to_print in self.dataset.base_dict[nick].keys() if "all" in keys_to_print else keys_to_print:
 				if item_to_print in self.dataset.base_dict[nick].keys():
-					print item_to_print,"\t:\t",self.dataset.base_dict[nick][item_to_print]
-					print "---------------------------------------------------------"
+					print "%15s : %s" % (item_to_print, self.dataset.base_dict[nick][item_to_print])
+			print "---------------------------------------------------------"
 			
 
 	def add_entry(self, entry):
@@ -277,7 +278,7 @@ class DataSetManagerBase:
 		self.dataset.merge(new)
 		
 if __name__ == "__main__":
-	parser = argparse.ArgumentParser(prog='./DatasetManager.py', usage='%(prog)s [options]', description="Tools for modify the dataset data base (aka datasets.json)") 
+	parser = argparse.ArgumentParser(description="Tools for modify the dataset data base (aka datasets.json)")
 	
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json")
 	parser.add_argument("-i", "--input", dest="inputfile", help="input data base (default=%s)"%def_input, default=def_input)
@@ -308,7 +309,7 @@ if __name__ == "__main__":
 	parser.add_argument("--deleteDatasets", dest="deleteDatasets", help="Delete Datasets which are matched", action='store_true')
 	
 	parser.add_argument("--print", dest="print_ds", help="Print ", action='store_true')
-	parser.add_argument("--printkeys", dest="printkeys", help="which keys to print (use komma separated list) (default=%s)"%def_input, default="dbs")
+	parser.add_argument("--printkeys", dest="printkeys", help="which keys to print [Default : %(default)s]. Choose \"all\" for printing everything.", nargs="+", default=["dbs"])
 	
 	args = parser.parse_args()
 	if not os.path.isabs(args.inputfile):
@@ -350,7 +351,7 @@ if __name__ == "__main__":
 	DSM.dict_diff()
 	
 	if args.print_ds:
-		DSM.print_skim(keys_to_print=args.printkeys.strip('][').replace(' ','').split(','))
+		DSM.print_skim(keys_to_print=args.printkeys)
 			 
 		
 		

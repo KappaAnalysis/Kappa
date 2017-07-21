@@ -1,5 +1,5 @@
-#!/bin/sh
-
+#!/bin/bash
+echo "what is 0: $0"
 echo "# ================= #"
 echo "# Checking wget "
 echo "# ================= #"
@@ -119,8 +119,6 @@ fi
 
 # export SCRAM_ARCH=slc6_amd64_gcc481
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
-mkdir -p /home/build && cd /home/build
-
 if [ "$ADDITIONAL_OUTPUT" = true ]; then
     echo "# ================= #"
     echo "# cmsset_default.sh"
@@ -132,21 +130,6 @@ if [ "$ADDITIONAL_OUTPUT" = true ]; then
     cat /proc/cpuinfo | awk '/^processor/{print $3}'
     echo
 fi
-
-echo "# ================= #"
-    . $VO_CMS_SW_DIR/cmsset_default.sh
-echo "# ================= #"
-echo
-
-echo "# ================= #"
-echo "# Compiling CMSSW"
-echo "# ================= #"
-    scram project ${TEST_CMSSW_VERSION}
-    cd ${TEST_CMSSW_VERSION}
-    cmsenv
-echo "# ================= #"
-echo
-
 
 echo "# ================= #"
 echo "# curl -O root files"
@@ -185,29 +168,26 @@ echo
 echo "# ================= #"
 echo "# Download checkout script for Kappa"
 echo "# ================= #"
-    #mkdir Kappa
-    #cp -r /home/travis/* Kappa/
-    cd ../../
-    curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/master/Skimming/scripts/${CHECKOUTSCRIPT}
-    git config --global user.github greyxray
-    git config --global user.email 'greyxray@gmail.com'
-    git config --global user.name 'kappa test'
-    printf "no\n" | python ${CHECKOUTSCRIPT} || {
+    mkdir -p /home/build && cd /home/build
+    curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/${KAPPA_BRANCH}/Skimming/scripts/${CHECKOUTSCRIPT}
+    chmod +x ${CHECKOUTSCRIPT}
+    cat ${CHECKOUTSCRIPT}
+    set -x
+    printf "no\n" | . ./${CHECKOUTSCRIPT} -b ${KAPPA_BRANCH} -g 'greyxray' -e 'greyxray@gmail.com' -n 'kappa test' || {
         echo "The ${CHECKOUTSCRIPT} could not be executed"
         exit 1
     }
-    echo
-    cd $CMSSW_BASE
 echo "# ================= #"
 echo
 
 echo "# ================= #"
-echo "# Building in CMSSW_BASE #"
+echo "# Set CMSSW variables"
 echo "# ================= #"
-    scram b -v -j 2 || {
-        echo "The ${CMSSW_BASE} with Kappa could not be built"
-        exit 1
-    }
+    source $VO_CMS_SW_DIR/cmsset_default.sh;
+    echo "cd TEST_CMSSW_VERSION"
+    cd $TEST_CMSSW_VERSION/src
+    eval `scramv1 runtime -sh`
+    cd $CMSSW_BASE/src
 echo "# ================= #"
 echo
 
@@ -235,16 +215,12 @@ if [ "$ADDITIONAL_OUTPUT" = true ]; then
     echo
 fi
 
-cd src/Kappa
-mkdir kappa_run
-cd kappa_run
-    
 echo "# =================== #"
 echo "# Cat the Config #"
 echo "# =================== #"
     cat $CMSSW_BASE/src/$SKIMMING_SCRIPT || {
-    echo "The ${CMSSW_BASE}/src/${SKIMMING_SCRIPT} could not be read"
-    exit 1
+        echo "The ${CMSSW_BASE}/src/${SKIMMING_SCRIPT} could not be read"
+        exit 1
     }
     #Kappa/Skimming/examples/travis/skim_tutorial1_basic.py
 echo "# ================= #"
@@ -253,6 +229,7 @@ echo
 echo "# =================== #"
 echo "# Test python #"
 echo "# =================== #"
+    cd $CMSSW_BASE/src/Kappa && mkdir kappa_run && cd kappa_run
     python $CMSSW_BASE/src/$SKIMMING_SCRIPT || {
         echo "Possible python syntax error "
         #exit 5

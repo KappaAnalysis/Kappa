@@ -274,7 +274,7 @@ def query_result(query, expect_n_results = 1):
 		pprint.pprint(query)
 		print "found the following matching samples: "
 		pprint.pprint(match)
-		sys.exit()
+		sys.exit(1)
 
 	return match
 
@@ -283,13 +283,13 @@ def get_sample_by_nick(nickname, expect_n_results = 1):
 	# split nickname
 	split_nick = nickname.split("_")
 	query = {
-		"process" : split_nick[0],
-		"campaign" : split_nick[1],
-		"scenario" : split_nick[2],
-		"energy" : split_nick[3].strip("TeV"),
-		"format" : split_nick[4],
-		"generator" : (split_nick[5] if (len(split_nick) > 5) else None),
-		"extension" : (split_nick[6] if (len(split_nick) > 6) else "")
+		"process" : "^"+split_nick[0]+"$",
+		"campaign" : "^"+split_nick[1]+"$",
+		"scenario" : "^"+split_nick[2]+"$",
+		"energy" : "^"+split_nick[3].strip("TeV")+"$",
+		"format" : "^"+split_nick[4]+"$",
+		"generator" : ("^"+split_nick[5]+"$" if (len(split_nick) > 5) else None),
+		"extension" : ("^"+split_nick[6]+"$" if (len(split_nick) > 6) else "")
 	}
 
 	#query_nick, sample = query_result(query)
