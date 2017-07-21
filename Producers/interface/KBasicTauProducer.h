@@ -48,10 +48,7 @@ public:
 			floatDiscrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrWhitelist");
 			floatDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrBlacklist");
 			tauDiscrProcessName[names[i]] = pset.getParameter< std::string >("tauDiscrProcessName");
-			if(pset.existsAs<edm::InputTag>("vertexcollection"))
-			{
-				this->VertexCollectionToken = consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
-			}
+			this->VertexCollectionToken = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
 		}
 	}
 
