@@ -14,6 +14,7 @@
 #include "TrackingTools/IPTools/interface/IPTools.h"
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
+#include "../../Producers/interface/KVertexProducer.h"
 
 class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KTracks>
 {
@@ -61,14 +62,25 @@ public:
 		out.nInnerHits = in.trackerExpectedHitsInner().numberOfHits();
 #endif
 
-		// check for builder
-		if(vertices.size() == 1)
+		// check for builder is missing - be carefull to pass it to this function together with verticies
+		if (vertices.size() > 0)
 		{
-			reco::TransientTrack transientTrack = builder->build(in);
-			out.d3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(0)).second.value();
-			out.d2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(0)).second.value();
-			out.err3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(0)).second.error();
-			out.err2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(0)).second.error();
+			int validVertexIndex = -1;
+			for (unsigned int i = 0; i < vertices.size(); i++)
+				if (vertices.at(i).isValid())
+				{
+					KVertexProducer::fillVertex(vertices.at(i), out.ipVertex);
+					validVertexIndex = i;
+					break;
+				}
+			if (validVertexIndex >= 0)
+			{
+				reco::TransientTrack transientTrack = builder->build(in);
+				out.d3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(validVertexIndex)).second.value();
+				out.d2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(validVertexIndex)).second.value();
+				out.err3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(validVertexIndex)).second.error();
+				out.err2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(validVertexIndex)).second.error();
+			}
 		}
 	}
 };
