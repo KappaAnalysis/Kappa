@@ -169,11 +169,11 @@ echo "# ================= #"
 echo "# Download checkout script for Kappa"
 echo "# ================= #"
     mkdir -p /home/build && cd /home/build
-    curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/getByToken/Skimming/scripts/${CHECKOUTSCRIPT}
+    curl -O https://raw.githubusercontent.com/KappaAnalysis/Kappa/${KAPPA_BRANCH}/Skimming/scripts/${CHECKOUTSCRIPT}
     chmod +x ${CHECKOUTSCRIPT}
     cat ${CHECKOUTSCRIPT}
     set -x
-    printf "no\n" | . ./${CHECKOUTSCRIPT} -g 'greyxray' -e 'greyxray@gmail.com' -n 'kappa test' || {
+    printf "no\n" | . ./${CHECKOUTSCRIPT} -b ${KAPPA_BRANCH} -g 'greyxray' -e 'greyxray@gmail.com' -n 'kappa test' || {
         echo "The ${CHECKOUTSCRIPT} could not be executed"
         exit 1
     }
