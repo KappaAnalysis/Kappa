@@ -31,7 +31,9 @@ public:
 	}
 
 	// Static method for filling Tracks in other producers
-	static void fillTrack(const SingleInputType &in, SingleOutputType &out, std::vector<reco::Vertex> vertices = std::vector<reco::Vertex>(), edm::ESHandle<TransientTrackBuilder> builder = edm::ESHandle<TransientTrackBuilder>())
+	static void fillTrack(const SingleInputType &in, SingleOutputType &out,
+	                      std::vector<reco::Vertex> const& vertices = std::vector<reco::Vertex>(),
+	                      edm::ESHandle<TransientTrackBuilder> const& builder = edm::ESHandle<TransientTrackBuilder>())
 	{
 		// Momentum:
 		out.p4.SetCoordinates(in.pt(), in.eta(), in.phi(), 0);
@@ -62,18 +64,19 @@ public:
 #else
 		out.nInnerHits = in.trackerExpectedHitsInner().numberOfHits();
 #endif
+
+		// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L3-L49
+		for (unsigned int index1 = 0; index1 < reco::Track::dimension; ++index1)
+		{
+			for (unsigned int index2 = 0; index2 < reco::Track::dimension; ++index2)
+			{
+				out.helixCovariance(index1, index2) = in.covariance(index1, index2);
+			}
+		}
+		
 		// check for builder is missing - be carefull to pass it to this function together with verticies
 		if (vertices.size() > 0)
 		{
-			// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L3-L49
-			for (unsigned int index1 = 0; index1 < reco::Track::dimension; ++index1)
-			{
-				for (unsigned int index2 = 0; index2 < reco::Track::dimension; ++index2)
-				{
-					out.helixCovariance(index1, index2) = in.covariance(index1, index2);
-				}
-			}
-
 			int validVertexIndex = -1;
 			for (unsigned int i = 0; i < vertices.size(); i++)
 				if (vertices.at(i).isValid())
