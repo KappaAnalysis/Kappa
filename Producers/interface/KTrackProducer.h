@@ -15,6 +15,7 @@
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
 
+
 class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KTracks>
 {
 public:
@@ -60,10 +61,19 @@ public:
 #else
 		out.nInnerHits = in.trackerExpectedHitsInner().numberOfHits();
 #endif
-
+		
 		// check for builder
 		if(vertices.size() == 1)
 		{
+			// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L3-L49
+			for (unsigned int index1 = 0; index1 < reco::Track::dimension; ++index1)
+			{
+				for (unsigned int index2 = 0; index2 < reco::Track::dimension; ++index2)
+				{
+					out.helixCovariance(index1, index2) = in.covariance(index1, index2);
+				}
+			}
+			
 			reco::TransientTrack transientTrack = builder->build(in);
 			out.d3D = IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(0)).second.value();
 			out.d2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(0)).second.value();
