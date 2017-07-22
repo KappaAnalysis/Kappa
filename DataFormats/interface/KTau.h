@@ -68,6 +68,8 @@ struct KTau : public KBasicTau
 	KPFCandidates chargedHadronCandidates;
 	KPFCandidates gammaCandidates;
 	KPFCandidates isolationChargedHadronCandidates;
+	
+	KVertex sv;
 
 	int tauKey;
 

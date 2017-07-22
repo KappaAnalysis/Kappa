@@ -4,6 +4,7 @@
 #define KAPPA_PATTAUPRODUCER_H
 #include "KBaseMultiLVProducer.h"
 #include "KTauProducer.h"
+#include "KVertexProducer.h"
 
 #if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "KPackedPFCandidateProducer.h"
@@ -120,7 +121,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 						outCandidate.bestTrack = KTrack();
 						if (single_pion->bestTrack() != nullptr)
-							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, theB);
+							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder);
 						else
 							outCandidate.bestTrack.ref.SetXYZ(single_pion->vertex().x(), single_pion->vertex().y(), single_pion->vertex().z());
 					}
@@ -140,7 +141,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 						outCandidate.bestTrack = KTrack();
 						if (single_pion->bestTrack() != nullptr)
-							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, theB);
+							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder);
 						else
 							outCandidate.bestTrack.ref.SetXYZ(single_pion->vertex().x(), single_pion->vertex().y(), single_pion->vertex().z());
 
@@ -169,6 +170,32 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 			std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());
 			std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), KLVSorter<KPFCandidate>());
+		}
+
+		virtual void fillSecondaryVertex(const SingleInputType &in, SingleOutputType &out)
+		{
+			// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TauReco/interface/PFTau.h#L34-L54
+			if ((in.decayMode() >= reco::PFTau::hadronicDecayMode::kThreeProng0PiZero) &&
+			    (in.signalChargedHadrCands().size() > 2))
+			{
+				// refit SV since in.secondaryVertexPos() is empty
+				// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/PatCandidates/interface/Tau.h#L325
+			
+				std::vector<reco::TransientTrack> transientTracks;
+				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
+				{
+					transientTracks.push_back(trackBuilder->build(in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()));
+				}
+				AdaptiveVertexFitter adaptiveVertexFitter;
+				adaptiveVertexFitter.setWeightThreshold(0.001);
+				try
+				{
+					TransientVertex sv = adaptiveVertexFitter.vertex(transientTracks, *BeamSpot); // TODO: add beam spot
+					KVertexProducer::fillVertex(sv, out.sv);
+				} catch (...)
+				{
+				}
+			}
 		}
 
 	public:
@@ -205,6 +232,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 						std::cout << "Warining: extrafloatDiscrlist only available in CMSSW_8_0_21 or new" << std::endl;
 				#endif
 				floatDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrBlacklist");
+				
+				if(pset.existsAs<edm::InputTag>("beamSpotSource")) consumescollector.consumes<reco::BeamSpot>(pset.getParameter<edm::InputTag>("beamSpotSource"));
 			}
 		}
 
@@ -212,13 +241,23 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 		{
-			setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->theB);
+			setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
 			return true;
 		}
 
 		virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 		{
 			return true;
+		}
+
+		virtual void fillProduct(const InputType &in, OutputType &out,
+		                         const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
+		{
+			edm::InputTag beamSpotSource = pset.getParameter<edm::InputTag>("beamSpotSource");
+			cEvent->getByLabel(beamSpotSource, BeamSpot);
+
+			// Continue normally
+			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>::fillProduct(in, out, name, tag, pset);
 		}
 
 		virtual bool acceptSingle(const SingleInputType &in) override
@@ -254,6 +293,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				KTauProducer::fillPFCandidates(in, out);
 			else
 				KPatTauProducer::fillPFCandidates(in, out);
+			//fillSecondaryVertex(in, out);
 		}
 
 		virtual void onFirstObject(const SingleInputType &in, SingleOutputType &out) override
@@ -358,13 +398,14 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		boost::hash<const pat::Tau*> hasher;
 		int n_float_dict;
 
+		edm::Handle<reco::BeamSpot> BeamSpot;
 		edm::Handle<reco::VertexCollection> VertexCollection;
 
 		edm::InputTag VertexCollectionSource;
 
 		edm::EDGetTokenT<reco::VertexCollection> tokenVertexCollection;
 
-		edm::ESHandle<TransientTrackBuilder> theB;
+		edm::ESHandle<TransientTrackBuilder> trackBuilder;
 
 		TTree* _lumi_tree_pointer;
 };
