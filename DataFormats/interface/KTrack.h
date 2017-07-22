@@ -45,6 +45,8 @@ struct KTrack : public KLV
 	float err3D, err2D;  ///< errors on the dxy (2D) and d (3D) impact parameters
 	KVertex ipVertex;
 	
+	float magneticField = 0.0; // at reference point, in 1/GeV
+	
 	// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L757-L819
 	float errPt() const
 	{

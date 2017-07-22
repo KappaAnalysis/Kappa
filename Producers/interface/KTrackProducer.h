@@ -69,6 +69,9 @@ public:
 			}
 		}
 		
+		// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/TrackingTools/TransientTrack/interface/TransientTrackBuilder.h
+		out.magneticField = (builder.product() ? builder->field()->inInverseGeV(GlobalPoint(out.ref.X(), out.ref.Y(), out.ref.Z())).z() : 0.0);
+		
 		// check for builder is missing - be carefull to pass it to this function together with verticies
 		if (vertices.size() > 0)
 		{
