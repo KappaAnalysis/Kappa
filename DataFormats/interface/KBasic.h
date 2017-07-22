@@ -17,18 +17,6 @@
 #include "KRoot.h"
 
 
-static void dout()
-{
-	std::cout << std::endl;
-}
-template <typename Head, typename... Tail>
-static void dout(Head H, Tail... T)
-{
-	std::cout << H << ' ';
-	dout(T...);
-}
-
-
 struct KLV
 {
 	virtual ~KLV() {};
