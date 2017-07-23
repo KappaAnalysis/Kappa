@@ -184,16 +184,23 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				std::vector<reco::TransientTrack> transientTracks;
 				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
 				{
-					transientTracks.push_back(trackBuilder->build(in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()));
+					const reco::Track* track = in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
+					if (track)
+					{
+						transientTracks.push_back(trackBuilder->build(track));
+					}
 				}
-				AdaptiveVertexFitter adaptiveVertexFitter;
-				adaptiveVertexFitter.setWeightThreshold(0.001);
-				try
+				if (transientTracks.size() > 2)
 				{
+					AdaptiveVertexFitter adaptiveVertexFitter;
+					adaptiveVertexFitter.setWeightThreshold(0.001);
+					
+					// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/VertexPrimitives/interface/TransientVertex.h
 					TransientVertex sv = adaptiveVertexFitter.vertex(transientTracks, *BeamSpot); // TODO: add beam spot
-					KVertexProducer::fillVertex(sv, out.sv);
-				} catch (...)
-				{
+					if (sv.isValid())
+					{
+						KVertexProducer::fillVertex(sv, out.sv);
+					}
 				}
 			}
 		}
@@ -293,7 +300,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				KTauProducer::fillPFCandidates(in, out);
 			else
 				KPatTauProducer::fillPFCandidates(in, out);
-			//fillSecondaryVertex(in, out);
+			fillSecondaryVertex(in, out);
 		}
 
 		virtual void onFirstObject(const SingleInputType &in, SingleOutputType &out) override
