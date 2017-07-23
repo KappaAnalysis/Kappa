@@ -138,7 +138,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
 
-	process.kappaTuple.active += cms.vstring('Info')
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
 	# setup BadPFMuonFilter and BadChargedCandidateFilter
