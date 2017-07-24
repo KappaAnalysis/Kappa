@@ -16,3 +16,4 @@ DataFormats/test/libKappa.cpp
 testcharge
 testdebug
 crab.log
+.nfs*
