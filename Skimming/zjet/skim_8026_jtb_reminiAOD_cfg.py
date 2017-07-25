@@ -279,8 +279,17 @@ process.path *= (process.packedPFCandidatesCHS)
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 
 # If you only want to re-correct for JEC and get the proper uncertainties for the default MET
-runMetCorAndUncFromMiniAOD(process, isData=data, pfCandColl='packedPFCandidatesCHS', recoMetFromPFCs=True)
+runMetCorAndUncFromMiniAOD(process, isData=data, pfCandColl='packedPFCandidates', recoMetFromPFCs=True)
 #runMetCorAndUncFromMiniAOD(process, isData=data, )
+# https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_8_0_X_X_26_patc
+## If you would like to re-cluster both jets and met and get the proper uncertainties
+#runMetCorAndUncFromMiniAOD(process,
+#                           isData=data,
+#                           pfCandColl=cms.InputTag("packedPFCandidates"),
+#                           recoMetFromPFCs=True,
+#                           CHS = True, #This is an important step and determines what type of jets to be reclustered
+#                           reclusterJets = True
+#                           )
 
 # Now you are creating the e/g corrected MET on top of the bad muon corrected MET (on re-miniaod)
 if data:
@@ -377,7 +386,12 @@ process.path.insert(0,process.nEventsTotal+process.nNegEventsTotal)
 process.path.insert(-1,process.nEventsFiltered+process.nNegEventsFiltered)
 process.kappaTuple.active += cms.vstring('FilterSummary')
 
-	# final information:
+# for debugging: dump entire python configuration
+with open('.'.join(outputfilename.split('.')[:-1]) + '_dump.py', 'w') as f:
+        f.write(process.dumpPython())
+
+
+# final information:
 print "------- CONFIGURATION 2 ---------"
 print ""
 print "CMSSW producers:"
