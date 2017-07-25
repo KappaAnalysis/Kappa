@@ -163,6 +163,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		else:
 			process.kappaTuple.TriggerObjectStandalone.metfilterbitslist = cms.vstring("BadChargedCandidateFilter","BadPFMuonFilter")
 
+	process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
