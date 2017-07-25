@@ -126,7 +126,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 						outCandidate.bestTrack = KTrack();
 						if (single_pion->bestTrack() != nullptr)
-							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder);
+							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
 						else
 							outCandidate.bestTrack.ref.SetXYZ(single_pion->vertex().x(), single_pion->vertex().y(), single_pion->vertex().z());
 					}
@@ -147,7 +147,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 						outCandidate.bestTrack = KTrack();
 						if (single_pion->bestTrack() != nullptr)
-							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder);
+							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
 						else
 							outCandidate.bestTrack.ref.SetXYZ(single_pion->vertex().x(), single_pion->vertex().y(), single_pion->vertex().z());
 
