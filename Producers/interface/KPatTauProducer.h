@@ -42,18 +42,18 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				out.dxy = packedLeadTauCand->dxy();
 				if (packedLeadTauCand->bestTrack() != nullptr)
 				{
-					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track);
+					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 				}
 			#else
 				if (in.leadPFChargedHadrCand().isNonnull())
 				{
 					if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
 					{
-						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track);
+						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 					}
 					else if (in.leadPFChargedHadrCand()->gsfTrackRef().isNonnull())
 					{
-						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track);
+						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 						out.leptonInfo |= KLeptonAlternativeTrackMask;
 					}
 				}

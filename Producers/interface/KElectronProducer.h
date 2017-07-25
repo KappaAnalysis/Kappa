@@ -13,6 +13,7 @@
 #include <DataFormats/PatCandidates/interface/Electron.h>
 #include <RecoEgamma/EgammaTools/interface/ConversionTools.h>
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
+#include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
 #include "boost/functional/hash.hpp"
@@ -59,6 +60,12 @@ public:
 		consumescollector.consumes<edm::ValueMap<float> >(edm::InputTag(namesOfIds[j]));
 	}
 }
+
+	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
+	{
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+		return true;
+	}
 
 	static const std::string getLabel() { return "Electrons"; }
 
@@ -146,7 +153,7 @@ public:
 		// electron track and impact parameter
 		if (in.gsfTrack().isNonnull())
 		{
-			KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
+			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 			out.dxy = in.gsfTrack()->dxy(vtx.position());
 			out.dz = in.gsfTrack()->dz(vtx.position());
 		}
@@ -308,6 +315,7 @@ private:
 	edm::Handle<reco::ConversionCollection> hConversions;
 	edm::Handle<reco::BeamSpot> BeamSpot;
 	edm::Handle<reco::VertexCollection> VertexCollection;
+	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 	edm::Handle<double> rhoIso_h;
 	std::string srcIds_;
 	bool doPfIsolation_;
