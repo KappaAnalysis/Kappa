@@ -77,6 +77,24 @@ struct KLepton : public KLV
 		return sumChargedHadronPt + std::max(0.0f,
 			sumNeutralHadronEt + sumPhotonEt - puFraction * sumPUPt);
 	}
+	
+	// (signed) PDG ID
+	int pdgId() const
+	{
+		int pdgId = 0;
+		switch (flavour())
+		{
+			case KLeptonFlavour::ELECTRON: pdgId = 11; break;
+			case KLeptonFlavour::MUON: pdgId = 13; break;
+			case KLeptonFlavour::TAU: pdgId = 15; break;
+			default: pdgId = 0;
+		}
+		if (charge() > 0)
+		{
+			pdgId *= -1;
+		}
+		return pdgId;
+	}
 
 	/// rho effective area isolation (approximation)
 	/** this is an alternative method for pile-up subtraction:
