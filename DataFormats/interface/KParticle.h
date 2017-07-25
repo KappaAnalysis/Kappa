@@ -291,14 +291,14 @@ struct KLHEParticles
 struct KKaonCandidate : public KPFCandidate
 {
 	virtual ~KKaonCandidate() {};
+
 	KTransTrack firstTransTrack;
 	KTransTrack secondTransTrack;
 	KVertex secondaryVertex;
+
 	bool isValid = false;
 	bool statusOfClosestApproachInRPhi = false;
-
-	//KTrack bestTrack;
-	
+	float distanceOfClosestApproach = -1;
 };
 typedef std::vector<KKaonCandidate> KKaonCandidates;
 

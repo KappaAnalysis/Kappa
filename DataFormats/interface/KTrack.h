@@ -185,6 +185,16 @@ struct KTrack : public KLV
 };
 typedef std::vector<KTrack> KTracks;
 
+struct KTransTrack : KTrack
+{
+	virtual ~KTransTrack() {};
+	
+	short int indexOfTrackInColl = -1;
+	bool impactPointTSCPIsValid = false;
+	
+};
+typedef std::vector<KTransTrack> KTransTracks;
+
 struct KMuonTriggerCandidate : public KTrack
 {
 	virtual ~KMuonTriggerCandidate() {};

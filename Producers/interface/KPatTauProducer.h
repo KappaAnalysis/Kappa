@@ -8,6 +8,9 @@
 
 #if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "KPackedPFCandidateProducer.h"
+#include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
+#include "TrackingTools/PatternTools/interface/ClosestApproachInRPhi.h"
+#include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
 #endif
 
 #include <DataFormats/PatCandidates/interface/Tau.h>
@@ -89,8 +92,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					if (variable->first == EXTRATAUFLOATS::decayDistX ) out.floatDiscriminators[variable->second] = in.flightLength().x();
 					else if (variable->first == EXTRATAUFLOATS::decayDistY) out.floatDiscriminators[variable->second] = in.flightLength().y();
 					else if (variable->first == EXTRATAUFLOATS::decayDistZ) out.floatDiscriminators[variable->second] = in.flightLength().z();
-					else if (variable->first == EXTRATAUFLOATS::decayDistM) out.floatDiscriminators[variable->second] =  std::sqrt(in.flightLength().x()*in.flightLength().x() 
-																		+ in.flightLength().y()*in.flightLength().y() 
+					else if (variable->first == EXTRATAUFLOATS::decayDistM) out.floatDiscriminators[variable->second] =  std::sqrt(in.flightLength().x()*in.flightLength().x()
+																		+ in.flightLength().y()*in.flightLength().y()
 																		+ in.flightLength().z()*in.flightLength().z());
 					else if (variable->first == EXTRATAUFLOATS::nPhoton ) out.floatDiscriminators[variable->second] = (float)clusterVariables_.tau_n_photons_total(in);
 					else if (variable->first == EXTRATAUFLOATS::ptWeightedDetaStrip ) out.floatDiscriminators[variable->second] = clusterVariables_.tau_pt_weighted_deta_strip(in, in.decayMode());
@@ -106,6 +109,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
 		{
 			cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
+			//cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 
 			#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 				std::vector<pat::PackedCandidate const*> tau_picharge;
@@ -113,6 +117,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				for(size_t i = 0; i < in.signalChargedHadrCands().size(); ++i)
 				{
 					KPFCandidate outCandidate;
+					outCandidate.indexInOriginalCollection = i;
 
 					if (kshortinformation[names[0]])
 					{
@@ -135,6 +140,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					for(size_t i = 0; i < in.isolationChargedHadrCands().size(); ++i)
 					{
 						KPFCandidate outCandidate;
+						outCandidate.indexInOriginalCollection = i + in.signalChargedHadrCands().size();
 
 						pat::PackedCandidate const* single_pion = dynamic_cast<pat::PackedCandidate const*>(in.isolationChargedHadrCands()[i].get());
 						tau_picharge.push_back(single_pion);
@@ -170,6 +176,103 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 			std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());
 			std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), KLVSorter<KPFCandidate>());
+
+			if (kshortinformation[names[0]]) fillMapOfTracksSV(in, out);
+		}
+
+		virtual void fillMapOfTracksSV(const SingleInputType &in, SingleOutputType &out)
+		{
+			unsigned short nTracks = in.signalChargedHadrCands().size() + in.isolationChargedHadrCands().size();
+			//kshortTracksMap
+			if (nTracks > 1)
+			{
+				std::vector<reco::TransientTrack> transientTracks;
+				//TODO: store the map index:track
+				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
+				{
+					const reco::Track* track = in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
+					if (track)
+						transientTracks.push_back(trackBuilder->build(track));
+				}
+
+				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.isolationChargedHadrCands().size(); ++chargedPFCandidateIndex)
+				{
+					const reco::Track* track = in.isolationChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
+					if (track)
+						transientTracks.push_back(trackBuilder->build(track));
+				}
+
+				if (transientTracks.size() > 2)
+				{
+					TransientVertex theRecoVertex;
+
+					bool useRefTracks = true; //temp
+					KalmanVertexFitter theKalmanFitter(useRefTracks == 0 ? false : true);
+
+					for(size_t trackIndex_1 = 0; trackIndex_1 < transientTracks.size() - 1; ++trackIndex_1)
+						for(size_t trackIndex_2 = trackIndex_1 + 1; trackIndex_2 < transientTracks.size(); ++trackIndex_2)
+						{
+							KKaonCandidate kaonCandidate;
+							std::vector<reco::TransientTrack> transientTracksPair;
+							transientTracksPair.push_back(transientTracks[trackIndex_1]);
+							transientTracksPair.push_back(transientTracks[trackIndex_2]);
+
+							kaonCandidate.isValid = true;
+							kaonCandidate.firstTransTrack.indexOfTrackInColl = trackIndex_1;
+							kaonCandidate.secondTransTrack.indexOfTrackInColl = trackIndex_2;
+							kaonCandidate.firstTransTrack.impactPointTSCPIsValid = transientTracksPair[0].impactPointTSCP().isValid();
+							kaonCandidate.secondTransTrack.impactPointTSCPIsValid = transientTracksPair[1].impactPointTSCP().isValid();
+
+							FreeTrajectoryState const & firstState = transientTracksPair[0].impactPointTSCP().theState(); // TODO::KAPPA
+							FreeTrajectoryState const & secondState = transientTracksPair[1].impactPointTSCP().theState(); // TODO::KAPPA
+
+							ClosestApproachInRPhi cApp; // TODO::KAPPA
+							cApp.calculate(firstState, secondState); // TODO::KAPPA
+							kaonCandidate.statusOfClosestApproachInRPhi = cApp.status();// if (!cApp.status()) continue; // TODO::KAPPA
+
+							float dca = std::abs(cApp.distance()); // TODO::KAPPA
+							kaonCandidate.distanceOfClosestApproach = dca; // if (dca > tkDCACut_) continue;
+
+							TransientVertex sv = theKalmanFitter.vertex(transientTracksPair);
+							if (sv.isValid())
+							{
+								KVertexProducer::fillVertex(sv, kaonCandidate.secondaryVertex);
+
+								/*
+								out.kshortCandidates.push_back(kaonCandidate);
+								*/
+								//fill kshortTracksTuple
+								//KVertexProducer::fillVertex(sv, kshortTracksMap[i, j].sv);
+								/* What is needed:
+									from TransientVertex:
+										isValid()
+
+										reco::Vertex theVtx = theRecoVertex;
+
+										if (theRecoVertex.hasRefittedTracks())
+											theRefTracks = theRecoVertex.refittedTracks();
+									-----------------
+									from Vertex:
+										theVtx.normalizedChi2()
+										theVtx.chi2()
+										theVtx.ndof()
+										theVtx.x(),y,z
+
+										SMatrixSym3D totalCov = theBeamSpot->rotatedCovariance3D() + theVtx.covariance(); // returns SMatrix 3x3
+										const reco::Vertex::CovarianceMatrix vtxCov(theVtx.covariance());
+								*/
+							}
+							else
+							{
+								//fill kshortTracksTuple with null
+								//out.kshortCandidates.isValid = false;
+							}
+						}
+
+					// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/VertexPrimitives/interface/TransientVertex.h
+
+				}
+			}
 		}
 
 		virtual void fillSecondaryVertex(const SingleInputType &in, SingleOutputType &out)
@@ -180,7 +283,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			{
 				// refit SV since in.secondaryVertexPos() is empty
 				// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/PatCandidates/interface/Tau.h#L325
-			
+
 				std::vector<reco::TransientTrack> transientTracks;
 				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
 				{
@@ -194,7 +297,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				{
 					AdaptiveVertexFitter adaptiveVertexFitter;
 					adaptiveVertexFitter.setWeightThreshold(0.001);
-					
+
 					// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/VertexPrimitives/interface/TransientVertex.h
 					TransientVertex sv = adaptiveVertexFitter.vertex(transientTracks, *BeamSpot); // TODO: add beam spot
 					if (sv.isValid())
@@ -209,10 +312,13 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		KPatTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
 			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+			BeamSpotSource(cfg.getParameter<edm::InputTag>("offlineBeamSpot")),
 			VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
 			_lumi_tree_pointer(_lumi_tree)
 		{
+			//this->tokenBeamSpot = consumescollector.consumes<reco::BeamSpot>(BeamSpotSource);
 			this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
+
 			const edm::ParameterSet &psBase = this->psBase;
 			names = psBase.getParameterNamesForType<edm::ParameterSet>();
 			if(names.size() != 1)
@@ -239,7 +345,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 						std::cout << "Warining: extrafloatDiscrlist only available in CMSSW_8_0_21 or new" << std::endl;
 				#endif
 				floatDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrBlacklist");
-				
+
 				if(pset.existsAs<edm::InputTag>("beamSpotSource")) consumescollector.consumes<reco::BeamSpot>(pset.getParameter<edm::InputTag>("beamSpotSource"));
 			}
 		}
@@ -258,7 +364,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		}
 
 		virtual void fillProduct(const InputType &in, OutputType &out,
-		                         const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
+								const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 		{
 			edm::InputTag beamSpotSource = pset.getParameter<edm::InputTag>("beamSpotSource");
 			cEvent->getByLabel(beamSpotSource, BeamSpot);
@@ -368,7 +474,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
 			TauIdMVAAuxiliaries clusterVariables_;
-			
+
 			enum class EXTRATAUFLOATS : int
 			{
 				UNKNOWN = -1, decayDistX = 0, decayDistY = 1, decayDistZ = 2, decayDistM = 3,
@@ -392,7 +498,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				std::cout<<"Warning: "<<in_string <<" is not implemented so far !!!!!"<<std::endl;
 				return EXTRATAUFLOATS::UNKNOWN;
 			}
-			
+
 			std::map<std::string, std::map< EXTRATAUFLOATS, int > > extraTaufloatmap;
 		#endif
 		std::map<std::string, std::vector<std::string> > preselectionDiscr;
@@ -400,6 +506,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		std::map<std::string, std::map< std::string, int > > realTauIdfloatmap;
 		std::map<std::string, KTauMetadata *> discriminatorMap;
 		std::map<std::string, bool> kshortinformation;
+		//std::map<unsigned short, unsigned short> kshortTracksMap;
+
 
 		std::vector<std::string> names;
 		boost::hash<const pat::Tau*> hasher;
@@ -408,9 +516,11 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		edm::Handle<reco::BeamSpot> BeamSpot;
 		edm::Handle<reco::VertexCollection> VertexCollection;
 
+		edm::InputTag BeamSpotSource;
 		edm::InputTag VertexCollectionSource;
 
 		edm::EDGetTokenT<reco::VertexCollection> tokenVertexCollection;
+		edm::EDGetTokenT<reco::VertexCollection> tokenBeamSpot;
 
 		edm::ESHandle<TransientTrackBuilder> trackBuilder;
 
