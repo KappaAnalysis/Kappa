@@ -33,33 +33,33 @@ public:
 		srcIds_(cfg.getParameter<std::string>("srcIds")),
 		doPfIsolation_(true),
 		doCutbasedIds_(true)
-{
-	electronMetadata = new KElectronMetadata;
-	_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
-
-	doMvaIds_ = (srcIds_ == "pat");
-	doAuxIds_ = (srcIds_ == "standalone");
-
-	const edm::ParameterSet &psBase = this->psBase;
-	std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
-
-	for (size_t i = 0; i < names.size(); ++i)
 	{
-		const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-		if(pset.existsAs<edm::InputTag>("allConversions")) consumescollector.consumes<reco::ConversionCollection>(pset.getParameter<edm::InputTag>("allConversions"));
-		if(pset.existsAs<edm::InputTag>("offlineBeamSpot")) consumescollector.consumes<reco::BeamSpot>(pset.getParameter<edm::InputTag>("offlineBeamSpot"));
-		if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
-		if(pset.existsAs<edm::InputTag>("rhoIsoInputTag")) consumescollector.consumes<double>(pset.getParameter<edm::InputTag>("rhoIsoInputTag"));
-		if(pset.existsAs<std::vector<edm::InputTag>>("isoValInputTags"))
+		electronMetadata = new KElectronMetadata;
+		_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
+
+		doMvaIds_ = (srcIds_ == "pat");
+		doAuxIds_ = (srcIds_ == "standalone");
+
+		const edm::ParameterSet &psBase = this->psBase;
+		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+		for (size_t i = 0; i < names.size(); ++i)
 		{
-			for(size_t j = 0; j < pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").size(); ++j) consumescollector.consumes<edm::ValueMap<double>>(pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").at(j));
+			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+			if(pset.existsAs<edm::InputTag>("allConversions")) consumescollector.consumes<reco::ConversionCollection>(pset.getParameter<edm::InputTag>("allConversions"));
+			if(pset.existsAs<edm::InputTag>("offlineBeamSpot")) consumescollector.consumes<reco::BeamSpot>(pset.getParameter<edm::InputTag>("offlineBeamSpot"));
+			if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
+			if(pset.existsAs<edm::InputTag>("rhoIsoInputTag")) consumescollector.consumes<double>(pset.getParameter<edm::InputTag>("rhoIsoInputTag"));
+			if(pset.existsAs<std::vector<edm::InputTag>>("isoValInputTags"))
+			{
+				for(size_t j = 0; j < pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").size(); ++j) consumescollector.consumes<edm::ValueMap<double>>(pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").at(j));
+			}
+		}
+		for (size_t j = 0; j < namesOfIds.size(); ++j)
+		{
+			consumescollector.consumes<edm::ValueMap<float> >(edm::InputTag(namesOfIds[j]));
 		}
 	}
-	for (size_t j = 0; j < namesOfIds.size(); ++j)
-	{
-		consumescollector.consumes<edm::ValueMap<float> >(edm::InputTag(namesOfIds[j]));
-	}
-}
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
