@@ -14,21 +14,22 @@ import Kappa.Producers.EventWeightCountProducer_cff
 #input_files='file:///storage/6/fcolombo/kappatest/input/data_AOD_Run2015D.root' #do not remove: for Kappa test!
 #input_files='file:///nfs/dust/cms/user/swayand/DO_MU_FILES/CMSSW80X/DYTOLLM50_mcantlo.root'
 #input_files='file:///storage/a/afriedel/zjets/mc_miniAOD.root' #do not remove: for Kappa test!
-input_files='file:///storage/jbod/tberger/testfiles/MC/RunIISummer16MiniAODv2/DYToLL_0J_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/00F8A837-BCD2-E611-B180-0025907B4FC2.root'
-#input_files='file:///storage/jbod/tberger/testfiles/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/0676A750-64EE-E611-A942-0025905B85D2.root'
+#input_files='file:///storage/jbod/tberger/testfiles/MC/RunIISummer16MiniAODv2/DYToLL_0J_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v1/00F8A837-BCD2-E611-B180-0025907B4FC2.root'
+input_files='file:///storage/jbod/tberger/testfiles/data/Run2016E/DoubleMuon/MINIAOD/03Feb2017-v1/0676A750-64EE-E611-A942-0025905B85D2.root'
 #input_files='file:///storage/jbod/tberger/testfiles/PickedEvents_Met_Xcheck.root'
 #input_files='file:/afs/cern.ch/user/t/tberger/public/pickeventsMu_H.root'
 #input_files='file:///afs/cern.ch/user/k/kirschen/public/forJERC/PickedEvents_Met_Xcheck.root'
 #input_files='file:///storage/a/afriedel/zjets/mc_miniAOD.root' #do not remove: for Kappa test!
 #input_files='dcap://cmssrm-kit.gridka.de:22125/pnfs/gridka.de/cms/store/mc/RunIISpring16DR80/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/AODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_v3-v1/20000/1A054918-89FF-E511-B246-0CC47A4D76B2.root'
 
-maxevents=100
-outputfilename="skim8026_jtb_met.root"
+maxevents=10
+outputfilename="skim8026_jtb_met_test.root"
 kappa_verbosity=0
 
 #  Basic Process Setup  ############################################
 process = cms.Process("KAPPA")
 process.path = cms.Path()
+process.endpath = cms.EndPath()
 process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(maxevents))
 process.options = cms.untracked.PSet(wantSummary=cms.untracked.bool(True))
 process.options.allowUnscheduled = cms.untracked.bool(True) 
@@ -93,12 +94,17 @@ else:
 	process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 
 	
-#process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
-#process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
+process.kappaTuple.Info.overrideHLTCheck = cms.untracked.bool(True)
+process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
 
 
 process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')	
 process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
+
+# 80X doesn't have 'slimmedPatTrigger' -> use 'selectedPatTrigger' instead
+process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet(
+	src=cms.InputTag("selectedPatTrigger")
+)
 process.kappaTuple.Info.hltWhitelist = cms.vstring(
 	# HLT regex selection can be tested at https://regex101.com (with gm options)
 	# single muon triggers, e.g. HLT_Mu50_v1
@@ -265,14 +271,24 @@ process.packedPFCandidatesCHS = cms.EDFilter('CandPtrSelector',
     # MiniAOD [2].
     # [1] https://twiki.cern.ch/twiki/bin/view/CMSPublic/ReMiniAOD03Feb2017Notes?rev=19#MET_Recipes
     # [2] https://indico.cern.ch/event/602633/contributions/2462363/
+process.path *= (process.packedPFCandidatesCHS)
     
 ### Start of MET recipe
 ## Following lines are for default MET for Type1 corrections.
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 
 # If you only want to re-correct for JEC and get the proper uncertainties for the default MET
-runMetCorAndUncFromMiniAOD(process, isData=data, pfCandColl='packedPFCandidatesCHS', recoMetFromPFCs=True)
+runMetCorAndUncFromMiniAOD(process, isData=data, pfCandColl='packedPFCandidates', recoMetFromPFCs=True)
 #runMetCorAndUncFromMiniAOD(process, isData=data, )
+# https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_8_0_X_X_26_patc
+## If you would like to re-cluster both jets and met and get the proper uncertainties
+#runMetCorAndUncFromMiniAOD(process,
+#                           isData=data,
+#                           pfCandColl=cms.InputTag("packedPFCandidates"),
+#                           recoMetFromPFCs=True,
+#                           CHS = True, #This is an important step and determines what type of jets to be reclustered
+#                           reclusterJets = True
+#                           )
 
 # Now you are creating the e/g corrected MET on top of the bad muon corrected MET (on re-miniaod)
 if data:
@@ -350,7 +366,7 @@ process.kappaTuple.PatMET.uncorrected = cms.bool(True) #Uncorrect MET -> Correct
 #process.kappaTuple.packedPFCandidates.pfcandiatesCHS = cms.PSet(src=cms.InputTag("packedPFCandidatesCHS","","PAT"))
 
 #  Kappa  Output ###########################################################
-process.path *= (process.kappaOut)
+process.endpath *= (process.kappaOut)
 
 process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src=cms.InputTag("offlineBeamSpot"))
 process.kappaTuple.VertexSummary.offlinePrimaryVerticesSummary = cms.PSet(src=cms.InputTag("offlineSlimmedPrimaryVertices"))
@@ -358,7 +374,7 @@ process.kappaTuple.VertexSummary.goodOfflinePrimaryVerticesSummary = cms.PSet(sr
 
 process.kappaTuple.PileupDensity.pileupDensity = cms.PSet(src=cms.InputTag("fixedGridRhoFastjetAll"))
 
-process.load("Kappa.CMSSW.EventWeightCountProducer_cff")
+process.load("Kappa.Producers.EventWeightCountProducer_cff")
 if not data:
 		process.nEventsTotal.isMC = cms.bool(True)
 		process.nNegEventsTotal.isMC = cms.bool(True)
@@ -369,11 +385,22 @@ process.path.insert(0,process.nEventsTotal+process.nNegEventsTotal)
 process.path.insert(-1,process.nEventsFiltered+process.nNegEventsFiltered)
 process.kappaTuple.active += cms.vstring('FilterSummary')
 
-	# final information:
+# for debugging: dump entire python configuration
+with open('.'.join(outputfilename.split('.')[:-1]) + '_dump.py', 'w') as f:
+        f.write(process.dumpPython())
+
+
+# final information:
 print "------- CONFIGURATION 2 ---------"
+print ""
 print "CMSSW producers:"
 for p in str(process.path).split('+'):
 	print "  %s" % p
+print ""
+print "CMSSW endpath producers:"
+for p in str(process.endpath).split('+'):
+	print "  %s" % p
+print ""
 print "Kappa producers:"
 for p in sorted(process.kappaTuple.active):
 	print "  %s" % p
