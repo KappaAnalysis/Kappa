@@ -30,6 +30,18 @@ public:
 		KTrackProducer::fillTrack(in, out);
 	}
 
+	static int getValidVertexIndex(std::vector<reco::Vertex> const& vertices = std::vector<reco::Vertex>())
+	{
+		int validVertexIndex = -1;
+		for (unsigned int i = 0; i < vertices.size(); i++)
+			if (vertices.at(i).isValid())
+			{
+				validVertexIndex = i;
+				break;
+			}
+		return validVertexIndex;
+	}
+
 	// Static method for filling Tracks in other producers
 	static void fillTrack(const SingleInputType &in, SingleOutputType &out,
 	                      std::vector<reco::Vertex> const& vertices = std::vector<reco::Vertex>(),
