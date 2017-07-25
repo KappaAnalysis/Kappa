@@ -122,6 +122,44 @@ public:
 		hltPrescales.clear();
 		addHLT(0, "fail", 42/*, std::vector<std::string>()*/);
 
+
+               if (tagHLTResults.process() == "")
+               {
+                       if (verbosity > 0)
+                               std::cout << "tagHLTResults is empty" << std::endl
+                                       << " -> trying to determine the process name automatically: ";
+
+                       const edm::ProcessHistory& processHistory(run.processHistory());
+                       for (edm::ProcessHistory::const_iterator it = processHistory.begin(); it != processHistory.end(); ++it)
+                       {
+                               if (verbosity > 0)
+                                       std::cout << it->processName();
+                               edm::ProcessConfiguration processConfiguration;
+                               if (processHistory.getConfigurationForProcess(it->processName(), processConfiguration))
+                               {
+                                       edm::ParameterSet processPSet;
+                                       if (edm::pset::Registry::instance()->getMapped(processConfiguration.parameterSetID(), processPSet))
+                                       {
+                                               if (processPSet.exists("hltTriggerSummaryAOD"))
+                                               {
+                                                       tagHLTResults = edm::InputTag(tagHLTResults.label(), "", it->processName());
+                                                       if (verbosity > 0)
+                                                               std::cout << "*";
+                                               }
+                                       }
+                               }
+                               if (verbosity > 0)
+                                       std::cout << " ";
+                       }
+                       if (verbosity > 0)
+                               std::cout << std::endl;
+                       std::cout << "Taking trigger from process " << tagHLTResults.process()
+                               << " (label = " << tagHLTResults.label() << ")" << std::endl;
+                       this->addProvenance(tagHLTResults.process(), "");
+                       if (tagHLTResults.process() == "")
+                               return true;
+               }
+
 		bool hltSetupChanged = false;
 		if (!KInfoProducerBase::hltConfig.init(run, setup, tagHLTResults.process(), hltSetupChanged))
 			return fail(std::cout << "Invalid HLT process selected: " << tagHLTResults.process() << std::endl);
@@ -180,6 +218,48 @@ public:
 
 		bool triggerPrescaleError = false;
 		metaEvent->bitsHLT.clear();
+		if (tagHLTResults.label() != "")
+               {
+                       // set HLT trigger bits
+                       edm::Handle<edm::TriggerResults> hTriggerResults;
+                       event.getByLabel(tagHLTResults, hTriggerResults);
+
+                       bool hltFAIL = false;
+                       metaEvent->bitsHLT.resize(KInfoProducerBase::hltKappa2FWK.size()+1);
+                       for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
+                       {
+                               const size_t idx = KInfoProducerBase::hltKappa2FWK[i];
+                               metaEvent->bitsHLT[i] = hTriggerResults->accept(idx);
+                               hltFAIL = hltFAIL || hTriggerResults->error(idx);
+                       }
+                       metaEvent->bitsHLT[0] = hltFAIL;
+
+                       // set and check trigger prescales
+                       for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
+                       {
+                               const std::string &name = metaLumi->hltNames[i];
+                               unsigned int prescale = 0;
+                               if (metaLumi->hltPrescales[i] == 0)
+                               {
+                                       if (verbosity > 0 || printHltList)
+                                               std::cout << "KInfoProducer::onEvent :  => Adding prescale for trigger: '" << name
+                                                       << " with value: " << prescale << std::endl;
+                                       metaLumi->hltPrescales[i] = prescale;
+                               }
+                               if (metaLumi->hltPrescales[i] != prescale)
+                               {
+                                       if (this->verbosity > 0)
+                                               std::cout << "KInfoProducer::onEvent :  !!!!!!!!!!! the prescale of " << name << " has changed with respect to the beginning of the luminosity section from " <<metaLumi->hltPrescales<< " to " << prescale << std::endl;
+                                       triggerPrescaleError = true;
+                               }
+                       }
+               }
+               else
+               {
+                       for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
+                               metaLumi->hltPrescales[i] = 1;
+               }
+
 		
 		for (size_t i = 1; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
 			metaLumi->hltPrescales[i] = 1;
