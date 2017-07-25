@@ -299,6 +299,11 @@ struct KKaonCandidate : public KPFCandidate
 	bool isValid = false;
 	bool statusOfClosestApproachInRPhi = false;
 	float distanceOfClosestApproach = -1;
+
+	float sigmaDistMagXYBS;
+	float distMagXYZBS;
+	float sigmaDistMagXYPV;
+	float distMagXYZPV;
 };
 typedef std::vector<KKaonCandidate> KKaonCandidates;
 
