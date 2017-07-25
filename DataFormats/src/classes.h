@@ -79,6 +79,8 @@ namespace
 		KParticles dict_KParticles;
 		KPFCandidate dict_KPFCandidate;
 		KPFCandidates dict_KPFCandidates;
+		KKaonCandidate dict_KKaonCandidate;
+		KKaonCandidates dict_KKaonCandidates;
 		KPhoton dict_KPhoton;
 		KPhotons dict_KPhotons;
 		KPileupDensity dict_KPileupDensity;
@@ -90,6 +92,8 @@ namespace
 		KTaupairVerticesMaps dict_KTaupairVerticesMaps;
 		KTrack dict_KTrack;
 		KTracks dict_KTracks;
+		KTransTrack dict_KTransTrack;
+		KTransTracks dict_KTransTracks;
 		KTriggerObjects dict_KTriggerObjects;
 		KVertex dict_KVertex;
 		KVertices dict_KVertices;

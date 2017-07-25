@@ -45,6 +45,8 @@
 	<class name="KParticles"/>
 	<class name="KPFCandidate"/>
 	<class name="KPFCandidates"/>
+	<class name="KKaonCandidate"/>
+	<class name="KKaonCandidates"/>
 	<class name="KPhoton"/>
 	<class name="KPhotons"/>
 	<class name="KPileupDensity"/>
@@ -56,6 +58,8 @@
 	<class name="KTaupairVerticesMaps"/>
 	<class name="KTrack"/>
 	<class name="KTracks"/>
+	<class name="KTransTrack"/>
+	<class name="KTransTracks"/>
 	<class name="KTriggerObjects"/>
 	<class name="KVertex"/>
 	<class name="KVertices"/>

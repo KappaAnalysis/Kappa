@@ -257,6 +257,7 @@ struct KPFCandidate : public KParticle
 	double hcalEnergy;        //< energy deposited in HCAL
 	unsigned short fromFirstPVFlag;
 	KTrack bestTrack;
+	short int indexInOriginalCollection = -1; // is used to store index of charged hadron in the original collection in KPatTauProducer
 };
 typedef std::vector<KPFCandidate> KPFCandidates;
 
@@ -284,6 +285,22 @@ struct KLHEParticles
 	double alphaEM; // AQEDUP
 	double alphaQCD; // AQCDUP
 };
+
+
+/// Particle-Flow Candidate
+struct KKaonCandidate : public KPFCandidate
+{
+	virtual ~KKaonCandidate() {};
+	KTransTrack firstTransTrack;
+	KTransTrack secondTransTrack;
+	KVertex secondaryVertex;
+	bool isValid = false;
+	bool statusOfClosestApproachInRPhi = false;
+
+	//KTrack bestTrack;
+	
+};
+typedef std::vector<KKaonCandidate> KKaonCandidates;
 
 #endif
 
