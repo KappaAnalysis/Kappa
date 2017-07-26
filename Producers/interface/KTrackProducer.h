@@ -87,14 +87,7 @@ public:
 		// check for builder is missing - be carefull to pass it to this function together with verticies
 		if (vertices.size() > 0)
 		{
-			int validVertexIndex = -1;
-			for (unsigned int i = 0; i < vertices.size(); i++)
-				if (vertices.at(i).isValid())
-				{
-					KVertexProducer::fillVertex(vertices.at(i), out.ipVertex);
-					validVertexIndex = i;
-					break;
-				}
+			int validVertexIndex = getValidVertexIndex(vertices);
 			if (validVertexIndex >= 0)
 			{
 				reco::TransientTrack transientTrack = trackBuilder->build(in);

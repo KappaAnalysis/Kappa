@@ -43,8 +43,6 @@ struct KTrack : public KLV
 	float chi2, nDOF;
 	float d2D, d3D;      ///< impact parameters dxy and d calculated considering the magnetic field
 	float err3D, err2D;  ///< errors on the dxy (2D) and d (3D) impact parameters
-	KVertex ipVertex;
-	
 	float magneticField = 0.0; // at reference point, in 1/GeV
 	
 	// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L757-L819
@@ -79,6 +77,7 @@ struct KTrack : public KLV
 	unsigned short nValidMuonHits;   //< number of valid hits in the muon system (for tight muID)
 	unsigned short nPixelLayers, nStripLayers, nTrackerLayersNew; // for soft/tight muID as trackerLayers
 	unsigned short nInnerHits;
+
 	/// functions for combinations
 	inline unsigned int nValidHits() const { return nValidPixelHits + nValidStripHits + nValidMuonHits; };
 	inline unsigned int nValidTrackerHits() const { return nValidPixelHits + nValidStripHits; };
@@ -191,7 +190,6 @@ struct KTransTrack : KTrack
 	
 	short int indexOfTrackInColl = -1;
 	bool impactPointTSCPIsValid = false;
-	
 };
 typedef std::vector<KTransTrack> KTransTracks;
 
