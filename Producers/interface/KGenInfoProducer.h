@@ -49,7 +49,7 @@ public:
 			this->tokenSource = consumescollector.consumes<GenEventInfoProduct>(tagSource);
 			this->tokenLhe = consumescollector.consumes<LHEEventProduct>(lheSource);
 			this->tokenPuInfo = consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
-			this->tokenLHERunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
+			//this->tokenLHERunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
 			this->tokenRunInfo = consumescollector.consumes<LHERunInfoProduct>(runInfo);
 
 			genEventInfoMetadata = new KGenEventInfoMetadata();
@@ -243,7 +243,7 @@ protected:
 	edm::EDGetTokenT<GenEventInfoProduct> tokenSource;
 	edm::EDGetTokenT<LHEEventProduct> tokenLhe;
 	edm::EDGetTokenT<std::vector<PileupSummaryInfo>> tokenPuInfo;
-	edm::EDGetTokenT<LHERunInfoProduct> tokenLHERunInfo;
+	//edm::EDGetTokenT<LHERunInfoProduct> tokenLHERunInfo;
 	edm::EDGetTokenT<LHERunInfoProduct> tokenRunInfo;
 };
 
