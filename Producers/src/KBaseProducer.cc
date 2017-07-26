@@ -34,6 +34,10 @@ bool KBaseProducer::endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, co
 {
 	return true;
 }
+bool KBaseProducer::endRun(edm::Run const &run, edm::EventSetup const &setup)
+{
+	return true;
+}
 
 bool KBaseProducer::tagMatch(const edm::Provenance *prov, const std::vector<edm::InputTag> &tags)
 {
@@ -137,7 +141,7 @@ bool KBaseProducer::fail(const std::ostream &s)
 	return false;
 }
 
-KBaseProducerWP::KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
+KBaseProducerWP::KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
 	consumescollector_(consumescollector),
 	psBase(cfg)
 {

@@ -17,8 +17,8 @@ template<typename Tin, typename Tout>
 class KBaseMultiProducer : public KBaseMatchingProducer<Tout>
 {
 public:
-	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector, bool _justOutputName = false) :
-		KBaseMatchingProducer<Tout>(cfg, _event_tree, _lumi_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)),
+	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector, bool _justOutputName = false) :
+		KBaseMatchingProducer<Tout>(cfg, _event_tree, _lumi_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)),
 		event_tree(_event_tree), justOutputName(_justOutputName)
 		{
 			this->addPSetRequests();

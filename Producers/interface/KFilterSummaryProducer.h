@@ -19,8 +19,8 @@
 class KFilterSummaryProducer : public KBaseMatchingProducer<KFilterSummary>
 {
 public:
-	KFilterSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMatchingProducer<KFilterSummary>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
+	KFilterSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMatchingProducer<KFilterSummary>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
 	{
 		names = new KFilterMetadata;
 		_lumi_tree->Bronch("filterMetadata", "KFilterMetadata", &names);

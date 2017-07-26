@@ -15,8 +15,8 @@
 class KLorentzProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, KLVs>
 {
 public:
-	KLorentzProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<edm::View<reco::Candidate>, KLVs>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KLorentzProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::Candidate>, KLVs>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "LV"; }
 

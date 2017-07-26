@@ -23,8 +23,8 @@
 class KRefitVertexProducer : public KBaseMultiVectorProducer<edm::View<RefitVertex>, KRefitVertices >
 {
 public:
-	KRefitVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiVectorProducer<edm::View<RefitVertex>, KRefitVertices >(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KRefitVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiVectorProducer<edm::View<RefitVertex>, KRefitVertices >(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "RefitVertex"; }
 

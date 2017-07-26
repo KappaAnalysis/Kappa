@@ -38,8 +38,8 @@
 class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>
 {
 public:
-	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
 		isoValInputTags(cfg.getParameter<std::vector<edm::InputTag> >("isoValInputTags")),

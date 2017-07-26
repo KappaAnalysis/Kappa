@@ -24,9 +24,9 @@
 class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>
 {
 public:
-	KElectronProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+	KElectronProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
 		KBaseMultiLVProducer<edm::View<pat::Electron>,
-		KElectrons>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+		KElectrons>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		tagConversionSource(cfg.getParameter<edm::InputTag>("allConversions")),
 		beamSpotSource(cfg.getParameter<edm::InputTag>("offlineBeamSpot")),
 		VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),

@@ -25,6 +25,7 @@ public:
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup);
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup);
 	virtual bool endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
+	virtual bool endRun(edm::Run const &run, edm::EventSetup const &setup);
 	virtual ~KBaseProducer() {};
 
 protected:
@@ -49,7 +50,7 @@ class KBaseProducerWP : public KBaseProducer
 {
 public:
 	virtual ~KBaseProducerWP() {};
-	KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector);
+	KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector);
 	void addProvenance(std::string oldName, std::string newName);
 
 protected:

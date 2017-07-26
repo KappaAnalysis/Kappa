@@ -36,8 +36,8 @@
 class KTriggerObjectStandaloneProducer : public KBaseMultiProducer<pat::TriggerObjectStandAloneCollection, KTriggerObjects>
 {
 public:
-	KTriggerObjectStandaloneProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiProducer<pat::TriggerObjectStandAloneCollection, KTriggerObjects>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector), true)
+	KTriggerObjectStandaloneProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<pat::TriggerObjectStandAloneCollection, KTriggerObjects>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector), true)
 	{
 		triggerBits_ = cfg.getParameter<edm::InputTag>("bits");
 		metFilterBits_ = cfg.getParameter<edm::InputTag>("metfilterbits");
