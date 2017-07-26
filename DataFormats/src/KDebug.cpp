@@ -357,9 +357,8 @@ std::ostream &operator<<(std::ostream &os, const KLumiInfo &info)
 	return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const KGenLumiInfo &info)
+std::ostream &operator<<(std::ostream &os, const KGenRunInfo &info)
 {
-	os << static_cast<const KLumiInfo>(info) << std::endl;
 	os << "\txSec(ext)=" << info.xSectionExt << " xSec(int)=" << info.xSectionInt;
 	os << " filterEff=" << info.filterEff;
 	return os;

@@ -24,9 +24,11 @@
 // MC data
 struct KGenInfo_Product
 {
-	typedef KGenLumiInfo typeLumi;
+	typedef KLumiInfo typeLumi;
+	typedef KGenRunInfo typeRun;
 	typedef KGenEventInfo typeEvent;
-	static const std::string idLumi() { return "KGenLumiInfo"; };
+	static const std::string idRun() { return "KGenRunInfo"; };
+	static const std::string idLumi() { return "KLumiInfo"; };
 	static const std::string idEvent() { return "KGenEventInfo"; };
 };
 
@@ -54,6 +56,9 @@ public:
 
 			genEventInfoMetadata = new KGenEventInfoMetadata();
 			_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
+
+			metaRun = new typename Tmeta::typeRun();
+			_run_tree->Bronch("runInfo", Tmeta::idRun().c_str(), &metaRun);
 		}
 
 	static const std::string getLabel() { return "GenInfo"; }
@@ -66,38 +71,26 @@ public:
 			return false;
 		if (forceLumi > 0)
 			this->metaLumi->nLumi = forceLumi;
-	{
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 6) || (CMSSW_MAJOR_VERSION > 7) 
-		// print available lheWeights
-		edm::Handle<LHERunInfoProduct> runhandle;
-		if((this->verbosity > 1) && lumiBlock.getRun().getByToken( tokenRunInfo, runhandle ))
 		{
-			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
-			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
+	#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 6) || (CMSSW_MAJOR_VERSION > 7) 
+			// print available lheWeights
+			edm::Handle<LHERunInfoProduct> runhandle;
+			if((this->verbosity > 1) && lumiBlock.getRun().getByToken( tokenRunInfo, runhandle ))
 			{
-				std::cout << iter->tag() << std::endl;
-				std::vector<std::string> lines = iter->lines();
-				for (unsigned int iLine = 0; iLine<lines.size(); iLine++)
+				LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
+				for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
 				{
-						std::cout << lines.at(iLine);
+					std::cout << iter->tag() << std::endl;
+					std::vector<std::string> lines = iter->lines();
+					for (unsigned int iLine = 0; iLine<lines.size(); iLine++)
+					{
+							std::cout << lines.at(iLine);
+					}
 				}
 			}
+	#endif
 		}
-#endif
-	}
-		// Read generator infos
-		edm::Handle<GenRunInfoProduct> hGenInfo;
-		lumiBlock.getRun().getByToken(this->tokenGenRunInfo, hGenInfo);
-
-		const bool invalidGenInfo = !hGenInfo.isValid();
-		this->metaLumi->filterEff = invalidGenInfo ? -1 : hGenInfo->filterEfficiency();
-		this->metaLumi->xSectionInt = invalidGenInfo ? -1 : hGenInfo->internalXSec().value();
-		this->metaLumi->xSectionExt = invalidGenInfo ? -1 : hGenInfo->externalXSecLO().value();
-		if (ignoreExtXSec)
-			this->metaLumi->xSectionExt = -1;
-		if (invalidGenInfo)
-			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
-		return true;
+	return true;
 	}
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
@@ -230,8 +223,25 @@ public:
 
 		return true;
 	}
+	bool endRun(edm::Run const&  run, edm::EventSetup const &setup) override
+	{
+		// Read generator infos
+		edm::Handle<GenRunInfoProduct> hGenInfo;
+		run.getByToken(this->tokenGenRunInfo, hGenInfo);
+
+		const bool invalidGenInfo = !hGenInfo.isValid();
+		this->metaRun->filterEff = invalidGenInfo ? -1 : hGenInfo->filterEfficiency();
+		this->metaRun->xSectionInt = invalidGenInfo ? -1 : hGenInfo->internalXSec().value();
+		this->metaRun->xSectionExt = invalidGenInfo ? -1 : hGenInfo->externalXSecLO().value();
+		if (ignoreExtXSec)
+			this->metaRun->xSectionExt = -1;
+		if (invalidGenInfo)
+			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
+		return true;
+	}
 
 protected:
+	typename Tmeta::typeRun *metaRun;
 	bool ignoreExtXSec;
 	int forceLumi;
 	std::string binningMode;
@@ -258,20 +268,20 @@ public:
 		tagSource(cfg.getParameter<edm::InputTag>("genSource"))
 		{
 		    tokenSource = consumescollector.consumes<edm::HepMCProduct>(tagSource);
+			metaRun = new typename Tmeta::typeRun();
+			_run_tree->Bronch("runInfo", Tmeta::idRun().c_str(), &metaRun);
 		}
 
 	static const std::string getLabel() { return "HepMCInfo"; }
 
-	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
+	bool endRun(edm::Run const&  run, edm::EventSetup const &setup) override
 	{
 		// Fill data related infos
-		if (!KInfoProducer<Tmeta>::onLumi(lumiBlock, setup))
+		if (!KInfoProducer<Tmeta>::onRun(run, setup))
 			return false;
-		if (forceLumi > 0)
-			this->metaLumi->nLumi = forceLumi;
-		this->metaLumi->filterEff = 1;
-		this->metaLumi->xSectionInt = forceXSec;
-		this->metaLumi->xSectionExt = forceXSec;
+		this->metaRun->filterEff = 1;
+		this->metaRun->xSectionInt = forceXSec;
+		this->metaRun->xSectionExt = forceXSec;
 		return true;
 	}
 
@@ -307,6 +317,7 @@ public:
 	}
 
 protected:
+	typename Tmeta::typeRun *metaRun;
 	double forceXSec;
 	int forceLumi;
 	edm::InputTag tagSource;
