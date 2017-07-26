@@ -49,6 +49,14 @@ git cms-addpkg PhysicsTools/PatUtils
 # Tau POG backport of tauID to CMSSW_8_0_26_patch1
 git cms-merge-topic -u cms-tau-pog:CMSSW_8_0_X_tau-pog_miniAOD-backport-tauID
 
+# https://github.com/cms-sw/cmssw/pull/16174#pullrequestreview-5167487
+# Fix for Puppi MET and MET significance compatibility between AOD and miniAOD (80X)
+git cms-merge-topic cms-met:METRecipe_8020 -u
+
+# https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_8_0_X_X_26_patc
+# Fix for the re-clustering of the CHS jets on the fly
+git cms-merge-topic cms-met:METRecipe_80X_part2 -u
+
 # find-and-replace-fixes in code
 sed "/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificanceParams_cfi\ import\ METSignificanceParams_Data" PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py -i
 

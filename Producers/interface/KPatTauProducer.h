@@ -42,18 +42,18 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				out.dxy = packedLeadTauCand->dxy();
 				if (packedLeadTauCand->bestTrack() != nullptr)
 				{
-					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track);
+					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 				}
 			#else
 				if (in.leadPFChargedHadrCand().isNonnull())
 				{
 					if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
 					{
-						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track);
+						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 					}
 					else if (in.leadPFChargedHadrCand()->gsfTrackRef().isNonnull())
 					{
-						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track);
+						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 						out.leptonInfo |= KLeptonAlternativeTrackMask;
 					}
 				}
@@ -126,7 +126,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 						outCandidate.bestTrack = KTrack();
 						if (single_pion->bestTrack() != nullptr)
-							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder);
+							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
 						else
 							outCandidate.bestTrack.ref.SetXYZ(single_pion->vertex().x(), single_pion->vertex().y(), single_pion->vertex().z());
 					}
@@ -147,7 +147,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 						outCandidate.bestTrack = KTrack();
 						if (single_pion->bestTrack() != nullptr)
-							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder);
+							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
 						else
 							outCandidate.bestTrack.ref.SetXYZ(single_pion->vertex().x(), single_pion->vertex().y(), single_pion->vertex().z());
 

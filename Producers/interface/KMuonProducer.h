@@ -161,9 +161,9 @@ public:
 
 		/// Tracks and track extracted information
 		if (in.track().isNonnull())
-			KTrackProducer::fillTrack(*in.track(), out.track, std::vector<reco::Vertex>(), trackBuilder);
+			KTrackProducer::fillTrack(*in.track(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 		if (in.globalTrack().isNonnull())
-			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack, std::vector<reco::Vertex>(), trackBuilder);
+			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack, std::vector<reco::Vertex>(), trackBuilder.product());
 
 		edm::View<reco::Vertex> vertices = *VertexHandle;
 		reco::Vertex vtx = vertices.at(0);
