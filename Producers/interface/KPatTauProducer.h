@@ -212,6 +212,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					for(size_t trackIndex_1 = 0; trackIndex_1 < transientTracks.size() - 1; ++trackIndex_1)
 						for(size_t trackIndex_2 = trackIndex_1 + 1; trackIndex_2 < transientTracks.size(); ++trackIndex_2)
 						{
+							//if (transientTracks[trackIndex_1].charge() * transientTracks[trackIndex_1].charge() > 0.) continue;
 							KKaonCandidate kaonCandidate;
 							std::vector<reco::TransientTrack> transientTracksPair;
 							transientTracksPair.push_back(transientTracks[trackIndex_1]);
@@ -222,56 +223,120 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 							kaonCandidate.secondTransTrack.indexOfTrackInColl = trackIndex_2;
 							kaonCandidate.firstTransTrack.impactPointTSCPIsValid = transientTracksPair[0].impactPointTSCP().isValid();
 							kaonCandidate.secondTransTrack.impactPointTSCPIsValid = transientTracksPair[1].impactPointTSCP().isValid();
+							if (!kaonCandidate.firstTransTrack.impactPointTSCPIsValid || !kaonCandidate.secondTransTrack.impactPointTSCPIsValid) continue;
 
-							FreeTrajectoryState const & firstState = transientTracksPair[0].impactPointTSCP().theState(); // TODO::KAPPA
-							FreeTrajectoryState const & secondState = transientTracksPair[1].impactPointTSCP().theState(); // TODO::KAPPA
+							FreeTrajectoryState const & firstState = transientTracksPair[0].impactPointTSCP().theState();
+							FreeTrajectoryState const & secondState = transientTracksPair[1].impactPointTSCP().theState();
 
-							ClosestApproachInRPhi cApp; // TODO::KAPPA
-							cApp.calculate(firstState, secondState); // TODO::KAPPA
-							kaonCandidate.statusOfClosestApproachInRPhi = cApp.status();// if (!cApp.status()) continue; // TODO::KAPPA
+							ClosestApproachInRPhi cApp;
+							cApp.calculate(firstState, secondState);
+							kaonCandidate.statusOfClosestApproachInRPhi = cApp.status();
+							if (!cApp.status()) continue;
 
-							float dca = std::abs(cApp.distance()); // TODO::KAPPA
-							kaonCandidate.distanceOfClosestApproach = dca; // if (dca > tkDCACut_) continue;
+							float dca = std::abs(cApp.distance());
+							kaonCandidate.distanceOfClosestApproach = dca;
 
 							TransientVertex sv = theKalmanFitter.vertex(transientTracksPair);
 							if (sv.isValid())
-							{
 								KVertexProducer::fillVertex(sv, kaonCandidate.secondaryVertex);
+							else continue;
 
-								/*
-								out.kshortCandidates.push_back(kaonCandidate);
-								*/
-								//fill kshortTracksTuple
-								//KVertexProducer::fillVertex(sv, kshortTracksMap[i, j].sv);
-								/* What is needed:
-									from TransientVertex:
-										isValid()
+							reco::Vertex theVtx = sv;
+							GlobalPoint vtxPos(theVtx.x(), theVtx.y(), theVtx.z());
+							reco::Vertex referenceVtx = VertexCollection->at(KTrackProducer::getValidVertexIndex(*VertexCollection));
+							math::XYZPoint referencePosBS(BeamSpot->position());
+							math::XYZPoint referencePosPV(referenceVtx.position());
 
-										reco::Vertex theVtx = theRecoVertex;
+							ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovBS = BeamSpot->rotatedCovariance3D() + theVtx.covariance();
+							ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovPV = referenceVtx.covariance() + theVtx.covariance(); // TODO::KAPPA
 
-										if (theRecoVertex.hasRefittedTracks())
-											theRefTracks = theRecoVertex.refittedTracks();
-									-----------------
-									from Vertex:
-										theVtx.normalizedChi2()
-										theVtx.chi2()
-										theVtx.ndof()
-										theVtx.x(),y,z
+							// TODO: move this calculation to the Artus level
+								// 2D decay significance
+									ROOT::Math::SVector<double, 3> distVecXYBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), 0.);
+									ROOT::Math::SVector<double, 3> distVecXYPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), 0.);
 
-										SMatrixSym3D totalCov = theBeamSpot->rotatedCovariance3D() + theVtx.covariance(); // returns SMatrix 3x3
-										const reco::Vertex::CovarianceMatrix vtxCov(theVtx.covariance());
-								*/
-							}
-							else
-							{
-								//fill kshortTracksTuple with null
-								//out.kshortCandidates.isValid = false;
-							}
+									kaonCandidate.sigmaDistMagXYBS  = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYBS)) / ROOT::Math::Mag(distVecXYBS);
+									kaonCandidate.sigmaDistMagXYPV  = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYPV)) / ROOT::Math::Mag(distVecXYPV);
+
+								// 3D decay significance
+									ROOT::Math::SVector<double, 3> distVecXYZBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), vtxPos.z() - referencePosBS.z());
+									ROOT::Math::SVector<double, 3> distVecXYZPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), vtxPos.z() - referencePosPV.z());
+
+									kaonCandidate.distMagXYZBS = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYZBS)) / ROOT::Math::Mag(distVecXYZBS);;
+									kaonCandidate.distMagXYZPV = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYZPV)) / ROOT::Math::Mag(distVecXYZPV);;
+
+
+							/*
+
+							//Significance
+								GlobalPoint vtxPos(theVtx.x(), theVtx.y(), theVtx.z());
+								reco::Vertex referenceVtx = VertexCollection->at(KTrackProducer::getValidVertexIndex(*VertexCollection)); // store cov
+								math::XYZPoint referencePosBS(BeamSpot->position()); // store 3 components
+								math::XYZPoint referencePosPV(referenceVtx.position()); // store 3 components
+
+								ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovBS = BeamSpot->rotatedCovariance3D() + theVtx.covariance(); // store 3 components of cov
+								ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovPV = referenceVtx.covariance() + theVtx.covariance(); // store 3 components of cov
+
+								// TODO: move this calculation to the Artus level
+									// 2D decay significance
+										ROOT::Math::SVector<double, 3> distVecXYBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), 0.);
+										ROOT::Math::SVector<double, 3> distVecXYPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), 0.);
+
+										kaonCandidate.sigmaDistMagXYBS  = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYBS)) / ROOT::Math::Mag(distVecXYBS);
+										kaonCandidate.sigmaDistMagXYPV  = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYPV)) / ROOT::Math::Mag(distVecXYPV);
+
+									// 3D decay significance
+										ROOT::Math::SVector<double, 3> distVecXYZBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), vtxPos.z() - referencePosBS.z());
+										ROOT::Math::SVector<double, 3> distVecXYZPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), vtxPos.z() - referencePosPV.z());
+
+										kaonCandidate.distMagXYZBS = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYZBS)) / ROOT::Math::Mag(distVecXYZBS);;
+										kaonCandidate.distMagXYZPV = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYZPV)) / ROOT::Math::Mag(distVecXYZPV);;
+
+
+								// Correct the momentum of pions with respect to the refitted SV // TODO::KAPPA
+								std::auto_ptr<TrajectoryStateClosestToPoint> trajFirst; // TODO::KAPPA
+								std::auto_ptr<TrajectoryStateClosestToPoint> trajSecond; // TODO::KAPPA
+								std::vector<reco::TransientTrack> theRefTracks;
+								if (sv.hasRefittedTracks())
+									theRefTracks = sv.refittedTracks();
+
+								if (theRefTracks.size() > 1)
+								{
+									reco::TransientTrack* thePositiveRefTrack = 0;
+									reco::TransientTrack* theNegativeRefTrack = 0;
+
+									// for (std::vector<reco::TransientTrack>::iterator iTrack = theRefTracks.begin(); iTrack != theRefTracks.end(); ++iTrack)
+									// 	if (iTrack->track().charge() > 0.)
+									// 		thePositiveRefTrack = &*iTrack;
+									// 	else if (iTrack->track().charge() < 0.)
+									// 		theNegativeRefTrack = &*iTrack;
+
+									if (thePositiveRefTrack == 0 || theNegativeRefTrack == 0) continue;
+									trajFirst.reset(new TrajectoryStateClosestToPoint(theRefTracks[0].trajectoryStateClosestToPoint(vtxPos))); // TODO::KAPPA
+									trajSecond.reset(new TrajectoryStateClosestToPoint(theRefTracks[1].trajectoryStateClosestToPoint(vtxPos))); // TODO::KAPPA
+								}
+								else
+								{
+									trajFirst.reset(new TrajectoryStateClosestToPoint(transientTracksPair[0].trajectoryStateClosestToPoint(vtxPos))); // TODO::KAPPA
+									trajSecond.reset(new TrajectoryStateClosestToPoint(transientTracksPair[0].trajectoryStateClosestToPoint(vtxPos))); // TODO::KAPPA
+								}
+							*/
+
+							// Write down the object
+							out.kshortCandidates.push_back(kaonCandidate);
 						}
 
 					// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/VertexPrimitives/interface/TransientVertex.h
 
 				}
+				else
+				{
+					//std::cout << "transientTracks.size() !> 2\n";
+				}
+			}
+			else
+			{
+				//std::cout << "nTracks !> 1\n";
 			}
 		}
 
