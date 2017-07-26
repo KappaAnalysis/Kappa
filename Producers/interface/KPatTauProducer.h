@@ -212,7 +212,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					for(size_t trackIndex_1 = 0; trackIndex_1 < transientTracks.size() - 1; ++trackIndex_1)
 						for(size_t trackIndex_2 = trackIndex_1 + 1; trackIndex_2 < transientTracks.size(); ++trackIndex_2)
 						{
-							//if (transientTracks[trackIndex_1].charge() * transientTracks[trackIndex_1].charge() > 0.) continue;
+							if (transientTracks[trackIndex_1].charge() * transientTracks[trackIndex_2].charge() > 0.) continue;
 							KKaonCandidate kaonCandidate;
 							std::vector<reco::TransientTrack> transientTracksPair;
 							transientTracksPair.push_back(transientTracks[trackIndex_1]);
@@ -250,49 +250,24 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 							ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovBS = BeamSpot->rotatedCovariance3D() + theVtx.covariance();
 							ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovPV = referenceVtx.covariance() + theVtx.covariance(); // TODO::KAPPA
 
+							// Significance
 							// TODO: move this calculation to the Artus level
 								// 2D decay significance
 									ROOT::Math::SVector<double, 3> distVecXYBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), 0.);
 									ROOT::Math::SVector<double, 3> distVecXYPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), 0.);
-
+									kaonCandidate.distMagXYBS = ROOT::Math::Mag(distVecXYBS);
+									kaonCandidate.distMagXYPV = ROOT::Math::Mag(distVecXYPV);
 									kaonCandidate.sigmaDistMagXYBS  = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYBS)) / ROOT::Math::Mag(distVecXYBS);
 									kaonCandidate.sigmaDistMagXYPV  = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYPV)) / ROOT::Math::Mag(distVecXYPV);
 
 								// 3D decay significance
 									ROOT::Math::SVector<double, 3> distVecXYZBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), vtxPos.z() - referencePosBS.z());
 									ROOT::Math::SVector<double, 3> distVecXYZPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), vtxPos.z() - referencePosPV.z());
-
-									kaonCandidate.distMagXYZBS = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYZBS)) / ROOT::Math::Mag(distVecXYZBS);;
-									kaonCandidate.distMagXYZPV = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYZPV)) / ROOT::Math::Mag(distVecXYZPV);;
-
-
+									kaonCandidate.distMagXYZBS = ROOT::Math::Mag(distVecXYZBS);
+									kaonCandidate.distMagXYZPV = ROOT::Math::Mag(distVecXYZPV);
+									kaonCandidate.sigmaDistMagXYZBS = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYZBS)) / ROOT::Math::Mag(distVecXYZBS);;
+									kaonCandidate.sigmaDistMagXYZPV = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYZPV)) / ROOT::Math::Mag(distVecXYZPV);;
 							/*
-
-							//Significance
-								GlobalPoint vtxPos(theVtx.x(), theVtx.y(), theVtx.z());
-								reco::Vertex referenceVtx = VertexCollection->at(KTrackProducer::getValidVertexIndex(*VertexCollection)); // store cov
-								math::XYZPoint referencePosBS(BeamSpot->position()); // store 3 components
-								math::XYZPoint referencePosPV(referenceVtx.position()); // store 3 components
-
-								ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovBS = BeamSpot->rotatedCovariance3D() + theVtx.covariance(); // store 3 components of cov
-								ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovPV = referenceVtx.covariance() + theVtx.covariance(); // store 3 components of cov
-
-								// TODO: move this calculation to the Artus level
-									// 2D decay significance
-										ROOT::Math::SVector<double, 3> distVecXYBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), 0.);
-										ROOT::Math::SVector<double, 3> distVecXYPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), 0.);
-
-										kaonCandidate.sigmaDistMagXYBS  = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYBS)) / ROOT::Math::Mag(distVecXYBS);
-										kaonCandidate.sigmaDistMagXYPV  = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYPV)) / ROOT::Math::Mag(distVecXYPV);
-
-									// 3D decay significance
-										ROOT::Math::SVector<double, 3> distVecXYZBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), vtxPos.z() - referencePosBS.z());
-										ROOT::Math::SVector<double, 3> distVecXYZPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), vtxPos.z() - referencePosPV.z());
-
-										kaonCandidate.distMagXYZBS = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYZBS)) / ROOT::Math::Mag(distVecXYZBS);;
-										kaonCandidate.distMagXYZPV = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYZPV)) / ROOT::Math::Mag(distVecXYZPV);;
-
-
 								// Correct the momentum of pions with respect to the refitted SV // TODO::KAPPA
 								std::auto_ptr<TrajectoryStateClosestToPoint> trajFirst; // TODO::KAPPA
 								std::auto_ptr<TrajectoryStateClosestToPoint> trajSecond; // TODO::KAPPA
@@ -320,6 +295,11 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 									trajFirst.reset(new TrajectoryStateClosestToPoint(transientTracksPair[0].trajectoryStateClosestToPoint(vtxPos))); // TODO::KAPPA
 									trajSecond.reset(new TrajectoryStateClosestToPoint(transientTracksPair[0].trajectoryStateClosestToPoint(vtxPos))); // TODO::KAPPA
 								}
+
+								if (trajFirst.get() == 0 || trajSecond.get() == 0 || !trajFirst->isValid() || !trajSecond->isValid()) continue;
+
+								GlobalVector positiveP(trajPlus->momentum());
+								GlobalVector negativeP(trajMins->momentum());
 							*/
 
 							// Write down the object
@@ -330,14 +310,10 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 				}
 				else
-				{
-					//std::cout << "transientTracks.size() !> 2\n";
-				}
+					edm::LogInfo("fillMapOfTracksSV") <<  "transientTracks.size() !> 2\n";
 			}
 			else
-			{
-				//std::cout << "nTracks !> 1\n";
-			}
+				edm::LogInfo("fillMapOfTracksSV") <<  "nTracks !> 1\n";
 		}
 
 		virtual void fillSecondaryVertex(const SingleInputType &in, SingleOutputType &out)
