@@ -13,8 +13,8 @@
 class KTrackSummaryProducer : public KBaseMultiProducer<edm::View<reco::Track>, KTrackSummary>
 {
 public:
-	KTrackSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiProducer<edm::View<reco::Track>, KTrackSummary>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KTrackSummaryProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<edm::View<reco::Track>, KTrackSummary>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "TrackSummary"; }
 

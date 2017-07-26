@@ -18,11 +18,11 @@
 class KJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KJets>
 {
 public:
-	KJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
+	KJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<reco::PFJetCollection, KJets>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
 {
 		names = new KJetMetadata;
-		_run_tree->Bronch("jetMetadata", "KJetMetadata", &names);
+		_lumi_tree->Bronch("jetMetadata", "KJetMetadata", &names);
 
 		std::vector<std::string> jetnames = cfg.getParameterNamesForType<edm::ParameterSet>();
 		for (auto akt_jet : jetnames ){

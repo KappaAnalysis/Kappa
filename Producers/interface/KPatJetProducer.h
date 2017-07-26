@@ -18,14 +18,14 @@
 class KPatJetProducer : public KBaseMultiLVProducer<edm::View<pat::Jet>, KJets >
 {
 public:
-	KPatJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+	KPatJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		ids(cfg.getParameter<std::vector<std::string> >("ids"))
 	{
 		genJet = new KGenJet;
 		_event_tree->Bronch("genJet", "KGenJet", &genJet);
 		names = new KJetMetadata;
-		_run_tree->Bronch("jetMetadata", "KJetMetadata", &names);
+		_lumi_tree->Bronch("jetMetadata", "KJetMetadata", &names);
 		jecSet = "patJetCorrFactors";
 	}
 
