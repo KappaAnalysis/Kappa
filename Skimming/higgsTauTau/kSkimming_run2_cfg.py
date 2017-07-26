@@ -478,14 +478,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')
+	process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
 	if tools.is_above_cmssw_version([9]):
 		pass
 	elif tools.is_above_cmssw_version([8,0,14]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 		runMetCorAndUncFromMiniAOD(process, isData=data  )
 		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs", "", "KAPPA"))
-	else:
-		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
+
 	#process.kappaTuple.PatMET.pfmetT1 = cms.PSet(src=cms.InputTag("patpfMETT1"))
 	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
 
