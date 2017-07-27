@@ -268,8 +268,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 									kaonCandidate.sigmaDistMagXYZPV = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYZPV)) / ROOT::Math::Mag(distVecXYZPV);;
 
 								// Correct the momentum of pions with respect to the refitted SV
-									std::auto_ptr<TrajectoryStateClosestToPoint> trajFirst;
-									std::auto_ptr<TrajectoryStateClosestToPoint> trajSecond;
+									std::auto_ptr<TrajectoryStateClosestToPoint> trajFirst, trajSecond;
 									std::vector<reco::TransientTrack> theRefTracks;
 									if (sv.hasRefittedTracks())
 										theRefTracks = sv.refittedTracks();
@@ -284,7 +283,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 										trajFirst.reset(new TrajectoryStateClosestToPoint(transientTracksPair[0].trajectoryStateClosestToPoint(vtxPos)));
 										trajSecond.reset(new TrajectoryStateClosestToPoint(transientTracksPair[0].trajectoryStateClosestToPoint(vtxPos)));
 									}
-									
 									if (trajFirst.get() == 0 || trajSecond.get() == 0 || !trajFirst->isValid() || !trajSecond->isValid())
 									{
 										std::cout << "TrajectoryStateClosestToPoint was invalid";
@@ -293,6 +291,23 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 									
 									GlobalVector firstPiMomentum(trajFirst->momentum()), secondPiMomentum(trajSecond->momentum());
 									GlobalVector totalPiMomentum(firstPiMomentum + secondPiMomentum);
+
+									CartesianRMFLV firstPiMomentumClosestToSV, secondPiMomentumClosestToSV;
+									firstPiMomentumClosestToSV.SetCoordinates(trajFirst->momentum().x(), trajFirst->momentum().y(), trajFirst->momentum().z(), 0);
+									secondPiMomentumClosestToSV.SetCoordinates(trajSecond->momentum().x(), trajSecond->momentum().y(), trajSecond->momentum().z(), 0);
+
+									CartesianRMFLV totalPiMomentumClosestToSV(firstPiMomentumClosestToSV + secondPiMomentumClosestToSV);
+									//calculate the energy
+										const float piMassTest = 0.13957018;
+										const float piMassSquaredTest = pow(piMassTest, 2);
+										float piFirstETest = sqrt(firstPiMomentum.mag2() + piMassSquaredTest);
+										float piSecondETest = sqrt(secondPiMomentum.mag2() + piMassSquaredTest);
+										float kShortETotTest = piFirstETest + piSecondETest;
+									totalPiMomentumClosestToSV.SetE(kShortETotTest);
+									// TODO: check if replaced correctly, should be like kShortP4RMFLV
+									kaonCandidate.firstPiMomentumClosestToSV = firstPiMomentumClosestToSV;
+									kaonCandidate.secondPiMomentumClosestToSV = secondPiMomentumClosestToSV;
+									kaonCandidate.totalPiMomentumClosestToSV = totalPiMomentumClosestToSV;
 
 									// 2D pointing angle
 										float dxBS = theVtx.x() - referencePosBS.x(), dyBS = theVtx.y() - referencePosBS.y(), pxBS = totalPiMomentum.x(), pyBS = totalPiMomentum.y();
@@ -313,21 +328,20 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 										float kShortETot = piFirstE + piSecondE;
 										// Create momentum 4-vectors for the 3 candidate types
 										const reco::Particle::LorentzVector kShortP4(totalPiMomentum.x(), totalPiMomentum.y(), totalPiMomentum.z(), kShortETot);
+										const reco::Particle::LorentzVector kShortP4Test(totalPiMomentum.x(), totalPiMomentum.y(), totalPiMomentum.z(), kShortETotTest);
 										CartesianRMFLV kShortP4RMFLV;
 										kShortP4RMFLV.SetCoordinates(totalPiMomentum.x(), totalPiMomentum.y(), totalPiMomentum.z(), kShortETot);
-										std::cout << "reco: " << kShortP4.x() << " " << kShortP4.y() << " " << kShortP4.z() << " " << kShortP4.E() << " " << "\n";
-										std::cout << "RMFL: " << kShortP4RMFLV.x() << " " << kShortP4RMFLV.y() << " " << kShortP4RMFLV.z() << " " << kShortP4RMFLV.E() << " " << "\n";
 
-										KVertex Ksv;
+										//std::cout << "reco: " << kShortP4.x() << " " << kShortP4.y() << " " << kShortP4.z() << " " << kShortP4.E() << " " << "\n";
+										std::cout << "RMFL: " << kShortP4RMFLV.x() << " " << kShortP4RMFLV.y() << " " << kShortP4RMFLV.z() << " " << kShortP4RMFLV.E() << " " << "\n";
+										std::cout << "CART: " << totalPiMomentumClosestToSV.x() << " " << totalPiMomentumClosestToSV.y() << " " << totalPiMomentumClosestToSV.z() << " " << totalPiMomentumClosestToSV.E() << " " << "\n";
+										//std::cout << "kShortP4" << kShortP4.mass() << "; " << kShortP4 << "\n";
+										//std::cout << "kShortP4Test" << kShortP4Test.mass() << "; " << kShortP4Test << "\n";
+										//std::cout << "kShortP4RMFLV" << kShortP4RMFLV.mass() << "; " << kShortP4RMFLV << "\n";
 										
-										KVertexProducer::fillVertex(theVtx, Ksv);
-										reco::Particle::Point vtx(theVtx.x(), theVtx.y(), theVtx.z());
-										const reco::Vertex::CovarianceMatrix vtxCov(theVtx.covariance()); // is the same as for sv?
-										std::cout << "\tTEST COV" << std::endl;
-										std::cout << "\tCMSSW: "<< vtxCov << "\n";
-										std::cout << "\tKappa: "<< Ksv.covariance << "\n";
-										//todo: compare
 										kaonCandidate.kMass = kShortP4.mass();
+										kaonCandidate.kMassLV = kShortP4RMFLV.mass();
+										kaonCandidate.kMassTest = kShortP4Test.mass();
 										//reco::VertexCompositeCandidate* theKshort = new reco::VertexCompositeCandidate(0, kShortP4, vtx, vtxCov, vtxChi2, vtxNdof);
 							// Write down the object
 							out.kshortCandidates.push_back(kaonCandidate);
