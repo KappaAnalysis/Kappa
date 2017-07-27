@@ -309,6 +309,14 @@ struct KKaonCandidate : public KPFCandidate
 	float distMagXYZPV;
 	float sigmaDistMagXYZBS;
 	float sigmaDistMagXYZPV;
+
+	//angles
+	float angleXYBS;
+	float angleXYPV;
+	float angleXYZPS;
+	float angleXYZPV;
+
+	float kMass;
 };
 typedef std::vector<KKaonCandidate> KKaonCandidates;
 

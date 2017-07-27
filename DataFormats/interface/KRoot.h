@@ -11,13 +11,13 @@
 #include <Math/MatrixRepresentationsStatic.h>
 
 typedef ROOT::Math::PtEtaPhiM4D<float> RMFLV_Store;
-typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<float> > RMFLV;
+typedef ROOT::Math::LorentzVector<RMFLV_Store> RMFLV;
 
 typedef ROOT::Math::PxPyPzE4D<float> CartesianRMFLV_Store;
-typedef ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > CartesianRMFLV;
+typedef ROOT::Math::LorentzVector<CartesianRMFLV_Store> CartesianRMFLV;
 
 typedef ROOT::Math::PtEtaPhiM4D<double> RMDLV_Store;
-typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > RMDLV;
+typedef ROOT::Math::LorentzVector<RMDLV_Store> RMDLV;
 
 typedef ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float> > RMPoint;
 
