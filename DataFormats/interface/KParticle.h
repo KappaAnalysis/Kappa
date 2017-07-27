@@ -317,12 +317,19 @@ struct KKaonCandidate : public KPFCandidate
 	float angleXYZPV;
 
 	float kMass;
-	float kMassLV;
-	float kMassTest;
 
 	CartesianRMFLV firstPiMomentumClosestToSV;
 	CartesianRMFLV secondPiMomentumClosestToSV;
 	CartesianRMFLV totalPiMomentumClosestToSV;
+
+	SMatrixSym3D totalCovBS;
+	SMatrixSym3D totalCovPV;
+
+	RMPoint refPosBS;
+	RMPoint refPosPV;
+
+	math::XYZPoint referencePosBS;//temp
+	math::XYZPoint referencePosPV;//temp
 };
 typedef std::vector<KKaonCandidate> KKaonCandidates;
 
