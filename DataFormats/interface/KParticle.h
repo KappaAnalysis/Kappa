@@ -6,8 +6,7 @@
 
 #include <algorithm>
 
-#include "KBasic.h"
-
+// #include "KTrack.h"
 /// Particle base class for generator particles or candidates
 struct KParticle : public KLV
 {
@@ -257,6 +256,8 @@ struct KPFCandidate : public KParticle
 	double ecalEnergy;        //< energy deposited in ECAL
 	double hcalEnergy;        //< energy deposited in HCAL
 	unsigned short fromFirstPVFlag;
+	KTrack bestTrack;
+	short int indexInOriginalCollection = -1; // is used to store index of charged hadron in the original collection in KPatTauProducer
 };
 typedef std::vector<KPFCandidate> KPFCandidates;
 
@@ -284,6 +285,27 @@ struct KLHEParticles
 	double alphaEM; // AQEDUP
 	double alphaQCD; // AQCDUP
 };
+
+
+/// Particle-Flow Candidate
+struct KKaonCandidate : public KPFCandidate
+{
+	virtual ~KKaonCandidate() {};
+
+	KTransTrack firstTransTrack;
+	KTransTrack secondTransTrack;
+	KVertex secondaryVertex;
+
+	bool isValid = false;
+	bool statusOfClosestApproachInRPhi = false;
+	float distanceOfClosestApproach = -1;
+
+	float sigmaDistMagXYBS;
+	float distMagXYZBS;
+	float sigmaDistMagXYPV;
+	float distMagXYZPV;
+};
+typedef std::vector<KKaonCandidate> KKaonCandidates;
 
 #endif
 

@@ -50,8 +50,8 @@ struct KVertex
 	virtual ~KVertex() {};
 
 	RMPoint position;
-	bool valid;
-	unsigned int nTracks;
+	bool valid = false;
+	unsigned int nTracks = 0;
 	float chi2;
 	float nDOF;
 

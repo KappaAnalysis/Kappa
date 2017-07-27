@@ -54,7 +54,7 @@ public:
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		setup.get<TransientTrackRecord>().get("TransientTrackBuilder",this->theB);
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
 		return true;
 	}
 
@@ -170,10 +170,10 @@ public:
 		if (in.leadPFChargedHadrCand().isNonnull())
 		{
 			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
-				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track, pv, this->theB);
+				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track, pv, trackBuilder.product());
 			else if (in.leadPFChargedHadrCand()->gsfTrackRef().isNonnull())
 			{
-				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, pv, this->theB);
+				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, pv, trackBuilder.product());
 				out.leptonInfo |= KLeptonAlternativeTrackMask;
 			}
 		}
@@ -302,7 +302,7 @@ private:
 	std::map<std::string, unsigned int> currentFloatDiscriminatorMap; // float discriminator-to-bit mapping to use (based on PSet)
 
 	edm::Handle<edm::View<reco::Vertex> > VertexHandle;
-	edm::ESHandle<TransientTrackBuilder> theB;
+	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 };
 	template<typename T>
 	static int createTauHash(const T tau)

@@ -335,6 +335,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.p *= getattr(process, taus)
 	
 	process.kappaTuple.active += cms.vstring('PatTaus')
+	process.kappaTuple.PatTaus.taus.kshortinformation = cms.untracked.bool(True)
+	process.kappaTuple.PatTaus.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+	process.kappaTuple.PatTaus.offlineBeamSpot = cms.InputTag("offlineBeamSpot")
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
 	process.kappaTuple.PatTaus.taus.src = cms.InputTag(taus)
 	process.kappaTuple.PatTaus.taus.floatDiscrBlacklist = cms.vstring()

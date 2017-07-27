@@ -575,6 +575,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			floatDiscrWhitelist = cms.vstring(".*"),
 			floatDiscrBlacklist = cms.vstring(),
 			tauDiscrProcessName = cms.string("KAPPA"),
+			beamSpotSource = cms.InputTag("offlineBeamSpot"),
 		),
 	),
 

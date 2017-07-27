@@ -13,6 +13,7 @@
 #include <DataFormats/PatCandidates/interface/Electron.h>
 #include <RecoEgamma/EgammaTools/interface/ConversionTools.h>
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
+#include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
 #include "boost/functional/hash.hpp"
@@ -36,32 +37,38 @@ public:
 		srcIds_(cfg.getParameter<std::string>("srcIds")),
 		doPfIsolation_(true),
 		doCutbasedIds_(true)
-{
-	electronMetadata = new KElectronMetadata;
-	_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
-
-	doMvaIds_ = (srcIds_ == "pat");
-	doAuxIds_ = (srcIds_ == "standalone");
-
-	this->tokenConversionSource = consumescollector.consumes<reco::ConversionCollection>(tagConversionSource);
-	this->tokenBeamSpot = consumescollector.consumes<reco::BeamSpot>(beamSpotSource);
-	this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
-	this->tokenRhoIso = consumescollector.consumes<double>(rhoIsoTag);
-
-	const edm::ParameterSet &psBase = this->psBase;
-	std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
-
-	for (size_t i = 0; i < names.size(); ++i)
 	{
-		const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-		for(size_t j = 0; j < this->isoValInputTags.size(); ++j)
-			tokenIsoValInputTags.push_back(consumescollector.consumes<edm::ValueMap<double>>(this->isoValInputTags.at(j)));
-	}
-	for (size_t j = 0; j < tagOfIds.size(); ++j)
+		electronMetadata = new KElectronMetadata;
+		_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
+
+		doMvaIds_ = (srcIds_ == "pat");
+		doAuxIds_ = (srcIds_ == "standalone");
+
+<<<<<<< HEAD
+		this->tokenConversionSource = consumescollector.consumes<reco::ConversionCollection>(tagConversionSource);
+		this->tokenBeamSpot = consumescollector.consumes<reco::BeamSpot>(beamSpotSource);
+		this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
+		this->tokenRhoIso = consumescollector.consumes<double>(rhoIsoTag);
+
+		const edm::ParameterSet &psBase = this->psBase;
+		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+		for (size_t i = 0; i < names.size(); ++i)
+		{
+			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+			for(size_t j = 0; j < this->isoValInputTags.size(); ++j)
+				tokenIsoValInputTags.push_back(consumescollector.consumes<edm::ValueMap<double>>(this->isoValInputTags.at(j)));
+		}
+		for (size_t j = 0; j < tagOfIds.size(); ++j)
+		{
+			tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(tagOfIds[j]));
+		}
+
+	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(tagOfIds[j]));
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+		return true;
 	}
-}
 
 	static const std::string getLabel() { return "Electrons"; }
 
@@ -126,7 +133,7 @@ public:
 		// electron track and impact parameter
 		if (in.gsfTrack().isNonnull())
 		{
-			KTrackProducer::fillTrack(*in.gsfTrack(), out.track);
+			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 			out.dxy = in.gsfTrack()->dxy(vtx.position());
 			out.dz = in.gsfTrack()->dz(vtx.position());
 		}
@@ -287,6 +294,7 @@ private:
 	edm::Handle<reco::ConversionCollection> hConversions;
 	edm::Handle<reco::BeamSpot> BeamSpot;
 	edm::Handle<reco::VertexCollection> VertexCollection;
+	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 	edm::Handle<double> rhoIso_h;
 
 	edm::InputTag tagConversionSource;

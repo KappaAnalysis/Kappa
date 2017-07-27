@@ -76,6 +76,12 @@ public:
 
 	static const std::string getLabel() { return "Muons"; }
 
+	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
+	{
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+		return true;
+	}
+
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		if(!noPropagation)
@@ -147,9 +153,9 @@ public:
 
 		/// Tracks and track extracted information
 		if (in.track().isNonnull())
-			KTrackProducer::fillTrack(*in.track(), out.track);
+			KTrackProducer::fillTrack(*in.track(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 		if (in.globalTrack().isNonnull())
-			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack);
+			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack, std::vector<reco::Vertex>(), trackBuilder.product());
 
 		reco::Vertex vtx = VertexHandle->at(0);
 		if (in.muonBestTrack().isNonnull()) // && &vtx != NULL) TODO
@@ -319,6 +325,7 @@ private:
 	edm::Handle<edm::ValueMap<reco::IsoDeposit> > isoDepsPF;
 	edm::Handle<trigger::TriggerEvent> triggerEventHandle;
 	edm::Handle<reco::VertexCollection> VertexHandle;
+	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 	KMuonMetadata *muonMetadata;
 	boost::hash<const reco::Muon*> hasher;
 	
