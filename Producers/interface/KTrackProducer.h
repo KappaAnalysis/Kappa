@@ -9,6 +9,7 @@
 #define KAPPA_TRACKPRODUCER_H
 
 #include "KBaseMultiLVProducer.h"
+#include "KVertexSummaryProducer.h"
 #include <DataFormats/TrackReco/interface/Track.h>
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
@@ -28,14 +29,6 @@ public:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
 		KTrackProducer::fillTrack(in, out);
-	}
-
-	static unsigned int getValidVertexIndex(std::vector<reco::Vertex> const& vertices = std::vector<reco::Vertex>())
-	{
-		for (unsigned int  validVertexIndex = 0; validVertexIndex < vertices.size(); validVertexIndex++)
-			if (vertices.at(validVertexIndex).isValid())
-				return validVertexIndex;
-		return -1;
 	}
 
 	// Static method for filling Tracks in other producers
@@ -83,7 +76,7 @@ public:
 		// check for builder is missing - be carefull to pass it to this function together with verticies
 		if (vertices.size() > 0)
 		{
-			int validVertexIndex = getValidVertexIndex(vertices);
+			int validVertexIndex = KVertexSummaryProducer::getValidVertexIndex(vertices);
 			if (validVertexIndex >= 0)
 			{
 				reco::TransientTrack transientTrack = trackBuilder->build(in);
