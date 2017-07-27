@@ -21,6 +21,8 @@ typedef ROOT::Math::LorentzVector<RMDLV_Store> RMDLV;
 
 typedef ROOT::Math::PositionVector3D<ROOT::Math::Cartesian3D<float> > RMPoint;
 
+typedef ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > SMatrixSym3D;
+
 #ifdef KAPPA_STANDALONE_DICT
 namespace ROOT
 {

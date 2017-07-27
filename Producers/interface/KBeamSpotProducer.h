@@ -40,6 +40,7 @@ protected:
 		out.sigmaZ = in.sigmaZ();
 
 		out.covariance = in.covariance();
+		out.covariance3D = in.rotatedCovariance3D();
 	}
 };
 

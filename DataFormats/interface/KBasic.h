@@ -41,6 +41,7 @@ struct KBeamSpot
 	double sigmaZ;                 ///< sigma in z direction
 
 	ROOT::Math::SMatrix<double, 7, 7, ROOT::Math::MatRepSym<double, 7> > covariance;
+	SMatrixSym3D covariance3D;
 };
 typedef std::vector<KBeamSpot> KBeamSpots;
 
@@ -55,7 +56,7 @@ struct KVertex
 	float chi2;
 	float nDOF;
 
-	ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > covariance;  //< covariance matrix
+	SMatrixSym3D covariance;  //< covariance matrix
 
 	inline bool fake() const { return (chi2 <= 0 && nDOF <= 0 && nTracks == 0); };
 };
