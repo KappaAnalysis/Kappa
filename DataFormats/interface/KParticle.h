@@ -294,6 +294,8 @@ struct KKaonCandidate : public KPFCandidate
 
 	KTransTrack firstTransTrack;
 	KTransTrack secondTransTrack;
+	//std::vector<KTransTrack> TrackPair;
+
 	KVertex secondaryVertex;
 
 	bool isValid = false;
@@ -317,16 +319,20 @@ struct KKaonCandidate : public KPFCandidate
 	float angleXYZPV;
 
 	float kMass;
+	float pionMass;
 
 	CartesianRMFLV firstPiMomentumClosestToSV;
 	CartesianRMFLV secondPiMomentumClosestToSV;
 	CartesianRMFLV totalPiMomentumClosestToSV;
+	CartesianRMFLV initialFirstTSCP;
+	CartesianRMFLV initialSecondTSCP;
 
 	SMatrixSym3D totalCovBS;
 	SMatrixSym3D totalCovPV;
 
 	RMPoint refPosBS;
 	RMPoint refPosPV;
+	RMPoint POCA;
 
 	math::XYZPoint referencePosBS;//temp
 	math::XYZPoint referencePosPV;//temp

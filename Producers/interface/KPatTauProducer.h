@@ -207,6 +207,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				{
 					TransientVertex theRecoVertex;
 					bool useRefTracks = true; //temp
+					const float piMass = 0.13957018;
+					const float piMassSquared = pow(piMass, 2);
 					KalmanVertexFitter theKalmanFitter(useRefTracks == 0 ? false : true);
 
 					for(size_t trackIndex_1 = 0; trackIndex_1 < transientTracks.size() - 1; ++trackIndex_1)
@@ -230,11 +232,29 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 							ClosestApproachInRPhi cApp;
 							cApp.calculate(firstState, secondState);
-							kaonCandidate.statusOfClosestApproachInRPhi = cApp.status();
+							kaonCandidate.statusOfClosestApproachInRPhi = cApp.status(); //remove
 							if (!cApp.status()) continue;
 
 							float dca = std::abs(cApp.distance());
 							kaonCandidate.distanceOfClosestApproach = dca;
+
+							GlobalPoint cxPt = cApp.crossingPoint();
+							kaonCandidate.POCA.SetXYZ(cxPt.x(), cxPt.y(), cxPt.z());
+
+							// the tracks should at least point in the same quadrant
+							TrajectoryStateClosestToPoint const & firstTSCP = transientTracks[trackIndex_1].trajectoryStateClosestToPoint(cxPt); // TODO::KAPPA
+							TrajectoryStateClosestToPoint const & secondTSCP = transientTracks[trackIndex_2].trajectoryStateClosestToPoint(cxPt); // TODO::KAPPA
+							if (!firstTSCP.isValid() || !secondTSCP.isValid()) continue;
+							if (firstTSCP.momentum().dot(secondTSCP.momentum())  < 0) continue;
+
+							//CartesianRMFLV initialFirstTSCP, initialSecondTSCP;
+							kaonCandidate.initialFirstTSCP.SetCoordinates(firstTSCP.momentum().x(), firstTSCP.momentum().y(), firstTSCP.momentum().z(), piMassSquared);
+							kaonCandidate.initialSecondTSCP.SetCoordinates(secondTSCP.momentum().x(), secondTSCP.momentum().y(), secondTSCP.momentum().z(), piMassSquared);
+							{
+								float totalE = sqrt(firstTSCP.momentum().mag2() + piMassSquared) + sqrt(secondTSCP.momentum().mag2() + piMassSquared);
+								float totalPSq = (firstTSCP.momentum() + secondTSCP.momentum()).mag2();
+								kaonCandidate.pionMass = sqrt(pow(totalE, 2) - totalPSq);
+							}
 
 							TransientVertex sv = theKalmanFitter.vertex(transientTracksPair);
 							if (sv.isValid())
@@ -297,8 +317,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 								}
 
 							// Calculate the 4-momentums
-								const float piMass = 0.13957018;
-								const float piMassSquared = pow(piMass, 2);
 								float piFirstE = sqrt(trajFirst->momentum().mag2() + piMassSquared);
 								float piSecondE = sqrt(trajSecond->momentum().mag2() + piMassSquared);
 
