@@ -31,11 +31,11 @@ struct KTrgObjSorter
 class KTriggerObjectProducer : public KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjects>
 {
 public:
-	KTriggerObjectProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjects>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector), true)
+	KTriggerObjectProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<trigger::TriggerEvent, KTriggerObjects>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector), true)
 	{
 		toMetadata = new KTriggerObjectMetadata;
-		_run_tree->Bronch("triggerObjectMetadata", "KTriggerObjectMetadata", &toMetadata);
+		_lumi_tree->Bronch("triggerObjectMetadata", "KTriggerObjectMetadata", &toMetadata);
 		this->registerBronch("triggerObjects", "KTriggerObjects", this->psBase,
 			cfg.getParameter<edm::InputTag>("hltTag"));
 	}

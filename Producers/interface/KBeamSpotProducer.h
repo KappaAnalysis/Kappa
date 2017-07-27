@@ -15,8 +15,8 @@
 class KBeamSpotProducer : public KBaseMultiProducer<reco::BeamSpot, KBeamSpot>
 {
 public:
-	KBeamSpotProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiProducer<reco::BeamSpot, KBeamSpot>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KBeamSpotProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<reco::BeamSpot, KBeamSpot>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 	virtual ~KBeamSpotProducer() {};
 
 	static const std::string getLabel() { return "BeamSpot"; }

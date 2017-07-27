@@ -331,19 +331,18 @@ kappaTupleDefaultsBlock = cms.PSet(
 	),
 
 	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
-		muons = cms.PSet(
-			src = cms.InputTag("muons"),
-			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
-			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
-			vertexcollection = cms.InputTag("offlinePrimaryVertices"),
+			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
 			isoValInputTags = cms.VInputTag(
 				cms.InputTag('muPFIsoValueChargedAll04PFIso'),
 				cms.InputTag('muPFIsoValueGamma04PFIso'),
 				cms.InputTag('muPFIsoValueNeutral04PFIso'),
 				cms.InputTag('muPFIsoValuePU04PFIso')),
 			# Cuts for PF isolation
+		muons = cms.PSet(
+			src = cms.InputTag("muons"),
 			pfIsoVetoCone = cms.double(0.01),
 			pfIsoVetoMinPt = cms.double(0.5),
+			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
 		),
 		muonTriggerObjects = cms.vstring(
 			# HLT_MuX (2010)
@@ -459,19 +458,19 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	Electrons = cms.PSet(kappaNoCut,
 		kappaNoRegEx,
-		ids = cms.vstring(),
+		ids = cms.VInputTag(),
 		srcIds = cms.string("pat"),
-		electrons = cms.PSet(
-			src = cms.InputTag("patElectrons"),
-			allConversions = cms.InputTag("allConversions"),
-			offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
-			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
-			isoValInputTags = cms.VInputTag(
+		allConversions = cms.InputTag("allConversions"),
+		offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
+		vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
+		rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
+		isoValInputTags = cms.VInputTag(
 				cms.InputTag('elPFIsoValueChargedAll04PFIdPFIso'),
 				cms.InputTag('elPFIsoValueGamma04PFIdPFIso'),
 				cms.InputTag('elPFIsoValueNeutral04PFIdPFIso'),
 				cms.InputTag('elPFIsoValuePU04PFIdPFIso')),
-			rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
+		electrons = cms.PSet(
+			src = cms.InputTag("patElectrons"),
 		),
 	),
 
@@ -579,19 +578,19 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 	),
 
-	ExtendedTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
-		taus = cms.PSet(
-			src = cms.InputTag("hpsPFTauProducer"),
-			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
-			binaryDiscrWhitelist = cms.vstring("hpsPFTau.*"),
-			binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", "raw", "Raw"),
-			floatDiscrWhitelist = cms.vstring("hpsPFTau.*raw.*", "hpsPFTau.*Raw.*"),
-			floatDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
-			tauDiscrProcessName = cms.string("KAPPA"),
-			barrelSuperClustersSource = cms.InputTag("particleFlowSuperClusterECAL:particleFlowSuperClusterECALBarrel"),
-			endcapSuperClustersSource = cms.InputTag("particleFlowSuperClusterECAL:particleFlowSuperClusterECALEndcapWithPreshower"),
-		),
-	),
+	#ExtendedTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+	#	taus = cms.PSet(
+	#		src = cms.InputTag("hpsPFTauProducer"),
+	#		preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
+	#		binaryDiscrWhitelist = cms.vstring("hpsPFTau.*"),
+	#		binaryDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$", "raw", "Raw"),
+	#		floatDiscrWhitelist = cms.vstring("hpsPFTau.*raw.*", "hpsPFTau.*Raw.*"),
+	#		floatDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
+	#		tauDiscrProcessName = cms.string("KAPPA"),
+	#		barrelSuperClustersSource = cms.InputTag("particleFlowSuperClusterECAL:particleFlowSuperClusterECALBarrel"),
+	#		endcapSuperClustersSource = cms.InputTag("particleFlowSuperClusterECAL:particleFlowSuperClusterECALEndcapWithPreshower"),
+	#	),
+	#),
 
 	L2MuonTrajectorySeed = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),

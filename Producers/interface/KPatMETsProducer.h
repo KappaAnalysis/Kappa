@@ -20,8 +20,8 @@
 class KPatMETsProducer : public KBaseMultiLVProducer<edm::View<pat::MET>, KMETs>
 {
 public:
-	KPatMETsProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<edm::View<pat::MET>, KMETs>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {
+	KPatMETsProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<pat::MET>, KMETs>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {
 	}
 
 	static const std::string getLabel() { return "PatMETs"; }
