@@ -188,19 +188,37 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			if (nTracks > 1)
 			{
 				std::vector<reco::TransientTrack> transientTracks;
+				std::vector<reco::Track> bestTracks;
+				KPFCandidates hadronCandidates;
 				//TODO: store the map index:track
 				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
 				{
 					const reco::Track* track = in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
 					if (track)
+					{
+						KPFCandidate outCandidate;
 						transientTracks.push_back(trackBuilder->build(track));
+						bestTracks.push_back(*track);
+
+						KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalChargedHadrCands()[chargedPFCandidateIndex].get()), outCandidate);
+						KTrackProducer::fillTrack(*(in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
+						hadronCandidates.push_back(outCandidate);
+					}
 				}
 
 				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.isolationChargedHadrCands().size(); ++chargedPFCandidateIndex)
 				{
 					const reco::Track* track = in.isolationChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
 					if (track)
+					{
+						KPFCandidate outCandidate;
 						transientTracks.push_back(trackBuilder->build(track));
+						bestTracks.push_back(*track);
+
+						KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.isolationChargedHadrCands()[chargedPFCandidateIndex].get()), outCandidate);
+						KTrackProducer::fillTrack(*(in.isolationChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
+						hadronCandidates.push_back(outCandidate);
+					}
 				}
 
 				if (transientTracks.size() > 2)
@@ -223,6 +241,10 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 							kaonCandidate.isValid = true;
 							kaonCandidate.firstTransTrack.indexOfTrackInColl = trackIndex_1; // Do not correspond to the indexes in taujet-charged collection
 							kaonCandidate.secondTransTrack.indexOfTrackInColl = trackIndex_2; // Do not correspond to the indexes in taujet-charged collection
+							KTrackProducer::fillTrack(bestTracks[trackIndex_1], kaonCandidate.firstTransTrack, *VertexCollection, trackBuilder.product());
+							KTrackProducer::fillTrack(bestTracks[trackIndex_2], kaonCandidate.secondTransTrack, *VertexCollection, trackBuilder.product());
+							kaonCandidate.firstTransPFCand = hadronCandidates[trackIndex_1];
+							kaonCandidate.secondTransPFCand = hadronCandidates[trackIndex_2];
 							kaonCandidate.firstTransTrack.impactPointTSCPIsValid = transientTracksPair[0].impactPointTSCP().isValid();
 							kaonCandidate.secondTransTrack.impactPointTSCPIsValid = transientTracksPair[1].impactPointTSCP().isValid();
 							if (!kaonCandidate.firstTransTrack.impactPointTSCPIsValid || !kaonCandidate.secondTransTrack.impactPointTSCPIsValid) continue;

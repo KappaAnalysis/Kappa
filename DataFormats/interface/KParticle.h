@@ -292,8 +292,10 @@ struct KKaonCandidate : public KPFCandidate
 {
 	virtual ~KKaonCandidate() {};
 
-	KTransTrack firstTransTrack;
-	KTransTrack secondTransTrack;
+	KTransTrack firstTransTrack;// remove
+	KTransTrack secondTransTrack;// remove
+	KPFCandidate firstTransPFCand;
+	KPFCandidate secondTransPFCand;
 	//std::vector<KTransTrack> TrackPair;
 
 	KVertex secondaryVertex;
