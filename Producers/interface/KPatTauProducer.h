@@ -42,7 +42,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				out.dxy = packedLeadTauCand->dxy();
 				if (packedLeadTauCand->bestTrack() != nullptr)
 				{
-					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
+					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
 				}
 			#else
 				if (in.leadPFChargedHadrCand().isNonnull())
@@ -375,8 +375,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 	public:
 
-		KPatTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+		KPatTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 			BeamSpotSource(cfg.getParameter<edm::InputTag>("offlineBeamSpot")),
 			VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
 			_lumi_tree_pointer(_lumi_tree)
@@ -412,7 +412,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				floatDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrBlacklist");
 			}
 		}
-}
 
 		static const std::string getLabel() { return "PatTaus"; }
 
@@ -580,7 +579,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		edm::InputTag VertexCollectionSource;
 
 		edm::EDGetTokenT<reco::VertexCollection> tokenVertexCollection;
-		edm::EDGetTokenT<reco::VertexCollection> tokenBeamSpot;
+		edm::EDGetTokenT<reco::BeamSpot> tokenBeamSpot;
 
 		edm::ESHandle<TransientTrackBuilder> trackBuilder;
 

@@ -22,6 +22,7 @@
 	#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 #endif
 
+
 class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>
 {
 public:
@@ -44,11 +45,11 @@ public:
 		doMvaIds_ = (srcIds_ == "pat");
 		doAuxIds_ = (srcIds_ == "standalone");
 
-<<<<<<< HEAD
 		this->tokenConversionSource = consumescollector.consumes<reco::ConversionCollection>(tagConversionSource);
 		this->tokenBeamSpot = consumescollector.consumes<reco::BeamSpot>(beamSpotSource);
 		this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
 		this->tokenRhoIso = consumescollector.consumes<double>(rhoIsoTag);
+
 
 		const edm::ParameterSet &psBase = this->psBase;
 		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
@@ -56,13 +57,14 @@ public:
 		for (size_t i = 0; i < names.size(); ++i)
 		{
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-			for(size_t j = 0; j < this->isoValInputTags.size(); ++j)
-				tokenIsoValInputTags.push_back(consumescollector.consumes<edm::ValueMap<double>>(this->isoValInputTags.at(j)));
+		for(size_t j = 0; j < this->isoValInputTags.size(); ++j)
+			tokenIsoValInputTags.push_back(consumescollector.consumes<edm::ValueMap<double>>(this->isoValInputTags.at(j)));
 		}
-		for (size_t j = 0; j < tagOfIds.size(); ++j)
+		for (size_t j = 0; j < namesOfIds.size(); ++j)
 		{
-			tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(tagOfIds[j]));
+			tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(namesOfIds[j]));
 		}
+	}
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
@@ -74,9 +76,9 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		for (size_t j = 0; j < tagOfIds.size(); ++j)
+		for (std::vector<std::string>::const_iterator id = namesOfIds.begin(); id != namesOfIds.end(); ++id)
 		{
-			electronMetadata->idNames.push_back(this->tagOfIds[j].label());
+			electronMetadata->idNames.push_back(*id);
 		}
 		return KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::onLumi(lumiBlock, setup);
 	}
@@ -86,11 +88,8 @@ public:
 	{
 		// Get additional objects for the cutbased IDs
 		cEvent->getByToken(this->tokenConversionSource, this->hConversions);
-
 		cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
-
 		cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
-
 		this->isoVals.resize(this->isoValInputTags.size());
 		for (size_t j = 0; j < this->isoValInputTags.size(); ++j)
 		{
@@ -102,10 +101,27 @@ public:
 		}
 		
 		cEvent->getByToken(tokenRhoIso, rhoIso_h);
+		/*art::Handle<StepPointMCCollection> stepsHandle;
+		event.getByLabel("g4run","tracker",stepsHandle);
+		StepPointMCCollection const& steps(*stepsHandle);
+		*/
+		/*try {
+			iEvent.getByLabel(l1GTReadoutRecTag_,L1GTRR);
+		} catch (...) {;}
+		if ( L1GTRR.isValid() ) { // exists
+		
+		edm::Handle<edm::TriggerResults> trh;
+		try {iEvent.getByLabel(triggerInputTag_,trh);}
+			catch( cms::Exception& ex ) { LogWarning("HWWTreeDumper") << "Trigger results: " << triggerInputTag_ << " not found"; }
+		if (!trh.isValid())
+			throw cms::Exception("ProductNotValid") << "TriggerResults product not valid";
+		*/
 
+		// Continue with main product: PAT-electrons
+		
 		// Prepare IDs for miniAOD
-		electronIDValueMap.resize(tokenOfIds.size());
-		for (size_t j = 0; j < tokenOfIds.size(); ++j)
+		electronIDValueMap.resize(namesOfIds.size());
+		for (size_t j = 0; j < namesOfIds.size(); ++j)
 		{
 			cEvent->getByToken(this->tokenOfIds[j], this->electronIDValueMap[j]);
 		}
@@ -219,7 +235,7 @@ protected:
 	virtual void doAuxIds(const SingleInputType &in, SingleOutputType &out)
 	{
 		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
-		for (size_t i = 0; i < tagOfIds.size(); ++i)
+		for (size_t i = 0; i < namesOfIds.size(); ++i)
 		{
 			out.electronIds.push_back((*(electronIDValueMap)[i])[pe]);
 		}
@@ -231,9 +247,9 @@ protected:
 		 * Full instructions in Producer/KElectrons_cff
 		 */
 		out.electronIds.clear();
-		for (size_t i = 0; i < tagOfIds.size(); ++i)
+		for (size_t i = 0; i < namesOfIds.size(); ++i)
 		{
-			out.electronIds.push_back(in.electronID(tagOfIds[i].label()));
+			out.electronIds.push_back(in.electronID(namesOfIds[i]));
 		}
 	}
 
@@ -287,6 +303,7 @@ protected:
 	}
 
 private:
+	std::vector<std::string> namesOfIds;
 	KElectronMetadata *electronMetadata;
 	boost::hash<const pat::Electron*> hasher;
 
@@ -303,7 +320,7 @@ private:
 	edm::InputTag rhoIsoTag;
 	std::vector<edm::InputTag>  isoValInputTags;
 	std::vector<edm::InputTag> tagOfIds;
-
+	
 	edm::EDGetTokenT<reco::ConversionCollection> tokenConversionSource;
 	edm::EDGetTokenT<reco::BeamSpot> tokenBeamSpot;
 	edm::EDGetTokenT<reco::VertexCollection> tokenVertexCollection;
