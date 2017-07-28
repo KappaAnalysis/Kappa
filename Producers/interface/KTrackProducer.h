@@ -91,7 +91,7 @@ public:
 
 
 	// fill vectors of IPmag and corresponding error calculated wrt refitted PVs
-	static void fillTrackNew(const SingleInputType &in, SingleOutputType &out,
+	static void fillIPInfo(const SingleInputType &in, SingleOutputType &out,
 	                      std::vector<RefitVertex> const& vertices = std::vector<RefitVertex>(),
 	                      //std::vector<reco::Vertex> const& vertices = std::vector<reco::Vertex>(),
 	                      const TransientTrackBuilder* trackBuilder = nullptr)

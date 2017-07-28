@@ -96,8 +96,6 @@ public:
 		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
 		cEvent->getByLabel(VertexCollectionSource, VertexCollection);
 
-		//edm::InputTag RefitVerticesSource = pset.getParameter<edm::InputTag>("refitvertexcollection");
-		//cEvent->getByLabel(RefitVerticesSource, RefitVertices);
 		cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 
 		std::vector<edm::InputTag>  isoValInputTags = pset.getParameter<std::vector<edm::InputTag> >("isoValInputTags");
@@ -163,7 +161,7 @@ public:
 		if (in.gsfTrack().isNonnull())
 		{
 			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
-			KTrackProducer::fillTrackNew(*in.gsfTrack(), out.track, *RefitVertices, trackBuilder.product());
+			KTrackProducer::fillIPInfo(*in.gsfTrack(), out.track, *RefitVertices, trackBuilder.product());
 			out.dxy = in.gsfTrack()->dxy(vtx.position());
 			out.dz = in.gsfTrack()->dz(vtx.position());
 		}

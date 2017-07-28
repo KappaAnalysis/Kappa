@@ -43,6 +43,7 @@ public:
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")),
 		selectedMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
+		RefitVerticesSource(cfg.getParameter<edm::InputTag>("refitvertexcollection")),
 		noPropagation(cfg.getParameter<bool>("noPropagation")),
 		propagatorToMuonSystem(cfg),
 		doPfIsolation(cfg.getParameter<bool>("doPfIsolation")),
@@ -56,6 +57,8 @@ public:
 
 		muonMetadata = new KMuonMetadata();
 		_lumi_tree->Bronch("muonMetadata", "KMuonMetadata", &muonMetadata);
+
+		this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
 
         consumescollector.consumes<trigger::TriggerEvent>(tagHLTrigger);
         const edm::ParameterSet &psBase = this->psBase;
@@ -131,6 +134,8 @@ public:
 		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
 		cEvent->getByLabel(VertexCollectionSource, VertexHandle);
 
+		cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
+
 		pfIsoVetoCone = pset.getParameter<double>("pfIsoVetoCone");
 		pfIsoVetoMinPt = pset.getParameter<double>("pfIsoVetoMinPt");
 
@@ -160,10 +165,14 @@ public:
 		copyP4(in, out.p4);
 
 		/// Tracks and track extracted information
-		if (in.track().isNonnull())
+		if (in.track().isNonnull()){
 			KTrackProducer::fillTrack(*in.track(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
-		if (in.globalTrack().isNonnull())
+			KTrackProducer::fillIPInfo(*in.track(), out.track, *RefitVertices, trackBuilder.product());
+		}
+		if (in.globalTrack().isNonnull()){
 			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack, std::vector<reco::Vertex>(), trackBuilder.product());
+			KTrackProducer::fillIPInfo(*in.globalTrack(), out.globalTrack, *RefitVertices, trackBuilder.product());
+		}
 
 		edm::View<reco::Vertex> vertices = *VertexHandle;
 		reco::Vertex vtx = vertices.at(0);
@@ -325,15 +334,19 @@ private:
 	double hltMaxdR, hltMaxdPt_Pt;
 	double pfIsoVetoCone, pfIsoVetoMinPt;
 	std::vector<std::string> selectedMuonTriggerObjects;
+	edm::InputTag RefitVerticesSource;
 	bool noPropagation;
 	PropagateToMuon propagatorToMuonSystem;
 	edm::Handle<edm::ValueMap<reco::IsoDeposit> > isoDepsPF;
 	edm::Handle<trigger::TriggerEvent> triggerEventHandle;
 	edm::Handle<edm::View<reco::Vertex> > VertexHandle;
+	edm::Handle<RefitVertexCollection> RefitVertices;
 	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 	KMuonMetadata *muonMetadata;
 	boost::hash<const reco::Muon*> hasher;
 	
+	edm::EDGetTokenT<RefitVertexCollection> tokenRefitVertices;
+
 	std::vector<edm::Handle<edm::ValueMap<double> > > isoVals;
 	bool doPfIsolation;
 	bool use03ConeForPfIso;

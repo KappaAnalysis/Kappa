@@ -336,7 +336,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			# Note: Needs to be produced in skimming config, see e.g. skim_MC_36x.py
 			srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
 			vertexcollection = cms.InputTag("offlinePrimaryVertices"),
-			refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS"),
+			refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer"),
 			isoValInputTags = cms.VInputTag(
 				cms.InputTag('muPFIsoValueChargedAll04PFIso'),
 				cms.InputTag('muPFIsoValueGamma04PFIso'),
@@ -566,7 +566,6 @@ kappaTupleDefaultsBlock = cms.PSet(
 			floatDiscrBlacklist = cms.vstring("^shrinkingCone.*", ".*PFlow$"),
 			tauDiscrProcessName = cms.string("KAPPA"),
 			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
-			refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS"),
 		),
 	),
 
@@ -580,6 +579,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			floatDiscrBlacklist = cms.vstring(),
 			tauDiscrProcessName = cms.string("KAPPA"),
 			beamSpotSource = cms.InputTag("offlineBeamSpot"),
+			refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer"),
 		),
 	),
 
