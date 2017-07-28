@@ -18,6 +18,7 @@
 #include "../../Producers/interface/Consumes.h"
 #include "boost/functional/hash.hpp"
 #include "EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h"
+#include "../../Producers/interface/KRefitVertexProducer.h"
 #if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2) || CMSSW_MAJOR_VERSION >= 8
 	#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 #endif
@@ -49,6 +50,7 @@ public:
 			if(pset.existsAs<edm::InputTag>("allConversions")) consumescollector.consumes<reco::ConversionCollection>(pset.getParameter<edm::InputTag>("allConversions"));
 			if(pset.existsAs<edm::InputTag>("offlineBeamSpot")) consumescollector.consumes<reco::BeamSpot>(pset.getParameter<edm::InputTag>("offlineBeamSpot"));
 			if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
+			if(pset.existsAs<edm::InputTag>("refitvertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("refitvertexcollection"));
 			if(pset.existsAs<edm::InputTag>("rhoIsoInputTag")) consumescollector.consumes<double>(pset.getParameter<edm::InputTag>("rhoIsoInputTag"));
 			if(pset.existsAs<std::vector<edm::InputTag>>("isoValInputTags"))
 			{
@@ -90,6 +92,9 @@ public:
 
 		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
 		cEvent->getByLabel(VertexCollectionSource, VertexCollection);
+
+		edm::InputTag RefitVertexCollectionSource = pset.getParameter<edm::InputTag>("refitvertexcollection");
+		cEvent->getByLabel(RefitVertexCollectionSource, RefitVertexCollection);
 
 		std::vector<edm::InputTag>  isoValInputTags = pset.getParameter<std::vector<edm::InputTag> >("isoValInputTags");
 		isoVals.resize(isoValInputTags.size());
@@ -154,6 +159,7 @@ public:
 		if (in.gsfTrack().isNonnull())
 		{
 			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
+			KTrackProducer::fillTrackNew(*in.gsfTrack(), out.track, *RefitVertexCollection, trackBuilder.product());
 			out.dxy = in.gsfTrack()->dxy(vtx.position());
 			out.dz = in.gsfTrack()->dz(vtx.position());
 		}
@@ -315,6 +321,7 @@ private:
 	edm::Handle<reco::ConversionCollection> hConversions;
 	edm::Handle<reco::BeamSpot> BeamSpot;
 	edm::Handle<reco::VertexCollection> VertexCollection;
+	edm::Handle<reco::VertexCollection> RefitVertexCollection;
 	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 	edm::Handle<double> rhoIso_h;
 	std::string srcIds_;

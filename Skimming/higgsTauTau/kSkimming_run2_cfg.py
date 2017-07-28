@@ -262,6 +262,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.load("Kappa.Skimming.KMuons_miniAOD_cff")
 	process.kappaTuple.Muons.muons.src = cms.InputTag(muons)
 	process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+	#process.kappaTuple.Muons.muons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS")
 	process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
 	process.kappaTuple.Muons.use03ConeForPfIso = cms.bool(True)
 	process.kappaTuple.Muons.doPfIsolation = cms.bool(False)
@@ -338,6 +339,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('PatTaus')
 	process.kappaTuple.PatTaus.taus.kshortinformation = cms.untracked.bool(True)
 	process.kappaTuple.PatTaus.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+	#process.kappaTuple.PatTaus.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS")
 	process.kappaTuple.PatTaus.offlineBeamSpot = cms.InputTag("offlineBeamSpot")
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
 	process.kappaTuple.PatTaus.taus.src = cms.InputTag(taus)
@@ -479,6 +481,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.AdvancedRefitVertexNoBSProducer.srcTaus = cms.InputTag(taus)
 		process.AdvancedRefitVertexNoBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
 
+
+	## 
+	process.kappaTuple.Electrons.electrons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS")
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')

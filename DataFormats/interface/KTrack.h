@@ -44,6 +44,11 @@ struct KTrack : public KLV
 	float d2D, d3D;      ///< impact parameters dxy and d calculated considering the magnetic field
 	float err3D, err2D;  ///< errors on the dxy (2D) and d (3D) impact parameters
 	float magneticField = 0.0; // at reference point, in 1/GeV
+
+	std::vector<float> d3DnewPV; // impact parameter d wrt refitted PV calculated considering the magnetic field
+	std::vector<float> err3DnewPV; // and corresponding error
+	std::vector<float> d2DnewPV; // impact parameter dxy wrt refitted PV calculated considering the magnetic
+	std::vector<float> err2DnewPV; // and corresponding error
 	
 	// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L757-L819
 	float errPt() const
