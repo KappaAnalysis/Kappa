@@ -86,7 +86,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# possibility to write out edmDump. Be careful when using unsceduled mode
 	process.load("Kappa.Skimming.edmOut")
 	process.ep = cms.EndPath()
-	#process.ep *= process.edmOut
+	process.ep *= process.edmOut
 
 	## ------------------------------------------------------------------------
 
@@ -483,7 +483,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 
 	## 
-	process.kappaTuple.Electrons.electrons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS")
+	process.kappaTuple.Electrons.electrons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer")
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')

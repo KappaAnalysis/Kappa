@@ -467,7 +467,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			allConversions = cms.InputTag("allConversions"),
 			offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
 			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
-			refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS"),
+			refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer"),
 			isoValInputTags = cms.VInputTag(
 				cms.InputTag('elPFIsoValueChargedAll04PFIdPFIso'),
 				cms.InputTag('elPFIsoValueGamma04PFIdPFIso'),

@@ -30,6 +30,7 @@ public:
 	KElectronProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
 		KBaseMultiLVProducer<edm::View<pat::Electron>,
 		KElectrons>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+		RefitVerticesSource(cfg.getParameter<edm::InputTag>("refitvertexcollection")),
 		namesOfIds(cfg.getParameter<std::vector<std::string> >("ids")),
 		srcIds_(cfg.getParameter<std::string>("srcIds")),
 		doPfIsolation_(true),
@@ -41,6 +42,8 @@ public:
 		doMvaIds_ = (srcIds_ == "pat");
 		doAuxIds_ = (srcIds_ == "standalone");
 
+		this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
+
 		const edm::ParameterSet &psBase = this->psBase;
 		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
 
@@ -51,7 +54,7 @@ public:
 			if(pset.existsAs<edm::InputTag>("offlineBeamSpot")) consumescollector.consumes<reco::BeamSpot>(pset.getParameter<edm::InputTag>("offlineBeamSpot"));
 			if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
 			if(pset.existsAs<edm::InputTag>("refitvertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("refitvertexcollection"));
-			if(pset.existsAs<edm::InputTag>("rhoIsoInputTag")) consumescollector.consumes<double>(pset.getParameter<edm::InputTag>("rhoIsoInputTag"));
+			//if(pset.existsAs<edm::InputTag>("rhoIsoInputTag")) consumescollector.consumes<double>(pset.getParameter<edm::InputTag>("rhoIsoInputTag"));
 			if(pset.existsAs<std::vector<edm::InputTag>>("isoValInputTags"))
 			{
 				for(size_t j = 0; j < pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").size(); ++j) consumescollector.consumes<edm::ValueMap<double>>(pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").at(j));
@@ -93,8 +96,9 @@ public:
 		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
 		cEvent->getByLabel(VertexCollectionSource, VertexCollection);
 
-		edm::InputTag RefitVertexCollectionSource = pset.getParameter<edm::InputTag>("refitvertexcollection");
-		cEvent->getByLabel(RefitVertexCollectionSource, RefitVertexCollection);
+		//edm::InputTag RefitVerticesSource = pset.getParameter<edm::InputTag>("refitvertexcollection");
+		//cEvent->getByLabel(RefitVerticesSource, RefitVertices);
+		cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 
 		std::vector<edm::InputTag>  isoValInputTags = pset.getParameter<std::vector<edm::InputTag> >("isoValInputTags");
 		isoVals.resize(isoValInputTags.size());
@@ -159,7 +163,7 @@ public:
 		if (in.gsfTrack().isNonnull())
 		{
 			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
-			KTrackProducer::fillTrackNew(*in.gsfTrack(), out.track, *RefitVertexCollection, trackBuilder.product());
+			KTrackProducer::fillTrackNew(*in.gsfTrack(), out.track, *RefitVertices, trackBuilder.product());
 			out.dxy = in.gsfTrack()->dxy(vtx.position());
 			out.dz = in.gsfTrack()->dz(vtx.position());
 		}
@@ -313,6 +317,7 @@ protected:
 	}
 
 private:
+	edm::InputTag RefitVerticesSource;
 	std::vector<std::string> namesOfIds;
 	KElectronMetadata *electronMetadata;
 	boost::hash<const pat::Electron*> hasher;
@@ -321,7 +326,7 @@ private:
 	edm::Handle<reco::ConversionCollection> hConversions;
 	edm::Handle<reco::BeamSpot> BeamSpot;
 	edm::Handle<reco::VertexCollection> VertexCollection;
-	edm::Handle<reco::VertexCollection> RefitVertexCollection;
+	edm::Handle<RefitVertexCollection> RefitVertices;
 	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 	edm::Handle<double> rhoIso_h;
 	std::string srcIds_;
@@ -329,6 +334,9 @@ private:
 	bool doCutbasedIds_;
 	bool doMvaIds_;
 	bool doAuxIds_;
+
+
+	edm::EDGetTokenT<RefitVertexCollection> tokenRefitVertices;
 
 	std::vector<edm::Handle<edm::ValueMap<float> > > electronIDValueMap;
 };
