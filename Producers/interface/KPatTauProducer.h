@@ -5,6 +5,7 @@
 #include "KBaseMultiLVProducer.h"
 #include "KTauProducer.h"
 #include "KVertexProducer.h"
+#include "KVertexSummaryProducer.h"
 
 #if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "KPackedPFCandidateProducer.h"
@@ -187,40 +188,63 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			if (nTracks > 1)
 			{
 				std::vector<reco::TransientTrack> transientTracks;
+				std::vector<reco::Track> bestTracks;
+				KPFCandidates hadronCandidates;
 				//TODO: store the map index:track
 				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
 				{
 					const reco::Track* track = in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
 					if (track)
+					{
+						KPFCandidate outCandidate;
 						transientTracks.push_back(trackBuilder->build(track));
+						bestTracks.push_back(*track);
+
+						KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalChargedHadrCands()[chargedPFCandidateIndex].get()), outCandidate);
+						KTrackProducer::fillTrack(*(in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
+						hadronCandidates.push_back(outCandidate);
+					}
 				}
 
 				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.isolationChargedHadrCands().size(); ++chargedPFCandidateIndex)
 				{
 					const reco::Track* track = in.isolationChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
 					if (track)
+					{
+						KPFCandidate outCandidate;
 						transientTracks.push_back(trackBuilder->build(track));
+						bestTracks.push_back(*track);
+
+						KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.isolationChargedHadrCands()[chargedPFCandidateIndex].get()), outCandidate);
+						KTrackProducer::fillTrack(*(in.isolationChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
+						hadronCandidates.push_back(outCandidate);
+					}
 				}
 
 				if (transientTracks.size() > 2)
 				{
 					TransientVertex theRecoVertex;
-
 					bool useRefTracks = true; //temp
+					const float piMass = 0.13957018;
+					const float piMassSquared = pow(piMass, 2);
 					KalmanVertexFitter theKalmanFitter(useRefTracks == 0 ? false : true);
 
 					for(size_t trackIndex_1 = 0; trackIndex_1 < transientTracks.size() - 1; ++trackIndex_1)
 						for(size_t trackIndex_2 = trackIndex_1 + 1; trackIndex_2 < transientTracks.size(); ++trackIndex_2)
 						{
-							//if (transientTracks[trackIndex_1].charge() * transientTracks[trackIndex_1].charge() > 0.) continue;
+							if (transientTracks[trackIndex_1].charge() * transientTracks[trackIndex_2].charge() > 0.) continue;
 							KKaonCandidate kaonCandidate;
 							std::vector<reco::TransientTrack> transientTracksPair;
 							transientTracksPair.push_back(transientTracks[trackIndex_1]);
 							transientTracksPair.push_back(transientTracks[trackIndex_2]);
 
 							kaonCandidate.isValid = true;
-							kaonCandidate.firstTransTrack.indexOfTrackInColl = trackIndex_1;
-							kaonCandidate.secondTransTrack.indexOfTrackInColl = trackIndex_2;
+							kaonCandidate.firstTransTrack.indexOfTrackInColl = trackIndex_1; // Do not correspond to the indexes in taujet-charged collection
+							kaonCandidate.secondTransTrack.indexOfTrackInColl = trackIndex_2; // Do not correspond to the indexes in taujet-charged collection
+							KTrackProducer::fillTrack(bestTracks[trackIndex_1], kaonCandidate.firstTransTrack, *VertexCollection, trackBuilder.product());
+							KTrackProducer::fillTrack(bestTracks[trackIndex_2], kaonCandidate.secondTransTrack, *VertexCollection, trackBuilder.product());
+							kaonCandidate.firstTransPFCand = hadronCandidates[trackIndex_1];
+							kaonCandidate.secondTransPFCand = hadronCandidates[trackIndex_2];
 							kaonCandidate.firstTransTrack.impactPointTSCPIsValid = transientTracksPair[0].impactPointTSCP().isValid();
 							kaonCandidate.secondTransTrack.impactPointTSCPIsValid = transientTracksPair[1].impactPointTSCP().isValid();
 							if (!kaonCandidate.firstTransTrack.impactPointTSCPIsValid || !kaonCandidate.secondTransTrack.impactPointTSCPIsValid) continue;
@@ -230,97 +254,115 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 							ClosestApproachInRPhi cApp;
 							cApp.calculate(firstState, secondState);
-							kaonCandidate.statusOfClosestApproachInRPhi = cApp.status();
+							kaonCandidate.statusOfClosestApproachInRPhi = cApp.status(); //remove
 							if (!cApp.status()) continue;
 
 							float dca = std::abs(cApp.distance());
 							kaonCandidate.distanceOfClosestApproach = dca;
+
+							GlobalPoint cxPt = cApp.crossingPoint();
+							kaonCandidate.POCA.SetXYZ(cxPt.x(), cxPt.y(), cxPt.z());
+
+							// the tracks should at least point in the same quadrant
+							TrajectoryStateClosestToPoint const & firstTSCP = transientTracks[trackIndex_1].trajectoryStateClosestToPoint(cxPt); // TODO::KAPPA
+							TrajectoryStateClosestToPoint const & secondTSCP = transientTracks[trackIndex_2].trajectoryStateClosestToPoint(cxPt); // TODO::KAPPA
+							if (!firstTSCP.isValid() || !secondTSCP.isValid()) continue;
+							if (firstTSCP.momentum().dot(secondTSCP.momentum())  < 0) continue;
+
+							//CartesianRMFLV initialFirstTSCP, initialSecondTSCP;
+							kaonCandidate.initialFirstTSCP.SetCoordinates(firstTSCP.momentum().x(), firstTSCP.momentum().y(), firstTSCP.momentum().z(), piMassSquared);
+							kaonCandidate.initialSecondTSCP.SetCoordinates(secondTSCP.momentum().x(), secondTSCP.momentum().y(), secondTSCP.momentum().z(), piMassSquared);
+							{
+								float totalE = sqrt(firstTSCP.momentum().mag2() + piMassSquared) + sqrt(secondTSCP.momentum().mag2() + piMassSquared);
+								float totalPSq = (firstTSCP.momentum() + secondTSCP.momentum()).mag2();
+								kaonCandidate.pionMass = sqrt(pow(totalE, 2) - totalPSq);
+							}
 
 							TransientVertex sv = theKalmanFitter.vertex(transientTracksPair);
 							if (sv.isValid())
 								KVertexProducer::fillVertex(sv, kaonCandidate.secondaryVertex);
 							else continue;
 
-							reco::Vertex theVtx = sv;
-							GlobalPoint vtxPos(theVtx.x(), theVtx.y(), theVtx.z());
-							reco::Vertex referenceVtx = VertexCollection->at(KTrackProducer::getValidVertexIndex(*VertexCollection));
-							math::XYZPoint referencePosBS(BeamSpot->position());
-							math::XYZPoint referencePosPV(referenceVtx.position());
+							// Variables needef for significance
+								reco::Vertex theVtx = sv; // Artus
+								GlobalPoint vtxPos(theVtx.x(), theVtx.y(), theVtx.z()); // Artus
+								reco::Vertex referencePV = VertexCollection->at(KVertexSummaryProducer::getValidVertexIndex(*VertexCollection)); // Artus. TODO: check that KVertex stores the same variable
+								math::XYZPoint referencePosBS(BeamSpot->position());
+								math::XYZPoint referencePosPV(referencePV.position());
+									//kaonCandidate.refPosBS(BeamSpot->position()); //temp for checks
+									//kaonCandidate.refPosPV(referencePV.position()); //temp for checks
+									kaonCandidate.referencePosBS = referencePosBS; //temp
+									kaonCandidate.referencePosPV = referencePosPV; //temp
+								//TODO: typedef  ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >
+								SMatrixSym3D totalCovBS = BeamSpot->rotatedCovariance3D() + theVtx.covariance();
+								SMatrixSym3D totalCovPV = referencePV.covariance() + theVtx.covariance(); // TODO::KAPPA
+									kaonCandidate.totalCovBS = totalCovBS; //temp for checks
+									kaonCandidate.totalCovPV = totalCovPV; //temp for checks
 
-							ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovBS = BeamSpot->rotatedCovariance3D() + theVtx.covariance();
-							ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovPV = referenceVtx.covariance() + theVtx.covariance(); // TODO::KAPPA
-
-							// TODO: move this calculation to the Artus level
-								// 2D decay significance
-									ROOT::Math::SVector<double, 3> distVecXYBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), 0.);
-									ROOT::Math::SVector<double, 3> distVecXYPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), 0.);
-
-									kaonCandidate.sigmaDistMagXYBS  = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYBS)) / ROOT::Math::Mag(distVecXYBS);
-									kaonCandidate.sigmaDistMagXYPV  = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYPV)) / ROOT::Math::Mag(distVecXYPV);
-
-								// 3D decay significance
-									ROOT::Math::SVector<double, 3> distVecXYZBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), vtxPos.z() - referencePosBS.z());
-									ROOT::Math::SVector<double, 3> distVecXYZPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), vtxPos.z() - referencePosPV.z());
-
-									kaonCandidate.distMagXYZBS = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYZBS)) / ROOT::Math::Mag(distVecXYZBS);;
-									kaonCandidate.distMagXYZPV = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYZPV)) / ROOT::Math::Mag(distVecXYZPV);;
-
-
-							/*
-
-							//Significance
-								GlobalPoint vtxPos(theVtx.x(), theVtx.y(), theVtx.z());
-								reco::Vertex referenceVtx = VertexCollection->at(KTrackProducer::getValidVertexIndex(*VertexCollection)); // store cov
-								math::XYZPoint referencePosBS(BeamSpot->position()); // store 3 components
-								math::XYZPoint referencePosPV(referenceVtx.position()); // store 3 components
-
-								ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovBS = BeamSpot->rotatedCovariance3D() + theVtx.covariance(); // store 3 components of cov
-								ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> > totalCovPV = referenceVtx.covariance() + theVtx.covariance(); // store 3 components of cov
-
-								// TODO: move this calculation to the Artus level
+							// Significance
+								// Move to Artus
 									// 2D decay significance
 										ROOT::Math::SVector<double, 3> distVecXYBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), 0.);
 										ROOT::Math::SVector<double, 3> distVecXYPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), 0.);
-
+										kaonCandidate.distMagXYBS = ROOT::Math::Mag(distVecXYBS);
+										kaonCandidate.distMagXYPV = ROOT::Math::Mag(distVecXYPV);
 										kaonCandidate.sigmaDistMagXYBS  = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYBS)) / ROOT::Math::Mag(distVecXYBS);
 										kaonCandidate.sigmaDistMagXYPV  = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYPV)) / ROOT::Math::Mag(distVecXYPV);
-
 									// 3D decay significance
 										ROOT::Math::SVector<double, 3> distVecXYZBS(vtxPos.x() - referencePosBS.x(), vtxPos.y() - referencePosBS.y(), vtxPos.z() - referencePosBS.z());
 										ROOT::Math::SVector<double, 3> distVecXYZPV(vtxPos.x() - referencePosPV.x(), vtxPos.y() - referencePosPV.y(), vtxPos.z() - referencePosPV.z());
+										kaonCandidate.distMagXYZBS = ROOT::Math::Mag(distVecXYZBS);
+										kaonCandidate.distMagXYZPV = ROOT::Math::Mag(distVecXYZPV);
+										kaonCandidate.sigmaDistMagXYZBS = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYZBS)) / ROOT::Math::Mag(distVecXYZBS);;
+										kaonCandidate.sigmaDistMagXYZPV = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYZPV)) / ROOT::Math::Mag(distVecXYZPV);;
 
-										kaonCandidate.distMagXYZBS = sqrt(ROOT::Math::Similarity(totalCovBS, distVecXYZBS)) / ROOT::Math::Mag(distVecXYZBS);;
-										kaonCandidate.distMagXYZPV = sqrt(ROOT::Math::Similarity(totalCovPV, distVecXYZPV)) / ROOT::Math::Mag(distVecXYZPV);;
-
-
-								// Correct the momentum of pions with respect to the refitted SV // TODO::KAPPA
-								std::auto_ptr<TrajectoryStateClosestToPoint> trajFirst; // TODO::KAPPA
-								std::auto_ptr<TrajectoryStateClosestToPoint> trajSecond; // TODO::KAPPA
+							// Correct the momentum of pions with respect to the refitted SV
+								std::auto_ptr<TrajectoryStateClosestToPoint> trajFirst, trajSecond;
 								std::vector<reco::TransientTrack> theRefTracks;
 								if (sv.hasRefittedTracks())
-									theRefTracks = sv.refittedTracks();
+									theRefTracks = sv.refittedTracks(); // TODO: check that sequence of returned objects is preserved
 
 								if (theRefTracks.size() > 1)
 								{
-									reco::TransientTrack* thePositiveRefTrack = 0;
-									reco::TransientTrack* theNegativeRefTrack = 0;
-
-									// for (std::vector<reco::TransientTrack>::iterator iTrack = theRefTracks.begin(); iTrack != theRefTracks.end(); ++iTrack)
-									// 	if (iTrack->track().charge() > 0.)
-									// 		thePositiveRefTrack = &*iTrack;
-									// 	else if (iTrack->track().charge() < 0.)
-									// 		theNegativeRefTrack = &*iTrack;
-
-									if (thePositiveRefTrack == 0 || theNegativeRefTrack == 0) continue;
-									trajFirst.reset(new TrajectoryStateClosestToPoint(theRefTracks[0].trajectoryStateClosestToPoint(vtxPos))); // TODO::KAPPA
-									trajSecond.reset(new TrajectoryStateClosestToPoint(theRefTracks[1].trajectoryStateClosestToPoint(vtxPos))); // TODO::KAPPA
+									trajFirst.reset(new TrajectoryStateClosestToPoint(theRefTracks[0].trajectoryStateClosestToPoint(vtxPos)));
+									trajSecond.reset(new TrajectoryStateClosestToPoint(theRefTracks[1].trajectoryStateClosestToPoint(vtxPos)));
 								}
 								else
 								{
-									trajFirst.reset(new TrajectoryStateClosestToPoint(transientTracksPair[0].trajectoryStateClosestToPoint(vtxPos))); // TODO::KAPPA
-									trajSecond.reset(new TrajectoryStateClosestToPoint(transientTracksPair[0].trajectoryStateClosestToPoint(vtxPos))); // TODO::KAPPA
+									trajFirst.reset(new TrajectoryStateClosestToPoint(transientTracksPair[0].trajectoryStateClosestToPoint(vtxPos)));
+									trajSecond.reset(new TrajectoryStateClosestToPoint(transientTracksPair[0].trajectoryStateClosestToPoint(vtxPos)));
 								}
-							*/
+								if (trajFirst.get() == 0 || trajSecond.get() == 0 || !trajFirst->isValid() || !trajSecond->isValid())
+								{
+									std::cout << "TrajectoryStateClosestToPoint was invalid";
+									continue;
+								}
+
+							// Calculate the 4-momentums
+								float piFirstE = sqrt(trajFirst->momentum().mag2() + piMassSquared);
+								float piSecondE = sqrt(trajSecond->momentum().mag2() + piMassSquared);
+
+								CartesianRMFLV firstPiMomentumClosestToSV, secondPiMomentumClosestToSV;
+								firstPiMomentumClosestToSV.SetCoordinates(trajFirst->momentum().x(), trajFirst->momentum().y(), trajFirst->momentum().z(), piFirstE);
+								secondPiMomentumClosestToSV.SetCoordinates(trajSecond->momentum().x(), trajSecond->momentum().y(), trajSecond->momentum().z(), piSecondE);
+								CartesianRMFLV totalPiMomentumClosestToSV(firstPiMomentumClosestToSV + secondPiMomentumClosestToSV);
+
+								kaonCandidate.firstPiMomentumClosestToSV = firstPiMomentumClosestToSV;
+								kaonCandidate.secondPiMomentumClosestToSV = secondPiMomentumClosestToSV;
+								kaonCandidate.totalPiMomentumClosestToSV = totalPiMomentumClosestToSV;
+								kaonCandidate.kMass = totalPiMomentumClosestToSV.mass();
+
+							//Move to Artus
+								// 2D pointing angle
+									float dxBS = theVtx.x() - referencePosBS.x(), dyBS = theVtx.y() - referencePosBS.y(), pxBS = totalPiMomentumClosestToSV.x(), pyBS = totalPiMomentumClosestToSV.y();
+									float dxPV = theVtx.x() - referencePosPV.x(), dyPV = theVtx.y() - referencePosPV.y(), pxPV = totalPiMomentumClosestToSV.x(), pyPV = totalPiMomentumClosestToSV.y();
+									kaonCandidate.angleXYBS = (dxBS * pxBS + dyBS * pyBS) / (sqrt(dxBS * dxBS + dyBS * dyBS) * sqrt(pxBS * pxBS + pyBS * pyBS));
+									kaonCandidate.angleXYPV = (dxPV * pxPV + dyPV * pyPV) / (sqrt(dxPV * dxPV + dyPV * dyPV) * sqrt(pxPV * pxPV + pyPV * pyPV));
+								// 3D pointing angle
+									float dzBS = theVtx.z() - referencePosBS.z(), pz = totalPiMomentumClosestToSV.z();
+									float dzPV = theVtx.z() - referencePosPV.z();
+									kaonCandidate.angleXYZPS = (dxBS * pxBS + dyBS * pyBS + dzBS * pz) / (sqrt(dxBS * dxBS + dyBS * dyBS + dzBS * dzBS) * sqrt(pxBS * pxBS + pyBS * pyBS + pz * pz));
+									kaonCandidate.angleXYZPV = (dxPV * pxPV + dyPV * pyPV + dzPV * pz) / (sqrt(dxPV * dxPV + dyPV * dyPV + dzPV * dzPV) * sqrt(pxPV * pxPV + pyPV * pyPV + pz * pz));
 
 							// Write down the object
 							out.kshortCandidates.push_back(kaonCandidate);
@@ -330,14 +372,16 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 				}
 				else
-				{
-					//std::cout << "transientTracks.size() !> 2\n";
-				}
+					edm::LogInfo("fillMapOfTracksSV") <<  "transientTracks.size() !> 2\n";
 			}
 			else
-			{
-				//std::cout << "nTracks !> 1\n";
-			}
+				edm::LogInfo("fillMapOfTracksSV") <<  "nTracks !> 1\n";
+		}
+
+		virtual void fillTemporaryPVandBSVariables(const SingleInputType &in, SingleOutputType &out)
+		{
+			out.referencePosBS = BeamSpot->position();
+			KVertexProducer::fillVertex(VertexCollection->at(KVertexSummaryProducer::getValidVertexIndex(*VertexCollection)), out.referencePV);
 		}
 
 		virtual void fillSecondaryVertex(const SingleInputType &in, SingleOutputType &out)
@@ -466,6 +510,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			else
 				KPatTauProducer::fillPFCandidates(in, out);
 			fillSecondaryVertex(in, out);
+			fillTemporaryPVandBSVariables(in, out);
 		}
 
 		virtual void onFirstObject(const SingleInputType &in, SingleOutputType &out) override

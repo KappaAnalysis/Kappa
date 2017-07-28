@@ -73,6 +73,9 @@ struct KTau : public KBasicTau
 
 	KVertex sv;
 
+	KVertex referencePV; // will be removed after tests
+	RMPoint referencePosBS; // will be removed after tests
+
 	int tauKey;
 
 	inline unsigned long nCandidates()

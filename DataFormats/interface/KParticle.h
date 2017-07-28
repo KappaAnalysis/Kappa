@@ -292,18 +292,52 @@ struct KKaonCandidate : public KPFCandidate
 {
 	virtual ~KKaonCandidate() {};
 
-	KTransTrack firstTransTrack;
-	KTransTrack secondTransTrack;
+	KTransTrack firstTransTrack;// remove
+	KTransTrack secondTransTrack;// remove
+	KPFCandidate firstTransPFCand;
+	KPFCandidate secondTransPFCand;
+	//std::vector<KTransTrack> TrackPair;
+
 	KVertex secondaryVertex;
 
 	bool isValid = false;
 	bool statusOfClosestApproachInRPhi = false;
 	float distanceOfClosestApproach = -1;
-
+	// 2D
+	float distMagXYBS;
+	float distMagXYPV;
 	float sigmaDistMagXYBS;
-	float distMagXYZBS;
 	float sigmaDistMagXYPV;
+	//3D
+	float distMagXYZBS;
 	float distMagXYZPV;
+	float sigmaDistMagXYZBS;
+	float sigmaDistMagXYZPV;
+
+	//angles
+	float angleXYBS;
+	float angleXYPV;
+	float angleXYZPS;
+	float angleXYZPV;
+
+	float kMass;
+	float pionMass;
+
+	CartesianRMFLV firstPiMomentumClosestToSV;
+	CartesianRMFLV secondPiMomentumClosestToSV;
+	CartesianRMFLV totalPiMomentumClosestToSV;
+	CartesianRMFLV initialFirstTSCP;
+	CartesianRMFLV initialSecondTSCP;
+
+	SMatrixSym3D totalCovBS;
+	SMatrixSym3D totalCovPV;
+
+	RMPoint refPosBS;
+	RMPoint refPosPV;
+	RMPoint POCA;
+
+	math::XYZPoint referencePosBS;//temp
+	math::XYZPoint referencePosPV;//temp
 };
 typedef std::vector<KKaonCandidate> KKaonCandidates;
 
