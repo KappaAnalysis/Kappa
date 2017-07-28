@@ -332,6 +332,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
 			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
+			refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer"),
 			isoValInputTags = cms.VInputTag(
 				cms.InputTag('muPFIsoValueChargedAll04PFIso'),
 				cms.InputTag('muPFIsoValueGamma04PFIso'),
@@ -463,6 +464,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		allConversions = cms.InputTag("allConversions"),
 		offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
 		vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
+		refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer"),
 		rhoIsoInputTag = cms.InputTag("kt6PFJetsForIsolation", "rho"),
 		isoValInputTags = cms.VInputTag(
 				cms.InputTag('elPFIsoValueChargedAll04PFIdPFIso'),
