@@ -579,11 +579,8 @@ class SkimManagerBase:
 				filelist_path = skim_path+'/'+dataset+'.txt'
 				filelist = open(filelist_path, 'w')
 				dataset_filelist = ""
-
-				number_jobs = self.skimdataset[dataset]["n_jobs"]
-				if (number_jobs == 0) and force:
-					number_jobs = int(self.skimdataset[dataset]["n_files"])
 				
+				number_jobs = self.skimdataset[dataset].get("n_jobs", int(self.skimdataset[dataset].get("n_files", 0)) if force else 0)
 				crab_number_folders = [str(i / 1000).zfill(4) for i in range(number_jobs+1)[::1000]]
 				crab_numer_folder_regex = re.compile('|'.join(crab_number_folders))
 
