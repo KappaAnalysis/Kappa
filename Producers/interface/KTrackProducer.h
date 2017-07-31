@@ -16,6 +16,7 @@
 #include <FWCore/Framework/interface/EDProducer.h>
 #include "../../Producers/interface/Consumes.h"
 #include "../../Producers/interface/KVertexProducer.h"
+#include "../../Producers/interface/KRefitVertexProducer.h"
 
 
 class KTrackProducer : public KBaseMultiLVProducer<edm::View<reco::Track>, KTracks>
@@ -87,6 +88,31 @@ public:
 			}
 		}
 	}
+
+
+	// fill vectors of IPmag and corresponding error calculated wrt refitted PVs
+	static void fillIPInfo(const SingleInputType &in, SingleOutputType &out,
+	                      std::vector<RefitVertex> const& vertices = std::vector<RefitVertex>(),
+	                      //std::vector<reco::Vertex> const& vertices = std::vector<reco::Vertex>(),
+	                      const TransientTrackBuilder* trackBuilder = nullptr)
+	{
+		if (vertices.size()>0){
+			
+			reco::TransientTrack transientTrack = trackBuilder->build(in);
+			
+			for (unsigned int i=0; i<vertices.size(); ++i) {
+				out.d3DnewPV.push_back(IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(i)).second.value());
+				out.err3DnewPV.push_back(IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(i)).second.error());
+				out.d2DnewPV.push_back(IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(i)).second.value());
+				out.err2DnewPV.push_back(IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(i)).second.error());
+			}
+		}
+	}
+
+
 };
+
+	
+
 
 #endif

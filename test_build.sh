@@ -135,7 +135,7 @@ echo "# ================= #"
 echo "# curl -O root files"
 echo "# ================= #"
     files=(/home/short/*)
-    if [ ${#files[@]} -gt 0 ]
+    if [ ! ${#files[@]} -gt 0 ]
     then
         echo "curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download" # single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
         curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download

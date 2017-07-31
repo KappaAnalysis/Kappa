@@ -459,7 +459,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	Electrons = cms.PSet(kappaNoCut,
 		kappaNoRegEx,
-		ids = cms.VInputTag(),
+		ids = cms.vstring(),
 		srcIds = cms.string("pat"),
 		allConversions = cms.InputTag("allConversions"),
 		offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
@@ -578,6 +578,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 			floatDiscrBlacklist = cms.vstring(),
 			tauDiscrProcessName = cms.string("KAPPA"),
 			beamSpotSource = cms.InputTag("offlineBeamSpot"),
+			refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer"),
 		),
 	),
 

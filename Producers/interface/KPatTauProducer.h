@@ -44,6 +44,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				if (packedLeadTauCand->bestTrack() != nullptr)
 				{
 					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
+					KTrackProducer::fillIPInfo(*packedLeadTauCand->bestTrack(), out.track, *RefitVertices, trackBuilder.product());
 				}
 			#else
 				if (in.leadPFChargedHadrCand().isNonnull())
@@ -51,10 +52,12 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
 					{
 						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
+						KTrackProducer::fillIPInfo(*in.leadPFChargedHadrCand()->trackRef(), out.track, *RefitVertices, trackBuilder.product());
 					}
 					else if (in.leadPFChargedHadrCand()->gsfTrackRef().isNonnull())
 					{
 						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
+						KTrackProducer::fillIPInfo(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, *RefitVertices, trackBuilder.product());
 						out.leptonInfo |= KLeptonAlternativeTrackMask;
 					}
 				}
@@ -126,8 +129,10 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 						tau_picharge.push_back(single_pion);
 
 						outCandidate.bestTrack = KTrack();
-						if (single_pion->bestTrack() != nullptr)
+						if (single_pion->bestTrack() != nullptr){
 							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
+							KTrackProducer::fillIPInfo(*single_pion->bestTrack(), outCandidate.bestTrack, *RefitVertices, trackBuilder.product());
+						}
 						else
 							outCandidate.bestTrack.ref.SetXYZ(single_pion->vertex().x(), single_pion->vertex().y(), single_pion->vertex().z());
 					}
@@ -147,8 +152,10 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 						tau_picharge.push_back(single_pion);
 
 						outCandidate.bestTrack = KTrack();
-						if (single_pion->bestTrack() != nullptr)
+						if (single_pion->bestTrack() != nullptr){
 							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
+							KTrackProducer::fillIPInfo(*single_pion->bestTrack(), outCandidate.bestTrack, *RefitVertices, trackBuilder.product());
+						}
 						else
 							outCandidate.bestTrack.ref.SetXYZ(single_pion->vertex().x(), single_pion->vertex().y(), single_pion->vertex().z());
 
@@ -202,6 +209,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 						KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalChargedHadrCands()[chargedPFCandidateIndex].get()), outCandidate);
 						KTrackProducer::fillTrack(*(in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
+						KTrackProducer::fillIPInfo(*(in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *RefitVertices, trackBuilder.product());
 						hadronCandidates.push_back(outCandidate);
 					}
 				}
@@ -217,6 +225,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 						KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.isolationChargedHadrCands()[chargedPFCandidateIndex].get()), outCandidate);
 						KTrackProducer::fillTrack(*(in.isolationChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
+						KTrackProducer::fillIPInfo(*(in.isolationChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *RefitVertices, trackBuilder.product());
 						hadronCandidates.push_back(outCandidate);
 					}
 				}
@@ -423,10 +432,12 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 			BeamSpotSource(cfg.getParameter<edm::InputTag>("offlineBeamSpot")),
 			VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
+			RefitVerticesSource(cfg.getParameter<edm::InputTag>("refitvertexcollection")),
 			_lumi_tree_pointer(_lumi_tree)
 		{
 			this->tokenBeamSpot = consumescollector.consumes<reco::BeamSpot>(BeamSpotSource);
 			this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
+			this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
 
 			const edm::ParameterSet &psBase = this->psBase;
 			names = psBase.getParameterNamesForType<edm::ParameterSet>();
@@ -472,6 +483,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			edm::InputTag beamSpotSource = pset.getParameter<edm::InputTag>("beamSpotSource");
 			cEvent->getByLabel(beamSpotSource, BeamSpot);
 
+			cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 			// Continue normally
 			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>::fillProduct(in, out, name, tag, pset);
 		}
@@ -619,12 +631,15 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		edm::Handle<reco::BeamSpot> BeamSpot;
 		edm::Handle<reco::VertexCollection> VertexCollection;
+		edm::Handle<RefitVertexCollection> RefitVertices;
 
 		edm::InputTag BeamSpotSource;
 		edm::InputTag VertexCollectionSource;
+		edm::InputTag RefitVerticesSource;
 
 		edm::EDGetTokenT<reco::VertexCollection> tokenVertexCollection;
 		edm::EDGetTokenT<reco::BeamSpot> tokenBeamSpot;
+		edm::EDGetTokenT<RefitVertexCollection> tokenRefitVertices;
 
 		edm::ESHandle<TransientTrackBuilder> trackBuilder;
 

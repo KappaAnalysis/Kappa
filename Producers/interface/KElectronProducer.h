@@ -18,6 +18,7 @@
 #include "../../Producers/interface/Consumes.h"
 #include "boost/functional/hash.hpp"
 #include "EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h"
+#include "../../Producers/interface/KRefitVertexProducer.h"
 #if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2) || CMSSW_MAJOR_VERSION >= 8
 	#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 #endif
@@ -34,10 +35,11 @@ public:
 		VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
 		rhoIsoTag(cfg.getParameter<edm::InputTag>("rhoIsoInputTag")),
 		isoValInputTags(cfg.getParameter<std::vector<edm::InputTag> >("isoValInputTags")),
-		tagOfIds(cfg.getParameter<std::vector<edm::InputTag> >("ids")),
+		namesOfIds(cfg.getParameter<std::vector<std::string> >("ids")),
 		srcIds_(cfg.getParameter<std::string>("srcIds")),
 		doPfIsolation_(true),
-		doCutbasedIds_(true)
+		doCutbasedIds_(true),
+		RefitVerticesSource(cfg.getParameter<edm::InputTag>("refitvertexcollection"))
 	{
 		electronMetadata = new KElectronMetadata;
 		_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
@@ -49,6 +51,7 @@ public:
 		this->tokenBeamSpot = consumescollector.consumes<reco::BeamSpot>(beamSpotSource);
 		this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
 		this->tokenRhoIso = consumescollector.consumes<double>(rhoIsoTag);
+		this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
 
 
 		const edm::ParameterSet &psBase = this->psBase;
@@ -90,6 +93,7 @@ public:
 		cEvent->getByToken(this->tokenConversionSource, this->hConversions);
 		cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 		cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
+		cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 		this->isoVals.resize(this->isoValInputTags.size());
 		for (size_t j = 0; j < this->isoValInputTags.size(); ++j)
 		{
@@ -150,6 +154,7 @@ public:
 		if (in.gsfTrack().isNonnull())
 		{
 			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
+			KTrackProducer::fillIPInfo(*in.gsfTrack(), out.track, *RefitVertices, trackBuilder.product());
 			out.dxy = in.gsfTrack()->dxy(vtx.position());
 			out.dz = in.gsfTrack()->dz(vtx.position());
 		}
@@ -303,7 +308,6 @@ protected:
 	}
 
 private:
-	std::vector<std::string> namesOfIds;
 	KElectronMetadata *electronMetadata;
 	boost::hash<const pat::Electron*> hasher;
 
@@ -311,6 +315,7 @@ private:
 	edm::Handle<reco::ConversionCollection> hConversions;
 	edm::Handle<reco::BeamSpot> BeamSpot;
 	edm::Handle<reco::VertexCollection> VertexCollection;
+	edm::Handle<RefitVertexCollection> RefitVertices;
 	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 	edm::Handle<double> rhoIso_h;
 
@@ -319,7 +324,7 @@ private:
 	edm::InputTag VertexCollectionSource;
 	edm::InputTag rhoIsoTag;
 	std::vector<edm::InputTag>  isoValInputTags;
-	std::vector<edm::InputTag> tagOfIds;
+	std::vector<std::string> namesOfIds;
 	
 	edm::EDGetTokenT<reco::ConversionCollection> tokenConversionSource;
 	edm::EDGetTokenT<reco::BeamSpot> tokenBeamSpot;
@@ -333,6 +338,10 @@ private:
 	bool doCutbasedIds_;
 	bool doMvaIds_;
 	bool doAuxIds_;
+
+
+	edm::InputTag RefitVerticesSource;
+	edm::EDGetTokenT<RefitVertexCollection> tokenRefitVertices;
 
 	std::vector<edm::Handle<edm::ValueMap<float> > > electronIDValueMap;
 };
