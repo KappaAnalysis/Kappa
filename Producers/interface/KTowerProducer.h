@@ -17,11 +17,11 @@
 class KTowerProducer : public KBaseMultiLVProducer<CaloTowerCollection, KLVs>
 {
 public:
-	KTowerProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<CaloTowerCollection, KLVs>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+	KTowerProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<CaloTowerCollection, KLVs>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		srcPVs(cfg.getParameter<edm::InputTag>("srcPVs"))
 		{
-			consumescollector.consumes<reco::VertexCollection>(srcPVs);
+			pvToken_ = consumescollector.consumes<reco::VertexCollection>(srcPVs);
 		}
 
 	static const std::string getLabel() { return "Tower"; }
@@ -34,7 +34,7 @@ protected:
 	{
 		// Get information for vertex correction
 		edm::Handle<reco::VertexCollection> pvCollection;
-		cEvent->getByLabel(srcPVs, pvCollection);
+		cEvent->getByToken(pvToken_, pvCollection);
 		if (pvCollection->size() > 0)
 			vertex = pvCollection->begin()->position();
 		else
@@ -52,6 +52,7 @@ protected:
 private:
 	reco::Jet::Point vertex;
 	KLVSorter<KLV> towersorter_pt;
+	edm::EDGetTokenT<reco::VertexCollection> pvToken_;
 };
 
 #endif

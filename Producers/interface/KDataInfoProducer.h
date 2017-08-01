@@ -26,18 +26,12 @@ template<typename Tmeta>
 class KDataInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KDataInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
+	KDataInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		currentRun(0),
 		isEmbedded(cfg.getParameter<bool>("isEmbedded"))
 		{
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
 		  lumiSource = consumescollector.consumes<LumiSummary , edm::InLumi >(cfg.getParameter<edm::InputTag>("lumiSource"));
-#else
-		  lumiSource = cfg.getParameter<edm::InputTag>("lumiSource");
-		  consumescollector.consumes<LumiSummary>(lumiSource);
-
-#endif
 		}
 
 	static const std::string getLabel() { return "DataInfo"; }
@@ -56,11 +50,7 @@ public:
 
 		// Read luminosity infos
 		edm::Handle<LumiSummary> hLumiSummary;
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
 		if (lumiBlock.getByToken(lumiSource, hLumiSummary))
-#else
-		if (lumiBlock.getByLabel(lumiSource, hLumiSummary))
-#endif
 		{
 			this->metaLumi->avgInsDelLumi = hLumiSummary->avgInsDelLumi();
 			this->metaLumi->avgInsDelLumiErr = hLumiSummary->avgInsDelLumiErr();
@@ -100,11 +90,7 @@ public:
 
 protected:
 	short currentRun;
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
 	edm::EDGetTokenT<LumiSummary> lumiSource;
-#else
-	edm::InputTag lumiSource;
-#endif
 	bool isEmbedded;
 };
 

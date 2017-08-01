@@ -18,12 +18,11 @@
 class KJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KJets>
 {
 public:
-	KJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<reco::PFJetCollection, KJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
-		 tagger(cfg.getParameter<std::vector<std::string> >("taggers"))
+	KJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<reco::PFJetCollection, KJets>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
 {
 		names = new KJetMetadata;
-		_run_tree->Bronch("jetMetadata", "KJetMetadata", &names);
+		_lumi_tree->Bronch("jetMetadata", "KJetMetadata", &names);
 
 		std::vector<std::string> jetnames = cfg.getParameterNamesForType<edm::ParameterSet>();
 		for (auto akt_jet : jetnames ){
@@ -40,19 +39,6 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		for (size_t i = 0; i < tagger.size(); ++i)
-		{
-			if ( (tagger[i] == "puJetIDFullLoose")
-				|| (tagger[i] == "puJetIDFullMedium")
-				|| (tagger[i] == "puJetIDFullTight")
-				|| (tagger[i] == "puJetIDCutbasedLoose")
-				|| (tagger[i] == "puJetIDCutbasedMedium")
-				|| (tagger[i] == "puJetIDCutbasedTight")
-				|| (tagger[i] == "puJetIDMET") )
-				names->idNames.push_back(tagger[i]);
-			else
-				names->tagNames.push_back(tagger[i]);
-		}
 		return KBaseMultiLVProducer<reco::PFJetCollection, KJets>::onLumi(lumiBlock, setup);
 	}
 
@@ -67,67 +53,6 @@ public:
 		PUJetID = pset.getParameter<edm::InputTag>("PUJetID");
 		PUJetID_full = pset.getParameter<edm::InputTag>("PUJetID_full");
 
-		for (size_t i = 0; i < tagger.size(); ++i)
-		{
-			if (tagger[i] == "QGlikelihood")
-				cEvent->getByLabel(QGtagger.label(),"qgLikelihood", QGTagsHandleLikelihood);
-			else if (tagger[i] == "QGmlp")
-				cEvent->getByLabel(QGtagger.label(),"qgMLP", QGTagsHandleMLP);
-			else if (tagger[i] == "TrackCountingHighEffBJetTags")
-				cEvent->getByLabel(Btagger.label()+"TrackCountingHighEffBJetTags", TrackCountingHighEffBJetTags_Handle);
-			else if (tagger[i] == "TrackCountingHighPurBJetTags")
-				cEvent->getByLabel(Btagger.label()+"TrackCountingHighPurBJetTags", TrackCountingHighPurBJetTags_Handle);
-			else if (tagger[i] == "JetProbabilityBJetTags")
-				cEvent->getByLabel(Btagger.label()+"JetProbabilityBJetTags", JetProbabilityBJetTags_Handle);
-			else if (tagger[i] == "JetBProbabilityBJetTags")
-				cEvent->getByLabel(Btagger.label()+"JetBProbabilityBJetTags", JetBProbabilityBJetTags_Handle);
-			else if (tagger[i] == "SoftElectronBJetTags")
-				cEvent->getByLabel(Btagger.label()+"SoftElectronBJetTags", SoftElectronBJetTags_Handle);
-			else if (tagger[i] == "SoftMuonBJetTags")
-				cEvent->getByLabel(Btagger.label()+"SoftMuonBJetTags", SoftMuonBJetTags_Handle);
-			else if (tagger[i] == "SoftMuonByIP3dBJetTags")
-				cEvent->getByLabel(Btagger.label()+"SoftMuonByIP3dBJetTags", SoftMuonByIP3dBJetTags_Handle);
-			else if (tagger[i] == "SoftMuonByPtBJetTags")
-				cEvent->getByLabel(Btagger.label()+"SoftMuonByPtBJetTags", SoftMuonByPtBJetTags_Handle);
-			else if (tagger[i] == "SimpleSecondaryVertexBJetTags")
-				cEvent->getByLabel(Btagger.label()+"SimpleSecondaryVertexBJetTags", SimpleSecondaryVertexBJetTags_Handle);
-			else if (tagger[i] == "CombinedSecondaryVertexBJetTags")
-				cEvent->getByLabel(Btagger.label()+"CombinedSecondaryVertexBJetTags", CombinedSecondaryVertexBJetTags_Handle);
-			else if (tagger[i] == "CombinedSecondaryVertexMVABJetTags")
-				cEvent->getByLabel(Btagger.label()+"CombinedSecondaryVertexMVABJetTags", CombinedSecondaryVertexMVABJetTags_Handle);
-			else if (tagger[i] == "puJetIDMET")
-				cEvent->getByLabel(PUJetID.label(), "metId", puJetIDMET_Handle);
-			else if (tagger[i] == "puJetIDFullDiscriminant")
-				cEvent->getByLabel(PUJetID.label(), PUJetID_full.label()+"Discriminant", puJetIDfullDiscriminant_Handle);
-			else if (tagger[i] == "puJetIDCutbasedDiscriminant")
-				cEvent->getByLabel(PUJetID.label(), "cutbasedDiscriminant", puJetIDcutbasedDiscriminant_Handle);
-			else if (tagger[i].find( "puJetIDFull") != std::string::npos)
-				cEvent->getByLabel(PUJetID.label(), PUJetID_full.label()+"Id", puJetIDfull_Handle);
-			else if (tagger[i].find( "puJetIDCutbased") != std::string::npos)
-				cEvent->getByLabel(PUJetID.label(), "cutbasedId", puJetIDcutbased_Handle);
-			else
-			{
-				std::cout << "Tagger '" << tagger[i] << "' not found! " << std::endl;
-				exit(1);
-			}
-		}
-
-		tagmap_b["TrackCountingHighEffBJetTags"] = TrackCountingHighEffBJetTags_Handle;
-		tagmap_b["TrackCountingHighPurBJetTags"] = TrackCountingHighPurBJetTags_Handle;
-		tagmap_b["JetProbabilityBJetTags"] = JetProbabilityBJetTags_Handle;
-		tagmap_b["JetBProbabilityBJetTags"] = JetBProbabilityBJetTags_Handle;
-		tagmap_b["SoftElectronBJetTags"] = SoftElectronBJetTags_Handle;
-		tagmap_b["SoftMuonBJetTags"] = SoftMuonBJetTags_Handle;
-		tagmap_b["SoftMuonByIP3dBJetTags"] = SoftMuonByIP3dBJetTags_Handle;
-		tagmap_b["SoftMuonByPtBJetTags"] = SoftMuonByPtBJetTags_Handle;
-		tagmap_b["SimpleSecondaryVertexBJetTags"] = SimpleSecondaryVertexBJetTags_Handle;
-		tagmap_b["CombinedSecondaryVertexBJetTags"] = CombinedSecondaryVertexBJetTags_Handle;
-		tagmap_b["CombinedSecondaryVertexMVABJetTags"] = CombinedSecondaryVertexMVABJetTags_Handle;
-		tagmap_qg["QGlikelihood"] = QGTagsHandleLikelihood;
-		tagmap_qg["QGmlp"] = QGTagsHandleMLP;
-		tagmap_pu["puJetIDFullDiscriminant"] = puJetIDfullDiscriminant_Handle;
-		tagmap_pu["puJetIDCutbasedDiscriminant"] = puJetIDcutbasedDiscriminant_Handle;
-
 		// Continue normally
 		KBaseMultiLVProducer<reco::PFJetCollection, KJets>::fillProduct(in, out, name, tag, pset);
 	}
@@ -138,32 +63,6 @@ public:
 
 		std::vector<bool> puJetID;
 
-		for (size_t i = 0; i < tagger.size(); ++i)
-		{
-			if ( (tagger[i] == "QGlikelihood") || (tagger[i] == "QGmlp"))
-				out.tags.push_back(getvalue( (*tagmap_qg[tagger[i]])[jetRef] ) );
-			else if ((tagger[i] == "puJetIDFullDiscriminant") || (tagger[i] == "puJetIDCutbasedDiscriminant"))
-				out.tags.push_back(getsignedvalue( (*tagmap_pu[tagger[i]])[jetRef] ) );
-			else if (tagger[i] == "puJetIDFullLoose")
-				puJetID.push_back(( (*puJetIDfull_Handle)[jetRef] & (1 << 2) ) != 0);
-			else if (tagger[i] == "puJetIDFullMedium")
-				puJetID.push_back(( (*puJetIDfull_Handle)[jetRef] & (1 << 1) ) != 0);
-			else if (tagger[i] == "puJetIDFullTight")
-				puJetID.push_back(( (*puJetIDfull_Handle)[jetRef] & (1 << 0) ) != 0);
-			else if (tagger[i] == "puJetIDCutbasedLoose")
-				puJetID.push_back(( (*puJetIDcutbased_Handle)[jetRef] & (1 << 2) ) != 0);
-			else if (tagger[i] == "puJetIDCutbasedMedium")
-				puJetID.push_back(( (*puJetIDcutbased_Handle)[jetRef] & (1 << 1) ) != 0);
-			else if (tagger[i] == "puJetIDCutbasedTight")
-				puJetID.push_back(( (*puJetIDcutbased_Handle)[jetRef] & (1 << 0) ) != 0);
-			else if (tagger[i] == "puJetIDMET")
-				puJetID.push_back(( (*puJetIDMET_Handle)[jetRef] & (1 << 2) ) != 0);
-			else
-			{
-				const reco::JetTagCollection & tags = *(tagmap_b[tagger[i]].product());
-				out.tags.push_back(getvalue( tags[this->nCursor].second ) );
-			}
-		}
 
 		for (unsigned int i = 0; i < puJetID.size(); ++i)
 			out.binaryIds |= puJetID[i] << i;
@@ -215,13 +114,7 @@ public:
 	}
 
 private:
-	std::vector<std::string> tagger;
-
 	KJetMetadata *names;
-
-	std::map< std::string, edm::Handle<edm::ValueMap<float>> > tagmap_qg;
-	std::map< std::string, edm::Handle<edm::ValueMap<float>> > tagmap_pu;
-	std::map< std::string, edm::Handle<reco::JetTagCollection> > tagmap_b;
 
 	edm::InputTag QGtagger;
 	edm::InputTag Btagger;
@@ -249,9 +142,7 @@ private:
 	edm::Handle< edm::ValueMap<float> > puJetIDfullDiscriminant_Handle;
 	edm::Handle< edm::ValueMap<float> > puJetIDcutbasedDiscriminant_Handle;
 
-	static constexpr float default_for_not_defined_tagger_value = -999.;
 
-	float getvalue(const float value){ return (value<0.) ? default_for_not_defined_tagger_value : value; }
 	float getsignedvalue(const float value){ return value; }
 
 };

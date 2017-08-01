@@ -43,7 +43,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				out.dxy = packedLeadTauCand->dxy();
 				if (packedLeadTauCand->bestTrack() != nullptr)
 				{
-					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
+					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
 					KTrackProducer::fillIPInfo(*packedLeadTauCand->bestTrack(), out.track, *RefitVertices, trackBuilder.product());
 				}
 			#else
@@ -113,7 +113,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
 		{
 			cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
-			//cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
+			cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 
 			#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 				std::vector<pat::PackedCandidate const*> tau_picharge;
@@ -428,14 +428,14 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 	public:
 
-		KPatTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+		KPatTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 			BeamSpotSource(cfg.getParameter<edm::InputTag>("offlineBeamSpot")),
 			VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
 			RefitVerticesSource(cfg.getParameter<edm::InputTag>("refitvertexcollection")),
 			_lumi_tree_pointer(_lumi_tree)
 		{
-			//this->tokenBeamSpot = consumescollector.consumes<reco::BeamSpot>(BeamSpotSource);
+			this->tokenBeamSpot = consumescollector.consumes<reco::BeamSpot>(BeamSpotSource);
 			this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
 			this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
 
@@ -465,8 +465,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 						std::cout << "Warining: extrafloatDiscrlist only available in CMSSW_8_0_21 or new" << std::endl;
 				#endif
 				floatDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrBlacklist");
-
-				if(pset.existsAs<edm::InputTag>("beamSpotSource")) consumescollector.consumes<reco::BeamSpot>(pset.getParameter<edm::InputTag>("beamSpotSource"));
 			}
 		}
 
@@ -478,10 +476,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			return true;
 		}
 
-		virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
-		{
-			return true;
-		}
 
 		virtual void fillProduct(const InputType &in, OutputType &out,
 								const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
@@ -644,8 +638,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		edm::InputTag RefitVerticesSource;
 
 		edm::EDGetTokenT<reco::VertexCollection> tokenVertexCollection;
+		edm::EDGetTokenT<reco::BeamSpot> tokenBeamSpot;
 		edm::EDGetTokenT<RefitVertexCollection> tokenRefitVertices;
-		edm::EDGetTokenT<reco::VertexCollection> tokenBeamSpot;
 
 		edm::ESHandle<TransientTrackBuilder> trackBuilder;
 
