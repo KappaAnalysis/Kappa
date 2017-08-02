@@ -222,7 +222,7 @@ public:
                {
                        // set HLT trigger bits
                        edm::Handle<edm::TriggerResults> hTriggerResults;
-                       event.getByLabel(tagHLTResults, hTriggerResults);
+                       event.getByToken(tagHLTResultsToken, hTriggerResults);
 
                        bool hltFAIL = false;
                        metaEvent->bitsHLT.resize(KInfoProducerBase::hltKappa2FWK.size()+1);

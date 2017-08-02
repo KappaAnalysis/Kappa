@@ -52,7 +52,7 @@ public:
 			this->tokenLhe = consumescollector.consumes<LHEEventProduct>(lheSource);
 			this->tokenPuInfo = consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
 			//this->tokenLHERunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
-			this->tokenRunInfo = consumescollector.consumes<LHERunInfoProduct>(runInfo);
+			this->tokenRunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
 
 			genEventInfoMetadata = new KGenEventInfoMetadata();
 			_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
@@ -71,25 +71,6 @@ public:
 			return false;
 		if (forceLumi > 0)
 			this->metaLumi->nLumi = forceLumi;
-		{
-	#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 6) || (CMSSW_MAJOR_VERSION > 7) 
-			// print available lheWeights
-			edm::Handle<LHERunInfoProduct> runhandle;
-			if((this->verbosity > 1) && lumiBlock.getRun().getByToken( tokenRunInfo, runhandle ))
-			{
-				LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
-				for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
-				{
-					std::cout << iter->tag() << std::endl;
-					std::vector<std::string> lines = iter->lines();
-					for (unsigned int iLine = 0; iLine<lines.size(); iLine++)
-					{
-							std::cout << lines.at(iLine);
-					}
-				}
-			}
-	#endif
-		}
 	return true;
 	}
 
@@ -237,6 +218,22 @@ public:
 			this->metaRun->xSectionExt = -1;
 		if (invalidGenInfo)
 			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
+
+		// print available lheWeights
+		edm::Handle<LHERunInfoProduct> runhandle;
+		if((this->verbosity > 1) && run.getByToken( tokenRunInfo, runhandle ))
+		{
+			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
+			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
+			{
+				std::cout << iter->tag() << std::endl;
+				std::vector<std::string> lines = iter->lines();
+				for (unsigned int iLine = 0; iLine<lines.size(); iLine++)
+				{
+						std::cout << lines.at(iLine);
+				}
+			}
+		}
 		return true;
 	}
 
