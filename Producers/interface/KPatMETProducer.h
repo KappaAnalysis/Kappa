@@ -14,7 +14,6 @@
 #include <DataFormats/METReco/interface/PFMET.h>
 #include <DataFormats/PatCandidates/interface/MET.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KPatMETProducer : public KBaseMultiProducer<edm::View<pat::MET>, KMET>
 {
@@ -33,15 +32,11 @@ public:
 		// fill properties of basic MET
 		KMETProducer::fillMET<pat::MET>(in, out);
 		if(uncor){
-			#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 6) || (CMSSW_MAJOR_VERSION > 7)
 				out.p4 = in.uncorP4();
 				out.sumEt = in.uncorSumEt();
 				if (verbosity > 0){
 					std::cout << "KPatMETProducer::fillMET : MET uncorrection enabled."<< std::endl;
-				}
-			#else
-			std::cout << "ERROR: MET is not uncorrected! Use CMSSW 7 or higher to use this feature." << std::endl; 
-			#endif
+			}
 		}
 		if(in.isPFMET())
 		{
@@ -54,7 +49,6 @@ public:
 			out.hfHadronFraction = in.Type6EtFraction();
 			out.hfEMFraction = in.Type7EtFraction();
 		}
-		#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 6) || (CMSSW_MAJOR_VERSION > 7)
 			// retrieve and save shifted four vector and sumEt of MET for all uncertainties
 			for (const auto metUnc : KMETUncertainty::All)
 			{
@@ -70,7 +64,6 @@ public:
 				copyP4(in.shiftedP4(static_cast<pat::MET::METUncertainty>(metUnc)),out.p4_shiftedByUncertainties[static_cast<KMETUncertainty::Type>(metUnc)]);
 				out.sumEt_shiftedByUncertainties[static_cast<KMETUncertainty::Type>(metUnc)] = in.shiftedSumEt(static_cast<pat::MET::METUncertainty>(metUnc));
 			}
-		#endif
 	}
 
 protected:

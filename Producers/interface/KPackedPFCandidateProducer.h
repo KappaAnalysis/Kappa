@@ -7,14 +7,12 @@
 #ifndef KAPPA_PackedPFCandidatePRODUCER_H
 #define KAPPA_PackedPFCandidatePRODUCER_H
 
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/PatCandidates/interface/PackedCandidate.h>
 #include <DataFormats/ParticleFlowCandidate/interface/PFCandidate.h>
 #include <DataFormats/ParticleFlowCandidate/interface/PFCandidateFwd.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KPackedPFCandidateProducer : public KBaseMultiLVProducer<edm::View<pat::PackedCandidate>, KPFCandidates>
 {
@@ -46,5 +44,4 @@ public:
 	}
 };
 
-#endif
 #endif

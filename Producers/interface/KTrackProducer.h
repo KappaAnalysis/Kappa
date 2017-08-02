@@ -14,7 +14,6 @@
 #include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
 #include "TrackingTools/IPTools/interface/IPTools.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 #include "../../Producers/interface/KVertexProducer.h"
 #include "../../Producers/interface/KRefitVertexProducer.h"
 
@@ -56,11 +55,7 @@ public:
 		out.nPixelLayers = in.hitPattern().pixelLayersWithMeasurement();
 		out.nStripLayers = in.hitPattern().stripLayersWithMeasurement();
 		out.nTrackerLayersNew = in.hitPattern().trackerLayersWithMeasurement();
-#if (CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2) || CMSSW_MAJOR_VERSION >= 8
 		out.nInnerHits = in.hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
-#else
-		out.nInnerHits = in.trackerExpectedHitsInner().numberOfHits();
-#endif
 
 		// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L3-L49
 		for (unsigned int index1 = 0; index1 < reco::Track::dimension; ++index1)

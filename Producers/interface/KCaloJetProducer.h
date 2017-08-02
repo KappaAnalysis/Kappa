@@ -10,7 +10,6 @@
 
 #include "KBaseMultiLVProducer.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 #include <DataFormats/JetReco/interface/CaloJet.h>
 #include <DataFormats/JetReco/interface/JetID.h>
 

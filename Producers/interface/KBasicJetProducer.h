@@ -11,7 +11,6 @@
 
 #include "KBaseMultiLVProducer.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 #include <DataFormats/JetReco/interface/PFJet.h>
 
 class KBasicJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, std::vector<KBasicJet> >

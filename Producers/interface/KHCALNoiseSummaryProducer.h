@@ -9,7 +9,6 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/HcalNoiseSummary.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KHCALNoiseSummaryProducer : public KBaseMultiProducer<HcalNoiseSummary, KHCALNoiseSummary>
 {

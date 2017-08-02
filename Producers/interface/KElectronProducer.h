@@ -15,13 +15,10 @@
 #include <DataFormats/BeamSpot/interface/BeamSpot.h>
 #include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 #include "boost/functional/hash.hpp"
 #include "EgammaAnalysis/ElectronTools/interface/EGammaCutBasedEleId.h"
 #include "../../Producers/interface/KRefitVertexProducer.h"
-#if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2) || CMSSW_MAJOR_VERSION >= 8
-	#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
-#endif
+#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
 
 class KElectronProducer : public KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>
@@ -169,9 +166,7 @@ public:
 		out.dEtaIn = in.deltaEtaSuperClusterTrackAtVtx();
 		out.dPhiIn = in.deltaPhiSuperClusterTrackAtVtx();
 		out.sigmaIetaIeta = in.sigmaIetaIeta();
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 1) || CMSSW_MAJOR_VERSION >= 8
 		out.full5x5_sigmaIetaIeta = in.full5x5_sigmaIetaIeta();
-#endif
 		out.hadronicOverEm = in.hadronicOverEm();
 		out.fbrem = in.fbrem();
 		if(in.superCluster().isNonnull())
@@ -218,7 +213,6 @@ public:
 
 		if (doPfIsolation_)
 			doPFIsolation(in, out);
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 		else {
 			// fall back on built-in methods, where available
 			out.sumChargedHadronPt = in.pfIsolationVariables().sumChargedHadronPt;
@@ -226,7 +220,6 @@ public:
 			out.sumNeutralHadronEt = in.pfIsolationVariables().sumNeutralHadronEt;
 			out.sumPUPt            = in.pfIsolationVariables().sumPUPt;
 		}
-#endif
 		if (doPfIsolation_ && doCutbasedIds_ && !doAuxIds_)
 			doCutbasedIds(in,out);
 		if(doMvaIds_)
@@ -268,7 +261,6 @@ protected:
 		const reco::GsfElectron* eGSF = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
 
 		double rhoIso = *(rhoIso_h.product());
-#if (CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION == 3 && CMSSW_REVISION >= 15) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 2) || CMSSW_MAJOR_VERSION >= 8
 		bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
 			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 		bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
@@ -277,16 +269,6 @@ protected:
 			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso, ElectronEffectiveArea::kEleEAData2012);
 		bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
 			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso, ElectronEffectiveArea::kEleEAData2012);
-#else
-		bool cutbasedIDloose = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::LOOSE,
-			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso);
-		bool cutbasedIDmedium = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::MEDIUM,
-			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso);
-		bool cutbasedIDtight = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::TIGHT,
-			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso);
-		bool cutbasedIDveto = EgammaCutBasedEleId::PassWP(EgammaCutBasedEleId::VETO,
-			*eGSF, hConversions, tmpbeamSpot, VertexCollection, out.sumChargedHadronPt, out.sumPhotonEt, out.sumNeutralHadronEt, rhoIso);
-#endif
 		out.ids = 1 << KLeptonId::ANY;  // mark it as filled
 		out.ids |= cutbasedIDloose << KLeptonId::LOOSE;
 		out.ids |= cutbasedIDmedium << KLeptonId::MEDIUM;

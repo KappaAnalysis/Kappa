@@ -8,7 +8,6 @@
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/L1Trigger/interface/L1MuonParticle.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KL1MuonProducer : public KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1Muons>
 {

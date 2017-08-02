@@ -15,7 +15,6 @@
 #include "KBaseMultiProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 #include <bitset>
 
 template<typename TProduct>
@@ -57,7 +56,6 @@ protected:
 			out.particleinfo |= (127 << KGenParticleStatusPosition);
 		out.daughterIndices = daughters;
 
-#if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
 		// generator-independent flags
 		reco::GenStatusFlags flags = (static_cast<const reco::GenParticle*>(&in))->statusFlags();
 		out.particleinfo |= (flags.isPrompt()                           << KGenStatusFlags::isPrompt);
@@ -72,7 +70,6 @@ protected:
 		out.particleinfo |= (flags.isHardProcessTauDecayProduct()       << KGenStatusFlags::isHardProcessTauDecayProduct);
 		out.particleinfo |= (flags.isDirectHardProcessTauDecayProduct() << KGenStatusFlags::isDirectHardProcessTauDecayProduct);
 		out.particleinfo |= (flags.isLastCopy()                         << KGenStatusFlags::isLastCopy);
-#endif
 	}
 
 	virtual bool acceptSingle(const typename KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>::SingleInputType& in)

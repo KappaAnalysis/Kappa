@@ -13,7 +13,6 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/BTauReco/interface/JetTag.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KJetProducer : public KBaseMultiLVProducer<reco::PFJetCollection, KJets>
 {
@@ -81,9 +80,6 @@ public:
 			in.muonEnergyFraction() +
 			in.photonEnergyFraction() +
 			in.electronEnergyFraction() +
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION < 3) || (CMSSW_MAJOR_VERSION < 7)
-			in.HFHadronEnergyFraction() +
-#endif
 			in.HFEMEnergyFraction();
 		out.neutralHadronFraction = in.neutralHadronEnergyFraction() / sumFractions;
 		out.chargedHadronFraction = in.chargedHadronEnergyFraction() / sumFractions;
@@ -96,18 +92,11 @@ public:
 		// JEC factor (a member of PFJet would be better, but if everything is right, this should be equivalent)
 		out.corrections.push_back(sumFractions);
 
-// energy fraction definitions have changed in CMSSW 7.3.X
 // fractions should add up to unity
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7) 
 		assert(out.neutralHadronFraction >= out.hfHadronFraction);
 		assert(std::abs(out.neutralHadronFraction + out.chargedHadronFraction +
 			out.muonFraction + out.photonFraction + out.electronFraction +
 			out.hfEMFraction - 1.0f) < 0.001f);
-#else
-		assert(std::abs(out.neutralHadronFraction + out.chargedHadronFraction +
-			out.muonFraction + out.photonFraction + out.electronFraction +
-			out.hfHadronFraction + out.hfEMFraction - 1.0f) < 0.001f);
-#endif
 		assert(std::abs(in.neutralEmEnergyFraction() - in.photonEnergyFraction() -
 			in.HFEMEnergyFraction()) < 0.001f);
 		assert(std::abs(in.chargedEmEnergyFraction() - in.electronEnergyFraction()) < 0.001f);

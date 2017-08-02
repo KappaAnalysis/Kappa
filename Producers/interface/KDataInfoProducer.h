@@ -9,7 +9,6 @@
 
 #include <DataFormats/Luminosity/interface/LumiSummary.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 #include "KInfoProducer.h"
 
 
