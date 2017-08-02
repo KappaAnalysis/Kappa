@@ -19,6 +19,10 @@
 
 #include "KInfoProducer.h"
 
+#include <boost/regex.hpp>
+
+#include <numeric>
+
 
 // MC data
 struct KGenInfo_Product
@@ -225,11 +229,13 @@ public:
 			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
 			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
 			{
-				std::cout << iter->tag() << std::endl;
 				std::vector<std::string> lines = iter->lines();
-				for (unsigned int iLine = 0; iLine<lines.size(); iLine++)
+				std::string content = accumulate(lines.begin(), lines.end(), std::string("\n"));
+				for (boost::sregex_token_iterator matches(content.begin(), content.end(), boost::regex("<weightgroup(?:(?!<weightgroup).)*</weightgroup>"), 0);
+				     matches != boost::sregex_token_iterator(); ++matches)
 				{
-						std::cout << lines.at(iLine);
+					std::cout << "LHE weights for tag \"" << iter->tag() << "\":" << std::endl;
+					std::cout << *matches  << std::endl;
 				}
 			}
 		}
