@@ -113,7 +113,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	data = datasetsHelper.isData(nickname)
 	isEmbedded = datasetsHelper.isEmbedded(nickname)
-	print nickname
+	print "nickmane:", nickname
+
 	#####miniaod = datasetsHelper.isMiniaod(nickname) not used anymore, since everything is MiniAOD now
 	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 
@@ -337,7 +338,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.p *= getattr(process, taus)
 	
 	process.kappaTuple.active += cms.vstring('PatTaus')
-	process.kappaTuple.PatTaus.taus.kshortinformation = cms.untracked.bool(True)
+	if len(datasetsHelper.get_nicks_with_query(query='{"process" : "QCD"}', pre_selected_nicks = [nickname])) > 0 or data:
+		process.kappaTuple.PatTaus.taus.kshortinformation = cms.untracked.bool(True)
 	process.kappaTuple.PatTaus.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 	#process.kappaTuple.PatTaus.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS")
 	process.kappaTuple.PatTaus.offlineBeamSpot = cms.InputTag("offlineBeamSpot")
