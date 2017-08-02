@@ -292,15 +292,12 @@ struct KKaonCandidate : public KPFCandidate
 {
 	virtual ~KKaonCandidate() {};
 
-	KTransTrack firstTransTrack;// remove
-	KTransTrack secondTransTrack;// remove
 	KPFCandidate firstTransPFCand;
 	KPFCandidate secondTransPFCand;
 	//std::vector<KTransTrack> TrackPair;
 
 	KVertex secondaryVertex;
 
-	bool isValid = false;
 	bool statusOfClosestApproachInRPhi = false;
 	float distanceOfClosestApproach = -1;
 	// 2D
