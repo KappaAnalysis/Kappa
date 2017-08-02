@@ -32,7 +32,6 @@
 #include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 #include <FWCore/Framework/interface/EDProducer.h>
 #include <DataFormats/VertexReco/interface/Vertex.h>
-#include "../../Producers/interface/Consumes.h"
 #include "boost/functional/hash.hpp"
 
 class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>
@@ -295,27 +294,14 @@ public:
 		    if release < 74X, otherwise use the method in the muon dataformat
 			last update: 2015-06-19
 		*/
-#if (CMSSW_MAJOR_VERSION < 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION < 4)
-		bool goodGlb = in.isGlobalMuon() &&
-			       (in.globalTrack().isNonnull() ? (in.globalTrack()->normalizedChi2() < 3.) : 0 ) &&
-			       in.combinedQuality().chi2LocalPosition < 12. &&
-			       in.combinedQuality().trkKink < 20.;
-		bool isMediumMuon = (in.innerTrack().isNonnull() ? (in.innerTrack()->validFraction() >= 0.8) : 0 ) &&
-			       muon::segmentCompatibility(in) >= (goodGlb ? 0.303 : 0.451);
-#else
 		bool isMediumMuon = muon::isMediumMuon(in);
-#endif
 
 		out.ids = KLeptonId::ANY;
 		out.ids |= (muon::isLooseMuon(in)      << KLeptonId::LOOSE);
 		out.ids |= (isMediumMuon               << KLeptonId::MEDIUM);
 		out.ids |= (muon::isTightMuon(in, vtx) << KLeptonId::TIGHT);
 		out.ids |= (muon::isSoftMuon(in, vtx)  << KLeptonId::SOFT);
-#if CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION < 15
-		out.ids |= (muon::isHighPtMuon(in, vtx, reco::improvedTuneP) << KLeptonId::HIGHPT);
-#else
 		out.ids |= (muon::isHighPtMuon(in, vtx) << KLeptonId::HIGHPT);
-#endif
 		assert((out.ids & 145) == 0); // 145 = 0b10010001, these bits should be zero
 	}
 

@@ -10,7 +10,6 @@
 #include "KBaseMultiLVProducer.h"
 #include <DataFormats/ParticleFlowCandidate/interface/PFCandidate.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KPFCandidateProducer : public KBaseMultiLVProducer<edm::View<reco::PFCandidate>, KPFCandidates>
 {

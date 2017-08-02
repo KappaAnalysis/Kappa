@@ -12,7 +12,6 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/VertexReco/interface/Vertex.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KVertexProducer : public KBaseMultiVectorProducer<edm::View<reco::Vertex>, std::vector<KVertex> >
 {

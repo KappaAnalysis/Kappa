@@ -7,7 +7,6 @@
 #include "DataFormats/JetReco/interface/GenJet.h"
 #include "PhysicsTools/JetMCUtils/interface/JetMCTag.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 #include "KBaseMultiLVProducer.h"
 

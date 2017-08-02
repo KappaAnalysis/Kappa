@@ -23,7 +23,6 @@
 #include <FWCore/ParameterSet/interface/ParameterSet.h>
 #include <FWCore/Utilities/interface/InputTag.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 #include <DataFormats/Common/interface/TriggerResults.h>
 #include <DataFormats/HLTReco/interface/TriggerEvent.h>
@@ -222,7 +221,7 @@ public:
                {
                        // set HLT trigger bits
                        edm::Handle<edm::TriggerResults> hTriggerResults;
-                       event.getByLabel(tagHLTResults, hTriggerResults);
+                       event.getByToken(tagHLTResultsToken, hTriggerResults);
 
                        bool hltFAIL = false;
                        metaEvent->bitsHLT.resize(KInfoProducerBase::hltKappa2FWK.size()+1);

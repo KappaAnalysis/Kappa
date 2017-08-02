@@ -6,17 +6,13 @@
 #include "KTauProducer.h"
 #include "KVertexProducer.h"
 #include "KVertexSummaryProducer.h"
-
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "KPackedPFCandidateProducer.h"
 #include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
 #include "TrackingTools/PatternTools/interface/ClosestApproachInRPhi.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
-#endif
 
 #include <DataFormats/PatCandidates/interface/Tau.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 #include "boost/functional/hash.hpp"
 
 #if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
@@ -37,7 +33,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			if(in.isPFTau())
 				out.leptonInfo |= KLeptonPFMask;
 
-			#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 				pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(in.leadChargedHadrCand().get());
 				out.dz = packedLeadTauCand->dz();
 				out.dxy = packedLeadTauCand->dxy();
@@ -46,22 +41,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
 					KTrackProducer::fillIPInfo(*packedLeadTauCand->bestTrack(), out.track, *RefitVertices, trackBuilder.product());
 				}
-			#else
-				if (in.leadPFChargedHadrCand().isNonnull())
-				{
-					if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
-					{
-						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
-						KTrackProducer::fillIPInfo(*in.leadPFChargedHadrCand()->trackRef(), out.track, *RefitVertices, trackBuilder.product());
-					}
-					else if (in.leadPFChargedHadrCand()->gsfTrackRef().isNonnull())
-					{
-						KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
-						KTrackProducer::fillIPInfo(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, *RefitVertices, trackBuilder.product());
-						out.leptonInfo |= KLeptonAlternativeTrackMask;
-					}
-				}
-			#endif
 				else // at least fill reference point
 				{
 					out.track.ref.SetXYZ(in.vertex().x(), in.vertex().y(), in.vertex().z());
@@ -115,7 +94,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
 			cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 
-			#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 				std::vector<pat::PackedCandidate const*> tau_picharge;
 
 				for(size_t i = 0; i < in.signalChargedHadrCands().size(); ++i)
@@ -181,7 +159,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalGammaCands()[i].get()), outCandidate);
 					out.gammaCandidates.push_back(outCandidate);
 				}
-			#endif
 
 			std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 			std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());

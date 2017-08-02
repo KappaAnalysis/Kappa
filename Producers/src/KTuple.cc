@@ -46,9 +46,7 @@
 #include "../interface/KMuonProducer.h"
 #include "../interface/KElectronProducer.h"
 #include "../interface/KPFCandidateProducer.h"
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "../interface/KPackedPFCandidateProducer.h"
-#endif
 #include "../interface/KTaupairVerticesMapProducer.h"
 #include "../interface/KBasicJetProducer.h"
 #include "../interface/KMETProducer.h"
@@ -65,14 +63,10 @@
 // #include "../interface/KLeptonPairProducer.h" not used in an config atm
 #include "../interface/KTrackSummaryProducer.h"
 #include "../interface/KTriggerObjectProducer.h"
-#if CMSSW_MAJOR_VERSION >= 7
 #include "../interface/KTriggerObjectStandaloneProducer.h"
-#endif
 #include "../interface/KVertexProducer.h"
 #include "../interface/KVertexSummaryProducer.h"
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "../interface/KRefitVertexProducer.h"
-#endif
 /* are these still used?
 #include "../interface/KHepMCPartonProducer.h"
 #include "../interface/KL1MuonProducer.h"
@@ -225,9 +219,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KMuonProducer>(active[i]);
 		addProducer<KElectronProducer>(active[i]);
 		addProducer<KPFCandidateProducer>(active[i]);
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 		addProducer<KPackedPFCandidateProducer>(active[i]);
-#endif
 		addProducer<KBasicJetProducer>(active[i]);
 		addProducer<KMETProducer>(active[i]);
 		addProducer<KPatMETProducer>(active[i]);
@@ -244,14 +236,10 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 //		addProducer<KLeptonPairProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);
 		addProducer<KTriggerObjectProducer>(active[i]);
-#if CMSSW_MAJOR_VERSION >= 7
 		addProducer<KTriggerObjectStandaloneProducer>(active[i]);
-#endif
 		addProducer<KVertexProducer>(active[i]);
 		addProducer<KVertexSummaryProducer>(active[i]);
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 		addProducer<KRefitVertexProducer>(active[i]);
-#endif
 		addProducer<KTreeInfoProducer >(active[i]);
 /* are these still used?
 		else if (active[i] == "L1Muons")

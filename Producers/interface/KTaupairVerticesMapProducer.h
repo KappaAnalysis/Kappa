@@ -16,7 +16,6 @@
 #include "RecoVertex/AdaptiveVertexFit/interface/AdaptiveVertexFitter.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KTaupairVerticesMapProducer : public KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>
 {
@@ -134,15 +133,9 @@ private:
 
 	const void removeTauTracks(const reco::PFTau tau, std::vector<const reco::Track*> &recoTracks)
 	{
-#if CMSSW_MAJOR_VERSION >= 7
 		const std::vector<edm::Ptr<reco::PFCandidate> > tauPFCHD = tau.signalPFChargedHadrCands();
 		for(std::vector<edm::Ptr<reco::PFCandidate> >::const_iterator chargedHadronCand = tauPFCHD.begin();
 			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
-#else
-		const reco::PFCandidateRefVector tauPFCHD = tau.signalPFChargedHadrCands();
-		for(reco::PFCandidateRefVector::const_iterator chargedHadronCand = tauPFCHD.begin();
-			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
-#endif
 		{
 			for(size_t i = 0; i < recoTracks.size(); ++i)
 			{
@@ -170,15 +163,9 @@ private:
 			}
 			unsigned int commonTracks = 0;
 			// if all chargedHadronCands of a tau have tracks in common with the PV, take this tau and add it to lists
-#if CMSSW_MAJOR_VERSION >= 7
 			const std::vector<edm::Ptr<reco::PFCandidate> > tauPFCHD = tau->signalPFChargedHadrCands();
 			for(std::vector<edm::Ptr<reco::PFCandidate> >::const_iterator chargedHadronCand = tauPFCHD.begin();
 			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
-#else
-			const reco::PFCandidateRefVector tauPFCHD = tau->signalPFChargedHadrCands();
-			for(reco::PFCandidateRefVector::const_iterator chargedHadronCand = tauPFCHD.begin();
-			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
-#endif
 			{
 				for(size_t i = 0; i < recoTracks.size(); ++i)
 				{
