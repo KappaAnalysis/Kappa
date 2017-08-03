@@ -128,25 +128,25 @@ public:
 		// Get LHE renormalization and factorization weights
 		if((lheWeightRegexes.size() > 0) && event.getByToken(tokenLhe, lheEventProduct) && lheEventProduct.isValid())
 		{
-			this->metaEvent->lheWeight.clear();
+			this->metaEvent->lheWeights.clear();
 			for(size_t j = 0; j < genEventInfoMetadata->lheWeightNames.size(); j++)
 			{
 				for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
 				{
 					if(lheEventProduct->weights()[i].id.compare(genEventInfoMetadata->lheWeightNames[j]) == 0)
 					{
-						this->metaEvent->lheWeight.push_back(lheEventProduct->weights()[i].wgt / lheEventProduct->originalXWGTUP() );
+						this->metaEvent->lheWeights.push_back(lheEventProduct->weights()[i].wgt / lheEventProduct->originalXWGTUP() );
 						break;
 					}
 				}
-				if (this->metaEvent->lheWeight.size() != j+1) // check that exactly one weight has been added
+				if (this->metaEvent->lheWeights.size() != j+1) // check that exactly one weight has been added
 				{
 					if(this->verbosity > 0)
 						std::cout << "Warning: Weight with id " << genEventInfoMetadata->lheWeightNames[j] << std::endl;
-					this->metaEvent->lheWeight.push_back(-999.0);
+					this->metaEvent->lheWeights.push_back(-999.0);
 				}
 			}
-			assert( this->metaEvent->lheWeight.size() == this->genEventInfoMetadata->lheWeightNames.size() ); // crosscheck, should never trigger
+			assert( this->metaEvent->lheWeights.size() == this->genEventInfoMetadata->lheWeightNames.size() ); // crosscheck, should never trigger
 		}
 
 		// Get generator event info:
