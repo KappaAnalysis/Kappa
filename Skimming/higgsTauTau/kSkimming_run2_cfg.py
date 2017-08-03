@@ -99,7 +99,6 @@ def getBaseConfig(
 	process.kappaTuple.profile    = cms.bool(True)
 
 	
-	# TODO set global tag from dataset.json
 	globaltag = datasetsHelper.getGlobalTag(nickname)
 	print "Global Tag:", globaltag
 	process.GlobalTag.globaltag = globaltag
