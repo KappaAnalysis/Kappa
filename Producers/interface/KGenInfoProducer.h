@@ -86,9 +86,9 @@ public:
 		{
 			for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
 			{
-				for(auto validIds : lheWeightRegexes)
+				for(std::string lheWeightRegex : lheWeightRegexes)
 				{
-					if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, validIds))
+					if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, lheWeightRegex))
 					{
 						genEventInfoMetadata->lheWeightNames.push_back(lheEventProduct->weights()[i].id);
 					}
@@ -226,7 +226,7 @@ public:
 
 		// print available lheWeights
 		edm::Handle<LHERunInfoProduct> runhandle;
-		if (run.getByToken(tokenRunInfo, runhandle))
+		if ((lheWeightRegexes.size() > 0) && run.getByToken(tokenRunInfo, runhandle))
 		{
 			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
 			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
@@ -268,14 +268,21 @@ public:
 							weightTypeDetail = boost::algorithm::trim_copy(std::string(weightRegexResult[2].first, weightRegexResult[2].second));
 						}
 						
-						std::string weightTypeFull = weightType + "__" + weightTypeDetail;
-						boost::replace_all(weightTypeFull, " ", "_");
-						boost::replace_all(weightTypeFull, "=", "_");
-						boost::replace_all(weightTypeFull, ".", "_");
-						
-						if (this->verbosity > 1)
+						for(std::string lheWeightRegex : lheWeightRegexes)
 						{
-							std::cout << weightId << " -> " << weightTypeFull << std::endl;
+							if(KBaseProducer::regexMatch(weightId, lheWeightRegex))
+							{
+								std::string weightTypeFull = weightType + "__" + weightTypeDetail;
+								boost::replace_all(weightTypeFull, " ", "_");
+								boost::replace_all(weightTypeFull, "=", "_");
+								boost::replace_all(weightTypeFull, ".", "_");
+								
+								if (this->verbosity > 1)
+								{
+									std::cout << weightId << " -> " << weightTypeFull << std::endl;
+								}
+								this->metaRun->lheWeightNamesMap[weightTypeFull] = weightId;
+							}
 						}
 					}
 				}

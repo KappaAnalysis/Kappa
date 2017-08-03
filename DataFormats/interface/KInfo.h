@@ -48,6 +48,8 @@ struct KGenRunInfo
 	double filterEff;              //< generator filter efficiency
 	double xSectionExt;            //< external process cross section
 	double xSectionInt;            //< internal process cross section
+	
+	std::map<std::string, std::string> lheWeightNamesMap; //< human readable names mapped to indices
 };
 
 struct KDataLumiInfo : public KLumiInfo
