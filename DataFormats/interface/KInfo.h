@@ -136,7 +136,7 @@ struct KGenEventInfoMetadata
 			{
 				if (lheWeightNames.at(lheWeightNameIndex).compare(requestedNames[index]) == 0)
 				{
-					resultMap[requestedNames[index]] = index;
+					resultMap[requestedNames[index]] = lheWeightNameIndex;
 					assert( !found ); // misconfiguration: the requested name matches more than once
 					found = true;
 				}
