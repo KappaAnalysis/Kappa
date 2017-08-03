@@ -20,6 +20,7 @@
 #include "KInfoProducer.h"
 
 #include <boost/regex.hpp>
+#include <boost/algorithm/string/replace.hpp>
 
 #include <numeric>
 
@@ -231,11 +232,44 @@ public:
 			{
 				std::vector<std::string> lines = iter->lines();
 				std::string content = accumulate(lines.begin(), lines.end(), std::string("\n"));
-				for (boost::sregex_token_iterator matches(content.begin(), content.end(), boost::regex("<weightgroup(?:(?!<weightgroup).)*</weightgroup>"), 0);
-				     matches != boost::sregex_token_iterator(); ++matches)
+				boost::regex weightGroupRegex("<weightgroup(?:(?!<weight).)*\\htype\\h*=\\h*\"((?:(?!<weight).)*)\"(?:(?!<weight).)*>(?:(?!<weightgroup).)*</weightgroup>");
+				for (boost::sregex_token_iterator weightGroup(content.begin(), content.end(), weightGroupRegex, 0);
+				     weightGroup != boost::sregex_token_iterator(); ++weightGroup)
 				{
-					std::cout << "LHE weights for tag \"" << iter->tag() << "\":" << std::endl;
-					std::cout << *matches  << std::endl;
+					std::string weightGroupStr = *weightGroup;
+					std::cout << "\nLHE weights for tag \"" << iter->tag() << "\":" << std::endl;
+					
+					boost::match_results<std::string::iterator> weightGroupRegexResult;
+					std::string weightType;
+					if (boost::regex_search(weightGroupStr.begin(), weightGroupStr.end(), weightGroupRegexResult, weightGroupRegex, boost::match_default) &&
+					    (weightGroupRegexResult.size() > 1))
+					{
+						weightType = std::string(weightGroupRegexResult[1].first, weightGroupRegexResult[1].second);
+					}
+					
+					boost::regex weightRegex("<weight(?:(?!<weight).)*\\hid\\h*=\\h*\"(\\d+)\"(?:(?!<weight).)*>((?:(?!<weight).)*)</weight>");
+					boost::match_results<std::string::iterator> weightRegexResult;
+					for (boost::sregex_token_iterator weight(weightGroupStr.begin(), weightGroupStr.end(), weightRegex, 0);
+					     weight != boost::sregex_token_iterator(); ++weight)
+					{
+						std::string weightStr = *weight;
+						
+						boost::match_results<std::string::iterator> weightRegexResult;
+						std::string weightId;
+						std::string weightTypeDetail;
+						if (boost::regex_search(weightStr.begin(), weightStr.end(), weightRegexResult, weightRegex, boost::match_default) &&
+						    (weightRegexResult.size() > 2))
+						{
+							weightId = std::string(weightRegexResult[1].first, weightRegexResult[1].second);
+							weightTypeDetail = std::string(weightRegexResult[2].first, weightRegexResult[2].second);
+						}
+						
+						std::string weightTypeFull = weightType + "__" + weightTypeDetail;
+						boost::replace_all(weightTypeFull, " ", "");
+						boost::replace_all(weightTypeFull, ".", "_");
+						
+						std::cout << weightId << " -> " << weightTypeFull << std::endl;
+					}
 				}
 			}
 		}
