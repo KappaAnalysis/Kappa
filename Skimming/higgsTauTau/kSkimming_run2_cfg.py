@@ -31,23 +31,20 @@ import Kappa.Skimming.tools as tools
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('python')
-options.register('globalTag', '76X_mcRun2_asymptotic_RunIIFall15DR76_v1', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'GlobalTag')
-options.register('kappaTag', 'KAPPA_2_0_0', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'KappaTag')
-options.register('nickname', 'SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Dataset Nickname')
-options.register('testfile', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Path for a testfile')
+options.register('nickname', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Dataset Nickname')
+options.register('testfile', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Path for a testfile. If no test file is given, nickname is used to get a test file with xrootd.')
 options.register('maxevents', -1, VarParsing.multiplicity.singleton, VarParsing.varType.int, 'maxevents. -1 for all events. Default: -1')
-options.register('outputfilename', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Filename for the Outputfile')
-options.register('testsuite', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'Run the Kappa test suite. Default: True')
+options.register('outputfilename', 'kappaTuple.root', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Filename for the Outputfile')
+options.register('mode', 'testsuite', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Mode to run. Options: ["testuite" (Default), "local", "crab", "gc"]')
 options.register('preselect', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'apply preselection at CMSSW level on leptons. Never preselect on SM Higgs samples')
 options.register('dumpPython', False, VarParsing.multiplicity.singleton, VarParsing.varType.bool, 'write cmsRun config to dumpPython.py')
 options.parseArguments()
 
-def getBaseConfig( globaltag= 'START70_V7::All',
-	testfile=cms.untracked.vstring(""),
-	maxevents=50,
-	nickname = 'SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8',
-	kappaTag = 'Kappa_2_0_0',
-	outputfilename = ''):
+def getBaseConfig( 
+	nickname,
+	testfile=False, # false if not given, string otherwise
+	maxevents=-1,
+	outputfilename = 'kappaTuple.root'):
 
 	from Kappa.Skimming.KSkimming_template_cfg import process
 	## ------------------------------------------------------------------------
@@ -92,7 +89,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	# Configure Kappa
 	if testfile:
-		process.source.fileNames      = testfile
+		process.source.fileNames      = cms.untracked.vstring("%s"%testfile)
 	else:
 		process.source 			  = cms.Source('PoolSource', fileNames=cms.untracked.vstring())
 	process.maxEvents.input	      = maxevents
@@ -100,9 +97,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# uncomment the following option to select only running on certain luminosity blocks. Use only for debugging
 	# process.source.lumisToProcess  = cms.untracked.VLuminosityBlockRange("1:500-1:1000")
 	process.kappaTuple.profile    = cms.bool(True)
-	if not globaltag.lower() == 'auto' :
-		process.GlobalTag.globaltag   = globaltag
-		print "GT (overwritten):", process.GlobalTag.globaltag
+
+	
+	# TODO set global tag from dataset.json
+	globaltag = datasetsHelper.getGlobalTag(nickname)
+	print "Global Tag:", globaltag
+	process.GlobalTag.globaltag = globaltag
 
 	## ------------------------------------------------------------------------
 
@@ -113,10 +113,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	data = datasetsHelper.isData(nickname)
 	isEmbedded = datasetsHelper.isEmbedded(nickname)
-	print "nickmane:", nickname
+	print "nickname:", nickname
 
 	#####miniaod = datasetsHelper.isMiniaod(nickname) not used anymore, since everything is MiniAOD now
-	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
+	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname)
 
 	## ------------------------------------------------------------------------
 
@@ -582,50 +582,67 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 
-	# test with user-defined input file
-	if options.testfile:
-		print 'read from testfile '+str(options.testfile)
+	# local testing with user-defined input file
+	if options.mode == "local":
+		if options.testfile == '': # get testfile from DBS
+			testfile = datasetsHelper.get_testfile_for_nick(options.nickname)
+		else:
+			testfile = options.testfile
+		print 'read from testfile '+str(testfile)
 		process = getBaseConfig(
-			globaltag=options.globalTag,
 			nickname=options.nickname,
-			kappaTag=options.kappaTag,
-			testfile=cms.untracked.vstring("%s"%options.testfile),
-			maxevents=options.maxevents,
-			outputfilename=options.outputfilename
+			testfile=testfile,
+			outputfilename=options.outputfilename,
+			maxevents=options.maxevents
 			)
 
 	# CRAB job-submission
-	elif options.outputfilename:
+	elif options.mode == "crab":
 		process = getBaseConfig(
-			globaltag=options.globalTag,
 			nickname=options.nickname,
-			kappaTag=options.kappaTag,
-			maxevents=options.maxevents,
 			outputfilename=options.outputfilename
 			)
 
 	# GC job-submission?
-	elif  str("@NICK@")[0] != '@':
-		process = getBaseConfig(
-			globaltag="@GLOBALTAG@",
-			nickname="@NICK@",
-			outputfilename="kappaTuple.root"
-			)
-
-	# Kappa test suite (cmsRun with NO extra options)
-	else:
-		testPaths = ['/storage/b/fs6-mirror/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input', '/home/short']
-		testPath = [p for p in testPaths if os.path.exists(p)][0]
-		if tools.is_above_cmssw_version([8]):
+	elif options.mode == "gc":
+		if  str("@NICK@")[0] != '@':
 			process = getBaseConfig(
-				globaltag="80X_mcRun2_asymptotic_2016_v3",
-				testfile=cms.untracked.vstring("file:%s/"%testPath + (testPath == '/home/short')*"short_" + "SUSYGluGluToHToTauTau_M-160_spring16_miniAOD.root"),
-				nickname='SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8',
+				nickname="@NICK@",
 				outputfilename="kappaTuple.root"
 				)
 		else:
+			print "Configuration error found. The mode was set to 'gc' but the nickname has not properly been replaced"
+			sys.exit(1)
+
+	# Kappa test suite (cmsRun with NO extra options, i.e. testsuite mode)
+	elif options.mode == "testsuite":
+		testPaths = ['/storage/b/fs6-mirror/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input', '/home/short']
+		testPath = [p for p in testPaths if os.path.exists(p)][0]
+
+		if tools.is_cmssw_version([9,2]):
+			testfile="file://%s/SingleElectron_Run2017B_23Jun2017v1_13TeV_MINIAOD.root"%testPath
 			process = getBaseConfig(
-				globaltag=options.globalTag,
-				testfile=cms.untracked.vstring("file:%s/"%testPath + (testPath == '/home/short')*"short_" + "SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root"),
-				outputfilename="kappaTuple.root"
+				testfile=testfile,
+				nickname='SingleElectron_Run2017B_23Jun2017v1_13TeV_MINIAOD',
+				maxevents=50,
 				)
+		elif tools.is_cmssw_version([8,0]):
+			testfile="file://%s/SUSYGluGluToHToTauTau_M-160_spring16_miniAOD.root"%testPath
+			process = getBaseConfig(
+				testfile=testfile,
+				nickname='SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8',
+				maxevents=50,
+				)
+		elif tools.is_cmssw_version([7,6]):
+			testfile="file://%s/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root"%testPath
+			process = getBaseConfig(
+				testfile=testfile,
+				nickname='SUSYGluGluToHToTauTauM160_RunIIFall15DR76_PU25nsData2015v1_13TeV_AOD_pythia8',
+				maxevents=50
+				)
+		else:
+			print "There is not yet a valid CMSSW test available for this CMSSW release. Please edit kSkimming_run2_cfg.py correspondingly."
+			sys.exit(1)
+	else:
+		print "Invalid mode selected: " + options.mode
+		sys.exit(1)

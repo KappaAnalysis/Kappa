@@ -112,7 +112,19 @@ class datasetsHelperTwopz:
 			return "reHLT"  in self.base_dict[nick]["campaign"]
 		return False
 
-	def getTreeInfo(self,nick, globaltag, kappaTag):
+	def getGlobalTag(self, nick):
+		"""get the global tag"""
+		if "globalTag" in self.base_dict.get(nick , {}).keys():
+			return str(self.base_dict[nick]["globalTag"])
+		return False
+
+	def getDBSName(self, nick):
+		"""get the dbs name"""
+		if "dbs" in self.base_dict.get(nick , {}).keys():
+			return str(self.base_dict[nick]["dbs"])
+		return False
+
+	def getTreeInfo(self,nick):
 		""" returns the Tree info which is stored in the kappa File"""
 		## not sure why all of this is needed inside of the kappa files,
 		## but to keep things consitent just add it
@@ -122,10 +134,9 @@ class datasetsHelperTwopz:
 		dataset               = cms.string(str(sub_dict.get("dbs", ''))),
 		generator             = cms.string(str(sub_dict.get("generator", ''))),
 		productionProcess     = cms.string(str(sub_dict.get("process", ''))),
-		globalTag             = cms.string(globaltag),
+		globalTag             = cms.string(str(sub_dict.get("globaltag"))),
 		scenario              = cms.string(str(sub_dict.get("scenario", ''))),
 		campaign              = cms.string(str(sub_dict.get("campaign", ''))),
-		kappaTag              = cms.string(kappaTag),
 		isEmbedded            = cms.bool(sub_dict.get("embedded", False)),
 		centerOfMassEnergy    = cms.int32(int(sub_dict.get("energy", 13))),
 		isData                = cms.bool(sub_dict.get("data", False))
@@ -292,6 +303,19 @@ class datasetsHelperTwopz:
 		diff_dict = {}
 		self.dataset_diff_base(dataset.base_dict,self.base_dict,diff_dict)
 		return json.dumps(diff_dict, sort_keys=True, indent=3)
+
+	def get_testfile_for_nick(self, nick, inputDBS='global'):
+		dbsname = self.base_dict[nick]["dbs"]
+		url = 'https://cmsweb.cern.ch/dbs/prod/'+inputDBS+'/DBSReader'
+		from Kappa.Skimming.getNumberGeneratedEventsFromDB import RestClient
+		cert = os.environ['X509_USER_PROXY']
+		if not cert.strip():
+			print "X509_USER_PROXY not properly set. Get a voms proxy and set this environment variable to get N events/files from siteDB"
+			return
+		rest_client = RestClient(cert=cert)
+		import ast
+		answer = ast.literal_eval(rest_client.get(url, api='files', params={'dataset': dbsname}))
+		return 'root://cms-xrd-global.cern.ch/' + answer[0]["logical_file_name"]
 
 	@classmethod
 	def wait_for_user_confirmation(self,true_false=False):

@@ -11218,6 +11218,7 @@
   }, 
   "SUSYGluGluToHToTauTauM160_RunIIFall15DR76_PU25nsData2015v1_13TeV_AOD_pythia8": {
     "campaign": "RunIIFall15DR76", 
+    "globalTag" : "76X_mcRun2_asymptotic_RunIIFall15DR76_v1",
     "data": false, 
     "dbs": "/SUSYGluGluToHToTauTau_M-160_TuneCUETP8M1_13TeV-pythia8/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM", 
     "embedded": false, 
