@@ -616,7 +616,7 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 
 	# Kappa test suite (cmsRun with NO extra options, i.e. testsuite mode)
 	elif options.mode == "testsuite":
-		testPaths = ['/storage/c/friese/kappatest/', '/nfs/dust/cms/user/fcolombo/kappatest/input', '/home/short']
+		testPaths = ['/storage/c/friese/kappatest/', '/nfs/dust/cms/user/rfriese/kappatest/', '/home/short']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
 
 		if tools.is_cmssw_version([9,2]):
@@ -627,14 +627,14 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 				maxevents=100,
 				)
 		elif tools.is_cmssw_version([8,0]):
-			testfile="file://%s/SUSYGluGluToHToTauTau_M-160_spring16_miniAOD.root"%testPath
+			testfile="file://%s/SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8.root"%testPath
 			process = getBaseConfig(
 				testfile=testfile,
 				nickname='SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8',
 				maxevents=100,
 				)
 		elif tools.is_cmssw_version([7,6]):
-			testfile="file://%s/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root"%testPath
+			testfile="file://%s/SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8"%testPath
 			process = getBaseConfig(
 				testfile=testfile,
 				nickname='SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8',
