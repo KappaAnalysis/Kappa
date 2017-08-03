@@ -4,6 +4,7 @@
 # -*- coding: UTF-8 -*-
 import json,os
 import re
+import Kappa.Skimming.tools as tools
 import FWCore.ParameterSet.Config as cms
 
 class datasetsHelperTwopz:
@@ -316,6 +317,21 @@ class datasetsHelperTwopz:
 		import ast
 		answer = ast.literal_eval(rest_client.get(url, api='files', params={'dataset': dbsname}))
 		return 'root://cms-xrd-global.cern.ch/' + answer[0]["logical_file_name"]
+
+	def is_compatible_release(self, nick, inputDBS='global'):
+		dbsname = self.base_dict[nick]["dbs"]
+		url = 'https://cmsweb.cern.ch/dbs/prod/'+inputDBS+'/DBSReader'
+		from Kappa.Skimming.getNumberGeneratedEventsFromDB import RestClient
+		cert = os.environ['X509_USER_PROXY']
+		if not cert.strip():
+			print "X509_USER_PROXY not properly set. Get a voms proxy and set this environment variable to get N events/files from siteDB"
+			return
+		rest_client = RestClient(cert=cert)
+		import ast
+		answer = ast.literal_eval(rest_client.get(url, api='releaseversions', params={'dataset': dbsname}))
+		version = [int(a) for a in  answer[0]["release_version"][0].split("_")[1:4]]
+		return tools.is_compatible_cmssw_version(version)
+		
 
 	@classmethod
 	def wait_for_user_confirmation(self,true_false=False):

@@ -11240,6 +11240,7 @@
     "embedded": false, 
     "energy": "13", 
     "extension": "", 
+    "globaltag" : "76X_mcRun2_asymptotic_RunIIFall15DR76_v1",
     "format": "MINIAOD", 
     "generator": "pythia8", 
     "generatorWeight": 1.0, 

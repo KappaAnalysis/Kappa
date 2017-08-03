@@ -616,7 +616,7 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 
 	# Kappa test suite (cmsRun with NO extra options, i.e. testsuite mode)
 	elif options.mode == "testsuite":
-		testPaths = ['/storage/b/fs6-mirror/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input', '/home/short']
+		testPaths = ['/storage/c/friese/kappatest/', '/nfs/dust/cms/user/fcolombo/kappatest/input', '/home/short']
 		testPath = [p for p in testPaths if os.path.exists(p)][0]
 
 		if tools.is_cmssw_version([9,2]):
@@ -637,7 +637,7 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 			testfile="file://%s/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root"%testPath
 			process = getBaseConfig(
 				testfile=testfile,
-				nickname='SUSYGluGluToHToTauTauM160_RunIIFall15DR76_PU25nsData2015v1_13TeV_AOD_pythia8',
+				nickname='SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8',
 				maxevents=50
 				)
 		else:
