@@ -21,6 +21,7 @@
 
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/trim.hpp>
 
 #include <numeric>
 
@@ -244,7 +245,7 @@ public:
 					if (boost::regex_search(weightGroupStr.begin(), weightGroupStr.end(), weightGroupRegexResult, weightGroupRegex, boost::match_default) &&
 					    (weightGroupRegexResult.size() > 1))
 					{
-						weightType = std::string(weightGroupRegexResult[1].first, weightGroupRegexResult[1].second);
+						weightType = boost::algorithm::trim_copy(std::string(weightGroupRegexResult[1].first, weightGroupRegexResult[1].second));
 					}
 					
 					boost::regex weightRegex("<weight(?:(?!<weight).)*\\hid\\h*=\\h*\"(\\d+)\"(?:(?!<weight).)*>((?:(?!<weight).)*)</weight>");
@@ -260,12 +261,13 @@ public:
 						if (boost::regex_search(weightStr.begin(), weightStr.end(), weightRegexResult, weightRegex, boost::match_default) &&
 						    (weightRegexResult.size() > 2))
 						{
-							weightId = std::string(weightRegexResult[1].first, weightRegexResult[1].second);
-							weightTypeDetail = std::string(weightRegexResult[2].first, weightRegexResult[2].second);
+							weightId = boost::algorithm::trim_copy(std::string(weightRegexResult[1].first, weightRegexResult[1].second));
+							weightTypeDetail = boost::algorithm::trim_copy(std::string(weightRegexResult[2].first, weightRegexResult[2].second));
 						}
 						
 						std::string weightTypeFull = weightType + "__" + weightTypeDetail;
-						boost::replace_all(weightTypeFull, " ", "");
+						boost::replace_all(weightTypeFull, " ", "_");
+						boost::replace_all(weightTypeFull, "=", "_");
 						boost::replace_all(weightTypeFull, ".", "_");
 						
 						std::cout << weightId << " -> " << weightTypeFull << std::endl;
