@@ -20,7 +20,7 @@ process.MessageLogger.default = cms.untracked.PSet(
 process.MessageLogger.cerr.FwkReport.reportEvery = 50
 
 ## Options and Output Report
-process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) ,
+process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(False) ,
 	allowUnscheduled = cms.untracked.bool(True) )
 
 if (cmssw_version_number.startswith("5_3")):
