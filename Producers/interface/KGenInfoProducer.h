@@ -226,7 +226,7 @@ public:
 
 		// print available lheWeights
 		edm::Handle<LHERunInfoProduct> runhandle;
-		if((this->verbosity > 1) && run.getByToken( tokenRunInfo, runhandle ))
+		if (run.getByToken(tokenRunInfo, runhandle))
 		{
 			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
 			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
@@ -238,7 +238,10 @@ public:
 				     weightGroup != boost::sregex_token_iterator(); ++weightGroup)
 				{
 					std::string weightGroupStr = *weightGroup;
-					std::cout << "\nLHE weights for tag \"" << iter->tag() << "\":" << std::endl;
+					if (this->verbosity > 1)
+					{
+						std::cout << "\nLHE weights for tag \"" << iter->tag() << "\":" << std::endl;
+					}
 					
 					boost::match_results<std::string::iterator> weightGroupRegexResult;
 					std::string weightType;
@@ -270,7 +273,10 @@ public:
 						boost::replace_all(weightTypeFull, "=", "_");
 						boost::replace_all(weightTypeFull, ".", "_");
 						
-						std::cout << weightId << " -> " << weightTypeFull << std::endl;
+						if (this->verbosity > 1)
+						{
+							std::cout << weightId << " -> " << weightTypeFull << std::endl;
+						}
 					}
 				}
 			}
