@@ -12,8 +12,8 @@
 class KL1MuonProducer : public KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1Muons>
 {
 public:
-	KL1MuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1MuonProducer_Product>(cfg, _event_tree, _lumi_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KL1MuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<l1extra::L1MuonParticle>, KL1MuonProducer_Product>(cfg, _event_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{

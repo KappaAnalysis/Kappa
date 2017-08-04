@@ -227,7 +227,9 @@ struct KHCALNoiseSummary
 struct KPileupDensity
 {
 	virtual ~KPileupDensity() {};
+
 	double rho;
+	double sigma;
 };
 
 #endif

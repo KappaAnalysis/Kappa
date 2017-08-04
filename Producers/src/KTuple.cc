@@ -57,10 +57,10 @@
 #include "../interface/KGenJetProducer.h"
 #include "../interface/KTauProducer.h"
 #include "../interface/KPatTauProducer.h"
-// #include "../interface/KExtendedTauProducer.h"
+#include "../interface/KExtendedTauProducer.h"
 #include "../interface/KTowerProducer.h"
 #include "../interface/KTrackProducer.h"
-// #include "../interface/KLeptonPairProducer.h" not used in an config atm
+#include "../interface/KLeptonPairProducer.h"
 #include "../interface/KTrackSummaryProducer.h"
 #include "../interface/KTriggerObjectProducer.h"
 #include "../interface/KTriggerObjectStandaloneProducer.h"
@@ -85,7 +85,6 @@ public:
 	virtual void beginLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
 	virtual void endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
-	virtual void endRun(edm::Run const&, edm::EventSetup const &);
 
 protected:
 	const edm::ParameterSet &psConfig;
@@ -97,7 +96,7 @@ protected:
 	double fillRuntime;
 	long nRuns, nLumis, nEvents, nFirsts;
 	std::vector<KBaseProducer*> producers;
-	TTree *event_tree, *lumi_tree, *run_tree;
+	TTree *event_tree, *lumi_tree;
 	TFile *file;
 
 	template<typename Tprod>
@@ -108,7 +107,7 @@ protected:
 			if (sName == "")
 				sName = sActive;
 			std::cout << "Init producer " << sActive << " using config from " << sName << std::endl;
-			producers.push_back(new Tprod(psConfig.getParameter<edm::ParameterSet>(sName), event_tree, lumi_tree, run_tree, consumesCollector()));
+			producers.push_back(new Tprod(psConfig.getParameter<edm::ParameterSet>(sName), event_tree, lumi_tree, consumesCollector()));
 			producers.back()->runRuntime = 0;
 			producers.back()->lumiRuntime = 0;
 			producers.back()->firstRuntime = 0;
@@ -142,7 +141,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		edm::Service<TFileService> fs;
 		lumi_tree = fs->make<TTree>("Lumis", "Lumis");
 		event_tree = fs->make<TTree>("Events", "Events");
-		run_tree = fs->make<TTree>("Runs", "Runs");
 	}
 	else
 	{
@@ -150,7 +148,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		lumi_tree->SetDirectory(0);
 		file = new TFile(outputFile.c_str(), "RECREATE");
 		event_tree = new TTree("Events", "Events");
-		run_tree = new TTree("Runs", "Runs");
 	}
 
 	KBaseProducer::verbosity = std::max(KBaseProducer::verbosity, psConfig.getParameter<int>("verbose"));
@@ -229,11 +226,11 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KPatJetProducer>(active[i]);
 		addProducer<KTauProducer>(active[i]);
 		addProducer<KPatTauProducer>(active[i]);
-//		addProducer<KExtendedTauProducer>(active[i]);
+		addProducer<KExtendedTauProducer>(active[i]);
 		addProducer<KTaupairVerticesMapProducer>(active[i]);
 		addProducer<KTowerProducer>(active[i]);
 		addProducer<KTrackProducer>(active[i]);
-//		addProducer<KLeptonPairProducer>(active[i]);
+		addProducer<KLeptonPairProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);
 		addProducer<KTriggerObjectProducer>(active[i]);
 		addProducer<KTriggerObjectStandaloneProducer>(active[i]);
@@ -248,6 +245,8 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 			addProducer<KL2MuonTrajectorySeedProducer>(psConfig, active[i]);
 		else if (active[i] == "L3MuonTrajectorySeed")
 			addProducer<KL3MuonTrajectorySeedProducer>(psConfig, active[i]);
+		else if (active[i] == "MuonTriggerCandidates")
+			addProducer<KMuonTriggerCandidateProducer>(psConfig, active[i]);
 */
 		if (producers.size() > nProducers + 1)
 		{
@@ -297,7 +296,6 @@ KTuple::~KTuple()
 		lumi_tree->SetDirectory(file);
 		lumi_tree->Write();
 		event_tree->Write();
-		run_tree->Write();
 		file->Close();
 	}
 	if (doProfile)
@@ -399,17 +397,6 @@ void KTuple::endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm
 	}
 	ROOTContextSentinel ctx;
 	lumi_tree->Fill();
-}
-
-void KTuple::endRun(edm::Run const &run, edm::EventSetup const &setup)
-{
-	for (unsigned int i = 0; i < producers.size(); ++i)
-	{
-		producers[i]->endRun(run, setup);
-	}
-	ROOTContextSentinel ctx;
-	run_tree->Fill();
-
 }
 
 DEFINE_FWK_MODULE(KTuple);

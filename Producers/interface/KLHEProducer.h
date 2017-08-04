@@ -13,8 +13,8 @@
 class KLHEProducer : public KBaseMultiProducer<LHEEventProduct, KLHEParticles>
 {
 public:
-	KLHEProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector):
-		KBaseMultiProducer<LHEEventProduct, KLHEParticles>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KLHEProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector):
+		KBaseMultiProducer<LHEEventProduct, KLHEParticles>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 	virtual ~KLHEProducer() {};
 
 	static const std::string getLabel() { return "LHE"; }

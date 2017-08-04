@@ -329,8 +329,8 @@ def getBaseConfig(
 					cms.InputTag('elPFIsoValuePU04PFIdPFIsoCal')),
 		)
 
-		#process.kappaTuple.Electrons.ids = cms.VInputTag("mvaTrigV0", "mvaTrigNoIPV0", "mvaNonTrigV0")
-		process.kappaTuple.Electrons.ids = cms.VInputTag('idMvaNonTrigV0', 'idMvaTrigNoIPV0', 'idMvaTrigV0')
+		#process.kappaTuple.Electrons.ids = cms.vstring("mvaTrigV0", "mvaTrigNoIPV0", "mvaNonTrigV0")
+		process.kappaTuple.Electrons.ids = cms.vstring('idMvaNonTrigV0', 'idMvaTrigNoIPV0', 'idMvaTrigV0')
 		process.kappaTuple.Electrons.minPt = cms.double(8.0)
 
 

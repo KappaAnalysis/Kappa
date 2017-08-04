@@ -41,9 +41,9 @@ struct KLumiInfo
 };
 
 
-struct KGenRunInfo
+struct KGenLumiInfo : public KLumiInfo
 {
-	virtual ~KGenRunInfo() {};
+	virtual ~KGenLumiInfo() {};
 
 	double filterEff;              //< generator filter efficiency
 	double xSectionExt;            //< external process cross section

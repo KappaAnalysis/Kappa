@@ -12,7 +12,7 @@
 class KTreeInfoProducer: public KBaseProducer
 {
 public:
-	KTreeInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector)
+	KTreeInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector)
 	{
 	
 		TList* keys = new TList();

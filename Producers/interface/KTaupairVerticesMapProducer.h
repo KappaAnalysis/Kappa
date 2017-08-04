@@ -20,12 +20,8 @@
 class KTaupairVerticesMapProducer : public KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>
 {
 public:
-	KTaupairVerticesMapProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
-	{
-		this->pfTauCollectionToken = consumescollector.consumes<std::vector<reco::PFTau>>(pfTauCollection);
-		this->beamSpotHandleToken = consumescollector.consumes<reco::BeamSpot>(beamSpotSource);
-	}
+	KTaupairVerticesMapProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "TaupairVerticesMap"; }
 
@@ -46,7 +42,7 @@ public:
 		this->includeOriginalPV = pset.getParameter<bool>("includeOrginalPV");
 		assert((this->fitMethod == 1) || (this->fitMethod == 0));
 		edm::Handle<reco::BeamSpot> beamSpotHandle;
-		this->cEvent->getByToken(this->beamSpotHandleToken, beamSpotHandle);
+		this->cEvent->getByLabel(this->beamSpotSource, beamSpotHandle);
 		beamSpot = *beamSpotHandle;
 
 		// Continue normally
@@ -152,7 +148,7 @@ private:
 	const int getCommonTaus(std::vector<reco::PFTau> &commonTaus, const std::vector<const reco::Track*> recoTracks)
 	{
 		edm::Handle<std::vector<reco::PFTau>> tauHandle;
-		this->cEvent->getByToken(this->pfTauCollectionToken, tauHandle);
+		this->cEvent->getByLabel(this->pfTauCollection, tauHandle);
 		// check wich tau is from the current PV
 		for(std::vector<reco::PFTau>::const_iterator tau = tauHandle->begin();
 		    tau != tauHandle->end(); ++tau)
@@ -223,8 +219,6 @@ private:
 	reco::BeamSpot beamSpot;
 	edm::InputTag beamSpotSource;
 	edm::InputTag pfTauCollection;
-	edm::EDGetTokenT<std::vector<reco::PFTau>> pfTauCollectionToken;
-	edm::EDGetTokenT<reco::BeamSpot> beamSpotHandleToken;
 	double deltaRThreshold;
 	int fitMethod;
 	bool includeOriginalPV;
