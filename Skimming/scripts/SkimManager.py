@@ -85,9 +85,6 @@ class SkimManagerBase:
 			self.UsernameFromSiteDB = getUsernameFromSiteDB()
 			return self.UsernameFromSiteDB
 
-	def get_global_tag(self, akt_nick):
-		return self.skimdataset[akt_nick].get("globalTag", '80X_dataRun2_2016SeptRepro_v7' if self.skimdataset.isData(akt_nick) else '80X_mcRun2_asymptotic_2016_TrancheIV_v8')
-
 	def files_per_job(self, akt_nick):
 		job_submission_limit=10000
 		if self.skimdataset[akt_nick].get("files_per_job", None):
@@ -170,7 +167,6 @@ class SkimManagerBase:
 	def individualized_crab_cfg(self, akt_nick, config):
 		config.General.requestName = akt_nick[:100]
 		config.Data.inputDBS = self.skimdataset[akt_nick].get("inputDBS", 'global')
-		globalTag = self.get_global_tag(akt_nick)
 		config.JobType.pyCfgParams = [str('globalTag=%s'%globalTag), 'kappaTag=KAPPA_2_1_0', str('nickname=%s'%(akt_nick)), str('outputfilename=kappa_%s.root'%(akt_nick)), 'testsuite=False']
 		config.Data.unitsPerJob = self.files_per_job(akt_nick)
 		config.Data.inputDataset = self.skimdataset[akt_nick]['dbs']
@@ -459,7 +455,6 @@ class SkimManagerBase:
 		gc_config['dataset'] = {}
 		gc_config['dataset']['dbs instance'] = self.skimdataset[akt_nick].get("inputDBS", 'global')
 										   #URL=https://cmsdbsprod.cern.ch:8443/cms_dbs_prod_global_writer/servlet/DBSServlet
-		gc_config['constants']['GLOBALTAG'] = self.get_global_tag(akt_nick)
 
 
 #### Function for status check of grid-control tasks.
