@@ -614,34 +614,25 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
 			sys.exit(1)
 
 	# Kappa test suite (cmsRun with NO extra options, i.e. testsuite mode)
+	# to create new testfiles edit make_testfile.py and run it with cmsRun
 	elif options.mode == "testsuite":
-		testPaths = ['/storage/c/friese/kappatest/', '/nfs/dust/cms/user/rfriese/kappatest/', '/home/short']
-		testPath = [p for p in testPaths if os.path.exists(p)][0]
+		cernbox_path = "https://cernbox.cern.ch/index.php/s/AqIrGNDGdygdvhU/download?path=%2Fnew&files=" # path to "new" folder within Olena's CernBox
 
 		if tools.is_cmssw_version([9,2]):
-			testfile="file://%s/SingleElectron_Run2017B_23Jun2017v1_13TeV_MINIAOD.root"%testPath
-			process = getBaseConfig(
-				testfile=testfile,
-				nickname='SingleElectron_Run2017B_23Jun2017v1_13TeV_MINIAOD',
-				maxevents=100,
-				)
+			test_nick = "SingleElectron_Run2017B_23Jun2017v1_13TeV_MINIAOD"
 		elif tools.is_cmssw_version([8,0]):
-			testfile="file://%s/SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8.root"%testPath
-			process = getBaseConfig(
-				testfile=testfile,
-				nickname='SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8',
-				maxevents=100,
-				)
+			test_nick='SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8'
 		elif tools.is_cmssw_version([7,6]):
-			testfile="file://%s/SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8"%testPath
-			process = getBaseConfig(
-				testfile=testfile,
-				nickname='SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8',
-				maxevents=100
-				)
+			test_nick='SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8'
 		else:
 			print "There is not yet a valid CMSSW test available for this CMSSW release. Please edit kSkimming_run2_cfg.py correspondingly."
 			sys.exit(1)
+		testfile=tools.download_rootfile(cernbox_path, test_nick)
+		process = getBaseConfig(
+			testfile=testfile,
+			nickname=test_nick,
+			maxevents=100
+			)
 	else:
 		print "Invalid mode selected: " + options.mode
 		sys.exit(1)

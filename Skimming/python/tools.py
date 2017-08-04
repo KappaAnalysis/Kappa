@@ -133,3 +133,9 @@ def is_compatible_cmssw_version(version_to_test): # test if a MC file is compati
 		return True
 	return True
 
+def download_rootfile(path, filename): # download a rootfile from http/https and return a valid local absolute path to it
+	import urllib
+	url = path + filename + ".root"
+	urllib.urlretrieve(url, filename + ".root")
+	import os
+	return "file://%s"%os.path.abspath("%s.root"%filename)

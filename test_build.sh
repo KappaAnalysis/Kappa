@@ -132,23 +132,8 @@ if [ "$ADDITIONAL_OUTPUT" = true ]; then
 fi
 
 echo "# ================= #"
-echo "# curl -O root files"
+echo "# Display additional files "
 echo "# ================= #"
-    files=(/home/short/*)
-    if [ ! ${#files[@]} -gt 0 ]
-    then
-        echo "curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download" # single file: curl -O https://cernbox.cern.ch/index.php/s/BgWZaBJFB2y4688/download 
-        curl -o /home/short_rootfiles.tar https://cernbox.cern.ch/index.php/s/WeawecKp2BD2BH2/download
-        echo "tar -xvf /home/short_rootfiles.tar /home/"
-        tar -xvf /home/short_rootfiles.tar -C /home/
-        echo
-        #echo "# ================= #"
-        #echo "# xrootd"
-        #echo "# ================= #"
-        #xrootd -d l -f root://eosuser.cern.ch://eos/user/o/ohlushch/kappatest_inputfiles/input/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root
-        #root -l root://eosuser.cern.ch://eos/user/o/ohlushch/kappatest_inputfiles/input/SUSYGluGluToHToTauTau_M-160_fall15_miniAOD.root
-        #echo
-    fi
     if [ "$ADDITIONAL_OUTPUT" = true ]; then
         echo "HOME:" $HOME
         ls $HOME
