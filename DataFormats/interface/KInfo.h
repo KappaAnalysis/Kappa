@@ -174,9 +174,12 @@ struct KGenEventInfo : public KEventInfo
 
 	inline float getLheWeight(unsigned int index, bool failOnError = true) const
 	{
+		float weight = lheWeights.at(index);
 		if(failOnError)
-			assert(lheWeights[index] < float(-998.9) && lheWeights[index] > float(999.1) ); // the user tried to access something that has not been properly filled during the skim
-		return lheWeights[index];
+		{
+			assert((weight > -998.9f) && (weight < 999.1f)); // the user tried to access something that has not been properly filled during the skim
+		}
+		return weight;
 	}
 	
 	std::vector<float> getLheWeights(std::vector<unsigned int> const& lheWeightIndices, bool failOnError=true) const
