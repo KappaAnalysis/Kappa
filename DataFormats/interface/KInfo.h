@@ -166,9 +166,12 @@ struct KGenEventInfo : public KEventInfo
 
 	inline float getLheWeight(size_t index, bool failOnError = true) const
 	{
+		float weight = lheWeight.at(index);
 		if(failOnError)
-			assert(lheWeight[index] < float(-998.9) && lheWeight[index] > float(999.1) ); // the user tried to access something that has not been properly filled during the skim
-		return lheWeight[index];
+		{
+			assert((weight > -998.9f) && (weight < 999.1f)); // the user tried to access something that has not been properly filled during the skim
+		}
+		return weight;
 	}
 };
 
