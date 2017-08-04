@@ -48,6 +48,8 @@ struct KGenRunInfo
 	double filterEff;              //< generator filter efficiency
 	double xSectionExt;            //< external process cross section
 	double xSectionInt;            //< internal process cross section
+	
+	std::map<std::string, std::string> lheWeightNamesMap; //< human readable names mapped to indices
 };
 
 struct KDataLumiInfo : public KLumiInfo
@@ -123,18 +125,24 @@ struct KGenEventInfoMetadata
 	std::vector<std::string> lheWeightNames;
 
 	// function that returns the indices of the lheWeights of interest for efficient access
-	std::map<std::string, size_t> getLheWeightNamesMap(const std::vector<std::string> &requestedNames) const
+	std::map<std::string, unsigned int> getLheWeightNamesMap(std::vector<std::string> const& requestedNames,
+	                                                         std::map<std::string, std::string> const& lheWeightNamesMap=std::map<std::string, std::string>()) const
 	{
-		std::map<std::string, size_t> resultMap;
-		bool found = false;
-		for(size_t index = 0; index < requestedNames.size(); index++)
+		std::map<std::string, unsigned int> resultMap;
+		for(std::vector<std::string>::const_iterator requestedName = requestedNames.begin(); requestedName != requestedNames.end(); ++requestedName)
 		{
-			found = false;
-			for(size_t lheWeightNameIndex = 0; lheWeightNameIndex < lheWeightNames.size(); lheWeightNameIndex++)
+			std::string tmpRequestedName = *requestedName;
+			if (lheWeightNamesMap.count(tmpRequestedName) > 0)
 			{
-				if (lheWeightNames.at(lheWeightNameIndex).compare(requestedNames[index]) == 0)
+				tmpRequestedName = lheWeightNamesMap.at(tmpRequestedName);
+			}
+			
+			bool found = false;
+			for(unsigned int lheWeightNameIndex = 0; lheWeightNameIndex < lheWeightNames.size(); lheWeightNameIndex++)
+			{
+				if (lheWeightNames.at(lheWeightNameIndex).compare(tmpRequestedName) == 0)
 				{
-					resultMap[requestedNames[index]] = index;
+					resultMap[tmpRequestedName] = lheWeightNameIndex;
 					assert( !found ); // misconfiguration: the requested name matches more than once
 					found = true;
 				}
@@ -162,13 +170,35 @@ struct KGenEventInfo : public KEventInfo
 	double x1;            ///< x of the first parton (used for PDF reweighting)
 	double x2;            ///< x of the second parton (used for PDF reweighting)
 	double qScale;        ///< q scale of the process (used for PDF reweighting)
-	std::vector<float> lheWeight;
+	std::vector<float> lheWeights;
 
-	inline float getLheWeight(size_t index, bool failOnError = true) const
+	inline float getLheWeight(unsigned int index, bool failOnError = true) const
 	{
 		if(failOnError)
-			assert(lheWeight[index] < float(-998.9) && lheWeight[index] > float(999.1) ); // the user tried to access something that has not been properly filled during the skim
-		return lheWeight[index];
+			assert(lheWeights[index] < float(-998.9) && lheWeights[index] > float(999.1) ); // the user tried to access something that has not been properly filled during the skim
+		return lheWeights[index];
+	}
+	
+	std::vector<float> getLheWeights(std::vector<unsigned int> const& lheWeightIndices, bool failOnError=true) const
+	{
+		std::vector<float> resultVector;
+		for(std::vector<unsigned int>::const_iterator lheWeightIndex = lheWeightIndices.begin();
+		    lheWeightIndex != lheWeightIndices.end(); ++lheWeightIndex)
+		{
+			resultVector.push_back(getLheWeight(*lheWeightIndex, failOnError));
+		}
+		return resultVector;
+	}
+	
+	std::map<std::string, float> getLheWeights(std::map<std::string, unsigned int> const& lheWeightNamesMap, bool failOnError=true) const
+	{
+		std::map<std::string, float> resultMap;
+		for(std::map<std::string, unsigned int>::const_iterator lheWeightNameIndex = lheWeightNamesMap.begin();
+		    lheWeightNameIndex != lheWeightNamesMap.end(); ++lheWeightNameIndex)
+		{
+			resultMap[lheWeightNameIndex->first] = getLheWeight(lheWeightNameIndex->second, failOnError);
+		}
+		return resultMap;
 	}
 };
 

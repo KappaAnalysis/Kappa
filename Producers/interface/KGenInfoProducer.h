@@ -19,6 +19,12 @@
 
 #include "KInfoProducer.h"
 
+#include <boost/regex.hpp>
+#include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/trim.hpp>
+
+#include <numeric>
+
 
 // MC data
 struct KGenInfo_Product
@@ -80,9 +86,9 @@ public:
 		{
 			for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
 			{
-				for(auto validIds : lheWeightRegexes)
+				for(std::string lheWeightRegex : lheWeightRegexes)
 				{
-					if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, validIds))
+					if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, lheWeightRegex))
 					{
 						genEventInfoMetadata->lheWeightNames.push_back(lheEventProduct->weights()[i].id);
 					}
@@ -122,25 +128,25 @@ public:
 		// Get LHE renormalization and factorization weights
 		if((lheWeightRegexes.size() > 0) && event.getByToken(tokenLhe, lheEventProduct) && lheEventProduct.isValid())
 		{
-			this->metaEvent->lheWeight.clear();
+			this->metaEvent->lheWeights.clear();
 			for(size_t j = 0; j < genEventInfoMetadata->lheWeightNames.size(); j++)
 			{
 				for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
 				{
 					if(lheEventProduct->weights()[i].id.compare(genEventInfoMetadata->lheWeightNames[j]) == 0)
 					{
-						this->metaEvent->lheWeight.push_back(lheEventProduct->weights()[i].wgt / lheEventProduct->originalXWGTUP() );
+						this->metaEvent->lheWeights.push_back(lheEventProduct->weights()[i].wgt / lheEventProduct->originalXWGTUP() );
 						break;
 					}
 				}
-				if (this->metaEvent->lheWeight.size() != j+1) // check that exactly one weight has been added
+				if (this->metaEvent->lheWeights.size() != j+1) // check that exactly one weight has been added
 				{
 					if(this->verbosity > 0)
 						std::cout << "Warning: Weight with id " << genEventInfoMetadata->lheWeightNames[j] << std::endl;
-					this->metaEvent->lheWeight.push_back(-999.0);
+					this->metaEvent->lheWeights.push_back(-999.0);
 				}
 			}
-			assert( this->metaEvent->lheWeight.size() == this->genEventInfoMetadata->lheWeightNames.size() ); // crosscheck, should never trigger
+			assert( this->metaEvent->lheWeights.size() == this->genEventInfoMetadata->lheWeightNames.size() ); // crosscheck, should never trigger
 		}
 
 		// Get generator event info:
@@ -220,16 +226,65 @@ public:
 
 		// print available lheWeights
 		edm::Handle<LHERunInfoProduct> runhandle;
-		if((this->verbosity > 1) && run.getByToken( tokenRunInfo, runhandle ))
+		if ((lheWeightRegexes.size() > 0) && run.getByToken(tokenRunInfo, runhandle))
 		{
 			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
 			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
 			{
-				std::cout << iter->tag() << std::endl;
 				std::vector<std::string> lines = iter->lines();
-				for (unsigned int iLine = 0; iLine<lines.size(); iLine++)
+				std::string content = accumulate(lines.begin(), lines.end(), std::string("\n"));
+				boost::regex weightGroupRegex("<weightgroup(?:(?!<weight).)*\\htype\\h*=\\h*\"((?:(?!<weight).)*)\"(?:(?!<weight).)*>(?:(?!<weightgroup).)*</weightgroup>");
+				for (boost::sregex_token_iterator weightGroup(content.begin(), content.end(), weightGroupRegex, 0);
+				     weightGroup != boost::sregex_token_iterator(); ++weightGroup)
 				{
-						std::cout << lines.at(iLine);
+					std::string weightGroupStr = *weightGroup;
+					if (this->verbosity > 1)
+					{
+						std::cout << "\nLHE weights for tag \"" << iter->tag() << "\":" << std::endl;
+					}
+					
+					boost::match_results<std::string::iterator> weightGroupRegexResult;
+					std::string weightType;
+					if (boost::regex_search(weightGroupStr.begin(), weightGroupStr.end(), weightGroupRegexResult, weightGroupRegex, boost::match_default) &&
+					    (weightGroupRegexResult.size() > 1))
+					{
+						weightType = boost::algorithm::trim_copy(std::string(weightGroupRegexResult[1].first, weightGroupRegexResult[1].second));
+					}
+					
+					boost::regex weightRegex("<weight(?:(?!<weight).)*\\hid\\h*=\\h*\"(\\d+)\"(?:(?!<weight).)*>((?:(?!<weight).)*)</weight>");
+					boost::match_results<std::string::iterator> weightRegexResult;
+					for (boost::sregex_token_iterator weight(weightGroupStr.begin(), weightGroupStr.end(), weightRegex, 0);
+					     weight != boost::sregex_token_iterator(); ++weight)
+					{
+						std::string weightStr = *weight;
+						
+						boost::match_results<std::string::iterator> weightRegexResult;
+						std::string weightId;
+						std::string weightTypeDetail;
+						if (boost::regex_search(weightStr.begin(), weightStr.end(), weightRegexResult, weightRegex, boost::match_default) &&
+						    (weightRegexResult.size() > 2))
+						{
+							weightId = boost::algorithm::trim_copy(std::string(weightRegexResult[1].first, weightRegexResult[1].second));
+							weightTypeDetail = boost::algorithm::trim_copy(std::string(weightRegexResult[2].first, weightRegexResult[2].second));
+						}
+						
+						for(std::string lheWeightRegex : lheWeightRegexes)
+						{
+							if(KBaseProducer::regexMatch(weightId, lheWeightRegex))
+							{
+								std::string weightTypeFull = weightType + "__" + weightTypeDetail;
+								boost::replace_all(weightTypeFull, " ", "_");
+								boost::replace_all(weightTypeFull, "=", "_");
+								boost::replace_all(weightTypeFull, ".", "_");
+								
+								if (this->verbosity > 1)
+								{
+									std::cout << weightId << " -> " << weightTypeFull << std::endl;
+								}
+								this->metaRun->lheWeightNamesMap[weightTypeFull] = weightId;
+							}
+						}
+					}
 				}
 			}
 		}

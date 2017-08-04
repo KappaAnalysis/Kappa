@@ -107,7 +107,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 						tau_picharge.push_back(single_pion);
 
 						outCandidate.bestTrack = KTrack();
-						if (single_pion->bestTrack() != nullptr){
+						if (single_pion->bestTrack() != nullptr)
+						{
 							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
 							KTrackProducer::fillIPInfo(*single_pion->bestTrack(), outCandidate.bestTrack, *RefitVertices, trackBuilder.product());
 						}
@@ -130,7 +131,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 						tau_picharge.push_back(single_pion);
 
 						outCandidate.bestTrack = KTrack();
-						if (single_pion->bestTrack() != nullptr){
+						if (single_pion->bestTrack() != nullptr)
+						{
 							KTrackProducer::fillTrack(*single_pion->bestTrack(), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
 							KTrackProducer::fillIPInfo(*single_pion->bestTrack(), outCandidate.bestTrack, *RefitVertices, trackBuilder.product());
 						}
@@ -168,22 +170,20 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		virtual void fillMapOfTracksSV(const SingleInputType &in, SingleOutputType &out)
 		{
 			unsigned short nTracks = in.signalChargedHadrCands().size() + in.isolationChargedHadrCands().size();
-			//kshortTracksMap
+
 			if (nTracks > 1)
 			{
 				std::vector<reco::TransientTrack> transientTracks;
-				std::vector<reco::Track> bestTracks;
 				KPFCandidates hadronCandidates;
-				//TODO: store the map index:track
+
 				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
 				{
 					const reco::Track* track = in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
 					if (track)
 					{
-						KPFCandidate outCandidate;
 						transientTracks.push_back(trackBuilder->build(track));
-						bestTracks.push_back(*track);
 
+						KPFCandidate outCandidate;
 						KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalChargedHadrCands()[chargedPFCandidateIndex].get()), outCandidate);
 						KTrackProducer::fillTrack(*(in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
 						KTrackProducer::fillIPInfo(*(in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *RefitVertices, trackBuilder.product());
@@ -196,10 +196,9 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					const reco::Track* track = in.isolationChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
 					if (track)
 					{
-						KPFCandidate outCandidate;
 						transientTracks.push_back(trackBuilder->build(track));
-						bestTracks.push_back(*track);
 
+						KPFCandidate outCandidate;
 						KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.isolationChargedHadrCands()[chargedPFCandidateIndex].get()), outCandidate);
 						KTrackProducer::fillTrack(*(in.isolationChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *VertexCollection, trackBuilder.product());
 						KTrackProducer::fillIPInfo(*(in.isolationChargedHadrCands()[chargedPFCandidateIndex]->bestTrack()), outCandidate.bestTrack, *RefitVertices, trackBuilder.product());
@@ -210,10 +209,12 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				if (transientTracks.size() > 2)
 				{
 					TransientVertex theRecoVertex;
-					bool useRefTracks = true; //temp
+
+					bool useRefTracks = true;// Todo: store non-refitted vertices too
+					KalmanVertexFitter theKalmanFitter(useRefTracks == 0 ? false : true);// TODO: add the AdaptiveVertexFitter in future too
+
 					const float piMass = 0.13957018;
 					const float piMassSquared = pow(piMass, 2);
-					KalmanVertexFitter theKalmanFitter(useRefTracks == 0 ? false : true);
 
 					for(size_t trackIndex_1 = 0; trackIndex_1 < transientTracks.size() - 1; ++trackIndex_1)
 						for(size_t trackIndex_2 = trackIndex_1 + 1; trackIndex_2 < transientTracks.size(); ++trackIndex_2)
@@ -223,17 +224,10 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 							std::vector<reco::TransientTrack> transientTracksPair;
 							transientTracksPair.push_back(transientTracks[trackIndex_1]);
 							transientTracksPair.push_back(transientTracks[trackIndex_2]);
+							if (!transientTracksPair[0].impactPointTSCP().isValid() || !transientTracksPair[1].impactPointTSCP().isValid()) continue;
 
-							kaonCandidate.isValid = true;
-							kaonCandidate.firstTransTrack.indexOfTrackInColl = trackIndex_1; // Do not correspond to the indexes in taujet-charged collection
-							kaonCandidate.secondTransTrack.indexOfTrackInColl = trackIndex_2; // Do not correspond to the indexes in taujet-charged collection
-							KTrackProducer::fillTrack(bestTracks[trackIndex_1], kaonCandidate.firstTransTrack, *VertexCollection, trackBuilder.product());
-							KTrackProducer::fillTrack(bestTracks[trackIndex_2], kaonCandidate.secondTransTrack, *VertexCollection, trackBuilder.product());
 							kaonCandidate.firstTransPFCand = hadronCandidates[trackIndex_1];
 							kaonCandidate.secondTransPFCand = hadronCandidates[trackIndex_2];
-							kaonCandidate.firstTransTrack.impactPointTSCPIsValid = transientTracksPair[0].impactPointTSCP().isValid();
-							kaonCandidate.secondTransTrack.impactPointTSCPIsValid = transientTracksPair[1].impactPointTSCP().isValid();
-							if (!kaonCandidate.firstTransTrack.impactPointTSCPIsValid || !kaonCandidate.secondTransTrack.impactPointTSCPIsValid) continue;
 
 							FreeTrajectoryState const & firstState = transientTracksPair[0].impactPointTSCP().theState();
 							FreeTrajectoryState const & secondState = transientTracksPair[1].impactPointTSCP().theState();
@@ -250,10 +244,10 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 							kaonCandidate.POCA.SetXYZ(cxPt.x(), cxPt.y(), cxPt.z());
 
 							// the tracks should at least point in the same quadrant
-							TrajectoryStateClosestToPoint const & firstTSCP = transientTracks[trackIndex_1].trajectoryStateClosestToPoint(cxPt); // TODO::KAPPA
-							TrajectoryStateClosestToPoint const & secondTSCP = transientTracks[trackIndex_2].trajectoryStateClosestToPoint(cxPt); // TODO::KAPPA
+							TrajectoryStateClosestToPoint const & firstTSCP = transientTracks[trackIndex_1].trajectoryStateClosestToPoint(cxPt);
+							TrajectoryStateClosestToPoint const & secondTSCP = transientTracks[trackIndex_2].trajectoryStateClosestToPoint(cxPt);
 							if (!firstTSCP.isValid() || !secondTSCP.isValid()) continue;
-							if (firstTSCP.momentum().dot(secondTSCP.momentum())  < 0) continue;
+							if (firstTSCP.momentum().dot(secondTSCP.momentum()) < 0) continue;
 
 							//CartesianRMFLV initialFirstTSCP, initialSecondTSCP;
 							kaonCandidate.initialFirstTSCP.SetCoordinates(firstTSCP.momentum().x(), firstTSCP.momentum().y(), firstTSCP.momentum().z(), piMassSquared);
@@ -270,8 +264,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 							else continue;
 
 							// Variables needef for significance
-								reco::Vertex theVtx = sv; // Artus
-								GlobalPoint vtxPos(theVtx.x(), theVtx.y(), theVtx.z()); // Artus
+								reco::Vertex theVtx = sv;
+								GlobalPoint vtxPos(theVtx.x(), theVtx.y(), theVtx.z());
 								reco::Vertex referencePV = VertexCollection->at(KVertexSummaryProducer::getValidVertexIndex(*VertexCollection)); // Artus. TODO: check that KVertex stores the same variable
 								math::XYZPoint referencePosBS(BeamSpot->position());
 								math::XYZPoint referencePosPV(referencePV.position());
@@ -353,15 +347,10 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 							// Write down the object
 							out.kshortCandidates.push_back(kaonCandidate);
 						}
-
-					// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/VertexPrimitives/interface/TransientVertex.h
-
 				}
-				else
-					edm::LogInfo("fillMapOfTracksSV") <<  "transientTracks.size() !> 2\n";
+				else edm::LogInfo("fillMapOfTracksSV") <<  "transientTracks.size() !> 2\n";
 			}
-			else
-				edm::LogInfo("fillMapOfTracksSV") <<  "nTracks !> 1\n";
+			else edm::LogInfo("fillMapOfTracksSV") <<  "nTracks !> 1\n";
 		}
 
 		virtual void fillTemporaryPVandBSVariables(const SingleInputType &in, SingleOutputType &out)
