@@ -104,7 +104,7 @@ REGISTER_NAME_OF_TYPE(KHCALNoiseSummary,KHCALNoiseSummary);
 REGISTER_NAME_OF_TYPE(KTrackSummary,KTrackSummary);
 REGISTER_NAME_OF_TYPE(KVertexSummary,KVertexSummary);
 REGISTER_NAME_OF_TYPE(KLumiInfo,KLumiInfo);
-REGISTER_NAME_OF_TYPE(KGenLumiInfo,KGenLumiInfo);
+REGISTER_NAME_OF_TYPE(KGenRunInfo,KGenRunInfo);
 REGISTER_NAME_OF_TYPE(KDataLumiInfo,KDataLumiInfo);
 REGISTER_NAME_OF_TYPE(KElectronMetadata,KElectronMetadata);
 REGISTER_NAME_OF_TYPE(KFilterMetadata,KFilterMetadata);

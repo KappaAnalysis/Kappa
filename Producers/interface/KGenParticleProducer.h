@@ -21,8 +21,8 @@ template<typename TProduct>
 class KBasicGenParticleProducer : public KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>
 {
 public:
-	KBasicGenParticleProducer(const edm::ParameterSet& cfg, TTree* _event_tree, TTree* _run_tree, const std::string& producerName, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KBasicGenParticleProducer(const edm::ParameterSet& cfg, TTree* _event_tree, TTree *_lumi_tree, TTree *_run_tree, const std::string& producerName, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::Candidate>, TProduct>(cfg, _event_tree, _lumi_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 
 protected:
@@ -115,8 +115,8 @@ private:
 class KGenParticleProducer: public KBasicGenParticleProducer<KGenParticles>
 {
 public:
-	KGenParticleProducer(const edm::ParameterSet& cfg, TTree* _event_tree, TTree* _run_tree, edm::ConsumesCollector && consumescollector) :
-		KBasicGenParticleProducer<KGenParticles>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KGenParticleProducer(const edm::ParameterSet& cfg, TTree* _event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBasicGenParticleProducer<KGenParticles>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel()
 	{

@@ -16,8 +16,8 @@
 class KCaloJetProducer : public KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJets>
 {
 public:
-	KCaloJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KCaloJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJets>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "CaloJets"; }
 
@@ -25,9 +25,9 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Retrieve additional input products
-		tagJetID = pset.getParameter<edm::InputTag>("srcJetID");
-		if (tagJetID.label() != "")
-			cEvent->getByLabel(tagJetID, hJetID);
+		//tagJetID = pset.getParameter<edm::InputTag>("srcJetID");
+		//if (tagJetID.label() != "")
+		//	cEvent->getByLabel(tagJetID, hJetID);
 
 		// Continue normally
 		KBaseMultiLVProducer<reco::CaloJetCollection, KCaloJets>::fillProduct(in, out, name, tag, pset);
@@ -45,20 +45,20 @@ public:
 		out.fHPD = -2;
 		out.fRBX = -2;
 		out.fHO = -2;
-		if (tagJetID.label() != "")
-		{
-			edm::RefToBase<reco::Jet> jetRef(edm::Ref<reco::CaloJetCollection>(handle, this->nCursor));
-			const reco::JetID &jetID = (*hJetID)[jetRef];
-			out.n90Hits = static_cast<int>(jetID.n90Hits);
-			out.fHPD = jetID.fHPD;
-			out.fRBX = jetID.fRBX;
-			out.fHO = jetID.fHO;
-		}
+		//if (tagJetID.label() != "")
+		//{
+		//	edm::RefToBase<reco::Jet> jetRef(edm::Ref<reco::CaloJetCollection>(handle, this->nCursor));
+		//	const reco::JetID &jetID = (*hJetID)[jetRef];
+		//	out.n90Hits = static_cast<int>(jetID.n90Hits);
+		//	out.fHPD = jetID.fHPD;
+		//	out.fRBX = jetID.fRBX;
+		//	out.fHO = jetID.fHO;
+		//}
 	}
 
 private:
-	edm::InputTag tagJetID;
-	edm::Handle<edm::ValueMap<reco::JetID> > hJetID;
+	//edm::InputTag tagJetID;
+	//edm::Handle<edm::ValueMap<reco::JetID> > hJetID;
 };
 
 #endif

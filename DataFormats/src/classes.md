@@ -74,7 +74,7 @@ These classes should be filled once per lumi section.
 
 ### Lumi section info
 + KLumiInfo
-+ KGenLumiInfo
++ KGenRunInfo
 + KDataLumiInfo
 
 ### Object metadata
