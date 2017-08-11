@@ -5942,11 +5942,11 @@
     "generator": "madgraph-pythia8", 
     "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v6", 
     "inputDBS": "phys03", 
-    "n_events_generated": "125304", 
+    "n_events_generated": "73038", 
     "n_files": "76", 
     "process": "LFV", 
     "scenario": "RunIISummer16MiniAODv2", 
-    "xsec": 1.0
+    "xsec": 51610.9
   }, 
   "MuonEG_Run2015B_16Dec2015v1_13TeV_MINIAOD": {
     "campaign": "Run2015B", 
