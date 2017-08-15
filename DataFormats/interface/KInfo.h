@@ -172,34 +172,29 @@ struct KGenEventInfo : public KEventInfo
 	double qScale;        ///< q scale of the process (used for PDF reweighting)
 	std::vector<float> lheWeights;
 
-	inline float getLheWeight(unsigned int index, bool failOnError = true) const
+	inline float getLheWeight(unsigned int index) const
 	{
-		float weight = lheWeights.at(index);
-		if(failOnError)
-		{
-			assert((weight > -998.9f) && (weight < 999.1f)); // the user tried to access something that has not been properly filled during the skim
-		}
-		return weight;
+		return lheWeights.at(index);
 	}
 	
-	std::vector<float> getLheWeights(std::vector<unsigned int> const& lheWeightIndices, bool failOnError=true) const
+	std::vector<float> getLheWeights(std::vector<unsigned int> const& lheWeightIndices) const
 	{
 		std::vector<float> resultVector;
 		for(std::vector<unsigned int>::const_iterator lheWeightIndex = lheWeightIndices.begin();
 		    lheWeightIndex != lheWeightIndices.end(); ++lheWeightIndex)
 		{
-			resultVector.push_back(getLheWeight(*lheWeightIndex, failOnError));
+			resultVector.push_back(getLheWeight(*lheWeightIndex));
 		}
 		return resultVector;
 	}
 	
-	std::map<std::string, float> getLheWeights(std::map<std::string, unsigned int> const& lheWeightNamesMap, bool failOnError=true) const
+	std::map<std::string, float> getLheWeights(std::map<std::string, unsigned int> const& lheWeightNamesMap) const
 	{
 		std::map<std::string, float> resultMap;
 		for(std::map<std::string, unsigned int>::const_iterator lheWeightNameIndex = lheWeightNamesMap.begin();
 		    lheWeightNameIndex != lheWeightNamesMap.end(); ++lheWeightNameIndex)
 		{
-			resultMap[lheWeightNameIndex->first] = getLheWeight(lheWeightNameIndex->second, failOnError);
+			resultMap[lheWeightNameIndex->first] = getLheWeight(lheWeightNameIndex->second);
 		}
 		return resultMap;
 	}
