@@ -131,18 +131,18 @@ struct KGenEventInfoMetadata
 		std::map<std::string, unsigned int> resultMap;
 		for(std::vector<std::string>::const_iterator requestedName = requestedNames.begin(); requestedName != requestedNames.end(); ++requestedName)
 		{
-			std::string tmpRequestedName = *requestedName;
-			if (lheWeightNamesMap.count(tmpRequestedName) > 0)
+			std::string internalName = *requestedName;
+			if (lheWeightNamesMap.count(internalName) > 0)
 			{
-				tmpRequestedName = lheWeightNamesMap.at(tmpRequestedName);
+				internalName = lheWeightNamesMap.at(internalName);
 			}
 			
 			bool found = false;
 			for(unsigned int lheWeightNameIndex = 0; lheWeightNameIndex < lheWeightNames.size(); lheWeightNameIndex++)
 			{
-				if (lheWeightNames.at(lheWeightNameIndex).compare(tmpRequestedName) == 0)
+				if (lheWeightNames.at(lheWeightNameIndex).compare(internalName) == 0)
 				{
-					resultMap[tmpRequestedName] = lheWeightNameIndex;
+					resultMap[*requestedName] = lheWeightNameIndex;
 					assert( !found ); // misconfiguration: the requested name matches more than once
 					found = true;
 				}
