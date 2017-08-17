@@ -5942,11 +5942,11 @@
     "generator": "madgraph-pythia8", 
     "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v6", 
     "inputDBS": "phys03", 
-    "n_events_generated": "125304", 
+    "n_events_generated": "73038", 
     "n_files": "76", 
     "process": "LFV", 
     "scenario": "RunIISummer16MiniAODv2", 
-    "xsec": 1.0
+    "xsec": 51610.9
   }, 
   "MuonEG_Run2015B_16Dec2015v1_13TeV_MINIAOD": {
     "campaign": "Run2015B", 
@@ -13199,6 +13199,7 @@
     "extension": "", 
     "format": "MINIAOD", 
     "generator": "amcatnlo-pythia8", 
+    "generatorWeight": 0.30654489040136124, 
     "globalTag": "76X_mcRun2_asymptotic_RunIIFall15DR76_v1", 
     "inputDBS": "global", 
     "n_events_generated": "1998200", 
@@ -15179,6 +15180,22 @@
     "scenario": "PUMoriond17", 
     "xsec": 49.997
   }, 
+  "WWZ_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/WWZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
+    "inputDBS": "global", 
+    "n_events_generated": "250000", 
+    "n_files": "4", 
+    "process": "WWZ", 
+    "scenario": "PUMoriond17", 
+    "xsec": 0.1651
+  }, 
   "WZJToLLLNu_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_amcatno-pythia8": {
     "Fall15": [
       "Skim_Fall15_Full", 
@@ -15579,6 +15596,22 @@
     "process": "WZToLNuQQ", 
     "scenario": "PUMoriond17", 
     "xsec": 1.0
+  }, 
+  "WZZ_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/WZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
+    "inputDBS": "global", 
+    "n_events_generated": "246800", 
+    "n_files": "5", 
+    "process": "WZZ", 
+    "scenario": "PUMoriond17", 
+    "xsec": 0.05565
   }, 
   "WminusHToTauTauM110_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [

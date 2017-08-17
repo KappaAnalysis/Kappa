@@ -131,18 +131,18 @@ struct KGenEventInfoMetadata
 		std::map<std::string, unsigned int> resultMap;
 		for(std::vector<std::string>::const_iterator requestedName = requestedNames.begin(); requestedName != requestedNames.end(); ++requestedName)
 		{
-			std::string tmpRequestedName = *requestedName;
-			if (lheWeightNamesMap.count(tmpRequestedName) > 0)
+			std::string internalName = *requestedName;
+			if (lheWeightNamesMap.count(internalName) > 0)
 			{
-				tmpRequestedName = lheWeightNamesMap.at(tmpRequestedName);
+				internalName = lheWeightNamesMap.at(internalName);
 			}
 			
 			bool found = false;
 			for(unsigned int lheWeightNameIndex = 0; lheWeightNameIndex < lheWeightNames.size(); lheWeightNameIndex++)
 			{
-				if (lheWeightNames.at(lheWeightNameIndex).compare(tmpRequestedName) == 0)
+				if (lheWeightNames.at(lheWeightNameIndex).compare(internalName) == 0)
 				{
-					resultMap[tmpRequestedName] = lheWeightNameIndex;
+					resultMap[*requestedName] = lheWeightNameIndex;
 					assert( !found ); // misconfiguration: the requested name matches more than once
 					found = true;
 				}
@@ -172,34 +172,29 @@ struct KGenEventInfo : public KEventInfo
 	double qScale;        ///< q scale of the process (used for PDF reweighting)
 	std::vector<float> lheWeights;
 
-	inline float getLheWeight(unsigned int index, bool failOnError = true) const
+	inline float getLheWeight(unsigned int index) const
 	{
-		float weight = lheWeights.at(index);
-		if(failOnError)
-		{
-			assert((weight > -998.9f) && (weight < 999.1f)); // the user tried to access something that has not been properly filled during the skim
-		}
-		return weight;
+		return lheWeights.at(index);
 	}
 	
-	std::vector<float> getLheWeights(std::vector<unsigned int> const& lheWeightIndices, bool failOnError=true) const
+	std::vector<float> getLheWeights(std::vector<unsigned int> const& lheWeightIndices) const
 	{
 		std::vector<float> resultVector;
 		for(std::vector<unsigned int>::const_iterator lheWeightIndex = lheWeightIndices.begin();
 		    lheWeightIndex != lheWeightIndices.end(); ++lheWeightIndex)
 		{
-			resultVector.push_back(getLheWeight(*lheWeightIndex, failOnError));
+			resultVector.push_back(getLheWeight(*lheWeightIndex));
 		}
 		return resultVector;
 	}
 	
-	std::map<std::string, float> getLheWeights(std::map<std::string, unsigned int> const& lheWeightNamesMap, bool failOnError=true) const
+	std::map<std::string, float> getLheWeights(std::map<std::string, unsigned int> const& lheWeightNamesMap) const
 	{
 		std::map<std::string, float> resultMap;
 		for(std::map<std::string, unsigned int>::const_iterator lheWeightNameIndex = lheWeightNamesMap.begin();
 		    lheWeightNameIndex != lheWeightNamesMap.end(); ++lheWeightNameIndex)
 		{
-			resultMap[lheWeightNameIndex->first] = getLheWeight(lheWeightNameIndex->second, failOnError);
+			resultMap[lheWeightNameIndex->first] = getLheWeight(lheWeightNameIndex->second);
 		}
 		return resultMap;
 	}
