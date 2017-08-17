@@ -29,11 +29,11 @@
 // MC data
 struct KGenInfo_Product
 {
-	typedef KLumiInfo typeLumi;
 	typedef KGenRunInfo typeRun;
+	typedef KGenLumiInfo typeLumi;
 	typedef KGenEventInfo typeEvent;
 	static const std::string idRun() { return "KGenRunInfo"; };
-	static const std::string idLumi() { return "KLumiInfo"; };
+	static const std::string idLumi() { return "KGenLumiInfo"; };
 	static const std::string idEvent() { return "KGenEventInfo"; };
 };
 
@@ -61,9 +61,6 @@ public:
 
 			genEventInfoMetadata = new KGenEventInfoMetadata();
 			_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
-
-			metaRun = new typename Tmeta::typeRun();
-			_run_tree->Bronch("runInfo", Tmeta::idRun().c_str(), &metaRun);
 		}
 
 	static const std::string getLabel() { return "GenInfo"; }
@@ -292,7 +289,6 @@ public:
 	}
 
 protected:
-	typename Tmeta::typeRun *metaRun;
 	bool ignoreExtXSec;
 	int forceLumi;
 	std::string binningMode;
@@ -319,8 +315,6 @@ public:
 		tagSource(cfg.getParameter<edm::InputTag>("genSource"))
 		{
 		    tokenSource = consumescollector.consumes<edm::HepMCProduct>(tagSource);
-			metaRun = new typename Tmeta::typeRun();
-			_run_tree->Bronch("runInfo", Tmeta::idRun().c_str(), &metaRun);
 		}
 
 	static const std::string getLabel() { return "HepMCInfo"; }
@@ -368,7 +362,6 @@ public:
 	}
 
 protected:
-	typename Tmeta::typeRun *metaRun;
 	double forceXSec;
 	int forceLumi;
 	edm::InputTag tagSource;

@@ -140,17 +140,18 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 	{
 		file = 0;
 		edm::Service<TFileService> fs;
+		run_tree = fs->make<TTree>("Runs", "Runs");
 		lumi_tree = fs->make<TTree>("Lumis", "Lumis");
 		event_tree = fs->make<TTree>("Events", "Events");
-		run_tree = fs->make<TTree>("Runs", "Runs");
 	}
 	else
 	{
+		run_tree = new TTree("Runs", "Runs");
+		run_tree->SetDirectory(0);
 		lumi_tree = new TTree("Lumis", "Lumis");
 		lumi_tree->SetDirectory(0);
 		file = new TFile(outputFile.c_str(), "RECREATE");
 		event_tree = new TTree("Events", "Events");
-		run_tree = new TTree("Runs", "Runs");
 	}
 
 	KBaseProducer::verbosity = std::max(KBaseProducer::verbosity, psConfig.getParameter<int>("verbose"));

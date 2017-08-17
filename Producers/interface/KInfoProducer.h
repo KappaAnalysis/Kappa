@@ -44,8 +44,10 @@
 // real data
 struct KInfo_Product
 {
+	typedef KRunInfo typeRun;
 	typedef KLumiInfo typeLumi;
 	typedef KEventInfo typeEvent;
+	static const std::string idRun() { return "KRunInfo"; };
 	static const std::string idLumi() { return "KLumiInfo"; };
 	static const std::string idEvent() { return "KEventInfo"; };
 };
@@ -88,6 +90,8 @@ public:
 		printHltList(cfg.getParameter<bool>("printHltList")),
 		overrideHLTCheck(cfg.getUntrackedParameter<bool>("overrideHLTCheck", false))
 	{
+		metaRun = new typename Tmeta::typeRun();
+		_run_tree->Bronch("runInfo", Tmeta::idRun().c_str(), &metaRun);
 		metaLumi = new typename Tmeta::typeLumi();
 		_lumi_tree->Bronch("lumiInfo", Tmeta::idLumi().c_str(), &metaLumi);
 		metaEvent = new typename Tmeta::typeEvent();
@@ -116,6 +120,9 @@ public:
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
+		metaRun = &(metaRunMap[run.run()]);
+		metaRun->nRun = run.run();
+		
 		KInfoProducerBase::hltKappa2FWK.clear();
 		hltNames.clear();
 		hltPrescales.clear();
@@ -324,9 +331,11 @@ protected:
 	std::vector<std::string> hltNames;
 	std::vector<unsigned int> hltPrescales;
 
+	typename Tmeta::typeRun *metaRun;
 	typename Tmeta::typeLumi *metaLumi;
 	typename Tmeta::typeEvent *metaEvent;
 
+	std::map<run_id, typename Tmeta::typeRun> metaRunMap;
 	std::map<std::pair<run_id, lumi_id>, typename Tmeta::typeLumi> metaLumiMap;
 };
 #endif

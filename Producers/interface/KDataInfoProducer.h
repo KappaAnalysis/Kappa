@@ -15,8 +15,10 @@
 // MC data
 struct KDataInfo_Product
 {
+	typedef KDataRunInfo typeRun;
 	typedef KDataLumiInfo typeLumi;
 	typedef KEventInfo typeEvent;
+	static const std::string idRun() { return "KDataRunInfo"; };
 	static const std::string idLumi() { return "KDataLumiInfo"; };
 	static const std::string idEvent() { return "KEventInfo"; };
 };

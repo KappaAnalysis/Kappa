@@ -69,8 +69,11 @@
 	<class name="KHCALNoiseSummary"/>
 	<class name="KTrackSummary"/>
 	<class name="KVertexSummary"/>
-	<class name="KLumiInfo"/>
+	<class name="KRunInfo"/>
 	<class name="KGenRunInfo"/>
+	<class name="KDataRunInfo"/>
+	<class name="KLumiInfo"/>
+	<class name="KGenLumiInfo"/>
 	<class name="KDataLumiInfo"/>
 	<class name="KElectronMetadata"/>
 	<class name="KFilterMetadata"/>
