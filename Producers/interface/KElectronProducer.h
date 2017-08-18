@@ -102,6 +102,8 @@ public:
 		}
 		
 		cEvent->getByToken(tokenRhoIso, rhoIso_h);
+		
+		// TODO: change to getByToken
 		/*art::Handle<StepPointMCCollection> stepsHandle;
 		event.getByLabel("g4run","tracker",stepsHandle);
 		StepPointMCCollection const& steps(*stepsHandle);

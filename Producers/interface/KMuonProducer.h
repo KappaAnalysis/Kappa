@@ -60,20 +60,20 @@ public:
 		muonMetadata = new KMuonMetadata();
 		_lumi_tree->Bronch("muonMetadata", "KMuonMetadata", &muonMetadata);
 
-	        this->HLTTriggerToken = consumescollector.consumes<trigger::TriggerEvent>(tagHLTrigger);
+		this->HLTTriggerToken = consumescollector.consumes<trigger::TriggerEvent>(tagHLTrigger);
 		this->VertexCollectionToken = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
 		this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
 
-        const edm::ParameterSet &psBase = this->psBase;
-        std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+		const edm::ParameterSet &psBase = this->psBase;
+		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
 
-        for (size_t i = 0; i < names.size(); ++i)
-        {
-            const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-            if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
+		for (size_t i = 0; i < names.size(); ++i)
+		{
+			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+			if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
 			for(size_t j = 0; j < isoValInputTags.size(); ++j)
 				isoValTokens.push_back(consumescollector.consumes<edm::ValueMap<double>>(isoValInputTags.at(j)));
-        }
+		}
 	}
 
 	static const std::string getLabel() { return "Muons"; }
@@ -266,8 +266,8 @@ public:
 
 		/// highpt ID variables
 		/** needed variables according to
-		    https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#New_HighPT_Version_recommended
-		    not in new CMSSW versions
+			https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#New_HighPT_Version_recommended
+			not in new CMSSW versions
 
 		reco::TrackRef cktTrack = muon::improvedMuonBestTrack(const reco::Muon & recoMu, muon::improvedTuneP);
 		dxy_high = cktTrack->db...
@@ -286,12 +286,12 @@ public:
 
 		/// precomputed muon IDs
 		/** https://hypernews.cern.ch/HyperNews/CMS/get/muon/868.html
-		    https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#Baseline_muon_selections_for_201
+			https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#Baseline_muon_selections_for_201
 			DataFormats/MuonReco/src/MuonSelectors.cc
 			automatically use muon::improvedTuneP default as in CMSSW
-		    Medium Id definition taken from:
-		    https://indico.cern.ch/event/357213/contribution/2/material/slides/0.pdf
-		    if release < 74X, otherwise use the method in the muon dataformat
+			Medium Id definition taken from:
+			https://indico.cern.ch/event/357213/contribution/2/material/slides/0.pdf
+			if release < 74X, otherwise use the method in the muon dataformat
 			last update: 2015-06-19
 		*/
 		bool isMediumMuon = muon::isMediumMuon(in);
