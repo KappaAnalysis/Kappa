@@ -42,6 +42,7 @@ public:
 		{
 			src = tags[i];
 
+			// TODO: change to getByToken
 			if (!event.getByLabel(src, handle))
 			{
 				std::cout << "Could not get main product! src = " << src.encode() << std::endl;

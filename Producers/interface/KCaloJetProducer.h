@@ -24,6 +24,7 @@ public:
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
+		// TODO: change to getByToken
 		// Retrieve additional input products
 		//tagJetID = pset.getParameter<edm::InputTag>("srcJetID");
 		//if (tagJetID.label() != "")
