@@ -5948,6 +5948,63 @@
     "scenario": "RunIISummer16MiniAODv2", 
     "xsec": 51610.9
   }, 
+  "LFV_croote_RunIISummer16MiniAODv2stk1_13TeV_USER_madgraph-pythia8": {
+    "Croote17": [
+      "Summer17-2A"
+    ], 
+    "campaign": "croote", 
+    "data": false, 
+    "dbs": "/LFV_ZToL1L2_13TeV_madgraph_pythia8_stk1/croote-RunIISummer16MiniAODv2-Croote_80X_mcRun2_asymptotic_2016_stk1-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_2017_CrooteLFV_v2", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "263200", 
+    "n_files": "400", 
+    "process": "LFV", 
+    "scenario": "RunIISummer16MiniAODv2stk1", 
+    "xsec": 51610.9
+  },
+  "LFV_croote_RunIISummer16MiniAODv2stk2_13TeV_USER_madgraph-pythia8": {
+    "Croote17": [
+      "Summer17-2B"
+    ], 
+    "campaign": "croote", 
+    "data": false, 
+    "dbs": "/LFV_ZToL1L2_13TeV_madgraph_pythia8_stk5/croote-RunIISummer16MiniAODv2-Croote_80X_mcRun2_asymptotic_2016_stk2-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_2017_CrooteLFV_v2", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "197400", 
+    "n_files": "300", 
+    "process": "LFV", 
+    "scenario": "RunIISummer16MiniAODv2stk2", 
+    "xsec": 51610.9
+  },
+  "LFV_croote_RunIISummer16MiniAODv2stk3_13TeV_USER_madgraph-pythia8": {
+    "Croote17": [
+      "Summer17-2C"
+    ], 
+    "campaign": "croote", 
+    "data": false, 
+    "dbs": "/LFV_ZToL1L2_13TeV_madgraph_pythia8_stk8/croote-RunIISummer16MiniAODv2-Croote_80X_mcRun2_asymptotic_2016_stk3-28028af67189b3de7224b79195bd0e1d/USER", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "madgraph-pythia8", 
+    "globalTag": "80X_mcRun2_2017_CrooteLFV_v2", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "197400", 
+    "n_files": "300", 
+    "process": "LFV", 
+    "scenario": "RunIISummer16MiniAODv2stk3", 
+    "xsec": 51610.9
+  },
   "MuonEG_Run2015B_16Dec2015v1_13TeV_MINIAOD": {
     "campaign": "Run2015B", 
     "data": true, 
