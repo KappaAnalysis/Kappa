@@ -39,7 +39,7 @@ git cms-merge-topic cms-met:METRecipe_80X_part2 -u
 git cms-merge-topic -u cms-tau-pog:CMSSW_8_0_X_tau-pog_miniAOD-backport-tauID
 
 #correct jet corrections for mvamet
-git cms-merge-topic -u cms-met:METRecipe_8020
+#git cms-merge-topic -u cms-met:METRecipe_8020
 #Mvamet package based on Summer16 Training
 git cms-merge-topic -u macewindu009:mvamet8026
 #copy training weightfile
