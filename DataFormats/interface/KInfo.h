@@ -29,6 +29,29 @@ struct KProvenance
 // List of user flags for luminosity sections (KLumiFlag...)
 const unsigned int KLFPrescaleError = 1 << 0;
 
+struct KRunInfo
+{
+	virtual ~KRunInfo() {};
+
+	unsigned int nRun;                      //< run number
+};
+
+struct KGenRunInfo : public KRunInfo
+{
+	virtual ~KGenRunInfo() {};
+
+	double filterEff;              //< generator filter efficiency
+	double xSectionExt;            //< external process cross section
+	double xSectionInt;            //< internal process cross section
+	
+	std::map<std::string, std::string> lheWeightNamesMap; //< human readable names mapped to indices
+};
+
+struct KDataRunInfo : public KRunInfo
+{
+	virtual ~KDataRunInfo() {};
+};
+
 struct KLumiInfo
 {
 	virtual ~KLumiInfo() {};
@@ -40,16 +63,9 @@ struct KLumiInfo
 	std::vector<std::string> hltNames;      //< names of the HLT triggers
 };
 
-
 struct KGenLumiInfo : public KLumiInfo
 {
 	virtual ~KGenLumiInfo() {};
-
-	double filterEff;              //< generator filter efficiency
-	double xSectionExt;            //< external process cross section
-	double xSectionInt;            //< internal process cross section
-	
-	std::map<std::string, std::string> lheWeightNamesMap; //< human readable names mapped to indices
 };
 
 struct KDataLumiInfo : public KLumiInfo

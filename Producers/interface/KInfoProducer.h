@@ -44,8 +44,10 @@
 // real data
 struct KInfo_Product
 {
+	typedef KRunInfo typeRun;
 	typedef KLumiInfo typeLumi;
 	typedef KEventInfo typeEvent;
+	static const std::string idRun() { return "KRunInfo"; };
 	static const std::string idLumi() { return "KLumiInfo"; };
 	static const std::string idEvent() { return "KEventInfo"; };
 };
@@ -53,8 +55,8 @@ struct KInfo_Product
 class KInfoProducerBase : public KBaseProducerWP
 {
 public:
-	KInfoProducerBase(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseProducerWP(cfg, _event_tree, _lumi_tree, "KInfo", std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KInfoProducerBase(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseProducerWP(cfg, _event_tree, _lumi_tree, _run_tree, "KInfo", std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	virtual ~KInfoProducerBase() {};
 
@@ -74,8 +76,8 @@ template<typename Tmeta>
 class KInfoProducer : public KInfoProducerBase
 {
 public:
-	KInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KInfoProducerBase(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
+	KInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KInfoProducerBase(cfg, _event_tree, _lumi_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		tauDiscrProcessName(cfg.getUntrackedParameter<std::string>("tauDiscrProcessName", "")),
 		tagL1Results(cfg.getParameter<edm::InputTag>("l1Source")),
 		tagHLTResults(cfg.getParameter<edm::InputTag>("hltSource")),
@@ -88,6 +90,8 @@ public:
 		printHltList(cfg.getParameter<bool>("printHltList")),
 		overrideHLTCheck(cfg.getUntrackedParameter<bool>("overrideHLTCheck", false))
 	{
+		metaRun = new typename Tmeta::typeRun();
+		_run_tree->Bronch("runInfo", Tmeta::idRun().c_str(), &metaRun);
 		metaLumi = new typename Tmeta::typeLumi();
 		_lumi_tree->Bronch("lumiInfo", Tmeta::idLumi().c_str(), &metaLumi);
 		metaEvent = new typename Tmeta::typeEvent();
@@ -100,7 +104,7 @@ public:
 		}
 		consumescollector.consumes<L1GlobalTriggerReadoutRecord>(tagL1Results);
 	 	tagHLTResultsToken = consumescollector.consumes<edm::TriggerResults>(tagHLTResults);
-		consumescollector.consumes<std::vector<edm::ErrorSummaryEntry>>(tagErrorsAndWarnings);
+		tokenErrorsAndWarnings = consumescollector.consumes<std::vector<edm::ErrorSummaryEntry>>(tagErrorsAndWarnings);
 	}
 	virtual ~KInfoProducer() {};
 
@@ -116,6 +120,9 @@ public:
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
+		metaRun = &(metaRunMap[run.run()]);
+		metaRun->nRun = run.run();
+		
 		KInfoProducerBase::hltKappa2FWK.clear();
 		hltNames.clear();
 		hltPrescales.clear();
@@ -280,7 +287,7 @@ public:
 
 		edm::Handle<std::vector<edm::ErrorSummaryEntry> > errorsAndWarnings;
 
-		event.getByLabel(tagErrorsAndWarnings, errorsAndWarnings);
+		event.getByToken(tokenErrorsAndWarnings, errorsAndWarnings);
 		if (errorsAndWarnings.failedToGet())
 		{
 			metaEvent->bitsUserFlags |= KEFRecoErrors;
@@ -315,6 +322,7 @@ protected:
 
 	edm::InputTag tagHLTrigger;
 	edm::InputTag tagErrorsAndWarnings;
+	edm::EDGetTokenT<std::vector<edm::ErrorSummaryEntry>> tokenErrorsAndWarnings;
 	std::vector<std::string> avoidEaWCategories;
 	bool printErrorsAndWarnings;
 	bool printHltList;
@@ -323,9 +331,11 @@ protected:
 	std::vector<std::string> hltNames;
 	std::vector<unsigned int> hltPrescales;
 
+	typename Tmeta::typeRun *metaRun;
 	typename Tmeta::typeLumi *metaLumi;
 	typename Tmeta::typeEvent *metaEvent;
 
+	std::map<run_id, typename Tmeta::typeRun> metaRunMap;
 	std::map<std::pair<run_id, lumi_id>, typename Tmeta::typeLumi> metaLumiMap;
 };
 #endif
