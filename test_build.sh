@@ -1,19 +1,5 @@
 #!/bin/bash
-echo "what is 0: $0"
-echo "# ================= #"
-echo "# Checking wget "
-echo "# ================= #"
-if ! which wget; then 
-    echo "No wget. Will install"; 
-    yum install wget -y
-    if ! which wget; then 
-        echo "Could not get wget"
-        exit 1
-    fi
-else
-    echo "wget found:"; 
-    which wget;
-fi
+echo $ADDITIONAL_OUTPUT
 
 echo "# ================= #"
 echo "# Setting /etc/cvmfs/config.d/cms.cern.ch.local BEFORE the mount "
@@ -42,12 +28,6 @@ if [ "$ADDITIONAL_OUTPUT" = true ]; then
     echo "# ================= #"
     echo "# Environment checks "
     echo "# ================= #"
-        # echo
-        # echo "# very specific tests of input files"
-        # echo "Testing most probably included in the image files"
-        # echo "1) /etc/yum.repos.d/cernvm.repo "
-        # cat /etc/yum.repos.d/cernvm.repo
-        # echo
 
         echo ":: /etc/cvmfs/default.local"
         cat /etc/cvmfs/default.local
