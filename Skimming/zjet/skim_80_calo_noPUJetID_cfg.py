@@ -209,7 +209,7 @@ process.path *= (process.makeKappaMuons)
 # Electrons ########################################################
 process.load('Kappa.Skimming.KElectrons_run2_cff')
 process.kappaTuple.Electrons.minPt = 8.0
-process.kappaTuple.Electrons.ids = cms.VInputTag("cutBasedElectronID_Spring15_25ns_V1_standalone_loose",
+process.kappaTuple.Electrons.ids = cms.vstring("cutBasedElectronID_Spring15_25ns_V1_standalone_loose",
 					       "cutBasedElectronID_Spring15_25ns_V1_standalone_medium",
 					       "cutBasedElectronID_Spring15_25ns_V1_standalone_tight",
 					       "cutBasedElectronID_Spring15_25ns_V1_standalone_veto",

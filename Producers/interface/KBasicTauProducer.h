@@ -22,9 +22,8 @@ template<typename TTau, typename TTauDiscriminator, typename TProduct>
 class KBasicTauProducer : public KBaseMultiLVProducer<std::vector<TTau>, TProduct>
 {
 public:
-	KBasicTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _lumi_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)),
-		VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection"))
+	KBasicTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _lumi_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector))
 	{
 		const edm::ParameterSet &psBase = this->psBase;
 		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
@@ -47,7 +46,7 @@ public:
 			floatDiscrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrWhitelist");
 			floatDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrBlacklist");
 			tauDiscrProcessName[names[i]] = pset.getParameter< std::string >("tauDiscrProcessName");
-			this->VertexCollectionToken = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
+			if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
 		}
 	}
 
@@ -124,7 +123,8 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Get vertices from event
-		this->cEvent->getByToken(this->VertexCollectionToken, VertexHandle);
+		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
+		this->cEvent->getByLabel(VertexCollectionSource, VertexHandle);
 
 		// Get tau discriminators from event
 		this->cEvent->getManyByType(currentTauDiscriminators);
@@ -275,8 +275,6 @@ public:
 	}
 
 protected:
-	edm::InputTag VertexCollectionSource;
-	edm::EDGetTokenT<reco::VertexCollection> VertexCollectionToken;
 	std::map<std::string, std::vector<std::string> > preselectionDiscr;
 	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist;
 	std::map<std::string, KTauMetadata *> discriminatorMap;

@@ -104,7 +104,7 @@ namespace
 		KTrackSummary dict_KTrackSummary;
 		KVertexSummary dict_KVertexSummary;
 		KLumiInfo dict_KLumiInfo;
-		KGenRunInfo dict_KGenRunInfo;
+		KGenLumiInfo dict_KGenLumiInfo;
 		KDataLumiInfo dict_KDataLumiInfo;
 		KElectronMetadata dict_KElectronMetadata;
 		KFilterMetadata dict_KFilterMetadata;

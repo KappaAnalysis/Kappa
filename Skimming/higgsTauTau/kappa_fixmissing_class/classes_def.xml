@@ -64,7 +64,7 @@
 	<class name="KTrackSummary"/>
 	<class name="KVertexSummary"/>
 	<class name="KLumiInfo"/>
-	<class name="KGenRunInfo"/>
+	<class name="KGenLumiInfo"/>
 	<class name="KDataLumiInfo"/>
 	<class name="KElectronMetadata"/>
 	<class name="KFilterMetadata"/>

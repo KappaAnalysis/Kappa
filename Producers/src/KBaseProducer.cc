@@ -34,10 +34,6 @@ bool KBaseProducer::endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, co
 {
 	return true;
 }
-bool KBaseProducer::endRun(edm::Run const &run, edm::EventSetup const &setup)
-{
-	return true;
-}
 
 bool KBaseProducer::tagMatch(const edm::Provenance *prov, const std::vector<edm::InputTag> &tags)
 {
@@ -141,9 +137,7 @@ bool KBaseProducer::fail(const std::ostream &s)
 	return false;
 }
 
-KBaseProducerWP::KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
-	consumescollector_(consumescollector),
-	psBase(cfg)
+KBaseProducerWP::KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) : psBase(cfg)
 {
 	provenance = new KProvenance();
 	_lumi_tree->Bronch(("provenance_" + producerName).c_str(), "KProvenance", &provenance);

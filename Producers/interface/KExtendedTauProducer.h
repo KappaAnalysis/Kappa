@@ -17,8 +17,8 @@
 class KExtendedTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KExtendedTaus>
 {
 public:
-	KExtendedTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KExtendedTaus>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
+	KExtendedTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KExtendedTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
 		{
 			const edm::ParameterSet &psBase = this->psBase;
 			std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();

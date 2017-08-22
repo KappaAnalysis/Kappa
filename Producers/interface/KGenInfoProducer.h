@@ -19,15 +19,19 @@
 
 #include "KInfoProducer.h"
 
+#include <boost/regex.hpp>
+#include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/trim.hpp>
+
+#include <numeric>
+
 
 // MC data
 struct KGenInfo_Product
 {
-	typedef KLumiInfo typeLumi;
-	typedef KGenRunInfo typeRun;
+	typedef KGenLumiInfo typeLumi;
 	typedef KGenEventInfo typeEvent;
-	static const std::string idRun() { return "KGenRunInfo"; };
-	static const std::string idLumi() { return "KLumiInfo"; };
+	static const std::string idLumi() { return "KGenLumiInfo"; };
 	static const std::string idEvent() { return "KGenEventInfo"; };
 };
 
@@ -35,8 +39,8 @@ template<typename Tmeta>
 class KGenInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KGenInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
+	KGenInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		ignoreExtXSec(cfg.getParameter<bool>("ignoreExtXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		binningMode(cfg.getParameter<std::string>("binningMode")),
@@ -46,18 +50,15 @@ public:
 		runInfo(cfg.getParameter<edm::InputTag>("lheSource")),
 		lheWeightRegexes(cfg.getParameter<std::vector<std::string>>("lheWeightNames"))
 		{
-			this->tokenGenRunInfo = consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
-			this->tokenSource = consumescollector.consumes<GenEventInfoProduct>(tagSource);
-			this->tokenLhe = consumescollector.consumes<LHEEventProduct>(lheSource);
-			this->tokenPuInfo = consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
-			//this->tokenLHERunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
-			this->tokenRunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
+			consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
+			consumescollector.consumes<GenEventInfoProduct>(tagSource);
+			consumescollector.consumes<LHEEventProduct>(lheSource);
+			consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
+			consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
+			consumescollector.consumes<LHERunInfoProduct>(runInfo);
 
 			genEventInfoMetadata = new KGenEventInfoMetadata();
 			_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
-
-			metaRun = new typename Tmeta::typeRun();
-			_run_tree->Bronch("runInfo", Tmeta::idRun().c_str(), &metaRun);
 		}
 
 	static const std::string getLabel() { return "GenInfo"; }
@@ -70,19 +71,99 @@ public:
 			return false;
 		if (forceLumi > 0)
 			this->metaLumi->nLumi = forceLumi;
-	return true;
+		
+#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 6) || (CMSSW_MAJOR_VERSION > 7) 
+		// print available lheWeights
+		edm::Handle<LHERunInfoProduct> runhandle;
+		if ((lheWeightRegexes.size() > 0) && lumiBlock.getRun().getByLabel( runInfo, runhandle ))
+		{
+			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
+			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
+			{
+				std::vector<std::string> lines = iter->lines();
+				std::string content = accumulate(lines.begin(), lines.end(), std::string("\n"));
+				boost::regex weightGroupRegex("<weightgroup(?:(?!<weight).)*\\htype\\h*=\\h*\"((?:(?!<weight).)*)\"(?:(?!<weight).)*>(?:(?!<weightgroup).)*</weightgroup>");
+				for (boost::sregex_token_iterator weightGroup(content.begin(), content.end(), weightGroupRegex, 0);
+				     weightGroup != boost::sregex_token_iterator(); ++weightGroup)
+				{
+					std::string weightGroupStr = *weightGroup;
+					if (this->verbosity > 1)
+					{
+						std::cout << "\nLHE weights for tag \"" << iter->tag() << "\":" << std::endl;
+					}
+					
+					boost::match_results<std::string::iterator> weightGroupRegexResult;
+					std::string weightType;
+					if (boost::regex_search(weightGroupStr.begin(), weightGroupStr.end(), weightGroupRegexResult, weightGroupRegex, boost::match_default) &&
+					    (weightGroupRegexResult.size() > 1))
+					{
+						weightType = boost::algorithm::trim_copy(std::string(weightGroupRegexResult[1].first, weightGroupRegexResult[1].second));
+					}
+					
+					boost::regex weightRegex("<weight(?:(?!<weight).)*\\hid\\h*=\\h*\"(\\d+)\"(?:(?!<weight).)*>((?:(?!<weight).)*)</weight>");
+					boost::match_results<std::string::iterator> weightRegexResult;
+					for (boost::sregex_token_iterator weight(weightGroupStr.begin(), weightGroupStr.end(), weightRegex, 0);
+					     weight != boost::sregex_token_iterator(); ++weight)
+					{
+						std::string weightStr = *weight;
+						
+						boost::match_results<std::string::iterator> weightRegexResult;
+						std::string weightId;
+						std::string weightTypeDetail;
+						if (boost::regex_search(weightStr.begin(), weightStr.end(), weightRegexResult, weightRegex, boost::match_default) &&
+						    (weightRegexResult.size() > 2))
+						{
+							weightId = boost::algorithm::trim_copy(std::string(weightRegexResult[1].first, weightRegexResult[1].second));
+							weightTypeDetail = boost::algorithm::trim_copy(std::string(weightRegexResult[2].first, weightRegexResult[2].second));
+						}
+						
+						for(std::string lheWeightRegex : lheWeightRegexes)
+						{
+							if(KBaseProducer::regexMatch(weightId, lheWeightRegex))
+							{
+								std::string weightTypeFull = weightType + "__" + weightTypeDetail;
+								boost::replace_all(weightTypeFull, " ", "_");
+								boost::replace_all(weightTypeFull, "=", "_");
+								boost::replace_all(weightTypeFull, ".", "_");
+								
+								if (this->verbosity > 1)
+								{
+									std::cout << weightId << " -> " << weightTypeFull << std::endl;
+								}
+								this->metaLumi->lheWeightNamesMap[weightTypeFull] = weightId;
+							}
+						}
+					}
+				}
+			}
+		}
+#endif
+		
+		// Read generator infos
+		edm::Handle<GenRunInfoProduct> hGenInfo;
+		lumiBlock.getRun().getByLabel(tagSource, hGenInfo);
+
+		const bool invalidGenInfo = !hGenInfo.isValid();
+		this->metaLumi->filterEff = invalidGenInfo ? -1 : hGenInfo->filterEfficiency();
+		this->metaLumi->xSectionInt = invalidGenInfo ? -1 : hGenInfo->internalXSec().value();
+		this->metaLumi->xSectionExt = invalidGenInfo ? -1 : hGenInfo->externalXSecLO().value();
+		if (ignoreExtXSec)
+			this->metaLumi->xSectionExt = -1;
+		if (invalidGenInfo)
+			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
+		return true;
 	}
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
 		edm::Handle<LHEEventProduct> lheEventProduct;
-		if(lheWeightRegexes.size() > 0 && event.getByToken(tokenLhe, lheEventProduct))
+		if(lheWeightRegexes.size() > 0 && event.getByLabel(lheSource, lheEventProduct))
 		{
 			for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
 			{
-				for(auto validIds : lheWeightRegexes)
+				for(std::string lheWeightRegex : lheWeightRegexes)
 				{
-					if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, validIds))
+					if(KBaseProducer::regexMatch(lheEventProduct->weights()[i].id, lheWeightRegex))
 					{
 						genEventInfoMetadata->lheWeightNames.push_back(lheEventProduct->weights()[i].id);
 					}
@@ -104,7 +185,7 @@ public:
 		edm::Handle<LHEEventProduct> lheEventProduct;
 		double lheHt = 0.;
 		int lheNOutPartons = 0;
-		if (event.getByToken(tokenLhe, lheEventProduct) && lheEventProduct.isValid())
+		if (event.getByLabel(lheSource, lheEventProduct) && lheEventProduct.isValid())
 		{
 			const lhef::HEPEUP& lheEvent = lheEventProduct->hepeup();
 			std::vector<lhef::HEPEUP::FiveVector> lheParticles = lheEvent.PUP;
@@ -120,32 +201,32 @@ public:
 		this->metaEvent->lheHt = lheHt;
 		this->metaEvent->lheNOutPartons = lheNOutPartons;
 		// Get LHE renormalization and factorization weights
-		if((lheWeightRegexes.size() > 0) && event.getByToken(tokenLhe, lheEventProduct) && lheEventProduct.isValid())
+		if((lheWeightRegexes.size() > 0) && event.getByLabel(lheSource, lheEventProduct) && lheEventProduct.isValid())
 		{
-			this->metaEvent->lheWeight.clear();
+			this->metaEvent->lheWeights.clear();
 			for(size_t j = 0; j < genEventInfoMetadata->lheWeightNames.size(); j++)
 			{
 				for(size_t i = 0; i < lheEventProduct->weights().size(); ++i)
 				{
 					if(lheEventProduct->weights()[i].id.compare(genEventInfoMetadata->lheWeightNames[j]) == 0)
 					{
-						this->metaEvent->lheWeight.push_back(lheEventProduct->weights()[i].wgt / lheEventProduct->originalXWGTUP() );
+						this->metaEvent->lheWeights.push_back(lheEventProduct->weights()[i].wgt / lheEventProduct->originalXWGTUP() );
 						break;
 					}
 				}
-				if (this->metaEvent->lheWeight.size() != j+1) // check that exactly one weight has been added
+				if (this->metaEvent->lheWeights.size() != j+1) // check that exactly one weight has been added
 				{
 					if(this->verbosity > 0)
 						std::cout << "Warning: Weight with id " << genEventInfoMetadata->lheWeightNames[j] << std::endl;
-					this->metaEvent->lheWeight.push_back(-999.0);
+					this->metaEvent->lheWeights.push_back(-999.0);
 				}
 			}
-			assert( this->metaEvent->lheWeight.size() == this->genEventInfoMetadata->lheWeightNames.size() ); // crosscheck, should never trigger
+			assert( this->metaEvent->lheWeights.size() == this->genEventInfoMetadata->lheWeightNames.size() ); // crosscheck, should never trigger
 		}
 
 		// Get generator event info:
 		edm::Handle<GenEventInfoProduct> hEventInfo;
-		event.getByToken(tokenSource, hEventInfo);
+		event.getByLabel(tagSource, hEventInfo);
 
 		this->metaEvent->binValue = -1;
 		if (hEventInfo->binningValues().size() > 0)
@@ -174,7 +255,7 @@ public:
 		this->metaEvent->nPUp1 = 0;
 		this->metaEvent->nPUp2 = 0;
 		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
-		if (event.getByToken(tokenPuInfo, puHandles) && puHandles.isValid())
+		if (event.getByLabel(puInfoSource, puHandles) && puHandles.isValid())
 		{
 			for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
 			{
@@ -197,87 +278,47 @@ public:
 		{
 			// in some versions of CMSSW it's not a vector:
 			edm::Handle<PileupSummaryInfo> puHandle;
-			if (event.getByToken(tokenPuInfo, puHandle) && puHandle.isValid())
+			if (event.getByLabel(puInfoSource, puHandle) && puHandle.isValid())
 				this->metaEvent->nPU = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
 		}
 
 		return true;
 	}
-	bool endRun(edm::Run const&  run, edm::EventSetup const &setup) override
-	{
-		// Read generator infos
-		edm::Handle<GenRunInfoProduct> hGenInfo;
-		run.getByToken(this->tokenGenRunInfo, hGenInfo);
-
-		const bool invalidGenInfo = !hGenInfo.isValid();
-		this->metaRun->filterEff = invalidGenInfo ? -1 : hGenInfo->filterEfficiency();
-		this->metaRun->xSectionInt = invalidGenInfo ? -1 : hGenInfo->internalXSec().value();
-		this->metaRun->xSectionExt = invalidGenInfo ? -1 : hGenInfo->externalXSecLO().value();
-		if (ignoreExtXSec)
-			this->metaRun->xSectionExt = -1;
-		if (invalidGenInfo)
-			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
-
-		// print available lheWeights
-		edm::Handle<LHERunInfoProduct> runhandle;
-		if((this->verbosity > 1) && run.getByToken( tokenRunInfo, runhandle ))
-		{
-			LHERunInfoProduct myLHERunInfoProduct = *(runhandle.product());
-			for (auto iter=myLHERunInfoProduct.headers_begin(); iter!=myLHERunInfoProduct.headers_end(); iter++)
-			{
-				std::cout << iter->tag() << std::endl;
-				std::vector<std::string> lines = iter->lines();
-				for (unsigned int iLine = 0; iLine<lines.size(); iLine++)
-				{
-						std::cout << lines.at(iLine);
-				}
-			}
-		}
-		return true;
-	}
 
 protected:
-	typename Tmeta::typeRun *metaRun;
 	bool ignoreExtXSec;
 	int forceLumi;
 	std::string binningMode;
 	edm::InputTag tagSource, puInfoSource, lheSource, runInfo;
 	KGenEventInfoMetadata *genEventInfoMetadata;
 	std::vector<std::string> lheWeightRegexes;
-
-	edm::EDGetTokenT<GenRunInfoProduct> tokenGenRunInfo;
-	edm::EDGetTokenT<GenEventInfoProduct> tokenSource;
-	edm::EDGetTokenT<LHEEventProduct> tokenLhe;
-	edm::EDGetTokenT<std::vector<PileupSummaryInfo>> tokenPuInfo;
-	//edm::EDGetTokenT<LHERunInfoProduct> tokenLHERunInfo;
-	edm::EDGetTokenT<LHERunInfoProduct> tokenRunInfo;
 };
 
 template<typename Tmeta>
 class KHepMCInfoProducer : public KInfoProducer<Tmeta>
 {
 public:
-	KHepMCInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
+	KHepMCInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
+		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		forceXSec(cfg.getParameter<double>("forceXSec")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource"))
 		{
-		    tokenSource = consumescollector.consumes<edm::HepMCProduct>(tagSource);
-			metaRun = new typename Tmeta::typeRun();
-			_run_tree->Bronch("runInfo", Tmeta::idRun().c_str(), &metaRun);
+		    consumescollector.consumes<edm::HepMCProduct>(tagSource);
 		}
 
 	static const std::string getLabel() { return "HepMCInfo"; }
 
-	bool endRun(edm::Run const&  run, edm::EventSetup const &setup) override
+	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		// Fill data related infos
-		if (!KInfoProducer<Tmeta>::onRun(run, setup))
+		if (!KInfoProducer<Tmeta>::onLumi(lumiBlock, setup))
 			return false;
-		this->metaRun->filterEff = 1;
-		this->metaRun->xSectionInt = forceXSec;
-		this->metaRun->xSectionExt = forceXSec;
+		if (forceLumi > 0)
+			this->metaLumi->nLumi = forceLumi;
+		this->metaLumi->filterEff = 1;
+		this->metaLumi->xSectionInt = forceXSec;
+		this->metaLumi->xSectionExt = forceXSec;
 		return true;
 	}
 
@@ -291,7 +332,7 @@ public:
 
 		// Get generator event info:
 		edm::Handle<edm::HepMCProduct> hEventInfo;
-		event.getByToken(this->tokenSource, hEventInfo);
+		event.getByLabel(tagSource, hEventInfo);
 		const HepMC::GenEvent &hepmc = hEventInfo->getHepMCData();
 
 		this->metaEvent->binValue = hepmc.event_scale();
@@ -313,11 +354,9 @@ public:
 	}
 
 protected:
-	typename Tmeta::typeRun *metaRun;
 	double forceXSec;
 	int forceLumi;
 	edm::InputTag tagSource;
-	edm::EDGetTokenT<edm::HepMCProduct> tokenSource;
 };
 
 #endif
