@@ -51,17 +51,16 @@ public:
 		lheSource(cfg.getParameter<edm::InputTag>("lheSource")),
 		runInfo(cfg.getParameter<edm::InputTag>("lheSource")),
 		lheWeightRegexes(cfg.getParameter<std::vector<std::string>>("lheWeightNames"))
-		{
-			this->tokenGenRunInfo = consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
-			this->tokenSource = consumescollector.consumes<GenEventInfoProduct>(tagSource);
-			this->tokenLhe = consumescollector.consumes<LHEEventProduct>(lheSource);
-			this->tokenPuInfo = consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
-			//this->tokenLHERunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
-			this->tokenRunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
+	{
+		this->tokenGenRunInfo = consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
+		this->tokenSource = consumescollector.consumes<GenEventInfoProduct>(tagSource);
+		this->tokenLhe = consumescollector.consumes<LHEEventProduct>(lheSource);
+		this->tokenPuInfo = consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
+		this->tokenRunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
 
-			genEventInfoMetadata = new KGenEventInfoMetadata();
-			_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
-		}
+		genEventInfoMetadata = new KGenEventInfoMetadata();
+		_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
+	}
 
 	static const std::string getLabel() { return "GenInfo"; }
 
@@ -206,7 +205,7 @@ public:
 
 		return true;
 	}
-	bool endRun(edm::Run const&  run, edm::EventSetup const &setup) override
+	bool endRun(edm::Run const& run, edm::EventSetup const &setup) override
 	{
 		// Read generator infos
 		edm::Handle<GenRunInfoProduct> hGenInfo;
@@ -221,7 +220,7 @@ public:
 		if (invalidGenInfo)
 			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
 
-		// print available lheWeights
+		// https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW#Retrieving_the_weights
 		edm::Handle<LHERunInfoProduct> runhandle;
 		if ((lheWeightRegexes.size() > 0) && run.getByToken(tokenRunInfo, runhandle))
 		{
@@ -230,7 +229,7 @@ public:
 			{
 				std::vector<std::string> lines = iter->lines();
 				std::string content = accumulate(lines.begin(), lines.end(), std::string("\n"));
-				boost::regex weightGroupRegex("<weightgroup(?:(?!<weight).)*\\htype\\h*=\\h*\"((?:(?!<weight).)*)\"(?:(?!<weight).)*>(?:(?!<weightgroup).)*</weightgroup>");
+				boost::regex weightGroupRegex("<weightgroup(?:(?!<weight).)*\\h(?:type|name)\\h*=\\h*\"((?:(?!<weight).)*)\"(?:(?!<weight).)*>(?:(?!<weightgroup).)*</weightgroup>");
 				for (boost::sregex_token_iterator weightGroup(content.begin(), content.end(), weightGroupRegex, 0);
 				     weightGroup != boost::sregex_token_iterator(); ++weightGroup)
 				{
@@ -300,7 +299,6 @@ protected:
 	edm::EDGetTokenT<GenEventInfoProduct> tokenSource;
 	edm::EDGetTokenT<LHEEventProduct> tokenLhe;
 	edm::EDGetTokenT<std::vector<PileupSummaryInfo>> tokenPuInfo;
-	//edm::EDGetTokenT<LHERunInfoProduct> tokenLHERunInfo;
 	edm::EDGetTokenT<LHERunInfoProduct> tokenRunInfo;
 };
 
