@@ -450,7 +450,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		virtual void fillProduct(const InputType &in, OutputType &out,
 								const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 		{
-			cEvent->getByToken(tokenBeamSpot, BeamSpot);
+			edm::InputTag beamSpotSource = pset.getParameter<edm::InputTag>("beamSpotSource");
+			cEvent->getByLabel(beamSpotSource, BeamSpot);
 
 			cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 			// Continue normally
