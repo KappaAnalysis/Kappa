@@ -314,7 +314,7 @@ struct KKaonCandidate : public KPFCandidate
 	//angles
 	float angleXYBS;
 	float angleXYPV;
-	float angleXYZPS;
+	float angleXYZBS;
 	float angleXYZPV;
 
 	float kMass;

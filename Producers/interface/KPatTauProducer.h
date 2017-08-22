@@ -6,6 +6,7 @@
 #include "KTauProducer.h"
 #include "KVertexProducer.h"
 #include "KVertexSummaryProducer.h"
+
 #include "KPackedPFCandidateProducer.h"
 #include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
 #include "TrackingTools/PatternTools/interface/ClosestApproachInRPhi.h"
@@ -269,11 +270,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 								reco::Vertex referencePV = VertexCollection->at(KVertexSummaryProducer::getValidVertexIndex(*VertexCollection)); // Artus. TODO: check that KVertex stores the same variable
 								math::XYZPoint referencePosBS(BeamSpot->position());
 								math::XYZPoint referencePosPV(referencePV.position());
-									//kaonCandidate.refPosBS(BeamSpot->position()); //temp for checks
-									//kaonCandidate.refPosPV(referencePV.position()); //temp for checks
 									kaonCandidate.referencePosBS = referencePosBS; //temp
 									kaonCandidate.referencePosPV = referencePosPV; //temp
-								//TODO: typedef  ROOT::Math::SMatrix<double, 3, 3, ROOT::Math::MatRepSym<double, 3> >
 								SMatrixSym3D totalCovBS = BeamSpot->rotatedCovariance3D() + theVtx.covariance();
 								SMatrixSym3D totalCovPV = referencePV.covariance() + theVtx.covariance(); // TODO::KAPPA
 									kaonCandidate.totalCovBS = totalCovBS; //temp for checks
@@ -341,7 +339,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 								// 3D pointing angle
 									float dzBS = theVtx.z() - referencePosBS.z(), pz = totalPiMomentumClosestToSV.z();
 									float dzPV = theVtx.z() - referencePosPV.z();
-									kaonCandidate.angleXYZPS = (dxBS * pxBS + dyBS * pyBS + dzBS * pz) / (sqrt(dxBS * dxBS + dyBS * dyBS + dzBS * dzBS) * sqrt(pxBS * pxBS + pyBS * pyBS + pz * pz));
+									kaonCandidate.angleXYZBS = (dxBS * pxBS + dyBS * pyBS + dzBS * pz) / (sqrt(dxBS * dxBS + dyBS * dyBS + dzBS * dzBS) * sqrt(pxBS * pxBS + pyBS * pyBS + pz * pz));
 									kaonCandidate.angleXYZPV = (dxPV * pxPV + dyPV * pyPV + dzPV * pz) / (sqrt(dxPV * dxPV + dyPV * dyPV + dzPV * dzPV) * sqrt(pxPV * pxPV + pyPV * pyPV + pz * pz));
 
 							// Write down the object
@@ -446,8 +444,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		virtual void fillProduct(const InputType &in, OutputType &out,
 								const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 		{
-			edm::InputTag beamSpotSource = pset.getParameter<edm::InputTag>("beamSpotSource");
-			cEvent->getByLabel(beamSpotSource, BeamSpot);
+			cEvent->getByToken(tokenBeamSpot, BeamSpot);
 
 			cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 			// Continue normally
