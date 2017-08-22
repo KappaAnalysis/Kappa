@@ -49,4 +49,8 @@ script:
                             -v '/home/short:/home/short' claria/cvmfs-cms /bin/bash 
                             -c "cd /home/; source /home/travis/test_build.sh -g 'greyxray' -e 'greyxray@gmail.com' -n 'kappa test'"
 notifications:
-  email: false
+  email:
+    recipients:
+      - greyxray@gmail.com
+    on_success: change
+    on_failure: always
