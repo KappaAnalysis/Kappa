@@ -67,9 +67,6 @@ struct KTau : public KBasicTau
 	KLVs piZeroCandidates;
 	KPFCandidates chargedHadronCandidates;
 	KPFCandidates gammaCandidates;
-	KPFCandidates isolationChargedHadronCandidates;
-	//std::tuple<unsigned short, unsigned short, KPFCandidate> kshortTracksTuple;
-	KKaonCandidates kshortCandidates;
 
 	KVertex sv;
 

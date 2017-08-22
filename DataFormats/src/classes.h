@@ -79,8 +79,6 @@ namespace
 		KParticles dict_KParticles;
 		KPFCandidate dict_KPFCandidate;
 		KPFCandidates dict_KPFCandidates;
-		KKaonCandidate dict_KKaonCandidate;
-		KKaonCandidates dict_KKaonCandidates;
 		KPhoton dict_KPhoton;
 		KPhotons dict_KPhotons;
 		KPileupDensity dict_KPileupDensity;

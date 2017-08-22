@@ -338,8 +338,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.p *= getattr(process, taus)
 	
 	process.kappaTuple.active += cms.vstring('PatTaus')
-	if len(datasetsHelper.get_nicks_with_query(query='{"process" : "QCD"}', pre_selected_nicks = [nickname])) > 0 or data:
-		process.kappaTuple.PatTaus.taus.kshortinformation = cms.untracked.bool(True)
 	process.kappaTuple.PatTaus.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 	#process.kappaTuple.PatTaus.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS")
 	process.kappaTuple.PatTaus.offlineBeamSpot = cms.InputTag("offlineBeamSpot")

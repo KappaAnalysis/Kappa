@@ -45,8 +45,6 @@
 	<class name="KParticles"/>
 	<class name="KPFCandidate"/>
 	<class name="KPFCandidates"/>
-	<class name="KKaonCandidate"/>
-	<class name="KKaonCandidates"/>
 	<class name="KPhoton"/>
 	<class name="KPhotons"/>
 	<class name="KPileupDensity"/>
