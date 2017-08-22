@@ -1736,6 +1736,21 @@
     "process": "DoubleEG", 
     "scenario": "23Jun2017v1"
   }, 
+  "DoubleEG_Run2017C_PromptRecov3_13TeV_MINIAOD": {
+    "campaign": "Run2017C", 
+    "data": true, 
+    "dbs": "/DoubleEG/Run2017C-PromptReco-v3/MINIAOD", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "", 
+    "globalTag": "92X_dataRun2_Prompt_v8", 
+    "inputDBS": "global", 
+    "n_events_generated": "16410501", 
+    "n_files": "248", 
+    "process": "DoubleEG", 
+    "scenario": "PromptRecov3"
+  }, 
   "DoubleMuon_Run2015B_PromptRecov1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Data_PromptReco"
