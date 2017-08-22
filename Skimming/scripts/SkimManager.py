@@ -676,7 +676,7 @@ if __name__ == "__main__":
 	parser.add_argument("--nicks", dest="nicks", help="Query which each dataset has to fulfill. Works with regex e.g: --nicks \".*_Run2016(B|C|D).*\"")
 	parser.add_argument("--tag", dest="tag", help="Ask for a specific tag of a dataset. Optional arguments are --TagValues")
 	parser.add_argument("--tagvalues", dest="tagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base', Skim_Exetend\" ")
-	parser.add_argument("--storage-for-output", dest="storage_for_output", default="T2_DE_DESY", help="Specifies the storage element you want to write your outputs to. Default: %(default)s")
+	parser.add_argument("--storage-for-output", dest="storage_for_output", default="T2_DE_RWTH", help="Specifies the storage element you want to write your outputs to. Default: %(default)s")
 
 	parser.add_argument("--init", dest="init", help="Init or Update the dataset", action='store_true')
 
