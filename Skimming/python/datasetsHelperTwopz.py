@@ -35,9 +35,10 @@ class datasetsHelperTwopz:
 		newdict = new.base_dict
 		self.base_dict.update(newdict)
 
-	def read_from_jsonfile(self, in_json_file):
+	def read_from_jsonfile(self, in_json_filename):
 		"""Read the base_dict from input file """
-		self.base_dict = json.load(open(in_json_file))  ## Maybe also add functionality to have two input files
+		with open(in_json_filename) as in_json_file:
+			self.base_dict = json.load(in_json_file)  ## Maybe also add functionality to have two input files
 
 	def write_to_jsonfile(self, out_json_file = None):
 		"""Save the base_dict to a json file"""
@@ -54,9 +55,9 @@ class datasetsHelperTwopz:
 			print "Created "+out_json_file
 		#~ else:
 			#~ print "Overwritten "+out_json_file
-		out_json = open(out_json_file, 'w')
-		out_json.write(json.dumps(self.base_dict, sort_keys=True, indent=2))
-		out_json.close()
+		print "write", out_json_file
+		with open(out_json_file, 'w') as out_json:
+			out_json.write(json.dumps(self.base_dict, sort_keys=True, indent=2))
 
 	def make_nickname(self, sample_dict):
 		"""Gives the (old) structure of the nicknames """
