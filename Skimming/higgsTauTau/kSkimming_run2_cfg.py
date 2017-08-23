@@ -131,7 +131,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.load("Kappa.Skimming.KVertices_cff")
 	process.goodOfflinePrimaryVertices.src = cms.InputTag('offlineSlimmedPrimaryVertices')
 	process.p *= ( process.makeVertexes )
-	
+
 	process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary
 	process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
 
@@ -141,7 +141,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
 	# setup BadPFMuonFilter and BadChargedCandidateFilter
-	if tools.is_above_cmssw_version([8]) and not tools.is_above_cmssw_version([9]): 
+	if tools.is_above_cmssw_version([8]) and not tools.is_above_cmssw_version([9]):
 		process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 		process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
 		process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
@@ -198,7 +198,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
-		
+
 		if ("HToTauTau" in nickname) or ("H2JetsToTauTau" in nickname):
 			process.kappaTuple.active += cms.vstring('LHE')
 			process.kappaTuple.LHE.whitelist = cms.vstring('source')
@@ -335,7 +335,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		)
 		setattr(process, taus, embedID)
 		process.p *= getattr(process, taus)
-	
+
 	process.kappaTuple.active += cms.vstring('PatTaus')
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
 	process.kappaTuple.PatTaus.taus.src = cms.InputTag(taus)
@@ -412,7 +412,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"rerunDiscriminationByIsolationMVANewDMrun2v1VVTight"
 			)
 	## now also possible to save all MVA isolation inputs for taus # turn of per default
-	
+
 	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring(
 		"decayDistX",
 		"decayDistY",
@@ -429,7 +429,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	process.kappaTuple.PatTaus.verbose = cms.int32(1)
-	
+
 	## ------------------------------------------------------------------------
 
 	## Configure Jets
