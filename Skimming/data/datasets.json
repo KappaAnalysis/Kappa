@@ -925,6 +925,22 @@
     "scenario": "PU25nsData2015v1", 
     "xsec": 2.72
   }, 
+  "DYJetsToLLM50_PhaseISpring17MiniAOD_FlatPU28to62_13TeV_MINIAOD_madgraph-pythia8_ext1": {
+    "campaign": "PhaseISpring17MiniAOD", 
+    "data": false, 
+    "dbs": "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/PhaseISpring17MiniAOD-FlatPU28to62_902_90X_upgrade2017_realistic_v20_ext1-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "ext1", 
+    "format": "MINIAOD", 
+    "generator": "madgraph-pythia8", 
+    "globalTag": "90X_upgrade2017_realistic_v20", 
+    "inputDBS": "global", 
+    "n_events_generated": "50524935", 
+    "n_files": "928", 
+    "process": "DYJetsToLL_M50", 
+    "scenario": "FlatPU28to62", 
+    "xsec": 5765.4
+  }, 
   "DYJetsToLLM50_RunIIFall15DR76_PU25nsData2015v1_13TeV_AOD_madgraph-pythia8": {
     "campaign": "RunIIFall15DR76", 
     "data": false, 
