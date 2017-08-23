@@ -543,11 +543,10 @@ class SkimManagerBase:
 
 ########## Functions to create or reset file lists for COMPLETED grid-control or crab tasks
 
-	def create_filelist(self, force=False):
-		filelist_folder_name = os.path.relpath(self.workdir, SkimManagerBase.get_workbase())
-		skim_path = os.path.join(os.environ.get("CMSSW_BASE"), "src/Kappa/Skimming/data", filelist_folder_name)
-		if not os.path.exists(skim_path):
-			 os.makedirs(skim_path)
+	def create_filelist(self, date, create_recent_symlinks, force=False):
+		filelist_folder_name = os.path.expandvars("$CMSSW_BASE/src/HiggsAnalysis/KITHiggsToTauTau/data/Samples")
+		if not os.path.exists(filelist_folder_name):
+			os.makedirs(filelist_folder_name)
 		for dataset in self.skimdataset.nicks():
 			storage_site = self.skimdataset[dataset].get("storageSite", self.storage_for_output)
 			if not self.skimdataset[dataset].get("storageSite"):
@@ -558,7 +557,8 @@ class SkimManagerBase:
 				n_jobs_info = os.path.join(self.workdir, dataset[:100], "params.map.gz")
 				if os.path.exists(n_jobs_info):
 					print "Getting GC file list for", dataset
-					filelist = open(skim_path+'/'+dataset+'.txt', 'w')
+					filelist_path = os.path.join(filelist_folder_name, "XROOTD_sample_"+dataset+"_"+date+".txt")
+					filelist = open(filelist_path, 'w')
 					n_gc_jobs = int(gzip.open(n_jobs_info, 'r').read())
 					done_jobs = 0
 					for i in range(n_gc_jobs):
@@ -571,12 +571,15 @@ class SkimManagerBase:
 									filelist.write(self.site_storage_access_dict[storage_site]["xrootd"]+re.sub(r'.*(store)', r'/store', file_path_parts[1]+file_path_parts[0]+"\n"))
 					filelist.close()
 					self.skimdataset[dataset]["GCSKIM_STATUS"] = "LISTED"
+					if create_recent_symlinks:
+						filelist_path_symlink = filelist_path.replace(date+".txt", "recent.txt")
+						os.system("ln -fsv %s %s" % (os.path.relpath(filelist_path, os.path.dirname(filelist_path_symlink)), filelist_path_symlink))
 					print "List creation successfull!"
 					print "---------------------------------------------------------"
 			# If GC task not completed, create a crab filelist
 			elif force or (self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED" and self.skimdataset[dataset]["GCSKIM_STATUS"] != "LISTED"):
 				print "Getting CRAB file list for", dataset
-				filelist_path = skim_path+'/'+dataset+'.txt'
+				filelist_path = os.path.join(filelist_folder_name, "XROOTD_sample_"+dataset+"_"+date+".txt")
 				filelist = open(filelist_path, 'w')
 				dataset_filelist = ""
 				
@@ -600,6 +603,10 @@ class SkimManagerBase:
 					print "Saved filelist in \"%s\"." % filelist_path
 				except:
 					print "Getting output from crab exited with error. Try again later."
+				
+				if create_recent_symlinks:
+					filelist_path_symlink = filelist_path.replace(date+".txt", "recent.txt")
+					os.system("ln -fsv %s %s" % (os.path.relpath(filelist_path, os.path.dirname(filelist_path_symlink)), filelist_path_symlink))
 
 				filelist_check = open(filelist_path, 'r')
 				if len(filelist_check.readlines()) == number_jobs:
@@ -671,7 +678,7 @@ if __name__ == "__main__":
 
 	parser.add_argument("-i", "--input", dest="inputfile", default=def_input, help="input data base (Default: %s)"%def_input)
 	parser.add_argument("-w", "--workdir", dest="workdir", default=os.path.join(work_base, strftime("%Y-%m-%d-%H-%M-%S", gmtime()))+"_kappa-skim", help="Set work directory  (Default: %(default)s)")
-	parser.add_argument("-d", "--date", dest="date", action="store_true", default=False, help="Add current date to workdir folder (Default: %(default)s)")
+	parser.add_argument("-d", "--date", nargs="?", default=None, const=datetime.date.today().strftime("%Y-%m-%d"), help="Date (Default: %(default)s)")
 	parser.add_argument("--query", dest="query", help="Query which each dataset has to fulfill. Works with regex e.g: --query '{\"campaign\" : \"RunIISpring16MiniAOD.*reHLT\"}' \n((!!! For some reasons the most outer question marks must be the \'))")
 	parser.add_argument("--nicks", dest="nicks", help="Query which each dataset has to fulfill. Works with regex e.g: --nicks \".*_Run2016(B|C|D).*\"")
 	parser.add_argument("--tag", dest="tag", help="Ask for a specific tag of a dataset. Optional arguments are --TagValues")
@@ -691,6 +698,7 @@ if __name__ == "__main__":
 	
 	parser.add_argument("--create-filelist", action='store_true', default=False, dest = "create_filelist", help="")
 	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
+	parser.add_argument("-r", "--create-recent-symlinks", default=False, action="store_true", help="Create symlinks to filelists as recent ones. [Default: %(default)s]")
 	
 	parser.add_argument("-f", "--force", action='store_true', default=False, dest="force", help="Force current action (e.g. creation of filelists).")
 
@@ -711,8 +719,9 @@ if __name__ == "__main__":
 	if not os.path.exists(args.inputfile):
 		print 'No input file found'
 		exit()
-	if args.date:
-		args.workdir+="_"+datetime.date.today().strftime("%Y-%m-%d")
+	
+	if args.date and args.init:
+		args.workdir+="_"+args.date
 	
 	SKM = SkimManagerBase(storage_for_output=args.storage_for_output, workbase=work_base, workdir=args.workdir)
 	nicks = SKM.nick_list(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
@@ -738,7 +747,10 @@ if __name__ == "__main__":
 		exit()
 
 	if args.create_filelist:
-		SKM.create_filelist(args.force)
+		if not args.date:
+			print "Please specify --date!"
+			exit()
+		SKM.create_filelist(args.date, args.create_recent_symlinks, args.force)
 		SKM.save_dataset()
 		exit()
 
