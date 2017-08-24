@@ -197,17 +197,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
 		
-	if ("HToTauTau" in nickname) or ("H2JetsToTauTau" in nickname):
-		process.kappaTuple.active += cms.vstring('LHE')
-		process.kappaTuple.LHE.whitelist = cms.vstring('source')
-		process.kappaTuple.LHE.rename = cms.vstring('source => LHEafter')
-		if tools.is_above_cmssw_version([7, 6]):
-			process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("externalLHEProducer"))
-
-	# write out for all processes where available
-	if not isEmbedded and not data:
 		process.kappaTuple.Info.lheSource = cms.InputTag("externalLHEProducer")
 		process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
+		
+		if any([pattern in nickname for pattern in ["HToTauTau", "H2JetsToTauTau", "DY", "LFV"]]):
+			process.kappaTuple.active += cms.vstring("LHE")
+			process.kappaTuple.LHE.whitelist = cms.vstring("source")
+			process.kappaTuple.LHE.rename = cms.vstring("source => LHEafter")
+			if tools.is_above_cmssw_version([7, 6]):
+				process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("externalLHEProducer"))
 
 	# save Flag
 	process.kappaTuple.Info.isEmbedded = cms.bool(isEmbedded)
