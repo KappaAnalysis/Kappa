@@ -55,7 +55,6 @@ class datasetsHelperTwopz:
 			print "Created "+out_json_file
 		#~ else:
 			#~ print "Overwritten "+out_json_file
-		print "write", out_json_file
 		with open(out_json_file, 'w') as out_json:
 			out_json.write(json.dumps(self.base_dict, sort_keys=True, indent=2))
 
