@@ -45,7 +45,7 @@ git cms-merge-topic -u macewindu009:mvamet8026
 #copy training weightfile
 mkdir $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
 cd $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
-wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root
+wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root --no-check-certificate
 
 cd $CMSSW_BASE/src
 git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit

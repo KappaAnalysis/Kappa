@@ -3,6 +3,14 @@ if [ "$ADDITIONAL_OUTPUT" = true ]; then
     set -x
 fi
 
+if ! which wget; then 
+    yum install wget -y
+    if ! which wget; then 
+        echo "Could not get wget"
+        exit 1
+    fi
+fi
+
 echo "# ================= #"
 echo "# Setting /etc/cvmfs/config.d/cms.cern.ch.local BEFORE the mount"
 echo "# ================= #"

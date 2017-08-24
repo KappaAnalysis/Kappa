@@ -113,7 +113,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	data = datasetsHelper.isData(nickname)
 	isEmbedded = datasetsHelper.isEmbedded(nickname)
-	print "nickmane:", nickname
+	print "nicknane:", nickname
 
 	#####miniaod = datasetsHelper.isMiniaod(nickname) not used anymore, since everything is MiniAOD now
 	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
@@ -130,7 +130,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.load("Kappa.Skimming.KVertices_cff")
 	process.goodOfflinePrimaryVertices.src = cms.InputTag('offlineSlimmedPrimaryVertices')
 	process.p *= ( process.makeVertexes )
-	
+
 	process.kappaTuple.VertexSummary.whitelist = cms.vstring('offlineSlimmedPrimaryVertices')  # save VertexSummary
 	process.kappaTuple.VertexSummary.rename = cms.vstring('offlineSlimmedPrimaryVertices => goodOfflinePrimaryVerticesSummary')
 
@@ -140,7 +140,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('TriggerObjectStandalone')
 
 	# setup BadPFMuonFilter and BadChargedCandidateFilter
-	if tools.is_above_cmssw_version([8]) and not tools.is_above_cmssw_version([9]): 
+	if tools.is_above_cmssw_version([8]) and not tools.is_above_cmssw_version([9]):
 		process.load('RecoMET.METFilters.BadPFMuonFilter_cfi')
 		process.BadPFMuonFilter.muons = cms.InputTag("slimmedMuons")
 		process.BadPFMuonFilter.PFCandidates = cms.InputTag("packedPFCandidates")
@@ -178,8 +178,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if not isEmbedded and "Spring16" in str(process.kappaTuple.TreeInfo.parameters.campaign):
 		# adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection"
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
-	
-	if not tools.is_above_cmssw_version([9]):
+
+	# 80X doesn't have 'slimmedPatTrigger' -> use 'selectedPatTrigger' instead
+	if tools.is_above_cmssw_version([8,0]):
 		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("selectedPatTrigger"))
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
 
@@ -334,7 +335,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		)
 		setattr(process, taus, embedID)
 		process.p *= getattr(process, taus)
-	
+
 	process.kappaTuple.active += cms.vstring('PatTaus')
 	process.kappaTuple.PatTaus.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 	#process.kappaTuple.PatTaus.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS")
@@ -414,7 +415,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"rerunDiscriminationByIsolationMVANewDMrun2v1VVTight"
 			)
 	## now also possible to save all MVA isolation inputs for taus # turn of per default
-	
+
 	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring(
 		"decayDistX",
 		"decayDistY",
@@ -431,7 +432,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.kappaTuple.PatTaus.taus.floatDiscrWhitelist = process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 	process.kappaTuple.PatTaus.verbose = cms.int32(1)
-	
+
 	## ------------------------------------------------------------------------
 
 	## Configure Jets
@@ -446,39 +447,39 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
 
 	## Refitted Vertices collection
-	process.kappaTuple.active += cms.vstring('RefitVertex')
-	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
-	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
-	
-	if tools.is_above_cmssw_version([7,6]) and not tools.is_above_cmssw_version([9]):
-		process.AdvancedRefitVertexBSProducer.srcElectrons = cms.InputTag(electrons)
-		process.AdvancedRefitVertexBSProducer.srcMuons = cms.InputTag(muons)
-		process.AdvancedRefitVertexBSProducer.srcTaus = cms.InputTag(taus)
-		process.AdvancedRefitVertexBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
-		process.p *= (process.AdvancedRefitVertexBS)
+	if not tools.is_above_cmssw_version([9]):
+		process.kappaTuple.active += cms.vstring('RefitVertex')
+		process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
+		process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
 
-	process.AdvancedRefitVertexNoBSProducer.srcElectrons = cms.InputTag(electrons)
-	process.AdvancedRefitVertexNoBSProducer.srcMuons = cms.InputTag(muons)
-	process.AdvancedRefitVertexNoBSProducer.srcTaus = cms.InputTag(taus)
-	process.AdvancedRefitVertexNoBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
-	process.p *= (process.AdvancedRefitVertexNoBS)
+		if tools.is_above_cmssw_version([7,6]) and not tools.is_above_cmssw_version([9]):
+			process.AdvancedRefitVertexBSProducer.srcElectrons = cms.InputTag(electrons)
+			process.AdvancedRefitVertexBSProducer.srcMuons = cms.InputTag(muons)
+			process.AdvancedRefitVertexBSProducer.srcTaus = cms.InputTag(taus)
+			process.AdvancedRefitVertexBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
+			process.p *= (process.AdvancedRefitVertexBS)
 
-	process.kappaTuple.RefitVertex.whitelist = cms.vstring('AdvancedRefitVertexBS', 'AdvancedRefitVertexNoBS')
-
-	if tools.is_above_cmssw_version([7,6]) and not tools.is_above_cmssw_version([9]):
-		process.kappaTuple.RefitVertex.AdvancedRefittedVerticesBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexBSProducer"))
-		process.AdvancedRefitVertexBSProducer.srcElectrons = cms.InputTag(electrons)
-		process.AdvancedRefitVertexBSProducer.srcMuons = cms.InputTag(muons)
-		process.AdvancedRefitVertexBSProducer.srcTaus = cms.InputTag(taus)
-		process.AdvancedRefitVertexBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
-
-	if tools.is_above_cmssw_version([7,6]):
-		process.kappaTuple.RefitVertex.AdvancedRefittedVerticesNoBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexNoBSProducer"))
 		process.AdvancedRefitVertexNoBSProducer.srcElectrons = cms.InputTag(electrons)
 		process.AdvancedRefitVertexNoBSProducer.srcMuons = cms.InputTag(muons)
 		process.AdvancedRefitVertexNoBSProducer.srcTaus = cms.InputTag(taus)
 		process.AdvancedRefitVertexNoBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
+		process.p *= (process.AdvancedRefitVertexNoBS)
 
+		process.kappaTuple.RefitVertex.whitelist = cms.vstring('AdvancedRefitVertexBS', 'AdvancedRefitVertexNoBS')
+
+		if tools.is_above_cmssw_version([7,6]) and not tools.is_above_cmssw_version([9]):
+			process.kappaTuple.RefitVertex.AdvancedRefittedVerticesBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexBSProducer"))
+			process.AdvancedRefitVertexBSProducer.srcElectrons = cms.InputTag(electrons)
+			process.AdvancedRefitVertexBSProducer.srcMuons = cms.InputTag(muons)
+			process.AdvancedRefitVertexBSProducer.srcTaus = cms.InputTag(taus)
+			process.AdvancedRefitVertexBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
+
+		if tools.is_above_cmssw_version([7,6]):
+			process.kappaTuple.RefitVertex.AdvancedRefittedVerticesNoBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexNoBSProducer"))
+			process.AdvancedRefitVertexNoBSProducer.srcElectrons = cms.InputTag(electrons)
+			process.AdvancedRefitVertexNoBSProducer.srcMuons = cms.InputTag(muons)
+			process.AdvancedRefitVertexNoBSProducer.srcTaus = cms.InputTag(taus)
+			process.AdvancedRefitVertexNoBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
 
 	## calculate IP info wrt refitted PV
 	process.kappaTuple.Electrons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer")

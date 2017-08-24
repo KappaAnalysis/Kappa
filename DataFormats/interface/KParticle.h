@@ -16,7 +16,7 @@ struct KParticle : public KLV
 
 	// vertex of production
 	RMPoint vertex;
-	
+
 	int sign() const
 	{
 		return (pdgId > 0) - (pdgId < 0);
@@ -127,16 +127,16 @@ struct KGenParticle : public KParticle
 		else
 			return -1;
 	}
-	
+
 	bool decayTreeContains(std::vector<int> absPdgIds, std::vector<KGenParticle>* genParticles, bool exact = true)
 	{
 		bool contains = exact;
-		
+
 		for (std::vector<unsigned int>::iterator daughterIndexIt = daughterIndices.begin();
 		     daughterIndexIt != daughterIndices.end(); ++daughterIndexIt)
 		{
 			KGenParticle& genParticle = genParticles->at(*daughterIndexIt);
-			
+
 			bool tmpContains = false;
 			if ((pdgId != 0) && (genParticle.pdgId == pdgId))
 			{
@@ -151,7 +151,7 @@ struct KGenParticle : public KParticle
 					tmpContains = true;
 				}
 			}
-			
+
 			if (exact)
 			{
 				contains = (contains && tmpContains && genParticle.decayTreeContains(absPdgIds, genParticles, exact));
@@ -161,7 +161,7 @@ struct KGenParticle : public KParticle
 				contains = (contains || absPdgIds.empty() || genParticle.decayTreeContains(absPdgIds, genParticles, exact));
 			}
 		}
-		
+
 		return contains;
 	}
 
@@ -200,7 +200,7 @@ struct KGenTau : public KGenParticle
 
 	KLV visible;              //< momentum four-vector of visible particles
 	RMPoint vertex;           //< vertex
-	
+
 	int nProngs;
 	int nPi0s;
 	int genDecayMode()
@@ -257,7 +257,6 @@ struct KPFCandidate : public KParticle
 	double hcalEnergy;        //< energy deposited in HCAL
 	unsigned short fromFirstPVFlag;
 	KTrack bestTrack;
-	short int indexInOriginalCollection = -1; // is used to store index of charged hadron in the original collection in KPatTauProducer
 };
 typedef std::vector<KPFCandidate> KPFCandidates;
 
@@ -266,7 +265,7 @@ typedef std::vector<KPFCandidate> KPFCandidates;
 struct KLHEParticle
 {
 	virtual ~KLHEParticle() {};
-	
+
 	CartesianRMFLV p4; // PUP
 	int pdgId; // IDUP
 	int status; // ISTUP
@@ -278,7 +277,7 @@ struct KLHEParticle
 struct KLHEParticles
 {
 	virtual ~KLHEParticles() {};
-	
+
 	std::vector<KLHEParticle> particles;
 	int subprocessCode; // IDPRUP
 	double pdfScale; // SCALUP
