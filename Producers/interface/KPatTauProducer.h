@@ -100,8 +100,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				for(size_t i = 0; i < in.signalChargedHadrCands().size(); ++i)
 				{
 					KPFCandidate outCandidate;
-					outCandidate.indexInOriginalCollection = i;
-
 					KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalChargedHadrCands()[i].get()), outCandidate);
 					out.chargedHadronCandidates.push_back(outCandidate);
 				}
@@ -124,12 +122,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());
 			std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), KLVSorter<KPFCandidate>());
 
-		}
-
-		virtual void fillTemporaryPVandBSVariables(const SingleInputType &in, SingleOutputType &out)
-		{
-			out.referencePosBS = BeamSpot->position();
-			KVertexProducer::fillVertex(VertexCollection->at(KVertexSummaryProducer::getValidVertexIndex(*VertexCollection)), out.referencePV);
 		}
 
 		virtual void fillSecondaryVertex(const SingleInputType &in, SingleOutputType &out)
@@ -259,7 +251,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			else
 				KPatTauProducer::fillPFCandidates(in, out);
 			fillSecondaryVertex(in, out);
-			fillTemporaryPVandBSVariables(in, out);
 		}
 
 		virtual void onFirstObject(const SingleInputType &in, SingleOutputType &out) override
