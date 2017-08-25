@@ -98,12 +98,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.maxEvents.input	      = maxevents
 	process.kappaTuple.verbose    = cms.int32(0)
 	# uncomment the following option to select only running on certain luminosity blocks. Use only for debugging
-	# process.source.lumisToProcess  = cms.untracked.VLuminosityBlockRange("1:500-1:1000")
+	# in this example 1 - is run and after semicolon - the LumiSection
+	# process.source.lumisToProcess  = cms.untracked.VLuminosityBlockRange("1:62090-1:63091")
 	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
 		print "GT (overwritten):", process.GlobalTag.globaltag
-
 	## ------------------------------------------------------------------------
 
 	# Configure Metadata describing the file
@@ -261,7 +261,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# Configure Muons
 	process.load("Kappa.Skimming.KMuons_miniAOD_cff")
 	process.kappaTuple.Muons.muons.src = cms.InputTag(muons)
-	process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+	process.kappaTuple.Muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 	#process.kappaTuple.Muons.muons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS")
 	process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
 	process.kappaTuple.Muons.use03ConeForPfIso = cms.bool(True)
