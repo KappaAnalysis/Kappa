@@ -279,9 +279,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('Electrons')
 	process.load("Kappa.Skimming.KElectrons_miniAOD_cff")
 	process.kappaTuple.Electrons.electrons.src = cms.InputTag("slimmedElectrons")
-	process.kappaTuple.Electrons.electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-	process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
-	process.kappaTuple.Electrons.electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
+	process.kappaTuple.Electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+	process.kappaTuple.Electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
+	process.kappaTuple.Electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
 	from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 	process.kappaTuple.Electrons.srcIds = cms.string("standalone")
 
