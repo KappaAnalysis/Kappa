@@ -148,6 +148,7 @@ public:
 		if (in.isPF())
 			out.leptonInfo |= KLeptonPFMask;
 
+		if (VertexCollection->size() == 0) throw cms::Exception("VertexCollection in KElectronProducer is empty");
 		reco::Vertex vtx = (*VertexCollection).at(0);
 		// electron track and impact parameter
 		if (in.gsfTrack().isNonnull())

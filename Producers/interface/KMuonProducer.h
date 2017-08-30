@@ -173,6 +173,7 @@ public:
 			KTrackProducer::fillIPInfo(*in.globalTrack(), out.globalTrack, *RefitVertices, trackBuilder.product());
 		}
 
+		if (VertexHandle->size() == 0) throw cms::Exception("VertexHandle in KMuonProducer is empty");
 		reco::Vertex vtx = VertexHandle->at(0);
 		if (in.muonBestTrack().isNonnull()) // && &vtx != NULL) TODO
 		{
@@ -207,7 +208,7 @@ public:
 		out.type = in.type();
 
 		// muon ID selection
-    		// DataFormats/MuonReco/src/MuonSelectors.cc
+		// DataFormats/MuonReco/src/MuonSelectors.cc
 		std::bitset<32> tmpBits;
 		for (size_t i = 0; i < 16; ++i)
 			tmpBits.set(i, muon::isGoodMuon(in, (muon::SelectionType) i));

@@ -163,6 +163,7 @@ public:
 
 		//vertex for IP
 		std::vector<reco::Vertex> pv;
+		if (VertexHandle->size() == 0) throw cms::Exception("VertexHandle in KBasicTauProducer is empty");
 		edm::View<reco::Vertex> vertices = *VertexHandle;
 		pv.push_back(vertices.at(0));
 
