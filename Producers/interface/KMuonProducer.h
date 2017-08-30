@@ -124,7 +124,7 @@ public:
 		if (tagHLTrigger.label() != "")
 			cEvent->getByToken(HLTTriggerToken, triggerEventHandle);
 
-		cEvent->getByToken(VertexCollectionToken, VertexHandle);
+		cEvent->getByToken(this->VertexCollectionToken, VertexHandle);
 
 		cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 
@@ -165,6 +165,7 @@ public:
 			KTrackProducer::fillIPInfo(*in.globalTrack(), out.globalTrack, *RefitVertices, trackBuilder.product());
 		}
 
+		if (VertexHandle->size() == 0) throw cms::Exception("VertexHandle in KMuonProducer is empty");
 		reco::Vertex vtx = VertexHandle->at(0);
 		if (in.muonBestTrack().isNonnull()) // && &vtx != NULL) TODO
 		{
