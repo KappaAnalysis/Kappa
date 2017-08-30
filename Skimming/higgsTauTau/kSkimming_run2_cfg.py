@@ -197,10 +197,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.active+= cms.vstring('GenTaus')           # save GenParticles,
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
-		
+
 		process.kappaTuple.Info.lheSource = cms.InputTag("externalLHEProducer")
 		process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
-		
+
 		if any([pattern in nickname for pattern in ["HToTauTau", "H2JetsToTauTau", "DY", "LFV"]]):
 			process.kappaTuple.active += cms.vstring("LHE")
 			process.kappaTuple.LHE.whitelist = cms.vstring("source")
@@ -262,8 +262,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.load("Kappa.Skimming.KMuons_miniAOD_cff")
 	process.kappaTuple.Muons.muons.src = cms.InputTag(muons)
 	process.kappaTuple.Muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-	#process.kappaTuple.Muons.muons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS")
-	process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
+	process.kappaTuple.Muons.srcMuonIsolationPF = cms.InputTag("")
 	process.kappaTuple.Muons.use03ConeForPfIso = cms.bool(True)
 	process.kappaTuple.Muons.doPfIsolation = cms.bool(False)
 	for src in [ "muPFIsoDepositCharged", "muPFIsoDepositChargedAll", "muPFIsoDepositNeutral", "muPFIsoDepositGamma", "muPFIsoDepositPU"]:
@@ -338,7 +337,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.kappaTuple.active += cms.vstring('PatTaus')
 	process.kappaTuple.PatTaus.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-	#process.kappaTuple.PatTaus.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBS")
 	process.kappaTuple.PatTaus.offlineBeamSpot = cms.InputTag("offlineBeamSpot")
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
 	process.kappaTuple.PatTaus.taus.src = cms.InputTag(taus)

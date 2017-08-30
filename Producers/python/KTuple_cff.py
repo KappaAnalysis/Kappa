@@ -277,7 +277,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 		whitelist = cms.vstring("source"),
 		blacklist = cms.vstring(),
-		
+
 		rename = cms.vstring("source => LHE"),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
@@ -318,7 +318,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 
 	LeptonPair = cms.PSet(kappaNoCut,
 		manual = cms.VInputTag(),
-		
+
 		electrons = cms.InputTag("patElectrons"),
 		muons = cms.InputTag("muons"),
 
@@ -331,13 +331,15 @@ kappaTupleDefaultsBlock = cms.PSet(
 	),
 
 	Muons = cms.PSet(kappaNoCut, kappaNoRegEx,
-			vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
-			refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer"),
-			isoValInputTags = cms.VInputTag(
+       	srcMuonIsolationPF = cms.InputTag("pfmuIsoDepositPFCandidates"),
+		vertexcollection = cms.InputTag("goodOfflinePrimaryVertices"),
+		refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer"),
+		isoValInputTags = cms.VInputTag(
 				cms.InputTag('muPFIsoValueChargedAll04PFIso'),
 				cms.InputTag('muPFIsoValueGamma04PFIso'),
 				cms.InputTag('muPFIsoValueNeutral04PFIso'),
-				cms.InputTag('muPFIsoValuePU04PFIso')),
+				cms.InputTag('muPFIsoValuePU04PFIso')
+		),
 			# Cuts for PF isolation
 		muons = cms.PSet(
 			src = cms.InputTag("muons"),
@@ -506,20 +508,20 @@ kappaTupleDefaultsBlock = cms.PSet(
 		),
 		rename_whitelist= cms.vstring(),
 		rename_blacklist = cms.vstring(),
-		ids = cms.vstring( "pileupJetId:fullDiscriminant", 
+		ids = cms.vstring( "pileupJetId:fullDiscriminant",
 				"pfJetProbabilityBJetTags",
 				"pfCombinedInclusiveSecondaryVertexV2BJetTags",
 				"pfCombinedMVAV2BJetTags",
 				"pfCombinedCvsLJetTags",
 				"pfCombinedCvsBJetTags",
-				"jetBProbabilityBJetTags", 
-				"jetProbabilityBJetTags", 
-				"trackCountingHighPurBJetTags", 
-				"trackCountingHighEffBJetTags", 
+				"jetBProbabilityBJetTags",
+				"jetProbabilityBJetTags",
+				"trackCountingHighPurBJetTags",
+				"trackCountingHighEffBJetTags",
 				"simpleSecondaryVertexHighEffBJetTags",
-				"simpleSecondaryVertexHighPurBJetTags", 
+				"simpleSecondaryVertexHighPurBJetTags",
 				"combinedSecondaryVertexBJetTags",
-				"combinedInclusiveSecondaryVertexBJetTags", 
+				"combinedInclusiveSecondaryVertexBJetTags",
 				"combinedInclusiveSecondaryVertexV2BJetTags",
 		),
 	),
@@ -569,6 +571,9 @@ kappaTupleDefaultsBlock = cms.PSet(
 	),
 
 	PatTaus = cms.PSet(kappaNoCut, kappaNoRegEx,
+		offlineBeamSpot = cms.InputTag("offlineBeamSpot"),
+		refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer"),
+
 		taus = cms.PSet(
 			src = cms.InputTag("slimmedTaus"),
 			preselectOnDiscriminators = cms.vstring("hpsPFTauDiscriminationByDecayModeFinding"), # no regex here!
@@ -576,9 +581,9 @@ kappaTupleDefaultsBlock = cms.PSet(
 			binaryDiscrBlacklist = cms.vstring(),
 			floatDiscrWhitelist = cms.vstring(".*"),
 			floatDiscrBlacklist = cms.vstring(),
+			extrafloatDiscrlist = cms.vstring(),
 			tauDiscrProcessName = cms.string("KAPPA"),
-			beamSpotSource = cms.InputTag("offlineBeamSpot"),
-			refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer"),
+			#beamSpotSource = cms.InputTag("offlineBeamSpot"),
 		),
 	),
 

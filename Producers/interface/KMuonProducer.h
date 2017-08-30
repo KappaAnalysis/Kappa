@@ -41,6 +41,7 @@ public:
 		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
 		VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
+		tagMuonIsolationPF(cfg.getParameter<edm::InputTag>("srcMuonIsolationPF")),
 		isoValInputTags(cfg.getParameter<std::vector<edm::InputTag> >("isoValInputTags")),
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")),
@@ -61,6 +62,7 @@ public:
 		_lumi_tree->Bronch("muonMetadata", "KMuonMetadata", &muonMetadata);
 
 		this->HLTTriggerToken = consumescollector.consumes<trigger::TriggerEvent>(tagHLTrigger);
+		this->MuonIsolationPFToken = consumescollector.consumes<edm::ValueMap<reco::IsoDeposit> >(tagMuonIsolationPF);
 		this->VertexCollectionToken = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
 		this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
 
@@ -70,6 +72,7 @@ public:
 		for (size_t i = 0; i < names.size(); ++i)
 		{
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+		       	if(pset.existsAs<edm::InputTag>("srcMuonIsolationPF")) consumescollector.consumes<edm::ValueMap<reco::IsoDeposit>>(pset.getParameter<edm::InputTag>("srcMuonIsolationPF"));
 			if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
 			for(size_t j = 0; j < isoValInputTags.size(); ++j)
 				isoValTokens.push_back(consumescollector.consumes<edm::ValueMap<double>>(isoValInputTags.at(j)));
@@ -120,13 +123,18 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Retrieve additional input products
+	    	if (tagMuonIsolationPF.label() != "")
+	    	{
+					cEvent->getByToken(MuonIsolationPFToken, isoDepsPF);
+	    		//muonIsolationPFInitialized = true;
+	    	}
 
 		if (tagHLTrigger.label() != "")
 			cEvent->getByToken(HLTTriggerToken, triggerEventHandle);
 
 		cEvent->getByToken(VertexCollectionToken, VertexHandle);
-
 		cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
+
 
 		pfIsoVetoCone = pset.getParameter<double>("pfIsoVetoCone");
 		pfIsoVetoMinPt = pset.getParameter<double>("pfIsoVetoMinPt");
@@ -151,7 +159,7 @@ public:
 		out.leptonInfo = KLeptonFlavour::MUON;
 		// hash of pointer as Id
 		out.internalId = hasher(&in);
-		
+
 		/// momentum:
 		copyP4(in, out.p4);
 
@@ -199,7 +207,7 @@ public:
 		out.type = in.type();
 
 		// muon ID selection
-		// DataFormats/MuonReco/src/MuonSelectors.cc
+    		// DataFormats/MuonReco/src/MuonSelectors.cc
 		std::bitset<32> tmpBits;
 		for (size_t i = 0; i < 16; ++i)
 			tmpBits.set(i, muon::isGoodMuon(in, (muon::SelectionType) i));
@@ -211,7 +219,7 @@ public:
 			// code copied from KElectronProducer
 			// we need the Ref, cf. example EgammaAnalysis/ElectronTools/src/EGammaCutBasedEleIdAnalyzer.cc
 			edm::Ref<edm::View<reco::Muon>> m(this->handle, this->nCursor);
-			
+
 			// isolation values (PF is used for IDs later)
 			double iso_ch = (*(isoVals)[0])[m];
 			double iso_ph = (*(isoVals)[1])[m];
@@ -308,9 +316,11 @@ public:
 private:
 	edm::InputTag tagHLTrigger;
 	edm::InputTag VertexCollectionSource;
+	edm::InputTag tagMuonIsolationPF;
 	std::vector<edm::InputTag>  isoValInputTags;
 	edm::EDGetTokenT<trigger::TriggerEvent> HLTTriggerToken;
 	edm::EDGetTokenT<reco::VertexCollection> VertexCollectionToken;
+	edm::EDGetTokenT<edm::ValueMap<reco::IsoDeposit> > MuonIsolationPFToken;
 	std::vector<edm::EDGetTokenT<edm::ValueMap<double>>> isoValTokens;
 	double hltMaxdR, hltMaxdPt_Pt;
 	double pfIsoVetoCone, pfIsoVetoMinPt;
@@ -325,7 +335,7 @@ private:
 	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 	KMuonMetadata *muonMetadata;
 	boost::hash<const reco::Muon*> hasher;
-	
+
 	edm::EDGetTokenT<RefitVertexCollection> tokenRefitVertices;
 
 	std::vector<edm::Handle<edm::ValueMap<double> > > isoVals;
