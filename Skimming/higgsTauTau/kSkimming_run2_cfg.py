@@ -199,7 +199,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
 
-		if ("HToTauTau" in nickname) or ("H2JetsToTauTau" in nickname):
+		if ("HToTauTau" in nickname) or ("H2JetsToTauTau" in nickname) or ("LFV" in nickname):
 			process.kappaTuple.active += cms.vstring('LHE')
 			process.kappaTuple.LHE.whitelist = cms.vstring('source')
 			process.kappaTuple.LHE.rename = cms.vstring('source => LHEafter')
