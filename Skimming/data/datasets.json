@@ -10082,6 +10082,7 @@
     "extension": "", 
     "format": "AOD", 
     "generator": "pythia8", 
+    "globalTag": "76X_mcRun2_asymptotic_RunIIFall15DR76_v1", 
     "n_events_generated": "485442", 
     "process": "SUSYGluGluToHToTauTau_M160", 
     "scenario": "PU25nsData2015v1"
@@ -10100,6 +10101,7 @@
     "generator": "pythia8", 
     "generatorWeight": 1.0, 
     "globalTag": "76X_mcRun2_asymptotic_RunIIFall15DR76_v1", 
+    "globaltag": "76X_mcRun2_asymptotic_RunIIFall15DR76_v1", 
     "n_events_generated": "469976", 
     "n_files": "15", 
     "process": "SUSYGluGluToHToTauTau_M160", 
