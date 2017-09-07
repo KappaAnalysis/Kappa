@@ -1733,40 +1733,6 @@
     "scenario": "PromptRecov3", 
     "xsec": 1.0
   }, 
-  "DoubleEG_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
-    "Analysis2017": [
-      "Skim_Data", 
-      "Skim_Base"
-    ], 
-    "campaign": "Run2017B", 
-    "data": true, 
-    "dbs": "/DoubleEG/Run2017B-23Jun2017-v1/MINIAOD", 
-    "energy": "13", 
-    "extension": "", 
-    "format": "MINIAOD", 
-    "generator": "", 
-    "globalTag": "92X_dataRun2_v2", 
-    "inputDBS": "global", 
-    "n_events_generated": "7764487", 
-    "n_files": "110", 
-    "process": "DoubleEG", 
-    "scenario": "23Jun2017v1"
-  }, 
-  "DoubleEG_Run2017C_PromptRecov3_13TeV_MINIAOD": {
-    "campaign": "Run2017C", 
-    "data": true, 
-    "dbs": "/DoubleEG/Run2017C-PromptReco-v3/MINIAOD", 
-    "energy": "13", 
-    "extension": "", 
-    "format": "MINIAOD", 
-    "generator": "", 
-    "globalTag": "92X_dataRun2_Prompt_v8", 
-    "inputDBS": "global", 
-    "n_events_generated": "16410501", 
-    "n_files": "248", 
-    "process": "DoubleEG", 
-    "scenario": "PromptRecov3"
-  }, 
   "DoubleMuon_Run2015B_PromptRecov1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Data_PromptReco"
@@ -2215,25 +2181,6 @@
     "process": "DoubleMuon", 
     "scenario": "PromptRecov3", 
     "xsec": 1.0
-  }, 
-  "DoubleMuon_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
-    "Analysis2017": [
-      "Skim_Data", 
-      "Skim_Base"
-    ], 
-    "campaign": "Run2017B", 
-    "data": true, 
-    "dbs": "/DoubleMuon/Run2017B-23Jun2017-v1/MINIAOD", 
-    "energy": "13", 
-    "extension": "", 
-    "format": "MINIAOD", 
-    "generator": "", 
-    "globalTag": "92X_dataRun2_v2", 
-    "inputDBS": "global", 
-    "n_events_generated": "2123034", 
-    "n_files": "27", 
-    "process": "DoubleMuon", 
-    "scenario": "23Jun2017v1"
   }, 
   "EWKWMinus2JetsWToLNuM50_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_madgraph-pythia8": {
     "Fall15": [
@@ -6547,25 +6494,6 @@
     "process": "MuonEG", 
     "scenario": "PromptRecov3", 
     "xsec": 1.0
-  }, 
-  "MuonEG_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
-    "Analysis2017": [
-      "Skim_Data", 
-      "Skim_Base"
-    ], 
-    "campaign": "Run2017B", 
-    "data": true, 
-    "dbs": "/MuonEG/Run2017B-23Jun2017-v1/MINIAOD", 
-    "energy": "13", 
-    "extension": "", 
-    "format": "MINIAOD", 
-    "generator": "", 
-    "globalTag": "92X_dataRun2_v2", 
-    "inputDBS": "global", 
-    "n_events_generated": "582555", 
-    "n_files": "12", 
-    "process": "MuonEG", 
-    "scenario": "23Jun2017v1"
   }, 
   "QCD_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8": {
     "Fall15": [
@@ -11893,25 +11821,6 @@
     "scenario": "PromptRecov3", 
     "xsec": 1.0
   }, 
-  "SingleElectron_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
-    "Analysis2017": [
-      "Skim_Data", 
-      "Skim_Base"
-    ], 
-    "campaign": "Run2017B", 
-    "data": true, 
-    "dbs": "/SingleElectron/Run2017B-23Jun2017-v1/MINIAOD", 
-    "energy": "13", 
-    "extension": "", 
-    "format": "MINIAOD", 
-    "generator": "", 
-    "globalTag": "92X_dataRun2_v2", 
-    "inputDBS": "global", 
-    "n_events_generated": "7688359", 
-    "n_files": "95", 
-    "process": "SingleElectron", 
-    "scenario": "23Jun2017v1"
-  }, 
   "SingleMu_Run2015B_PromptRecov1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Data_PromptReco"
@@ -12442,25 +12351,6 @@
     "process": "SingleMuon", 
     "scenario": "PromptRecov3", 
     "xsec": 1.0
-  }, 
-  "SingleMuon_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
-    "Analysis2017": [
-      "Skim_Data", 
-      "Skim_Base"
-    ], 
-    "campaign": "Run2017B", 
-    "data": true, 
-    "dbs": "/SingleMuon/Run2017B-23Jun2017-v1/MINIAOD", 
-    "energy": "13", 
-    "extension": "", 
-    "format": "MINIAOD", 
-    "generator": "", 
-    "globalTag": "92X_dataRun2_v2", 
-    "inputDBS": "global", 
-    "n_events_generated": "19500603", 
-    "n_files": "209", 
-    "process": "SingleMuon", 
-    "scenario": "23Jun2017v1"
   }, 
   "TTJets_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
@@ -13175,25 +13065,6 @@
     "process": "Tau", 
     "scenario": "PromptRecov3", 
     "xsec": 1.0
-  }, 
-  "Tau_Run2017B_23Jun2017v1_13TeV_MINIAOD": {
-    "Analysis2017": [
-      "Skim_Data", 
-      "Skim_Base"
-    ], 
-    "campaign": "Run2017B", 
-    "data": true, 
-    "dbs": "/Tau/Run2017B-23Jun2017-v1/MINIAOD", 
-    "energy": "13", 
-    "extension": "", 
-    "format": "MINIAOD", 
-    "generator": "", 
-    "globalTag": "92X_dataRun2_v2", 
-    "inputDBS": "global", 
-    "n_events_generated": "6173967", 
-    "n_files": "74", 
-    "process": "Tau", 
-    "scenario": "23Jun2017v1"
   }, 
   "VBFHToTauTauM110_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
