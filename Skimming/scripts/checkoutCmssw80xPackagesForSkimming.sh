@@ -75,7 +75,7 @@ sed "/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificance
 #Check out Kappa
 git clone https://github.com/KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
 
-scram b -v -j 4 || {
+scram b -v -j `grep -c ^processor /proc/cpuinfo` || {
       echo "The ${CMSSW_BASE} with Kappa could not be built"
       exit 1
 }
