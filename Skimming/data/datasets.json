@@ -4583,6 +4583,22 @@
     "scenario": "imputPromptDoubleMu_mirror_miniAODv3", 
     "xsec": 821.9
   }, 
+  "Embedding2017B_MuTauFinalState_imputPromptDoubleMuminiAODv1_13TeV_USER": {
+    "campaign": "MuTauFinalState", 
+    "data": true, 
+    "dbs": "/EmbeddingRun2017B/MuTauFinalState-imputDoubleMu_miniAOD-v1/USER", 
+    "embedded": true, 
+    "energy": "13", 
+    "extension": "", 
+    "format": "USER", 
+    "generator": "", 
+    "globalTag": "92X_dataRun2_Prompt_v4", 
+    "inputDBS": "phys03", 
+    "n_events_generated": "3861786", 
+    "n_files": "5599", 
+    "process": "Embedding2017B", 
+    "scenario": "imputPromptDoubleMu_miniAODv1"
+  }, 
   "EmbeddingMCRunIISummer16DR80_ElMuFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USER_pythia8": {
     "Moriond17": [
       "Skim_Embedding_MCRunIISummer16"
