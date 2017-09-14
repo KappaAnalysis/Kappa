@@ -156,7 +156,7 @@ class datasetsHelperTwopz:
 						take_nick = False
 			if take_nick:
 				nick_list.append(akt_nick)
-		return nick_list
+		return sorted(nick_list)
 
 	def get_nicks_with_regex(self, nick_regex, pre_selected_nicks=None):
 		""" returns all nicks (keys) which matches the nick_regex"""
@@ -167,7 +167,7 @@ class datasetsHelperTwopz:
 		for akt_nick in pre_selected_nicks:
 			if re.match( nick_regex, akt_nick):
 				nick_list.append(akt_nick)
-		return nick_list
+		return sorted(nick_list)
 
 	def get_nicks_with_tag(self, tag, tag_values=None, pre_selected_nicks=None):
 		nick_list = []
@@ -185,7 +185,7 @@ class datasetsHelperTwopz:
 							take_nick = True
 			if take_nick:
 				nick_list.append(akt_nick)
-		return nick_list
+		return sorted(nick_list)
 
 	def get_nick_list(self, tag_key = None, tag_values = None,  query = None, nick_regex = None):
 		nick_list = None
@@ -195,7 +195,7 @@ class datasetsHelperTwopz:
 			nick_list = self.get_nicks_with_query(query=query, pre_selected_nicks=nick_list)
 		if nick_regex:
 			nick_list = self.get_nicks_with_regex(nick_regex=nick_regex, pre_selected_nicks=nick_list)
-		return nick_list
+		return sorted(nick_list)
 
 	def addEntry(self, entry, nick_list =[] ):
 		for nick in nick_list:
