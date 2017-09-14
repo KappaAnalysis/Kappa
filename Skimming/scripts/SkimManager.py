@@ -135,11 +135,7 @@ class SkimManagerBase:
 			self.skimdataset[akt_nick]["crab_name"] = "crab_"+config.General.requestName
 
 			submit_dict = {"config" : config, "proxy" : self.voms_proxy}
-			process_queue = Queue()
-			p = Process(target=self.crab_cmd, args=[{"cmd":"submit", "args" :submit_dict}, process_queue])
-			p.start()
-			p.join()
-			submit_command_output = process_queue.get()
+			submit_command_output = self.crab_cmd({"cmd" : "submit", "args" : submit_dict})
 			if submit_command_output:
 				self.skimdataset[akt_nick]["SKIM_STATUS"] = "SUBMITTED"
 				self.skimdataset[akt_nick]["crab_task"] = submit_command_output["uniquerequestname"]
@@ -189,7 +185,7 @@ class SkimManagerBase:
 			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED", "COMPLETED", "INIT"] and self.skimdataset[akt_nick]["GCSKIM_STATUS"] not in ["LISTED", "COMPLETED"]:
 				crab_job_dir = os.path.join(self.workdir, self.skimdataset[akt_nick].get("crab_name", "crab_"+akt_nick[:100]))
 				status_dict = {"proxy" : self.voms_proxy, "dir" : crab_job_dir}
-				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd({"cmd": "status", "args" : status_dict})
+				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd({"cmd" : "status", "args" : status_dict})
 				if not self.skimdataset[akt_nick]['last_status']:
 					self.skimdataset[akt_nick]["SKIM_STATUS"] = "EXCEPTION"
 
@@ -239,11 +235,8 @@ class SkimManagerBase:
 			print "You specified an unsuitable status for purging. Please specify from this list: ALL, COMPLETED, LISTED, KILLED, FAILED."
 		print len(tasks_to_perge), "crab task(s) to purge."
 		for task in tasks_to_perge:
-			process_queue = Queue()
 			print "Attempt to purge", task
-			p = Process(target=self.crab_cmd, args=[{"cmd":"purge", "args":{"dir":os.path.join(self.workdir, task), "cache":True}}, process_queue])
-			p.start()
-			p.join()
+			self.crab_cmd({"cmd" : "purge", "args" : {"dir":os.path.join(self.workdir, task), "cache":True}})
 			print "--------------------------------------------"
 
 	def remake_task(self):
@@ -290,12 +283,9 @@ class SkimManagerBase:
 					pass
 		print "Try to resubmit", len(datasets_to_resubmit), "tasks"
 		for dataset in datasets_to_resubmit:
-			process_queue = Queue()
 			print "Resubmission for", dataset
 			argument_dict["dir"] = os.path.join(self.workdir, str(dataset))
-			p = Process(target=self.crab_cmd, args=[{"cmd":"resubmit", "args" : argument_dict}, process_queue])
-			p.start()
-			p.join()
+			self.crab_cmd({"cmd" : "resubmit", "args" : argument_dict})
 			print "--------------------------------------------"
 
 #### Crab related helper functions
