@@ -93,15 +93,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# Configure Kappa
 	if testfile:
 		process.source            = cms.Source('PoolSource', fileNames=cms.untracked.vstring(testfile))
+		# uncomment the following option to select only running on certain luminosity blocks. Use only for debugging
+		# in this example 1 - is run and after semicolon - the LumiSection
+		# process.source.lumisToProcess  = cms.untracked.VLuminosityBlockRange("1:62090-1:63091")
+		#process.source.eventsToProcess = cms.untracked.VEventRange('1:917:1719279', '1:1022:1915188')
+		#process.source.skipEvents = cms.untracked.uint32(539)
 	else:
 		process.source 			  = cms.Source('PoolSource', fileNames=cms.untracked.vstring())
 	process.maxEvents.input	      = maxevents
 	process.kappaTuple.verbose    = cms.int32(0)
-	# uncomment the following option to select only running on certain luminosity blocks. Use only for debugging
-	# in this example 1 - is run and after semicolon - the LumiSection
-	# process.source.lumisToProcess  = cms.untracked.VLuminosityBlockRange("1:62090-1:63091")
-	#process.source.eventsToProcess = cms.untracked.VEventRange('1:917:1719279', '1:1022:1915188')
-	#process.source.skipEvents = cms.untracked.uint32(539)
 
 	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
