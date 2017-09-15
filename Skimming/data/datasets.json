@@ -1323,21 +1323,6 @@
     "scenario": "PUSpring16", 
     "xsec": 1967.0
   }, 
-  "DYToLLMCRunIISummer16DR80_AllFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USER_unspecified": {
-    "campaign": "AllFinalState", 
-    "data": false, 
-    "dbs": "/DYToLLMCRunIISummer16DR80/AllFinalState-imputFlatPU28to62HcalNZSRAWAODSIM_madgraph_miniAOD-v5/USER", 
-    "energy": "13", 
-    "extension": "", 
-    "format": "USER", 
-    "generator": "unspecified", 
-    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v6", 
-    "inputDBS": "phys03", 
-    "n_events_generated": "19963203", 
-    "n_files": "8060", 
-    "process": "DYToLLMCRunIISummer16DR80", 
-    "scenario": "imputFlatPU28to62HcalNZSRAWAODSIM"
-  }, 
   "DoubleEG_Run2015B_PromptRecov1_13TeV_MINIAOD": {
     "Moriond17": [
       "Skim_Data_PromptReco"
