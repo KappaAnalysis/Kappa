@@ -64,17 +64,26 @@ class SkimManagerBase:
 	def save_dataset(self, filename=None):
 		self.skimdataset.write_to_jsonfile(filename)
 
-	def add_new(self, nicks = None):
+	def add_new(self, nicks=None, force=False):
 		if nicks is None:
 			print "You must select something [see options --query, --nicks  or --tag (with --tagvalues)]"
 		else:
 			for new_nick in nicks:
-				if new_nick in self.skimdataset.base_dict.keys():
-					print new_nick, " already in this skimming campain"
-				else:
+				add_current_nick = False
+				
+				if (not new_nick in self.skimdataset.base_dict.keys()):
+					add_current_nick = True
+				elif (force and (self.skimdataset.base_dict[new_nick].get("SKIM_STATUS", "EXCEPTION") == "EXCEPTION")):
+					add_current_nick = True
+					self.skimdataset.base_dict.pop(new_nick)
+				
+				if add_current_nick:
 					self.skimdataset[new_nick] = self.inputdataset[new_nick]
 					self.skimdataset[new_nick]["SKIM_STATUS"] = "INIT"
 					self.skimdataset[new_nick]["GCSKIM_STATUS"] = "INIT"
+				else:
+					print new_nick, "already in this skimming campain"
+		
 		self.save_dataset()
 
 	def getUsernameFromSiteDB_cache(self):
@@ -117,7 +126,7 @@ class SkimManagerBase:
 
 #### Crab submission functions
 
-	def submit_crab(self, filename=None):
+	def submit_crab(self, filename=None, force=False):
 		if len(self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "INIT"})) == 0:
 			print "\nNo tasks will be submitted to the crab server. Set --init to add new tasks to submit.\n"
 		else:
@@ -125,6 +134,9 @@ class SkimManagerBase:
 			self.wait_for_user_confirmation()
 		nerror=0
 		for akt_nick in self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "INIT"}):
+			if force and os.path.exists(os.path.join(self.workdir, "crab_"+akt_nick)):
+				os.system("rm -rv "+os.path.join(self.workdir, "crab_"+akt_nick))
+			
 			config = self.crab_default_cfg() ## if there are parameters which should only be set for one dataset then its better to start from default again
 			self.individualized_crab_cfg(akt_nick, config)
 			if config.Data.inputDBS in ['list']:
@@ -717,7 +729,7 @@ if __name__ == "__main__":
 	nicks = SKM.nick_list(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
 
 	if args.init:
-		SKM.add_new(nicks)
+		SKM.add_new(nicks, args.force)
 		SKM.create_gc_config(backend=args.backend)
 
 	if args.kill_all:
@@ -757,7 +769,7 @@ if __name__ == "__main__":
 		SKM.status_gc()
 
 	else:
-		SKM.submit_crab()
+		SKM.submit_crab(force=args.force)
 		SKM.status_crab()
 		SKM.print_skim(summary=args.summary)
 
