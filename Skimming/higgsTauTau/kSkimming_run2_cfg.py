@@ -92,7 +92,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	# Configure Kappa
 	if testfile:
-		process.source.fileNames      = testfile
+		process.source            = cms.Source('PoolSource', fileNames=cms.untracked.vstring(testfile))
 	else:
 		process.source 			  = cms.Source('PoolSource', fileNames=cms.untracked.vstring())
 	process.maxEvents.input	      = maxevents
