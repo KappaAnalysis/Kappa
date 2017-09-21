@@ -172,6 +172,10 @@ class DataSetManagerBase:
 	def get_extension(self, details, data=False):
 		if data:
 			return ""
+		elif (details.find('_set')!=-1 and details.find('-28028')!=-1):
+			startpos = details.find("set")
+			endpos = details.rfind("-28028")
+			return details[startpos:endpos]
 		else:
 			startpos = details.find("ext")
 			endpos = details.rfind("-v")
