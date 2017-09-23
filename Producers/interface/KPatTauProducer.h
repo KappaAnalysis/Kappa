@@ -9,6 +9,8 @@
 
 #include "KPackedPFCandidateProducer.h"
 #include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
+#include "RecoVertex/KinematicFit/interface/KinematicParticleVertexFitter.h"
+#include "RecoVertex/KinematicFitPrimitives/interface/KinematicParticleFactoryFromTransientTrack.h"
 #include "TrackingTools/PatternTools/interface/ClosestApproachInRPhi.h"
 #include "TrackingTools/TrajectoryState/interface/TrajectoryStateTransform.h"
 
@@ -132,6 +134,12 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		virtual void fillSecondaryVertex(const SingleInputType &in, SingleOutputType &out)
 		{
+			out.sv = KVertex();
+			out.refittedThreeProngParameters = ROOT::Math::SVector<double, 7>();
+			out.refittedThreeProngCovariance = ROOT::Math::SMatrix<float, 7, 7, ROOT::Math::MatRepSym<float, 7> >();
+			out.refittedChargedHadronTracks.clear();
+			
+			// https://github.com/cherepan/LLRHiggsTauTau/blob/VladimirDev/NtupleProducer/plugins/TauFiller.cc#L537-L590
 			// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TauReco/interface/PFTau.h#L34-L54
 			if ((in.decayMode() >= reco::PFTau::hadronicDecayMode::kThreeProng0PiZero) &&
 			    (in.signalChargedHadrCands().size() > 2))
@@ -139,25 +147,74 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				// refit SV since in.secondaryVertexPos() is empty
 				// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/PatCandidates/interface/Tau.h#L325
 
-				std::vector<reco::TransientTrack> transientTracks;
+				std::vector<reco::TransientTrack> chargedHadronTransientTracks;
 				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
 				{
 					const reco::Track* track = in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
 					if (track)
 					{
-						transientTracks.push_back(trackBuilder->build(track));
+						chargedHadronTransientTracks.push_back(trackBuilder->build(track));
 					}
 				}
-				if (transientTracks.size() > 2)
+				
+				if (chargedHadronTransientTracks.size() > 2)
 				{
 					AdaptiveVertexFitter adaptiveVertexFitter;
 					adaptiveVertexFitter.setWeightThreshold(0.001);
 
 					// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/VertexPrimitives/interface/TransientVertex.h
-					TransientVertex sv = adaptiveVertexFitter.vertex(transientTracks, *BeamSpot); // TODO: add beam spot
+					TransientVertex sv = adaptiveVertexFitter.vertex(chargedHadronTransientTracks, *BeamSpot); // TODO: add beam spot
 					if (sv.isValid())
 					{
 						KVertexProducer::fillVertex(sv, out.sv);
+						
+						// refit charged hadron candidate tracks
+						if (in.signalChargedHadrCands().size() == chargedHadronTransientTracks.size())
+						{
+							std::vector<RefCountedKinematicParticle> chargedHadronParticles;
+							KinematicParticleFactoryFromTransientTrack kinematicParticleFactory;
+							float pionChi2 = 0.0;
+							float pionNdf = 0.0;
+							GlobalPoint svPoint(sv.position().x(), sv.position().y(), sv.position().z());
+							float pionMassSigma = std::sqrt(std::pow(10.0, -12.0));
+							
+							for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
+							{
+								// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/KinematicFitPrimitives/interface/KinematicParticleFactoryFromTransientTrack.h#L60-L71
+								chargedHadronParticles.push_back(kinematicParticleFactory.particle(
+										chargedHadronTransientTracks[chargedPFCandidateIndex],
+										in.signalChargedHadrCands()[chargedPFCandidateIndex].get()->p4().mass(),
+										pionChi2,
+										pionNdf,
+										svPoint,
+										pionMassSigma
+								));
+							}
+							
+							KinematicParticleVertexFitter kinematicParticleVertexFitter;
+							RefCountedKinematicTree kinematicTree = kinematicParticleVertexFitter.fit(chargedHadronParticles);
+							if (kinematicTree->isValid())
+							{
+								kinematicTree->movePointerToTheTop();
+								KinematicParameters kinematicParameters = kinematicTree->currentParticle()->currentState().kinematicParameters();
+								AlgebraicSymMatrix77 covarianceMatrix = kinematicTree->currentParticle()->currentState().kinematicParametersError().matrix();
+								for (int index1 = 0; index1 < 7; ++index1)
+								{
+									out.refittedThreeProngParameters(index1) = kinematicParameters(index1);
+									for (int index2 = 0; index2 < 7; index2++)
+									{
+										out.refittedThreeProngCovariance(index1, index2) = covarianceMatrix(index1, index2);
+									}
+								}
+							}
+							
+							for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
+							{
+								KTrack refittedChargedHadronTracks;
+								KTrackProducer::fillTrack(chargedHadronTransientTracks[chargedPFCandidateIndex].track(), refittedChargedHadronTracks, std::vector<reco::Vertex>(), this->trackBuilder.product());
+								out.refittedChargedHadronTracks.push_back(refittedChargedHadronTracks);
+							}
+						}
 					}
 				}
 			}
