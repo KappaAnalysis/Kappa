@@ -30,22 +30,26 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			out.leptonInfo = KLeptonFlavour::TAU;
 			//assert(in.charge() == 1 || in.charge() == -1);
 			if (in.charge() > 0)
+			{
 				out.leptonInfo |= KLeptonChargeMask;
-			if(in.isPFTau())
+			}
+			if (in.isPFTau())
+			{
 				out.leptonInfo |= KLeptonPFMask;
+			}
 
-				pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(in.leadChargedHadrCand().get());
-				out.dz = packedLeadTauCand->dz();
-				out.dxy = packedLeadTauCand->dxy();
-				if (packedLeadTauCand->bestTrack() != nullptr)
-				{
-					KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
-					KTrackProducer::fillIPInfo(*packedLeadTauCand->bestTrack(), out.track, *RefitVertices, trackBuilder.product());
-				}
-				else // at least fill reference point
-				{
-					out.track.ref.SetXYZ(in.vertex().x(), in.vertex().y(), in.vertex().z());
-				}
+			pat::PackedCandidate const* packedLeadTauCand = dynamic_cast<pat::PackedCandidate const*>(in.leadChargedHadrCand().get());
+			out.dz = packedLeadTauCand->dz();
+			out.dxy = packedLeadTauCand->dxy();
+			if (packedLeadTauCand->bestTrack() != nullptr)
+			{
+				KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
+				KTrackProducer::fillIPInfo(*packedLeadTauCand->bestTrack(), out.track, *RefitVertices, trackBuilder.product());
+			}
+			else // at least fill reference point
+			{
+				out.track.ref.SetXYZ(in.vertex().x(), in.vertex().y(), in.vertex().z());
+			}
 
 			if (in.isPFTau()) out.emFraction = in.emFraction();
 
@@ -59,34 +63,36 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			out.binaryDiscriminators = 0;
 			for(auto discriminator: discriminatorMap[names[0]]->binaryDiscriminatorNames)
 			{
-				if(in.tauID(discriminator) > 0.5 )
+				if (in.tauID(discriminator) > 0.5)
+				{
 					out.binaryDiscriminators |= (1ull << digit);
+				}
 				++digit;
 			}
 
 			out.floatDiscriminators.resize(n_float_dict);
-			for(auto discriminator=realTauIdfloatmap[names[0]].begin(); discriminator != realTauIdfloatmap[names[0]].end(); discriminator++)
+			for (auto discriminator=realTauIdfloatmap[names[0]].begin(); discriminator != realTauIdfloatmap[names[0]].end(); discriminator++)
 			{
 				out.floatDiscriminators[discriminator->second] = in.tauID(discriminator->first);
 			}
 
 			#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
-				for(auto variable = extraTaufloatmap[names[0]].begin();  variable!= extraTaufloatmap[names[0]].end(); variable++)
-				{
-					if (variable->first == EXTRATAUFLOATS::decayDistX ) out.floatDiscriminators[variable->second] = in.flightLength().x();
-					else if (variable->first == EXTRATAUFLOATS::decayDistY) out.floatDiscriminators[variable->second] = in.flightLength().y();
-					else if (variable->first == EXTRATAUFLOATS::decayDistZ) out.floatDiscriminators[variable->second] = in.flightLength().z();
-					else if (variable->first == EXTRATAUFLOATS::decayDistM) out.floatDiscriminators[variable->second] =  std::sqrt(in.flightLength().x()*in.flightLength().x()
-																		+ in.flightLength().y()*in.flightLength().y()
-																		+ in.flightLength().z()*in.flightLength().z());
-					else if (variable->first == EXTRATAUFLOATS::nPhoton ) out.floatDiscriminators[variable->second] = (float)clusterVariables_.tau_n_photons_total(in);
-					else if (variable->first == EXTRATAUFLOATS::ptWeightedDetaStrip ) out.floatDiscriminators[variable->second] = clusterVariables_.tau_pt_weighted_deta_strip(in, in.decayMode());
-					else if (variable->first == EXTRATAUFLOATS::ptWeightedDphiStrip ) out.floatDiscriminators[variable->second] = clusterVariables_.tau_pt_weighted_dphi_strip(in, in.decayMode());
-					else if (variable->first == EXTRATAUFLOATS::ptWeightedDrSignal ) out.floatDiscriminators[variable->second]  = clusterVariables_.tau_pt_weighted_dr_signal(in, in.decayMode());
-					else if (variable->first == EXTRATAUFLOATS::ptWeightedDrIsolation) out.floatDiscriminators[variable->second]= clusterVariables_.tau_pt_weighted_dr_iso(in, in.decayMode());
-					else if (variable->first == EXTRATAUFLOATS::leadingTrackChi2 )  out.floatDiscriminators[variable->second] = in.leadingTrackNormChi2();
-					else if (variable->first == EXTRATAUFLOATS::eRatio )  out.floatDiscriminators[variable->second] = clusterVariables_.tau_Eratio(in);
-				}
+			for(auto variable = extraTaufloatmap[names[0]].begin();  variable!= extraTaufloatmap[names[0]].end(); variable++)
+			{
+				if (variable->first == EXTRATAUFLOATS::decayDistX ) out.floatDiscriminators[variable->second] = in.flightLength().x();
+				else if (variable->first == EXTRATAUFLOATS::decayDistY) out.floatDiscriminators[variable->second] = in.flightLength().y();
+				else if (variable->first == EXTRATAUFLOATS::decayDistZ) out.floatDiscriminators[variable->second] = in.flightLength().z();
+				else if (variable->first == EXTRATAUFLOATS::decayDistM) out.floatDiscriminators[variable->second] =  std::sqrt(in.flightLength().x()*in.flightLength().x()
+																	+ in.flightLength().y()*in.flightLength().y()
+																	+ in.flightLength().z()*in.flightLength().z());
+				else if (variable->first == EXTRATAUFLOATS::nPhoton ) out.floatDiscriminators[variable->second] = (float)clusterVariables_.tau_n_photons_total(in);
+				else if (variable->first == EXTRATAUFLOATS::ptWeightedDetaStrip ) out.floatDiscriminators[variable->second] = clusterVariables_.tau_pt_weighted_deta_strip(in, in.decayMode());
+				else if (variable->first == EXTRATAUFLOATS::ptWeightedDphiStrip ) out.floatDiscriminators[variable->second] = clusterVariables_.tau_pt_weighted_dphi_strip(in, in.decayMode());
+				else if (variable->first == EXTRATAUFLOATS::ptWeightedDrSignal ) out.floatDiscriminators[variable->second]  = clusterVariables_.tau_pt_weighted_dr_signal(in, in.decayMode());
+				else if (variable->first == EXTRATAUFLOATS::ptWeightedDrIsolation) out.floatDiscriminators[variable->second]= clusterVariables_.tau_pt_weighted_dr_iso(in, in.decayMode());
+				else if (variable->first == EXTRATAUFLOATS::leadingTrackChi2 )  out.floatDiscriminators[variable->second] = in.leadingTrackNormChi2();
+				else if (variable->first == EXTRATAUFLOATS::eRatio )  out.floatDiscriminators[variable->second] = clusterVariables_.tau_Eratio(in);
+			}
 			#endif
 		}
 
@@ -95,28 +101,28 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
 			cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 
-				std::vector<pat::PackedCandidate const*> tau_picharge;
+			std::vector<pat::PackedCandidate const*> tau_picharge;
 
-				for(size_t i = 0; i < in.signalChargedHadrCands().size(); ++i)
-				{
-					KPFCandidate outCandidate;
-					KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalChargedHadrCands()[i].get()), outCandidate);
-					out.chargedHadronCandidates.push_back(outCandidate);
-				}
+			for(size_t i = 0; i < in.signalChargedHadrCands().size(); ++i)
+			{
+				KPFCandidate outCandidate;
+				KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalChargedHadrCands()[i].get()), outCandidate);
+				out.chargedHadronCandidates.push_back(outCandidate);
+			}
 
-				for(size_t i = 0; i < in.signalNeutrHadrCands().size(); ++i)
-				{
-					KLV tmp;
-					copyP4(in.signalNeutrHadrCands()[i].get()->p4(), tmp.p4);
-					out.piZeroCandidates.push_back(tmp);
-				}
+			for(size_t i = 0; i < in.signalNeutrHadrCands().size(); ++i)
+			{
+				KLV tmp;
+				copyP4(in.signalNeutrHadrCands()[i].get()->p4(), tmp.p4);
+				out.piZeroCandidates.push_back(tmp);
+			}
 
-				for(size_t i = 0; i < in.signalGammaCands().size(); ++i)
-				{
-					KPFCandidate outCandidate;
-					KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalGammaCands()[i].get()), outCandidate);
-					out.gammaCandidates.push_back(outCandidate);
-				}
+			for(size_t i = 0; i < in.signalGammaCands().size(); ++i)
+			{
+				KPFCandidate outCandidate;
+				KPackedPFCandidateProducer::fillPackedPFCandidate(*(in.signalGammaCands()[i].get()), outCandidate);
+				out.gammaCandidates.push_back(outCandidate);
+			}
 
 			std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 			std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());
@@ -288,15 +294,15 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				}
 
 				#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
-					for (auto extrafloatDiscr : extrafloatDiscrlist[names[i]])
+				for (auto extrafloatDiscr : extrafloatDiscrlist[names[i]])
+				{
+					EXTRATAUFLOATS add_value = string_to_extraTaufloats(extrafloatDiscr);
+					if (add_value != EXTRATAUFLOATS::UNKNOWN)
 					{
-						EXTRATAUFLOATS add_value = string_to_extraTaufloats(extrafloatDiscr);
-						if (add_value != EXTRATAUFLOATS::UNKNOWN)
-						{
-							extraTaufloatmap[names[i]][add_value] = discriminatorMap[names[i]]->floatDiscriminatorNames.size();
-							discriminatorMap[names[i]]->floatDiscriminatorNames.push_back(extrafloatDiscr);
-						}
+						extraTaufloatmap[names[i]][add_value] = discriminatorMap[names[i]]->floatDiscriminatorNames.size();
+						discriminatorMap[names[i]]->floatDiscriminatorNames.push_back(extrafloatDiscr);
 					}
+				}
 				#endif
 
 				checkMapsize(discriminatorMap[names[i]]->floatDiscriminatorNames, "float Discriminators");
@@ -317,34 +323,35 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		}
 
 		#if (CMSSW_MAJOR_VERSION == 8 && CMSSW_MINOR_VERSION == 0 && CMSSW_REVISION >= 21) || (CMSSW_MAJOR_VERSION >= 8 && CMSSW_MINOR_VERSION > 0)
-			TauIdMVAAuxiliaries clusterVariables_;
+		TauIdMVAAuxiliaries clusterVariables_;
 
-			enum class EXTRATAUFLOATS : int
-			{
-				UNKNOWN = -1, decayDistX = 0, decayDistY = 1, decayDistZ = 2, decayDistM = 3,
-				nPhoton = 4, ptWeightedDetaStrip = 5, ptWeightedDphiStrip = 6, ptWeightedDrSignal = 7,
-				ptWeightedDrIsolation = 8, leadingTrackChi2 = 9, eRatio = 10
-			};
+		enum class EXTRATAUFLOATS : int
+		{
+			UNKNOWN = -1, decayDistX = 0, decayDistY = 1, decayDistZ = 2, decayDistM = 3,
+			nPhoton = 4, ptWeightedDetaStrip = 5, ptWeightedDphiStrip = 6, ptWeightedDrSignal = 7,
+			ptWeightedDrIsolation = 8, leadingTrackChi2 = 9, eRatio = 10
+		};
 
-			EXTRATAUFLOATS string_to_extraTaufloats(std::string in_string)
-			{
-				if      (in_string == "decayDistX") return EXTRATAUFLOATS::decayDistX;
-				else if (in_string == "decayDistY") return EXTRATAUFLOATS::decayDistY;
-				else if (in_string == "decayDistZ") return EXTRATAUFLOATS::decayDistZ;
-				else if (in_string == "decayDistM") return EXTRATAUFLOATS::decayDistM;
-				else if (in_string == "nPhoton") return EXTRATAUFLOATS::nPhoton;
-				else if (in_string == "ptWeightedDetaStrip") return EXTRATAUFLOATS::ptWeightedDetaStrip;
-				else if (in_string == "ptWeightedDphiStrip") return EXTRATAUFLOATS::ptWeightedDphiStrip;
-				else if (in_string == "ptWeightedDrSignal") return EXTRATAUFLOATS::ptWeightedDrSignal;
-				else if (in_string == "ptWeightedDrIsolation") return EXTRATAUFLOATS::ptWeightedDrIsolation;
-				else if (in_string == "leadingTrackChi2") return EXTRATAUFLOATS::leadingTrackChi2;
-				else if (in_string == "eRatio") return EXTRATAUFLOATS::eRatio;
-				std::cout<<"Warning: "<<in_string <<" is not implemented so far !!!!!"<<std::endl;
-				return EXTRATAUFLOATS::UNKNOWN;
-			}
+		EXTRATAUFLOATS string_to_extraTaufloats(std::string in_string)
+		{
+			if      (in_string == "decayDistX") return EXTRATAUFLOATS::decayDistX;
+			else if (in_string == "decayDistY") return EXTRATAUFLOATS::decayDistY;
+			else if (in_string == "decayDistZ") return EXTRATAUFLOATS::decayDistZ;
+			else if (in_string == "decayDistM") return EXTRATAUFLOATS::decayDistM;
+			else if (in_string == "nPhoton") return EXTRATAUFLOATS::nPhoton;
+			else if (in_string == "ptWeightedDetaStrip") return EXTRATAUFLOATS::ptWeightedDetaStrip;
+			else if (in_string == "ptWeightedDphiStrip") return EXTRATAUFLOATS::ptWeightedDphiStrip;
+			else if (in_string == "ptWeightedDrSignal") return EXTRATAUFLOATS::ptWeightedDrSignal;
+			else if (in_string == "ptWeightedDrIsolation") return EXTRATAUFLOATS::ptWeightedDrIsolation;
+			else if (in_string == "leadingTrackChi2") return EXTRATAUFLOATS::leadingTrackChi2;
+			else if (in_string == "eRatio") return EXTRATAUFLOATS::eRatio;
+			std::cout<<"Warning: "<<in_string <<" is not implemented so far !!!!!"<<std::endl;
+			return EXTRATAUFLOATS::UNKNOWN;
+		}
 
-			std::map<std::string, std::map< EXTRATAUFLOATS, int > > extraTaufloatmap;
+		std::map<std::string, std::map< EXTRATAUFLOATS, int > > extraTaufloatmap;
 		#endif
+		
 		std::map<std::string, std::vector<std::string> > preselectionDiscr;
 		std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist, extrafloatDiscrlist;
 		std::map<std::string, std::map< std::string, int > > realTauIdfloatmap;
