@@ -5973,7 +5973,8 @@
     "n_events_generated": "674778", 
     "n_files": "1000", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
+    "scenario": "RunIISummer16MiniAODv2", 
+    "xsec": "51610.9"
   }, 
   "LFV_croote_RunIISummer16MiniAODv2_13TeV_USER_madgraph-pythia8_set10": {
     "campaign": "croote", 
@@ -5988,7 +5989,8 @@
     "n_events_generated": "674155", 
     "n_files": "999", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
+    "scenario": "RunIISummer16MiniAODv2", 
+    "xsec": "51610.9"
   }, 
   "LFV_croote_RunIISummer16MiniAODv2_13TeV_USER_madgraph-pythia8_set2": {
     "campaign": "croote", 
@@ -6003,7 +6005,8 @@
     "n_events_generated": "673358", 
     "n_files": "998", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
+    "scenario": "RunIISummer16MiniAODv2", 
+    "xsec": "51610.9"
   }, 
   "LFV_croote_RunIISummer16MiniAODv2_13TeV_USER_madgraph-pythia8_set3": {
     "campaign": "croote", 
@@ -6018,7 +6021,8 @@
     "n_events_generated": "674785", 
     "n_files": "999", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
+    "scenario": "RunIISummer16MiniAODv2", 
+    "xsec": "51610.9"
   }, 
   "LFV_croote_RunIISummer16MiniAODv2_13TeV_USER_madgraph-pythia8_set4": {
     "campaign": "croote", 
@@ -6033,7 +6037,8 @@
     "n_events_generated": "675048", 
     "n_files": "1000", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
+    "scenario": "RunIISummer16MiniAODv2", 
+    "xsec": "51610.9"
   }, 
   "LFV_croote_RunIISummer16MiniAODv2_13TeV_USER_madgraph-pythia8_set5": {
     "campaign": "croote", 
@@ -6045,10 +6050,11 @@
     "generator": "madgraph-pythia8", 
     "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v6", 
     "inputDBS": "phys03", 
-    "n_events_generated": "673666", 
-    "n_files": "998", 
+    "n_events_generated": "674985", 
+    "n_files": "1000", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
+    "scenario": "RunIISummer16MiniAODv2", 
+    "xsec": "51610.9"
   }, 
   "LFV_croote_RunIISummer16MiniAODv2_13TeV_USER_madgraph-pythia8_set6": {
     "campaign": "croote", 
@@ -6063,7 +6069,8 @@
     "n_events_generated": "674814", 
     "n_files": "1000", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
+    "scenario": "RunIISummer16MiniAODv2", 
+    "xsec": "51610.9"
   }, 
   "LFV_croote_RunIISummer16MiniAODv2_13TeV_USER_madgraph-pythia8_set7": {
     "campaign": "croote", 
@@ -6078,7 +6085,8 @@
     "n_events_generated": "673415", 
     "n_files": "997", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
+    "scenario": "RunIISummer16MiniAODv2", 
+    "xsec": "51610.9"
   }, 
   "LFV_croote_RunIISummer16MiniAODv2_13TeV_USER_madgraph-pythia8_set8": {
     "campaign": "croote", 
@@ -6093,7 +6101,8 @@
     "n_events_generated": "672108", 
     "n_files": "995", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
+    "scenario": "RunIISummer16MiniAODv2", 
+    "xsec": "51610.9"
   }, 
   "LFV_croote_RunIISummer16MiniAODv2_13TeV_USER_madgraph-pythia8_set9": {
     "campaign": "croote", 
@@ -6108,7 +6117,8 @@
     "n_events_generated": "670954", 
     "n_files": "995", 
     "process": "LFV", 
-    "scenario": "RunIISummer16MiniAODv2"
+    "scenario": "RunIISummer16MiniAODv2", 
+    "xsec": "51610.9"
   }, 
   "LFV_croote_RunIISummer16MiniAODv2stk1_13TeV_USER_madgraph-pythia8": {
     "Croote17": [
@@ -6127,7 +6137,7 @@
     "n_files": "398", 
     "process": "LFV", 
     "scenario": "RunIISummer16MiniAODv2stk1", 
-    "xsec": 51610.9
+    "xsec": "51610.9"
   }, 
   "MuonEG_Run2015B_16Dec2015v1_13TeV_MINIAOD": {
     "campaign": "Run2015B", 
