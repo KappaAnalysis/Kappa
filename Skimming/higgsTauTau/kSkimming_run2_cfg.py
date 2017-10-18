@@ -106,6 +106,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
+
+		# Auto alternative
+		#from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
+		#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data', '')
+
 		print "GT (overwritten):", process.GlobalTag.globaltag
 	## ------------------------------------------------------------------------
 
@@ -447,10 +452,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
 
+	# process.load("Configuration.StandardSequences.Reconstruction_cff") or process.load("Configuration.Geometry.GeometryRecoDB_cff")
+	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
+
 	## Refitted Vertices collection
 	if not tools.is_above_cmssw_version([9]):
 		process.kappaTuple.active += cms.vstring('RefitVertex')
-		process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 		process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
 
 		if tools.is_above_cmssw_version([7,6]) and not tools.is_above_cmssw_version([9]):
@@ -576,6 +583,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# add python config to TreeInfo
 	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
 
+	print "process.p:", process.p
 	return process
 
 if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":
