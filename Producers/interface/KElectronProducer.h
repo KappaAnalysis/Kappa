@@ -38,6 +38,7 @@ public:
 		doCutbasedIds_(true),
 		RefitVerticesSource(cfg.getParameter<edm::InputTag>("refitvertexcollection"))
 	{
+		if (this->verbosity == 3) std::cout << "KElectronProducer ()\n";
 		electronMetadata = new KElectronMetadata;
 		_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
 
@@ -49,7 +50,6 @@ public:
 		this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
 		this->tokenRhoIso = consumescollector.consumes<double>(rhoIsoTag);
 		this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
-
 
 		const edm::ParameterSet &psBase = this->psBase;
 		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
@@ -64,11 +64,14 @@ public:
 		{
 			tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(namesOfIds[j]));
 		}
+		if (this->verbosity == 3) std::cout << "KElectronProducer () end\n";
 	}
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
+               if (this->verbosity == 3) std::cout << "KElectronProducer onrun\n";
 		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+		if (this->verbosity == 3) std::cout << "KElectronProducer end onrun\n";
 		return true;
 	}
 
@@ -87,6 +90,7 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Get additional objects for the cutbased IDs
+		if (this->verbosity == 3) std::cout << "KElectron::fillProduct \n";
 		cEvent->getByToken(this->tokenConversionSource, this->hConversions);
 		cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 		cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
@@ -100,7 +104,7 @@ public:
 				doPfIsolation_ = false;
 			}
 		}
-		
+
 		cEvent->getByToken(tokenRhoIso, rhoIso_h);
 		
 		// TODO: change to getByToken
@@ -131,10 +135,12 @@ public:
 		
 		// call base class
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::fillProduct(in, out, name, tag, pset);
+		if (this->verbosity == 3) std::cout << "KElectron::fillProduct end\n";
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		if (this->verbosity == 3) std::cout << "KElectron::fillSingle\n";
 		// momentum:
 		copyP4(in, out.p4);
 		// hash of pointer as Id
@@ -229,6 +235,7 @@ public:
 			doMvaIds(in, out);
 		if(doAuxIds_)
 			doAuxIds(in, out);
+		if (this->verbosity == 3) std::cout << "end KElectron::fillSingle\n";
 	}
 
 

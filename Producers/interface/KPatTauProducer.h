@@ -29,6 +29,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		virtual void fillChargeAndFlavour(const SingleInputType &in, SingleOutputType &out)
 		{
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillChargeAndFlavour\n";
 			out.leptonInfo = KLeptonFlavour::TAU;
 			//assert(in.charge() == 1 || in.charge() == -1);
 			if (in.charge() > 0)
@@ -56,10 +57,12 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			if (in.isPFTau()) out.emFraction = in.emFraction();
 
 			out.decayMode = in.decayMode();
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillChargeAndFlavour end\n";
 		}
 
 		virtual void fillDiscriminators(const SingleInputType &in, SingleOutputType &out)
 		{
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillDiscriminators\n";
 			const std::vector<std::pair<std::string, float>> tauIDs = in.tauIDs();
 			int digit = 0;
 			out.binaryDiscriminators = 0;
@@ -96,10 +99,12 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				else if (variable->first == EXTRATAUFLOATS::eRatio )  out.floatDiscriminators[variable->second] = clusterVariables_.tau_Eratio(in);
 			}
 			#endif
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillDiscriminators end\n";
 		}
 
 		virtual void fillPFCandidates(const SingleInputType &in, SingleOutputType &out)
 		{
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillPFCandidates\n";
 			cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
 			cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 
@@ -129,11 +134,13 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 			std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());
 			std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), KLVSorter<KPFCandidate>());
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillPFCandidates end\n";
 
 		}
 
 		virtual void fillSecondaryVertex(const SingleInputType &in, SingleOutputType &out)
 		{
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillSecondaryVertex\n";
 			out.sv = KVertex();
 			out.refittedThreeProngParameters = ROOT::Math::SVector<double, 7>();
 			out.refittedThreeProngCovariance = ROOT::Math::SMatrix<float, 7, 7, ROOT::Math::MatRepSym<float, 7> >();
@@ -146,8 +153,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			{
 				// refit SV since in.secondaryVertexPos() is empty
 				// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/PatCandidates/interface/Tau.h#L325
-
 				std::vector<reco::TransientTrack> chargedHadronTransientTracks;
+				if (this->verbosity == 3) std::cout << "\tKPatTauProducer fillSecondaryVertex - size: " << in.signalChargedHadrCands().size() << "\n";
 				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
 				{
 					const reco::Track* track = in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
@@ -159,9 +166,9 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				
 				if (chargedHadronTransientTracks.size() > 2)
 				{
+					if (this->verbosity == 3) std::cout << "\tKPatTauProducer fillSecondaryVertex - setting adaptiveVertexFitter\n";
 					AdaptiveVertexFitter adaptiveVertexFitter;
 					adaptiveVertexFitter.setWeightThreshold(0.001);
-
 					// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/VertexPrimitives/interface/TransientVertex.h
 					TransientVertex sv = adaptiveVertexFitter.vertex(chargedHadronTransientTracks, *BeamSpot); // TODO: add beam spot
 					if (sv.isValid())
@@ -177,7 +184,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 							float pionNdf = 0.0;
 							GlobalPoint svPoint(sv.position().x(), sv.position().y(), sv.position().z());
 							float pionMassSigma = std::sqrt(std::pow(10.0, -12.0));
-							
+
 							for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
 							{
 								// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/KinematicFitPrimitives/interface/KinematicParticleFactoryFromTransientTrack.h#L60-L71
@@ -218,6 +225,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					}
 				}
 			}
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillSecondaryVertex end\n";
 		}
 
 	public:
@@ -229,6 +237,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			RefitVerticesSource(cfg.getParameter<edm::InputTag>("refitvertexcollection")),
 			_lumi_tree_pointer(_lumi_tree)
 		{
+			if (this->verbosity == 3) std::cout << "KPatTauProducer()\n";
 			this->tokenBeamSpot = consumescollector.consumes<reco::BeamSpot>(BeamSpotSource);
 			this->tokenVertexCollection = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
 			this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
@@ -259,13 +268,16 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				#endif
 				floatDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrBlacklist");
 			}
+			if (this->verbosity == 3) std::cout << "KPatTauProducer() end\n";
 		}
 
 		static const std::string getLabel() { return "PatTaus"; }
 
 		virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 		{
+                       if (this->verbosity == 3) std::cout << "KPatTauProducer onrun\n";
 			setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+			if (this->verbosity == 3) std::cout << "KPatTauProducer end onrun\n";
 			return true;
 		}
 
@@ -273,15 +285,18 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		virtual void fillProduct(const InputType &in, OutputType &out,
 								const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 		{
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillProduct\n";
 			cEvent->getByToken(tokenBeamSpot, BeamSpot);
 
 			cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 			// Continue normally
 			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>::fillProduct(in, out, name, tag, pset);
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillProduct end\n";
 		}
 
 		virtual bool acceptSingle(const SingleInputType &in) override
 		{
+			if (this->verbosity == 3) std::cout << "KPatTauProducer acceptSingle\n";
 			// propagate the selection on minPt/maxEta
 			bool acceptTau = KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>::acceptSingle(in);
 
@@ -298,11 +313,13 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				}
 				acceptTau = acceptTau && (in.tauID(discriminator) > 0.5);
 			}
+			if (this->verbosity == 3) std::cout << "KPatTauProducer acceptSingle end\n";
 			return acceptTau;
 		}
 
 		virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 		{
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillSingle\n";
 			copyP4(in, out.p4);
 			// hash of pointer as Id
 			out.internalId = hasher(&in);
@@ -314,10 +331,12 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			else
 				KPatTauProducer::fillPFCandidates(in, out);
 			fillSecondaryVertex(in, out);
+			if (this->verbosity == 3) std::cout << "KPatTauProducer fillSingle end\n";
 		}
 
 		virtual void onFirstObject(const SingleInputType &in, SingleOutputType &out) override
 		{
+			if (this->verbosity == 3) std::cout << "KPatTauProducer onFirstObject\n";
 			if (this->verbosity > 0 && !in.isPFTau())
 				std::cout << "Warning: pat::Tau has not been made from PFTau. emFraction and some PFCandidates will not be filled properly" << std::endl;
 
@@ -366,6 +385,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				checkMapsize(discriminatorMap[names[i]]->binaryDiscriminatorNames, "binary Discriminators");
 				n_float_dict += discriminatorMap[names[i]]->floatDiscriminatorNames.size();
 			}
+			if (this->verbosity == 3) std::cout << "KPatTauProducer onFirstObject end\n";
 		}
 
 	private:

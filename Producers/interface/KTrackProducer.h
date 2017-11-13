@@ -28,7 +28,9 @@ public:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		if (KBaseProducer::verbosity == 3) std::cout << "KTracksProducer::fillSingle\n";
 		KTrackProducer::fillTrack(in, out);
+		if (KBaseProducer::verbosity == 3) std::cout << "KTracksProducer::fillSingle end\n";
 	}
 
 	// Static method for filling Tracks in other producers
@@ -36,6 +38,7 @@ public:
 	                      std::vector<reco::Vertex> const& vertices = std::vector<reco::Vertex>(),
 	                      const TransientTrackBuilder* trackBuilder = nullptr)
 	{
+		if (KBaseProducer::verbosity == 3) std::cout << "KTracksProducer::fillTrack\n";
 		// Momentum:
 		out.p4.SetCoordinates(in.pt(), in.eta(), in.phi(), 0);
 
@@ -82,6 +85,7 @@ public:
 				out.err2D = IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(validVertexIndex)).second.error();
 			}
 		}
+		if (KBaseProducer::verbosity == 3) std::cout << "KTracksProducer::fillTrack end\n";
 	}
 
 
@@ -91,17 +95,21 @@ public:
 	                      //std::vector<reco::Vertex> const& vertices = std::vector<reco::Vertex>(),
 	                      const TransientTrackBuilder* trackBuilder = nullptr)
 	{
-		if (vertices.size()>0){
+		if (KBaseProducer::verbosity == 3) std::cout << "KTracksProducer::fillIPInfo\n";
+		if (vertices.size() > 0 && trackBuilder != nullptr)
+		{
 			
 			reco::TransientTrack transientTrack = trackBuilder->build(in);
 			
-			for (unsigned int i=0; i<vertices.size(); ++i) {
+			for (unsigned int i=0; i<vertices.size(); ++i)
+			{
 				out.d3DnewPV.push_back(IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(i)).second.value());
 				out.err3DnewPV.push_back(IPTools::absoluteImpactParameter3D(transientTrack, vertices.at(i)).second.error());
 				out.d2DnewPV.push_back(IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(i)).second.value());
 				out.err2DnewPV.push_back(IPTools::absoluteTransverseImpactParameter(transientTrack, vertices.at(i)).second.error());
 			}
 		}
+		if (KBaseProducer::verbosity == 3) std::cout << "KTracks::fillIPInfo end\n";
 	}
 
 

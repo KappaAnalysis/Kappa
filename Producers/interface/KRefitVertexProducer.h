@@ -20,13 +20,15 @@ class KRefitVertexProducer : public KBaseMultiVectorProducer<edm::View<RefitVert
 {
 public:
 	KRefitVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiVectorProducer<edm::View<RefitVertex>, KRefitVertices >(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+		KBaseMultiVectorProducer<edm::View<RefitVertex>,
+		KRefitVertices >(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "RefitVertex"; }
 
 protected:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		if (this->verbosity == 3) std::cout << "KRefitVertexProducer fillSingle()\n";
 		KVertexProducer::fillVertex(in, out);
 
 		// save references to lepton selection in the refitted vertex
@@ -37,7 +39,7 @@ protected:
 			boost::hash_combine(hash,aRecoCand.get());
 		}
 		out.leptonSelectionHash = hash;
-
+		if (this->verbosity == 3) std::cout << "KRefitVertexProducer fillSingle() end\n";
 	}
 };
 

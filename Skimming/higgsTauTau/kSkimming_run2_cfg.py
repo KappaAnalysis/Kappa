@@ -192,6 +192,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("selectedPatTrigger"))
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
 
+	print "TriggerObjectStandalone: ", process.kappaTuple.TriggerObjectStandalone
+
 	process.kappaTuple.active += cms.vstring('BeamSpot')
 	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.BeamSpot.offlineBeamSpot = cms.PSet(src = cms.InputTag("offlineBeamSpot"))

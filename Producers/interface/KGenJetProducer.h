@@ -33,7 +33,9 @@ public:
 	}
 
 	static void fillGenJet(const SingleInputType &in, SingleOutputType &out)
-	{	/// momentum:
+	{
+		if (KBaseProducer::verbosity == 3) std::cout << "KGenJetProducer fillGenJet()\n";
+		/// momentum:
 		copyP4(in, out.p4);
 		// check if inputs are valid. Status April 15: Some miniAOD samples do not fill their daughters properly
 		std::string genTauDecayModeString = allDaughtersValid(in) ? JetMCTagUtils::genTauDecayMode(in) : "invalid";
@@ -47,12 +49,15 @@ public:
 		else if (genTauDecayModeString == "electron")         out.genTauDecayMode = 5;
 		else if (genTauDecayModeString == "muons")            out.genTauDecayMode = 6;
 		else out.genTauDecayMode = -1;
+		if (KBaseProducer::verbosity == 3) std::cout << "KGenJetProducer fillGenJet() end\n";
 	}
 
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		if (KBaseProducer::verbosity == 3) std::cout << "KGenJetProducer fillSingle()\n";
 		fillGenJet(in, out);
+		if (KBaseProducer::verbosity == 3) std::cout << "KGenJetProducer fillSingle() end\n";
 	}
 };
 
