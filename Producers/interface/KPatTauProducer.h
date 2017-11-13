@@ -48,7 +48,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			if (packedLeadTauCand->bestTrack() != nullptr)
 			{
 				KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
-				KTrackProducer::fillIPInfo(*packedLeadTauCand->bestTrack(), out.track, *RefitVertices, trackBuilder.product());
+				// KTrackProducer::fillIPInfo(*packedLeadTauCand->bestTrack(), out.track, *RefitVertices, trackBuilder.product());
 			}
 			else // at least fill reference point
 			{
@@ -161,7 +161,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					const reco::Track* track = in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
 					if (track)
 					{
-						chargedHadronTransientTracks.push_back(trackBuilder->build(track));
+						chargedHadronTransientTracks.push_back(trackBuilder->build(track)); // runtime error
 					}
 				}
 				
@@ -276,8 +276,9 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 		{
-                       if (this->verbosity == 3) std::cout << "KPatTauProducer onrun\n";
-			setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+			if (this->verbosity == 3) std::cout << "KPatTauProducer onrun\n";
+			edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
+			// setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
 			if (this->verbosity == 3) std::cout << "KPatTauProducer end onrun\n";
 			return true;
 		}
@@ -289,7 +290,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			if (this->verbosity == 3) std::cout << "KPatTauProducer fillProduct\n";
 			cEvent->getByToken(tokenBeamSpot, BeamSpot);
 
-			cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
+			// cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 			// Continue normally
 			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>::fillProduct(in, out, name, tag, pset);
 			if (this->verbosity == 3) std::cout << "KPatTauProducer fillProduct end\n";
@@ -331,7 +332,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				KTauProducer::fillPFCandidates(in, out);
 			else
 				KPatTauProducer::fillPFCandidates(in, out);
-			fillSecondaryVertex(in, out);
+			// fillSecondaryVertex(in, out);
 			if (this->verbosity == 3) std::cout << "KPatTauProducer fillSingle end\n";
 		}
 

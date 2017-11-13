@@ -101,7 +101,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	else:
 		process.source 			  = cms.Source('PoolSource', fileNames=cms.untracked.vstring())
 	process.maxEvents.input	      = maxevents
-	process.kappaTuple.verbose    = cms.int32(0)
+	process.kappaTuple.verbose    = cms.int32(3)
 
 	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
@@ -216,15 +216,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
 
-		process.kappaTuple.Info.lheSource = cms.InputTag("externalLHEProducer")
+		# process.kappaTuple.Info.lheSource = cms.InputTag("externalLHEProducer")
 		process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
 
 		if any([pattern in nickname for pattern in ["HToTauTau", "H2JetsToTauTau", "DY", "LFV"]]):
-			process.kappaTuple.active += cms.vstring("LHE")
+			# process.kappaTuple.active += cms.vstring("LHE")
 			process.kappaTuple.LHE.whitelist = cms.vstring("source")
 			process.kappaTuple.LHE.rename = cms.vstring("source => LHEafter")
 			if tools.is_above_cmssw_version([7, 6]):
 				process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("externalLHEProducer"))
+
 
 	# save Flag
 	process.kappaTuple.Info.isEmbedded = cms.bool(isEmbedded)
@@ -463,10 +464,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
 
 	# process.load("Configuration.StandardSequences.Reconstruction_cff") or process.load("Configuration.Geometry.GeometryRecoDB_cff")
-	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
+	# process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 
 	## Refitted Vertices collection
-	if not tools.is_above_cmssw_version([9]):
+	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
+	if False and tools.is_above_cmssw_version([9]):
 		process.kappaTuple.active += cms.vstring('RefitVertex')
 		process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
 

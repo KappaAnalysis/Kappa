@@ -69,8 +69,9 @@ public:
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-               if (this->verbosity == 3) std::cout << "KElectronProducer onrun\n";
-		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+		if (this->verbosity == 3) std::cout << "KElectronProducer onrun\n";
+		edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
+		// setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
 		if (this->verbosity == 3) std::cout << "KElectronProducer end onrun\n";
 		return true;
 	}
@@ -94,7 +95,8 @@ public:
 		cEvent->getByToken(this->tokenConversionSource, this->hConversions);
 		cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 		cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
-		cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
+		// cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
+
 		this->isoVals.resize(this->isoValInputTags.size());
 		for (size_t j = 0; j < this->isoValInputTags.size(); ++j)
 		{
@@ -160,7 +162,7 @@ public:
 		if (in.gsfTrack().isNonnull())
 		{
 			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
-			KTrackProducer::fillIPInfo(*in.gsfTrack(), out.track, *RefitVertices, trackBuilder.product());
+			// KTrackProducer::fillIPInfo(*in.gsfTrack(), out.track, *RefitVertices, trackBuilder.product());
 			out.dxy = in.gsfTrack()->dxy(vtx.position());
 			out.dz = in.gsfTrack()->dz(vtx.position());
 		}

@@ -33,8 +33,9 @@ public:
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-               if (this->verbosity == 3) std::cout << "KTaupairVerticesMapProducer onRun()\n";
-		setup.get<TransientTrackRecord>().get("TransientTrackBuilder",this->theB);
+		if (this->verbosity == 3) std::cout << "KTaupairVerticesMapProducer onRun()\n";
+		this->theB = edm::ESHandle<TransientTrackBuilder>();
+		// setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->theB);
 		if (this->verbosity == 3) std::cout << "KTaupairVerticesMapProducer onRun() end\n";
 		return true;
 	}
