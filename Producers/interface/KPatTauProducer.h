@@ -7,6 +7,7 @@
 #include "KVertexProducer.h"
 #include "KVertexSummaryProducer.h"
 
+#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 #include "KPackedPFCandidateProducer.h"
 #include "RecoVertex/KalmanVertexFit/interface/KalmanVertexFitter.h"
 #include "RecoVertex/KinematicFit/interface/KinematicParticleVertexFitter.h"

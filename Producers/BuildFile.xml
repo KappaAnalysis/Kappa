@@ -26,6 +26,7 @@
 <use name="RecoMuon/DetLayers"/>
 <use name="RecoMuon/Records"/>
 <use name="TrackingTools/KalmanUpdators"/>
+<use name="TrackingTools/TransientTrack"/>
 <use name="RecoEgamma/EgammaTools"/>
 <use name="RecoVertex/AdaptiveVertexFit"/>
 <use name="RecoVertex/LinearizationPointFinders"/>

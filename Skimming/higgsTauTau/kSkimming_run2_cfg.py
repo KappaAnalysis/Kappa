@@ -129,7 +129,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 
 	# General configuration
-	if tools.is_above_cmssw_version([7,4]):
+	if tools.is_above_cmssw_version([7,4]) and not data:
 		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
 
 	# save primary vertex
@@ -172,23 +172,31 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
 	if isEmbedded:
+		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "SIMembedding")
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
 	elif data:
 		if tools.is_above_cmssw_version([9]):
 			process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
 			#process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "RECO")
+			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO") # take last process used in production for data
 		elif "03Feb2017" in str(process.kappaTuple.TreeInfo.parameters.scenario):
 			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "PAT")
 		else:
 			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
 			process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "RECO")
+	else:
+		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "PAT") # take last process used in production for mc
+
 	if not isEmbedded and "Spring16" in str(process.kappaTuple.TreeInfo.parameters.campaign):
 		# adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection"
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 
 	# 80X doesn't have 'slimmedPatTrigger' -> use 'selectedPatTrigger' instead
-	if tools.is_above_cmssw_version([8,0]):
+	if tools.is_above_cmssw_version([9,0]):
+		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("slimmedPatTrigger"))
+		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
+	elif tools.is_above_cmssw_version([8,0]):
 		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("selectedPatTrigger"))
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
 
