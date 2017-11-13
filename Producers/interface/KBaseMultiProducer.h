@@ -5,7 +5,6 @@
 #define KAPPA_MULTIPRODUCER_H
 
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 #include "KBaseMatchingProducer.h"
 #include "../../DataFormats/interface/KBasic.h"
@@ -17,19 +16,14 @@ template<typename Tin, typename Tout>
 class KBaseMultiProducer : public KBaseMatchingProducer<Tout>
 {
 public:
-	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector, bool _justOutputName = false) :
-		KBaseMatchingProducer<Tout>(cfg, _event_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)),
+	KBaseMultiProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector, bool _justOutputName = false) :
+		KBaseMatchingProducer<Tout>(cfg, _event_tree, _lumi_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)),
 		event_tree(_event_tree), justOutputName(_justOutputName)
 		{
 			this->addPSetRequests();
-			for (typename std::map<Tout*, std::pair<const edm::ParameterSet, const edm::InputTag> >::iterator
-				it = targetSetupMap.begin(); it != targetSetupMap.end(); ++it)
-			{
-				const edm::InputTag &src = it->second.second;
-				consumescollector.consumes<Tin>(src);
-			}
 			
 		}
+	typedef std::tuple<const edm::ParameterSet, const edm::InputTag, const edm::EDGetTokenT<Tin>> TargetSetupMapContent;
 	virtual ~KBaseMultiProducer() {}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
@@ -37,11 +31,11 @@ public:
 		this->cEvent = &event;
 		this->cSetup = &setup;
 
-		for (typename std::map<Tout*, std::pair<const edm::ParameterSet, const edm::InputTag> >::iterator
+		for (typename std::map<Tout*, TargetSetupMapContent >::iterator
 			it = targetSetupMap.begin(); it != targetSetupMap.end(); ++it)
 		{
-			const edm::ParameterSet &pset = it->second.first;
-			const edm::InputTag &src = it->second.second;
+			const edm::ParameterSet &pset = std::get<0>(it->second);
+			const edm::InputTag &src = std::get<1>(it->second);
 			const std::pair<std::string, std::string> desc = this->nameMap[it->first];
 
 			// Clear previous collection
@@ -49,7 +43,7 @@ public:
 			clearProduct(ref);
 
 			// Try to get product via id
-			if (!event.getByLabel(src, this->handle))
+			if (!event.getByToken(std::get<2>(it->second), this->handle))
 			{
 				std::cout << "Could not get main product! " << desc.second << ".src = " << src.encode() << std::endl;
 				continue;
@@ -92,8 +86,7 @@ protected:
 		nameMap[target] = make_pair(targetName, inputName);
 
 		// Used for fast lookup of selector and lv collection
-		typedef std::pair<const edm::ParameterSet, const edm::InputTag> TmpType;
-		this->targetSetupMap.insert(std::pair<Tout*, TmpType>(target, TmpType(pset, tag)));
+		this->targetSetupMap.insert(std::pair<Tout*, TargetSetupMapContent>(target, TargetSetupMapContent(pset, tag, this->consumescollector_.template consumes<Tin>(tag))));
 	}
 
 	virtual void fillProduct(const InputType &input, OutputType &output,
@@ -105,8 +98,8 @@ protected:
 	TTree *event_tree;
 	const edm::Event *cEvent;
 	const edm::EventSetup *cSetup;
-
-	std::map<Tout*, std::pair<const edm::ParameterSet, const edm::InputTag> > targetSetupMap;
+	
+	std::map<Tout*, TargetSetupMapContent > targetSetupMap;
 	std::map<Tout*, std::pair<std::string, std::string> > nameMap;
 
 private:

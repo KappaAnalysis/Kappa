@@ -90,6 +90,8 @@ namespace
 		KTaupairVerticesMaps dict_KTaupairVerticesMaps;
 		KTrack dict_KTrack;
 		KTracks dict_KTracks;
+		KTransTrack dict_KTransTrack;
+		KTransTracks dict_KTransTracks;
 		KTriggerObjects dict_KTriggerObjects;
 		KVertex dict_KVertex;
 		KVertices dict_KVertices;
@@ -99,6 +101,9 @@ namespace
 		KHCALNoiseSummary dict_KHCALNoiseSummary;
 		KTrackSummary dict_KTrackSummary;
 		KVertexSummary dict_KVertexSummary;
+		KRunInfo dict_KRunInfo;
+		KGenRunInfo dict_KGenRunInfo;
+		KDataRunInfo dict_KDataRunInfo;
 		KLumiInfo dict_KLumiInfo;
 		KGenLumiInfo dict_KGenLumiInfo;
 		KDataLumiInfo dict_KDataLumiInfo;

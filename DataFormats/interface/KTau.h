@@ -12,6 +12,9 @@
 
 #include "KLepton.h"
 
+#include "DataFormats/TauReco/interface/PFTau.h"
+
+
 struct KTauMetadata
 {
 	virtual ~KTauMetadata() {};
@@ -30,6 +33,24 @@ struct KBasicTau : public KLepton
 
 	int decayMode;     ///< hadronic decay mode as identified by HPS algorithm
 	float emFraction;  ///< electromagnetic energy fraction
+	
+	// (signed) PDG ID of the hadronic resonance
+	int resonancePdgId() const
+	{
+		int pdgId = 0;
+		switch (decayMode)
+		{
+			case reco::PFTau::hadronicDecayMode::kThreeProng0PiZero: pdgId = 20213; break;
+			case reco::PFTau::hadronicDecayMode::kOneProng1PiZero: pdgId = 213; break;
+			case reco::PFTau::hadronicDecayMode::kOneProng0PiZero: pdgId = 211; break;
+			default: pdgId = 0;
+		}
+		if (charge() > 0)
+		{
+			pdgId *= -1;
+		}
+		return pdgId;
+	}
 
 	/// container for tau discriminators with binary values
 	unsigned long long binaryDiscriminators;
@@ -67,6 +88,11 @@ struct KTau : public KBasicTau
 	KLVs piZeroCandidates;
 	KPFCandidates chargedHadronCandidates;
 	KPFCandidates gammaCandidates;
+
+	KVertex sv;
+	ROOT::Math::SVector<double, 7> refittedThreeProngParameters;
+	ROOT::Math::SMatrix<float, 7, 7, ROOT::Math::MatRepSym<float, 7> > refittedThreeProngCovariance;
+	KTracks refittedChargedHadronTracks;
 
 	int tauKey;
 

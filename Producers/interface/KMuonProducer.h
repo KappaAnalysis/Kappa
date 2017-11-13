@@ -31,18 +31,22 @@
 #include <TrackingTools/Records/interface/TransientTrackRecord.h>
 #include <TrackingTools/TransientTrack/interface/TransientTrackBuilder.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
+#include <DataFormats/VertexReco/interface/Vertex.h>
 #include "boost/functional/hash.hpp"
 
 class KMuonProducer : public KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>
 {
 public:
-	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+	KMuonProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		tagHLTrigger(cfg.getParameter<edm::InputTag>("hlTrigger")),
+		VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
+		tagMuonIsolationPF(cfg.getParameter<edm::InputTag>("srcMuonIsolationPF")),
+		isoValInputTags(cfg.getParameter<std::vector<edm::InputTag> >("isoValInputTags")),
 		hltMaxdR(cfg.getParameter<double>("hltMaxdR")),
 		hltMaxdPt_Pt(cfg.getParameter<double>("hltMaxdPt_Pt")),
 		selectedMuonTriggerObjects(cfg.getParameter<std::vector<std::string> >("muonTriggerObjects")),
+		RefitVerticesSource(cfg.getParameter<edm::InputTag>("refitvertexcollection")),
 		noPropagation(cfg.getParameter<bool>("noPropagation")),
 		propagatorToMuonSystem(cfg),
 		doPfIsolation(cfg.getParameter<bool>("doPfIsolation")),
@@ -57,23 +61,31 @@ public:
 		muonMetadata = new KMuonMetadata();
 		_lumi_tree->Bronch("muonMetadata", "KMuonMetadata", &muonMetadata);
 
-        consumescollector.consumes<trigger::TriggerEvent>(tagHLTrigger);
-        const edm::ParameterSet &psBase = this->psBase;
-        std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+		this->HLTTriggerToken = consumescollector.consumes<trigger::TriggerEvent>(tagHLTrigger);
+		this->MuonIsolationPFToken = consumescollector.consumes<edm::ValueMap<reco::IsoDeposit> >(tagMuonIsolationPF);
+		this->VertexCollectionToken = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
+		this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
 
-        for (size_t i = 0; i < names.size(); ++i)
-        {
-            const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-            if(pset.existsAs<edm::InputTag>("srcMuonIsolationPF")) consumescollector.consumes<edm::ValueMap<reco::IsoDeposit>>(pset.getParameter<edm::InputTag>("srcMuonIsolationPF"));
-            if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<edm::View<reco::Vertex>>(pset.getParameter<edm::InputTag>("vertexcollection"));
-            if(pset.existsAs<std::vector<edm::InputTag>>("isoValInputTags"))
-            {
-                for(size_t j = 0; j < pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").size(); ++j) consumescollector.consumes<edm::ValueMap<double>>(pset.getParameter<std::vector<edm::InputTag>>("isoValInputTags").at(j));
-            }
-        }
+		const edm::ParameterSet &psBase = this->psBase;
+		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
+
+		for (size_t i = 0; i < names.size(); ++i)
+		{
+			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
+		       	if(pset.existsAs<edm::InputTag>("srcMuonIsolationPF")) consumescollector.consumes<edm::ValueMap<reco::IsoDeposit>>(pset.getParameter<edm::InputTag>("srcMuonIsolationPF"));
+			if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
+			for(size_t j = 0; j < isoValInputTags.size(); ++j)
+				isoValTokens.push_back(consumescollector.consumes<edm::ValueMap<double>>(isoValInputTags.at(j)));
+		}
 	}
 
 	static const std::string getLabel() { return "Muons"; }
+
+	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
+	{
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+		return true;
+	}
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
@@ -111,28 +123,26 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Retrieve additional input products
-		edm::InputTag tagMuonIsolationPF = pset.getParameter<edm::InputTag>("srcMuonIsolationPF");
-
-		if (tagMuonIsolationPF.label() != "")
-		{
-			cEvent->getByLabel(tagMuonIsolationPF, isoDepsPF);
-			muonIsolationPFInitialized = true;
-		}
+	    	if (tagMuonIsolationPF.label() != "")
+	    	{
+					cEvent->getByToken(MuonIsolationPFToken, isoDepsPF);
+	    		//muonIsolationPFInitialized = true;
+	    	}
 
 		if (tagHLTrigger.label() != "")
-			cEvent->getByLabel(tagHLTrigger, triggerEventHandle);
+			cEvent->getByToken(HLTTriggerToken, triggerEventHandle);
 
-		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
-		cEvent->getByLabel(VertexCollectionSource, VertexHandle);
+		cEvent->getByToken(VertexCollectionToken, VertexHandle);
+		cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
+
 
 		pfIsoVetoCone = pset.getParameter<double>("pfIsoVetoCone");
 		pfIsoVetoMinPt = pset.getParameter<double>("pfIsoVetoMinPt");
 
-		std::vector<edm::InputTag>  isoValInputTags_ = pset.getParameter<std::vector<edm::InputTag> >("isoValInputTags");
-		isoVals.resize(isoValInputTags_.size());
-		for (size_t j = 0; j < isoValInputTags_.size(); ++j)
+		isoVals.resize(this->isoValInputTags.size());
+		for (size_t j = 0; j < this->isoValInputTags.size(); ++j)
 		{
-			cEvent->getByLabel(isoValInputTags_[j], isoVals[j]);
+			cEvent->getByToken(isoValTokens[j], isoVals[j]);
 			if (isoVals[j].failedToGet())
 			{
 				doPfIsolation = false;
@@ -149,18 +159,22 @@ public:
 		out.leptonInfo = KLeptonFlavour::MUON;
 		// hash of pointer as Id
 		out.internalId = hasher(&in);
-		
+
 		/// momentum:
 		copyP4(in, out.p4);
 
 		/// Tracks and track extracted information
-		if (in.track().isNonnull())
-			KTrackProducer::fillTrack(*in.track(), out.track);
-		if (in.globalTrack().isNonnull())
-			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack);
+		if (in.track().isNonnull()){
+			KTrackProducer::fillTrack(*in.track(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
+			KTrackProducer::fillIPInfo(*in.track(), out.track, *RefitVertices, trackBuilder.product());
+		}
+		if (in.globalTrack().isNonnull()){
+			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack, std::vector<reco::Vertex>(), trackBuilder.product());
+			KTrackProducer::fillIPInfo(*in.globalTrack(), out.globalTrack, *RefitVertices, trackBuilder.product());
+		}
 
-		edm::View<reco::Vertex> vertices = *VertexHandle;
-		reco::Vertex vtx = vertices.at(0);
+		if (VertexHandle->size() == 0) throw cms::Exception("VertexHandle in KMuonProducer is empty");
+		reco::Vertex vtx = VertexHandle->at(0);
 		if (in.muonBestTrack().isNonnull()) // && &vtx != NULL) TODO
 		{
 			/// ID var from the bestTrack which is not saved entirely
@@ -206,7 +220,7 @@ public:
 			// code copied from KElectronProducer
 			// we need the Ref, cf. example EgammaAnalysis/ElectronTools/src/EGammaCutBasedEleIdAnalyzer.cc
 			edm::Ref<edm::View<reco::Muon>> m(this->handle, this->nCursor);
-			
+
 			// isolation values (PF is used for IDs later)
 			double iso_ch = (*(isoVals)[0])[m];
 			double iso_ph = (*(isoVals)[1])[m];
@@ -261,8 +275,8 @@ public:
 
 		/// highpt ID variables
 		/** needed variables according to
-		    https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#New_HighPT_Version_recommended
-		    not in new CMSSW versions
+			https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#New_HighPT_Version_recommended
+			not in new CMSSW versions
 
 		reco::TrackRef cktTrack = muon::improvedMuonBestTrack(const reco::Muon & recoMu, muon::improvedTuneP);
 		dxy_high = cktTrack->db...
@@ -281,51 +295,50 @@ public:
 
 		/// precomputed muon IDs
 		/** https://hypernews.cern.ch/HyperNews/CMS/get/muon/868.html
-		    https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#Baseline_muon_selections_for_201
+			https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#Baseline_muon_selections_for_201
 			DataFormats/MuonReco/src/MuonSelectors.cc
 			automatically use muon::improvedTuneP default as in CMSSW
-		    Medium Id definition taken from:
-		    https://indico.cern.ch/event/357213/contribution/2/material/slides/0.pdf
-		    if release < 74X, otherwise use the method in the muon dataformat
+			Medium Id definition taken from:
+			https://indico.cern.ch/event/357213/contribution/2/material/slides/0.pdf
+			if release < 74X, otherwise use the method in the muon dataformat
 			last update: 2015-06-19
 		*/
-#if (CMSSW_MAJOR_VERSION < 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION < 4)
-		bool goodGlb = in.isGlobalMuon() &&
-			       (in.globalTrack().isNonnull() ? (in.globalTrack()->normalizedChi2() < 3.) : 0 ) &&
-			       in.combinedQuality().chi2LocalPosition < 12. &&
-			       in.combinedQuality().trkKink < 20.;
-		bool isMediumMuon = (in.innerTrack().isNonnull() ? (in.innerTrack()->validFraction() >= 0.8) : 0 ) &&
-			       muon::segmentCompatibility(in) >= (goodGlb ? 0.303 : 0.451);
-#else
 		bool isMediumMuon = muon::isMediumMuon(in);
-#endif
 
 		out.ids = KLeptonId::ANY;
 		out.ids |= (muon::isLooseMuon(in)      << KLeptonId::LOOSE);
 		out.ids |= (isMediumMuon               << KLeptonId::MEDIUM);
 		out.ids |= (muon::isTightMuon(in, vtx) << KLeptonId::TIGHT);
 		out.ids |= (muon::isSoftMuon(in, vtx)  << KLeptonId::SOFT);
-#if CMSSW_MAJOR_VERSION == 5 && CMSSW_MINOR_VERSION < 15
-		out.ids |= (muon::isHighPtMuon(in, vtx, reco::improvedTuneP) << KLeptonId::HIGHPT);
-#else
 		out.ids |= (muon::isHighPtMuon(in, vtx) << KLeptonId::HIGHPT);
-#endif
 		assert((out.ids & 145) == 0); // 145 = 0b10010001, these bits should be zero
 	}
 
 private:
 	edm::InputTag tagHLTrigger;
+	edm::InputTag VertexCollectionSource;
+	edm::InputTag tagMuonIsolationPF;
+	std::vector<edm::InputTag>  isoValInputTags;
+	edm::EDGetTokenT<trigger::TriggerEvent> HLTTriggerToken;
+	edm::EDGetTokenT<reco::VertexCollection> VertexCollectionToken;
+	edm::EDGetTokenT<edm::ValueMap<reco::IsoDeposit> > MuonIsolationPFToken;
+	std::vector<edm::EDGetTokenT<edm::ValueMap<double>>> isoValTokens;
 	double hltMaxdR, hltMaxdPt_Pt;
 	double pfIsoVetoCone, pfIsoVetoMinPt;
 	std::vector<std::string> selectedMuonTriggerObjects;
+	edm::InputTag RefitVerticesSource;
 	bool noPropagation;
 	PropagateToMuon propagatorToMuonSystem;
 	edm::Handle<edm::ValueMap<reco::IsoDeposit> > isoDepsPF;
 	edm::Handle<trigger::TriggerEvent> triggerEventHandle;
-	edm::Handle<edm::View<reco::Vertex> > VertexHandle;
+	edm::Handle<reco::VertexCollection> VertexHandle;
+	edm::Handle<RefitVertexCollection> RefitVertices;
+	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 	KMuonMetadata *muonMetadata;
 	boost::hash<const reco::Muon*> hasher;
-	
+
+	edm::EDGetTokenT<RefitVertexCollection> tokenRefitVertices;
+
 	std::vector<edm::Handle<edm::ValueMap<double> > > isoVals;
 	bool doPfIsolation;
 	bool use03ConeForPfIso;

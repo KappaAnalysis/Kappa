@@ -92,18 +92,26 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	# Configure Kappa
 	if testfile:
-		process.source.fileNames      = testfile
+		process.source            = cms.Source('PoolSource', fileNames=cms.untracked.vstring(testfile))
+		# uncomment the following option to select only running on certain luminosity blocks. Use only for debugging
+		# in this example 1 - is run and after semicolon - the LumiSection
+		# process.source.lumisToProcess  = cms.untracked.VLuminosityBlockRange("1:62090-1:63091")
+		#process.source.eventsToProcess = cms.untracked.VEventRange('1:917:1719279', '1:1022:1915188')
+		#process.source.skipEvents = cms.untracked.uint32(539)
 	else:
 		process.source 			  = cms.Source('PoolSource', fileNames=cms.untracked.vstring())
 	process.maxEvents.input	      = maxevents
 	process.kappaTuple.verbose    = cms.int32(0)
-	# uncomment the following option to select only running on certain luminosity blocks. Use only for debugging
-	# process.source.lumisToProcess  = cms.untracked.VLuminosityBlockRange("1:500-1:1000")
+
 	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
 		process.GlobalTag.globaltag   = globaltag
-		print "GT (overwritten):", process.GlobalTag.globaltag
 
+		# Auto alternative
+		#from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
+		#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data', '')
+
+		print "GT (overwritten):", process.GlobalTag.globaltag
 	## ------------------------------------------------------------------------
 
 	# Configure Metadata describing the file
@@ -113,7 +121,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	data = datasetsHelper.isData(nickname)
 	isEmbedded = datasetsHelper.isEmbedded(nickname)
-	print nickname
+	print "nicknane:", nickname
+
 	#####miniaod = datasetsHelper.isMiniaod(nickname) not used anymore, since everything is MiniAOD now
 	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
 
@@ -122,8 +131,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# General configuration
 	if tools.is_above_cmssw_version([7,4]):
 		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
-	if isSignal:
-		process.kappaTuple.Info.lheSource = cms.InputTag("source")
 
 	# save primary vertex
 	process.kappaTuple.active += cms.vstring('VertexSummary') # save VertexSummary
@@ -199,15 +206,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
 
-		if ("HToTauTau" in nickname) or ("H2JetsToTauTau" in nickname) or ("LFV" in nickname) or ("DY" in nickname):
-			process.kappaTuple.active += cms.vstring('LHE')
-			process.kappaTuple.LHE.whitelist = cms.vstring('source')
-			process.kappaTuple.LHE.rename = cms.vstring('source => LHEafter')
+		process.kappaTuple.Info.lheSource = cms.InputTag("externalLHEProducer")
+		process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
+
+		if any([pattern in nickname for pattern in ["HToTauTau", "H2JetsToTauTau", "DY", "LFV"]]):
+			process.kappaTuple.active += cms.vstring("LHE")
+			process.kappaTuple.LHE.whitelist = cms.vstring("source")
+			process.kappaTuple.LHE.rename = cms.vstring("source => LHEafter")
 			if tools.is_above_cmssw_version([7, 6]):
 				process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("externalLHEProducer"))
-
-	# write out for all processes where available
-	process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
 
 	# save Flag
 	process.kappaTuple.Info.isEmbedded = cms.bool(isEmbedded)
@@ -262,8 +269,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# Configure Muons
 	process.load("Kappa.Skimming.KMuons_miniAOD_cff")
 	process.kappaTuple.Muons.muons.src = cms.InputTag(muons)
-	process.kappaTuple.Muons.muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-	process.kappaTuple.Muons.muons.srcMuonIsolationPF = cms.InputTag("")
+	process.kappaTuple.Muons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+	process.kappaTuple.Muons.srcMuonIsolationPF = cms.InputTag("")
 	process.kappaTuple.Muons.use03ConeForPfIso = cms.bool(True)
 	process.kappaTuple.Muons.doPfIsolation = cms.bool(False)
 	for src in [ "muPFIsoDepositCharged", "muPFIsoDepositChargedAll", "muPFIsoDepositNeutral", "muPFIsoDepositGamma", "muPFIsoDepositPU"]:
@@ -279,9 +286,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('Electrons')
 	process.load("Kappa.Skimming.KElectrons_miniAOD_cff")
 	process.kappaTuple.Electrons.electrons.src = cms.InputTag("slimmedElectrons")
-	process.kappaTuple.Electrons.electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-	process.kappaTuple.Electrons.electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
-	process.kappaTuple.Electrons.electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
+	process.kappaTuple.Electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+	process.kappaTuple.Electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
+	process.kappaTuple.Electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
 	from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 	process.kappaTuple.Electrons.srcIds = cms.string("standalone")
 
@@ -337,6 +344,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.p *= getattr(process, taus)
 
 	process.kappaTuple.active += cms.vstring('PatTaus')
+	process.kappaTuple.PatTaus.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+	process.kappaTuple.PatTaus.offlineBeamSpot = cms.InputTag("offlineBeamSpot")
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
 	process.kappaTuple.PatTaus.taus.src = cms.InputTag(taus)
 	process.kappaTuple.PatTaus.taus.floatDiscrBlacklist = cms.vstring()
@@ -443,10 +452,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
 
+	# process.load("Configuration.StandardSequences.Reconstruction_cff") or process.load("Configuration.Geometry.GeometryRecoDB_cff")
+	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
+
 	## Refitted Vertices collection
 	if not tools.is_above_cmssw_version([9]):
 		process.kappaTuple.active += cms.vstring('RefitVertex')
-		process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 		process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
 
 		if tools.is_above_cmssw_version([7,6]) and not tools.is_above_cmssw_version([9]):
@@ -477,6 +488,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			process.AdvancedRefitVertexNoBSProducer.srcMuons = cms.InputTag(muons)
 			process.AdvancedRefitVertexNoBSProducer.srcTaus = cms.InputTag(taus)
 			process.AdvancedRefitVertexNoBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
+
+	## calculate IP info wrt refitted PV
+	process.kappaTuple.Electrons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer")
+	process.kappaTuple.Muons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer")
+	process.kappaTuple.PatTaus.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer")
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')
@@ -567,6 +583,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# add python config to TreeInfo
 	process.kappaTuple.TreeInfo.parameters.config = cms.string(process.dumpPython())
 
+	print "process.p:", process.p
 	return process
 
 if __name__ == "__main__" or __name__ == "kSkimming_run2_cfg":

@@ -46,9 +46,7 @@
 #include "../interface/KMuonProducer.h"
 #include "../interface/KElectronProducer.h"
 #include "../interface/KPFCandidateProducer.h"
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "../interface/KPackedPFCandidateProducer.h"
-#endif
 #include "../interface/KTaupairVerticesMapProducer.h"
 #include "../interface/KBasicJetProducer.h"
 #include "../interface/KMETProducer.h"
@@ -59,20 +57,16 @@
 #include "../interface/KGenJetProducer.h"
 #include "../interface/KTauProducer.h"
 #include "../interface/KPatTauProducer.h"
-#include "../interface/KExtendedTauProducer.h"
+// #include "../interface/KExtendedTauProducer.h"
 #include "../interface/KTowerProducer.h"
 #include "../interface/KTrackProducer.h"
-#include "../interface/KLeptonPairProducer.h"
+// #include "../interface/KLeptonPairProducer.h" not used in an config atm
 #include "../interface/KTrackSummaryProducer.h"
 #include "../interface/KTriggerObjectProducer.h"
-#if CMSSW_MAJOR_VERSION >= 7
 #include "../interface/KTriggerObjectStandaloneProducer.h"
-#endif
 #include "../interface/KVertexProducer.h"
 #include "../interface/KVertexSummaryProducer.h"
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 #include "../interface/KRefitVertexProducer.h"
-#endif
 /* are these still used?
 #include "../interface/KHepMCPartonProducer.h"
 #include "../interface/KL1MuonProducer.h"
@@ -91,6 +85,7 @@ public:
 	virtual void beginLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
 	virtual void analyze(const edm::Event&, const edm::EventSetup&);
 	virtual void endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
+	virtual void endRun(edm::Run const&, edm::EventSetup const &);
 
 protected:
 	const edm::ParameterSet &psConfig;
@@ -102,7 +97,7 @@ protected:
 	double fillRuntime;
 	long nRuns, nLumis, nEvents, nFirsts;
 	std::vector<KBaseProducer*> producers;
-	TTree *event_tree, *lumi_tree;
+	TTree *event_tree, *lumi_tree, *run_tree;
 	TFile *file;
 
 	template<typename Tprod>
@@ -113,7 +108,7 @@ protected:
 			if (sName == "")
 				sName = sActive;
 			std::cout << "Init producer " << sActive << " using config from " << sName << std::endl;
-			producers.push_back(new Tprod(psConfig.getParameter<edm::ParameterSet>(sName), event_tree, lumi_tree, consumesCollector()));
+			producers.push_back(new Tprod(psConfig.getParameter<edm::ParameterSet>(sName), event_tree, lumi_tree, run_tree, consumesCollector()));
 			producers.back()->runRuntime = 0;
 			producers.back()->lumiRuntime = 0;
 			producers.back()->firstRuntime = 0;
@@ -145,11 +140,14 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 	{
 		file = 0;
 		edm::Service<TFileService> fs;
+		run_tree = fs->make<TTree>("Runs", "Runs");
 		lumi_tree = fs->make<TTree>("Lumis", "Lumis");
 		event_tree = fs->make<TTree>("Events", "Events");
 	}
 	else
 	{
+		run_tree = new TTree("Runs", "Runs");
+		run_tree->SetDirectory(0);
 		lumi_tree = new TTree("Lumis", "Lumis");
 		lumi_tree->SetDirectory(0);
 		file = new TFile(outputFile.c_str(), "RECREATE");
@@ -222,9 +220,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KMuonProducer>(active[i]);
 		addProducer<KElectronProducer>(active[i]);
 		addProducer<KPFCandidateProducer>(active[i]);
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 		addProducer<KPackedPFCandidateProducer>(active[i]);
-#endif
 		addProducer<KBasicJetProducer>(active[i]);
 		addProducer<KMETProducer>(active[i]);
 		addProducer<KPatMETProducer>(active[i]);
@@ -234,21 +230,17 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KPatJetProducer>(active[i]);
 		addProducer<KTauProducer>(active[i]);
 		addProducer<KPatTauProducer>(active[i]);
-		addProducer<KExtendedTauProducer>(active[i]);
+//		addProducer<KExtendedTauProducer>(active[i]);
 		addProducer<KTaupairVerticesMapProducer>(active[i]);
 		addProducer<KTowerProducer>(active[i]);
 		addProducer<KTrackProducer>(active[i]);
-		addProducer<KLeptonPairProducer>(active[i]);
+//		addProducer<KLeptonPairProducer>(active[i]);
 		addProducer<KTrackSummaryProducer>(active[i]);
 		addProducer<KTriggerObjectProducer>(active[i]);
-#if CMSSW_MAJOR_VERSION >= 7
 		addProducer<KTriggerObjectStandaloneProducer>(active[i]);
-#endif
 		addProducer<KVertexProducer>(active[i]);
 		addProducer<KVertexSummaryProducer>(active[i]);
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4) || (CMSSW_MAJOR_VERSION > 7)
 		addProducer<KRefitVertexProducer>(active[i]);
-#endif
 		addProducer<KTreeInfoProducer >(active[i]);
 /* are these still used?
 		else if (active[i] == "L1Muons")
@@ -257,8 +249,6 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 			addProducer<KL2MuonTrajectorySeedProducer>(psConfig, active[i]);
 		else if (active[i] == "L3MuonTrajectorySeed")
 			addProducer<KL3MuonTrajectorySeedProducer>(psConfig, active[i]);
-		else if (active[i] == "MuonTriggerCandidates")
-			addProducer<KMuonTriggerCandidateProducer>(psConfig, active[i]);
 */
 		if (producers.size() > nProducers + 1)
 		{
@@ -308,6 +298,7 @@ KTuple::~KTuple()
 		lumi_tree->SetDirectory(file);
 		lumi_tree->Write();
 		event_tree->Write();
+		run_tree->Write();
 		file->Close();
 	}
 	if (doProfile)
@@ -409,6 +400,17 @@ void KTuple::endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm
 	}
 	ROOTContextSentinel ctx;
 	lumi_tree->Fill();
+}
+
+void KTuple::endRun(edm::Run const &run, edm::EventSetup const &setup)
+{
+	for (unsigned int i = 0; i < producers.size(); ++i)
+	{
+		producers[i]->endRun(run, setup);
+	}
+	ROOTContextSentinel ctx;
+	run_tree->Fill();
+
 }
 
 DEFINE_FWK_MODULE(KTuple);

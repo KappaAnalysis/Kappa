@@ -12,7 +12,6 @@
 #include "KBaseMultiLVProducer.h"
 #include "../../DataFormats/interface/KTrack.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 template<typename TTau, typename TTauDiscriminator, typename TProduct>
 // Note: We need to use std::vector here, not edm::View, because otherwise
@@ -23,8 +22,9 @@ template<typename TTau, typename TTauDiscriminator, typename TProduct>
 class KBasicTauProducer : public KBaseMultiLVProducer<std::vector<TTau>, TProduct>
 {
 public:
-	KBasicTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _lumi_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector))
+	KBasicTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<std::vector<TTau>, TProduct>(cfg, _event_tree, _lumi_tree, _run_tree, producerName, std::forward<edm::ConsumesCollector>(consumescollector)),
+		VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection"))
 	{
 		const edm::ParameterSet &psBase = this->psBase;
 		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
@@ -47,13 +47,13 @@ public:
 			floatDiscrWhitelist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrWhitelist");
 			floatDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrBlacklist");
 			tauDiscrProcessName[names[i]] = pset.getParameter< std::string >("tauDiscrProcessName");
-			if(pset.existsAs<edm::InputTag>("vertexcollection")) consumescollector.consumes<reco::VertexCollection>(pset.getParameter<edm::InputTag>("vertexcollection"));
+			this->VertexCollectionToken = consumescollector.consumes<reco::VertexCollection>(VertexCollectionSource);
 		}
 	}
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		setup.get<TransientTrackRecord>().get("TransientTrackBuilder",this->theB);
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
 		return true;
 	}
 
@@ -124,8 +124,7 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Get vertices from event
-		edm::InputTag VertexCollectionSource = pset.getParameter<edm::InputTag>("vertexcollection");
-		this->cEvent->getByLabel(VertexCollectionSource, VertexHandle);
+		this->cEvent->getByToken(this->VertexCollectionToken, VertexHandle);
 
 		// Get tau discriminators from event
 		this->cEvent->getManyByType(currentTauDiscriminators);
@@ -164,16 +163,17 @@ public:
 
 		//vertex for IP
 		std::vector<reco::Vertex> pv;
+		if (VertexHandle->size() == 0) throw cms::Exception("VertexHandle in KBasicTauProducer is empty");
 		edm::View<reco::Vertex> vertices = *VertexHandle;
 		pv.push_back(vertices.at(0));
 
 		if (in.leadPFChargedHadrCand().isNonnull())
 		{
 			if (in.leadPFChargedHadrCand()->trackRef().isNonnull())
-				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track, pv, this->theB);
+				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->trackRef(), out.track, pv, trackBuilder.product());
 			else if (in.leadPFChargedHadrCand()->gsfTrackRef().isNonnull())
 			{
-				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, pv, this->theB);
+				KTrackProducer::fillTrack(*in.leadPFChargedHadrCand()->gsfTrackRef(), out.track, pv, trackBuilder.product());
 				out.leptonInfo |= KLeptonAlternativeTrackMask;
 			}
 		}
@@ -276,6 +276,8 @@ public:
 	}
 
 protected:
+	edm::InputTag VertexCollectionSource;
+	edm::EDGetTokenT<reco::VertexCollection> VertexCollectionToken;
 	std::map<std::string, std::vector<std::string> > preselectionDiscr;
 	std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist;
 	std::map<std::string, KTauMetadata *> discriminatorMap;
@@ -300,7 +302,7 @@ private:
 	std::map<std::string, unsigned int> currentFloatDiscriminatorMap; // float discriminator-to-bit mapping to use (based on PSet)
 
 	edm::Handle<edm::View<reco::Vertex> > VertexHandle;
-	edm::ESHandle<TransientTrackBuilder> theB;
+	edm::ESHandle<TransientTrackBuilder> trackBuilder;
 };
 	template<typename T>
 	static int createTauHash(const T tau)

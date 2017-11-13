@@ -11,7 +11,6 @@
 #include <TrackingTools/PatternTools/interface/TwoTrackMinimumDistance.h>
 #include <RecoVertex/KinematicFitPrimitives/interface/KinematicParticleFactoryFromTransientTrack.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 #include "KBaseMultiProducer.h"
 #include "Kappa/DataFormats/interface/Hash.h"
@@ -21,13 +20,13 @@ class KLeptonPairProducer : public KBaseMultiProducer<edm::View<reco::Track>, KL
 {
 
 public:
-	KLeptonPairProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiProducer<edm::View<reco::Track>, KLeptonPairs>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+	KLeptonPairProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<edm::View<reco::Track>, KLeptonPairs>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		electronsTag(cfg.getParameter<edm::InputTag>("electrons")),
 		muonsTag(cfg.getParameter<edm::InputTag>("muons"))
 	{
-		consumescollector.consumes<edm::View<pat::Electron>>(electronsTag);
-		consumescollector.consumes<edm::View<reco::Muon>>(muonsTag);
+		this->electronsCollectionToken = consumescollector.consumes<edm::View<pat::Electron> >(electronsTag);
+		this->muonsCollectionToken = consumescollector.consumes<edm::View<reco::Muon> >(muonsTag);
 	}
 
 	static const std::string getLabel() { return "LeptonPair"; }
@@ -49,11 +48,11 @@ public:
 		// get electron and muon collections
 		if (electronsTag.label() != "")
 		{
-			cEvent->getByLabel(electronsTag, electrons);
+			cEvent->getByToken(electronsCollectionToken, electrons);
 		}
 		if (muonsTag.label() != "")
 		{
-			cEvent->getByLabel(muonsTag, muons);
+			cEvent->getByToken(muonsCollectionToken, muons);
 		}
 		
 		// loop over electrons
@@ -99,6 +98,9 @@ public:
 private:
 	edm::InputTag electronsTag;
 	edm::InputTag muonsTag;
+	
+	edm::EDGetTokenT<edm::View<pat::Electron> > electronsCollectionToken;
+	edm::EDGetTokenT<edm::View<reco::Muon> > muonsCollectionToken;
 	
 	edm::ESHandle<TransientTrackBuilder> transientTrackBuilder;
 	

@@ -12,13 +12,12 @@
 #include "../../DataFormats/interface/KDebug.h"
 #include <DataFormats/METReco/interface/PFMET.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KMETProducer : public KBaseMultiProducer<edm::View<reco::PFMET>, KMET>
 {
 public:
-	KMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiProducer<edm::View<reco::PFMET>, KMET>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KMETProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiProducer<edm::View<reco::PFMET>, KMET>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "MET"; }
 
@@ -28,11 +27,7 @@ public:
 		copyP4(in, out.p4);
 		out.sumEt = in.sumEt();
 
-#if (CMSSW_MAJOR_VERSION >= 7 && CMSSW_MINOR_VERSION >= 2) || CMSSW_MAJOR_VERSION >= 8
 		reco::METCovMatrix mat = in.getSignificanceMatrix();
-#else
-		TMatrixD mat = in.getSignificanceMatrix();
-#endif
 		if (mat(0,1) != mat(1,0))
         	std::cout << "KMETProducer::fillMET: Matrix is not symmetric: "
         	          << mat(0,1) << " != " << mat(1,0) << std::endl;

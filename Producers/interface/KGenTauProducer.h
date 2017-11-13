@@ -10,18 +10,14 @@
 #include "KGenParticleProducer.h"
 #include <DataFormats/HepMCCandidate/interface/GenParticle.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
-
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 1) || (CMSSW_MAJOR_VERSION > 7)
 #include <Validation/EventGenerator/interface/TauDecay_GenParticle.h>
-#endif
 
 
 class KGenTauProducer : public KBasicGenParticleProducer<KGenTaus>
 {
 public:
-	KGenTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBasicGenParticleProducer<KGenTaus>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KGenTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBasicGenParticleProducer<KGenTaus>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "GenTaus"; }
 
@@ -85,7 +81,6 @@ protected:
 
 		out.vertex = in.vertex();
 
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 1) || (CMSSW_MAJOR_VERSION > 7)
 		// official TauPOG analysis of tau decay chain
 		TauDecay_GenParticle genTauDecayAnalyser;
 
@@ -120,11 +115,6 @@ protected:
 		// TODO: also set decay mode with official tools
 		//       but currently not fully understood how
 		//       to do this properly
-#else
-		out.visible.p4 = info.p4_vis;
-		out.nProngs = info.n_charged;
-		out.nPi0s = -1; // not filled
-#endif
 	}
 
 	virtual bool acceptSingle(const SingleInputType& in)
@@ -141,11 +131,9 @@ protected:
 		// from an intermediate gamma emission from another tau
 		if(in.mother()->mother() && std::abs(in.mother()->mother()->pdgId()) == 15)
 			return false;
-#if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
 		// Do not include taus which are produced within jets
 		if(!dynamic_cast<const reco::GenParticle&>(in).statusFlags().isPrompt())
 		    return false;
-#endif
 		
 
 		return true;
@@ -179,11 +167,7 @@ private:
 			// Check that the final particle of the chain is a direct tau decay product, avoiding,
 			// for example, particles coming from intermediate gamma emission, which are listed as
 			// tau daughters in prunedGenParticle collections. Method available only from 74X.
-#if (CMSSW_MAJOR_VERSION > 7) || (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 4)
 			if(in.status() == 1 && !isNeutrino(in.pdgId()) && (in.statusFlags().isPromptTauDecayProduct() || allowNonPromptTauDecayProduct))
-#else
-			if(in.status() == 1 && !isNeutrino(in.pdgId()))
-#endif
 			{
 				RMDLV p4;
 				copyP4(in.p4(), p4);

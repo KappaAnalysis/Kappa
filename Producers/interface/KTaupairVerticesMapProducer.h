@@ -16,13 +16,16 @@
 #include "RecoVertex/AdaptiveVertexFit/interface/AdaptiveVertexFitter.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KTaupairVerticesMapProducer : public KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>
 {
 public:
-	KTaupairVerticesMapProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KTaupairVerticesMapProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiVectorProducer<edm::View<reco::Vertex>, KTaupairVerticesMaps>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
+	{
+		this->pfTauCollectionToken = consumescollector.consumes<std::vector<reco::PFTau>>(pfTauCollection);
+		this->beamSpotHandleToken = consumescollector.consumes<reco::BeamSpot>(beamSpotSource);
+	}
 
 	static const std::string getLabel() { return "TaupairVerticesMap"; }
 
@@ -43,7 +46,7 @@ public:
 		this->includeOriginalPV = pset.getParameter<bool>("includeOrginalPV");
 		assert((this->fitMethod == 1) || (this->fitMethod == 0));
 		edm::Handle<reco::BeamSpot> beamSpotHandle;
-		this->cEvent->getByLabel(this->beamSpotSource, beamSpotHandle);
+		this->cEvent->getByToken(this->beamSpotHandleToken, beamSpotHandle);
 		beamSpot = *beamSpotHandle;
 
 		// Continue normally
@@ -130,15 +133,9 @@ private:
 
 	const void removeTauTracks(const reco::PFTau tau, std::vector<const reco::Track*> &recoTracks)
 	{
-#if CMSSW_MAJOR_VERSION >= 7
 		const std::vector<edm::Ptr<reco::PFCandidate> > tauPFCHD = tau.signalPFChargedHadrCands();
 		for(std::vector<edm::Ptr<reco::PFCandidate> >::const_iterator chargedHadronCand = tauPFCHD.begin();
 			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
-#else
-		const reco::PFCandidateRefVector tauPFCHD = tau.signalPFChargedHadrCands();
-		for(reco::PFCandidateRefVector::const_iterator chargedHadronCand = tauPFCHD.begin();
-			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
-#endif
 		{
 			for(size_t i = 0; i < recoTracks.size(); ++i)
 			{
@@ -155,7 +152,7 @@ private:
 	const int getCommonTaus(std::vector<reco::PFTau> &commonTaus, const std::vector<const reco::Track*> recoTracks)
 	{
 		edm::Handle<std::vector<reco::PFTau>> tauHandle;
-		this->cEvent->getByLabel(this->pfTauCollection, tauHandle);
+		this->cEvent->getByToken(this->pfTauCollectionToken, tauHandle);
 		// check wich tau is from the current PV
 		for(std::vector<reco::PFTau>::const_iterator tau = tauHandle->begin();
 		    tau != tauHandle->end(); ++tau)
@@ -166,15 +163,9 @@ private:
 			}
 			unsigned int commonTracks = 0;
 			// if all chargedHadronCands of a tau have tracks in common with the PV, take this tau and add it to lists
-#if CMSSW_MAJOR_VERSION >= 7
 			const std::vector<edm::Ptr<reco::PFCandidate> > tauPFCHD = tau->signalPFChargedHadrCands();
 			for(std::vector<edm::Ptr<reco::PFCandidate> >::const_iterator chargedHadronCand = tauPFCHD.begin();
 			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
-#else
-			const reco::PFCandidateRefVector tauPFCHD = tau->signalPFChargedHadrCands();
-			for(reco::PFCandidateRefVector::const_iterator chargedHadronCand = tauPFCHD.begin();
-			    chargedHadronCand != tauPFCHD.end(); ++chargedHadronCand)
-#endif
 			{
 				for(size_t i = 0; i < recoTracks.size(); ++i)
 				{
@@ -232,6 +223,8 @@ private:
 	reco::BeamSpot beamSpot;
 	edm::InputTag beamSpotSource;
 	edm::InputTag pfTauCollection;
+	edm::EDGetTokenT<std::vector<reco::PFTau>> pfTauCollectionToken;
+	edm::EDGetTokenT<reco::BeamSpot> beamSpotHandleToken;
 	double deltaRThreshold;
 	int fitMethod;
 	bool includeOriginalPV;

@@ -12,7 +12,6 @@
 #include <FWCore/Framework/interface/Run.h>
 #include <FWCore/ParameterSet/interface/ParameterSet.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 #include "../../DataFormats/interface/KInfo.h"
 
 // KBaseProducer is the base class for all producers
@@ -25,6 +24,7 @@ public:
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup);
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup);
 	virtual bool endLuminosityBlock(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup);
+	virtual bool endRun(edm::Run const &run, edm::EventSetup const &setup);
 	virtual ~KBaseProducer() {};
 
 protected:
@@ -49,10 +49,11 @@ class KBaseProducerWP : public KBaseProducer
 {
 public:
 	virtual ~KBaseProducerWP() {};
-	KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector);
+	KBaseProducerWP(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, const std::string &producerName, edm::ConsumesCollector && consumescollector);
 	void addProvenance(std::string oldName, std::string newName);
 
 protected:
+	edm::ConsumesCollector& consumescollector_;
 	const edm::ParameterSet psBase;
 	KProvenance *provenance;
 };

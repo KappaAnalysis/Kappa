@@ -13,19 +13,18 @@
 #include "KGenJetProducer.h"
 #include <DataFormats/PatCandidates/interface/Jet.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 class KPatJetProducer : public KBaseMultiLVProducer<edm::View<pat::Jet>, KJets >
 {
 public:
-	KPatJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>(cfg, _event_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
+	KPatJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<pat::Jet>, KJets>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)),
 		ids(cfg.getParameter<std::vector<std::string> >("ids"))
 	{
 		genJet = new KGenJet;
 		_event_tree->Bronch("genJet", "KGenJet", &genJet);
 		names = new KJetMetadata;
-		_run_tree->Bronch("jetMetadata", "KJetMetadata", &names);
+		_lumi_tree->Bronch("jetMetadata", "KJetMetadata", &names);
 		jecSet = "patJetCorrFactors";
 	}
 
@@ -100,19 +99,12 @@ public:
 		out.hfEMFraction = in.HFEMEnergyFraction();
 		out.flavour = in.hadronFlavour();
 
-// energy fraction definitions have changed in CMSSW 7.3.X
 // fractions should add up to unity
-#if (CMSSW_MAJOR_VERSION == 7 && CMSSW_MINOR_VERSION >= 3) || (CMSSW_MAJOR_VERSION > 7)
 		assert(out.neutralHadronFraction >= out.hfHadronFraction);
 		assert(std::abs(out.neutralHadronFraction + out.chargedHadronFraction +
 			out.muonFraction + out.photonFraction + out.electronFraction +
 			out.hfEMFraction - 1.0f) < 0.001f);
 		out.genMatch = in.genJet(); // if the jet has a matched generator jet, it's from the hard Process
-#else
-		assert(std::abs(out.neutralHadronFraction + out.chargedHadronFraction +
-			out.muonFraction + out.photonFraction + out.electronFraction +
-			out.hfHadronFraction + out.hfEMFraction - 1.0f) < 0.001f);
-#endif
 		assert(std::abs(in.neutralEmEnergyFraction() - in.photonEnergyFraction() -
 			in.HFEMEnergyFraction()) < 0.001f);
 		assert(std::abs(in.chargedEmEnergyFraction() - in.electronEnergyFraction()) < 0.001f);

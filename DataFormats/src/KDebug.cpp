@@ -36,7 +36,6 @@ std::ostream &operator<<(std::ostream &os, const KBeamSpot &bs)
 {
 	os << bs.position << " beta*=" << bs.betaStar;
 	os << " beamWidth=(" << bs.beamWidthX << ", " << bs.beamWidthY << ")";
-	os << " dx/dz=" << bs.dxdz << " dy/dz=" << bs.dydz << " sigmaZ=" << bs.sigmaZ;
 	return os;
 }
 
@@ -60,9 +59,9 @@ std::ostream &operator<<(std::ostream &os, const KTrackSummary &s)
 std::ostream &operator<<(std::ostream &os, const KTrack &trk)
 {
 	os << static_cast<const KLV>(trk);
-	os << "+-(" << trk.errPt << ", " << trk.errEta << ", " << trk.errPhi << ")" << std::endl;
+	os << "+-(" << trk.errPt() << ", " << trk.errEta() << ", " << trk.errPhi() << ")" << std::endl;
 	os << "\tcharge=" << int(trk.charge) << " chi2/nDOF=" << trk.chi2 << "/" << trk.nDOF;
-	os << " ref=" << trk.ref << "+-(" << trk.errDxy << ",, " << trk.errDz << ")" << std::endl;
+	os << " ref=" << trk.ref << "+-(" << trk.errDxy() << ", " << trk.errDz() << ")" << std::endl;
 	os << "\thits: nPX=" << trk.nValidPixelHits << " nST=" << trk.nValidStripHits;
 	os << " nMU=" << trk.nValidMuonHits << " nIN=" << trk.nInnerHits;
 	os << "; layers: nPX=" << trk.nPixelLayers << " nST=" << trk.nStripLayers;
@@ -264,7 +263,7 @@ std::ostream &operator<<(std::ostream &os, const KTriggerObjects &to)
 
 std::ostream &operator<<(std::ostream &os, const KPileupDensity &pu)
 {
-	return os << "rho=" << pu.rho << " sigma=" << pu.sigma;
+	return os << "rho=" << pu.rho;
 }
 
 std::ostream &operator<<(std::ostream &os, const KHit &hit)
@@ -346,6 +345,26 @@ std::ostream &operator<<(std::ostream &os, const KProvenance &p)
 	return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const KRunInfo &info)
+{
+	os << "Run=" << info.nRun;
+	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const KGenRunInfo &info)
+{
+	os << static_cast<const KRunInfo>(info) << std::endl;
+	os << " xSec(ext)=" << info.xSectionExt << " xSec(int)=" << info.xSectionInt;
+	os << " filterEff=" << info.filterEff;
+	return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const KDataRunInfo &info)
+{
+	os << static_cast<const KRunInfo>(info) << std::endl;
+	return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const KLumiInfo &info)
 {
 	os << "Run:LS=" << info.nRun << ":" << info.nLumi << " flags=" << info.bitsUserFlags;
@@ -361,8 +380,6 @@ std::ostream &operator<<(std::ostream &os, const KLumiInfo &info)
 std::ostream &operator<<(std::ostream &os, const KGenLumiInfo &info)
 {
 	os << static_cast<const KLumiInfo>(info) << std::endl;
-	os << "\txSec(ext)=" << info.xSectionExt << " xSec(int)=" << info.xSectionInt;
-	os << " filterEff=" << info.filterEff;
 	return os;
 }
 

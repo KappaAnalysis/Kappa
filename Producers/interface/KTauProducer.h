@@ -19,7 +19,6 @@
 #include <DataFormats/TauReco/interface/PFTau.h>
 #include <DataFormats/TauReco/interface/PFTauDiscriminator.h>
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 #include "KBasicTauProducer.h"
 #include "KPFCandidateProducer.h"
@@ -27,8 +26,8 @@
 class KTauProducer : public KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>
 {
 public:
-	KTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+	KTauProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "Taus"; }
 

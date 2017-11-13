@@ -30,6 +30,7 @@
 <use name="RecoVertex/AdaptiveVertexFit"/>
 <use name="RecoVertex/LinearizationPointFinders"/>
 <use name="RecoVertex/KalmanVertexFit"/>
+<use name="RecoVertex/KinematicFit"/>
 <use name="RecoVertex/KinematicFitPrimitives"/>
 <use name="Validation/EventGenerator"/>
 <use name="Kappa/DataFormats"/>

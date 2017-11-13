@@ -52,7 +52,7 @@ int main() {
 	cout << "* KTrackSummary: " << KTrackSummary() << endl << endl;
 	cout << "* KVertexSummary: " << KVertexSummary() << endl << endl;
 	cout << "* KLumiInfo: " << KLumiInfo() << endl << endl;
-	cout << "* KGenLumiInfo: " << KGenLumiInfo() << endl << endl;
+	cout << "* KGenRunInfo: " << KGenRunInfo() << endl << endl;
 	cout << "* KDataLumiInfo: " << KDataLumiInfo() << endl << endl;
 	cout << "* KElectronMetadata: " << KElectronMetadata() << endl << endl;
 	cout << "* KFilterMetadata: " << KFilterMetadata() << endl << endl;

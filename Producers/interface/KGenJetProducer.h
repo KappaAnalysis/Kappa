@@ -7,7 +7,6 @@
 #include "DataFormats/JetReco/interface/GenJet.h"
 #include "PhysicsTools/JetMCUtils/interface/JetMCTag.h"
 #include <FWCore/Framework/interface/EDProducer.h>
-#include "../../Producers/interface/Consumes.h"
 
 #include "KBaseMultiLVProducer.h"
 
@@ -15,8 +14,8 @@
 class KGenJetProducer : public KBaseMultiLVProducer<edm::View<reco::GenJet>, KGenJets>
 {
 public:
-	KGenJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiLVProducer<edm::View<reco::GenJet>, KGenJets>(cfg, _event_tree, _lumi_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
+	KGenJetProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
+		KBaseMultiLVProducer<edm::View<reco::GenJet>, KGenJets>(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector))
 	{
 	}
 

@@ -1,3 +1,5 @@
+*.swp
+*.swo
 *.o
 *.a
 *.so
@@ -16,3 +18,4 @@ DataFormats/test/libKappa.cpp
 testcharge
 testdebug
 crab.log
+.nfs*
