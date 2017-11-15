@@ -199,6 +199,10 @@
     "scenario": "PU25nsData2015v1"
   }, 
   "DY1JetsToLLM10to50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+   "Moriond17": [
+      "Skim_Base", 
+      "Skim_Moriond17_MC_BG"
+    ],
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/DY1JetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -338,6 +342,10 @@
     "xsec": 184.3
   }, 
   "DY2JetsToLLM10to50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
+   "Moriond17": [
+      "Skim_Base", 
+      "Skim_Moriond17_MC_BG"
+    ],
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
     "dbs": "/DY2JetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
@@ -457,7 +465,8 @@
   }, 
   "DY3JetsToLLM10to50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
-      "Skim_Base"
+      "Skim_Base", 
+      "Skim_Moriond17_MC_BG"
     ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
@@ -578,7 +587,8 @@
   },  
   "DY4JetsToLLM10to50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
-      "Skim_Base"
+      "Skim_Base", 
+      "Skim_Moriond17_MC_BG"
     ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
@@ -680,7 +690,8 @@
   }, 
   "DYBBJetsToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
-      "MC_Summer16"
+      "MC_Summer16", 
+      "Skim_Moriond17_MC_BG"
     ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
@@ -699,7 +710,8 @@
   }, 
   "DYBJetsToLLM50_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
-      "MC_Summer16"
+      "MC_Summer16",
+      "Skim_Moriond17_MC_BG"
     ], 
     "campaign": "RunIISummer16MiniAODv2", 
     "data": false, 
