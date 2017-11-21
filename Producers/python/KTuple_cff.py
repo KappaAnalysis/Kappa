@@ -109,8 +109,8 @@ kappaTupleDefaultsBlock = cms.PSet(
 			metfilterbitslist = cms.vstring(),
 			bits = cms.InputTag("TriggerResults","","HLT"),
 			prescales = cms.InputTag("patTrigger"),
-		triggerObjects = cms.PSet(
-			src = cms.InputTag("slimmedPatTrigger"),
+			triggerObjects = cms.PSet(
+				src = cms.InputTag("selectedPatTrigger"),
 			)
 	),
 	Tracks = cms.PSet(kappaNoRename,
