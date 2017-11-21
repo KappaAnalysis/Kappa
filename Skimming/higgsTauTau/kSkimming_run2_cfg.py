@@ -193,14 +193,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 
 	# 80X doesn't have 'slimmedPatTrigger' -> use 'selectedPatTrigger' instead
-	if tools.is_above_cmssw_version([9,0]):
-		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("slimmedPatTrigger"))
-		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
-	elif tools.is_above_cmssw_version([8,0]):
-		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("selectedPatTrigger"))
-		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
+	#if tools.is_above_cmssw_version([9,0]):
+	#	process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("slimmedPatTrigger"))
+	#	process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
+	#elif tools.is_above_cmssw_version([8,0]):
+	#	process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("selectedPatTrigger"))
+	#	process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
 
-	print "TriggerObjectStandalone: ", process.kappaTuple.TriggerObjectStandalone
+	#print "TriggerObjectStandalone: ", process.kappaTuple.TriggerObjectStandalone
 
 	process.kappaTuple.active += cms.vstring('BeamSpot')
 	if tools.is_above_cmssw_version([7,6]):
