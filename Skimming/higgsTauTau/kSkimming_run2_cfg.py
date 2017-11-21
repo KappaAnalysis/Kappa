@@ -183,9 +183,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		else:
 			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "RECO")
 			process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "RECO")
-	if not isEmbedded and "Spring16" in str(process.kappaTuple.TreeInfo.parameters.campaign):
-		# adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection"
-		process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
+	if not isEmbedded:
+		if "reHLT" in str(process.kappaTuple.TreeInfo.parameters.campaign):
+			process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT2")
+			process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT2")
+			process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "HLT2")
+		elif "Spring16" in str(process.kappaTuple.TreeInfo.parameters.campaign):
+			# adds for each HLT Trigger wich contains "Tau" or "tau" in the name a Filter object named "l1extratauccolltection"
+			process.kappaTuple.TriggerObjectStandalone.l1extratauJetSource = cms.untracked.InputTag("l1extraParticles","IsoTau","RECO")
 
 	process.kappaTuple.active += cms.vstring('BeamSpot')
 	if tools.is_above_cmssw_version([7,6]):
