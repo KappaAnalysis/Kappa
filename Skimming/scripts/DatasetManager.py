@@ -110,7 +110,7 @@ class DataSetManagerBase:
 		elif isembedded:
 			return "pythia8"
 		else:
-			pos = pd_name.find("TeV") + 4
+			pos = pd_name.find("TeV")+4
 			generators = []
 			if "amcatnlo" in pd_name[pos:]:
 				generators.append("amcatnlo")
@@ -126,7 +126,7 @@ class DataSetManagerBase:
 				else:
 					generators.append("JHUgen")
 			if "pythia" in pd_name[pos:]:
-				generators.append(pd_name[pos:][pd_name[pos:].find("pythia"):pd_name[pos:].find("pythia") + 7])
+				generators.append(pd_name[pos:][pd_name[pos:].find("pythia"):pd_name[pos:].find("pythia")+7])
 			generator = '-'.join(generators)
 			if generator == "":
 				generator = "unspecified"
