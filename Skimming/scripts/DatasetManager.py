@@ -119,7 +119,7 @@ class DataSetManagerBase:
 				generators.append("powheg")
 			if "madgraph" in pd_name[pos:]:
 				generators.append("madgraph")
-			if "jhugen" in pd_name[pos:].lower():
+			if "jhu" in pd_name[pos:].lower():
 				if "JHUgenv628" in pd_name[pos:]:
 					generators.append("JHUgenv628")
 				elif "JHUgenv698" in pd_name[pos:]:
