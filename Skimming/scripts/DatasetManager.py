@@ -118,11 +118,13 @@ class DataSetManagerBase:
 				generators.append("powheg")
 			if "madgraph" in pd_name[pos:]:
 				generators.append("madgraph")
-			if "JHUgen" in pd_name[pos:]: #TODO: Generalize for any version
+			if "jhugen" in pd_name[pos:].lower():
 				if "JHUgenv628" in pd_name[pos:]:
 					generators.append("JHUgenv628")
 				elif "JHUgenv698" in pd_name[pos:]:
 					generators.append("JHUgenv698")
+				elif "JHUGenV6" in pd_name[pos:]:
+					generators.append("JHUgenv6")
 				else:
 					generators.append("JHUgen")
 			if "pythia" in pd_name[pos:]:
