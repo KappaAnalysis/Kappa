@@ -90,7 +90,7 @@ def get_energy(pd_name, details, default=None, data=False, isembedded=False):
 	else:
 		return default
 
-
+# do not forget that there is the same function in scripts/DatasetManager.py that likes to be modified!
 def get_generator(pd_name, default=None, data=False, isembedded=False):
 	if data:
 		return ""
