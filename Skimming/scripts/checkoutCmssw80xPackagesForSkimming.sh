@@ -23,6 +23,21 @@ done
 
 cd $CMSSW_BASE/src
 
+# MET:
+# Correct jet corrections for mvamet
+#git cms-merge-topic -u cms-met:METRecipe_8020
+# Mvamet package based on Summer16 Training
+git cms-merge-topic -u macewindu009:mvamet8026
+
+# TAU: Packages needed to rerun tau id
+git cms-merge-topic -u -s -X theirs cms-tau-pog:CMSSW_8_0_X_tau-pog_tauIDOnMiniAOD-legacy-backport-81X
+
+# MET:
+# copy training weightfile
+mkdir $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
+cd $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
+wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root --no-check-certificate
+
 # EM:
 # Electron cutBased Id and MVA Id
 #https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_8_0
@@ -32,7 +47,9 @@ git cms-addpkg DataFormats/METReco
 git cms-addpkg PhysicsTools/PatUtils
 git cms-addpkg RecoEgamma/ElectronIdentification
 #Above needs to be checked out first since there are conflicts with MVA MET otherwise and then 63 packages are checked out...
-git cms-merge-topic -u ikrav:egm_id_80X_v2
+
+# This is an old recipe : https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2Archive
+#git cms-merge-topic -u ikrav:egm_id_80X_v2
 
 # MET:
 # Additional metfilters
@@ -40,18 +57,7 @@ git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter
 git cms-merge-topic cms-met:METRecipe_8020 -u
 git cms-merge-topic cms-met:METRecipe_80X_part2 -u
 
-# TAU: Packages needed to rerun tau id
-git cms-merge-topic -u cms-tau-pog:CMSSW_8_0_X_tau-pog_tauIDOnMiniAOD-legacy-backport-81X
 
-# MET:
-# Correct jet corrections for mvamet
-#git cms-merge-topic -u cms-met:METRecipe_8020
-# Mvamet package based on Summer16 Training
-#git cms-merge-topic -u macewindu009:mvamet8026
-# copy training weightfile
-mkdir $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
-cd $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
-wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root --no-check-certificate
 
 # CP:
 cd $CMSSW_BASE/src
