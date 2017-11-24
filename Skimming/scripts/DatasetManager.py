@@ -104,6 +104,7 @@ class DataSetManagerBase:
 				scenario = scenario.split("_")[0]
 			return scenario
 
+	# do not forget that there is the same function in python/registerDatasetHelper.py that likes to be modified!
 	def get_generator(self, pd_name, data=False, isembedded=None):
 		if data:
 			return ""
