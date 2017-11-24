@@ -30,7 +30,7 @@ cd $CMSSW_BASE/src
 git cms-merge-topic -u macewindu009:mvamet8026
 
 # TAU: Packages needed to rerun tau id
-git cms-merge-topic -u -s -X theirs cms-tau-pog:CMSSW_8_0_X_tau-pog_tauIDOnMiniAOD-legacy-backport-81X
+# git cms-merge-topic -u -s theirs cms-tau-pog:CMSSW_8_0_X_tau-pog_tauIDOnMiniAOD-legacy-backport-81X
 
 # MET:
 # copy training weightfile
