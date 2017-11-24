@@ -92,11 +92,11 @@ def get_energy(pd_name, details, default=None, data=False, isembedded=False):
 
 
 def get_generator(pd_name, default=None, data=False, isembedded=False):
-	if data and not isembedded:
+	if data:
 		return ""
-        if isembedded:
-            return "pythia8"
-	if (default == None):
+	elif isembedded:
+		return "pythia8"
+	else:
 		pos = pd_name.find("TeV")+4
 		generators = []
 		if "amcatnlo" in pd_name[pos:]:
@@ -105,14 +105,19 @@ def get_generator(pd_name, default=None, data=False, isembedded=False):
 			generators.append("powheg")
 		if "madgraph" in pd_name[pos:]:
 			generators.append("madgraph")
+		if "JHUgen" in pd_name[pos:]: #TODO: Generalize for any version
+			if "JHUgenv628" in pd_name[pos:]:
+				generators.append("JHUgenv628")
+			elif "JHUgenv698" in pd_name[pos:]:
+				generators.append("JHUgenv698")
+			else:
+				generators.append("JHUgen")
 		if "pythia" in pd_name[pos:]:
 			generators.append(pd_name[pos:][pd_name[pos:].find("pythia"):pd_name[pos:].find("pythia")+7])
 		generator = '-'.join(generators)
 		if generator == "":
 			generator = "unspecified"
 		return generator
-	else:
-		return default
 
 def get_process(pd_name, default=None):
 	if (default != None):
