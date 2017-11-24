@@ -46,9 +46,9 @@ git cms-merge-topic -u cms-tau-pog:CMSSW_8_0_X_tau-pog_tauIDOnMiniAOD-legacy-bac
 # MET:
 # Correct jet corrections for mvamet
 #git cms-merge-topic -u cms-met:METRecipe_8020
-#Mvamet package based on Summer16 Training
-git cms-merge-topic -u macewindu009:mvamet8026
-#copy training weightfile
+# Mvamet package based on Summer16 Training
+#git cms-merge-topic -u macewindu009:mvamet8026
+# copy training weightfile
 mkdir $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
 cd $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
 wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root --no-check-certificate
@@ -70,7 +70,7 @@ rm -rf tempData
 # CLEANUP:
 # Remove the .git folder as it is not needed and contains a lot of useless data
 rm -rf RecoEgamma/ElectronIdentification/data/.git
-#Remove Fireworks and SimGeneral - they are only checked out due to failed merge attempts
+# Remove Fireworks and SimGeneral - they are only checked out due to failed merge attempts
 rm -rf Fireworks
 rm -rf SimGeneral
 rm -rf RecoEgamma
@@ -78,6 +78,7 @@ sed -i '/Fireworks/d' .git/info/sparse-checkout
 sed -i '/SimGeneral/d' .git/info/sparse-checkout
 sed -i '/RecoEgamma/d' .git/info/sparse-checkout
 git read-tree -mu HEAD
+
 # do the sed's afterwards -> bevore, the read-tree fails
 sed -i "/produces<edm::PtrVector<reco::Muon>>/a \	  produces<bool>();" RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc
 sed -i "/iEvent.put(std::move(out),/a \	iEvent.put(std::auto_ptr<bool>(new bool(found)));" RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc
