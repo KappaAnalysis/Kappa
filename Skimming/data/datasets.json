@@ -4907,6 +4907,42 @@
     "scenario": "imputFlatPU28to62HcalNZSRAWAODSIM", 
     "xsec": 2420.167383414
   }, 
+  "GluGluH2JetsToTauTauM125CPmixingmaxmixJHU_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
+    "Moriond17": [
+      "MC_SignalCPStudies_Summer16"
+    ], 
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/GluGluH2JetsToTauTau_M125_13TeV_CPmixing_maxmix_JHU/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "JHUgen", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
+    "inputDBS": "global", 
+    "n_events_generated": "1496800", 
+    "n_files": "35", 
+    "process": "GluGluH2JetsToTauTau_M125_CPmixing_maxmix_JHU", 
+    "scenario": "PUMoriond17"
+  }, 
+  "GluGluH2JetsToTauTauM125CPmixingpseudoscalarJHU_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
+    "Moriond17": [
+      "MC_SignalCPStudies_Summer16"
+    ], 
+    "campaign": "RunIISummer16MiniAODv2", 
+    "data": false, 
+    "dbs": "/GluGluH2JetsToTauTau_M125_13TeV_CPmixing_pseudoscalar_JHU/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "JHUgen", 
+    "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8", 
+    "inputDBS": "global", 
+    "n_events_generated": "1478400", 
+    "n_files": "39", 
+    "process": "GluGluH2JetsToTauTau_M125_CPmixing_pseudoscalar_JHU", 
+    "scenario": "PUMoriond17"
+  }, 
   "GluGluH2JetsToTauTauM125CPmixingsmJHU_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
       "MC_SignalCPStudies_Summer16"
