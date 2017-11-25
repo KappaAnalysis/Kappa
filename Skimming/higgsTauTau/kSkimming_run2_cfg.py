@@ -221,12 +221,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		# process.kappaTuple.Info.lheSource = cms.InputTag("externalLHEProducer")
 		process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
 
-		if any([pattern in nickname for pattern in ["HToTauTau", "H2JetsToTauTau", "DY", "LFV"]]):
-			# process.kappaTuple.active += cms.vstring("LHE")
+		if any([pattern in nickname for pattern in ["HToTauTau", "H2JetsToTauTau", "Higgs", "DY", "LFV"]]):
+			process.kappaTuple.active += cms.vstring("LHE")
 			process.kappaTuple.LHE.whitelist = cms.vstring("source")
 			process.kappaTuple.LHE.rename = cms.vstring("source => LHEafter")
 			if tools.is_above_cmssw_version([7, 6]):
-				process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("externalLHEProducer"))
+				if "jhugen" in nickname.lower():
+					process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("source"))
+				else:
+					process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("externalLHEProducer"))
 
 
 	# save Flag
