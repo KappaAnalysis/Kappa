@@ -4923,7 +4923,8 @@
     "n_events_generated": "1496800", 
     "n_files": "35", 
     "process": "GluGluH2JetsToTauTau_M125_CPmixing_maxmix_JHU", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "GluGluH2JetsToTauTauM125CPmixingpseudoscalarJHU_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -4941,7 +4942,8 @@
     "n_events_generated": "1478400", 
     "n_files": "39", 
     "process": "GluGluH2JetsToTauTau_M125_CPmixing_pseudoscalar_JHU", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "GluGluH2JetsToTauTauM125CPmixingsmJHU_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -4959,7 +4961,8 @@
     "n_events_generated": "1482400", 
     "n_files": "27", 
     "process": "GluGluH2JetsToTauTau_M125_CPmixing_sm_JHU", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "GluGluHToTauTauM110_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -15183,7 +15186,8 @@
     "n_events_generated": "972000", 
     "n_files": "27", 
     "process": "VBFHiggs0L1_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "VBFHiggs0L1f05ph0M125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgenv6": {
     "Moriond17": [
@@ -15201,7 +15205,8 @@
     "n_events_generated": "995200", 
     "n_files": "15", 
     "process": "VBFHiggs0L1f05ph0_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "VBFHiggs0MM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgenv6": {
     "Moriond17": [
@@ -15219,7 +15224,8 @@
     "n_events_generated": "952800", 
     "n_files": "30", 
     "process": "VBFHiggs0M_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "VBFHiggs0Mf05ph0M125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgenv6": {
     "Moriond17": [
@@ -15237,7 +15243,8 @@
     "n_events_generated": "916400", 
     "n_files": "17", 
     "process": "VBFHiggs0Mf05ph0_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "VBFHiggs0PHM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgenv6": {
     "Moriond17": [
@@ -15255,7 +15262,8 @@
     "n_events_generated": "912000", 
     "n_files": "31", 
     "process": "VBFHiggs0PH_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "VBFHiggs0PHf05ph0M125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgenv6": {
     "Moriond17": [
@@ -15273,7 +15281,8 @@
     "n_events_generated": "958400", 
     "n_files": "38", 
     "process": "VBFHiggs0PHf05ph0_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "VBFHiggs0PMM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgenv6": {
     "Moriond17": [
@@ -15291,7 +15300,8 @@
     "n_events_generated": "998600", 
     "n_files": "14", 
     "process": "VBFHiggs0PM_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "VVTo2L2Nu_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_amcatnlo-pythia8": {
     "Fall15": [
@@ -16062,7 +16072,8 @@
     "n_events_generated": "970200", 
     "n_files": "34", 
     "process": "WHiggs0L1_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WHiggs0L1fWH05ph0UndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -16080,7 +16091,8 @@
     "n_events_generated": "985200", 
     "n_files": "41", 
     "process": "WHiggs0L1fWH05ph0_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WHiggs0MUndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -16098,7 +16110,8 @@
     "n_events_generated": "992800", 
     "n_files": "48", 
     "process": "WHiggs0M_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WHiggs0MfWH05ph0UndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -16116,7 +16129,8 @@
     "n_events_generated": "991000", 
     "n_files": "42", 
     "process": "WHiggs0MfWH05ph0_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WHiggs0PHUndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -16134,7 +16148,8 @@
     "n_events_generated": "966800", 
     "n_files": "48", 
     "process": "WHiggs0PH_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WHiggs0PHfWH05ph0UndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -16152,7 +16167,8 @@
     "n_events_generated": "951600", 
     "n_files": "41", 
     "process": "WHiggs0PHfWH05ph0_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WHiggs0PMUndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -16170,7 +16186,8 @@
     "n_events_generated": "1000000", 
     "n_files": "15", 
     "process": "WHiggs0PM_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "WJetsToLNuHT-100To200_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_madgraph-pythia8": {
     "Fall15": [
@@ -17829,7 +17846,8 @@
     "n_events_generated": "959200", 
     "n_files": "42", 
     "process": "ZHiggs0L1_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "ZHiggs0L1fZH05ph0UndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -17847,7 +17865,8 @@
     "n_events_generated": "948400", 
     "n_files": "37", 
     "process": "ZHiggs0L1fZH05ph0_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "ZHiggs0MUndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -17865,7 +17884,8 @@
     "n_events_generated": "962800", 
     "n_files": "44", 
     "process": "ZHiggs0M_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "ZHiggs0MfZH05ph0UndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -17883,7 +17903,8 @@
     "n_events_generated": "998400", 
     "n_files": "43", 
     "process": "ZHiggs0MfZH05ph0_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "ZHiggs0PHUndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -17901,7 +17922,8 @@
     "n_events_generated": "907200", 
     "n_files": "39", 
     "process": "ZHiggs0PH_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "ZHiggs0PHfZH05ph0UndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -17919,7 +17941,8 @@
     "n_events_generated": "949200", 
     "n_files": "43", 
     "process": "ZHiggs0PHfZH05ph0_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "ZHiggs0PMUndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
@@ -17937,7 +17960,8 @@
     "n_events_generated": "965600", 
     "n_files": "39", 
     "process": "ZHiggs0PM_Undecayed_M125", 
-    "scenario": "PUMoriond17"
+    "scenario": "PUMoriond17", 
+    "xsec": 1.0
   }, 
   "ZZTo2L2Nu_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
