@@ -13335,6 +13335,9 @@
     "xsec": 831.76
   }, 
   "TTJets_RunIISummer17MiniAOD_92X_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "analysis_2017": [
+      "skim_mc"
+    ], 
     "campaign": "RunIISummer17MiniAOD", 
     "data": false, 
     "dbs": "/TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer17MiniAOD-92X_upgrade2017_realistic_v10-v3/MINIAODSIM", 
