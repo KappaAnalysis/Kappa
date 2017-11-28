@@ -63,7 +63,8 @@ class datasetsHelperTwopz:
 				print "Created " + out_json_file
 
 		with open(out_json_file, 'w') as out_json:
-			out_json.write(json.dumps(self.base_dict, sort_keys=True, indent=2))
+			out_json.write(json.dumps(self.base_dict, sort_keys=True, indent=2, separators=(',', ': ')))
+
 
 	def make_nickname(self, sample_dict):
 		"""Gives the (old) structure of the nicknames """
