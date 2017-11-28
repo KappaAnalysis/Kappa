@@ -13334,6 +13334,21 @@
     "scenario": "PUMoriond17", 
     "xsec": 831.76
   }, 
+  "TTJets_RunIISummer17MiniAOD_92X_13TeV_MINIAOD_amcatnlo-pythia8": {
+    "campaign": "RunIISummer17MiniAOD", 
+    "data": false, 
+    "dbs": "/TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISummer17MiniAOD-92X_upgrade2017_realistic_v10-v3/MINIAODSIM", 
+    "energy": "13", 
+    "extension": "", 
+    "format": "MINIAOD", 
+    "generator": "amcatnlo-pythia8", 
+    "globalTag": "92X_upgrade2017_realistic_v10", 
+    "inputDBS": "global", 
+    "n_events_generated": "8819411", 
+    "n_files": "205", 
+    "process": "TTJets", 
+    "scenario": "92X"
+  }, 
   "TTTo2L2Nu_RunIISpring16MiniAODv2_PUSpring16_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
       "MC_Spring16", 
