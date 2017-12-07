@@ -856,7 +856,8 @@
     "n_events_generated": "34940256",
     "n_files": "355",
     "process": "DYJetsToLL_M10to50",
-    "scenario": "92X"
+    "scenario": "92X",
+    "xsec": 18610.0
   },
   "DYJetsToLLM150_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_madgraph-pythia8": {
     "Fall15": [
@@ -15912,7 +15913,8 @@
     "n_events_generated": "8928213",
     "n_files": "258",
     "process": "W4JetsToLNu",
-    "scenario": "92X"
+    "scenario": "92X",
+    "xsec": 485.8
   },
   "WGToLNuG_RunIISpring16MiniAODv2_PUSpring16_13TeV_MINIAOD_amcatnlo-pythia8_ext1": {
     "Moriond17": [
