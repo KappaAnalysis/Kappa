@@ -54,7 +54,11 @@ using namespace std;
 
 
 EventWeightCountProducer::EventWeightCountProducer(const edm::ParameterSet& iConfig){
-  produces<edm::MergeableCounter, edm::InLumi>();
+	#if CMSSW_MAJOR_VERSION >= 10  || (CMSSW_MAJOR_VERSION == 9 && CMSSW_MINOR_VERSION >= 4 )
+    produces<edm::MergeableCounter, edm::Transition::EndLuminosityBlock>();
+	#else
+	produces<edm::MergeableCounter, edm::InLumi>();
+	#endif
   if (iConfig.existsAs<bool>("isMC"))
     isMC = iConfig.getParameter<bool>("isMC");
   else throw cms::Exception("Configuration")<<"Missing parameter input isMC \n";\
