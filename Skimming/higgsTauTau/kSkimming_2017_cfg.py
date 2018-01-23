@@ -463,8 +463,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
 
-	# process.load("Configuration.StandardSequences.Reconstruction_cff") or process.load("Configuration.Geometry.GeometryRecoDB_cff")
-	# process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
+	process.load("TrackingTools/TransientTrack/TransientTrackBuilder_cfi")
 
 	## Refitted Vertices collection
 	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")

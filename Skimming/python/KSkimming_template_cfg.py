@@ -34,21 +34,23 @@ process.source = cms.Source("PoolSource",
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
 ## Geometry and Detector Conditions (needed for a few patTuple production steps)
+# see for cmssw7XY: https://twiki.cern.ch/twiki/bin/view/Sandbox/MyRootMakerFrom72XTo74X#DDVectorGetter_vectors_are_empty
+print "Skimming/python/KSkimming_template_cfg: Use GeometryRecoDB and condDBv2"
 if (cmssw_version_number.startswith("7_4") or cmssw_version_number.startswith("7_6")):
-	# see https://twiki.cern.ch/twiki/bin/view/Sandbox/MyRootMakerFrom72XTo74X#DDVectorGetter_vectors_are_empty
-	print "Use GeometryRecoDB and condDBv2"
 	process.load("Configuration.Geometry.GeometryRecoDB_cff")
 	process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
-
 else:
-	process.load("Configuration.Geometry.GeometryIdeal_cff")
+	if tools.is_above_cmssw_version([9]): # 2017 data/mc
+		process.load("Configuration.Geometry.GeometryRecoDB_cff")
+	else: # versions arount 8 which don't bother me
+		process.load("Configuration.Geometry.GeometryIdeal_cff")
 	process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 
 # print the global tag until it is clear whether this auto global tag is fine
-print "GT from autoCond:", process.GlobalTag.globaltag
+print "Skimming/python/KSkimming_template_cfg: GT from autoCond:", process.GlobalTag.globaltag
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
-## Kappa
+## Kappa - the best comment that could be ever left
 from Kappa.Producers.KTuple_cff import kappaTupleDefaultsBlock
 process.kappaTuple = cms.EDAnalyzer('KTuple',
 	kappaTupleDefaultsBlock,
