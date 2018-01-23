@@ -53,8 +53,8 @@ public:
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
-		// setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+		//edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
 		return true;
 	}
 
