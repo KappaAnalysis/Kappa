@@ -467,8 +467,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 
 	## Refitted Vertices collection
-	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
-	if False and tools.is_above_cmssw_version([9]):
+	#process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
+	if not tools.is_above_cmssw_version([9]):
 		process.kappaTuple.active += cms.vstring('RefitVertex')
 		process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
 
