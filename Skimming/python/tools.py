@@ -74,6 +74,8 @@ def read_grid_control_include(filename):
 	a = []
 	for line in f:
 		a.append(line.replace("\n", "").replace("\t", "").replace(" ",""))
+
+	# I propose: remove_sublist(a, ["[global]", "include="])
 	a.remove("[global]")
 	a.remove("include=")
 
@@ -87,12 +89,24 @@ def read_grid_control_include(filename):
 				sys.exit()
 	return nicks
 
+def remove_sublist(a, B):
+	if not isinstance(B, list): B = [B]
+	try:
+		[a.remove(b) for b in B]
+	except ValueError:
+		print "one of the passed to remove_sublist arguments is unacceptable", "\n\ta:", a, "\n\tB:", B
+	return a
+
 def read_grid_control_dataset(filename):
 	f = open(filename)
 	a, nicks = [], []
 
 	for line in f:
 		a.append(line.replace("\n", "").replace("\t", "").replace(" ",""))
+
+	print '\033[95m', "There is a nice test task for you if you look in the code of tools.py!",'\033[0m'
+	# I propose: remove_sublist(a, ["[CMSSW_Advanced]", "dataset+=", ""])
+	# or [a.remove(b) for b in ["[CMSSW_Advanced]", "dataset+=", ""]] - please test when the function will be in use
 	a.remove("[CMSSW_Advanced]")
 	a.remove("dataset+=")
 	a.remove("")
