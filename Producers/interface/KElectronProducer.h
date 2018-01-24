@@ -70,14 +70,7 @@ public:
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
 		if (this->verbosity == 3) std::cout << "KElectronProducer onrun\n";
-
-		// 1)edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
-		// 2)setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->trackBuilder);
-		// 3)trackBuilder = edm::ESHandle<TransientTrackBuilder>();
-		//4) edm::ESHandle<TransientTrackBuilder> trackBuilder;
-		//   edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
-		//5) setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
-		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->trackBuilder);// edm::ESHandle<TransientTrackBuilder>
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->trackBuilder);
 		if (this->verbosity == 3) std::cout << "KElectronProducer end onrun\n";
 		return true;
 	}
@@ -167,7 +160,6 @@ public:
 		// electron track and impact parameter
 		if (in.gsfTrack().isNonnull())
 		{
-			// KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
 			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
 			// KTrackProducer::fillIPInfo(*in.gsfTrack(), out.track, *RefitVertices, trackBuilder.product());
 			out.dxy = in.gsfTrack()->dxy(vtx.position());
@@ -187,20 +179,16 @@ public:
 		out.full5x5_sigmaIetaIeta = in.full5x5_sigmaIetaIeta();
 		out.hadronicOverEm = in.hadronicOverEm();
 		out.fbrem = in.fbrem();
-		if(in.superCluster().isNonnull())
+		if (in.superCluster().isNonnull())
 		{
 			out.eSuperClusterOverP = in.eSuperClusterOverP();
 			out.superclusterEnergy = in.superCluster()->energy();
 			out.superclusterPosition = in.superCluster()->position();
 			// Definition from RecoEgamma/ElectronIdentification/plugins/cuts/GsfDEtaInSeedCut.cc
-			if(in.superCluster()->seed().isNonnull())
-			{
+			if (in.superCluster()->seed().isNonnull())
 				out.dEtaInSeed = in.deltaEtaSuperClusterTrackAtVtx() - in.superCluster()->eta() + in.superCluster()->seed()->eta();
-			}
 			else
-			{
 				out.dEtaInSeed = std::numeric_limits<float>::max();
-			}
 		}
 		else
 		{
@@ -231,52 +219,47 @@ public:
 
 		if (doPfIsolation_)
 			doPFIsolation(in, out);
-		else {
+		else
+		{
 			// fall back on built-in methods, where available
 			out.sumChargedHadronPt = in.pfIsolationVariables().sumChargedHadronPt;
 			out.sumPhotonEt        = in.pfIsolationVariables().sumPhotonEt;
 			out.sumNeutralHadronEt = in.pfIsolationVariables().sumNeutralHadronEt;
 			out.sumPUPt            = in.pfIsolationVariables().sumPUPt;
 		}
-		if (doPfIsolation_ && doCutbasedIds_ && !doAuxIds_)
-			doCutbasedIds(in,out);
-		if(doMvaIds_)
-			doMvaIds(in, out);
-		if(doAuxIds_)
-			doAuxIds(in, out);
+		if (doPfIsolation_ && doCutbasedIds_ && !doAuxIds_) doCutbasedIds(in,out);
+		if (doMvaIds_) doMvaIds(in, out);
+		if (doAuxIds_) doAuxIds(in, out);
 		if (this->verbosity == 3) std::cout << "end KElectron::fillSingle\n";
 	}
 
-
 protected:
+
 	virtual void doAuxIds(const SingleInputType &in, SingleOutputType &out)
 	{
 		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
+
 		for (size_t i = 0; i < namesOfIds.size(); ++i)
-		{
 			out.electronIds.push_back((*(electronIDValueMap)[i])[pe]);
-		}
-	}
-	virtual void doMvaIds(const SingleInputType &in, SingleOutputType &out)
-	{
-		/* Modification for new MVA Electron ID for Run 2
-		 * https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
-		 * Full instructions in Producer/KElectrons_cff
-		 */
-		out.electronIds.clear();
-		for (size_t i = 0; i < namesOfIds.size(); ++i)
-		{
-			out.electronIds.push_back(in.electronID(namesOfIds[i]));
-		}
 	}
 
-	virtual void doCutbasedIds(const SingleInputType &in, SingleOutputType &out)
+	// Modification for new MVA Electron ID for Run 2
+	// https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
+	// Full instructions in Producer/KElectrons_cff
+	virtual void doMvaIds(const SingleInputType &in, SingleOutputType &out)
+	{
+		out.electronIds.clear();
+
+		for (size_t i = 0; i < namesOfIds.size(); ++i)
+			out.electronIds.push_back(in.electronID(namesOfIds[i]));
+	}
+
 	// cutbased IDs (cf. header)
 	// ElectronTools/interface/ElectronEffectiveArea.h: ElectronEffectiveAreaTarget::kEleEAData2011,kEleEASummer11MC,kEleEAFall11MC,kEleEAData2012
+	// in analogy to https://github.com/cms-analysis/EgammaAnalysis-ElectronTools/blob/master/src/EGammaCutBasedEleIdAnalyzer.cc
+	virtual void doCutbasedIds(const SingleInputType &in, SingleOutputType &out)
 	{
-		// in analogy to https://github.com/cms-analysis/EgammaAnalysis-ElectronTools/blob/master/src/EGammaCutBasedEleIdAnalyzer.cc
 		const reco::BeamSpot &tmpbeamSpot = *(BeamSpot.product());
-	
 		const reco::GsfElectron* eGSF = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
 
 		double rhoIso = *(rhoIso_h.product());
@@ -309,6 +292,7 @@ protected:
 	}
 
 private:
+
 	KElectronMetadata *electronMetadata;
 	boost::hash<const pat::Electron*> hasher;
 
@@ -340,11 +324,11 @@ private:
 	bool doMvaIds_;
 	bool doAuxIds_;
 
-
 	edm::InputTag RefitVerticesSource;
 	edm::EDGetTokenT<RefitVertexCollection> tokenRefitVertices;
 
 	std::vector<edm::Handle<edm::ValueMap<float> > > electronIDValueMap;
+
 };
 
 #endif
