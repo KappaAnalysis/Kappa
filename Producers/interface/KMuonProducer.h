@@ -86,8 +86,8 @@ public:
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
 		if (this->verbosity == 3) std::cout << "KMuonProducer onrun\n";
-		edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
-		// setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+		// edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->trackBuilder);
 		if (this->verbosity == 3) std::cout << "KMuonProducer end onrun\n";
 		return true;
 	}
