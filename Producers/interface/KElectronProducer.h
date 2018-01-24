@@ -70,8 +70,14 @@ public:
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
 		if (this->verbosity == 3) std::cout << "KElectronProducer onrun\n";
-		edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
-		// setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+
+		// 1)edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
+		// 2)setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->trackBuilder);
+		// 3)trackBuilder = edm::ESHandle<TransientTrackBuilder>();
+		//4) edm::ESHandle<TransientTrackBuilder> trackBuilder;
+		//   edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
+		//5) setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->trackBuilder);// edm::ESHandle<TransientTrackBuilder>
 		if (this->verbosity == 3) std::cout << "KElectronProducer end onrun\n";
 		return true;
 	}
@@ -161,7 +167,8 @@ public:
 		// electron track and impact parameter
 		if (in.gsfTrack().isNonnull())
 		{
-			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
+			// KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
+			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
 			// KTrackProducer::fillIPInfo(*in.gsfTrack(), out.track, *RefitVertices, trackBuilder.product());
 			out.dxy = in.gsfTrack()->dxy(vtx.position());
 			out.dz = in.gsfTrack()->dz(vtx.position());
