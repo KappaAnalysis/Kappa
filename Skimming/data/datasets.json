@@ -393,6 +393,25 @@
     "scenario": "PU25nsData2015v1",
     "xsec": 332.8
   },
+  "DY2JetsToLLM50_RunIIFall17MiniAOD_94X_13TeV_MINIAOD_madgraph-pythia8": {
+    "analysis_2017": [
+      "skim_mc"
+    ],
+    "campaign": "RunIIFall17MiniAOD",
+    "data": false,
+    "dbs": "/DY2JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "madgraph-pythia8",
+    "globalTag": "94X_mc2017_realistic_v10",
+    "inputDBS": "global",
+    "n_events_generated": "11623646",
+    "n_files": "209",
+    "process": "DY2JetsToLL_M50",
+    "scenario": "94X",
+    "xsec": 332.8
+  },
   "DY2JetsToLLM50_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
       "MC_Spring16_v1"
