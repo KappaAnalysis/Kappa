@@ -463,12 +463,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
 
-	# process.load("Configuration.StandardSequences.Reconstruction_cff") or process.load("Configuration.Geometry.GeometryRecoDB_cff")
-	# process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
+	## Adds the possibility to add the SV refitting
+	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 
 	## Refitted Vertices collection
-	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
-	if False and tools.is_above_cmssw_version([9]):
+	#process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
+	if not tools.is_above_cmssw_version([9]):
 		process.kappaTuple.active += cms.vstring('RefitVertex')
 		process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
 

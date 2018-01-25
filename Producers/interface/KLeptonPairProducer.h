@@ -36,8 +36,8 @@ public:
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
 		if (this->verbosity == 3) std::cout << "KLeptonPairProducer onRun()\n";
-		this->transientTrackBuilder = edm::ESHandle<TransientTrackBuilder>();
-		// setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->transientTrackBuilder);
+		// this->transientTrackBuilder = edm::ESHandle<TransientTrackBuilder>();
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->transientTrackBuilder);
 		if (this->verbosity == 3) std::cout << "KLeptonPairProducer onRun() end\n";
 		return true;
 	}
