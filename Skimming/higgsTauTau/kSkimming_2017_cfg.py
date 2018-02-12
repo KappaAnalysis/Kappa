@@ -121,7 +121,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	data = datasetsHelper.isData(nickname)
 	isEmbedded = datasetsHelper.isEmbedded(nickname)
-	print "nicknane:", nickname
+	print "nickname:", nickname
 
 	#####miniaod = datasetsHelper.isMiniaod(nickname) not used anymore, since everything is MiniAOD now
 	process.kappaTuple.TreeInfo.parameters= datasetsHelper.getTreeInfo(nickname, globaltag, kappaTag)
@@ -303,30 +303,21 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
 	process.kappaTuple.Electrons.srcIds = cms.string("standalone")
 
-	if tools.is_above_cmssw_version([8]):
+	if tools.is_above_cmssw_version([9]):
+
 		process.kappaTuple.Electrons.ids = cms.vstring(
-			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto",
-			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose",
-			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium",
-			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight",
-			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"
-			)
-	else:
-		process.kappaTuple.Electrons.ids = cms.vstring(
-			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
-			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
-			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
-			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
-			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"
+			"egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90",
+			"egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80",
+			"egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose",
+			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"
 			)
 
 	setupElectrons(process, electrons)
 	process.p *= (process.makeKappaElectrons)
 
 	## ------------------------------------------------------------------------
-
-	# new tau id only available for 8_0_20 (I believe) and above
-	if tools.is_above_cmssw_version([8,0,20]):
+	#Configure Tau Leptons
+	if tools.is_above_cmssw_version([9]):
 		process.load('RecoTauTag.Configuration.loadRecoTauTagMVAsFromPrepDB_cfi')
 		process.load("Kappa.Skimming.KPatTaus_run2_cff")
 		process.p *= ( process.makeKappaTaus )
@@ -335,21 +326,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		embedID = cms.EDProducer("PATTauIDEmbedder",
 			src = cms.InputTag('slimmedTaus'),
 			tauIDSources = cms.PSet(
-				rerunDiscriminationByIsolationMVAOldDMrun2v1raw = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1raw'),
-				rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose'),
-				rerunDiscriminationByIsolationMVAOldDMrun2v1Loose = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1Loose'),
-				rerunDiscriminationByIsolationMVAOldDMrun2v1Medium = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1Medium'),
-				rerunDiscriminationByIsolationMVAOldDMrun2v1Tight = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1Tight'),
-				rerunDiscriminationByIsolationMVAOldDMrun2v1VTight = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1VTight'),
-				rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight = cms.InputTag('rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight'),
-				rerunDiscriminationByIsolationMVANewDMrun2v1raw = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1raw'),
-				rerunDiscriminationByIsolationMVANewDMrun2v1VLoose = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1VLoose'),
-				rerunDiscriminationByIsolationMVANewDMrun2v1Loose = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1Loose'),
-				rerunDiscriminationByIsolationMVANewDMrun2v1Medium = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1Medium'),
-				rerunDiscriminationByIsolationMVANewDMrun2v1Tight = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1Tight'),
-				rerunDiscriminationByIsolationMVANewDMrun2v1VTight = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1VTight'),
-				rerunDiscriminationByIsolationMVANewDMrun2v1VVTight = cms.InputTag('rerunDiscriminationByIsolationMVANewDMrun2v1VVTight')
-			),
+				rerunDiscriminationByIsolationMVArun2v1raw = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1raw'),
+				rerunDiscriminationByIsolationMVArun2v1VLoose = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1VLoose'),
+				rerunDiscriminationByIsolationMVArun2v1VVLoose = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1VVLoose'),
+				rerunDiscriminationByIsolationMVArun2v1Loose = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1Loose'),
+				rerunDiscriminationByIsolationMVArun2v1Medium = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1Medium'),
+				rerunDiscriminationByIsolationMVArun2v1Tight = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1Tight'),
+				rerunDiscriminationByIsolationMVArun2v1VTight = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1VTight'),
+				rerunDiscriminationByIsolationMVArun2v1VVTight = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1VVTight')
+			  ),
 		)
 		setattr(process, taus, embedID)
 		process.p *= getattr(process, taus)
@@ -376,6 +361,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		"footprintCorrection",
 		"photonPtSumOutsideSignalCone",
 		"byIsolationMVArun2v1DBoldDMwLTraw",
+		"byVVLooseIsolationMVArun2v1DBoldDMwLT",
 		"byVLooseIsolationMVArun2v1DBoldDMwLT",
 		"byLooseIsolationMVArun2v1DBoldDMwLT",
 		"byMediumIsolationMVArun2v1DBoldDMwLT",
@@ -414,7 +400,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		#"byVTightIsolationMVArun2v1DBdR03oldDMwLT",
 		#"byVVTightIsolationMVArun2v1DBdR03oldDMwLT",
 		)
-	if tools.is_above_cmssw_version([8,0,20]):
+	if tools.is_above_cmssw_version([8,0,20]) and not tools.is_above_cmssw_version([9]):
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
 			"rerunDiscriminationByIsolationMVAOldDMrun2v1raw",
 			"rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose",
@@ -430,6 +416,17 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"rerunDiscriminationByIsolationMVANewDMrun2v1Tight",
 			"rerunDiscriminationByIsolationMVANewDMrun2v1VTight",
 			"rerunDiscriminationByIsolationMVANewDMrun2v1VVTight"
+			)
+	if tools.is_above_cmssw_version([9]):
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+			"rerunDiscriminationByIsolationMVArun2v1raw",
+			"rerunDiscriminationByIsolationMVArun2v1VVLoose",
+			"rerunDiscriminationByIsolationMVArun2v1VLoose",
+			"rerunDiscriminationByIsolationMVArun2v1Loose",
+			"rerunDiscriminationByIsolationMVArun2v1Medium",
+			"rerunDiscriminationByIsolationMVArun2v1Tight",
+			"rerunDiscriminationByIsolationMVArun2v1VTight",
+			"rerunDiscriminationByIsolationMVArun2v1VVTight"
 			)
 	## now also possible to save all MVA isolation inputs for taus # turn of per default
 
