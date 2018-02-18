@@ -13770,7 +13770,7 @@
     "n_files": "1230",
     "process": "TTTo2L2Nu",
     "scenario": "94X",
-    "xsec": 88.29
+    "xsec": 87.31
   },
   "TTTo2L2Nu_RunIISpring16MiniAODv2_PUSpring16_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -13829,7 +13829,7 @@
     "n_files": "2498",
     "process": "TTToHadronic",
     "scenario": "94X",
-    "xsec": 365.35
+    "xsec": 380.1
   },
   "TTToSemiLeptonic_RunIIFall17MiniAOD_94X_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
@@ -13848,7 +13848,7 @@
     "n_files": "2032",
     "process": "TTToSemiLeptonic",
     "scenario": "94X",
-    "xsec": 377.96
+    "xsec": 364.4
   },
   "TTToSemilepton_RunIISpring16MiniAODv2_PUSpring16_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -15917,7 +15917,7 @@
     "globalTag": "94X_mc2017_realistic_v10",
     "inputDBS": "global",
     "n_events_generated": "30003848",
-    "n_files": "",
+    "n_files": "484",
     "process": "W1JetsToLNu",
     "scenario": "94X",
     "xsec": 9644.5
@@ -16038,7 +16038,7 @@
     "globalTag": "94X_mc2017_realistic_v10",
     "inputDBS": "global",
     "n_events_generated": "19944844",
-    "n_files": "",
+    "n_files": "312",
     "process": "W2JetsToLNu",
     "scenario": "94X",
     "xsec": 3144.5
@@ -16322,7 +16322,7 @@
     "globalTag": "94X_mc2017_realistic_v10",
     "inputDBS": "global",
     "n_events_generated": "30003848",
-    "n_files": "",
+    "n_files": "164",
     "process": "W4JetsToLNu",
     "scenario": "94X",
     "xsec": 485.8
@@ -16876,7 +16876,7 @@
     "globalTag": "94X_mc2017_realistic_v10",
     "inputDBS": "global",
     "n_events_generated": "5173940",
-    "n_files": "",
+    "n_files": "382",
     "process": "WJetsToLNu",
     "scenario": "94X",
     "xsec": 61526.7
