@@ -3065,47 +3065,6 @@
     "scenario": "imputDoubleMu_mirror_miniAODv5",
     "xsec": 390.0
   },
-  "Embedding2016B_ElMuFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016B/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "4477206",
-    "n_files": "9604",
-    "process": "Embedding2016B",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 310.8
-  },
-  "Embedding2016B_ElMuFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016B/ElMuFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "4538907",
-    "n_files": "11004",
-    "process": "Embedding2016B",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
-  },
   "Embedding2016B_ElMuFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
       "Skim_Base",
@@ -3126,47 +3085,6 @@
     "process": "Embedding2016B",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 875.4
-  },
-  "Embedding2016B_ElTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016B/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "3668707",
-    "n_files": "11187",
-    "process": "Embedding2016B",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 349.1
-  },
-  "Embedding2016B_ElTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016B/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "3605467",
-    "n_files": "11088",
-    "process": "Embedding2016B",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016B_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -3203,46 +3121,6 @@
     "n_files": "5488",
     "process": "Embedding2016B",
     "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016B_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016B/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "3971096",
-    "n_files": "11427",
-    "process": "Embedding2016B",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 369.8
-  },
-  "Embedding2016B_MuTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016B/MuTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "3836098",
-    "n_files": "11136",
-    "process": "Embedding2016B",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
     "xsec": 390.0
   },
   "Embedding2016B_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
@@ -3284,26 +3162,6 @@
     "scenario": "imputSep16DoubleMu_miniAODv2",
     "xsec": 780.0
   },
-  "Embedding2016B_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "TauTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016B/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "1319282",
-    "n_files": "11428",
-    "process": "Embedding2016B",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": "260.5"
-  },
   "Embedding2016B_TauTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
       "Skim_Moriond17_Embedding",
@@ -3326,47 +3184,6 @@
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 869.6
   },
-  "Embedding2016C_ElMuFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016C/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "1871314",
-    "n_files": "4019",
-    "process": "Embedding2016C",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 289.3
-  },
-  "Embedding2016C_ElMuFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016C/ElMuFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "1940460",
-    "n_files": "4733",
-    "process": "Embedding2016C",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
-  },
   "Embedding2016C_ElMuFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
       "Skim_Base",
@@ -3387,47 +3204,6 @@
     "process": "Embedding2016C",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 857.1
-  },
-  "Embedding2016C_ElTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016C/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "1602420",
-    "n_files": "4918",
-    "process": "Embedding2016C",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 339.6
-  },
-  "Embedding2016C_ElTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016C/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "1584557",
-    "n_files": "4916",
-    "process": "Embedding2016C",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016C_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -3464,46 +3240,6 @@
     "n_files": "2308",
     "process": "Embedding2016C",
     "scenario": "imputDoubleMu_mirror_miniAODv2",
-    "xsec": 390.0
-  },
-  "Embedding2016C_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016C/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "1719937",
-    "n_files": "4980",
-    "process": "Embedding2016C",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 356.7
-  },
-  "Embedding2016C_MuTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016C/MuTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "2196754",
-    "n_files": "9735",
-    "process": "Embedding2016C",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
     "xsec": 390.0
   },
   "Embedding2016C_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
@@ -3545,26 +3281,6 @@
     "scenario": "imputSep16DoubleMu_miniAODv2",
     "xsec": 780.0
   },
-  "Embedding2016C_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "TauTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016C/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "571247",
-    "n_files": "4970",
-    "process": "Embedding2016C",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 241.5
-  },
   "Embedding2016C_TauTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "campaign": "TauTauFinalState",
     "data": true,
@@ -3581,47 +3297,6 @@
     "process": "Embedding2016C",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 859.0
-  },
-  "Embedding2016D_ElMuFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016D/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "3253914",
-    "n_files": "6988",
-    "process": "Embedding2016D",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 305.7
-  },
-  "Embedding2016D_ElMuFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016D/ElMuFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "3264886",
-    "n_files": "7967",
-    "process": "Embedding2016D",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016D_ElMuFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -3643,47 +3318,6 @@
     "process": "Embedding2016D",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 818.5
-  },
-  "Embedding2016D_ElTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016D/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "2699485",
-    "n_files": "8297",
-    "process": "Embedding2016D",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 347.7
-  },
-  "Embedding2016D_ElTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016D/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "2607751",
-    "n_files": "8098",
-    "process": "Embedding2016D",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016D_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -3720,46 +3354,6 @@
     "n_files": "4097",
     "process": "Embedding2016D",
     "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016D_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016D/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "2887608",
-    "n_files": "8376",
-    "process": "Embedding2016D",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 364.0
-  },
-  "Embedding2016D_MuTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016D/MuTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "2718971",
-    "n_files": "7972",
-    "process": "Embedding2016D",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
     "xsec": 390.0
   },
   "Embedding2016D_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
@@ -3801,26 +3395,6 @@
     "scenario": "imputSep16DoubleMu_miniAODv2",
     "xsec": 780.0
   },
-  "Embedding2016D_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "TauTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016D/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "957321",
-    "n_files": "8353",
-    "process": "Embedding2016D",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 255.7
-  },
   "Embedding2016D_TauTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "campaign": "TauTauFinalState",
     "data": true,
@@ -3837,47 +3411,6 @@
     "process": "Embedding2016D",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 821.1
-  },
-  "Embedding2016E_ElMuFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016E/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "2952521",
-    "n_files": "6346",
-    "process": "Embedding2016E",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016E_ElMuFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016E/ElMuFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "2978512",
-    "n_files": "7302",
-    "process": "Embedding2016E",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016E_ElMuFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -3899,47 +3432,6 @@
     "process": "Embedding2016E",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 823.7
-  },
-  "Embedding2016E_ElTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016E/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "2464024",
-    "n_files": "7622",
-    "process": "Embedding2016E",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016E_ElTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016E/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "2315443",
-    "n_files": "7248",
-    "process": "Embedding2016E",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016E_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -3976,47 +3468,6 @@
     "n_files": "3745",
     "process": "Embedding2016E",
     "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016E_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016E/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "2553291",
-    "n_files": "7451",
-    "process": "Embedding2016E",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 319.0
-  },
-  "Embedding2016E_MuTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016E/MuTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "2402553",
-    "n_files": "7099",
-    "process": "Embedding2016E",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
     "xsec": 390.0
   },
   "Embedding2016E_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
@@ -4058,26 +3509,6 @@
     "scenario": "imputSep16DoubleMu_miniAODv2",
     "xsec": 780.0
   },
-  "Embedding2016E_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "TauTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016E/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "873477",
-    "n_files": "7660",
-    "process": "Embedding2016E",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
   "Embedding2016E_TauTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "campaign": "TauTauFinalState",
     "data": true,
@@ -4094,47 +3525,6 @@
     "process": "Embedding2016E",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 905.9
-  },
-  "Embedding2016F_ElMuFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016F/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "2185568",
-    "n_files": "4700",
-    "process": "Embedding2016F",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016F_ElMuFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016F/ElMuFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "2223379",
-    "n_files": "5455",
-    "process": "Embedding2016F",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016F_ElMuFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -4156,47 +3546,6 @@
     "process": "Embedding2016F",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 828.0
-  },
-  "Embedding2016F_ElTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016F/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "1848679",
-    "n_files": "5728",
-    "process": "Embedding2016F",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016F_ElTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016F/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "1686149",
-    "n_files": "5284",
-    "process": "Embedding2016F",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016F_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -4233,47 +3582,6 @@
     "n_files": "2798",
     "process": "Embedding2016F",
     "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016F_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016F/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "1954752",
-    "n_files": "5715",
-    "process": "Embedding2016F",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 313.0
-  },
-  "Embedding2016F_MuTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016F/MuTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "1836422",
-    "n_files": "5433",
-    "process": "Embedding2016F",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
     "xsec": 390.0
   },
   "Embedding2016F_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
@@ -4315,26 +3623,6 @@
     "scenario": "imputSep16DoubleMu_miniAODv2",
     "xsec": 780.0
   },
-  "Embedding2016F_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "TauTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016F/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "653449",
-    "n_files": "5752",
-    "process": "Embedding2016F",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
   "Embedding2016F_TauTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "campaign": "TauTauFinalState",
     "data": true,
@@ -4351,47 +3639,6 @@
     "process": "Embedding2016F",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 828.9
-  },
-  "Embedding2016G_ElMuFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016G/ElMuFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "3883542",
-    "n_files": "8360",
-    "process": "Embedding2016G",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016G_ElMuFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016G/ElMuFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "6271935",
-    "n_files": "15258",
-    "process": "Embedding2016G",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016G_ElMuFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -4413,47 +3660,6 @@
     "process": "Embedding2016G",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 860.9
-  },
-  "Embedding2016G_ElTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016G/ElTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "3282187",
-    "n_files": "10100",
-    "process": "Embedding2016G",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016G_ElTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016G/ElTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "4890085",
-    "n_files": "15123",
-    "process": "Embedding2016G",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016G_ElTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -4490,47 +3696,6 @@
     "n_files": "7312",
     "process": "Embedding2016G",
     "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016G_MuTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016G/MuTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "3346387",
-    "n_files": "9717",
-    "process": "Embedding2016G",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 313.0
-  },
-  "Embedding2016G_MuTauFinalState_imputSep16DoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016G/MuTauFinalState-imputSep16DoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "4895408",
-    "n_files": "14287",
-    "process": "Embedding2016G",
-    "scenario": "imputSep16DoubleMu_mirror_miniAODv1",
     "xsec": 390.0
   },
   "Embedding2016G_MuTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
@@ -4572,26 +3737,6 @@
     "scenario": "imputSep16DoubleMu_miniAODv2",
     "xsec": 780.0
   },
-  "Embedding2016G_TauTauFinalState_imputDoubleMumirrorminiAODv5_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Embedding_PromptReco"
-    ],
-    "campaign": "TauTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016G/TauTauFinalState-imputDoubleMu_mirror_miniAOD-v5/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v14",
-    "inputDBS": "phys03",
-    "n_events_generated": "1163373",
-    "n_files": "10191",
-    "process": "Embedding2016G",
-    "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
   "Embedding2016G_TauTauFinalState_imputSep16DoubleMumirrorminiAODv2_13TeV_USER": {
     "campaign": "TauTauFinalState",
     "data": true,
@@ -4608,27 +3753,6 @@
     "process": "Embedding2016G",
     "scenario": "imputSep16DoubleMu_mirror_miniAODv2",
     "xsec": 859.0
-  },
-  "Embedding2016H_ElMuFinalState_imputPromptDoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElMuFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016H/ElMuFinalState-imputPromptDoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "5932460",
-    "n_files": "17938",
-    "process": "Embedding2016H",
-    "scenario": "imputPromptDoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016H_ElMuFinalState_imputPromptDoubleMumirrorminiAODv4_13TeV_USER": {
     "Moriond17": [
@@ -4650,27 +3774,6 @@
     "process": "Embedding2016H",
     "scenario": "imputPromptDoubleMu_mirror_miniAODv4",
     "xsec": 820.8
-  },
-  "Embedding2016H_ElTauFinalState_imputPromptDoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "ElTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016H/ElTauFinalState-imputPromptDoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_2016SeptRepro_v7",
-    "inputDBS": "phys03",
-    "n_events_generated": "4606035",
-    "n_files": "17589",
-    "process": "Embedding2016H",
-    "scenario": "imputPromptDoubleMu_mirror_miniAODv1",
-    "xsec": 390.0
   },
   "Embedding2016H_ElTauFinalState_imputPromptDoubleMumirrorminiAODv2_13TeV_USER": {
     "Moriond17": [
@@ -4709,27 +3812,6 @@
     "n_files": "9215",
     "process": "Embedding2016H",
     "scenario": "imputDoubleMu_mirror_miniAODv5",
-    "xsec": 390.0
-  },
-  "Embedding2016H_MuTauFinalState_imputPromptDoubleMumirrorminiAODv1_13TeV_USER": {
-    "Moriond17": [
-      "Skim_Base",
-      "TauLTZero_Embedding_Rereco"
-    ],
-    "campaign": "MuTauFinalState",
-    "data": true,
-    "dbs": "/EmbeddingRun2016H/MuTauFinalState-imputPromptDoubleMu_mirror_miniAOD-v1/USER",
-    "embedded": true,
-    "energy": "13",
-    "extension": "",
-    "format": "USER",
-    "generator": "",
-    "globalTag": "80X_dataRun2_Prompt_v16",
-    "inputDBS": "phys03",
-    "n_events_generated": "4768628",
-    "n_files": "17434",
-    "process": "Embedding2016H",
-    "scenario": "imputPromptDoubleMu_mirror_miniAODv1",
     "xsec": 390.0
   },
   "Embedding2016H_MuTauFinalState_imputPromptDoubleMumirrorminiAODv2_13TeV_USER": {
