@@ -182,7 +182,7 @@ class SkimManagerBase:
 		config.JobType.pyCfgParams = [str('globalTag=%s'%globalTag), 'kappaTag=KAPPA_2_1_0', str('nickname=%s'%(akt_nick)), str('outputfilename=kappa_%s.root'%(akt_nick)), 'testsuite=False']
 		config.Data.unitsPerJob = self.files_per_job(akt_nick)
 		config.Data.inputDataset = self.skimdataset[akt_nick]['dbs']
-		config.Data.ignoreLocality = self.skimdataset[akt_nick].get("ignoreLocality", True) ## i have very good experince with this option, but feel free to change it (maybe also add larger default black list for this, or start with a whitlist
+		config.Data.ignoreLocality = self.skimdataset[akt_nick].get("ignoreLocality", False) # Set to False to make it submit also if no whitelist is defined. Set to True if you how to configure it properly. ## i have very good experince with this option, but feel free to change it (maybe also add larger default black list for this, or start with a whitlist
 		config.Site.blacklist.extend(self.skimdataset[akt_nick].get("blacklist", []))
 		config.JobType.outputFiles = [str('kappa_%s.root'%(akt_nick))]
 
