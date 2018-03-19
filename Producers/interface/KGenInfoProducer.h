@@ -44,6 +44,7 @@ public:
 	KGenInfoProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
 		KInfoProducer<Tmeta>(cfg, _event_tree, _lumi_tree, _run_tree, std::forward<edm::ConsumesCollector>(consumescollector)),
 		ignoreExtXSec(cfg.getParameter<bool>("ignoreExtXSec")),
+		isEmbedded(cfg.getParameter<bool>("isEmbedded")),
 		forceLumi(cfg.getParameter<int>("forceLumi")),
 		binningMode(cfg.getParameter<std::string>("binningMode")),
 		tagSource(cfg.getParameter<edm::InputTag>("genSource")),
@@ -175,6 +176,8 @@ public:
 		this->metaEvent->nPU   = 0;
 		this->metaEvent->nPUp1 = 0;
 		this->metaEvent->nPUp2 = 0;
+		if(!isEmbedded)
+		 {
 		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
 		if (event.getByToken(tokenPuInfo, puHandles) && puHandles.isValid())
 		{
@@ -202,7 +205,7 @@ public:
 			if (event.getByToken(tokenPuInfo, puHandle) && puHandle.isValid())
 				this->metaEvent->nPU = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
 		}
-
+		}
 		return true;
 	}
 	bool endRun(edm::Run const& run, edm::EventSetup const &setup) override
@@ -289,6 +292,7 @@ public:
 
 protected:
 	bool ignoreExtXSec;
+	bool isEmbedded;
 	int forceLumi;
 	std::string binningMode;
 	edm::InputTag tagSource, puInfoSource, lheSource, runInfo;

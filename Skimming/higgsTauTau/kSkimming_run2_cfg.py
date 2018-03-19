@@ -129,8 +129,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 
 	# General configuration
-	if tools.is_above_cmssw_version([7,4]):
-		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
+	if tools.is_above_cmssw_version([7,4]) and not data and not isEmbedded:
+		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo", "", "PAT")
 
 	# save primary vertex
 	process.kappaTuple.active += cms.vstring('VertexSummary') # save VertexSummary
