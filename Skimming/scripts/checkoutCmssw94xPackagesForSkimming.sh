@@ -29,41 +29,36 @@ cd $CMSSW_BASE/src
 #git cms-addpkg RecoMET/METPUSubtraction
 #git cms-addpkg DataFormats/METReco
 #git cms-addpkg PhysicsTools/PatUtils
-#git cms-addpkg RecoEgamma/ElectronIdentification
-##This needs to be checked out first since there are conflicts with MVA MET otherwise and then 63 packages are checked out...
-#git cms-merge-topic --ssh -u ikrav:egm_id_80X_v2
-## additional metfilters
-#git cms-merge-topic --ssh -u cms-met:fromCMSSW_8_0_20_postICHEPfilter
-#git cms-merge-topic --ssh cms-met:METRecipe_8020 -u
-#git cms-merge-topic --ssh cms-met:METRecipe_80X_part2 -u
-#sed -i "/produces<edm::PtrVector<reco::Muon>>/a \	  produces<bool>();" RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc
-#sed -i "/iEvent.put(std::move(out),/a \	iEvent.put(std::auto_ptr<bool>(new bool(found)));" RecoMET/METFilters/plugins/BadGlobalMuonTagger.cc
-##packages needed to rerun tau id
-#git cms-merge-topic --ssh -u cms-tau-pog:CMSSW_8_0_X_tau-pog_miniAOD-backport-tauID
-#
-##correct jet corrections for mvamet
-#git cms-merge-topic --ssh -u cms-met:METRecipe_8020
-##Mvamet package based on Summer16 Training
-#git cms-merge-topic --ssh -u macewindu009:mvamet8026
-##copy training weightfile
-#mkdir $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
-#cd $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
-#wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root
-#
-#cd $CMSSW_BASE/src
-#sed "/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificanceParams_cfi\ import\ METSignificanceParams_Data" PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py -i
-git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
+#git cms-addpkg PhysicsTools/PatAlgos
+
+git cms-addpkg DataFormats/PatCandidates
+git cms-addpkg RecoTauTag/Configuration
+git cms-addpkg RecoTauTag/RecoTau
+
+git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP
+
+mkdir $CMSSW_BASE/tmp_external
+#cd $CMSSW_BASE/tmp_external
+#git clone https://github.com/lsoffi/RecoEgamma-PhotonIdentification.git data/RecoEgamma/PhotonIdentification/data
+#cd data/RecoEgamma/PhotonIdentification/data
+#git checkout CMSSW_9_4_0_pre3_TnP
+
 #fetch xml files for Egamma Id from private repository
-#git clone git@github.com:ikrav/RecoEgamma-ElectronIdentification.git tempData/RecoEgamma/ElectronIdentification/data
-#cd $CMSSW_BASE/src/tempData/RecoEgamma/ElectronIdentification/data
-#git checkout egm_id_80X_v1
-#cd $CMSSW_BASE/src/tempData/
-#cp -r * $CMSSW_BASE/src
-#cd $CMSSW_BASE/src
-#rm -rf tempData
+cd $CMSSW_BASE/tmp_external
+git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
+cd data/RecoEgamma/ElectronIdentification/data
+git checkout CMSSW_9_4_0_pre3_TnP
+cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/ElectronIdentification/data
+# Go back to the src/
+cd $CMSSW_BASE/src
+rm -rf tmp_external
+
+#Check out Refitting package
+git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
 #
 ##Remove the .git folder as it is not needed and contains a lot of useless data
 #rm -rf RecoEgamma/ElectronIdentification/data/.git
+
 #Check out Kappa
 git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
 
