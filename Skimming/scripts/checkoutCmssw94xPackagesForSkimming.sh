@@ -22,42 +22,54 @@ do
 	esac
 done
 
-cd $CMSSW_BASE/src
 ##Electron cutBased Id and MVA Id
 ##https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_8_0
 ##https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_regular_users_common
-#git cms-addpkg RecoMET/METPUSubtraction
-#git cms-addpkg DataFormats/METReco
-#git cms-addpkg PhysicsTools/PatUtils
-#git cms-addpkg PhysicsTools/PatAlgos
-
-git cms-addpkg DataFormats/PatCandidates
-git cms-addpkg RecoTauTag/Configuration
-git cms-addpkg RecoTauTag/RecoTau
-
 git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP
-
-mkdir $CMSSW_BASE/tmp_external
-#cd $CMSSW_BASE/tmp_external
-#git clone https://github.com/lsoffi/RecoEgamma-PhotonIdentification.git data/RecoEgamma/PhotonIdentification/data
-#cd data/RecoEgamma/PhotonIdentification/data
-#git checkout CMSSW_9_4_0_pre3_TnP
-
-#fetch xml files for Egamma Id from private repository
-cd $CMSSW_BASE/tmp_external
+git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
+scram b -j `grep -c ^processor /proc/cpuinfo`
+#
+# Add the area containing the MVA weights (from cms-data, to appear externa).
+# Note: the external area appears after scram build is run at least once, as above
+#
+# Photons - Uncomment if needed
+cd $CMSSW_BASE/external
+# below, you may have a different architecture, this is just one example from lxplus
+cd slc6_amd64_gcc630/
+git clone https://github.com/lsoffi/RecoEgamma-PhotonIdentification.git data/RecoEgamma/PhotonIdentification/data
+cd data/RecoEgamma/PhotonIdentification/data
+git checkout CMSSW_9_4_0_pre3_TnP
+#
+# Electrons
+cd $CMSSW_BASE/external
+cd slc6_amd64_gcc630/
 git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
 cd data/RecoEgamma/ElectronIdentification/data
 git checkout CMSSW_9_4_0_pre3_TnP
-cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/ElectronIdentification/data
-# Go back to the src/
 cd $CMSSW_BASE/src
-rm -rf tmp_external
-
-#Check out Refitting package
-git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
 #
 ##Remove the .git folder as it is not needed and contains a lot of useless data
 #rm -rf RecoEgamma/ElectronIdentification/data/.git
+
+
+# git cms-addpkg DataFormats/PatCandidates
+# git cms-addpkg RecoTauTag/Configuration
+# git cms-addpkg RecoTauTag/RecoTau
+#
+# mkdir $CMSSW_BASE/tmp_external
+# #fetch xml files for Egamma Id from private repository
+# cd $CMSSW_BASE/tmp_external
+# git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
+# cd data/RecoEgamma/ElectronIdentification/data
+# git checkout CMSSW_9_4_0_pre3_TnP
+# cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/ElectronIdentification/data
+# # Go back to the src/
+# cd $CMSSW_BASE/src
+# rm -rf tmp_external
+
+
+#Check out Refitting package
+git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
 
 #Check out Kappa
 git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
