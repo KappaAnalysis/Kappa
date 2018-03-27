@@ -475,9 +475,8 @@ std::ostream &operator<<(std::ostream &os, const KGenEventInfo &i)
 std::ostream &displayHLT(std::ostream &os, const KLumiInfo &metaLumi, const KEventInfo &metaEvent)
 {
 	for (size_t hltIdx = 0; hltIdx < metaLumi.hltNames.size(); ++hltIdx)
-		if (metaEvent.bitsHLT[hltIdx])
-			os << hltIdx << ":" << metaLumi.hltNames[hltIdx] << "(" << metaLumi.hltPrescales[hltIdx] << ")" << " ";
-		os << std::endl;
+		if (metaEvent.bitsHLT[hltIdx]) os << hltIdx << ":" << metaLumi.hltNames[hltIdx] << "(" << metaLumi.hltPrescales[hltIdx] << ")" << " ";
+	os << std::endl;
 	return os;
 }
 
