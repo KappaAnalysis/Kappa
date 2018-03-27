@@ -67,8 +67,6 @@ git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
 #Check out Kappa
 git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
 
-cd $CMSSW_BASE/src/Kappa/Skimming/python/
-wget https://raw.githubusercontent.com/greyxray/TauAnalysisTools/CMSSW_9_4_X_tau-pog_RunIIFall17/TauAnalysisTools/python/runTauIdMVA.py
-cd -
+wget https://raw.githubusercontent.com/greyxray/TauAnalysisTools/CMSSW_9_4_X_tau-pog_RunIIFall17/TauAnalysisTools/python/runTauIdMVA.py  -P $CMSSW_BASE/src/Kappa/Skimming/python/
 
 scram b -j `grep -c ^processor /proc/cpuinfo`
