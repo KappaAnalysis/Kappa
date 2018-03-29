@@ -88,6 +88,8 @@ REGISTER_NAME_OF_TYPE(KPhotons,std::vector<KPhoton>);
 REGISTER_NAME_OF_TYPE(KPileupDensity,KPileupDensity);
 REGISTER_NAME_OF_TYPE(KTau,KTau);
 REGISTER_NAME_OF_TYPE(KTaus,std::vector<KTau>);
+REGISTER_NAME_OF_TYPE(KL1Tau,KL1Tau);
+REGISTER_NAME_OF_TYPE(KL1Taus,std::vector<KL1Tau>);
 REGISTER_NAME_OF_TYPE(KExtendedTau,KExtendedTau);
 REGISTER_NAME_OF_TYPE(KExtendedTaus,std::vector<KExtendedTau>);
 REGISTER_NAME_OF_TYPE(KTaupairVerticesMap,KTaupairVerticesMap);
