@@ -50,7 +50,7 @@ cd $CMSSW_BASE/src
 #
 ##Remove the .git folder as it is not needed and contains a lot of useless data
 #rm -rf RecoEgamma/ElectronIdentification/data/.git
-
+rm -rf $CMSSW_BASE/external/slc6_amd64_gcc630/data/RecoEgamma/ElectronIdentification/data/.git
 
 # git cms-addpkg DataFormats/PatCandidates
 # git cms-addpkg RecoTauTag/Configuration
@@ -67,13 +67,37 @@ cd $CMSSW_BASE/src
 # cd $CMSSW_BASE/src
 # rm -rf tmp_external
 
+# MET filters :
+# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#Analysis_Recommendations_for_ana
+# No new recipe?
 
-#Check out Refitting package
+# Luminosity :
+# https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM
+
+# JETS to use:
+# https://twiki.cern.ch/twiki/bin/view/CMS/JECDataMC#Jet_Energy_Corrections_in_Run2
+# Cross-check
+
+# Muons to use:
+# https://twiki.cern.ch/twiki/bin/view/CMS/MuonPOG#Basic_documentation_description
+# No new recipe?
+
+# general reference:
+# https://twiki.cern.ch/twiki/bin/view/CMS/WebHome
+
+# CP: Refitting package
 git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
 
 #Check out Kappa
 git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
 
+# B-tag:
+# https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+# NEEDS UPDATE
+
+# TAU: Packages needed to rerun tau id
+# https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_M_AN1
+# NEEDS UPDATE
 wget https://raw.githubusercontent.com/greyxray/TauAnalysisTools/CMSSW_9_4_X_tau-pog_RunIIFall17/TauAnalysisTools/python/runTauIdMVA.py  -P $CMSSW_BASE/src/Kappa/Skimming/python/
 
 scram b -j `grep -c ^processor /proc/cpuinfo`
