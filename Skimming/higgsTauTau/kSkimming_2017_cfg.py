@@ -537,6 +537,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	#process.kappaTuple.PatMET.pfmetT1 = cms.PSet(src=cms.InputTag("patpfMETT1"))
 	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
+	process.kappaTuple.PatMET.metPF = cms.PSet(
+		src=cms.InputTag("slimmedMETs", "", "PAT"),
+		uncorrected=cms.bool(True)
+	)
 
 	if not tools.is_above_cmssw_version([9]):
 		## Write MVA MET to KMETs
