@@ -304,12 +304,31 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.Electrons.srcIds = cms.string("standalone")
 
 	if tools.is_above_cmssw_version([9]):
-
 		process.kappaTuple.Electrons.ids = cms.vstring(
+			"egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-veto",
+			"egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-loose",
+			"egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-medium",
+			"egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-tight",
 			"egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90",
 			"egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80",
 			"egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose",
 			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"
+			)
+	elif tools.is_above_cmssw_version([8]):
+		process.kappaTuple.Electrons.ids = cms.vstring(
+			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto",
+			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose",
+			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium",
+			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight",
+			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"
+			)
+	else:
+		process.kappaTuple.Electrons.ids = cms.vstring(
+			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
+			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-loose",
+			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-medium",
+			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
+			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"
 			)
 
 	setupElectrons(process, electrons)
