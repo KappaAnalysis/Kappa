@@ -336,27 +336,18 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## ------------------------------------------------------------------------
 	#Configure Tau Leptons
-	if tools.is_above_cmssw_version([9]):
-		process.load('RecoTauTag.Configuration.loadRecoTauTagMVAsFromPrepDB_cfi')
-		process.load("Kappa.Skimming.KPatTaus_run2_cff")
-		process.p *= ( process.makeKappaTaus )
+	#--------------------------------------------------------------------------------
+	toKeep = []
+	if tools.is_above_cmssw_version([8,0,20]): toKeep.extend(("2016v1", "newDM2016v1"))
+	elif tools.is_above_cmssw_version([9]): toKeep.extend(("2017v1", "2017v2", "newDM2017v2", "dR0p32017v2"))
 
-		# embed new id's into new tau collection
-		embedID = cms.EDProducer("PATTauIDEmbedder",
-			src = cms.InputTag('slimmedTaus'),
-			tauIDSources = cms.PSet(
-				rerunDiscriminationByIsolationMVArun2v1raw = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1raw'),
-				rerunDiscriminationByIsolationMVArun2v1VLoose = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1VLoose'),
-				rerunDiscriminationByIsolationMVArun2v1VVLoose = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1VVLoose'),
-				rerunDiscriminationByIsolationMVArun2v1Loose = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1Loose'),
-				rerunDiscriminationByIsolationMVArun2v1Medium = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1Medium'),
-				rerunDiscriminationByIsolationMVArun2v1Tight = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1Tight'),
-				rerunDiscriminationByIsolationMVArun2v1VTight = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1VTight'),
-				rerunDiscriminationByIsolationMVArun2v1VVTight = cms.InputTag('rerunDiscriminationByIsolationMVArun2v1VVTight')
-			  ),
-		)
-		setattr(process, taus, embedID)
-		process.p *= getattr(process, taus)
+	from Kappa.Skimming.runTauIdMVA import *
+	na = TauIDEmbedder(process, cms,
+	    debug=True,
+	    toKeep = toKeep
+	)
+	na.runTauID()
+	process.p *= process.rerunMvaIsolationSequence * process.NewTauIDsEmbedded
 
 	process.kappaTuple.active += cms.vstring('PatTaus')
 	process.kappaTuple.PatTaus.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
@@ -387,13 +378,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		"byTightIsolationMVArun2v1DBoldDMwLT",
 		"byVTightIsolationMVArun2v1DBoldDMwLT",
 		"byVVTightIsolationMVArun2v1DBoldDMwLT",
-		#"byIsolationMVArun2v1DBnewDMwLTraw",
-		#"byVLooseIsolationMVArun2v1DBnewDMwLT",
-		#"byLooseIsolationMVArun2v1DBnewDMwLT",
-		#"byMediumIsolationMVArun2v1DBnewDMwLT",
-		#"byTightIsolationMVArun2v1DBnewDMwLT",
-		#"byVTightIsolationMVArun2v1DBnewDMwLT",
-		#"byVVTightIsolationMVArun2v1DBnewDMwLT",
 		"againstMuonLoose3",
 		"againstMuonTight3",
 		"againstElectronMVA6category",
@@ -402,53 +386,68 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		"againstElectronLooseMVA6",
 		"againstElectronMediumMVA6",
 		"againstElectronTightMVA6",
-		"againstElectronVTightMVA6"#,
-		#"chargedIsoPtSumdR03",
-		#"neutralIsoPtSumdR03",
-		#"neutralIsoPtSumWeightdR03",
-		#"footprintCorrectiondR03",
-		#"photonPtSumOutsideSignalConedR03",
-		#"byLooseCombinedIsolationDeltaBetaCorr3HitsdR03",
-		#"byMediumCombinedIsolationDeltaBetaCorr3HitsdR03",
-		#"byTightCombinedIsolationDeltaBetaCorr3HitsdR03",
-		#"byIsolationMVArun2v1DBdR03oldDMwLTraw",
-		#"byVLooseIsolationMVArun2v1DBdR03oldDMwLT",
-		#"byLooseIsolationMVArun2v1DBdR03oldDMwLT",
-		#"byMediumIsolationMVArun2v1DBdR03oldDMwLT",
-		#"byTightIsolationMVArun2v1DBdR03oldDMwLT",
-		#"byVTightIsolationMVArun2v1DBdR03oldDMwLT",
-		#"byVVTightIsolationMVArun2v1DBdR03oldDMwLT",
+		"againstElectronVTightMVA6"
 		)
 
 	process.kappaTuple.active += cms.vstring('L1Taus')
 
-	if tools.is_above_cmssw_version([8,0,20]) and not tools.is_above_cmssw_version([9]):
-		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
-			"rerunDiscriminationByIsolationMVAOldDMrun2v1raw",
-			"rerunDiscriminationByIsolationMVAOldDMrun2v1VLoose",
-			"rerunDiscriminationByIsolationMVAOldDMrun2v1Loose",
-			"rerunDiscriminationByIsolationMVAOldDMrun2v1Medium",
-			"rerunDiscriminationByIsolationMVAOldDMrun2v1Tight",
-			"rerunDiscriminationByIsolationMVAOldDMrun2v1VTight",
-			"rerunDiscriminationByIsolationMVAOldDMrun2v1VVTight",
-			"rerunDiscriminationByIsolationMVANewDMrun2v1raw",
-			"rerunDiscriminationByIsolationMVANewDMrun2v1VLoose",
-			"rerunDiscriminationByIsolationMVANewDMrun2v1Loose",
-			"rerunDiscriminationByIsolationMVANewDMrun2v1Medium",
-			"rerunDiscriminationByIsolationMVANewDMrun2v1Tight",
-			"rerunDiscriminationByIsolationMVANewDMrun2v1VTight",
-			"rerunDiscriminationByIsolationMVANewDMrun2v1VVTight"
-			)
 	if tools.is_above_cmssw_version([9]):
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
-			"rerunDiscriminationByIsolationMVArun2v1raw",
-			"rerunDiscriminationByIsolationMVArun2v1VVLoose",
-			"rerunDiscriminationByIsolationMVArun2v1VLoose",
-			"rerunDiscriminationByIsolationMVArun2v1Loose",
-			"rerunDiscriminationByIsolationMVArun2v1Medium",
-			"rerunDiscriminationByIsolationMVArun2v1Tight",
-			"rerunDiscriminationByIsolationMVArun2v1VTight",
-			"rerunDiscriminationByIsolationMVArun2v1VVTight"
+				# v1
+				'rerunDiscriminationByIsolationOldDMMVArun2017v1raw',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v1VLoose',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v1VVLoose',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v1Loose',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v1Medium',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v1Tight',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v1VTight',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v1VVTight',
+				# v2
+				'rerunDiscriminationByIsolationOldDMMVArun2017v2raw',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v2VVLoose',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v2VLoose',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v2Loose',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v2Medium',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v2Tight',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v2VTight',
+				'rerunDiscriminationByIsolationOldDMMVArun2017v2VVTight'
+				# new DM
+				'rerunDiscriminationByIsolationNewDMMVArun2017v2raw',
+				'rerunDiscriminationByIsolationNewDMMVArun2017v2VLoose',
+				'rerunDiscriminationByIsolationNewDMMVArun2017v2VVLoose',
+				'rerunDiscriminationByIsolationNewDMMVArun2017v2Loose',
+				'rerunDiscriminationByIsolationNewDMMVArun2017v2Medium',
+				'rerunDiscriminationByIsolationNewDMMVArun2017v2Tight',
+				'rerunDiscriminationByIsolationNewDMMVArun2017v2VTight',
+				'rerunDiscriminationByIsolationNewDMMVArun2017v2VVTight',
+				# 0.3
+				'rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2raw',
+				'rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2VLoose',
+				'rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2VVLoose',
+				'rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2Loose',
+				'rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2Medium',
+				'rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2Tight',
+				'rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2VTight',
+				'rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2VVTight'
+			)
+	elif tools.is_above_cmssw_version([8,0,20]):
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+			# 2016 v1
+			'rerunDiscriminationByIsolationOldDMMVArun2v1raw',
+			'rerunDiscriminationByIsolationOldDMMVArun2v1VLoose',
+			'rerunDiscriminationByIsolationOldDMMVArun2v1Loose',
+			'rerunDiscriminationByIsolationOldDMMVArun2v1Medium',
+			'rerunDiscriminationByIsolationOldDMMVArun2v1Tight',
+			'rerunDiscriminationByIsolationOldDMMVArun2v1VTight',
+			'rerunDiscriminationByIsolationOldDMMVArun2v1VVTight',
+			# 2016 new DM
+			'rerunDiscriminationByIsolationNewDMMVArun2v1raw',
+			'rerunDiscriminationByIsolationNewDMMVArun2v1VLoose',
+			'rerunDiscriminationByIsolationNewDMMVArun2v1Loose',
+			'rerunDiscriminationByIsolationNewDMMVArun2v1Medium',
+			'rerunDiscriminationByIsolationNewDMMVArun2v1Tight',
+			'rerunDiscriminationByIsolationNewDMMVArun2v1VTight',
+			'rerunDiscriminationByIsolationNewDMMVArun2v1VVTight'
 			)
 	## now also possible to save all MVA isolation inputs for taus # turn of per default
 
