@@ -23,9 +23,14 @@ do
 done
 
 ##Electron cutBased Id and MVA Id
+#References:
+##https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_92X
+##https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_Recipe_for_regul
 ##https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_8_0
 ##https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_regular_users_common
+# cut-based electrons IDs
 git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP
+# MVA-based electrons IDs
 git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
 scram b -j `grep -c ^processor /proc/cpuinfo`
 #
