@@ -12,6 +12,10 @@ cmssw_version_number = tools.get_cmssw_version_number()
 ## ------------------------------------------------------------------------
 ##  rerun tau reconstruction sequence following POG recommendation:
 ##  https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_MiniA
+'''
+	THIS FILE IS OBSOLETE AND IS NOT USED ANYMORE: SWITCHED TO THE TAU POG STANDART TECHNEQUE.
+'''
+
 """
 	The tau ID configuration on MiniAOD event content in CMSSW_9_4_X can be found in the following wiki page:
 	https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_M_AN1
@@ -201,7 +205,6 @@ if not tools.is_above_cmssw_version([9]):
 		rerunDiscriminationByIsolationMVANewDMrun2v1VVTight
 	)
 if tools.is_above_cmssw_version([9]):
-	print "here"
 	makeKappaTaus = cms.Sequence(
 		rerunDiscriminationByIsolationMVArun2v1raw +
 		rerunDiscriminationByIsolationMVArun2v1VVLoose +
