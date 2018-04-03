@@ -31,8 +31,7 @@ public:
 		this->cEvent = &event;
 		this->cSetup = &setup;
 
-		for (typename std::map<Tout*, TargetSetupMapContent >::iterator
-			it = targetSetupMap.begin(); it != targetSetupMap.end(); ++it)
+		for(typename std::map<Tout*, TargetSetupMapContent >::iterator it = targetSetupMap.begin(); it != targetSetupMap.end(); ++it)
 		{
 			const edm::ParameterSet &pset = std::get<0>(it->second);
 			const edm::InputTag &src = std::get<1>(it->second);
@@ -45,13 +44,16 @@ public:
 			// Try to get product via id
 			if (!event.getByToken(std::get<2>(it->second), this->handle))
 			{
-				std::cout << "Could not get main product! " << desc.second << ".src = " << src.encode() << std::endl;
+				std::cout << "Could not get main product! " << desc.second << ".src = " << src.encode()
+				<< " desc.first=" << desc.first
+				<< " pset=" << pset
+				<< " this->handle=" << this->handle
+				<< std::endl;
 				continue;
 			}
 
 			std::string name = desc.first;
-			if ((desc.first != desc.second) && !justOutputName)
-				name += " (" + desc.second + ")";
+			if ((desc.first != desc.second) && !justOutputName) name += " (" + desc.second + ")";
 			fillProduct(*(this->handle), ref, name, &src, pset);
 		}
 
