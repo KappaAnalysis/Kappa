@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
-import json,os
+import json, os, pprint
+pp = pprint.PrettyPrinter(indent=4)
+
 from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
 import argparse
 from Kappa.Skimming.tools import read_grid_control_includes
@@ -299,6 +301,38 @@ class DataSetManagerBase:
 		new = datasetsHelperTwopz(newfile)
 		self.dataset.merge(new)
 
+	def copy_xsec_from_campaign(self, new_campaign, old_campaign):
+		xsec_dict = {}
+		not_updated_nicks = []
+
+		new_nick_list = [nick for nick in self.get_nick_list() if self.dataset.base_dict[nick]["campaign"] == new_campaign]
+		old_nick_list = [nick for nick in self.get_nick_list() if self.dataset.base_dict[nick]["campaign"] == old_campaign and "xsec" in self.dataset.base_dict[nick]]
+		old_processes_xsec_per_nick_list = [(self.dataset.base_dict[nick]["process"],self.dataset.base_dict[nick]["xsec"]) for nick in old_nick_list]
+
+		for info in old_processes_xsec_per_nick_list:
+			if info[0] not in xsec_dict: xsec_dict[info[0]] = info[1]
+			elif xsec_dict[info[0]] == info[1]: continue
+			else:
+				print "WARINING: inconsistent xsec values for process %s. Please query them for the following campaign: %s"%(info[0], old_campaign)
+				print "Values: ", xsec_dict[info[0]], "vs", info[1]
+				print "--------------------"
+
+		for nick in new_nick_list:
+			if self.dataset.base_dict[nick]["process"] in xsec_dict:
+				self.dataset.addEntry({"xsec" : float(xsec_dict[self.dataset.base_dict[nick]["process"]])}, [nick])
+			else:
+				print "WARNING: cross-section not found for %s, Please set it by hand or choose a different reference campaign."%nick
+				not_updated_nicks.append(nick)
+
+		print "Summary of not updated nicks:"
+		pp.pprint(not_updated_nicks)
+
+		process_pattern = "^("
+		not_covered_process_list = set([self.dataset.base_dict[n]["process"] for n in not_updated_nicks])
+		process_pattern += "|".join(list(not_covered_process_list))
+		process_pattern += ")$"
+		print "--query \'{\"process\" : \"%s\"}\'"%process_pattern
+
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="Tools for modify the dataset data base (aka datasets.json)")
 
@@ -315,6 +349,7 @@ if __name__ == "__main__":
 	parser.add_argument("--mergejson",default=None, dest="mergejson", help="Add new JSON file to merge with input JSON. In case of same keys inputfile will be overwritten with new keys.")
 
 	parser.add_argument("--addentry", dest="addentry", default=None, help="Add a dict entry to all dicts that match query, e.g. --addentry '{\"NewKey\" : \"NewValue\"}' (!!! outer parentheses must be \'), or json file. Existing values with the same Key will be overwritten. [Default : %(default)s]")
+	parser.add_argument("--copy_xsec_from_campaign", dest="copy_xsec_from_campaign", default=None, help="Copy xsec values process-wise from one campaign to another. Format: new_campaign,old_campaign")
 
 	parser.add_argument("--addtag", dest="addtag", help="Add the to this tag the TagValues -> requieres -- addtagvaluesoption\nAlso either the --query or --nicks option must be given (for matching) ")
 	parser.add_argument("--addtagvalues", dest="addtagvalues", help="The tag values, must be a comma separated string (e.g. --TagValues \"Skim_Base',Skim_Exetend\" ")
@@ -364,6 +399,8 @@ if __name__ == "__main__":
 			DSM.add_globaltag(add_globaltag=str(args.globaltag))
 		if args.rmtag:
 			DSM.rm_tags(rm_tag_key=args.rmtag, rm_tag_values_str=args.rmtagvalues)
+		if args.copy_xsec_from_campaign:
+			DSM.copy_xsec_from_campaign(args.copy_xsec_from_campaign.split(",")[0], args.copy_xsec_from_campaign.split(",")[1])
 
 	if args.deleteDatasets:
 		 DSM.delete_datasets()
