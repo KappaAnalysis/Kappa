@@ -312,7 +312,12 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90",
 			"egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80",
 			"egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose",
-			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"
+			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values",
+			"egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90",
+			"egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80",
+			"egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose",
+			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values"
+
 			)
 	elif tools.is_above_cmssw_version([8]):
 		process.kappaTuple.Electrons.ids = cms.vstring(
