@@ -419,8 +419,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		#"byVTightIsolationMVArun2v1DBdR03oldDMwLT",
 		#"byVVTightIsolationMVArun2v1DBdR03oldDMwLT",
 		)
-
-	process.kappaTuple.active += cms.vstring('L1Taus')
+	if tools.is_above_cmssw_version([9]):
+		process.kappaTuple.active += cms.vstring('L1Taus')
 
 	if tools.is_above_cmssw_version([8,0,20]):
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
