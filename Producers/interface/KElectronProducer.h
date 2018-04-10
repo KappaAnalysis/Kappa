@@ -57,13 +57,13 @@ public:
 		for (size_t i = 0; i < names.size(); ++i)
 		{
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-		for(size_t j = 0; j < this->isoValInputTags.size(); ++j)
-			tokenIsoValInputTags.push_back(consumescollector.consumes<edm::ValueMap<double>>(this->isoValInputTags.at(j)));
+			for(size_t j = 0; j < this->isoValInputTags.size(); ++j)
+				tokenIsoValInputTags.push_back(consumescollector.consumes<edm::ValueMap<double>>(this->isoValInputTags.at(j)));
 		}
+
 		for (size_t j = 0; j < namesOfIds.size(); ++j)
-		{
 			tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(namesOfIds[j]));
-		}
+
 		if (this->verbosity == 3) std::cout << "KElectronProducer () end\n";
 	}
 
@@ -80,9 +80,8 @@ public:
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
 		for (std::vector<std::string>::const_iterator id = namesOfIds.begin(); id != namesOfIds.end(); ++id)
-		{
 			electronMetadata->idNames.push_back(*id);
-		}
+
 		return KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::onLumi(lumiBlock, setup);
 	}
 
@@ -100,14 +99,12 @@ public:
 		for (size_t j = 0; j < this->isoValInputTags.size(); ++j)
 		{
 			cEvent->getByToken(this->tokenIsoValInputTags[j], this->isoVals[j]);
-			if (this->isoVals[j].failedToGet())
-			{
-				doPfIsolation_ = false;
-			}
+
+			if (this->isoVals[j].failedToGet()) doPfIsolation_ = false;
 		}
 
 		cEvent->getByToken(tokenRhoIso, rhoIso_h);
-		
+
 		// TODO: change to getByToken
 		/*art::Handle<StepPointMCCollection> stepsHandle;
 		event.getByLabel("g4run","tracker",stepsHandle);
@@ -126,14 +123,12 @@ public:
 		*/
 
 		// Continue with main product: PAT-electrons
-		
+
 		// Prepare IDs for miniAOD
 		electronIDValueMap.resize(namesOfIds.size());
 		for (size_t j = 0; j < namesOfIds.size(); ++j)
-		{
 			cEvent->getByToken(this->tokenOfIds[j], this->electronIDValueMap[j]);
-		}
-		
+
 		// call base class
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::fillProduct(in, out, name, tag, pset);
 		if (this->verbosity == 3) std::cout << "KElectron::fillProduct end\n";
@@ -150,10 +145,9 @@ public:
 		// charge and flavour (lepton type)
 		assert(in.charge() == 1 || in.charge() == -1);
 		out.leptonInfo = KLeptonFlavour::ELECTRON;
-		if (in.charge() > 0)
-			out.leptonInfo |= KLeptonChargeMask;
-		if (in.isPF())
-			out.leptonInfo |= KLeptonPFMask;
+
+		if (in.charge() > 0) out.leptonInfo |= KLeptonChargeMask;
+		if (in.isPF())       out.leptonInfo |= KLeptonPFMask;
 
 		if (VertexCollection->size() == 0) throw cms::Exception("VertexCollection in KElectronProducer is empty");
 		reco::Vertex vtx = (*VertexCollection).at(0);
@@ -217,8 +211,7 @@ public:
 		out.hcal1Iso = in.dr03HcalDepth1TowerSumEt();
 		out.hcal2Iso = in.dr03HcalDepth2TowerSumEt();
 
-		if (doPfIsolation_)
-			doPFIsolation(in, out);
+		if (doPfIsolation_) doPFIsolation(in, out);
 		else
 		{
 			// fall back on built-in methods, where available
