@@ -7319,6 +7319,9 @@
     "xsec": 720648000.0
   },
   "STt-channelantitop4finclusiveDecaysTuneCP5_RunIIFall17MiniAOD_94X_13TeV_MINIAOD_powheg-pythia8": {
+    "analysis_2017": [
+      "skim_mc"
+    ],
     "campaign": "RunIIFall17MiniAOD",
     "data": false,
     "dbs": "/ST_t-channel_antitop_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM",
@@ -7417,6 +7420,9 @@
     "xsec": 26.2278
   },
   "STt-channeltop4finclusiveDecaysTuneCP5_RunIIFall17MiniAOD_94X_13TeV_MINIAOD_powheg-pythia8": {
+    "analysis_2017": [
+      "skim_mc"
+    ],
     "campaign": "RunIIFall17MiniAOD",
     "data": false,
     "dbs": "/ST_t-channel_top_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM",
