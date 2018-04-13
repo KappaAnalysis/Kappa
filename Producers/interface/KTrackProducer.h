@@ -58,7 +58,12 @@ public:
 		out.nPixelLayers = in.hitPattern().pixelLayersWithMeasurement();
 		out.nStripLayers = in.hitPattern().stripLayersWithMeasurement();
 		out.nTrackerLayersNew = in.hitPattern().trackerLayersWithMeasurement();
+		#if (CMSSW_MAJOR_VERSION >= 9)
 		out.nInnerHits = in.hitPattern().numberOfAllHits(reco::HitPattern::MISSING_INNER_HITS);
+		#endif
+		#if (CMSSW_MAJOR_VERSION < 9)
+		out.nInnerHits = in.hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
+		#endif
 
 		// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L3-L49
 		for (unsigned int index1 = 0; index1 < reco::Track::dimension; ++index1)
