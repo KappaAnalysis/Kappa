@@ -857,6 +857,25 @@
     "scenario": "PU25nsData2015v1",
     "xsec": 18610.0
   },
+  "DYJetsToLLM10to50_RunIIFall17MiniAOD_94X_13TeV_MINIAOD_madgraph-pythia8": {
+    "analysis_2017": [
+      "skim_mc"
+    ],
+    "campaign": "RunIIFall17MiniAOD",
+    "data": false,
+    "dbs": "/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v2/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "madgraph-pythia8",
+    "globalTag": "94X_mc2017_realistic_v13",
+    "inputDBS": "global",
+    "n_events_generated": "38832197",
+    "n_files": "508",
+    "process": "DYJetsToLL_M10to50",
+    "scenario": "94X",
+    "xsec": 18610.0
+  },
   "DYJetsToLLM10to50_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_amcatnlo-pythia8": {
     "Moriond17": [
       "MC_Spring16_v1"
@@ -15988,7 +16007,7 @@
     "generatorWeight": 0.9992433637178805,
     "globalTag": "94X_mc2017_realistic_v13",
     "inputDBS": "global",
-    "n_events_generated": "29499912",
+    "n_events_generated": "30003848",
     "n_files": "484",
     "process": "W1JetsToLNu",
     "scenario": "94X",
@@ -16110,7 +16129,7 @@
     "generatorWeight": 0.9989203224652948,
     "globalTag": "94X_mc2017_realistic_v13",
     "inputDBS": "global",
-    "n_events_generated": "19543473",
+    "n_events_generated": "19944844",
     "n_files": "312",
     "process": "W2JetsToLNu",
     "scenario": "94X",
@@ -16393,11 +16412,10 @@
     "extension": "",
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
-    "generatorWeight": 0.9973246380359905,
     "globalTag": "94X_mc2017_realistic_v13",
     "inputDBS": "global",
-    "n_events_generated": "6281804",
-    "n_files": "164",
+    "n_events_generated": "11285729",
+    "n_files": "255",
     "process": "W4JetsToLNu",
     "scenario": "94X",
     "xsec": 485.8
