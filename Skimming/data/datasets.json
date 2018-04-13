@@ -1225,7 +1225,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9991206409969199,
-    "globalTag": "94X_mc2017_realistic_v10",
+    "globalTag": "94X_mc2017_realistic_v13",
     "inputDBS": "global",
     "n_events_generated": "48141885",
     "n_files": "737",
@@ -1245,7 +1245,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9991168301976515,
-    "globalTag": "94X_mc2017_realistic_v10",
+    "globalTag": "94X_mc2017_realistic_v13",
     "inputDBS": "global",
     "n_events_generated": "48787900",
     "n_files": "674",
@@ -7537,7 +7537,7 @@
     "n_files": "155",
     "process": "STtWantitop5finclusiveDecaysTuneCP5",
     "scenario": "94X",
-    "xsec": 38.09
+    "xsec": 35.85
   },
   "STtWantitop5finclusiveDecays_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_powheg-pythia8": {
     "Fall15": [
@@ -7641,6 +7641,25 @@
     "scenario": "92X",
     "xsec": 38.09
   },
+  "STtWtop5finclusiveDecaysTuneCP5PSweights_RunIIFall17MiniAOD_94X_13TeV_MINIAOD_powheg-pythia8": {
+    "analysis_2017": [
+      "skim_mc"
+    ],
+    "campaign": "RunIIFall17MiniAOD",
+    "data": false,
+    "dbs": "/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "powheg-pythia8",
+    "globalTag": "94X_mc2017_realistic_v13",
+    "inputDBS": "global",
+    "n_events_generated": "7636171",
+    "n_files": "167",
+    "process": "STtWtop5finclusiveDecaysTuneCP5PSweights",
+    "scenario": "94X",
+    "xsec": 35.85
+  },
   "STtWtop5finclusiveDecaysTuneCP5_RunIIFall17MiniAOD_94X_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
       "skim_mc"
@@ -7659,7 +7678,7 @@
     "n_files": "183",
     "process": "STtWtop5finclusiveDecaysTuneCP5",
     "scenario": "94X",
-    "xsec": 38.09
+    "xsec": 35.85
   },
   "STtWtop5finclusiveDecays_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_powheg-pythia8": {
     "Fall15": [
