@@ -36,36 +36,41 @@ git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
 #git cms-merge-topic cms-egamma:EGIDV1AndScaleSmear_940
 #git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
 #====================================
-scram b -j `grep -c ^processor /proc/cpuinfo`
+#scram b -j `grep -c ^processor /proc/cpuinfo`
 #
 # Add the area containing the MVA weights (from cms-data, to appear externa).
 # Note: the external area appears after scram build is run at least once, as above
 #
+mkdir $CMSSW_BASE/tmp_external
 # Photons - Uncomment if needed
-cd $CMSSW_BASE/external
+cd $CMSSW_BASE/tmp_external
 # below, you may have a different architecture, this is just one example from lxplus
-cd slc6_amd64_gcc630/
+#cd slc6_amd64_gcc630/
 git clone https://github.com/lsoffi/RecoEgamma-PhotonIdentification.git data/RecoEgamma/PhotonIdentification/data
 cd data/RecoEgamma/PhotonIdentification/data
+cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/PhotonIdentification/data
 git checkout CMSSW_9_4_0_pre3_TnP
 #
 # Electrons
-cd $CMSSW_BASE/external
-cd slc6_amd64_gcc630/
+cd $CMSSW_BASE/tmp_external
+#cd slc6_amd64_gcc630/
 git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
 cd data/RecoEgamma/ElectronIdentification/data
 git checkout CMSSW_9_4_0_pre3_TnP
+cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/ElectronIdentification/data
 cd $CMSSW_BASE/src
 #=========smearing and scaling=======
 #now we need to get the .dat files for the scale and smearing
-#cd $CMSSW_BASE/external
+#cd $CMSSW_BASE/tmp_external
 ## below, you may have a different architecture, this is just one example from lxplus
-#cd slc6_amd64_gcc630/
+##cd slc6_amd64_gcc630/
 #git clone git@github.com:Sam-Harper/EgammaAnalysis-ElectronTools.git data/EgammaAnalysis/ElectronTools/data
 #cd data/EgammaAnalysis/ElectronTools/data
 #git checkout ReReco17NovScaleAndSmearing 
+#cp -r Fall17 $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/datas
 #cd $CMSSW_BASE/src
 #=====================================
+rm -rf tmp_external
 ##Remove the .git folder as it is not needed and contains a lot of useless data
 #rm -rf RecoEgamma/ElectronIdentification/data/.git
 rm -rf $CMSSW_BASE/external/slc6_amd64_gcc630/data/RecoEgamma/ElectronIdentification/data/.git
