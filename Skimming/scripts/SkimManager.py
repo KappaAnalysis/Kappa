@@ -12,6 +12,8 @@ import gzip
 import shutil
 import re
 from multiprocessing import Process, Queue
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 
 from httplib import HTTPException
 from CRABAPI.RawCommand import crabCommand
@@ -65,6 +67,11 @@ class SkimManagerBase:
 			print "Failed", configuration["cmd"], "of the task: %s" % (hte.headers)
 		except ClientException as cle:
 			print "Failed", configuration["cmd"], "of the task: %s" % (cle)
+		except:
+			print "Looks like crab has a bug - write to support"
+			if configuration["cmd"] == "submit":
+				print "The submission for this case is disabled. Bye"
+				exit(1)
 
 	def save_dataset(self, filename=None):
 		self.skimdataset.write_to_jsonfile(filename)
@@ -174,7 +181,7 @@ class SkimManagerBase:
 		config.JobType.maxMemoryMB = 2500
 		config.JobType.allowUndistributedCMSSW = True
 		config.Site.blacklist = ["T3_FR_IPNL", "T3_US_UCR", "T2_BR_SPRACE", "T1_RU_*", "T2_RU_*", "T3_US_UMiss", "T2_US_Vanderbilt", "T2_EE_Estonia", "T2_TW_*"]
-		config.Data.splitting = 'FileBased'
+		config.Data.splitting = 'Automatic'# 'FileBased'
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir.rstrip("/")))
 		config.Data.publication = False
 		config.Data.allowNonValidInputDataset = False  # Set it true to run over incomplete datasets (for the ones still on Production status)
@@ -773,7 +780,6 @@ if __name__ == "__main__":
 
 	if args.statusgc:
 		SKM.status_gc()
-
 	else:
 		SKM.submit_crab(force=args.force)
 		SKM.status_crab()
