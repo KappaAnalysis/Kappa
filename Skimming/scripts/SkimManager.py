@@ -177,6 +177,7 @@ class SkimManagerBase:
 		config.Data.splitting = 'FileBased'
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir.rstrip("/")))
 		config.Data.publication = False
+		config.Data.allowNonValidInputDataset = False  # Set it true to run over incomplete datasets (for the ones still on Production status)
 		config.Site.storageSite = self.storage_for_output
 		return config
 
