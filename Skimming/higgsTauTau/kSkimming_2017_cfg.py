@@ -542,8 +542,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	#process.kappaTuple.PatMET.pfmetT1 = cms.PSet(src=cms.InputTag("patpfMETT1"))
 	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
+
+	slimmedMETsProcess = "PAT"
+	if data: slimmedMETsProcess = "RECO"
 	process.kappaTuple.PatMET.metPF = cms.PSet(
-		src=cms.InputTag("slimmedMETs", "", "PAT"),
+		src=cms.InputTag("slimmedMETs", "", slimmedMETsProcess),
 		uncorrected=cms.bool(True)
 	)
 
