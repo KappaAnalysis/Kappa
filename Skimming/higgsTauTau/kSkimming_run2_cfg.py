@@ -333,7 +333,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# new tau id only available for 8_0_20 (I believe) and above
 	if tools.is_above_cmssw_version([8,0,20]):
 		process.load('RecoTauTag.Configuration.loadRecoTauTagMVAsFromPrepDB_cfi')
-		process.load("Kappa.Skimming.KPatTaus_run2_cff")
+		process.load("Kappa.Skimming.KPatTaus_run2_cff_OBSOLETE")
 		process.p *= ( process.makeKappaTaus )
 
 		# embed new id's into new tau collection
