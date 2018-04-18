@@ -347,8 +347,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#--------------------------------------------------------------------------------
 	#https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_M_AN1
 	toKeep = []
-	if tools.is_above_cmssw_version([8,0,20]): toKeep.extend(("2016v1", "newDM2016v1"))
-	elif tools.is_above_cmssw_version([9]): toKeep.extend(("2017v1", "2017v2", "newDM2017v2", "dR0p32017v2"))
+	if tools.is_above_cmssw_version([9]): toKeep.extend(("2017v1", "2017v2", "newDM2017v2", "dR0p32017v2"))
+	elif tools.is_above_cmssw_version([8,0,20]): toKeep.extend(("2016v1", "newDM2016v1"))
 
 	from Kappa.Skimming.runTauIdMVA import *
 	na = TauIDEmbedder(process, cms,
