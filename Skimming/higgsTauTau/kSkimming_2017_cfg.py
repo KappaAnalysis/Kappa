@@ -24,10 +24,13 @@ if not hasattr(sys, 'argv'):
 	sys.argv = ["cmsRun", "runFrameworkMC.py"]
 
 import os
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
+
 import FWCore.ParameterSet.Config as cms
+import Kappa.Skimming.tools as tools
 from  Kappa.Skimming.datasetsHelperTwopz import datasetsHelperTwopz
 datasetsHelper = datasetsHelperTwopz(os.path.join(os.environ.get("CMSSW_BASE"),"src/Kappa/Skimming/data/datasets.json"))
-import Kappa.Skimming.tools as tools
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('python')
