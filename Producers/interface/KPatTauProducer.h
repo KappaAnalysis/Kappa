@@ -268,6 +268,12 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 						std::cout << "Warining: extrafloatDiscrlist only available in CMSSW_8_0_21 or new" << std::endl;
 				#endif
 				floatDiscrBlacklist[names[i]] = pset.getParameter< std::vector<std::string> >("floatDiscrBlacklist");
+				if (this->verbosity == 3)
+				{
+					std::cout << "name " << i << " correxponds binaryDiscrWhitelist \n" ;
+					for (unsigned int j = 0; j< binaryDiscrWhitelist[names[i]].size(); j++)
+						std::cout << "\t" << binaryDiscrWhitelist[names[i]][j] << std::endl;
+				}
 			}
 			if (this->verbosity == 3) std::cout << "KPatTauProducer() end\n";
 		}
@@ -351,10 +357,21 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			out.floatDiscriminators = std::vector<float>(0); // Will be resized in each event
 
 			const std::vector<std::pair<std::string, float>> tauIDs = in.tauIDs();
+
+			if (this->verbosity == 3)
+			{
+				std::cout << "Study tauIDs:" << std::endl;
+				for(size_t i = 0; i < tauIDs.size(); ++i)
+					std::cout << "tauid number " << i << " :" <<  tauIDs[i].first << " :: " << tauIDs[i].second<< std::endl;
+			std::cout << "names length:" <<  names.size() << std::endl;
+			}
+
 			for(size_t i = 0; i < names.size(); ++i)
 			{
+				if (this->verbosity == 3) std::cout << "names " << i << " :" <<  names[i] << std::endl;
 				for(auto tauID : tauIDs)
 				{
+					if (this->verbosity == 3) std::cout << "\ttauid " << " :" <<  tauID.first << " :: " << tauID.second<< std::endl;
 					if( KBaseProducer::regexMatch(tauID.first, binaryDiscrWhitelist[names[i]], binaryDiscrBlacklist[names[i]])) //regexmatch for binary discriminators
 					{
 						discriminatorMap[names[i]]->binaryDiscriminatorNames.push_back(tauID.first);
