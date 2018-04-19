@@ -395,41 +395,46 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	if "2017v1" in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
-				# v1
-				"byIsolationMVArun2017v1DBoldDMwLTraw2017",
-				"byVVLooseIsolationMVArun2017v1DBoldDMwLT2017",
-				"byVLooseIsolationMVArun2017v1DBoldDMwLT2017",
-				"byLooseIsolationMVArun2017v1DBoldDMwLT2017",
-				"byMediumIsolationMVArun2017v1DBoldDMwLT2017",
-				"byTightIsolationMVArun2017v1DBoldDMwLT2017",
-				"byVTightIsolationMVArun2017v1DBoldDMwLT2017",
-				"byVVTightIsolationMVArun2017v1DBoldDMwLT2017")
+			"byIsolationMVArun2017v1DBoldDMwLTraw2017",
+			"byVVLooseIsolationMVArun2017v1DBoldDMwLT2017",
+			"byVLooseIsolationMVArun2017v1DBoldDMwLT2017",
+			"byLooseIsolationMVArun2017v1DBoldDMwLT2017",
+			"byMediumIsolationMVArun2017v1DBoldDMwLT2017",
+			"byTightIsolationMVArun2017v1DBoldDMwLT2017",
+			"byVTightIsolationMVArun2017v1DBoldDMwLT2017",
+			"byVVTightIsolationMVArun2017v1DBoldDMwLT2017")
 	if "2017v2" in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
-			# v2
-				"byIsolationMVArun2017v2DBoldDMwLTraw2017",
-				"byVVLooseIsolationMVArun2017v2DBoldDMwLT2017",
-				"byVLooseIsolationMVArun2017v2DBoldDMwLT2017",
-				"byLooseIsolationMVArun2017v2DBoldDMwLT2017",
-				"byMediumIsolationMVArun2017v2DBoldDMwLT2017",
-				"byTightIsolationMVArun2017v2DBoldDMwLT2017",
-				"byVTightIsolationMVArun2017v2DBoldDMwLT2017",
-				"byVVTightIsolationMVArun2017v2DBoldDMwLT2017")
+			"byIsolationMVArun2017v2DBoldDMwLTraw2017",
+			"byVVLooseIsolationMVArun2017v2DBoldDMwLT2017",
+			"byVLooseIsolationMVArun2017v2DBoldDMwLT2017",
+			"byLooseIsolationMVArun2017v2DBoldDMwLT2017",
+			"byMediumIsolationMVArun2017v2DBoldDMwLT2017",
+			"byTightIsolationMVArun2017v2DBoldDMwLT2017",
+			"byVTightIsolationMVArun2017v2DBoldDMwLT2017",
+			"byVVTightIsolationMVArun2017v2DBoldDMwLT2017")
 	if "newDM2017v2" in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
-			# new DM
-				"byIsolationMVArun2017v2DBnewDMwLTraw2017",
-				"byVVLooseIsolationMVArun2017v2DBnewDMwLT2017",
-				"byVLooseIsolationMVArun2017v2DBnewDMwLT2017",
-				"byLooseIsolationMVArun2017v2DBnewDMwLT2017",
-				"byMediumIsolationMVArun2017v2DBnewDMwLT2017",
-				"byTightIsolationMVArun2017v2DBnewDMwLT2017",
-				"byVTightIsolationMVArun2017v2DBnewDMwLT2017",
-				"byVVTightIsolationMVArun2017v2DBnewDMwLT2017"
-			)
+			"byIsolationMVArun2017v2DBnewDMwLTraw2017",
+			"byVVLooseIsolationMVArun2017v2DBnewDMwLT2017",
+			"byVLooseIsolationMVArun2017v2DBnewDMwLT2017",
+			"byLooseIsolationMVArun2017v2DBnewDMwLT2017",
+			"byMediumIsolationMVArun2017v2DBnewDMwLT2017",
+			"byTightIsolationMVArun2017v2DBnewDMwLT2017",
+			"byVTightIsolationMVArun2017v2DBnewDMwLT2017",
+			"byVVTightIsolationMVArun2017v2DBnewDMwLT2017")
+	if "dR0p32017v2" in toKeep:
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+			"byIsolationMVArun2017v2DBoldDMdR0p3wLTraw2017",
+			"byVVLooseIsolationMVArun2017v2DBoldDMdR0p3wLT2017",
+			"byVLooseIsolationMVArun2017v2DBoldDMdR0p3wLT2017",
+			"byLooseIsolationMVArun2017v2DBoldDMdR0p3wLT2017",
+			"byMediumIsolationMVArun2017v2DBoldDMdR0p3wLT2017",
+			"byTightIsolationMVArun2017v2DBoldDMdR0p3wLT2017",
+			"byVTightIsolationMVArun2017v2DBoldDMdR0p3wLT2017",
+			"byVVTightIsolationMVArun2017v2DBoldDMdR0p3wLT2017")
 	if "2016v1" in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
-			# 2016 v1
 			"byIsolationMVArun2v1DBoldDMwLTraw2016",
 			"byVLooseIsolationMVArun2v1DBoldDMwLT2016",
 			"byLooseIsolationMVArun2v1DBoldDMwLT2016",
@@ -439,7 +444,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"byVVTightIsolationMVArun2v1DBoldDMwLT2016")
 	if "newDM2016v1" in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
-			# 2016 new DM
 			"byIsolationMVArun2v1DBnewDMwLTraw2016",
 			"byVLooseIsolationMVArun2v1DBnewDMwLT2016",
 			"byLooseIsolationMVArun2v1DBnewDMwLT2016",
@@ -447,7 +451,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"byTightIsolationMVArun2v1DBnewDMwLT2016",
 			"byVTightIsolationMVArun2v1DBnewDMwLT2016",
 			"byVVTightIsolationMVArun2v1DBnewDMwLT2016")
-	## now also possible to save all MVA isolation inputs for taus # turn of per default
 
 	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring(
 		"decayDistX",
