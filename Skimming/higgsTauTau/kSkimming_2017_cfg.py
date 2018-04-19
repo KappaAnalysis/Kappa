@@ -350,7 +350,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if tools.is_above_cmssw_version([9]): toKeep.extend(("2017v1", "2017v2", "newDM2017v2", "dR0p32017v2"))
 	elif tools.is_above_cmssw_version([8,0,20]): toKeep.extend(("2016v1", "newDM2016v1"))
 
-	from Kappa.Skimming.runTauIdMVA import *
+	from Kappa.Skimming.runTauIdMVA import TauIDEmbedder
 	na = TauIDEmbedder(process, cms,
 	    debug=True,
 	    toKeep = toKeep
@@ -393,7 +393,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('L1Taus')
 
 
-	if tools.is_above_cmssw_version([9]):
+	if "2017v1" in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
 				# v1
 				"byIsolationMVArun2017v1DBoldDMwLTraw2017",
@@ -403,8 +403,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 				"byMediumIsolationMVArun2017v1DBoldDMwLT2017",
 				"byTightIsolationMVArun2017v1DBoldDMwLT2017",
 				"byVTightIsolationMVArun2017v1DBoldDMwLT2017",
-				"byVVTightIsolationMVArun2017v1DBoldDMwLT2017",
-				# v2
+				"byVVTightIsolationMVArun2017v1DBoldDMwLT2017")
+	if "2017v2" in toKeep:
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+			# v2
 				"byIsolationMVArun2017v2DBoldDMwLTraw2017",
 				"byVVLooseIsolationMVArun2017v2DBoldDMwLT2017",
 				"byVLooseIsolationMVArun2017v2DBoldDMwLT2017",
@@ -412,8 +414,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 				"byMediumIsolationMVArun2017v2DBoldDMwLT2017",
 				"byTightIsolationMVArun2017v2DBoldDMwLT2017",
 				"byVTightIsolationMVArun2017v2DBoldDMwLT2017",
-				"byVVTightIsolationMVArun2017v2DBoldDMwLT2017",
-				# new DM
+				"byVVTightIsolationMVArun2017v2DBoldDMwLT2017")
+	if "newDM2017v2" in toKeep:
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+			# new DM
 				"byIsolationMVArun2017v2DBnewDMwLTraw2017",
 				"byVVLooseIsolationMVArun2017v2DBnewDMwLT2017",
 				"byVLooseIsolationMVArun2017v2DBnewDMwLT2017",
@@ -423,7 +427,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 				"byVTightIsolationMVArun2017v2DBnewDMwLT2017",
 				"byVVTightIsolationMVArun2017v2DBnewDMwLT2017"
 			)
-	elif tools.is_above_cmssw_version([8,0,20]):
+	if "2016v1" in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
 			# 2016 v1
 			"byIsolationMVArun2v1DBoldDMwLTraw2016",
@@ -432,7 +436,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"byMediumIsolationMVArun2v1DBoldDMwLT2016",
 			"byTightIsolationMVArun2v1DBoldDMwLT2016",
 			"byVTightIsolationMVArun2v1DBoldDMwLT2016",
-			"byVVTightIsolationMVArun2v1DBoldDMwLT2016",
+			"byVVTightIsolationMVArun2v1DBoldDMwLT2016")
+	if "newDM2016v1" in toKeep:
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
 			# 2016 new DM
 			"byIsolationMVArun2v1DBnewDMwLTraw2016",
 			"byVLooseIsolationMVArun2v1DBnewDMwLT2016",
@@ -440,8 +446,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"byMediumIsolationMVArun2v1DBnewDMwLT2016",
 			"byTightIsolationMVArun2v1DBnewDMwLT2016",
 			"byVTightIsolationMVArun2v1DBnewDMwLT2016",
-			"byVVTightIsolationMVArun2v1DBnewDMwLT2016"
-			)
+			"byVVTightIsolationMVArun2v1DBnewDMwLT2016")
 	## now also possible to save all MVA isolation inputs for taus # turn of per default
 
 	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring(
