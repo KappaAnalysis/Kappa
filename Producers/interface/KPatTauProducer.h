@@ -67,7 +67,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			const std::vector<std::pair<std::string, float>> tauIDs = in.tauIDs();
 			int digit = 0;
 			out.binaryDiscriminators = 0;
-			for(auto discriminator: discriminatorMap[names[0]]->binaryDiscriminatorNames)
+			for (auto discriminator: discriminatorMap[names[0]]->binaryDiscriminatorNames)
 			{
 				if (in.tauID(discriminator) > 0.5)
 				{
@@ -383,7 +383,6 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				}
 				#endif
 
-				checkMapsize(discriminatorMap[names[i]]->floatDiscriminatorNames, "float Discriminators");
 				checkMapsize(discriminatorMap[names[i]]->binaryDiscriminatorNames, "binary Discriminators");
 				n_float_dict += discriminatorMap[names[i]]->floatDiscriminatorNames.size();
 			}
@@ -396,7 +395,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		{
 			if(map.size() > 64)
 			{
-				std::cout << title << " contains too many Elements(" << map.size() << ", max is 64" << std::endl;
+				std::cout << title << " contains too many Elements(" << map.size() << ", max is 64 since we use 'unsigned long long binaryDiscriminators' as a bit array for binary descriminators" << std::endl;
 				exit(1);
 			}
 		}
