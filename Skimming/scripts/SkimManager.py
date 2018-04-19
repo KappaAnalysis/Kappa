@@ -182,6 +182,8 @@ class SkimManagerBase:
 		config.JobType.allowUndistributedCMSSW = True
 		config.Site.blacklist = ["T3_FR_IPNL", "T3_US_UCR", "T2_BR_SPRACE", "T1_RU_*", "T2_RU_*", "T3_US_UMiss", "T2_US_Vanderbilt", "T2_EE_Estonia", "T2_TW_*"]
 		config.Data.splitting = 'Automatic'# 'FileBased'
+
+		# unitsPerJob
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir.rstrip("/")))
 		config.Data.publication = False
 		config.Data.allowNonValidInputDataset = False  # Set it true to run over incomplete datasets (for the ones still on Production status)
@@ -193,7 +195,8 @@ class SkimManagerBase:
 		config.Data.inputDBS = self.skimdataset[akt_nick].get("inputDBS", 'global')
 		globalTag = self.get_global_tag(akt_nick)
 		config.JobType.pyCfgParams = [str('globalTag=%s'%globalTag), 'kappaTag=KAPPA_2_1_0', str('nickname=%s'%(akt_nick)), str('outputfilename=kappa_%s.root'%(akt_nick)), 'testsuite=False']
-		config.Data.unitsPerJob = self.files_per_job(akt_nick)
+		if config.Data.splitting != 'Automatic':
+			config.Data.unitsPerJob = self.files_per_job(akt_nick)
 		config.Data.inputDataset = self.skimdataset[akt_nick]['dbs']
 		config.Data.ignoreLocality = self.skimdataset[akt_nick].get("ignoreLocality", False) # Set to False to make it submit also if no whitelist is defined. Set to True if you how to configure it properly. ## i have very good experince with this option, but feel free to change it (maybe also add larger default black list for this, or start with a whitlist
 		config.Site.blacklist.extend(self.skimdataset[akt_nick].get("blacklist", []))
