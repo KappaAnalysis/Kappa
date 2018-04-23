@@ -5268,6 +5268,9 @@
     "xsec": 3.045966
   },
   "GluGluHToTauTauM125_RunIIFall17MiniAOD_94X_13TeV_MINIAOD_powheg-pythia8": {
+    "analysis_2017": [
+      "skim_mc"
+    ],
     "campaign": "RunIIFall17MiniAOD",
     "data": false,
     "dbs": "/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM",
