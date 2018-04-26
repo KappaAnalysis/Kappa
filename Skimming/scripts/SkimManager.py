@@ -616,10 +616,11 @@ class SkimManagerBase:
 							except KeyError:
 								jobiddict["x"] = [jobid]
 						else:
+							id_type_key = re.findall(r'\d+-', jobid)[0]+ "x"
 							try:
-								jobiddict[jobid[0:2]+"x"].append(jobid)
+								jobiddict[id_type_key].append(jobid)
 							except KeyError:
-								jobiddict[jobid[0:2]+"x"]=[jobid]
+								jobiddict[id_type_key]=[jobid]
 
 				try:
 					for id_type in jobiddict.keys():
