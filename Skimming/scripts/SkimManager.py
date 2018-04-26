@@ -602,32 +602,51 @@ class SkimManagerBase:
 				dataset_filelist = ""
 				
 				number_jobs = self.skimdataset[dataset].get("n_jobs", int(self.skimdataset[dataset].get("n_files", 0)) if force else 0)
+
 				crab_number_folders = [str(i / 1000).zfill(4) for i in range(number_jobs+1)[::1000]]
 				crab_numer_folder_regex = re.compile('|'.join(crab_number_folders))
 
+				jobiddict ={}
+				for jobstatuslist in self.skimdataset[dataset].get("last_status").get("jobList"):
+					if jobstatuslist[0] == 'finished':
+						jobid = jobstatuslist[1]
+						if re.search("-", jobid) == None:
+							try:
+								jobiddict["x"].append(jobid)
+							except KeyError:
+								jobiddict["x"] = [jobid]
+						else:
+							try:
+								jobiddict[jobid[0:2]+"x"].append(jobid)
+							except KeyError:
+								jobiddict[jobid[0:2]+"x"]=[jobid]
+
 				try:
-					crab_dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids 1-{MAXID} --dir {DATASET_TASK} --proxy $X509_USER_PROXY".format(DATASET_TASK=os.path.join(self.workdir, self.skimdataset[dataset].get("crab_name", "crab_"+dataset[:100])), MAXID=min(number_jobs, 5)), shell=True).strip('\n').split('\n')
-					sample_file_path = crab_dataset_filelist[0]
-					job_id_match = re.findall(r'_\d+.root', sample_file_path)[0]
-					sample_file_path =  sample_file_path.replace(job_id_match, "_{JOBID}.root")
-					crab_number_folder_match = re.findall('|'.join(crab_number_folders), sample_file_path)[0]
-					sample_file_path =  sample_file_path.replace(crab_number_folder_match, "{CRAB_NUMBER_FOLDER}")
-					print "Found", number_jobs, "output files."
-					for jobid in range(1, number_jobs+1):
-						dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[jobid/1000], JOBID=jobid)+'\n'
+					for id_type in jobiddict.keys():
+						if id_type != "0-x":
+							crab_dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids {JOBID} --dir {DATASET_TASK} --proxy $X509_USER_PROXY".format(DATASET_TASK=os.path.join(self.workdir, self.skimdataset[dataset].get("crab_name", "crab_"+dataset[:100])), JOBID=str(jobiddict[id_type][0])), shell=True).strip('\n').split('\n')
+							sample_file_path = crab_dataset_filelist[0]
+							pattern = "_" + id_type[0:-1]+r'\d+.root'
+							job_id_match = re.findall(pattern, sample_file_path)[0]
+							sample_file_path =  sample_file_path.replace(job_id_match,"_"+ id_type[0:-1]+ "{JOBID}.root")
+							crab_number_folder_match = re.findall('|'.join(crab_number_folders), sample_file_path)[0]
+							sample_file_path =  sample_file_path.replace(crab_number_folder_match, "{CRAB_NUMBER_FOLDER}")
+							print "Found", number_jobs, "output files."
+							for jobid in range(1, len(jobiddict[id_type])+1):
+								dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[jobid/1000], JOBID=jobid)+'\n'
 					dataset_filelist = dataset_filelist.strip('\n')
 					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/", self.site_storage_access_dict[storage_site]["xrootd"]))
 					filelist.close()
 					print "Saved filelist in \"%s\"." % filelist_path
 				except:
 					print "Getting output from crab exited with error. Try again later."
-				
+
 				if create_recent_symlinks:
 					filelist_path_symlink = filelist_path.replace(date+".txt", "recent.txt")
 					os.system("ln -fsv %s %s" % (os.path.relpath(filelist_path, os.path.dirname(filelist_path_symlink)), filelist_path_symlink))
 
 				filelist_check = open(filelist_path, 'r')
-				if len(filelist_check.readlines()) == number_jobs:
+				if len(filelist_check.readlines()) == (number_jobs-len(jobiddict["0-x"])):
 					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
 					print "List creation successfull!"
 				filelist_check.close()
