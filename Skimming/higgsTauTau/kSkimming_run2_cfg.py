@@ -129,8 +129,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 
 	# General configuration
-	if tools.is_above_cmssw_version([7,4]) and not data:
-		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo")
+	if tools.is_above_cmssw_version([7,4]) and not data and not isEmbedded:
+		process.kappaTuple.Info.pileUpInfoSource = cms.InputTag("slimmedAddPileupInfo", "", "PAT")
 
 	# save primary vertex
 	process.kappaTuple.active += cms.vstring('VertexSummary') # save VertexSummary
@@ -218,7 +218,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.GenParticles.genParticles.src = cms.InputTag("prunedGenParticles")
 		process.kappaTuple.GenTaus.genTaus.src = cms.InputTag("prunedGenParticles")
 
-		# process.kappaTuple.Info.lheSource = cms.InputTag("externalLHEProducer")
+		process.kappaTuple.Info.lheSource = cms.InputTag("externalLHEProducer")
 		process.kappaTuple.Info.lheWeightNames = cms.vstring(".*")
 
 		if any([pattern in nickname for pattern in ["HToTauTau", "H2JetsToTauTau", "Higgs", "DY", "LFV"]]):
@@ -230,7 +230,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 					process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("source"))
 				else:
 					process.kappaTuple.LHE.LHEafter = cms.PSet(src=cms.InputTag("externalLHEProducer"))
-
 
 	# save Flag
 	process.kappaTuple.Info.isEmbedded = cms.bool(isEmbedded)
@@ -472,11 +471,11 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
 
 	# process.load("Configuration.StandardSequences.Reconstruction_cff") or process.load("Configuration.Geometry.GeometryRecoDB_cff")
-	# process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
+	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 
 	## Refitted Vertices collection
 	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
-	if False and tools.is_above_cmssw_version([9]):
+	if not tools.is_above_cmssw_version([9]):
 		process.kappaTuple.active += cms.vstring('RefitVertex')
 		process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
 

@@ -1,5 +1,7 @@
 #!/bin/sh
-set -e # exit on errors
+#set -e # exit on errors
+
+ssh -vT git@github.com
 
 export SCRAM_ARCH=slc6_amd64_gcc493
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
@@ -22,17 +24,17 @@ do
 done
 
 cd $CMSSW_BASE/src
-git cms-merge-topic -u KappaAnalysis:Kappa_CMSSW_763
+git cms-merge-topic --ssh -u KappaAnalysis:Kappa_CMSSW_763
 git cms-addpkg RecoMET/METPUSubtraction
 git cms-addpkg DataFormats/METReco
 #Electron cutBased Id and MVA Id
 #https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_747
 #https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_747_Spring15_MVA_tra
 #"git cms-merge-topic ikrav:egm_id_747_v2
-git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
+git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
 
 #Check out Kappa
-git clone https://github.com/KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
+git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
 
 scram b -v -j `grep -c ^processor /proc/cpuinfo` || {
       echo "The ${CMSSW_BASE} with Kappa could not be built"

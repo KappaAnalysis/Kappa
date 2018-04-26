@@ -2,7 +2,18 @@
 
 [![Build Status](https://travis-ci.org/KappaAnalysis/Kappa.svg)](https://travis-ci.org/KappaAnalysis/Kappa)
 
-CMSSW based tests: [results](http://www-ekp.physik.uni-karlsruhe.de/~fcolombo/kappa/test/current/result.html)
+[Skimming checkout recipes](https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/wiki/Skimming)
+
+[Performing a skim](https://github.com/cms-analysis/HiggsAnalysis-KITHiggsToTauTau/wiki/Performing-a-Skim)
+
+
+
+<!---
+deprecated CMSSW based [tests](http://www-ekp.physik.uni-karlsruhe.de/~fcolombo/kappa/test/current/result.html)
+-->
+
+[//]: # (This may be the most platform independent comment)
+
 
 κappa is the Karlsruhe Package for Physics Analysis.
 It is a skimming framework constructed to extract the relevant data

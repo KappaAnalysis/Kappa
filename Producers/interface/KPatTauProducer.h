@@ -170,6 +170,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 					if (this->verbosity == 3) std::cout << "\tKPatTauProducer fillSecondaryVertex - setting adaptiveVertexFitter\n";
 					AdaptiveVertexFitter adaptiveVertexFitter;
 					adaptiveVertexFitter.setWeightThreshold(0.001);
+
 					// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/VertexPrimitives/interface/TransientVertex.h
 					TransientVertex sv = adaptiveVertexFitter.vertex(chargedHadronTransientTracks, *BeamSpot); // TODO: add beam spot
 					if (sv.isValid())
@@ -363,7 +364,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				std::cout << "Study tauIDs:" << std::endl;
 				for(size_t i = 0; i < tauIDs.size(); ++i)
 					std::cout << "tauid number " << i << " :" <<  tauIDs[i].first << " :: " << tauIDs[i].second<< std::endl;
-			std::cout << "names length:" <<  names.size() << std::endl;
+				std::cout << "names length:" <<  names.size() << std::endl;
 			}
 
 			for(size_t i = 0; i < names.size(); ++i)

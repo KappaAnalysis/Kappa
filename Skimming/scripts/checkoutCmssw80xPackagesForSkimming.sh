@@ -1,5 +1,7 @@
 #!/bin/sh
-set -e # exit on errors
+#set -e # exit on errors
+
+ssh -vT git@github.com
 
 export SCRAM_ARCH=slc6_amd64_gcc530
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
@@ -91,8 +93,7 @@ sed -i "/iEvent.put(std::move(out),/a \	iEvent.put(std::auto_ptr<bool>(new bool(
 sed "/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificanceParams_cfi\ import\ METSignificanceParams_Data" PhysicsTools/PatUtils/python/tools/runMETCorrectionsAndUncertainties.py -i
 
 # Check out Kappa:
-git clone https://github.com/KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
-
+git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
 
 # Compile:
 scram b -v -j `grep -c ^processor /proc/cpuinfo` || {
