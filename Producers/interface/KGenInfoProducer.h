@@ -181,35 +181,37 @@ public:
 		this->metaEvent->nPUp1 = 0;
 		this->metaEvent->nPUp2 = 0;
 		if(!isEmbedded)
-		 {
-		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
-		if (event.getByToken(tokenPuInfo, puHandles) && puHandles.isValid())
 		{
-			for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
+			edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
+			if (event.getByToken(tokenPuInfo, puHandles) && puHandles.isValid())
 			{
-				unsigned char nPU = (unsigned char)std::min(255, it->getPU_NumInteractions());
-				if (it->getBunchCrossing() == -2)
-					this->metaEvent->nPUm2 = nPU;
-				else if (it->getBunchCrossing() == -1)
-					this->metaEvent->nPUm1 = nPU;
-				else if (it->getBunchCrossing() == 0)
-					this->metaEvent->nPU = nPU;
-				else if (it->getBunchCrossing() == 1)
-					this->metaEvent->nPUp1 = nPU;
-				else if (it->getBunchCrossing() == 2)
-					this->metaEvent->nPUp2 = nPU;
+				for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
+				{
+					unsigned char nPU = (unsigned char)std::min(255, it->getPU_NumInteractions());
+					if (it->getBunchCrossing() == -2)
+						this->metaEvent->nPUm2 = nPU;
+					else if (it->getBunchCrossing() == -1)
+						this->metaEvent->nPUm1 = nPU;
+					else if (it->getBunchCrossing() == 0)
+						this->metaEvent->nPU = nPU;
+					else if (it->getBunchCrossing() == 1)
+						this->metaEvent->nPUp1 = nPU;
+					else if (it->getBunchCrossing() == 2)
+						this->metaEvent->nPUp2 = nPU;
 
-				this->metaEvent->nPUMean = it->getTrueNumInteractions();  // remove this line to compile with CMSSW 4.2.7 or earlier
+					this->metaEvent->nPUMean = it->getTrueNumInteractions();  // remove this line to compile with CMSSW 4.2.7 or earlier
+				}
 			}
+			else
+			{
+				// in some versions of CMSSW it's not a vector:
+				edm::Handle<PileupSummaryInfo> puHandle;
+				if (event.getByToken(tokenPuInfo, puHandle) && puHandle.isValid())
+					this->metaEvent->nPU = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
+			}
+
+			if (this->verbosity == 3) std::cout << "KGenInfoProducer onEvent() end\n";
 		}
-		else
-		{
-			// in some versions of CMSSW it's not a vector:
-			edm::Handle<PileupSummaryInfo> puHandle;
-			if (event.getByToken(tokenPuInfo, puHandle) && puHandle.isValid())
-				this->metaEvent->nPU = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
-		}
-		if (this->verbosity == 3) std::cout << "KGenInfoProducer onEvent() end\n";
 		return true;
 	}
 	bool endRun(edm::Run const& run, edm::EventSetup const &setup) override
