@@ -647,9 +647,14 @@ class SkimManagerBase:
 					os.system("ln -fsv %s %s" % (os.path.relpath(filelist_path, os.path.dirname(filelist_path_symlink)), filelist_path_symlink))
 
 				filelist_check = open(filelist_path, 'r')
-				if len(filelist_check.readlines()) == (number_jobs-len(jobiddict["0-x"])):
-					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
-					print "List creation successfull!"
+				if "0-x" in jobiddict.keys():
+					if len(filelist_check.readlines()) == (number_jobs-len(jobiddict["0-x"])):
+						self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
+						print "List creation successfull!"
+				else:
+					if len(filelist_check.readlines()) == (number_jobs):
+						self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
+						print "List creation successfull!"
 				filelist_check.close()
 				print "---------------------------------------------------------"
 
