@@ -868,7 +868,7 @@
     "extension": "",
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
-    "generatorWeight": 0.9991206409969199,
+    "generatorWeight": 0.9992006633052464,
     "globalTag": "94X_mc2017_realistic_v13",
     "inputDBS": "global",
     "n_events_generated": "38832197",
