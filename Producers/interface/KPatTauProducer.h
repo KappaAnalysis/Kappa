@@ -411,9 +411,9 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		void checkMapsize(const std::vector<std::string> &map, const std::string &title)
 		{
-			if(map.size() > 64)
+			if(map.size() > 66)
 			{
-				std::cout << title << " contains too many Elements(" << map.size() << ", max is 64 since we use 'unsigned long long binaryDiscriminators' as a bit array for binary descriminators" << std::endl;
+				std::cout << title << " contains too many Elements(" << map.size() << ", max is 64 since we use 'unsigned long long binaryDiscriminators' as a bit array for binary descriminators(64+2 to store 2016 training as well)" << std::endl;
 				exit(1);
 			}
 		}
