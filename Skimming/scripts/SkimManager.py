@@ -607,6 +607,7 @@ class SkimManagerBase:
 				crab_numer_folder_regex = re.compile('|'.join(crab_number_folders))
 
 				jobiddict ={}
+				number_listed_jobs = 0
 				for jobstatuslist in self.skimdataset[dataset].get("last_status").get("jobList"):
 					if jobstatuslist[0] == 'finished':
 						jobid = jobstatuslist[1]
@@ -629,12 +630,16 @@ class SkimManagerBase:
 							sample_file_path = crab_dataset_filelist[0]
 							pattern = "_" + id_type[0:-1]+r'\d+.root'
 							job_id_match = re.findall(pattern, sample_file_path)[0]
-							sample_file_path =  sample_file_path.replace(job_id_match,"_"+ id_type[0:-1]+ "{JOBID}.root")
+							sample_file_path =  sample_file_path.replace(job_id_match,"_"+ "{JOBID}.root")
 							crab_number_folder_match = re.findall('|'.join(crab_number_folders), sample_file_path)[0]
 							sample_file_path =  sample_file_path.replace(crab_number_folder_match, "{CRAB_NUMBER_FOLDER}")
-							print "Found", number_jobs, "output files."
+
 							for jobid in range(1, len(jobiddict[id_type])+1):
-								dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[jobid/1000], JOBID=jobid)+'\n'
+								dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[jobid/1000], JOBID=jobiddict[id_type][jobid-1])+'\n'
+								number_listed_jobs += 1
+
+					print "Found", number_jobs, "files run on skimming."
+					print "Found", number_listed_jobs, "output files finishing successfully and stored."
 					dataset_filelist = dataset_filelist.strip('\n')
 					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/", self.site_storage_access_dict[storage_site]["xrootd"]))
 					filelist.close()
