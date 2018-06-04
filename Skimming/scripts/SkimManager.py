@@ -634,8 +634,14 @@ class SkimManagerBase:
 							crab_number_folder_match = re.findall('|'.join(crab_number_folders), sample_file_path)[0]
 							sample_file_path =  sample_file_path.replace(crab_number_folder_match, "{CRAB_NUMBER_FOLDER}")
 
-							for jobid in range(1, len(jobiddict[id_type])+1):
-								dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[jobid/1000], JOBID=jobiddict[id_type][jobid-1])+'\n'
+							jobid = 0
+							for jobindex in range(1, len(jobiddict[id_type])+1):
+								if re.search("-", jobiddict[id_type][jobindex-1]) == None:
+									jobid = jobiddict[id_type][jobindex-1]
+								else:
+									jobid = jobiddict[id_type][jobindex-1].split("-")[-1]
+
+								dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[int(jobid)/1000], JOBID=jobiddict[id_type][jobindex-1])+'\n'
 								number_listed_jobs += 1
 
 					print "Found", number_jobs, "files run on skimming."
