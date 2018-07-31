@@ -511,6 +511,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		ids = cms.vstring( "pileupJetId:fullDiscriminant",
 				"pfJetProbabilityBJetTags",
 				"pfCombinedInclusiveSecondaryVertexV2BJetTags",
+				"pfDeepCSVDiscriminatorsJetTags:BvsAll",    #not sure if this will work for previous versions of cmssw
 				"pfCombinedMVAV2BJetTags",
 				"pfCombinedCvsLJetTags",
 				"pfCombinedCvsBJetTags",
