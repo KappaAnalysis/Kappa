@@ -23,8 +23,7 @@ def setupElectrons(process, electrons):
 	if tools.is_above_cmssw_version([9]):
 		my_id_modules.extend(['RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V1_cff',
 			'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_noIso_V1_cff',
-			'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff',
-			'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff'])
+			'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff'])
 	elif tools.is_above_cmssw_version([8]):
 		my_id_modules.extend([
 			'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
