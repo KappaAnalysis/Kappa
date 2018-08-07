@@ -25,7 +25,7 @@ protected:
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		if (KBaseProducer::verbosity == 3) std::cout << "KGenTauProducer fillProduct()\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer fillProduct()\n";
 		// Retrieve additional input products
 		selectStatus(pset.getParameter<int>("selectedStatus"));
 
@@ -34,12 +34,12 @@ protected:
 		selectParticles(&particles, &particles + 1);
 
 		KBasicGenParticleProducer<KGenTaus>::fillProduct(in, out, name, tag, pset);
-		if (KBaseProducer::verbosity == 3) std::cout << "KGenTauProducer fillProduct() end\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer fillProduct() end\n";
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		if (KBaseProducer::verbosity == 3) std::cout << "KGenTauProducer fillSingle()\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer fillSingle()\n";
 		KBasicGenParticleProducer<KGenTaus>::fillSingle(in, out);
 		
 		// custom implementations
@@ -118,12 +118,12 @@ protected:
 		// TODO: also set decay mode with official tools
 		//       but currently not fully understood how
 		//       to do this properly
-		if (KBaseProducer::verbosity == 3) std::cout << "KGenTauProducer fillSingle() end\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer fillSingle() end\n";
 	}
 
 	virtual bool acceptSingle(const SingleInputType& in)
 	{
-		if (KBaseProducer::verbosity == 3) std::cout << "KGenTauProducer acceptSingle()\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer acceptSingle()\n";
 		if(!KBasicGenParticleProducer<KGenTaus>::acceptSingle(in))
 			return false;
 
@@ -158,7 +158,7 @@ private:
 
 	void walkDecayTree(const reco::GenParticle& in, DecayInfo& info, int level = 0, bool allowNonPromptTauDecayProduct = false )
 	{
-		if (KBaseProducer::verbosity == 3) std::cout << "KGenTauProducer walkDecayTree()\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer walkDecayTree()\n";
 		//for(int i = 0; i < level; ++i) printf(" ");
 		//printf("PDG %d\tstatus %d", in.pdgId(), in.status());
 		//std::cout<<"\tpt "<<in.p4().pt()<<"\tphi "<<in.p4().phi()<<"\teta "<<in.p4().eta()<<"\tE "<<in.p4().E()
@@ -255,7 +255,7 @@ private:
 			for(unsigned int i = 0; i < in.numberOfDaughters(); ++i)
 				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(i)), info, level + 1, allowNonPromptTauDecayProduct);
 		}
-		if (KBaseProducer::verbosity == 3) std::cout << "KGenTauProducer walkDecayTree() end\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer walkDecayTree() end\n";
 	}
 
 	static bool isNeutrino(int pdg_id)
@@ -268,7 +268,7 @@ private:
 	}
 	static bool minthreeLeptondauhhters(const reco::GenParticle& in, unsigned int &lep_daughter_wiht_max_pt)
 	{
-		if (KBaseProducer::verbosity == 3) std::cout << "KGenTauProducer minthreeLeptondauhhters()\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer minthreeLeptondauhhters()\n";
 		int Nakt = 0;
 		float akt_max_pt = -1.0;
 		for(unsigned int i = 0; i < in.numberOfDaughters(); ++i)
@@ -283,7 +283,7 @@ private:
 				}
 			}
 		}
-		if (KBaseProducer::verbosity == 3) std::cout << "KGenTauProducer minthreeLeptondauhhters() end\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer minthreeLeptondauhhters() end\n";
 		return Nakt >= 3;
 	}
 	  

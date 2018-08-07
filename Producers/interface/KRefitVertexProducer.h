@@ -28,7 +28,7 @@ public:
 protected:
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		if (this->verbosity == 3) std::cout << "KRefitVertexProducer fillSingle()\n";
+		if (this->verbosity >= 3) std::cout << "KRefitVertexProducer fillSingle()\n";
 		KVertexProducer::fillVertex(in, out);
 
 		// save references to lepton selection in the refitted vertex
@@ -39,7 +39,7 @@ protected:
 			boost::hash_combine(hash,aRecoCand.get());
 		}
 		out.leptonSelectionHash = hash;
-		if (this->verbosity == 3) std::cout << "KRefitVertexProducer fillSingle() end\n";
+		if (this->verbosity >= 3) std::cout << "KRefitVertexProducer fillSingle() end\n";
 	}
 };
 

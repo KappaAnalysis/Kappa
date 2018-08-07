@@ -38,7 +38,7 @@ public:
 		doCutbasedIds_(true),
 		RefitVerticesSource(cfg.getParameter<edm::InputTag>("refitvertexcollection"))
 	{
-		if (this->verbosity == 3) std::cout << "KElectronProducer ()\n";
+		if (this->verbosity >= 3) std::cout << "KElectronProducer ()\n";
 		electronMetadata = new KElectronMetadata;
 		_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
 
@@ -64,14 +64,14 @@ public:
 		for (size_t j = 0; j < namesOfIds.size(); ++j)
 			tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(namesOfIds[j]));
 
-		if (this->verbosity == 3) std::cout << "KElectronProducer () end\n";
+		if (this->verbosity >= 3) std::cout << "KElectronProducer () end\n";
 	}
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		if (this->verbosity == 3) std::cout << "KElectronProducer onrun\n";
+		if (this->verbosity >= 3) std::cout << "KElectronProducer onrun\n";
 		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->trackBuilder);
-		if (this->verbosity == 3) std::cout << "KElectronProducer end onrun\n";
+		if (this->verbosity >= 3) std::cout << "KElectronProducer end onrun\n";
 		return true;
 	}
 
@@ -89,7 +89,7 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Get additional objects for the cutbased IDs
-		if (this->verbosity == 3) std::cout << "KElectron::fillProduct \n";
+		if (this->verbosity >= 3) std::cout << "KElectron::fillProduct \n";
 		cEvent->getByToken(this->tokenConversionSource, this->hConversions);
 		cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 		cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
@@ -131,12 +131,12 @@ public:
 
 		// call base class
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::fillProduct(in, out, name, tag, pset);
-		if (this->verbosity == 3) std::cout << "KElectron::fillProduct end\n";
+		if (this->verbosity >= 3) std::cout << "KElectron::fillProduct end\n";
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		if (this->verbosity == 3) std::cout << "KElectron::fillSingle\n";
+		if (this->verbosity >= 3) std::cout << "KElectron::fillSingle\n";
 		// momentum:
 		copyP4(in, out.p4);
 		// hash of pointer as Id
@@ -223,7 +223,7 @@ public:
 		if (doPfIsolation_ && doCutbasedIds_ && !doAuxIds_) doCutbasedIds(in,out);
 		if (doMvaIds_) doMvaIds(in, out);
 		if (doAuxIds_) doAuxIds(in, out);
-		if (this->verbosity == 3) std::cout << "end KElectron::fillSingle\n";
+		if (this->verbosity >= 3) std::cout << "end KElectron::fillSingle\n";
 	}
 
 protected:

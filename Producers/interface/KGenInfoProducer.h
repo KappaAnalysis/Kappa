@@ -53,7 +53,7 @@ public:
 		runInfo(cfg.getParameter<edm::InputTag>("lheSource")),
 		lheWeightRegexes(cfg.getParameter<std::vector<std::string>>("lheWeightNames"))
 	{
-		if (this->verbosity == 3) std::cout << "KGenInfoProducer constructor()\n";
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer constructor()\n";
 		this->tokenGenRunInfo = consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
 		this->tokenSource = consumescollector.consumes<GenEventInfoProduct>(tagSource);
 		this->tokenLhe = consumescollector.consumes<LHEEventProduct>(lheSource);
@@ -79,7 +79,7 @@ public:
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		if (this->verbosity == 3) std::cout << "KGenInfoProducer onFirstEvent()\n";
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer onFirstEvent()\n";
 		edm::Handle<LHEEventProduct> lheEventProduct;
 		if(lheWeightRegexes.size() > 0 && event.getByToken(tokenLhe, lheEventProduct))
 		{
@@ -94,13 +94,13 @@ public:
 				}
 			}
 		}
-		if (this->verbosity == 3) std::cout << "KGenInfoProducer onFirstEvent() end\n";
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer onFirstEvent() end\n";
 		return KBaseProducerWP::onFirstEvent(event, setup);
 	}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
-		if (this->verbosity == 3) std::cout << "KGenInfoProducer onEvent()\n";
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer onEvent()\n";
 		// Fill data related infos
 		if (!KInfoProducer<Tmeta>::onEvent(event, setup))
 			return false;
@@ -210,13 +210,13 @@ public:
 					this->metaEvent->nPU = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
 			}
 
-			if (this->verbosity == 3) std::cout << "KGenInfoProducer onEvent() end\n";
+			if (this->verbosity >= 3) std::cout << "KGenInfoProducer onEvent() end\n";
 		}
 		return true;
 	}
 	bool endRun(edm::Run const& run, edm::EventSetup const &setup) override
 	{
-		if (this->verbosity == 3) std::cout << "KGenInfoProducer endRun()\n";
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer endRun()\n";
 		// Read generator infos
 		edm::Handle<GenRunInfoProduct> hGenInfo;
 		run.getByToken(this->tokenGenRunInfo, hGenInfo);
@@ -229,7 +229,7 @@ public:
 			this->metaRun->xSectionExt = -1;
 		if (invalidGenInfo)
 		{
-			if (this->verbosity == 3) std::cout << "KGenInfoProducer endRun() end\n";
+			if (this->verbosity >= 3) std::cout << "KGenInfoProducer endRun() end\n";
 			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
 		}
 
@@ -298,7 +298,7 @@ public:
 			}
 		}
 
-		if (this->verbosity == 3) std::cout << "KGenInfoProducer endRun() end\n";
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer endRun() end\n";
 		return true;
 	}
 

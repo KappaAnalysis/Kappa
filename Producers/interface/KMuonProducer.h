@@ -53,7 +53,7 @@ public:
 		use03ConeForPfIso(cfg.getParameter<bool>("use03ConeForPfIso")),
 		muonIsolationPFInitialized(false)
 	{
-		if (this->verbosity == 3) std::cout << "KMuonProducer ()\n";
+		if (this->verbosity >= 3) std::cout << "KMuonProducer ()\n";
 		std::sort(selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
 		std::vector<std::string>::iterator tempIt = std::unique(
 			selectedMuonTriggerObjects.begin(), selectedMuonTriggerObjects.end());
@@ -78,17 +78,17 @@ public:
 			for(size_t j = 0; j < isoValInputTags.size(); ++j)
 				isoValTokens.push_back(consumescollector.consumes<edm::ValueMap<double>>(isoValInputTags.at(j)));
 		}
-		if (this->verbosity == 3) std::cout << "KMuonProducer ()\n";
+		if (this->verbosity >= 3) std::cout << "KMuonProducer ()\n";
 	}
 
 	static const std::string getLabel() { return "Muons"; }
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		if (this->verbosity == 3) std::cout << "KMuonProducer onrun\n";
+		if (this->verbosity >= 3) std::cout << "KMuonProducer onrun\n";
 		// edm::ESHandle<TransientTrackBuilder> trackBuilder = edm::ESHandle<TransientTrackBuilder>();
 		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->trackBuilder);
-		if (this->verbosity == 3) std::cout << "KMuonProducer end onrun\n";
+		if (this->verbosity >= 3) std::cout << "KMuonProducer end onrun\n";
 		return true;
 	}
 
@@ -127,7 +127,7 @@ public:
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		if (this->verbosity == 3) std::cout << "KMuonProducer fillProduct\n";
+		if (this->verbosity >= 3) std::cout << "KMuonProducer fillProduct\n";
 		// Retrieve additional input products
 	    	if (tagMuonIsolationPF.label() != "")
 	    	{
@@ -138,10 +138,10 @@ public:
 		if (tagHLTrigger.label() != "")
 			cEvent->getByToken(HLTTriggerToken, triggerEventHandle);
 
-		if (this->verbosity == 3) std::cout << "KMuonProducer fillProduct cEvent access\n";
+		if (this->verbosity >= 3) std::cout << "KMuonProducer fillProduct cEvent access\n";
 		cEvent->getByToken(VertexCollectionToken, VertexHandle);
 		// cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
-		if (this->verbosity == 3) std::cout << "KMuonProducer fillProduct cEvent access end\n";
+		if (this->verbosity >= 3) std::cout << "KMuonProducer fillProduct cEvent access end\n";
 
 
 		pfIsoVetoCone = pset.getParameter<double>("pfIsoVetoCone");
@@ -159,13 +159,13 @@ public:
 
 		// Continue normally
 		KBaseMultiLVProducer<edm::View<reco::Muon>, KMuons>::fillProduct(in, out, name, tag, pset);
-		if (this->verbosity == 3) std::cout << "KMuonProducer end fillProduct\n";
+		if (this->verbosity >= 3) std::cout << "KMuonProducer end fillProduct\n";
 	}
 
 	/// fill muon from DataFormats/MuonReco/interface/Muon.h
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		if (this->verbosity == 3) std::cout << "KMuonProducer fillSingle\n";
+		if (this->verbosity >= 3) std::cout << "KMuonProducer fillSingle\n";
 		out.leptonInfo = KLeptonFlavour::MUON;
 		// hash of pointer as Id
 		out.internalId = hasher(&in);
@@ -322,7 +322,7 @@ public:
 		out.ids |= (muon::isSoftMuon(in, vtx)  << KLeptonId::SOFT);
 		out.ids |= (muon::isHighPtMuon(in, vtx) << KLeptonId::HIGHPT);
 		assert((out.ids & 145) == 0); // 145 = 0b10010001, these bits should be zero
-		if (this->verbosity == 3) std::cout << "KMuonProducer end fillSingle\n";
+		if (this->verbosity >= 3) std::cout << "KMuonProducer end fillSingle\n";
 	}
 
 private:

@@ -33,18 +33,18 @@ public:
 
 	static void fillTau(const SingleInputType &in, SingleOutputType &out)
 	{
-		if (KBaseProducer::verbosity == 3) std::cout << "KTauProducer fillTau()\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KTauProducer fillTau()\n";
 		// Fill additional fields from KTau
 		out.tauKey = createTauHash(in);
 		
 		KTauProducer::fillPFCandidates(in, out);
-		if (KBaseProducer::verbosity == 3) std::cout << "KTauProducer fillTau() end\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KTauProducer fillTau() end\n";
 	}
 
 	template<class Tin, class Tout>
 	static void fillPFCandidates(const Tin &in, Tout &out)
 	{
-		if (KBaseProducer::verbosity == 3) std::cout << "KTauProducer fillPFCandidates()\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KTauProducer fillPFCandidates()\n";
 		for(size_t i = 0; i < in.signalPFChargedHadrCands().size(); ++i)
 		{
 			KPFCandidate tmp;
@@ -67,7 +67,7 @@ public:
 		std::sort(out.chargedHadronCandidates.begin(), out.chargedHadronCandidates.end(), KLVSorter<KPFCandidate>());
 		std::sort(out.piZeroCandidates.begin(), out.piZeroCandidates.end(), KLVSorter<KLV>());
 		std::sort(out.gammaCandidates.begin(), out.gammaCandidates.end(), KLVSorter<KPFCandidate>());
-		if (KBaseProducer::verbosity == 3) std::cout << "KTauProducer fillPFCandidates() end\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KTauProducer fillPFCandidates() end\n";
 	}
 
 protected:
@@ -78,12 +78,12 @@ protected:
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
-		if (KBaseProducer::verbosity == 3) std::cout << "KTauProducer fillSingle()\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KTauProducer fillSingle()\n";
 		// Fill fields of KBasicTau via base class
 		KBasicTauProducer<reco::PFTau, reco::PFTauDiscriminator, KTaus>::fillSingle(in, out);
 		// Fill additional fields of KTau
 		KTauProducer::fillTau(in, out);
-		if (KBaseProducer::verbosity == 3) std::cout << "KTauProducer fillSingle() end\n";
+		if (KBaseProducer::verbosity >= 3) std::cout << "KTauProducer fillSingle() end\n";
 	}
 };
 
