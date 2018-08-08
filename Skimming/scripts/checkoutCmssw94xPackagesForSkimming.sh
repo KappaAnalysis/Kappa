@@ -6,8 +6,8 @@ ssh -vT git@github.com
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh
 
-scramv1 project CMSSW CMSSW_9_4_4
-cd CMSSW_9_4_4/src
+scramv1 project CMSSW CMSSW_9_4_9
+cd CMSSW_9_4_9/src
 eval `scramv1 runtime -sh`
 
 export KAPPA_BRANCH="master"
@@ -45,7 +45,7 @@ mkdir $CMSSW_BASE/tmp_external
 # Photons - Uncomment if needed
 cd $CMSSW_BASE/tmp_external
 # below, you may have a different architecture, this is just one example from lxplus
-#cd slc6_amd64_gcc630/
+#cd slc7_amd64_gcc630/
 git clone https://github.com/lsoffi/RecoEgamma-PhotonIdentification.git data/RecoEgamma/PhotonIdentification/data
 cd data/RecoEgamma/PhotonIdentification/data
 cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/PhotonIdentification/data
@@ -53,7 +53,7 @@ git checkout CMSSW_9_4_0_pre3_TnP
 #
 # Electrons
 cd $CMSSW_BASE/tmp_external
-#cd slc6_amd64_gcc630/
+#cd slc7_amd64_gcc630/
 git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
 cd data/RecoEgamma/ElectronIdentification/data
 git checkout CMSSW_9_4_0_pre3_TnP
@@ -63,7 +63,7 @@ cd $CMSSW_BASE/src
 #now we need to get the .dat files for the scale and smearing
 #cd $CMSSW_BASE/tmp_external
 ## below, you may have a different architecture, this is just one example from lxplus
-##cd slc6_amd64_gcc630/
+##cd slc7_amd64_gcc630/
 #git clone git@github.com:Sam-Harper/EgammaAnalysis-ElectronTools.git data/EgammaAnalysis/ElectronTools/data
 #cd data/EgammaAnalysis/ElectronTools/data
 #git checkout ReReco17NovScaleAndSmearing 
@@ -73,7 +73,7 @@ cd $CMSSW_BASE/src
 rm -rf tmp_external
 ##Remove the .git folder as it is not needed and contains a lot of useless data
 #rm -rf RecoEgamma/ElectronIdentification/data/.git
-rm -rf $CMSSW_BASE/external/slc6_amd64_gcc630/data/RecoEgamma/ElectronIdentification/data/.git
+rm -rf $CMSSW_BASE/external/slc7_amd64_gcc630/data/RecoEgamma/ElectronIdentification/data/.git
 
 # git cms-addpkg DataFormats/PatCandidates
 # git cms-addpkg RecoTauTag/Configuration
