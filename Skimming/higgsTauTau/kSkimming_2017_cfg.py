@@ -269,7 +269,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	jetCollectionPuppi = "slimmedJetsPuppi"
 	if tools.is_above_cmssw_version([9]):
-		jetCollection = "slimmedJets"
+		from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
+		updateJetCollection(
+                       process,
+                       jetSource = cms.InputTag('slimmedJets'),
+                       labelName = 'UpdatedJEC',
+                       jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute', 'L2L3Residual']), 'None')
+                )
+		jetCollection = "updatedPatJetsUpdatedJEC"
 	elif tools.is_above_cmssw_version([8]):
 		from RecoMET.METPUSubtraction.jet_recorrections import recorrectJets
 		#from RecoMET.METPUSubtraction.jet_recorrections import loadLocalSqlite
@@ -301,16 +308,29 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## ------------------------------------------------------------------------
 
 	# Configure Electrons
+		
+	if tools.is_above_cmssw_version([9,4]):
+		from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
+		setupEgammaPostRecoSeq(process,applyEnergyCorrections=False,
+                                   applyVIDOnCorrectedEgamma=False,
+                                   isMiniAOD=True,
+                                   era='2017-Nov17ReReco')
+		process.p *= process.egammaPostRecoSeq
+	
 	process.kappaTuple.active += cms.vstring('Electrons')
 	process.load("Kappa.Skimming.KElectrons_miniAOD_cff")
 	process.kappaTuple.Electrons.electrons.src = cms.InputTag("slimmedElectrons")
 	process.kappaTuple.Electrons.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
-	process.kappaTuple.Electrons.rhoIsoInputTag = cms.InputTag("slimmedJets", "rho")
+	process.kappaTuple.Electrons.rhoIsoInputTag = cms.InputTag(jetCollection, "rho")
 	process.kappaTuple.Electrons.allConversions = cms.InputTag("reducedEgamma", "reducedConversions")
 	from Kappa.Skimming.KElectrons_miniAOD_cff import setupElectrons
-	process.kappaTuple.Electrons.srcIds = cms.string("standalone")
+	if tools.is_above_cmssw_version([9,4]):
+		process.kappaTuple.Electrons.srcIds = cms.string("pat")
+	else:
+		process.kappaTuple.Electrons.srcIds = cms.string("standalone")
 
 	if tools.is_above_cmssw_version([9]):
+		"""
 		process.kappaTuple.Electrons.ids = cms.vstring(
 			"egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-veto",
 			"egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-loose",
@@ -326,14 +346,38 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values"
 
 			)
+		"""
+		process.kappaTuple.Electrons.ids = cms.VInputTag(
+			cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-veto"),
+			cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-loose"),
+			cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-medium"),
+			cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-tight"),
+			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90"),
+			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80"),
+			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose"),
+			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90"),
+			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80"),
+			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose"),
+			)
+                process.kappaTuple.Electrons.userFloats = cms.VInputTag(
+			cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values"),
+			cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"),
+			cms.InputTag("electronCorrection:ecalTrkEnergyPreCorr"),
+			cms.InputTag("electronCorrection:ecalTrkEnergyPostCorr"),
+			cms.InputTag("electronCorrection:ecalTrkEnergyErrPreCorr"),
+			cms.InputTag("electronCorrection:ecalTrkEnergyErrPostCorr"),
+)
+
 	elif tools.is_above_cmssw_version([8]):
-		process.kappaTuple.Electrons.ids = cms.vstring(
+		process.kappaTuple.Electrons.ids = cms.VInputTag(
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto",
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose",
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium",
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight",
 			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"
 			)
+		process.kappaTuple.Electrons.userFloats = cms.VInputTag()
+		
 	else:
 		process.kappaTuple.Electrons.ids = cms.vstring(
 			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
@@ -342,9 +386,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-tight",
 			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"
 			)
-
-	setupElectrons(process, electrons)
-	process.p *= (process.makeKappaElectrons)
+		process.kappaTuple.Electrons.userFloats = cms.VInputTag()
+	if not tools.is_above_cmssw_version([9,4]):
+		setupElectrons(process, electrons)
+        	process.p *= (process.makeKappaElectrons)
 
 	## ------------------------------------------------------------------------
 	#Configure Tau Leptons
@@ -486,6 +531,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
+	if tools.is_above_cmssw_version([9]):
+		process.jecSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC)
+		process.p *= process.jecSequence
 
 	## Adds the possibility to add the SV refitting
 	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
@@ -534,7 +582,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('PatMET')
 	process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
 	if tools.is_above_cmssw_version([9]):
-		pass
+		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+		runMetCorAndUncFromMiniAOD(process, isData=data)
+		process.p *= process.fullPatMetSequence
 	elif tools.is_above_cmssw_version([8,0,14]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 		runMetCorAndUncFromMiniAOD(process, isData=data  )

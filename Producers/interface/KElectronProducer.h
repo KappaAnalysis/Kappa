@@ -32,7 +32,8 @@ public:
 		VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
 		rhoIsoTag(cfg.getParameter<edm::InputTag>("rhoIsoInputTag")),
 		isoValInputTags(cfg.getParameter<std::vector<edm::InputTag> >("isoValInputTags")),
-		namesOfIds(cfg.getParameter<std::vector<std::string> >("ids")),
+		tagOfIds(cfg.getParameter<std::vector<edm::InputTag> >("ids")),
+		tagOfUserFloats(cfg.getParameter<std::vector<edm::InputTag> >("userFloats")),
 		srcIds_(cfg.getParameter<std::string>("srcIds")),
 		doPfIsolation_(true),
 		doCutbasedIds_(true),
@@ -61,8 +62,8 @@ public:
 				tokenIsoValInputTags.push_back(consumescollector.consumes<edm::ValueMap<double>>(this->isoValInputTags.at(j)));
 		}
 
-		for (size_t j = 0; j < namesOfIds.size(); ++j)
-			tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(namesOfIds[j]));
+		for (size_t j = 0; j < tagOfIds.size(); ++j)
+			tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(tagOfIds[j]));
 
 		if (this->verbosity >= 3) std::cout << "KElectronProducer () end\n";
 	}
@@ -79,11 +80,17 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		for (std::vector<std::string>::const_iterator id = namesOfIds.begin(); id != namesOfIds.end(); ++id)
-			electronMetadata->idNames.push_back(*id);
-
+		for (size_t j = 0; j < tagOfIds.size(); ++j)
+		{
+			electronMetadata->idNames.push_back(this->tagOfIds[j].label()+":"+this->tagOfIds[j].instance());
+		}
+		for (size_t j = 0; j < tagOfUserFloats.size(); ++j)
+		{
+			electronMetadata->idNames.push_back(this->tagOfUserFloats[j].label()+":"+this->tagOfUserFloats[j].instance());
+		}
 		return KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::onLumi(lumiBlock, setup);
 	}
+	
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
@@ -125,9 +132,11 @@ public:
 		// Continue with main product: PAT-electrons
 
 		// Prepare IDs for miniAOD
-		electronIDValueMap.resize(namesOfIds.size());
-		for (size_t j = 0; j < namesOfIds.size(); ++j)
+		electronIDValueMap.resize(tokenOfIds.size());
+		for (size_t j = 0; j < tokenOfIds.size(); ++j)
+		{
 			cEvent->getByToken(this->tokenOfIds[j], this->electronIDValueMap[j]);
+		}
 
 		// call base class
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::fillProduct(in, out, name, tag, pset);
@@ -232,7 +241,7 @@ protected:
 	{
 		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
 
-		for (size_t i = 0; i < namesOfIds.size(); ++i)
+		for (size_t i = 0; i < tagOfIds.size(); ++i)
 			out.electronIds.push_back((*(electronIDValueMap)[i])[pe]);
 	}
 
@@ -243,8 +252,16 @@ protected:
 	{
 		out.electronIds.clear();
 
-		for (size_t i = 0; i < namesOfIds.size(); ++i)
-			out.electronIds.push_back(in.electronID(namesOfIds[i]));
+		for (size_t i = 0; i < tagOfIds.size(); ++i)
+		{
+			out.electronIds.push_back(in.electronID(tagOfIds[i].instance()));
+		}
+		for (size_t i = 0; i < tagOfUserFloats.size(); ++i)
+		{
+			out.electronIds.push_back(in.userFloat(tagOfUserFloats[i].instance()));
+		}
+
+
 	}
 
 	// cutbased IDs (cf. header)
@@ -302,7 +319,8 @@ private:
 	edm::InputTag VertexCollectionSource;
 	edm::InputTag rhoIsoTag;
 	std::vector<edm::InputTag>  isoValInputTags;
-	std::vector<std::string> namesOfIds;
+	std::vector<edm::InputTag> tagOfIds;
+	std::vector<edm::InputTag> tagOfUserFloats;
 	
 	edm::EDGetTokenT<reco::ConversionCollection> tokenConversionSource;
 	edm::EDGetTokenT<reco::BeamSpot> tokenBeamSpot;

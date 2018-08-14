@@ -108,6 +108,15 @@ rm -rf $CMSSW_BASE/external/slc7_amd64_gcc630/data/RecoEgamma/ElectronIdentifica
 # general reference:
 # https://twiki.cern.ch/twiki/bin/view/CMS/WebHome
 
+
+
+# Get code for electron scale & smear corrections
+git cms-merge-topic cms-egamma:EgammaPostRecoTools_940
+
+# Get recipes to re-correct MET (also for ECAL prefiring)
+git cms-merge-topic cms-met:METRecipe94xEEnoisePatch
+
+
 # CP: Refitting package
 git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
 
