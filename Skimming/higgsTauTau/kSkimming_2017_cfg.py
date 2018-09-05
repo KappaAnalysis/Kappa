@@ -583,8 +583,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
 	if tools.is_above_cmssw_version([9]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
-		runMetCorAndUncFromMiniAOD(process, isData=data)
-		process.p *= process.fullPatMetSequence
+		runMetCorAndUncFromMiniAOD (
+			process,
+			isData = data, # false for MC
+			fixEE2017 = True,
+			postfix = "ModifiedMET"
+		)
+		#process.p *= process.fullPatMetSequence
+		process.p *= process.fullPatMetSequenceModifiedMET
 	elif tools.is_above_cmssw_version([8,0,14]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 		runMetCorAndUncFromMiniAOD(process, isData=data  )
@@ -594,12 +600,13 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
 
 	slimmedMETsProcess = "PAT"
+	"""
 	if data: slimmedMETsProcess = "RECO"
 	process.kappaTuple.PatMET.metPF = cms.PSet(
 		src=cms.InputTag("slimmedMETs", "", slimmedMETsProcess),
 		uncorrected=cms.bool(True)
 	)
-
+	"""
 	if not tools.is_above_cmssw_version([9]):
 		## Write MVA MET to KMETs
 		process.kappaTuple.active += cms.vstring('PatMETs')
