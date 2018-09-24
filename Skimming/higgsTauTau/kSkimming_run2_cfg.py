@@ -308,13 +308,15 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.Electrons.srcIds = cms.string("standalone")
 
 	if tools.is_above_cmssw_version([8]):
-		process.kappaTuple.Electrons.ids = cms.vstring(
+		process.kappaTuple.Electrons.ids = cms.VInputTag(
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto",
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose",
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium",
 			"egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight",
 			"electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"
 			)
+		process.kappaTuple.Electrons.userFloats = cms.VInputTag()
+		
 	else:
 		process.kappaTuple.Electrons.ids = cms.vstring(
 			"egmGsfElectronIDs:cutBasedElectronID-Spring15-25ns-V1-standalone-veto",
