@@ -114,7 +114,7 @@ rm -rf $CMSSW_BASE/external/slc7_amd64_gcc630/data/RecoEgamma/ElectronIdentifica
 git cms-merge-topic cms-egamma:EgammaPostRecoTools_940
 
 # Get recipes to re-correct MET (also for ECAL prefiring)
-git cms-merge-topic cms-met:METFixEE2017_949
+git cms-merge-topic cms-met:METFixEE2017_949_v2 #https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_for_2
 
 
 # CP: Refitting package
