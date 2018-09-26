@@ -6,8 +6,8 @@ ssh -vT git@github.com
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh
 
-scramv1 project CMSSW CMSSW_9_4_9
-cd CMSSW_9_4_9/src
+scramv1 project CMSSW CMSSW_9_4_10
+cd CMSSW_9_4_10/src
 eval `scramv1 runtime -sh`
 
 export KAPPA_BRANCH="master"
@@ -28,10 +28,14 @@ done
 ##https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_Recipe_for_regul
 ##https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_8_0
 ##https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_regular_users_common
+
+git cms-init
 # cut-based electrons IDs
-git cms-merge-topic lsoffi:CMSSW_9_4_0_pre3_TnP
+#git cms-merge-topic UAEDF-tomc:eleCutBasedId_94X_V2
 # MVA-based electrons IDs
-git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
+#git cms-merge-topic guitargeek:EgammaID_9_4_X
+
+
 #=========smearing and scaling=======
 #git cms-merge-topic cms-egamma:EGIDV1AndScaleSmear_940
 #git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
@@ -41,24 +45,26 @@ git cms-merge-topic guitargeek:ElectronID_MVA2017_940pre3
 # Add the area containing the MVA weights (from cms-data, to appear externa).
 # Note: the external area appears after scram build is run at least once, as above
 #
-mkdir $CMSSW_BASE/tmp_external
+
+
+#mkdir $CMSSW_BASE/tmp_external
 # Photons - Uncomment if needed
-cd $CMSSW_BASE/tmp_external
+#cd $CMSSW_BASE/tmp_external
 # below, you may have a different architecture, this is just one example from lxplus
 #cd slc7_amd64_gcc630/
-git clone https://github.com/lsoffi/RecoEgamma-PhotonIdentification.git data/RecoEgamma/PhotonIdentification/data
-cd data/RecoEgamma/PhotonIdentification/data
-cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/PhotonIdentification/data
-git checkout CMSSW_9_4_0_pre3_TnP
+#git clone https://github.com/lsoffi/RecoEgamma-PhotonIdentification.git data/RecoEgamma/PhotonIdentification/data
+#cd data/RecoEgamma/PhotonIdentification/data
+#cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/PhotonIdentification/data
+#git checkout CMSSW_9_4_0_pre3_TnP
 #
 # Electrons
-cd $CMSSW_BASE/tmp_external
+#cd $CMSSW_BASE/tmp_external
 #cd slc7_amd64_gcc630/
-git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
-cd data/RecoEgamma/ElectronIdentification/data
-git checkout CMSSW_9_4_0_pre3_TnP
-cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/ElectronIdentification/data
-cd $CMSSW_BASE/src
+#git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
+#cd data/RecoEgamma/ElectronIdentification/data
+#git checkout CMSSW_9_4_0_pre3_TnP
+#cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/ElectronIdentification/data
+#cd $CMSSW_BASE/src
 #=========smearing and scaling=======
 #now we need to get the .dat files for the scale and smearing
 #cd $CMSSW_BASE/tmp_external
@@ -70,10 +76,10 @@ cd $CMSSW_BASE/src
 #cp -r Fall17 $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/datas
 #cd $CMSSW_BASE/src
 #=====================================
-rm -rf tmp_external
+#rm -rf tmp_external
 ##Remove the .git folder as it is not needed and contains a lot of useless data
 #rm -rf RecoEgamma/ElectronIdentification/data/.git
-rm -rf $CMSSW_BASE/external/slc7_amd64_gcc630/data/RecoEgamma/ElectronIdentification/data/.git
+#rm -rf $CMSSW_BASE/external/slc7_amd64_gcc630/data/RecoEgamma/ElectronIdentification/data/.git
 
 # git cms-addpkg DataFormats/PatCandidates
 # git cms-addpkg RecoTauTag/Configuration
