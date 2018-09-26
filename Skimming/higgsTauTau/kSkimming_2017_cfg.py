@@ -581,7 +581,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')
 	process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
-	if tools.is_above_cmssw_version([9,4,9]):
+	if tools.is_above_cmssw_version([9,4]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 		runMetCorAndUncFromMiniAOD (
 			process,
