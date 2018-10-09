@@ -16866,6 +16866,9 @@
     "xsec": 2.6707
   },
   "VBFHiggs0MToTauTauM125_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_JHUgen-pythia8": {
+    "analysis_2017": [
+      "skim_mcv2"
+    ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
     "dbs": "/VBFHiggs0MToTauTau_M125_13TeV_JHUGenV7011_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM",
@@ -16958,6 +16961,9 @@
     "xsec": 0.2371314
   },
   "VBFHiggs0PMToTauTauM125_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_JHUgen-pythia8": {
+    "analysis_2017": [
+      "skim_mcv2"
+    ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
     "dbs": "/VBFHiggs0PMToTauTau_M125_13TeV_JHUGenV7011_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM",
