@@ -6,11 +6,11 @@ ssh -vT git@github.com
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh
 
-scramv1 project CMSSW CMSSW_9_4_10
-cd CMSSW_9_4_10/src
+scramv1 project CMSSW_9_4_11_cand1
+cd CMSSW_9_4_11_cand1/src
 eval `scramv1 runtime -sh`
 
-export KAPPA_BRANCH="master"
+export KAPPA_BRANCH="dictchanges_CMSSW94X"
 while getopts :b:g:e:n: option
 do
 	case "${option}"
@@ -29,90 +29,24 @@ done
 ##https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_8_0
 ##https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_regular_users_common
 
+
+
 git cms-init
-# cut-based electrons IDs
-#git cms-merge-topic UAEDF-tomc:eleCutBasedId_94X_V2
-# MVA-based electrons IDs
-#git cms-merge-topic guitargeek:EgammaID_9_4_X
 
+# Get DeepFlavour b-tagger (optional)
+git cms-addpkg RecoBTag/TensorFlow
+git cherry-pick 94ceae257f846998c357fcad408986cc8a039152
 
-#=========smearing and scaling=======
-#git cms-merge-topic cms-egamma:EGIDV1AndScaleSmear_940
-#git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
-#====================================
-#scram b -j `grep -c ^processor /proc/cpuinfo`
-#
-# Add the area containing the MVA weights (from cms-data, to appear externa).
-# Note: the external area appears after scram build is run at least once, as above
-#
+# Get working version of HTXSRivetProducer (mainly relevant for SM HTT)
+#TODO the new version in CMSSW_9_4_11_cand1 is validated. To be followed up
+#git cms-addpkg GeneratorInterface/RivetInterface
+#cd GeneratorInterface/RivetInterface/plugins
+#rm HTXSRivetProducer.cc
+#wget https://raw.githubusercontent.com/perrozzi/cmssw/HTXS_clean/GeneratorInterface/RivetInterface/plugins/HTXSRivetProducer.cc
+#cd -
 
-
-#mkdir $CMSSW_BASE/tmp_external
-# Photons - Uncomment if needed
-#cd $CMSSW_BASE/tmp_external
-# below, you may have a different architecture, this is just one example from lxplus
-#cd slc7_amd64_gcc630/
-#git clone https://github.com/lsoffi/RecoEgamma-PhotonIdentification.git data/RecoEgamma/PhotonIdentification/data
-#cd data/RecoEgamma/PhotonIdentification/data
-#cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/PhotonIdentification/data
-#git checkout CMSSW_9_4_0_pre3_TnP
-#
-# Electrons
-#cd $CMSSW_BASE/tmp_external
-#cd slc7_amd64_gcc630/
-#git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
-#cd data/RecoEgamma/ElectronIdentification/data
-#git checkout CMSSW_9_4_0_pre3_TnP
-#cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/ElectronIdentification/data
-#cd $CMSSW_BASE/src
-#=========smearing and scaling=======
-#now we need to get the .dat files for the scale and smearing
-#cd $CMSSW_BASE/tmp_external
-## below, you may have a different architecture, this is just one example from lxplus
-##cd slc7_amd64_gcc630/
-#git clone git@github.com:Sam-Harper/EgammaAnalysis-ElectronTools.git data/EgammaAnalysis/ElectronTools/data
-#cd data/EgammaAnalysis/ElectronTools/data
-#git checkout ReReco17NovScaleAndSmearing 
-#cp -r Fall17 $CMSSW_BASE/src/EgammaAnalysis/ElectronTools/datas
-#cd $CMSSW_BASE/src
-#=====================================
-#rm -rf tmp_external
-##Remove the .git folder as it is not needed and contains a lot of useless data
-#rm -rf RecoEgamma/ElectronIdentification/data/.git
-#rm -rf $CMSSW_BASE/external/slc7_amd64_gcc630/data/RecoEgamma/ElectronIdentification/data/.git
-
-# git cms-addpkg DataFormats/PatCandidates
-# git cms-addpkg RecoTauTag/Configuration
-# git cms-addpkg RecoTauTag/RecoTau
-#
-# mkdir $CMSSW_BASE/tmp_external
-# #fetch xml files for Egamma Id from private repository
-# cd $CMSSW_BASE/tmp_external
-# git clone https://github.com/lsoffi/RecoEgamma-ElectronIdentification.git data/RecoEgamma/ElectronIdentification/data
-# cd data/RecoEgamma/ElectronIdentification/data
-# git checkout CMSSW_9_4_0_pre3_TnP
-# cp -r Fall17 $CMSSW_BASE/src/RecoEgamma/ElectronIdentification/data
-# # Go back to the src/
-# cd $CMSSW_BASE/src
-# rm -rf tmp_external
-
-# MET filters :
-# https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#Analysis_Recommendations_for_ana
-# No new recipe?
-
-# Luminosity :
-# https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM
-
-# JETS to use:
-# https://twiki.cern.ch/twiki/bin/view/CMS/JECDataMC#Jet_Energy_Corrections_in_Run2
-# Cross-check
-
-# Muons to use:
-# https://twiki.cern.ch/twiki/bin/view/CMS/MuonPOG#Basic_documentation_description
-# No new recipe?
-
-# general reference:
-# https://twiki.cern.ch/twiki/bin/view/CMS/WebHome
+# Get code for electron V2 ID's (trained on 94X MC's)
+git cms-merge-topic guitargeek:EgammaID_949
 
 
 
@@ -122,6 +56,20 @@ git cms-merge-topic cms-egamma:EgammaPostRecoTools_940
 # Get recipes to re-correct MET (also for ECAL prefiring)
 git cms-merge-topic cms-met:METFixEE2017_949_v2 #https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_for_2
 
+# Get deep Tau & DPF based Tau ID (and Tau ID Embedder) (deep Tau & DPF Tau optional)
+git cms-merge-topic ocolegro:dpfisolation # consists updated version of runTauIdMVA.py (RecoTauTag/RecoTau/python/runTauIdMVA.py). Originally, this .py file comes from https://raw.githubusercontent.com/greyxray/TauAnalysisTools/CMSSW_9_4_X_tau-pog_RunIIFall17/TauAnalysisTools/python/runTauIdMVA.py
+
+
+#---------OLD--------
+# TAU: Packages needed to rerun tau id
+# https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_M_AN1
+# NEEDS UPDATE
+#wget https://raw.githubusercontent.com/greyxray/TauAnalysisTools/CMSSW_9_4_X_tau-pog_RunIIFall17/TauAnalysisTools/python/runTauIdMVA.py  -P $CMSSW_BASE/src/Kappa/Skimming/python/
+
+
+# Get latest anti-e discriminator MVA6v2 (2017 training) (optional)
+#TODO some files need to be copied from afs. A proper integration of the files will be done by Tau POG. To be followed up.
+git cms-merge-topic cms-tau-pog:CMSSW_9_4_X_tau-pog_updateAntiEDisc
 
 # CP: Refitting package
 git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
@@ -133,9 +81,5 @@ git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
 # NEEDS UPDATE
 
-# TAU: Packages needed to rerun tau id
-# https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_M_AN1
-# NEEDS UPDATE
-wget https://raw.githubusercontent.com/greyxray/TauAnalysisTools/CMSSW_9_4_X_tau-pog_RunIIFall17/TauAnalysisTools/python/runTauIdMVA.py  -P $CMSSW_BASE/src/Kappa/Skimming/python/
 
 scram b -j `grep -c ^processor /proc/cpuinfo`
