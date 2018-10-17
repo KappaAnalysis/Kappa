@@ -177,6 +177,7 @@ struct KGenEventInfo : public KEventInfo
 	double alphaQCD;                    //< value of alpha_S for this event
 	double lheHt;                       //< p-T sum of the outgoing partons of the event
 	int lheNOutPartons;                 //< number of outgoing partons
+	int lhenpNLO;
 	float nPUMean;        //< mean ("true") number of PU interactions
 	unsigned char nPUm2;  // bx = -2
 	unsigned char nPUm1;  // bx = -1

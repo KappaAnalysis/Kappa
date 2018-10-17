@@ -111,9 +111,12 @@ public:
 		edm::Handle<LHEEventProduct> lheEventProduct;
 		double lheHt = 0.;
 		int lheNOutPartons = 0;
+		int npNLO = 0;
+
 		if (event.getByToken(tokenLhe, lheEventProduct) && lheEventProduct.isValid())
 		{
 			const lhef::HEPEUP& lheEvent = lheEventProduct->hepeup();
+
 			std::vector<lhef::HEPEUP::FiveVector> lheParticles = lheEvent.PUP;
 			for ( size_t idxParticle = 0; idxParticle < lheParticles.size(); ++idxParticle ) {
 				int id = std::abs(lheEvent.IDUP[idxParticle]);
@@ -124,8 +127,18 @@ public:
 				}
 			}
 		}
+		if (event.getByToken(tokenLhe, lheEventProduct) && lheEventProduct.isValid())
+		{
+			npNLO = lheEventProduct->npNLO();
+		}
+
+
 		this->metaEvent->lheHt = lheHt;
 		this->metaEvent->lheNOutPartons = lheNOutPartons;
+		this->metaEvent->lhenpNLO = npNLO;
+
+
+
 		// Get LHE renormalization and factorization weights
 		if((lheWeightRegexes.size() > 0) && event.getByToken(tokenLhe, lheEventProduct) && lheEventProduct.isValid())
 		{
