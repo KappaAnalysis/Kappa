@@ -274,7 +274,13 @@ def getBaseConfig( globaltag= 'START70_V7::All',
                        process,
                        jetSource = cms.InputTag('slimmedJets'),
                        labelName = 'UpdatedJEC',
-                       jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute', 'L2L3Residual']), 'None')
+                       jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute', 'L2L3Residual']), 'None'),
+		       btagDiscriminators = [
+		           "pfDeepFlavourJetTags:probb",
+			   "pfDeepFlavourJetTags:probbb",
+			   "pfDeepFlavourJetTags:problepb",
+       			],
+
                 )
 		jetCollection = "updatedPatJetsUpdatedJEC"
 	elif tools.is_above_cmssw_version([8]):
@@ -311,10 +317,23 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		
 	if tools.is_above_cmssw_version([9,4]):
 		from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
-		setupEgammaPostRecoSeq(process,applyEnergyCorrections=False,
-                                   applyVIDOnCorrectedEgamma=False,
-                                   isMiniAOD=True,
-                                   era='2017-Nov17ReReco')
+		setupEgammaPostRecoSeq(
+		process,
+		runVID=True,
+		eleIDModules=[
+		        'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff',
+
+		        'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V1_cff',
+		        'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_noIso_V1_cff',
+		        'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff',
+
+		        'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V2_cff',
+		        'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_noIso_V2_cff',
+		        'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V2_cff',
+		],
+		era='2017-Nov17ReReco'
+)
+
 		process.p *= process.egammaPostRecoSeq
 	
 	process.kappaTuple.active += cms.vstring('Electrons')
@@ -348,24 +367,60 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			)
 		"""
 		process.kappaTuple.Electrons.ids = cms.VInputTag(
-			cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-veto"),
-			cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-loose"),
-			cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-medium"),
-			cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-tight"),
-			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90"),
-			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80"),
-			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose"),
-			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90"),
-			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80"),
-			cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose"),
-			)
+		    cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-veto"),
+		    cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-loose"),
+		    cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-medium"),
+		    cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-tight"),
+
+		    cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-veto"),
+		    cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-loose"),
+		    cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-medium"),
+		    cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-tight"),
+
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90"),
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80"),
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose"),
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90"),
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80"),
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose"),
+
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V2-wp90"),
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V2-wp80"),
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V2-wpLoose"),
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wp90"),
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wp80"),
+		    cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wpLoose"),
+		)
+
+
+
+
+
                 process.kappaTuple.Electrons.userFloats = cms.VInputTag(
 			cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values"),
 			cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"),
+			cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV2Values"),
+			cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV2Values"),
+
 			cms.InputTag("electronCorrection:ecalTrkEnergyPreCorr"),
 			cms.InputTag("electronCorrection:ecalTrkEnergyPostCorr"),
 			cms.InputTag("electronCorrection:ecalTrkEnergyErrPreCorr"),
 			cms.InputTag("electronCorrection:ecalTrkEnergyErrPostCorr"),
+
+                        cms.InputTag("electronCorrection:energyScaleUp"),
+			cms.InputTag("electronCorrection:energyScaleDown"),
+			cms.InputTag("electronCorrection:energyScaleStatUp"),
+			cms.InputTag("electronCorrection:energyScaleStatDown"),
+			cms.InputTag("electronCorrection:energyScaleSystUp"),
+			cms.InputTag("electronCorrection:energyScaleSystDown"),
+			cms.InputTag("electronCorrection:energyScaleGainUp"),
+			cms.InputTag("electronCorrection:energyScaleGainDown"),
+			cms.InputTag("electronCorrection:energySigmaUp"),
+			cms.InputTag("electronCorrection:energySigmaDown"),
+			cms.InputTag("electronCorrection:energySigmaPhiUp"),
+			cms.InputTag("electronCorrection:energySigmaPhiDown"),
+			cms.InputTag("electronCorrection:energySigmaRhoUp"),
+			cms.InputTag("electronCorrection:energySigmaRhoDown"),
 )
 
 	elif tools.is_above_cmssw_version([8]):
@@ -396,21 +451,46 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#--------------------------------------------------------------------------------
 	#https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_M_AN1
 	toKeep = []
-	if tools.is_above_cmssw_version([9]): toKeep.extend(("2017v1", "2017v2", "newDM2017v2", "dR0p32017v2"))
+	if tools.is_above_cmssw_version([9]): toKeep.extend(("2017v1", "2017v2","DPFTau_2016_v0","DPFTau_2016_v1","deepTau2017v1"))
 	elif tools.is_above_cmssw_version([8,0,20]): toKeep.extend(("2016v1", "newDM2016v1"))
 
-	from Kappa.Skimming.runTauIdMVA import TauIDEmbedder
+	from RecoTauTag.RecoTau.runTauIdMVA import TauIDEmbedder
 	na = TauIDEmbedder(process, cms,
 	    debug=True,
 	    toKeep = toKeep
 	)
-	na.runTauID()
-	process.p *= process.rerunMvaIsolationSequence * process.NewTauIDsEmbedded
+
+	if tools.is_above_cmssw_version([8,0,20]):
+		taus = "NewTauIDsEmbedded"
+
+	na.runTauID(taus)
+	process.p *= process.rerunMvaIsolationSequence
+	process.p *= getattr(process, taus)
+
+	tauCollection = cms.InputTag(taus) # to be used as input
+	# Tau ID's embedded additionally into the new collection
+	additionalIds = cms.vstring(
+	    "byIsolationMVArun2017v2DBoldDMwLTraw2017",
+	    "byVVLooseIsolationMVArun2017v2DBoldDMwLT2017",
+	    "byVLooseIsolationMVArun2017v2DBoldDMwLT2017",
+	    "byLooseIsolationMVArun2017v2DBoldDMwLT2017",
+	    "byMediumIsolationMVArun2017v2DBoldDMwLT2017",
+	    "byTightIsolationMVArun2017v2DBoldDMwLT2017",
+	    "byVTightIsolationMVArun2017v2DBoldDMwLT2017",
+	    "byVVTightIsolationMVArun2017v2DBoldDMwLT2017",
+	    "deepTau2017v1tauVSall",
+	    "DPFTau_2016_v0tauVSall",
+	    "DPFTau_2016_v1tauVSall",
+	)
+
 
 	process.kappaTuple.active += cms.vstring('PatTaus')
+
 	process.kappaTuple.PatTaus.vertexcollection = cms.InputTag("offlineSlimmedPrimaryVertices")
 	process.kappaTuple.PatTaus.offlineBeamSpot = cms.InputTag("offlineBeamSpot")
+
 	process.kappaTuple.PatTaus.taus.binaryDiscrBlacklist = cms.vstring()
+
 	process.kappaTuple.PatTaus.taus.src = cms.InputTag(taus)
 	process.kappaTuple.PatTaus.taus.floatDiscrBlacklist = cms.vstring()
 	# just took everything from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TauIDRecommendation13TeV
@@ -482,6 +562,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"byTightIsolationMVArun2017v2DBoldDMdR0p3wLT2017",
 			"byVTightIsolationMVArun2017v2DBoldDMdR0p3wLT2017",
 			"byVVTightIsolationMVArun2017v2DBoldDMdR0p3wLT2017")
+	if "deepTau2017v1" in toKeep:
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+			"deepTau2017v1tauVSall") # deep Tau based on same inputs as MVAIso (BDT-based)
+	if "DPFTau_2016_v0" in toKeep:
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+                        "DPFTau_2016_v0tauVSall") # Deep PF Tau based also on low-level inputs (v0)
+	if "DPFTau_2016_v1" in toKeep:
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+                        "DPFTau_2016_v1tauVSall") # Deep PF Tau based also on low-level inputs (v1)
+
 	if "2016v1" in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
 			"byIsolationMVArun2v1DBoldDMwLTraw2016",
