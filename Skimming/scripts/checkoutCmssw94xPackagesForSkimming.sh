@@ -6,8 +6,8 @@ ssh -vT git@github.com
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh
 
-scramv1 project CMSSW_9_4_11_cand1
-cd CMSSW_9_4_11_cand1/src
+scramv1 project CMSSW_9_4_11_cand2
+cd CMSSW_9_4_11_cand2/src
 eval `scramv1 runtime -sh`
 
 export KAPPA_BRANCH="dictchanges_CMSSW94X"
@@ -53,7 +53,7 @@ git cms-merge-topic guitargeek:EgammaID_949
 # Get code for electron scale & smear corrections
 git cms-merge-topic cms-egamma:EgammaPostRecoTools_940
 
-# Get recipes to re-correct MET (also for ECAL prefiring)
+# Get recipes to re-correct MET (also for ECAL noise)
 git cms-merge-topic cms-met:METFixEE2017_949_v2 #https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_for_2
 
 # Get deep Tau & DPF based Tau ID (and Tau ID Embedder) (deep Tau & DPF Tau optional)
