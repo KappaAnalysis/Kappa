@@ -451,7 +451,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#--------------------------------------------------------------------------------
 	#https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_M_AN1
 	toKeep = []
-	if tools.is_above_cmssw_version([9]): toKeep.extend(("2017v1", "2017v2","DPFTau_2016_v0","DPFTau_2016_v1","deepTau2017v1"))
+	if tools.is_above_cmssw_version([9]): toKeep.extend(("2017v1", "2017v2"))
 	elif tools.is_above_cmssw_version([8,0,20]): toKeep.extend(("2016v1", "newDM2016v1"))
 
 	from RecoTauTag.RecoTau.runTauIdMVA import TauIDEmbedder
@@ -469,6 +469,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	tauCollection = cms.InputTag(taus) # to be used as input
 	# Tau ID's embedded additionally into the new collection
+	#NO deep tau, to large files
 	additionalIds = cms.vstring(
 	    "byIsolationMVArun2017v2DBoldDMwLTraw2017",
 	    "byVVLooseIsolationMVArun2017v2DBoldDMwLT2017",
@@ -478,9 +479,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	    "byTightIsolationMVArun2017v2DBoldDMwLT2017",
 	    "byVTightIsolationMVArun2017v2DBoldDMwLT2017",
 	    "byVVTightIsolationMVArun2017v2DBoldDMwLT2017",
-	    "deepTau2017v1tauVSall",
-	    "DPFTau_2016_v0tauVSall",
-	    "DPFTau_2016_v1tauVSall",
 	)
 
 
