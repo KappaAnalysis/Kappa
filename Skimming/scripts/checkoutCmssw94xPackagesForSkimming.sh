@@ -59,6 +59,8 @@ git cms-merge-topic cms-met:METFixEE2017_949_v2 #https://twiki.cern.ch/twiki/bin
 # Get deep Tau & DPF based Tau ID (and Tau ID Embedder) (deep Tau & DPF Tau optional)
 git cms-merge-topic ocolegro:dpfisolation # consists updated version of runTauIdMVA.py (RecoTauTag/RecoTau/python/runTauIdMVA.py). Originally, this .py file comes from https://raw.githubusercontent.com/greyxray/TauAnalysisTools/CMSSW_9_4_X_tau-pog_RunIIFall17/TauAnalysisTools/python/runTauIdMVA.py
 
+rm -rf RecoTauTag/RecoTau/data/
+
 
 #---------OLD--------
 # TAU: Packages needed to rerun tau id
