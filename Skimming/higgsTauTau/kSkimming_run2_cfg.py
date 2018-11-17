@@ -172,7 +172,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
 	if isEmbedded:
-		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
+		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "SIMembedding")
+		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "MERGE")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
 	elif data:
 		if tools.is_above_cmssw_version([9]):
