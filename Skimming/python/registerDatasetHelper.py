@@ -240,7 +240,10 @@ def get_extension(details, data=False):
 def make_nickname(dict):
 	nick = ""
 	nick += dict["process"].replace("_", "")  + "_"
-	nick += dict["campaign"].replace("_", "") + "_"
+	nick += sample_dict["campaign"].replace("_", "") + "_"
+	if sample_dict["campaign"] == "dwinterb":
+		if re.search("2017", sample_dict["dbs"]):
+			nick += "RunIIFall17MiniAODv2_"	
 	nick += dict["scenario"].replace("_", "") + "_"
 	nick += dict["energy"].replace("_", "")   + "TeV_"
 	nick += dict["format"].replace("_", "") + ("" if (dict["data"] or dict.get("embedded")) else "_")
