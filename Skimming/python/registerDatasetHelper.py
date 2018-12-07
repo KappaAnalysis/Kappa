@@ -240,8 +240,8 @@ def get_extension(details, data=False):
 def make_nickname(dict):
 	nick = ""
 	nick += dict["process"].replace("_", "")  + "_"
-	nick += sample_dict["campaign"].replace("_", "") + "_"
-	if sample_dict["campaign"] == "dwinterb":
+	nick += dict["campaign"].replace("_", "") + "_"
+	if dict["campaign"] == "dwinterb":
 		if re.search("2017", sample_dict["dbs"]):
 			nick += "RunIIFall17MiniAODv2_"	
 	nick += dict["scenario"].replace("_", "") + "_"
@@ -292,6 +292,8 @@ def get_sample_by_nick(nickname, expect_n_results = 1):
 
 	# split nickname
 	split_nick = nickname.split("_")
+	if 'dwinterb' in split_nick and  'RunIIFall17MiniAODv2' in split_nick:
+		split_nick.remove("RunIIFall17MiniAODv2")
 	query = {
 		"process" : "^"+split_nick[0]+"$",
 		"campaign" : "^"+split_nick[1]+"$",
