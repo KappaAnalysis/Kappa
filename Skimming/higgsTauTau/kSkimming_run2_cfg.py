@@ -257,12 +257,22 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if tools.is_above_cmssw_version([9]):
 		jetCollection = "slimmedJets"
 	elif tools.is_above_cmssw_version([8]):
+		from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
+		updateJetCollection(
+			process,
+			jetSource = cms.InputTag('slimmedJets'),
+			labelName = 'UpdatedJEC',
+			jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute', 'L2L3Residual']), 'None'),
+		)
+		jetCollection = "updatedPatJetsUpdatedJEC"
+		"""
 		from RecoMET.METPUSubtraction.jet_recorrections import recorrectJets
 		#from RecoMET.METPUSubtraction.jet_recorrections import loadLocalSqlite
 		#loadLocalSqlite(process, sqliteFilename = "Spring16_25nsV6_DATA.db" if data else "Spring16_25nsV6_MC.db",
 		#                         tag = 'JetCorrectorParametersCollection_Spring16_25nsV6_DATA_AK4PF' if data else 'JetCorrectorParametersCollection_Spring16_25nsV6_MC_AK4PF')
 		recorrectJets(process, isData=data)
 		jetCollection = "patJetsReapplyJEC"
+		"""
 	else:
 		from RecoMET.METPUSubtraction.localSqlite import recorrectJets
 		recorrectJets(process, isData=data)
@@ -455,6 +465,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
+	elif tools.is_above_cmssw_version([8,0]):
+		process.jecSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC)
+		process.p *= process.jecSequence
 
 	# process.load("Configuration.StandardSequences.Reconstruction_cff") or process.load("Configuration.Geometry.GeometryRecoDB_cff")
 	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
@@ -511,7 +524,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#process.kappaTuple.PatMET.pfmetT1 = cms.PSet(src=cms.InputTag("patpfMETT1"))
 	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
 
-	if not tools.is_above_cmssw_version([9]):
+	if not tools.is_above_cmssw_version([8]):
 		## Write MVA MET to KMETs
 		process.kappaTuple.active += cms.vstring('PatMETs')
 		# new MVA MET
