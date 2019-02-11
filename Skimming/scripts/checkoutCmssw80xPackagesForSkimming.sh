@@ -3,12 +3,12 @@
 
 ssh -vT git@github.com
 
-export SCRAM_ARCH=slc6_amd64_gcc530
+export SCRAM_ARCH=slc7_amd64_gcc530
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 . $VO_CMS_SW_DIR/cmsset_default.sh
 
-scramv1 project CMSSW CMSSW_8_0_26_patch1
-cd CMSSW_8_0_26_patch1/src
+scramv1 project CMSSW CMSSW_8_0_32
+cd CMSSW_8_0_32/src
 eval `scramv1 runtime -sh`
 
 export KAPPA_BRANCH="master"
@@ -27,37 +27,40 @@ cd $CMSSW_BASE/src
 
 # MET:
 # Correct jet corrections for mvamet
-#git cms-merge-topic -u cms-met:METRecipe_8020
-# Mvamet package based on Summer16 Training
-git cms-merge-topic -u macewindu009:mvamet8026
+#git cms-merge-topic --ssh -u cms-met:METRecipe_8020
+git cms-merge-topic cms-met:METRecipe_8020_for80Xintegration
+## Mvamet package based on Summer16 Training
+#git cms-merge-topic --ssh -u macewindu009:mvamet8026
 
 # TAU: Packages needed to rerun tau id
-# git cms-merge-topic -u -s theirs cms-tau-pog:CMSSW_8_0_X_tau-pog_tauIDOnMiniAOD-legacy-backport-81X
-
-# MET:
-# copy training weightfile
-mkdir $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
-cd $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
-wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root --no-check-certificate
+git cms-merge-topic -u --ssh cms-tau-pog:CMSSW_8_0_X_tau-pog_tauIDOnMiniAOD-legacy-backport-81Xv2
 
 # EM:
 # Electron cutBased Id and MVA Id
 #https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2#Recipe_for_regular_users_for_8_0
 #https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recipes_for_regular_users_common
 git cms-addpkg RecoMET/METPUSubtraction
+
+# MET:
+# copy training weightfile
+mkdir $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
+cd $CMSSW_BASE/src/RecoMET/METPUSubtraction/data
+wget https://github.com/macewindu009/MetTools/raw/nicobranch/MVAMET/weightfiles/weightfile.root --no-check-certificate
+cd $CMSSW_BASE/src
+
 git cms-addpkg DataFormats/METReco
 git cms-addpkg PhysicsTools/PatUtils
 git cms-addpkg RecoEgamma/ElectronIdentification
 #Above needs to be checked out first since there are conflicts with MVA MET otherwise and then 63 packages are checked out...
 
-# This is an old recipe : https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2Archive
-#git cms-merge-topic -u ikrav:egm_id_80X_v2
+## This is an old recipe : https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedElectronIdentificationRun2Archive
+##git cms-merge-topic --ssh -u ikrav:egm_id_80X_v2
 
-# MET:
-# Additional metfilters
-git cms-merge-topic -u cms-met:fromCMSSW_8_0_20_postICHEPfilter
-git cms-merge-topic cms-met:METRecipe_8020 -u
-git cms-merge-topic cms-met:METRecipe_80X_part2 -u
+## MET:
+## Additional metfilters
+#git cms-merge-topic --ssh -u cms-met:fromCMSSW_8_0_20_postICHEPfilter
+#git cms-merge-topic --ssh cms-met:METRecipe_8020 -u
+#git cms-merge-topic --ssh cms-met:METRecipe_80X_part2 -u
 
 
 
