@@ -518,7 +518,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		)
 
 	process.kappaTuple.active += cms.vstring('L1Taus')
-
+	if isEmbedded:
+		process.kappaTuple.L1Taus.l1taus.src = cms.InputTag("caloStage2Digis","Tau","SIMembedding")
 
 	if "2017v1" in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
