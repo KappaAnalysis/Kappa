@@ -176,7 +176,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "HLT")
 	if isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "SIMembedding")
-		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "SIMembedding")
+		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "MERGE")
 		process.kappaTuple.Info.hltSource = cms.InputTag("TriggerResults", "", "SIMembedding")
 	elif data:
 		if tools.is_above_cmssw_version([9]):
@@ -198,7 +198,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	# 80X doesn't have 'slimmedPatTrigger' -> use 'selectedPatTrigger' instead
 	if tools.is_above_cmssw_version([9,0]):
 		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("slimmedPatTrigger"))
-		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
+		if not isEmbedded:
+			process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
 	elif tools.is_above_cmssw_version([8,0]):
 		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("selectedPatTrigger"))
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
@@ -271,17 +272,16 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	if tools.is_above_cmssw_version([9]):
 		from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 		updateJetCollection(
-                       process,
-                       jetSource = cms.InputTag('slimmedJets'),
-                       labelName = 'UpdatedJEC',
-                       jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute', 'L2L3Residual']), 'None'),
-		       btagDiscriminators = [
-		           "pfDeepFlavourJetTags:probb",
-			   "pfDeepFlavourJetTags:probbb",
-			   "pfDeepFlavourJetTags:problepb",
-       			],
-
-                )
+			process,
+			jetSource = cms.InputTag('slimmedJets'),
+			labelName = 'UpdatedJEC',
+			jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute', 'L2L3Residual']), 'None'),
+			btagDiscriminators = [
+				"pfDeepFlavourJetTags:probb",
+				"pfDeepFlavourJetTags:probbb",
+				"pfDeepFlavourJetTags:problepb",
+			],
+		)
 		jetCollection = "updatedPatJetsUpdatedJEC"
 	elif tools.is_above_cmssw_version([8]):
 		from RecoMET.METPUSubtraction.jet_recorrections import recorrectJets
@@ -673,7 +673,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 		runMetCorAndUncFromMiniAOD (
 			process,
-			isData = data, # false for MC
+			isData = (data or isEmbedded), # false for MC
 			fixEE2017 = True,
 			fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139},
 			postfix = "ModifiedMET"
