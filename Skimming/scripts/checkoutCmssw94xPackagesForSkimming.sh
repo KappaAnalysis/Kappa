@@ -47,7 +47,7 @@ git cherry-pick 94ceae257f846998c357fcad408986cc8a039152
 
 # Get code for electron V2 ID's (trained on 94X MC's)
 #git cms-merge-topic guitargeek:EgammaID_949
-git cms-merge-topic cms-egamma/EgammaID_949
+git cms-merge-topic cms-egamma:EgammaID_949
 
 
 
