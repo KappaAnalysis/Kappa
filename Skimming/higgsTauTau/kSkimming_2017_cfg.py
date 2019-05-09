@@ -628,39 +628,38 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 
 	## Refitted Vertices collection
-	#process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
-	if not tools.is_above_cmssw_version([9]):
-		process.kappaTuple.active += cms.vstring('RefitVertex')
-		process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
+	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
+	process.kappaTuple.active += cms.vstring('RefitVertex')
+	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
 
-		if tools.is_above_cmssw_version([7,6]) and not tools.is_above_cmssw_version([9]):
-			process.AdvancedRefitVertexBSProducer.srcElectrons = cms.InputTag(electrons)
-			process.AdvancedRefitVertexBSProducer.srcMuons = cms.InputTag(muons)
-			process.AdvancedRefitVertexBSProducer.srcTaus = cms.InputTag(taus)
-			process.AdvancedRefitVertexBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
-			process.p *= (process.AdvancedRefitVertexBS)
+	if tools.is_above_cmssw_version([7,6]):
+		process.AdvancedRefitVertexBSProducer.srcElectrons = cms.InputTag(electrons)
+		process.AdvancedRefitVertexBSProducer.srcMuons = cms.InputTag(muons)
+		process.AdvancedRefitVertexBSProducer.srcTaus = cms.InputTag(taus)
+		process.AdvancedRefitVertexBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
+		process.p *= (process.AdvancedRefitVertexBS)
 
+	process.AdvancedRefitVertexNoBSProducer.srcElectrons = cms.InputTag(electrons)
+	process.AdvancedRefitVertexNoBSProducer.srcMuons = cms.InputTag(muons)
+	process.AdvancedRefitVertexNoBSProducer.srcTaus = cms.InputTag(taus)
+	process.AdvancedRefitVertexNoBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
+	process.p *= (process.AdvancedRefitVertexNoBS)
+
+	process.kappaTuple.RefitVertex.whitelist = cms.vstring('AdvancedRefitVertexBS', 'AdvancedRefitVertexNoBS')
+
+	if tools.is_above_cmssw_version([7,6]):#and not tools.is_above_cmssw_version([9]):
+		process.kappaTuple.RefitVertex.AdvancedRefittedVerticesBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexBSProducer"))
+		process.AdvancedRefitVertexBSProducer.srcElectrons = cms.InputTag(electrons)
+		process.AdvancedRefitVertexBSProducer.srcMuons = cms.InputTag(muons)
+		process.AdvancedRefitVertexBSProducer.srcTaus = cms.InputTag(taus)
+		process.AdvancedRefitVertexBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
+
+	if tools.is_above_cmssw_version([7,6]):
+		process.kappaTuple.RefitVertex.AdvancedRefittedVerticesNoBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexNoBSProducer"))
 		process.AdvancedRefitVertexNoBSProducer.srcElectrons = cms.InputTag(electrons)
 		process.AdvancedRefitVertexNoBSProducer.srcMuons = cms.InputTag(muons)
 		process.AdvancedRefitVertexNoBSProducer.srcTaus = cms.InputTag(taus)
 		process.AdvancedRefitVertexNoBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
-		process.p *= (process.AdvancedRefitVertexNoBS)
-
-		process.kappaTuple.RefitVertex.whitelist = cms.vstring('AdvancedRefitVertexBS', 'AdvancedRefitVertexNoBS')
-
-		if tools.is_above_cmssw_version([7,6]) and not tools.is_above_cmssw_version([9]):
-			process.kappaTuple.RefitVertex.AdvancedRefittedVerticesBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexBSProducer"))
-			process.AdvancedRefitVertexBSProducer.srcElectrons = cms.InputTag(electrons)
-			process.AdvancedRefitVertexBSProducer.srcMuons = cms.InputTag(muons)
-			process.AdvancedRefitVertexBSProducer.srcTaus = cms.InputTag(taus)
-			process.AdvancedRefitVertexBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
-
-		if tools.is_above_cmssw_version([7,6]):
-			process.kappaTuple.RefitVertex.AdvancedRefittedVerticesNoBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexNoBSProducer"))
-			process.AdvancedRefitVertexNoBSProducer.srcElectrons = cms.InputTag(electrons)
-			process.AdvancedRefitVertexNoBSProducer.srcMuons = cms.InputTag(muons)
-			process.AdvancedRefitVertexNoBSProducer.srcTaus = cms.InputTag(taus)
-			process.AdvancedRefitVertexNoBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
 
 	## calculate IP info wrt refitted PV
 	process.kappaTuple.Electrons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer")
