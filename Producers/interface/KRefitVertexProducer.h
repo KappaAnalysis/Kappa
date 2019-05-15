@@ -39,12 +39,9 @@ protected:
 		for(auto name: in.userCandNames())
 		{
 			edm::Ptr<reco::Candidate> aRecoCand = in.userCand( name );
-
-			size_t hash_1 = hasher(aRecoCand.get());
-			hashes.push_back(hash_1);
-			boost::hash_combine(hash1,hash_1);
-			hash = hash1;
-
+			size_t hash_ = hasher(aRecoCand.get());
+			hashes.push_back(hash_);
+			boost::hash_combine(hash,hash_);
 		}
 
 		out.leptonSelectionHash = hash;
