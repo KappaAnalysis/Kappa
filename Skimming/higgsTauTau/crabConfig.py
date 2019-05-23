@@ -7,7 +7,7 @@ from httplib import HTTPException
 from CRABAPI.RawCommand import crabCommand
 from CRABClient.ClientExceptions import ClientException
 from multiprocessing import Process
-from Kappa.Skimming.registerDatasetHelper import get_sample_by_nick,get_inputDBS_by_nick,get_n_files_from_nick,get_n_generated_events_from_nick
+from Kappa.Skimming.registerDatasetHelper import get_sample_by_nick,get_inputDBS_by_nick,get_n_files_from_nick,get_n_generated_events_from_nick,get_dbs_by_nick
 from Kappa.Skimming.datasetsHelper2015 import isData, getScenario
 import sys
 from glob import glob
@@ -102,14 +102,14 @@ def submission(events_per_job):
 
 		config.JobType.pyCfgParams = ['globalTag=80X_dataRun2_2016SeptRepro_v7' if isData(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_TrancheIV_v8' if "PUMoriond17" in getScenario(nickname) else 'globalTag=80X_mcRun2_asymptotic_2016_miniAODv2_v1' ,'kappaTag=KAPPA_2_1_0','nickname=%s'%(nickname),'outputfilename=kappa_%s.root'%(nickname),'testsuite=False']
 		config.JobType.outputFiles = ['kappa_%s.root'%(nickname)]
-		config.Data.inputDataset = get_sample_by_nick(nickname)
+		config.Data.inputDataset = get_dbs_by_nick(nickname)
 		#config.Data.lumiMask = '/nfs/dust/cms/user/<NAF-username>/kappa/crab_kappa_skim80X-<campaign-date>/results/missingLumis.json' # for running of a subset of lumi sections
 		p = Process(target=submit, args=(config,))
 		p.start()
 		p.join()
 
 if __name__ == "__main__":
-	if len(sys.argv) == 1: 
+	if len(sys.argv) == 1:
 		print "no setting provided"
 		sys.exit()
 	if sys.argv[1] == "submit":
