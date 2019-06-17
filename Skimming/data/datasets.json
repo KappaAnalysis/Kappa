@@ -16332,6 +16332,9 @@
     "scenario": "17Nov2017v1"
   },
   "Tau_Run2017B_31Mar2018v1_13TeV_MINIAOD": {
+    "analysis_2017": [
+      "skim_data31March"
+    ],
     "campaign": "Run2017B",
     "data": true,
     "dbs": "/Tau/Run2017B-31Mar2018-v1/MINIAOD",
@@ -16401,6 +16404,9 @@
     "scenario": "17Nov2017v1"
   },
   "Tau_Run2017C_31Mar2018v1_13TeV_MINIAOD": {
+    "analysis_2017": [
+      "skim_data31March"
+    ],
     "campaign": "Run2017C",
     "data": true,
     "dbs": "/Tau/Run2017C-31Mar2018-v1/MINIAOD",
@@ -16488,6 +16494,9 @@
     "scenario": "17Nov2017v1"
   },
   "Tau_Run2017D_31Mar2018v1_13TeV_MINIAOD": {
+    "analysis_2017": [
+      "skim_data31March"
+    ],
     "campaign": "Run2017D",
     "data": true,
     "dbs": "/Tau/Run2017D-31Mar2018-v1/MINIAOD",
@@ -16539,6 +16548,9 @@
     "scenario": "17Nov2017v1"
   },
   "Tau_Run2017E_31Mar2018v1_13TeV_MINIAOD": {
+    "analysis_2017": [
+      "skim_data31March"
+    ],
     "campaign": "Run2017E",
     "data": true,
     "dbs": "/Tau/Run2017E-31Mar2018-v1/MINIAOD",
@@ -16572,6 +16584,9 @@
     "scenario": "17Nov2017v1"
   },
   "Tau_Run2017F_31Mar2018v1_13TeV_MINIAOD": {
+    "analysis_2017": [
+      "skim_data31March"
+    ],
     "campaign": "Run2017F",
     "data": true,
     "dbs": "/Tau/Run2017F-31Mar2018-v1/MINIAOD",
