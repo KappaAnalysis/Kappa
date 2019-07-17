@@ -34,17 +34,14 @@ protected:
 		KVertexProducer::fillVertex(in, out);
 
 		// save references to lepton selection in the refitted vertex
-		size_t hash = 0;
 		std::vector<size_t> hashes;
 		for(auto name: in.userCandNames())
 		{
 			edm::Ptr<reco::Candidate> aRecoCand = in.userCand( name );
-			size_t hash_ = hasher(aRecoCand.get());
-			hashes.push_back(hash_);
-			boost::hash_combine(hash,hash_);
+			size_t hash = hasher(aRecoCand.get());
+			hashes.push_back(hash);
 		}
 
-		out.leptonSelectionHash = hash;
 		out.leptonSelectionHash1 = hashes[0];
 		out.leptonSelectionHash2 = hashes[1];
 		if (this->verbosity >= 3) std::cout << "KRefitVertexProducer fillSingle() end\n";
