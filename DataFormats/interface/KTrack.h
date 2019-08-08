@@ -99,12 +99,39 @@ struct KTrack : public KLV
 	};
 	
 	// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TrackReco/interface/TrackBase.h#L3-L49
+	template<class T>
+	std::vector<float> helixParameters(const T &vertex) const
+	{
+		std::vector<float> parameters = { qOverP(), lambda(), phi(), getDxy(vertex), getDsz(vertex) };
+		return parameters;
+	}
+
 	std::vector<float> helixParameters()
 	{
 		KVertex origin;
 		std::vector<float> parameters = { qOverP(), lambda(), phi(), getDxy(&origin), getDsz(&origin) };
 		return parameters;
 	}
+
+	template<class T>
+	float helixParameters(const T &vertex, int index) const
+	{
+		switch (index) {
+			case 0:
+				return qOverP();
+			case 1:
+				return lambda();
+			case 2:
+				return phi();
+			case 3:
+				return getDxy(vertex);
+			case 4:
+				return getDsz(vertex);
+			default:
+				return -999;
+		}
+	}
+
 	ROOT::Math::SMatrix<float, reco::Track::dimension, reco::Track::dimension, ROOT::Math::MatRepSym<float, reco::Track::dimension> > helixCovariance;
 	
 	float qOverP() const
