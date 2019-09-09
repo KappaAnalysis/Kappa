@@ -245,6 +245,13 @@ def make_nickname(dict):
 	nick += dict["energy"].replace("_", "")   + "TeV_"
 	nick += dict["format"].replace("_", "") + ("" if (dict["data"] or dict.get("embedded")) else "_")
 	nick += dict["generator"].replace("_", "")
+	if (dict["campaign"] == "tmuller"):
+		if re.search("TauDecays_externalMode_0", dict["dbs"]):
+			nick += "_TauDecays_externalMode_0"
+		elif re.search("TauDecays_externalMode_1", dict["dbs"]):
+			nick += "_TauDecays_externalMode_1"
+		elif re.search("TauDecays_externalMode_2", dict["dbs"]):
+			nick += "_TauDecays_externalMode_2"
 	nick += ("_" + dict["extension"] if dict["extension"] != "" else "")
 	return nick
 

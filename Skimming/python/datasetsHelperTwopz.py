@@ -76,6 +76,13 @@ class datasetsHelperTwopz:
 		nick += sample_dict["energy"].replace("_", "") + "TeV_"
 		nick += sample_dict["format"].replace("_", "") + ("" if (sample_dict["data"]) else "_")
 		nick += sample_dict["generator"].replace("_", "")
+		if (sample_dict["campaign"] == "tmuller"):
+			if re.search("TauDecays_externalMode_0", sample_dict["dbs"]):
+				nick += "_TauDecays_externalMode_0"
+			elif re.search("TauDecays_externalMode_1", sample_dict["dbs"]):
+				nick += "_TauDecays_externalMode_1"
+			elif re.search("TauDecays_externalMode_2", sample_dict["dbs"]):
+				nick += "_TauDecays_externalMode_2"
 		nick += ("_" + sample_dict["extension"] if sample_dict["extension"] != "" else "")
 
 		return nick
