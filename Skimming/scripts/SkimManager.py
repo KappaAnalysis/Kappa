@@ -11,6 +11,7 @@ import ast
 import gzip
 import shutil
 import re
+import hashlib
 from multiprocessing import Process, Queue
 
 from httplib import HTTPException
@@ -176,7 +177,7 @@ class SkimManagerBase:
 		return config
 
 	def individualized_crab_cfg(self, akt_nick, config):
-		config.General.requestName = akt_nick[:100]
+		config.General.requestName = hashlib.md5(akt_nick).hexdigest()
 		config.Data.inputDBS = self.skimdataset[akt_nick].get("inputDBS", 'global')
 		globalTag = self.get_global_tag(akt_nick)
 		config.JobType.pyCfgParams = [str('globalTag=%s'%globalTag), 'kappaTag=KAPPA_2_1_0', str('nickname=%s'%(akt_nick)), str('outputfilename=kappa_%s.root'%(akt_nick)), 'testsuite=False']
