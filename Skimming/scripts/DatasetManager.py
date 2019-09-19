@@ -91,8 +91,6 @@ class DataSetManagerBase:
 			campaign = campaign.split("_")[0]
 		if "reHLT" in details:
 			campaign = campaign + "reHLT"
-		if "tmuller-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2" in details:
-			campaign = "RunIISummer16MiniAODv2"
 		return campaign
 
 	def get_scenario(self, details, energy=None, data=False):
@@ -104,8 +102,6 @@ class DataSetManagerBase:
 				scenario = scenario.split("_")[0] + "_" + scenario.split("_")[1]
 			if (energy == "13" or energy =="14"):
 				scenario = scenario.split("_")[0]
-			if "tmuller-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2" in details:
-				campaign = "PUMoriond17"
 			return scenario
 
 	# do not forget that there is the same function in python/registerDatasetHelper.py that likes to be modified!
@@ -187,15 +183,6 @@ class DataSetManagerBase:
 	def get_extension(self, details, data=False):
 		if data:
 			return ""
-		elif "tmuller-RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2" in details:
-			if "TauDecays_externalMode_0" in details:
-				return "ext1TauDecaysExternalMode0"
-			elif "TauDecays_externalMode_1" in details:
-				return "ext1TauDecaysExternalMode1"
-			elif "TauDecays_externalMode_2" in details:
-				return "ext1TauDecaysExternalMode2"
-			else:
-				return "ext1"
 		elif (details.find('_set')!=-1 and details.find('-28028')!=-1):
 			startpos = details.find("set")
 			endpos = details.rfind("-28028")
