@@ -214,7 +214,8 @@ private:
 			// The inital tau decays into three leptons, which can be illustrated by a virual photon (gamma*).
 			// Take the lepton with the largest pt, which is most likly to be reconstructed as the tau. The others are usally soft 
 			// the loop over the daughters is necessary since also photons can be radiated within this step.
-			 if (std::abs(lep_daughter_wiht_max_pt) == 11 || std::abs(lep_daughter_wiht_max_pt) == 13 ) allowNonPromptTauDecayProduct = true;
+		          int lep_daughter_wiht_max_pt_pdgId = in.daughter(lep_daughter_wiht_max_pt)->pdgId();
+		          if (std::abs(lep_daughter_wiht_max_pt_pdgId) == 11 || std::abs(lep_daughter_wiht_max_pt_pdgId) == 13 ) allowNonPromptTauDecayProduct = true;
 			 walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(lep_daughter_wiht_max_pt)), info, level, allowNonPromptTauDecayProduct);
 		}		
 		else if(in.numberOfDaughters() == 2 && std::abs(in.pdgId()) == 111 &&
