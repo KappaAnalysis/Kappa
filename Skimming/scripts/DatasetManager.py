@@ -86,6 +86,7 @@ class DataSetManagerBase:
 		return akt_energy
 
 	def get_campaign(self, details, energy=None):
+		details = details.replace("tmuller-", "")
 		campaign = details.split("-")[0]
 		if energy == "8":
 			campaign = campaign.split("_")[0]
@@ -94,6 +95,7 @@ class DataSetManagerBase:
 		return campaign
 
 	def get_scenario(self, details, energy=None, data=False):
+		details = details.replace("tmuller-", "")
 		if data:
 			return ''.join(details.split('-')[1:])
 		else:
@@ -178,7 +180,7 @@ class DataSetManagerBase:
 		return process
 
 	def get_format(self,filetype):
-		return filetype.replace("AODSIM", "AOD")
+		return filetype.replace("AODSIM", "AOD").replace("USER", "MINIAOD")
 
 	def get_extension(self, details, data=False):
 		if data:
