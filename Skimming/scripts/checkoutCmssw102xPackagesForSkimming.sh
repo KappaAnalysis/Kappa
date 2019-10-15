@@ -6,8 +6,8 @@ ssh -vT git@github.com
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh
 
-scramv1 project -n CMSSW_10_2_16_kappa CMSSW CMSSW_10_2_16
-cd CMSSW_10_2_16_kappa/src/
+scramv1 project -n CMSSW_10_2_17_kappa CMSSW CMSSW_10_2_17
+cd CMSSW_10_2_17_kappa/src/
 eval `scramv1 runtime -sh`
 
 export KAPPA_BRANCH="dictchanges_CMSSW102X"
@@ -41,7 +41,7 @@ git cms-merge-topic cms-egamma:EgammaPostRecoTools
 git cms-merge-topic cms-met:METFixEE2017_949_v2_backport_to_102X
 
 # Get deepTau 2017v2p1 Tau ID (and Tau ID Embedder)
-git cms-merge-topic 27879 #MB: Check if it got merged with 10_2_17 when released
+#git cms-merge-topic 27879 #MB: It got merged with 10_2_17
 
 # add MVA DM code and xml files
 git cms-merge-topic -u danielwinterbottom:from-CMSSW_10_2_16-mvaDM
