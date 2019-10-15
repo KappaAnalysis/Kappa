@@ -446,7 +446,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#--------------------------------------------------------------------------------
 	#https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_M_AN1
 	toKeep = []
-	if tools.is_above_cmssw_version([10,2,15]): toKeep.extend(("2017v2","newDM2017v2","MVADM_2017_v1","deepTau2017v2p1"))
+	if tools.is_above_cmssw_version([10,2,15]): toKeep.extend(("2017v2","MVADM_2017_v1","deepTau2017v2p1"))
 	elif tools.is_above_cmssw_version([9]): toKeep.extend(("2017v2","newDM2017v2"))
 	elif tools.is_above_cmssw_version([8,0,20]): toKeep.extend(("2016v1", "newDM2016v1"))
 
@@ -609,28 +609,28 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		# deepTauID 2017v2p1
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(#comment out WP as defined by a simple cut at raw value
 			"byDeepTau2017v2p1VSjetraw",
-			#"byVVVLooseDeepTau2017v2p1VSjet",
-			#"byVVLooseDeepTau2017v2p1VSjet",
-			#"byVLooseDeepTau2017v2p1VSjet",
-			#"byLooseDeepTau2017v2p1VSjet",
-			#"byMediumDeepTau2017v2p1VSjet",
-			#"byTightDeepTau2017v2p1VSjet",
-			#"byVTightDeepTau2017v2p1VSjet",
-			#"byVVTightDeepTau2017v2p1VSjet",
+			"byVVVLooseDeepTau2017v2p1VSjet",
+			"byVVLooseDeepTau2017v2p1VSjet",
+			"byVLooseDeepTau2017v2p1VSjet",
+			"byLooseDeepTau2017v2p1VSjet",
+			"byMediumDeepTau2017v2p1VSjet",
+			"byTightDeepTau2017v2p1VSjet",
+			"byVTightDeepTau2017v2p1VSjet",
+			"byVVTightDeepTau2017v2p1VSjet",
 			"byDeepTau2017v2p1VSeraw",
-			#"byVVVLooseDeepTau2017v2p1VSe",
-			#"byVVLooseDeepTau2017v2p1VSe",
-			#"byVLooseDeepTau2017v2p1VSe",
-			#"byLooseDeepTau2017v2p1VSe",
-			#"byMediumDeepTau2017v2p1VSe",
-			#"byTightDeepTau2017v2p1VSe",
-			#"byVTightDeepTau2017v2p1VSe",
-			#"byVVTightDeepTau2017v2p1VSe",
+			"byVVVLooseDeepTau2017v2p1VSe",
+			"byVVLooseDeepTau2017v2p1VSe",
+			"byVLooseDeepTau2017v2p1VSe",
+			"byLooseDeepTau2017v2p1VSe",
+			"byMediumDeepTau2017v2p1VSe",
+			"byTightDeepTau2017v2p1VSe",
+			"byVTightDeepTau2017v2p1VSe",
+			"byVVTightDeepTau2017v2p1VSe",
 			"byDeepTau2017v2p1VSmuraw",
-			#"byVLooseDeepTau2017v2p1VSmu",
-			#"byLooseDeepTau2017v2p1VSmu",
-			#"byMediumDeepTau2017v2p1VSmu",
-			#"byTightDeepTau2017v2p1VSmu"
+			"byVLooseDeepTau2017v2p1VSmu",
+			"byLooseDeepTau2017v2p1VSmu",
+			"byMediumDeepTau2017v2p1VSmu",
+			"byTightDeepTau2017v2p1VSmu"
 			)
 
 	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring(
