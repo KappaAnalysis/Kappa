@@ -1393,11 +1393,11 @@
     "generator": "madgraph-pythia8",
     "globalTag": "80X_mcRun2_asymptotic_2016_TrancheIV_v8",
     "inputDBS": "phys03",
-    "n_events_generated": "34937755",
-    "n_files": "4349",
+    "n_events_generated": "68759199",
+    "n_files": "8559",
     "process": "DYJetsToTauTau_M50",
     "scenario": "PUMoriond17",
-    "xsec": 1923.8932567580948
+    "xsec": 1923.89325676
   },
   "DoubleEG_Run2015B_PromptRecov1_13TeV_MINIAOD": {
     "Moriond17": [
