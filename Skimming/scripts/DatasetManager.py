@@ -103,7 +103,10 @@ class DataSetManagerBase:
 			if (energy == "7" or energy == "8"):
 				scenario = scenario.split("_")[0] + "_" + scenario.split("_")[1]
 			if (energy == "13" or energy =="14"):
-				scenario = scenario.split("_")[0]
+				if "new_pmx" in scenario:
+					scenario = scenario.split("_")[0] + "_new_pmx"
+				else:
+					scenario = scenario.split("_")[0]
 			return scenario
 
 	# do not forget that there is the same function in python/registerDatasetHelper.py that likes to be modified!

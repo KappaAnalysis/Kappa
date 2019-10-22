@@ -16769,6 +16769,22 @@
     "scenario": "PU2017",
     "xsec": 0.2370687
   },
+  "VBFHToTauTauM125_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_powheg-pythia8": {
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/VBFHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "powheg-pythia8",
+    "globalTag": "94X_mc2017_realistic_v17",
+    "inputDBS": "global",
+    "n_events_generated": "2977152",
+    "n_files": "39",
+    "process": "VBFHToTauTau_M125",
+    "scenario": "PU2017_new_pmx",
+    "xsec": 0.2370687
+  },
   "VBFHToTauTauM125_RunIISpring16MiniAODv1_PUSpring16RAWAODSIM_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
       "MC_Spring16_v1"
