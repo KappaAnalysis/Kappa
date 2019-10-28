@@ -597,7 +597,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			"byVVTightIsolationMVArun2v1DBnewDMwLT2016")
 	if "MVADM_2017_v1" in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(#comment out raw values
-			"MVADM2016v1", #MVADM=0,1,... and -1 for unknown
+			"MVADM2017v1", #MVADM=0,1,... and -1 for unknown
 			#"MVADM2017v1DM0raw", #MVA score for DM=0
 			#"MVADM2017v1DM1raw", #MVA score for DM=1
 			#"MVADM2017v1DM2raw", #MVA score for DM=2
