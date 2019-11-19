@@ -49,6 +49,11 @@ class SkimManagerBase:
 				"dcap" : "dcap://grid-dcap-extern.physik.rwth-aachen.de/pnfs/physik.rwth-aachen.de/cms/",
 				"srm" : "srm://grid-srm.physik.rwth-aachen.de:8443/srm/managerv2\?SFN=/pnfs/physik.rwth-aachen.de/cms/",
 				"xrootd" : "root://grid-vo-cms.physik.rwth-aachen.de:1094/",
+			},
+			"T2_PL_Swierk" : {
+				#"dcap" : ""
+				"srm" : "srm://se.cis.gov.pl:8446/srm/managerv2?SFN=/dpm/cis.gov.pl/home/cms/",
+				"xrootd" : "root://se.cis.gov.pl:1094/",
 			}
 		}
 		self.UsernameFromSiteDB = None
@@ -174,7 +179,7 @@ class SkimManagerBase:
 		config.General.workArea = self.workdir
 		config.General.transferOutputs = True
 		config.General.transferLogs = True
-		config.User.voGroup = 'dcms'
+		config.User.voGroup = 'dcms' #comment out if not using German grid cert
 		config.JobType.pluginName = 'Analysis'
 		config.JobType.psetName = os.path.join(os.environ.get("CMSSW_BASE"), "src/Kappa/Skimming/higgsTauTau/", self.configfile)
 		#config.JobType.inputFiles = ['Spring16_25nsV6_DATA.db', 'Spring16_25nsV6_MC.db']
