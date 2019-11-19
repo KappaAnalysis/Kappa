@@ -50,8 +50,7 @@ git cms-merge-topic -u danielwinterbottom:from-CMSSW_10_2_16-mvaDM
 git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
 
 #Check out Kappa
-#git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
-git clone git@github.com:mbluj/Kappa.git -b ${KAPPA_BRANCH} #FIXME: move to main repo
+git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
 
 # B-tag:
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
