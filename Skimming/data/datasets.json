@@ -277,7 +277,8 @@
   },
   "DY1JetsToLLM50_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8": {
     "analysis_2017": [
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -287,7 +288,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9992426879451716,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "42331295",
     "n_files": "492",
@@ -297,7 +298,8 @@
   },
   "DY1JetsToLLM50_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8_ext1": {
     "analysis_2017": [
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -307,7 +309,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9992446492598397,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "33669127",
     "n_files": "392",
@@ -536,6 +538,25 @@
     "scenario": "PU2017",
     "xsec": 304.4
   },
+  "DY2JetsToLLM50_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_madgraph-pythia8_ext1": {
+    "analysis_2017": [
+      "skim_legacy_MC"
+    ],
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/DY2JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14_ext1-v2/MINIAODSIM",
+    "energy": "13",
+    "extension": "ext1",
+    "format": "MINIAOD",
+    "generator": "madgraph-pythia8",
+    "globalTag": "102X_mc2017_realistic_v7",
+    "inputDBS": "global",
+    "n_events_generated": "10037851",
+    "n_files": "163",
+    "process": "DY2JetsToLL_M50",
+    "scenario": "PU2017_new_pmx",
+    "xsec": 304.4
+  },
   "DY2JetsToLLM50_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
       "MC_Spring16_v1"
@@ -680,7 +701,8 @@
   "DY3JetsToLLM50_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -690,7 +712,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.998556484460376,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "5748466",
     "n_files": "84",
@@ -701,7 +723,8 @@
   "DY3JetsToLLM50_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8_ext1": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -711,7 +734,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9984845149969508,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "1149467",
     "n_files": "22",
@@ -862,7 +885,8 @@
   },
   "DY4JetsToLLM50_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8": {
     "analysis_2017": [
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -871,7 +895,7 @@
     "extension": "",
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "4328648",
     "n_files": "75",
@@ -1022,7 +1046,8 @@
   },
   "DYJetsToLLM10to50_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8": {
     "analysis_2017": [
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -1032,7 +1057,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9992010370122589,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "39521230",
     "n_files": "477",
@@ -1439,7 +1464,8 @@
   "DYJetsToLLM50_RunIIFall17MiniAODv2_PU2017RECOSIMstep_13TeV_MINIAOD_madgraph-pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -1449,7 +1475,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9991217736408744,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "48675378",
     "n_files": "553",
@@ -1460,7 +1486,8 @@
   "DYJetsToLLM50_RunIIFall17MiniAODv2_PU2017RECOSIMstep_13TeV_MINIAOD_madgraph-pythia8_ext1": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -1469,7 +1496,7 @@
     "extension": "ext1",
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "49125561",
     "n_files": "591",
@@ -3093,6 +3120,25 @@
     "scenario": "PU2017",
     "xsec": 23.24
   },
+  "EWKWMinus2JetsWToLNuM50_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_madgraph-pythia8": {
+    "analysis_2017": [
+      "skim_legacy_MC"
+    ],
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/EWKWMinus2Jets_WToLNu_M-50_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "madgraph-pythia8",
+    "globalTag": "102X_mc2017_realistic_v7",
+    "inputDBS": "global",
+    "n_events_generated": "4449714",
+    "n_files": "67",
+    "process": "EWKWMinus2Jets_WToLNu_M50",
+    "scenario": "PU2017_new_pmx",
+    "xsec": 23.24
+  },
   "EWKWMinus2JetsWToLNuM50_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
       "MC_Spring16_v1"
@@ -3255,6 +3301,25 @@
     "n_files": "66",
     "process": "EWKWPlus2Jets_WToLNu_M50",
     "scenario": "PU2017",
+    "xsec": 29.59
+  },
+  "EWKWPlus2JetsWToLNuM50_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_madgraph-pythia8": {
+    "analysis_2017": [
+      "skim_legacy_MC"
+    ],
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/EWKWPlus2Jets_WToLNu_M-50_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "madgraph-pythia8",
+    "globalTag": "102X_mc2017_realistic_v7",
+    "inputDBS": "global",
+    "n_events_generated": "4453013",
+    "n_files": "90",
+    "process": "EWKWPlus2Jets_WToLNu_M50",
+    "scenario": "PU2017_new_pmx",
     "xsec": 29.59
   },
   "EWKWPlus2JetsWToLNuM50_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_madgraph-pythia8": {
@@ -3421,6 +3486,25 @@
     "scenario": "PU2017",
     "xsec": 4.321
   },
+  "EWKZ2JetsZToLLM50_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_madgraph-pythia8": {
+    "analysis_2017": [
+      "skim_legacy_MC"
+    ],
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/EWKZ2Jets_ZToLL_M-50_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "madgraph-pythia8",
+    "globalTag": "102X_mc2017_realistic_v7",
+    "inputDBS": "global",
+    "n_events_generated": "954336",
+    "n_files": "16",
+    "process": "EWKZ2Jets_ZToLL_M50",
+    "scenario": "PU2017_new_pmx",
+    "xsec": 4.321
+  },
   "EWKZ2JetsZToLLM50_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_madgraph-pythia8": {
     "Moriond17": [
       "MC_Spring16_v1"
@@ -3581,6 +3665,25 @@
     "n_files": "38",
     "process": "EWKZ2Jets",
     "scenario": "PU2017",
+    "xsec": 10.66
+  },
+  "EWKZ2Jets_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_madgraph-pythia8": {
+    "analysis_2017": [
+      "skim_legacy_MC"
+    ],
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/EWKZ2Jets_ZToNuNu_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "madgraph-pythia8",
+    "globalTag": "102X_mc2017_realistic_v7",
+    "inputDBS": "global",
+    "n_events_generated": "3000000",
+    "n_files": "41",
+    "process": "EWKZ2Jets",
+    "scenario": "PU2017_new_pmx",
     "xsec": 10.66
   },
   "EWKZ2Jets_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_madgraph-pythia8": {
@@ -5436,6 +5539,9 @@
     "Embedding2017": [
       "embedding2017_skim"
     ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
+    ],
     "campaign": "ElMuFinalState",
     "data": true,
     "dbs": "/EmbeddingRun2017B/ElMuFinalState-inputDoubleMu_94X_miniAOD-v2/USER",
@@ -5454,6 +5560,9 @@
   "Embedding2017B_ElTauFinalState_inputDoubleMu94XminiAODv2_13TeV_USER": {
     "Embedding2017": [
       "embedding2017_skim"
+    ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
     ],
     "campaign": "ElTauFinalState",
     "data": true,
@@ -5490,6 +5599,9 @@
     "Embedding2017": [
       "embedding2017_skim"
     ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
+    ],
     "campaign": "MuTauFinalState",
     "data": true,
     "dbs": "/EmbeddingRun2017B/MuTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER",
@@ -5508,6 +5620,9 @@
   "Embedding2017B_TauTauFinalState_inputDoubleMu94XminiAODv2_13TeV_USER": {
     "Embedding2017": [
       "embedding2017_skim"
+    ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
     ],
     "campaign": "TauTauFinalState",
     "data": true,
@@ -5528,6 +5643,9 @@
     "Embedding2017": [
       "embedding2017_skim"
     ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
+    ],
     "campaign": "ElMuFinalState",
     "data": true,
     "dbs": "/EmbeddingRun2017C/ElMuFinalState-inputDoubleMu_94X_miniAOD-v2/USER",
@@ -5546,6 +5664,9 @@
   "Embedding2017C_ElTauFinalState_inputDoubleMu94XminiAODv2_13TeV_USER": {
     "Embedding2017": [
       "embedding2017_skim"
+    ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
     ],
     "campaign": "ElTauFinalState",
     "data": true,
@@ -5566,6 +5687,9 @@
     "Embedding2017": [
       "embedding2017_skim"
     ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
+    ],
     "campaign": "MuTauFinalState",
     "data": true,
     "dbs": "/EmbeddingRun2017C/MuTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER",
@@ -5584,6 +5708,9 @@
   "Embedding2017C_TauTauFinalState_inputDoubleMu94XminiAODv2_13TeV_USER": {
     "Embedding2017": [
       "embedding2017_skim"
+    ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
     ],
     "campaign": "TauTauFinalState",
     "data": true,
@@ -5604,6 +5731,9 @@
     "Embedding2017": [
       "embedding2017_skim"
     ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
+    ],
     "campaign": "ElMuFinalState",
     "data": true,
     "dbs": "/EmbeddingRun2017D/ElMuFinalState-inputDoubleMu_94X_miniAOD-v2/USER",
@@ -5622,6 +5752,9 @@
   "Embedding2017D_ElTauFinalState_inputDoubleMu94XminiAODv2_13TeV_USER": {
     "Embedding2017": [
       "embedding2017_skim"
+    ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
     ],
     "campaign": "ElTauFinalState",
     "data": true,
@@ -5642,6 +5775,9 @@
     "Embedding2017": [
       "embedding2017_skim"
     ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
+    ],
     "campaign": "MuTauFinalState",
     "data": true,
     "dbs": "/EmbeddingRun2017D/MuTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER",
@@ -5660,6 +5796,9 @@
   "Embedding2017D_TauTauFinalState_inputDoubleMu94XminiAODv2_13TeV_USER": {
     "Embedding2017": [
       "embedding2017_skim"
+    ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
     ],
     "campaign": "TauTauFinalState",
     "data": true,
@@ -5680,6 +5819,9 @@
     "Embedding2017": [
       "embedding2017_skim"
     ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
+    ],
     "campaign": "ElMuFinalState",
     "data": true,
     "dbs": "/EmbeddingRun2017E/ElMuFinalState-inputDoubleMu_94X_miniAOD-v2/USER",
@@ -5698,6 +5840,9 @@
   "Embedding2017E_ElTauFinalState_inputDoubleMu94XminiAODv2_13TeV_USER": {
     "Embedding2017": [
       "embedding2017_skim"
+    ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
     ],
     "campaign": "ElTauFinalState",
     "data": true,
@@ -5718,6 +5863,9 @@
     "Embedding2017": [
       "embedding2017_skim"
     ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
+    ],
     "campaign": "MuTauFinalState",
     "data": true,
     "dbs": "/EmbeddingRun2017E/MuTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER",
@@ -5736,6 +5884,9 @@
   "Embedding2017E_TauTauFinalState_inputDoubleMu94XminiAODv2_13TeV_USER": {
     "Embedding2017": [
       "embedding2017_skim"
+    ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
     ],
     "campaign": "TauTauFinalState",
     "data": true,
@@ -5756,6 +5907,9 @@
     "Embedding2017": [
       "embedding2017_skim"
     ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
+    ],
     "campaign": "ElMuFinalState",
     "data": true,
     "dbs": "/EmbeddingRun2017F/ElMuFinalState-inputDoubleMu_94X_miniAOD-v2/USER",
@@ -5774,6 +5928,9 @@
   "Embedding2017F_ElTauFinalState_inputDoubleMu94XminiAODv2_13TeV_USER": {
     "Embedding2017": [
       "embedding2017_skim"
+    ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
     ],
     "campaign": "ElTauFinalState",
     "data": true,
@@ -5794,6 +5951,9 @@
     "Embedding2017": [
       "embedding2017_skim"
     ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
+    ],
     "campaign": "MuTauFinalState",
     "data": true,
     "dbs": "/EmbeddingRun2017F/MuTauFinalState-inputDoubleMu_94X_miniAOD-v2/USER",
@@ -5812,6 +5972,9 @@
   "Embedding2017F_TauTauFinalState_inputDoubleMu94XminiAODv2_13TeV_USER": {
     "Embedding2017": [
       "embedding2017_skim"
+    ],
+    "analysis_2017": [
+      "skim_legacy_embedding"
     ],
     "campaign": "TauTauFinalState",
     "data": true,
@@ -6145,6 +6308,25 @@
     "n_files": "38",
     "process": "GluGluHToTauTau_M125",
     "scenario": "PU2017",
+    "xsec": 3.045966
+  },
+  "GluGluHToTauTauM125_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_powheg-pythia8": {
+    "analysis_2017": [
+      "skim_legacy_MC"
+    ],
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/GluGluHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "powheg-pythia8",
+    "globalTag": "102X_mc2017_realistic_v7",
+    "inputDBS": "global",
+    "n_events_generated": "2921180",
+    "n_files": "35",
+    "process": "GluGluHToTauTau_M125",
+    "scenario": "PU2017_new_pmx",
     "xsec": 3.045966
   },
   "GluGluHToTauTauM125_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_powheg-pythia8": {
@@ -8727,7 +8909,8 @@
   "STt-channelantitop4finclusiveDecaysTuneCP5_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -8737,7 +8920,7 @@
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
     "generatorWeight": 1.0,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "3675910",
     "n_files": "69",
@@ -8849,8 +9032,26 @@
   },
   "STt-channeltop4finclusiveDecaysTuneCP5_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
-      "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_legacy_MC"
+    ],
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/ST_t-channel_top_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "powheg-pythia8",
+    "globalTag": "102X_mc2017_realistic_v7",
+    "inputDBS": "global",
+    "n_events_generated": "5865875",
+    "n_files": "111",
+    "process": "STt-channeltop4finclusiveDecaysTuneCP5",
+    "scenario": "PU2017",
+    "xsec": 136.02
+  },
+  "STt-channeltop4finclusiveDecaysTuneCP5_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_powheg-pythia8": {
+    "analysis_2017": [
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -8859,13 +9060,12 @@
     "extension": "",
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
-    "generatorWeight": 1.0,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "5982064",
     "n_files": "93",
     "process": "STt-channeltop4finclusiveDecaysTuneCP5",
-    "scenario": "PU2017",
+    "scenario": "PU2017_new_pmx",
     "xsec": 136.02
   },
   "STt-channeltop4finclusiveDecays_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
@@ -8972,7 +9172,8 @@
   "STtWantitop5finclusiveDecaysTuneCP5_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -8982,7 +9183,7 @@
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
     "generatorWeight": 0.9923797513735627,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "7977430",
     "n_files": "134",
@@ -9135,7 +9336,8 @@
   "STtWtop5finclusiveDecaysTuneCP5_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -9145,7 +9347,7 @@
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
     "generatorWeight": 0.992322225823197,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "7794186",
     "n_files": "139",
@@ -14214,7 +14416,8 @@
   },
   "SingleElectron_Run2017B_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017B",
     "data": true,
@@ -14305,7 +14508,8 @@
   },
   "SingleElectron_Run2017C_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017C",
     "data": true,
@@ -14396,7 +14600,8 @@
   },
   "SingleElectron_Run2017D_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017D",
     "data": true,
@@ -14451,7 +14656,8 @@
   },
   "SingleElectron_Run2017E_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017E",
     "data": true,
@@ -14506,7 +14712,8 @@
   },
   "SingleElectron_Run2017F_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017F",
     "data": true,
@@ -15110,7 +15317,8 @@
   },
   "SingleMuon_Run2017B_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017B",
     "data": true,
@@ -15201,7 +15409,8 @@
   },
   "SingleMuon_Run2017C_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017C",
     "data": true,
@@ -15292,7 +15501,8 @@
   },
   "SingleMuon_Run2017D_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017D",
     "data": true,
@@ -15347,7 +15557,8 @@
   },
   "SingleMuon_Run2017E_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017E",
     "data": true,
@@ -15402,7 +15613,8 @@
   },
   "SingleMuon_Run2017F_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017F",
     "data": true,
@@ -15497,7 +15709,8 @@
   "TTTo2L2Nu_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -15507,7 +15720,7 @@
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
     "generatorWeight": 0.991888,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "9000000",
     "n_files": "153",
@@ -15578,7 +15791,8 @@
   "TTToHadronic_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -15588,7 +15802,7 @@
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
     "generatorWeight": 1.0,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "41729120",
     "n_files": "665",
@@ -15619,7 +15833,8 @@
   "TTToSemiLeptonic_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -15629,7 +15844,7 @@
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
     "generatorWeight": 0.9919210554086331,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "43732445",
     "n_files": "828",
@@ -16349,7 +16564,8 @@
   },
   "Tau_Run2017B_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017B",
     "data": true,
@@ -16421,7 +16637,8 @@
   },
   "Tau_Run2017C_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017C",
     "data": true,
@@ -16511,7 +16728,8 @@
   },
   "Tau_Run2017D_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017D",
     "data": true,
@@ -16565,7 +16783,8 @@
   },
   "Tau_Run2017E_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017E",
     "data": true,
@@ -16601,7 +16820,8 @@
   },
   "Tau_Run2017F_31Mar2018v1_13TeV_MINIAOD": {
     "analysis_2017": [
-      "skim_data31March"
+      "skim_data31March",
+      "skim_legacy_data"
     ],
     "campaign": "Run2017F",
     "data": true,
@@ -16786,6 +17006,9 @@
     "xsec": 0.2370687
   },
   "VBFHToTauTauM125_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_powheg-pythia8": {
+    "analysis_2017": [
+      "skim_legacy_MC"
+    ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
     "dbs": "/VBFHToTauTau_M125_13TeV_powheg_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/MINIAODSIM",
@@ -16793,7 +17016,7 @@
     "extension": "",
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "2977152",
     "n_files": "39",
@@ -17987,20 +18210,19 @@
   },
   "W1JetsToLNu_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8": {
     "analysis_2017": [
-      "skim_mcv2_CP"
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
-    "dbs": "/W1JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v3/MINIAODSIM",
+    "dbs": "/W1JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v4/MINIAODSIM",
     "energy": "13",
     "extension": "",
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
-    "generatorWeight": 0.9992449187051178,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
-    "n_events_generated": "54147812",
-    "n_files": "801",
+    "n_events_generated": "54988117",
+    "n_files": "745",
     "process": "W1JetsToLNu",
     "scenario": "PU2017",
     "xsec": 8104.0
@@ -18130,7 +18352,8 @@
   "W2JetsToLNu_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -18140,7 +18363,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9989281628924824,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "6577492",
     "n_files": "157",
@@ -18294,7 +18517,8 @@
   "W3JetsToLNu_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -18304,7 +18528,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9984424663548317,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "19700377",
     "n_files": "250",
@@ -18474,6 +18698,25 @@
     "n_files": "186",
     "process": "W4JetsToLNu",
     "scenario": "PU2017",
+    "xsec": 544.3
+  },
+  "W4JetsToLNu_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_madgraph-pythia8": {
+    "analysis_2017": [
+      "skim_legacy_MC"
+    ],
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "madgraph-pythia8",
+    "globalTag": "102X_mc2017_realistic_v7",
+    "inputDBS": "global",
+    "n_events_generated": "11103685",
+    "n_files": "185",
+    "process": "W4JetsToLNu",
+    "scenario": "PU2017_new_pmx",
     "xsec": 544.3
   },
   "W4JetsToLNu_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_madgraph-pythia8": {
@@ -19033,7 +19276,8 @@
   },
   "WJetsToLNu_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8": {
     "analysis_2017": [
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -19043,7 +19287,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9991058045421888,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "33073306",
     "n_files": "514",
@@ -19054,7 +19298,8 @@
   "WJetsToLNu_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8_ext1": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_WJETS_ERR"
+      "skim_mcv2_WJETS_ERR",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -19063,7 +19308,7 @@
     "extension": "ext1",
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "44881137",
     "n_files": "746",
@@ -19533,21 +19778,19 @@
   },
   "WW_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_pythia8": {
     "analysis_2017": [
-      "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
-    "dbs": "/WW_TuneCP5_13TeV-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+    "dbs": "/WW_TuneCP5_13TeV-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM",
     "energy": "13",
     "extension": "",
     "format": "MINIAOD",
     "generator": "pythia8",
-    "generatorWeight": 1.0,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
-    "n_events_generated": "7791498",
-    "n_files": "93",
+    "n_events_generated": "7765828",
+    "n_files": "85",
     "process": "WW",
     "scenario": "PU2017",
     "xsec": 75.88
@@ -20092,7 +20335,8 @@
   "WZ_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_pythia8": {
     "analysis_2017": [
       "skim_mcv2",
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -20102,7 +20346,7 @@
     "format": "MINIAOD",
     "generator": "pythia8",
     "generatorWeight": 1.0,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "3928630",
     "n_files": "50",
@@ -20235,7 +20479,8 @@
   },
   "WminusHToTauTauM125_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -20245,7 +20490,7 @@
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
     "generatorWeight": 0.9473466097814173,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "3860872",
     "n_files": "57",
@@ -20504,7 +20749,8 @@
   },
   "WplusHToTauTauM125_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -20514,7 +20760,7 @@
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
     "generatorWeight": 0.9443945,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "4000000",
     "n_files": "61",
@@ -20771,7 +21017,8 @@
   },
   "ZHToTauTauM125_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -20781,7 +21028,7 @@
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
     "generatorWeight": 0.9416674932138787,
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "4940230",
     "n_files": "75",
@@ -21370,6 +21617,25 @@
     "scenario": "PU2017",
     "xsec": 12.14
   },
+  "ZZ_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_pythia8": {
+    "analysis_2017": [
+      "skim_legacy_MC"
+    ],
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/ZZ_TuneCP5_13TeV-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "pythia8",
+    "globalTag": "102X_mc2017_realistic_v7",
+    "inputDBS": "global",
+    "n_events_generated": "1925931",
+    "n_files": "27",
+    "process": "ZZ",
+    "scenario": "PU2017_new_pmx",
+    "xsec": 12.14
+  },
   "ZZ_RunIISummer17MiniAOD_92X_13TeV_MINIAOD_pythia8": {
     "analysis_2017": [
       "skim_mc"
@@ -21567,7 +21833,8 @@
   },
   "ttHToTauTauM125_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
-      "skim_mcv2_CP"
+      "skim_mcv2_CP",
+      "skim_legacy_MC"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
@@ -21576,7 +21843,7 @@
     "extension": "",
     "format": "MINIAOD",
     "generator": "powheg-pythia8",
-    "globalTag": "94X_mc2017_realistic_v17",
+    "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
     "n_events_generated": "21713806",
     "n_files": "453",
