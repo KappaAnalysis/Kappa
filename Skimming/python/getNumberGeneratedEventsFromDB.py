@@ -56,7 +56,7 @@ class RestClient(object):
         request_headers = self._request_headers(headers)
 
         url = self._format_url(url, api, params)
-        print url
+        # print url
         opener = self._build_opener()
         return opener.open(urllib2.Request(url, None, request_headers)).read()
 
@@ -89,4 +89,3 @@ def getNumberFilesFromDB(dataset, dbsinstance=None):
     import ast
     answer=ast.literal_eval(rest_client.get(url, api='blocksummaries', params={'dataset': dataset}))
     return str(answer[0]["num_file"])
-

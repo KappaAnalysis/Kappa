@@ -230,7 +230,7 @@ class DataSetManagerBase:
 				else:
 					print "This inputDBS(",inputDBS,") can not provide event and file numbers"
 
-	def add_dataset(self,dbs,inputDBS=None,xsec=None,nick_name=None,globaltag=None):
+	def add_dataset(self,dbs,inputDBS=None,xsec=None,nick_name=None,globaltag=None,status="VALID"):
 		new_entry = {'dbs' : dbs}
 		self.query = new_entry  ## now it can be used to set tags
 		if len(self.get_nick_list(query=new_entry)) > 0:
@@ -246,6 +246,8 @@ class DataSetManagerBase:
 			new_entry["embedded"]  = True ## if not given assume false ;)
 		## Not sure if it is important at all, but lets keep it
 		new_entry["energy"] = self.get_energy(dbs)
+		if status != "VALID":
+			new_entry["status"] = status
 		if not nick_name:
 			pd_name, details, filetype = dbs.strip("/").split("/")
 			if xsec is not None:
@@ -269,13 +271,23 @@ class DataSetManagerBase:
 		rest_client = RestClient(cert=cert)
 		url = 'https://cmsweb.cern.ch/dbs/prod/'+inputDBS+'/DBSReader'
 		import ast
-		print pattern
-		dataset_list = [d["dataset"]  for d in ast.literal_eval(rest_client.get(url, api='datasets', params={'dataset': pattern}))]
+		dataset_list = [d["dataset"] for d in ast.literal_eval(rest_client.get(url, api='datasets', params={'dataset' : pattern, 'dataset_access_type' : "VALID"}))]
+		dataset_status_list = []
+		if dataset_list == []:
+			print "\nWARNING: Could not find any valid datasets matching pattern: " + pattern + ". Trying to find datasets with other status.\n"
+			for status in args.dataset_status:
+				temp_dict = [dict["dataset"] for dict in ast.literal_eval(rest_client.get(url, api='datasets', params={'dataset' : pattern, 'dataset_access_type' : status}))]
+				dataset_status_list += [status for dict in ast.literal_eval(rest_client.get(url, api='datasets', params={'dataset' : pattern, 'dataset_access_type' : status}))]
+				dataset_list += temp_dict
+				if temp_dict != []:
+					print "Found datasets matching pattern: " + pattern + " with status " + status
+		else:
+			print "Found datasets matching pattern: " + pattern + " with VALID status. Skipping other status."
 		print "Adding missing datasets queried from the pattern: "
-		print pattern
+		print "\t" + pattern
 		print "---------------------------------------------"
-		for dataset in dataset_list:
-			self.add_dataset(dataset, inputDBS=inputDBS, xsec=xsec, nick_name=nick_name, globaltag=globaltag)
+		for index, dataset in enumerate(dataset_list):
+			self.add_dataset(dataset, inputDBS=inputDBS, xsec=xsec, nick_name=nick_name, globaltag=globaltag, status=dataset_status_list[index])
 		return
 
 	def delete_datasets(self):
@@ -367,11 +379,13 @@ if __name__ == "__main__":
 	parser.add_argument("--addDatasets", dest="addDatasets", help="Add one or more datasets which match a given DAS pattern with the structure /*/*/*.")
 	parser.add_argument("--inputDBS", dest="inputDBS", default="global", help="Change the dbs instance, default will be global (for official samples), for private production choose phys03")
 	parser.add_argument("--xsec", dest="xsec", help="Add a cross section to this Dataset ")
+	parser.add_argument("--dataset-status", nargs="+", default=["VALID"], help="Allow adding of datasets with non valid status. Options are ['DELETED', 'DEPRECATED', 'INVALID', 'PRODUCTION', 'VALID']. [Default:%(default)s]")
 
 	parser.add_argument("--deleteDatasets", dest="deleteDatasets", help="Delete Datasets which are matched", action='store_true')
 
 	parser.add_argument("--print", dest="print_ds", help="Print ", action='store_true')
 	parser.add_argument("--printkeys", dest="printkeys", help="which keys to print [Default : %(default)s]. Choose \"all\" for printing everything.", nargs="+", default=["dbs"])
+
 
 	args = parser.parse_args()
 	if not os.path.isabs(args.inputfile):
