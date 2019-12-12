@@ -17047,7 +17047,8 @@
   },
   "VBFHToTauTauM125_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
-      "skim_legacy_MC"
+      "skim_legacy_MC",
+      "sync_mc"
     ],
     "campaign": "RunIIFall17MiniAODv2",
     "data": false,
