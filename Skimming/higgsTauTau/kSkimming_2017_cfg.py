@@ -712,6 +712,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')
 	process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
+	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
+
 	fixEE2017=False
 	if nickname.find('Run2017')>-1 or nickname.find('RunIIFall17')>-1:
 		fixEE2017=True
@@ -724,15 +726,31 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139},
 			postfix = "ModifiedMET"
 		)
-		#process.p *= process.fullPatMetSequence
 		process.p *= process.fullPatMetSequenceModifiedMET
+
+		# prepare Puppi
+		makePuppiesFromMiniAOD( process, True)
+		# (pf)MET with Puppi
+		runMetCorAndUncFromMiniAOD (
+			process,
+			isData = (data or isEmbedded),
+			metType = "Puppi",
+			jetFlavor = "AK4PFPuppi",
+			postfix = "Puppi"
+		)
+		process.puppiNoLep.useExistingWeights = False
+		process.puppi.useExistingWeights = False
+		process.p *= cms.Sequence(
+			process.puppiMETSequence*
+			process.fullPatMetSequencePuppi
+		)
+
 	elif tools.is_above_cmssw_version([8,0,14]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 		runMetCorAndUncFromMiniAOD(process, isData=data  )
 		process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs", "", "KAPPA"))
 
 	#process.kappaTuple.PatMET.pfmetT1 = cms.PSet(src=cms.InputTag("patpfMETT1"))
-	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
 
 	#slimmedMETsProcess = "PAT"
 	"""
