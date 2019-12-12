@@ -729,6 +729,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		process.p *= process.fullPatMetSequenceModifiedMET
 
 		# prepare Puppi
+		from PhysicsTools.PatAlgos.slimming.puppiForMET_cff import makePuppiesFromMiniAOD
 		makePuppiesFromMiniAOD( process, True)
 		# (pf)MET with Puppi
 		runMetCorAndUncFromMiniAOD (
