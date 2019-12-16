@@ -726,25 +726,34 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139},
 			postfix = "ModifiedMET"
 		)
-		process.p *= process.fullPatMetSequenceModifiedMET
-
 		# prepare Puppi
 		from PhysicsTools.PatAlgos.slimming.puppiForMET_cff import makePuppiesFromMiniAOD
-		makePuppiesFromMiniAOD( process, True)
+		# backup photon modules to protect against changes by makePuppiesFromMiniAOD (FIXME: why it is needed??)
+		egmPhotonIDsBackup = process.egmPhotonIDs.clone()
+		slimmedPhotonsBackup = process.slimmedPhotons.clone()
+		makePuppiesFromMiniAOD( process, True )
+		process.egmPhotonIDs = egmPhotonIDsBackup
+		process.slimmedPhotons = slimmedPhotonsBackup
 		# (pf)MET with Puppi
 		runMetCorAndUncFromMiniAOD (
 			process,
 			isData = (data or isEmbedded),
 			metType = "Puppi",
 			jetFlavor = "AK4PFPuppi",
-			postfix = "Puppi"
+                        fixEE2017 = fixEE2017,
+                        fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139},
+			postfix = "PuppiModifiedMET"
 		)
-		process.puppiNoLep.useExistingWeights = False
-		process.puppi.useExistingWeights = False
-		process.p *= cms.Sequence(
-			process.puppiMETSequence*
-			process.fullPatMetSequencePuppi
+		#process.puppiNoLep.useExistingWeights = False #Not necessary with MiniAODv2
+		#process.puppi.useExistingWeights = False #Not necessary with MiniAODv2
+		process.kMetSequence = cms.Sequence(
+                        process.puppiMETSequence*
+                        process.fullPatMetSequencePuppiModifiedMET*
+                        process.fullPatMetSequenceModifiedMET
 		)
+                process.p *= process.kMetSequence
+                process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETsModifiedMET"))
+                process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppiModifiedMET"))
 
 	elif tools.is_above_cmssw_version([8,0,14]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
