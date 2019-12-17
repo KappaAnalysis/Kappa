@@ -6063,6 +6063,310 @@
     "process": "Embedding2017F",
     "scenario": "inputDoubleMu_94X_miniAODv2"
   },
+  "Embedding2018A_ElMuFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "ElMuFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018A/ElMuFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "13805200",
+    "n_files": "21605",
+    "process": "Embedding2018A",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018A_ElTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "ElTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018A/ElTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "11735088",
+    "n_files": "21606",
+    "process": "Embedding2018A",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018A_MuTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "MuTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018A/MuTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "11735808",
+    "n_files": "21606",
+    "process": "Embedding2018A",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018A_TauTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "TauTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018A/TauTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "10371109",
+    "n_files": "21606",
+    "process": "Embedding2018A",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018B_ElMuFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "ElMuFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018B/ElMuFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "6681860",
+    "n_files": "9717",
+    "process": "Embedding2018B",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018B_ElTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "ElTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018B/ElTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "5893097",
+    "n_files": "9717",
+    "process": "Embedding2018B",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018B_MuTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "MuTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018B/MuTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "5892212",
+    "n_files": "9717",
+    "process": "Embedding2018B",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018B_TauTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "TauTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018B/TauTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "5227841",
+    "n_files": "9717",
+    "process": "Embedding2018B",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018C_ElMuFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "ElMuFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018C/ElMuFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "6157928",
+    "n_files": "8968",
+    "process": "Embedding2018C",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018C_ElTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "ElTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018C/ElTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "5422423",
+    "n_files": "8968",
+    "process": "Embedding2018C",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018C_MuTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "MuTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018C/MuTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "5420887",
+    "n_files": "8967",
+    "process": "Embedding2018C",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018C_TauTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "TauTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018C/TauTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_v11",
+    "inputDBS": "phys03",
+    "n_events_generated": "4821754",
+    "n_files": "8968",
+    "process": "Embedding2018C",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018D_ElMuFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "ElMuFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018D/ElMuFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_Prompt_v14",
+    "inputDBS": "phys03",
+    "n_events_generated": "28839079",
+    "n_files": "28226",
+    "process": "Embedding2018D",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018D_ElTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "ElTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018D/ElTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_Prompt_v14",
+    "inputDBS": "phys03",
+    "n_events_generated": "25383778",
+    "n_files": "56450",
+    "process": "Embedding2018D",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018D_MuTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "MuTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018D/MuTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_Prompt_v14",
+    "inputDBS": "phys03",
+    "n_events_generated": "25379684",
+    "n_files": "56451",
+    "process": "Embedding2018D",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
+  "Embedding2018D_TauTauFinalState_inputDoubleMu102XminiAODv1_13TeV_MINIAOD": {
+    "analysis_2018": [
+      "skim_legacy_embedding"
+    ],
+    "campaign": "TauTauFinalState",
+    "data": true,
+    "dbs": "/EmbeddingRun2018D/TauTauFinalState-inputDoubleMu_102X_miniAOD-v1/USER",
+    "embedded": true,
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "",
+    "globalTag": "102X_dataRun2_Prompt_v14",
+    "inputDBS": "phys03",
+    "n_events_generated": "22561187",
+    "n_files": "56451",
+    "process": "Embedding2018D",
+    "scenario": "inputDoubleMu_102X_miniAODv1"
+  },
   "EmbeddingMCRunIISummer16DR80_ElMuFinalState_imputFlatPU28to62HcalNZSRAWAODSIM_13TeV_USER_pythia8": {
     "Moriond17": [
       "Skim_Embedding_MCRunIISummer16"
