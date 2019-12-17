@@ -272,7 +272,7 @@ class DataSetManagerBase:
 		url = 'https://cmsweb.cern.ch/dbs/prod/'+inputDBS+'/DBSReader'
 		import ast
 		dataset_list = [d["dataset"] for d in ast.literal_eval(rest_client.get(url, api='datasets', params={'dataset' : pattern, 'dataset_access_type' : "VALID"}))]
-		dataset_status_list = []
+		dataset_status_list = ["VALID" for d in ast.literal_eval(rest_client.get(url, api='datasets', params={'dataset' : pattern, 'dataset_access_type' : "VALID"}))]
 		if dataset_list == []:
 			print "\nWARNING: Could not find any valid datasets matching pattern: " + pattern + ". Trying to find datasets with other status.\n"
 			for status in args.dataset_status:
