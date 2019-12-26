@@ -32,12 +32,14 @@ public:
 		VertexCollectionSource(cfg.getParameter<edm::InputTag>("vertexcollection")),
 		rhoIsoTag(cfg.getParameter<edm::InputTag>("rhoIsoInputTag")),
 		isoValInputTags(cfg.getParameter<std::vector<edm::InputTag> >("isoValInputTags")),
-		namesOfIds(cfg.getParameter<std::vector<std::string> >("ids")),
+		tagOfIds(cfg.getParameter<std::vector<edm::InputTag> >("ids")),
+		tagOfUserFloats(cfg.getParameter<std::vector<edm::InputTag> >("userFloats")),
 		srcIds_(cfg.getParameter<std::string>("srcIds")),
 		doPfIsolation_(true),
 		doCutbasedIds_(true),
 		RefitVerticesSource(cfg.getParameter<edm::InputTag>("refitvertexcollection"))
 	{
+		if (this->verbosity >= 3) std::cout << "KElectronProducer ()\n";
 		electronMetadata = new KElectronMetadata;
 		_lumi_tree->Bronch("electronMetadata", "KElectronMetadata", &electronMetadata);
 
@@ -50,25 +52,27 @@ public:
 		this->tokenRhoIso = consumescollector.consumes<double>(rhoIsoTag);
 		this->tokenRefitVertices = consumescollector.consumes<RefitVertexCollection>(RefitVerticesSource);
 
-
 		const edm::ParameterSet &psBase = this->psBase;
 		std::vector<std::string> names = psBase.getParameterNamesForType<edm::ParameterSet>();
 
 		for (size_t i = 0; i < names.size(); ++i)
 		{
 			const edm::ParameterSet pset = psBase.getParameter<edm::ParameterSet>(names[i]);
-		for(size_t j = 0; j < this->isoValInputTags.size(); ++j)
-			tokenIsoValInputTags.push_back(consumescollector.consumes<edm::ValueMap<double>>(this->isoValInputTags.at(j)));
+			for(size_t j = 0; j < this->isoValInputTags.size(); ++j)
+				tokenIsoValInputTags.push_back(consumescollector.consumes<edm::ValueMap<double>>(this->isoValInputTags.at(j)));
 		}
-		for (size_t j = 0; j < namesOfIds.size(); ++j)
-		{
-			tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(namesOfIds[j]));
-		}
+
+		for (size_t j = 0; j < tagOfIds.size(); ++j)
+			tokenOfIds.push_back(consumescollector.consumes<edm::ValueMap<float> >(tagOfIds[j]));
+
+		if (this->verbosity >= 3) std::cout << "KElectronProducer () end\n";
 	}
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
-		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", trackBuilder);
+		if (this->verbosity >= 3) std::cout << "KElectronProducer onrun\n";
+		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->trackBuilder);
+		if (this->verbosity >= 3) std::cout << "KElectronProducer end onrun\n";
 		return true;
 	}
 
@@ -76,33 +80,38 @@ public:
 
 	virtual bool onLumi(const edm::LuminosityBlock &lumiBlock, const edm::EventSetup &setup)
 	{
-		for (std::vector<std::string>::const_iterator id = namesOfIds.begin(); id != namesOfIds.end(); ++id)
+		for (size_t j = 0; j < tagOfIds.size(); ++j)
 		{
-			electronMetadata->idNames.push_back(*id);
+			electronMetadata->idNames.push_back(this->tagOfIds[j].label()+":"+this->tagOfIds[j].instance());
+		}
+		for (size_t j = 0; j < tagOfUserFloats.size(); ++j)
+		{
+			electronMetadata->idNames.push_back(this->tagOfUserFloats[j].label()+":"+this->tagOfUserFloats[j].instance());
 		}
 		return KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::onLumi(lumiBlock, setup);
 	}
+	
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		// Get additional objects for the cutbased IDs
+		if (this->verbosity >= 3) std::cout << "KElectron::fillProduct \n";
 		cEvent->getByToken(this->tokenConversionSource, this->hConversions);
 		cEvent->getByToken(this->tokenBeamSpot, this->BeamSpot);
 		cEvent->getByToken(this->tokenVertexCollection, this->VertexCollection);
-		cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
+		// cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
+
 		this->isoVals.resize(this->isoValInputTags.size());
 		for (size_t j = 0; j < this->isoValInputTags.size(); ++j)
 		{
 			cEvent->getByToken(this->tokenIsoValInputTags[j], this->isoVals[j]);
-			if (this->isoVals[j].failedToGet())
-			{
-				doPfIsolation_ = false;
-			}
+
+			if (this->isoVals[j].failedToGet()) doPfIsolation_ = false;
 		}
-		
+
 		cEvent->getByToken(tokenRhoIso, rhoIso_h);
-		
+
 		// TODO: change to getByToken
 		/*art::Handle<StepPointMCCollection> stepsHandle;
 		event.getByLabel("g4run","tracker",stepsHandle);
@@ -121,20 +130,22 @@ public:
 		*/
 
 		// Continue with main product: PAT-electrons
-		
+
 		// Prepare IDs for miniAOD
-		electronIDValueMap.resize(namesOfIds.size());
-		for (size_t j = 0; j < namesOfIds.size(); ++j)
+		electronIDValueMap.resize(tokenOfIds.size());
+		for (size_t j = 0; j < tokenOfIds.size(); ++j)
 		{
 			cEvent->getByToken(this->tokenOfIds[j], this->electronIDValueMap[j]);
 		}
-		
+
 		// call base class
 		KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::fillProduct(in, out, name, tag, pset);
+		if (this->verbosity >= 3) std::cout << "KElectron::fillProduct end\n";
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		if (this->verbosity >= 3) std::cout << "KElectron::fillSingle\n";
 		// momentum:
 		copyP4(in, out.p4);
 		// hash of pointer as Id
@@ -143,18 +154,17 @@ public:
 		// charge and flavour (lepton type)
 		assert(in.charge() == 1 || in.charge() == -1);
 		out.leptonInfo = KLeptonFlavour::ELECTRON;
-		if (in.charge() > 0)
-			out.leptonInfo |= KLeptonChargeMask;
-		if (in.isPF())
-			out.leptonInfo |= KLeptonPFMask;
+
+		if (in.charge() > 0) out.leptonInfo |= KLeptonChargeMask;
+		if (in.isPF())       out.leptonInfo |= KLeptonPFMask;
 
 		if (VertexCollection->size() == 0) throw cms::Exception("VertexCollection in KElectronProducer is empty");
 		reco::Vertex vtx = (*VertexCollection).at(0);
 		// electron track and impact parameter
 		if (in.gsfTrack().isNonnull())
 		{
-			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
-			KTrackProducer::fillIPInfo(*in.gsfTrack(), out.track, *RefitVertices, trackBuilder.product());
+			KTrackProducer::fillTrack(*in.gsfTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
+			// KTrackProducer::fillIPInfo(*in.gsfTrack(), out.track, *RefitVertices, trackBuilder.product());
 			out.dxy = in.gsfTrack()->dxy(vtx.position());
 			out.dz = in.gsfTrack()->dz(vtx.position());
 		}
@@ -172,20 +182,16 @@ public:
 		out.full5x5_sigmaIetaIeta = in.full5x5_sigmaIetaIeta();
 		out.hadronicOverEm = in.hadronicOverEm();
 		out.fbrem = in.fbrem();
-		if(in.superCluster().isNonnull())
+		if (in.superCluster().isNonnull())
 		{
 			out.eSuperClusterOverP = in.eSuperClusterOverP();
 			out.superclusterEnergy = in.superCluster()->energy();
 			out.superclusterPosition = in.superCluster()->position();
 			// Definition from RecoEgamma/ElectronIdentification/plugins/cuts/GsfDEtaInSeedCut.cc
-			if(in.superCluster()->seed().isNonnull())
-			{
+			if (in.superCluster()->seed().isNonnull())
 				out.dEtaInSeed = in.deltaEtaSuperClusterTrackAtVtx() - in.superCluster()->eta() + in.superCluster()->seed()->eta();
-			}
 			else
-			{
 				out.dEtaInSeed = std::numeric_limits<float>::max();
-			}
 		}
 		else
 		{
@@ -214,53 +220,56 @@ public:
 		out.hcal1Iso = in.dr03HcalDepth1TowerSumEt();
 		out.hcal2Iso = in.dr03HcalDepth2TowerSumEt();
 
-		if (doPfIsolation_)
-			doPFIsolation(in, out);
-		else {
+		if (doPfIsolation_) doPFIsolation(in, out);
+		else
+		{
 			// fall back on built-in methods, where available
 			out.sumChargedHadronPt = in.pfIsolationVariables().sumChargedHadronPt;
 			out.sumPhotonEt        = in.pfIsolationVariables().sumPhotonEt;
 			out.sumNeutralHadronEt = in.pfIsolationVariables().sumNeutralHadronEt;
 			out.sumPUPt            = in.pfIsolationVariables().sumPUPt;
 		}
-		if (doPfIsolation_ && doCutbasedIds_ && !doAuxIds_)
-			doCutbasedIds(in,out);
-		if(doMvaIds_)
-			doMvaIds(in, out);
-		if(doAuxIds_)
-			doAuxIds(in, out);
+		if (doPfIsolation_ && doCutbasedIds_ && !doAuxIds_) doCutbasedIds(in,out);
+		if (doMvaIds_) doMvaIds(in, out);
+		if (doAuxIds_) doAuxIds(in, out);
+		if (this->verbosity >= 3) std::cout << "end KElectron::fillSingle\n";
 	}
 
-
 protected:
+
 	virtual void doAuxIds(const SingleInputType &in, SingleOutputType &out)
 	{
 		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
-		for (size_t i = 0; i < namesOfIds.size(); ++i)
-		{
+
+		for (size_t i = 0; i < tagOfIds.size(); ++i)
 			out.electronIds.push_back((*(electronIDValueMap)[i])[pe]);
-		}
-	}
-	virtual void doMvaIds(const SingleInputType &in, SingleOutputType &out)
-	{
-		/* Modification for new MVA Electron ID for Run 2
-		 * https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
-		 * Full instructions in Producer/KElectrons_cff
-		 */
-		out.electronIds.clear();
-		for (size_t i = 0; i < namesOfIds.size(); ++i)
-		{
-			out.electronIds.push_back(in.electronID(namesOfIds[i]));
-		}
 	}
 
-	virtual void doCutbasedIds(const SingleInputType &in, SingleOutputType &out)
+	// Modification for new MVA Electron ID for Run 2
+	// https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2
+	// Full instructions in Producer/KElectrons_cff
+	virtual void doMvaIds(const SingleInputType &in, SingleOutputType &out)
+	{
+		out.electronIds.clear();
+
+		for (size_t i = 0; i < tagOfIds.size(); ++i)
+		{
+			out.electronIds.push_back(in.electronID(tagOfIds[i].instance()));
+		}
+		for (size_t i = 0; i < tagOfUserFloats.size(); ++i)
+		{
+			out.electronIds.push_back(in.userFloat(tagOfUserFloats[i].instance()));
+		}
+
+
+	}
+
 	// cutbased IDs (cf. header)
 	// ElectronTools/interface/ElectronEffectiveArea.h: ElectronEffectiveAreaTarget::kEleEAData2011,kEleEASummer11MC,kEleEAFall11MC,kEleEAData2012
+	// in analogy to https://github.com/cms-analysis/EgammaAnalysis-ElectronTools/blob/master/src/EGammaCutBasedEleIdAnalyzer.cc
+	virtual void doCutbasedIds(const SingleInputType &in, SingleOutputType &out)
 	{
-		// in analogy to https://github.com/cms-analysis/EgammaAnalysis-ElectronTools/blob/master/src/EGammaCutBasedEleIdAnalyzer.cc
 		const reco::BeamSpot &tmpbeamSpot = *(BeamSpot.product());
-	
 		const reco::GsfElectron* eGSF = dynamic_cast<const reco::GsfElectron*>(in.originalObjectRef().get());
 
 		double rhoIso = *(rhoIso_h.product());
@@ -293,6 +302,7 @@ protected:
 	}
 
 private:
+
 	KElectronMetadata *electronMetadata;
 	boost::hash<const pat::Electron*> hasher;
 
@@ -309,7 +319,8 @@ private:
 	edm::InputTag VertexCollectionSource;
 	edm::InputTag rhoIsoTag;
 	std::vector<edm::InputTag>  isoValInputTags;
-	std::vector<std::string> namesOfIds;
+	std::vector<edm::InputTag> tagOfIds;
+	std::vector<edm::InputTag> tagOfUserFloats;
 	
 	edm::EDGetTokenT<reco::ConversionCollection> tokenConversionSource;
 	edm::EDGetTokenT<reco::BeamSpot> tokenBeamSpot;
@@ -324,11 +335,11 @@ private:
 	bool doMvaIds_;
 	bool doAuxIds_;
 
-
 	edm::InputTag RefitVerticesSource;
 	edm::EDGetTokenT<RefitVertexCollection> tokenRefitVertices;
 
 	std::vector<edm::Handle<edm::ValueMap<float> > > electronIDValueMap;
+
 };
 
 #endif

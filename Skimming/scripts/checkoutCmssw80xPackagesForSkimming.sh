@@ -66,11 +66,11 @@ git cms-addpkg RecoEgamma/ElectronIdentification
 
 # CP:
 cd $CMSSW_BASE/src
-git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
+git clone https://github.com/artus-analysis/TauRefit.git VertexRefit/TauRefit
 
 # EM:
 # fetch xml files for Egamma Id from private repository
-git clone git@github.com:ikrav/RecoEgamma-ElectronIdentification.git tempData/RecoEgamma/ElectronIdentification/data
+git clone https://github.com/ikrav/RecoEgamma-ElectronIdentification.git tempData/RecoEgamma/ElectronIdentification/data
 cd $CMSSW_BASE/src/tempData/RecoEgamma/ElectronIdentification/data
 git checkout egm_id_80X_v1
 cd $CMSSW_BASE/src/tempData/
@@ -97,7 +97,6 @@ sed "/import\ switchJetCollection/a from\ RecoMET\.METProducers\.METSignificance
 
 # Check out Kappa:
 git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
-
 
 # Compile:
 scram b -v -j `grep -c ^processor /proc/cpuinfo` || {

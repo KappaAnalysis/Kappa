@@ -84,6 +84,8 @@ namespace
 		KPileupDensity dict_KPileupDensity;
 		KTau dict_KTau;
 		KTaus dict_KTaus;
+		KL1Tau dict_KL1Tau;
+		KL1Taus dict_KL1Taus;
 		KExtendedTau dict_KExtendedTau;
 		KExtendedTaus dict_KExtendedTaus;
 		KTaupairVerticesMap dict_KTaupairVerticesMap;

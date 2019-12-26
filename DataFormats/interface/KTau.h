@@ -77,6 +77,19 @@ struct KBasicTau : public KLepton
 };
 typedef std::vector<KBasicTau> KBasicTaus;
 
+/// Kappa L1 Tau format for L1 Seeds of Taus
+/*  needed for matching Tau trigger objects to their L1 seeds & apply pt cuts,
+	as recommended by Tau Trigger group for 2017 to achieve trigger SF's near 1.
+	It could be easily/generalized to L1 Muons and Electrons, but for now, that's not needed.
+	CMSSW DataFormats reference:
+	https://github.com/cms-sw/cmssw/blob/CMSSW_9_4_X/DataFormats/L1Trigger/interface/L1Candidate.h
+	https://github.com/cms-sw/cmssw/blob/CMSSW_9_4_X/DataFormats/L1Trigger/interface/Tau.h*/
+struct KL1Tau : public KLV
+{
+	virtual ~KL1Tau() {};
+	bool hwIso; // hardware iso: stored as 'int' in MINIAOD; switch to bool since relevant check is hwIso() > 0 in analyses
+};
+typedef std::vector<KL1Tau> KL1Taus;
 
 /// Kappa Tau data format
 /** copy from DataFormats/TauReco/interface/PFTau.h */

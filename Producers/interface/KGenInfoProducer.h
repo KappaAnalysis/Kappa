@@ -53,6 +53,7 @@ public:
 		runInfo(cfg.getParameter<edm::InputTag>("lheSource")),
 		lheWeightRegexes(cfg.getParameter<std::vector<std::string>>("lheWeightNames"))
 	{
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer constructor()\n";
 		this->tokenGenRunInfo = consumescollector.consumes<GenRunInfoProduct, edm::InRun>(tagSource);
 		this->tokenSource = consumescollector.consumes<GenEventInfoProduct>(tagSource);
 		this->tokenLhe = consumescollector.consumes<LHEEventProduct>(lheSource);
@@ -78,6 +79,7 @@ public:
 
 	virtual bool onFirstEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer onFirstEvent()\n";
 		edm::Handle<LHEEventProduct> lheEventProduct;
 		if(lheWeightRegexes.size() > 0 && event.getByToken(tokenLhe, lheEventProduct))
 		{
@@ -92,11 +94,13 @@ public:
 				}
 			}
 		}
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer onFirstEvent() end\n";
 		return KBaseProducerWP::onFirstEvent(event, setup);
 	}
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup)
 	{
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer onEvent()\n";
 		// Fill data related infos
 		if (!KInfoProducer<Tmeta>::onEvent(event, setup))
 			return false;
@@ -190,39 +194,42 @@ public:
 		this->metaEvent->nPUp1 = 0;
 		this->metaEvent->nPUp2 = 0;
 		if(!isEmbedded)
-		 {
-		edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
-		if (event.getByToken(tokenPuInfo, puHandles) && puHandles.isValid())
 		{
-			for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
+			edm::Handle<std::vector<PileupSummaryInfo> > puHandles;
+			if (event.getByToken(tokenPuInfo, puHandles) && puHandles.isValid())
 			{
-				unsigned char nPU = (unsigned char)std::min(255, it->getPU_NumInteractions());
-				if (it->getBunchCrossing() == -2)
-					this->metaEvent->nPUm2 = nPU;
-				else if (it->getBunchCrossing() == -1)
-					this->metaEvent->nPUm1 = nPU;
-				else if (it->getBunchCrossing() == 0)
-					this->metaEvent->nPU = nPU;
-				else if (it->getBunchCrossing() == 1)
-					this->metaEvent->nPUp1 = nPU;
-				else if (it->getBunchCrossing() == 2)
-					this->metaEvent->nPUp2 = nPU;
+				for (std::vector<PileupSummaryInfo>::const_iterator it = puHandles->begin(); it != puHandles->end(); ++it)
+				{
+					unsigned char nPU = (unsigned char)std::min(255, it->getPU_NumInteractions());
+					if (it->getBunchCrossing() == -2)
+						this->metaEvent->nPUm2 = nPU;
+					else if (it->getBunchCrossing() == -1)
+						this->metaEvent->nPUm1 = nPU;
+					else if (it->getBunchCrossing() == 0)
+						this->metaEvent->nPU = nPU;
+					else if (it->getBunchCrossing() == 1)
+						this->metaEvent->nPUp1 = nPU;
+					else if (it->getBunchCrossing() == 2)
+						this->metaEvent->nPUp2 = nPU;
 
-				this->metaEvent->nPUMean = it->getTrueNumInteractions();  // remove this line to compile with CMSSW 4.2.7 or earlier
+					this->metaEvent->nPUMean = it->getTrueNumInteractions();  // remove this line to compile with CMSSW 4.2.7 or earlier
+				}
 			}
-		}
-		else
-		{
-			// in some versions of CMSSW it's not a vector:
-			edm::Handle<PileupSummaryInfo> puHandle;
-			if (event.getByToken(tokenPuInfo, puHandle) && puHandle.isValid())
-				this->metaEvent->nPU = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
-		}
+			else
+			{
+				// in some versions of CMSSW it's not a vector:
+				edm::Handle<PileupSummaryInfo> puHandle;
+				if (event.getByToken(tokenPuInfo, puHandle) && puHandle.isValid())
+					this->metaEvent->nPU = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
+			}
+
+			if (this->verbosity >= 3) std::cout << "KGenInfoProducer onEvent() end\n";
 		}
 		return true;
 	}
 	bool endRun(edm::Run const& run, edm::EventSetup const &setup) override
 	{
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer endRun()\n";
 		// Read generator infos
 		edm::Handle<GenRunInfoProduct> hGenInfo;
 		run.getByToken(this->tokenGenRunInfo, hGenInfo);
@@ -234,7 +241,10 @@ public:
 		if (ignoreExtXSec)
 			this->metaRun->xSectionExt = -1;
 		if (invalidGenInfo)
+		{
+			if (this->verbosity >= 3) std::cout << "KGenInfoProducer endRun() end\n";
 			return KBaseProducer::fail(std::cout << "Invalid generator info" << std::endl);
+		}
 
 		// https://twiki.cern.ch/twiki/bin/viewauth/CMS/LHEReaderCMSSW#Retrieving_the_weights
 		edm::Handle<LHERunInfoProduct> runhandle;
@@ -252,7 +262,7 @@ public:
 					std::string weightGroupStr = *weightGroup;
 					if (this->verbosity > 1)
 					{
-						std::cout << "\nLHE weights for tag \"" << iter->tag() << "\":" << std::endl;
+						if (this->verbosity < 3) std::cout << "\nLHE weights for tag \"" << iter->tag() << "\":" << std::endl;
 					}
 					
 					boost::match_results<std::string::iterator> weightGroupRegexResult;
@@ -291,7 +301,7 @@ public:
 								
 								if (this->verbosity > 1)
 								{
-									std::cout << weightId << " -> " << weightTypeFull << std::endl;
+									if (this->verbosity < 3) std::cout << weightId << " if (KBaseProducer::verbosity > 0) -> " << weightTypeFull << std::endl;
 								}
 								this->metaRun->lheWeightNamesMap[weightTypeFull] = weightId;
 							}
@@ -300,6 +310,8 @@ public:
 				}
 			}
 		}
+
+		if (this->verbosity >= 3) std::cout << "KGenInfoProducer endRun() end\n";
 		return true;
 	}
 

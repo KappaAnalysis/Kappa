@@ -5,9 +5,9 @@ def setup_PatJets(process, data):
 	makePatJets = {}
 	makePatJetsData = {}
 	makePatJetsMC = {}
-	for param in (4, 8):
+	for jetsCone in (4, 8):
 		for algo in ["", "CHS", "Puppi"]:
-			variant_name = "AK%dPF%s" % (param, algo)
+			variant_name = "AK%dPF%s" % (jetsCone, algo)
 			makePatJetsData[variant_name] = cms.Sequence( 
 						getattr(process, "pfImpactParameterTagInfos"+variant_name)*
 						getattr(process, "pfTrackCountingHighEffBJetTags"+variant_name)*
@@ -17,6 +17,7 @@ def setup_PatJets(process, data):
 						getattr(process, "softPFMuonsTagInfos"+variant_name)*
 						getattr(process, "pfInclusiveSecondaryVertexFinderTagInfos"+variant_name)*
 						getattr(process, "pfCombinedMVAV2BJetTags"+variant_name)*
+						getattr(process, "pfDeepCSVDiscriminatorsJetTags:BvsAll"+variant_name)*
 						getattr(process, "pfCombinedInclusiveSecondaryVertexV2BJetTags"+variant_name)*
    						getattr(process, "pfSimpleSecondaryVertexHighPurBJetTags"+variant_name)*
 						getattr(process, "pfSimpleSecondaryVertexHighEffBJetTags"+variant_name)*

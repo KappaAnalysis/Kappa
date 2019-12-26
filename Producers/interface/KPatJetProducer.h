@@ -97,7 +97,8 @@ public:
 		out.electronFraction = in.electronEnergyFraction();
 		out.hfHadronFraction = in.HFHadronEnergyFraction();
 		out.hfEMFraction = in.HFEMEnergyFraction();
-		out.flavour = in.hadronFlavour();
+		out.hadronFlavour = in.hadronFlavour();
+		out.partonFlavour = in.partonFlavour();
 
 // fractions should add up to unity
 		assert(out.neutralHadronFraction >= out.hfHadronFraction);

@@ -72,6 +72,9 @@ class datasetsHelperTwopz:
 		nick = ""
 		nick += sample_dict["process"].replace("_", "") + "_"
 		nick += sample_dict["campaign"].replace("_", "") + "_"
+		if ((sample_dict["campaign"] == "dwinterb") or (sample_dict["campaign"] == "adow")):
+			if re.search("2017", sample_dict["dbs"]):
+				nick += "RunIIFall17MiniAODv2_"		
 		nick += sample_dict["scenario"].replace("_", "") + "_"
 		nick += sample_dict["energy"].replace("_", "") + "TeV_"
 		nick += sample_dict["format"].replace("_", "") + ("" if (sample_dict["data"]) else "_")

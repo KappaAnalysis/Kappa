@@ -31,6 +31,7 @@ std::ostream &operator<<(std::ostream &os, const KLepton &lep);
 std::ostream &operator<<(std::ostream &os, const KLeptonPair &leptonPair);
 std::ostream &operator<<(std::ostream &os, const KBasicTau &tau);
 std::ostream &operator<<(std::ostream &os, const KTau &tau);
+std::ostream &operator<<(std::ostream &os, const KL1Tau &tau);
 std::ostream &operator<<(std::ostream &os, const KExtendedTau &tau);
 std::ostream &operator<<(std::ostream &os, const KGenTau &tau);
 std::ostream &operator<<(std::ostream &os, const KGenJet &jet);

@@ -148,7 +148,8 @@ std::ostream &operator<<(std::ostream &os, const KBasicJet &jet)
 std::ostream &operator<<(std::ostream &os, const KJet &jet)
 {
 	os << static_cast<const KBasicJet>(jet);
-	os << "\tflavour=" << jet.flavour;
+	os << "\thadronFlavour=" << jet.hadronFlavour;
+	os << "\tpartonFlavour=" << jet.partonFlavour;
 	os << "\tIDs=" << std::bitset<8>(jet.binaryIds);
 	if (jet.tags.size() > 0)
 		os << std::endl << "\ttags: ";
@@ -475,9 +476,8 @@ std::ostream &operator<<(std::ostream &os, const KGenEventInfo &i)
 std::ostream &displayHLT(std::ostream &os, const KLumiInfo &metaLumi, const KEventInfo &metaEvent)
 {
 	for (size_t hltIdx = 0; hltIdx < metaLumi.hltNames.size(); ++hltIdx)
-		if (metaEvent.bitsHLT[hltIdx])
-			os << hltIdx << ":" << metaLumi.hltNames[hltIdx] << "(" << metaLumi.hltPrescales[hltIdx] << ")" << " ";
-		os << std::endl;
+		if (metaEvent.bitsHLT[hltIdx]) os << hltIdx << ":" << metaLumi.hltNames[hltIdx] << "(" << metaLumi.hltPrescales[hltIdx] << ")" << " ";
+	os << std::endl;
 	return os;
 }
 

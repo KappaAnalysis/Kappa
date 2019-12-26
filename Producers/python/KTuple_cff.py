@@ -511,6 +511,7 @@ kappaTupleDefaultsBlock = cms.PSet(
 		ids = cms.vstring( "pileupJetId:fullDiscriminant",
 				"pfJetProbabilityBJetTags",
 				"pfCombinedInclusiveSecondaryVertexV2BJetTags",
+				"pfDeepCSVDiscriminatorsJetTags:BvsAll",    #not sure if this will work for previous versions of cmssw
 				"pfCombinedMVAV2BJetTags",
 				"pfCombinedCvsLJetTags",
 				"pfCombinedCvsBJetTags",
@@ -585,6 +586,10 @@ kappaTupleDefaultsBlock = cms.PSet(
 			tauDiscrProcessName = cms.string("KAPPA"),
 			#beamSpotSource = cms.InputTag("offlineBeamSpot"),
 		),
+	),
+
+	L1Taus = cms.PSet(kappaNoCut, kappaNoRegEx,
+		l1taus = cms.PSet(src = cms.InputTag("caloStage2Digis", "Tau", "RECO"))
 	),
 
 	#ExtendedTaus = cms.PSet(kappaNoCut, kappaNoRegEx,

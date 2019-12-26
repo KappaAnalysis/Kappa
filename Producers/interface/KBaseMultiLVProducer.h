@@ -38,8 +38,8 @@ public:
 		typename KBaseMultiProducer<Tin, Tout>::OutputType &output,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
-		if (KBaseProducer::verbosity > 0)
-			std::cout << input.size() << "KBaseMultiLVProducer::fillProduct :  objects in collection " << name << std::endl;
+		if (KBaseProducer::verbosity >= 3)
+			std::cout << input.size() << " KBaseMultiLVProducer::fillProduct :  objects in collection " << name << std::endl;
 		output.reserve(input.size());
 
 		// Cursor is necessary to get "Refs" later
@@ -59,7 +59,7 @@ public:
 		if (maxN > 0)
 			output.erase(output.begin() + std::min(output.size(), (size_t)maxN), output.end());
 
-		if (KBaseProducer::verbosity > 1)
+		if (KBaseProducer::verbosity >= 3)
 			std::cout << "KBaseMultiLVProducer::fillProduct : \t" << "Number of accepted objects: " << output.size() << "\t";
 	}
 
@@ -106,7 +106,7 @@ public:
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
 		KBaseMultiVectorProducer<Tin, Tout>::fillProduct(input, output, name, tag, pset);
-		if ((KBaseProducer::verbosity > 1) && (output.size() > 0))
+		if ((KBaseProducer::verbosity >= 3) && (output.size() > 0))
 			std::cout << "KBaseMultiLVProducer::fillProduct : First: " << output[0].p4 << "\tLast: " << output[output.size() - 1].p4 << std::endl;
 	}
 

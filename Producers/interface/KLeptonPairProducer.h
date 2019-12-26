@@ -25,15 +25,20 @@ public:
 		electronsTag(cfg.getParameter<edm::InputTag>("electrons")),
 		muonsTag(cfg.getParameter<edm::InputTag>("muons"))
 	{
+		if (this->verbosity >= 3) std::cout << "KLeptonPairProducer ()\n";
 		this->electronsCollectionToken = consumescollector.consumes<edm::View<pat::Electron> >(electronsTag);
 		this->muonsCollectionToken = consumescollector.consumes<edm::View<reco::Muon> >(muonsTag);
+		if (this->verbosity >= 3) std::cout << "KLeptonPairProducer () end\n";
 	}
 
 	static const std::string getLabel() { return "LeptonPair"; }
 
 	virtual bool onRun(edm::Run const &run, edm::EventSetup const &setup)
 	{
+		if (this->verbosity >= 3) std::cout << "KLeptonPairProducer onRun()\n";
+		// this->transientTrackBuilder = edm::ESHandle<TransientTrackBuilder>();
 		setup.get<TransientTrackRecord>().get("TransientTrackBuilder", this->transientTrackBuilder);
+		if (this->verbosity >= 3) std::cout << "KLeptonPairProducer onRun() end\n";
 		return true;
 	}
 
@@ -45,6 +50,7 @@ public:
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
+		if (this->verbosity >= 3) std::cout << "KLeptonPairProducer fillProduct()\n";
 		// get electron and muon collections
 		if (electronsTag.label() != "")
 		{
@@ -93,6 +99,7 @@ public:
 				}
 			}
 		}
+		if (this->verbosity >= 3) std::cout << "KLeptonPairProducer fillProduct() end\n";
 	}
 
 private:
@@ -110,6 +117,7 @@ private:
 	template<class T1, class T2>
 	std::pair<KLeptonPair, bool> getLeptonPair(T1 particle1, T2 particle2)
 	{
+		if (this->verbosity >= 3) std::cout << "KLeptonPairProducer getLeptonPair()\n";
 		KinematicParticleFactoryFromTransientTrack particleFactory;
 		
 		const reco::Track* track1 = KLeptonPairProducer::getTrack(particle1);
@@ -178,10 +186,12 @@ private:
 			leptonPair.dca2DError = dca2DError;
 			//std::cout << "dca3D = " << leptonPair.dca3D << " +/- " << leptonPair.dca3DError << ", "
 			//          << "dca2D = " << leptonPair.dca2D << " +/- " << leptonPair.dca2DError << std::endl;
+			if (this->verbosity >= 3) std::cout << "KLeptonPairProducer getLeptonPair() end1\n";
 			return std::pair<KLeptonPair, bool>(leptonPair, true);
 		}
 		else
 		{
+			if (this->verbosity >= 3) std::cout << "KLeptonPairProducer getLeptonPair() end2\n";
 			return std::pair<KLeptonPair, bool>(KLeptonPair(), false);
 		}
 	}

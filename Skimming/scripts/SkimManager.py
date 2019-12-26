@@ -13,10 +13,14 @@ import shutil
 import re
 import hashlib
 from multiprocessing import Process, Queue
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 
 from httplib import HTTPException
 from CRABAPI.RawCommand import crabCommand
 from CRABClient.ClientExceptions import ClientException
+
+import Kappa.Skimming.tools as tools
 
 class SkimManagerBase:
 
@@ -30,7 +34,10 @@ class SkimManagerBase:
 		backup_dataset = self.skimdataset.json_file_name.replace(".json", "_backup.json")
 		self.skimdataset.keep_input_json = False ## will be updated very often
 		self.skimdataset.write_to_jsonfile(backup_dataset)
-		self.configfile = 'kSkimming_run2_cfg.py'
+		if tools.is_above_cmssw_version([9]):
+			self.configfile = 'kSkimming_2017_cfg.py'
+		else:
+			self.configfile = 'kSkimming_run2_cfg.py'
 		self.max_crab_jobs_per_nick = 8000 # 10k is the hard limit
 		self.voms_proxy = None
 		self.site_storage_access_dict = {
@@ -61,6 +68,11 @@ class SkimManagerBase:
 			print "Failed", configuration["cmd"], "of the task: %s" % (hte.headers)
 		except ClientException as cle:
 			print "Failed", configuration["cmd"], "of the task: %s" % (cle)
+		except:
+			print "Looks like crab has a bug - write to support"
+			if configuration["cmd"] == "submit":
+				print "The submission for this case is disabled. Bye"
+				exit(1)
 
 	def save_dataset(self, filename=None):
 		self.skimdataset.write_to_jsonfile(filename)
@@ -170,9 +182,12 @@ class SkimManagerBase:
 		config.JobType.maxMemoryMB = 2500
 		config.JobType.allowUndistributedCMSSW = True
 		config.Site.blacklist = ["T3_FR_IPNL", "T3_US_UCR", "T2_BR_SPRACE", "T1_RU_*", "T2_RU_*", "T3_US_UMiss", "T2_US_Vanderbilt", "T2_EE_Estonia", "T2_TW_*"]
-		config.Data.splitting = 'FileBased'
+		config.Data.splitting = 'Automatic'# 'FileBased'
+
+		# unitsPerJob
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir.rstrip("/")))
 		config.Data.publication = False
+		config.Data.allowNonValidInputDataset = False  # Set it true to run over incomplete datasets (for the ones still on Production status)
 		config.Site.storageSite = self.storage_for_output
 		return config
 
@@ -181,7 +196,8 @@ class SkimManagerBase:
 		config.Data.inputDBS = self.skimdataset[akt_nick].get("inputDBS", 'global')
 		globalTag = self.get_global_tag(akt_nick)
 		config.JobType.pyCfgParams = [str('globalTag=%s'%globalTag), 'kappaTag=KAPPA_2_1_0', str('nickname=%s'%(akt_nick)), str('outputfilename=kappa_%s.root'%(akt_nick)), 'testsuite=False']
-		config.Data.unitsPerJob = self.files_per_job(akt_nick)
+		if config.Data.splitting != 'Automatic':
+			config.Data.unitsPerJob = self.files_per_job(akt_nick)
 		config.Data.inputDataset = self.skimdataset[akt_nick]['dbs']
 		config.Data.ignoreLocality = self.skimdataset[akt_nick].get("ignoreLocality", False) # Set to False to make it submit also if no whitelist is defined. Set to True if you how to configure it properly. ## i have very good experince with this option, but feel free to change it (maybe also add larger default black list for this, or start with a whitlist
 		config.Site.blacklist.extend(self.skimdataset[akt_nick].get("blacklist", []))
@@ -587,34 +603,70 @@ class SkimManagerBase:
 				dataset_filelist = ""
 				
 				number_jobs = self.skimdataset[dataset].get("n_jobs", int(self.skimdataset[dataset].get("n_files", 0)) if force else 0)
+
 				crab_number_folders = [str(i / 1000).zfill(4) for i in range(number_jobs+1)[::1000]]
 				crab_numer_folder_regex = re.compile('|'.join(crab_number_folders))
 
+				jobiddict ={}
+				number_listed_jobs = 0
+				for jobstatuslist in self.skimdataset[dataset].get("last_status").get("jobList"):
+					if jobstatuslist[0] == 'finished':
+						jobid = jobstatuslist[1]
+						if re.search("-", jobid) == None:
+							try:
+								jobiddict["x"].append(jobid)
+							except KeyError:
+								jobiddict["x"] = [jobid]
+						else:
+							id_type_key = re.findall(r'\d+-', jobid)[0]+ "x"
+							try:
+								jobiddict[id_type_key].append(jobid)
+							except KeyError:
+								jobiddict[id_type_key]=[jobid]
+
 				try:
-					crab_dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids 1-{MAXID} --dir {DATASET_TASK} --proxy $X509_USER_PROXY".format(DATASET_TASK=os.path.join(self.workdir, self.skimdataset[dataset].get("crab_name", "crab_"+dataset[:100])), MAXID=min(number_jobs, 5)), shell=True).strip('\n').split('\n')
-					sample_file_path = crab_dataset_filelist[0]
-					job_id_match = re.findall(r'_\d+.root', sample_file_path)[0]
-					sample_file_path =  sample_file_path.replace(job_id_match, "_{JOBID}.root")
-					crab_number_folder_match = re.findall('|'.join(crab_number_folders), sample_file_path)[0]
-					sample_file_path =  sample_file_path.replace(crab_number_folder_match, "{CRAB_NUMBER_FOLDER}")
-					print "Found", number_jobs, "output files."
-					for jobid in range(1, number_jobs+1):
-						dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[jobid/1000], JOBID=jobid)+'\n'
+					for id_type in jobiddict.keys():
+						if id_type != "0-x":
+							crab_dataset_filelist = subprocess.check_output("crab getoutput --xrootd --jobids {JOBID} --dir {DATASET_TASK} --proxy $X509_USER_PROXY".format(DATASET_TASK=os.path.join(self.workdir, self.skimdataset[dataset].get("crab_name", "crab_"+dataset[:100])), JOBID=str(jobiddict[id_type][0])), shell=True).strip('\n').split('\n')
+							sample_file_path = crab_dataset_filelist[0]
+							pattern = "_" + id_type[0:-1]+r'\d+.root'
+							job_id_match = re.findall(pattern, sample_file_path)[0]
+							sample_file_path =  sample_file_path.replace(job_id_match,"_"+ "{JOBID}.root")
+							crab_number_folder_match = re.findall('|'.join(crab_number_folders), sample_file_path)[0]
+							sample_file_path =  sample_file_path.replace(crab_number_folder_match, "{CRAB_NUMBER_FOLDER}")
+
+							jobid = 0
+							for jobindex in range(1, len(jobiddict[id_type])+1):
+								if re.search("-", jobiddict[id_type][jobindex-1]) == None:
+									jobid = jobiddict[id_type][jobindex-1]
+								else:
+									jobid = jobiddict[id_type][jobindex-1].split("-")[-1]
+
+								dataset_filelist += sample_file_path.format(CRAB_NUMBER_FOLDER=crab_number_folders[int(jobid)/1000], JOBID=jobiddict[id_type][jobindex-1])+'\n'
+								number_listed_jobs += 1
+
+					print "Found", number_jobs, "files run on skimming."
+					print "Found", number_listed_jobs, "output files finishing successfully and stored."
 					dataset_filelist = dataset_filelist.strip('\n')
 					filelist.write(dataset_filelist.replace("root://cms-xrd-global.cern.ch/", self.site_storage_access_dict[storage_site]["xrootd"]))
 					filelist.close()
 					print "Saved filelist in \"%s\"." % filelist_path
 				except:
 					print "Getting output from crab exited with error. Try again later."
-				
+
 				if create_recent_symlinks:
 					filelist_path_symlink = filelist_path.replace(date+".txt", "recent.txt")
 					os.system("ln -fsv %s %s" % (os.path.relpath(filelist_path, os.path.dirname(filelist_path_symlink)), filelist_path_symlink))
 
 				filelist_check = open(filelist_path, 'r')
-				if len(filelist_check.readlines()) == number_jobs:
-					self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
-					print "List creation successfull!"
+				if "0-x" in jobiddict.keys():
+					if len(filelist_check.readlines()) == (number_jobs-len(jobiddict["0-x"])):
+						self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
+						print "List creation successfull!"
+				else:
+					if len(filelist_check.readlines()) == (number_jobs):
+						self.skimdataset[dataset]["SKIM_STATUS"] = "LISTED"
+						print "List creation successfull!"
 				filelist_check.close()
 				print "---------------------------------------------------------"
 
@@ -768,7 +820,6 @@ if __name__ == "__main__":
 
 	if args.statusgc:
 		SKM.status_gc()
-
 	else:
 		SKM.submit_crab(force=args.force)
 		SKM.status_crab()

@@ -15,7 +15,6 @@ def flattenList(listOfLists):
 	"""
 	return [item for subList in listOfLists for item in subList]
 
-
 def get_repository_revisions(repo_scan_base_dirs=["$CMSSW_BASE/src"], repo_scan_depth=3):
 	import glob
 	import subprocess
@@ -75,43 +74,56 @@ def read_grid_control_include(filename):
 	a = []
 	for line in f:
 		a.append(line.replace("\n", "").replace("\t", "").replace(" ",""))
+
+	# I propose: remove_sublist(a, ["[global]", "include="])
 	a.remove("[global]")
 	a.remove("include=")
+
 	nicks = []
 	for line in a:
-		if(not line.startswith(";")):
-			if(line.endswith(".conf")):
-			#	print line
-				for nick in read_grid_control_dataset(line):
-					nicks.append(nick)
+		if not line.startswith(";"):
+			if line.endswith(".conf"):
+				[nicks.append(nick) for nick in read_grid_control_dataset(line)]
 			else:
-				print "could not parse " + line + " from " + filename
+				print "could not parse", line, "from", filename
 				sys.exit()
 	return nicks
 
+def remove_sublist(a, B):
+	if not isinstance(B, list): B = [B]
+	try:
+		[a.remove(b) for b in B]
+	except ValueError:
+		print "one of the passed to remove_sublist arguments is unacceptable", "\n\ta:", a, "\n\tB:", B
+	return a
+
 def read_grid_control_dataset(filename):
 	f = open(filename)
-	a = []
-	nicks = []
+	a, nicks = [], []
+
 	for line in f:
 		a.append(line.replace("\n", "").replace("\t", "").replace(" ",""))
+
+	print '\033[95m', "There is a nice test task for you if you look in the code of tools.py!",'\033[0m'
+	# I propose: remove_sublist(a, ["[CMSSW_Advanced]", "dataset+=", ""])
+	# or [a.remove(b) for b in ["[CMSSW_Advanced]", "dataset+=", ""]] - please test when the function will be in use
 	a.remove("[CMSSW_Advanced]")
 	a.remove("dataset+=")
 	a.remove("")
-	#print a
+
 	for line in a:
 		nick = line.split(":")
-		if not nick[0].startswith(";"):
-			nicks.append(nick[0])
+		if not nick[0].startswith(";"): nicks.append(nick[0])
+
 	return nicks
 
-def is_above_cmssw_version(version_to_test):
+def is_above_cmssw_version(version_to_test, adequate_behaviour = False):
 	cmssw_version_number = get_cmssw_version_number()
 	split_cmssw_version = [int(i) for i in cmssw_version_number.split("_")[0:3]]
-	for index in range(len(version_to_test)):
-		if (version_to_test[index] > split_cmssw_version[index]):
-			return False
-		elif (version_to_test[index] < split_cmssw_version[index]):
-			return True
-	return True
 
+	for index in range(len(version_to_test)):
+		if   version_to_test[index] > split_cmssw_version[index]: return False
+		elif version_to_test[index] < split_cmssw_version[index]: return True
+
+	if adequate_behaviour: return False
+	return True

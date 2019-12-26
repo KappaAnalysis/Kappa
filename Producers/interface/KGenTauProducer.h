@@ -25,6 +25,7 @@ protected:
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
 	{
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer fillProduct()\n";
 		// Retrieve additional input products
 		selectStatus(pset.getParameter<int>("selectedStatus"));
 
@@ -33,10 +34,12 @@ protected:
 		selectParticles(&particles, &particles + 1);
 
 		KBasicGenParticleProducer<KGenTaus>::fillProduct(in, out, name, tag, pset);
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer fillProduct() end\n";
 	}
 
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer fillSingle()\n";
 		KBasicGenParticleProducer<KGenTaus>::fillSingle(in, out);
 		
 		// custom implementations
@@ -115,10 +118,12 @@ protected:
 		// TODO: also set decay mode with official tools
 		//       but currently not fully understood how
 		//       to do this properly
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer fillSingle() end\n";
 	}
 
 	virtual bool acceptSingle(const SingleInputType& in)
 	{
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer acceptSingle()\n";
 		if(!KBasicGenParticleProducer<KGenTaus>::acceptSingle(in))
 			return false;
 
@@ -153,6 +158,7 @@ private:
 
 	void walkDecayTree(const reco::GenParticle& in, DecayInfo& info, int level = 0, bool allowNonPromptTauDecayProduct = false )
 	{
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer walkDecayTree()\n";
 		//for(int i = 0; i < level; ++i) printf(" ");
 		//printf("PDG %d\tstatus %d", in.pdgId(), in.status());
 		//std::cout<<"\tpt "<<in.p4().pt()<<"\tphi "<<in.p4().phi()<<"\teta "<<in.p4().eta()<<"\tE "<<in.p4().E()
@@ -208,7 +214,8 @@ private:
 			// The inital tau decays into three leptons, which can be illustrated by a virual photon (gamma*).
 			// Take the lepton with the largest pt, which is most likly to be reconstructed as the tau. The others are usally soft 
 			// the loop over the daughters is necessary since also photons can be radiated within this step.
-			 if (std::abs(lep_daughter_wiht_max_pt) == 11 || std::abs(lep_daughter_wiht_max_pt) == 13 ) allowNonPromptTauDecayProduct = true;
+		          int lep_daughter_wiht_max_pt_pdgId = in.daughter(lep_daughter_wiht_max_pt)->pdgId();
+		          if (std::abs(lep_daughter_wiht_max_pt_pdgId) == 11 || std::abs(lep_daughter_wiht_max_pt_pdgId) == 13 ) allowNonPromptTauDecayProduct = true;
 			 walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(lep_daughter_wiht_max_pt)), info, level, allowNonPromptTauDecayProduct);
 		}		
 		else if(in.numberOfDaughters() == 2 && std::abs(in.pdgId()) == 111 &&
@@ -249,6 +256,7 @@ private:
 			for(unsigned int i = 0; i < in.numberOfDaughters(); ++i)
 				walkDecayTree(dynamic_cast<const reco::GenParticle&>(*in.daughter(i)), info, level + 1, allowNonPromptTauDecayProduct);
 		}
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer walkDecayTree() end\n";
 	}
 
 	static bool isNeutrino(int pdg_id)
@@ -259,21 +267,25 @@ private:
 	{
 		return std::abs(pdg_id) == 11 || std::abs(pdg_id) == 13 || std::abs(pdg_id) == 15;
 	}
-	static bool minthreeLeptondauhhters(const reco::GenParticle& in, unsigned int &lep_daughter_wiht_max_pt){
-	  int Nakt=0;
-	  float akt_max_pt=-1.0;
-	  for(unsigned int i = 0; i < in.numberOfDaughters(); ++i)
-	    {
-	     if (isLepton(in.daughter(i)->pdgId()))
-	     {
-	       Nakt++; 
-	       if (in.daughter(i)->pt()>akt_max_pt){
-		 lep_daughter_wiht_max_pt = i;
-		 akt_max_pt = in.daughter(i)->pt();
-	       }
-	     }
-	  }	
-	  return Nakt>=3;
+	static bool minthreeLeptondauhhters(const reco::GenParticle& in, unsigned int &lep_daughter_wiht_max_pt)
+	{
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer minthreeLeptondauhhters()\n";
+		int Nakt = 0;
+		float akt_max_pt = -1.0;
+		for(unsigned int i = 0; i < in.numberOfDaughters(); ++i)
+		{
+			if (isLepton(in.daughter(i)->pdgId()))
+			{
+				Nakt++;
+				if (in.daughter(i)->pt() > akt_max_pt)
+				{
+					lep_daughter_wiht_max_pt = i;
+					akt_max_pt = in.daughter(i)->pt();
+				}
+			}
+		}
+		if (KBaseProducer::verbosity >= 3) std::cout << "KGenTauProducer minthreeLeptondauhhters() end\n";
+		return Nakt >= 3;
 	}
 	  
 };

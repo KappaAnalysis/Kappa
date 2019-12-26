@@ -56,6 +56,7 @@
 #include "../interface/KPatJetProducer.h"
 #include "../interface/KGenJetProducer.h"
 #include "../interface/KTauProducer.h"
+#include "../interface/KL1TauProducer.h"
 #include "../interface/KPatTauProducer.h"
 // #include "../interface/KExtendedTauProducer.h"
 #include "../interface/KTowerProducer.h"
@@ -229,6 +230,7 @@ KTuple::KTuple(const edm::ParameterSet &_psConfig) :
 		addProducer<KGenJetProducer>(active[i]);
 		addProducer<KPatJetProducer>(active[i]);
 		addProducer<KTauProducer>(active[i]);
+		addProducer<KL1TauProducer>(active[i]);
 		addProducer<KPatTauProducer>(active[i]);
 //		addProducer<KExtendedTauProducer>(active[i]);
 		addProducer<KTaupairVerticesMapProducer>(active[i]);

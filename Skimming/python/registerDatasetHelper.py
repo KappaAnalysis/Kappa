@@ -241,6 +241,9 @@ def make_nickname(dict):
 	nick = ""
 	nick += dict["process"].replace("_", "")  + "_"
 	nick += dict["campaign"].replace("_", "") + "_"
+	if ((dict["campaign"] == "dwinterb") or (dict["campaign"] == "adow")):
+		if re.search("2017", sample_dict["dbs"]):
+			nick += "RunIIFall17MiniAODv2_"	
 	nick += dict["scenario"].replace("_", "") + "_"
 	nick += dict["energy"].replace("_", "")   + "TeV_"
 	nick += dict["format"].replace("_", "") + ("" if (dict["data"] or dict.get("embedded")) else "_")
@@ -289,6 +292,8 @@ def get_sample_by_nick(nickname, expect_n_results = 1):
 
 	# split nickname
 	split_nick = nickname.split("_")
+	if (('dwinterb' in split_nick) or ('adow' in split_nick)) and 'RunIIFall17MiniAODv2' in split_nick:
+		split_nick.remove("RunIIFall17MiniAODv2")
 	query = {
 		"process" : "^"+split_nick[0]+"$",
 		"campaign" : "^"+split_nick[1]+"$",
@@ -306,12 +311,14 @@ def get_sample_by_nick(nickname, expect_n_results = 1):
 		return query_result(query, expect_n_results)
 	#pd_name, details, filetype = options.sample.strip("/").split("/")
 	#return pd_name, details, filetype
+
 def get_inputDBS_by_nick(nickname):
   	akt_sample_key = get_sample_by_nick(nickname)
-  	try:
-	  return str(database[akt_sample_key]['inputDBS'])
-	except:
-	  return 'global'
+	return database.get(akt_sample_key).get('inputDBS', 'global')
+
+def get_dbs_by_nick(nickname):
+  	akt_sample_key = get_sample_by_nick(nickname)
+	return databse.get(akt_sample_key).get('dbs')
 
 def get_nick_list(query, expect_n_results =1):
 	dict = database

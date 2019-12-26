@@ -42,6 +42,7 @@ int main() {
 	cout << "* KPhoton: " << KPhoton() << endl << endl;
 	cout << "* KPileupDensity: " << KPileupDensity() << endl << endl;
 	cout << "* KTau: " << KTau() << endl << endl;
+	cout << "* KL1Tau: " << KL1Tau() << endl << endl;
 	cout << "* KExtendedTau: " << KExtendedTau() << endl << endl;
 	cout << "* KTaupairVerticesMap: " << KTaupairVerticesMap() << endl << endl;
 	cout << "* KTrack: " << KTrack() << endl << endl;

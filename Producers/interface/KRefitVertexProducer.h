@@ -20,24 +20,31 @@ class KRefitVertexProducer : public KBaseMultiVectorProducer<edm::View<RefitVert
 {
 public:
 	KRefitVertexProducer(const edm::ParameterSet &cfg, TTree *_event_tree, TTree *_lumi_tree, TTree *_run_tree, edm::ConsumesCollector && consumescollector) :
-		KBaseMultiVectorProducer<edm::View<RefitVertex>, KRefitVertices >(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
+		KBaseMultiVectorProducer<edm::View<RefitVertex>,
+		KRefitVertices >(cfg, _event_tree, _lumi_tree, _run_tree, getLabel(), std::forward<edm::ConsumesCollector>(consumescollector)) {}
 
 	static const std::string getLabel() { return "RefitVertex"; }
 
 protected:
+	boost::hash<const reco::Candidate*> hasher;
+
 	virtual void fillSingle(const SingleInputType &in, SingleOutputType &out)
 	{
+		if (this->verbosity >= 3) std::cout << "KRefitVertexProducer fillSingle()\n";
 		KVertexProducer::fillVertex(in, out);
 
 		// save references to lepton selection in the refitted vertex
-		std::size_t hash = 0;
+		std::vector<size_t> hashes;
 		for(auto name: in.userCandNames())
 		{
 			edm::Ptr<reco::Candidate> aRecoCand = in.userCand( name );
-			boost::hash_combine(hash,aRecoCand.get());
+			size_t hash = hasher(aRecoCand.get());
+			hashes.push_back(hash);
 		}
-		out.leptonSelectionHash = hash;
 
+		out.leptonSelectionHash1 = hashes[0];
+		out.leptonSelectionHash2 = hashes[1];
+		if (this->verbosity >= 3) std::cout << "KRefitVertexProducer fillSingle() end\n";
 	}
 };
 
