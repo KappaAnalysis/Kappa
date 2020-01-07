@@ -6926,6 +6926,26 @@
     "scenario": "PUMoriond17",
     "xsec": 1.296
   },
+  "GluGluHToTauTauUncorrelatedDecayFilteredM125_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_powheg-pythia8": {
+    "analysis_2017": [
+      "skim_legacy_signal"
+    ],
+    "campaign": "RunIIFall17MiniAODv2",
+    "data": false,
+    "dbs": "/GluGluHToTauTauUncorrelatedDecay_Filtered_M125_TuneCP5_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "powheg-pythia8",
+    "globalTag": "102X_mc2017_realistic_v7",
+    "inputDBS": "global",
+    "n_events_generated": "18117372",
+    "n_files": "364",
+    "process": "GluGluHToTauTauUncorrelatedDecay_Filtered_M125",
+    "scenario": "PU2017",
+    "status": "PRODUCTION",
+    "xsec": 3.045966
+  },
   "GluGluHToWWTo2L2NuM1000_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-JHUgenv698-pythia8": {
     "campaign": "RunIISummer16MiniAODv2",
     "data": false,
@@ -17847,7 +17867,6 @@
     "n_files": "522",
     "process": "VBFHToTauTauUncorrelatedDecay_Filtered_M125",
     "scenario": "PU2017",
-    "status": "PRODUCTION",
     "xsec": 0.2370687
   },
   "VBFHToWWTo2L2NuM1000_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-JHUgenv698-pythia8": {
@@ -21297,11 +21316,10 @@
     "generator": "powheg-pythia8",
     "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
-    "n_events_generated": "1865653",
-    "n_files": "138",
+    "n_events_generated": "1986464",
+    "n_files": "153",
     "process": "WminusHToTauTauUncorrelatedDecay_Filtered_M125",
     "scenario": "PU2017",
-    "status": "PRODUCTION",
     "xsec": 0.533
   },
   "WplusHToTauTauM110_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
@@ -21587,11 +21605,10 @@
     "generator": "powheg-pythia8",
     "globalTag": "102X_mc2017_realistic_v7",
     "inputDBS": "global",
-    "n_events_generated": "2315978",
-    "n_files": "168",
+    "n_events_generated": "2640112",
+    "n_files": "198",
     "process": "WplusHToTauTauUncorrelatedDecay_Filtered_M125",
     "scenario": "PU2017",
-    "status": "PRODUCTION",
     "xsec": 0.84
   },
   "ZHToTauTauM110_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
