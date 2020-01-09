@@ -224,23 +224,63 @@ class SkimManagerBase:
 					self.skimdataset[akt_nick]["SKIM_STATUS"] = "EXCEPTION"
 
 	def update_status_crab(self):
+		# mostly copy paste from here: https://github.com/dmwm/CRABClient/blob/d41695646c20936a4d5671f2abd566ea91a7ac13/src/python/CRABClient/Commands/status.py#L513
 		for akt_nick in self.skimdataset.nicks():
+			statusCacheInfo = self.skimdataset[akt_nick].get('last_status', False)['jobs']
+			# This record is no longer necessary and makes parsing more difficult.
+			if 'DagStatus' in statusCacheInfo:
+				del statusCacheInfo['DagStatus']
 
-			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED", "COMPLETED"]:
-				all_jobs = 0
-				done_jobs = 0
-				failed_jobs = 0
-				if self.skimdataset[akt_nick].get('last_status', False):
-					self.skimdataset[akt_nick]["SKIM_STATUS"] = self.skimdataset[akt_nick]['last_status']['status']
-					for job_per_status in self.skimdataset[akt_nick]['last_status'].get('jobsPerStatus', {}).keys():
-						all_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
-						if job_per_status == 'finished':
-							done_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
-						elif job_per_status == 'failed':
-							failed_jobs += self.skimdataset[akt_nick]['last_status']['jobsPerStatus'][job_per_status]
-					self.skimdataset[akt_nick]['crab_done'] = 0.0 if all_jobs == 0  else round(float(100.0*done_jobs)/float(all_jobs), 2)
-					self.skimdataset[akt_nick]['crab_failed'] = 0.0 if all_jobs == 0  else round(float(100.0*failed_jobs)/float(all_jobs), 2)
-					self.skimdataset[akt_nick]['n_jobs'] = max(all_jobs, self.skimdataset[akt_nick].get('n_jobs', 0))
+			jobsPerStatus = {}
+			jobList = []
+			result = {}
+			for job, info in statusCacheInfo.items():
+				jobStatus = info['State']
+				jobsPerStatus.setdefault(jobStatus, 0)
+				jobsPerStatus[jobStatus] += 1
+				jobList.append([jobStatus, job])
+			result['jobsPerStatus'] = jobsPerStatus
+			result['jobList'] = jobList
+
+			# Collect information about probe and tail jobs
+			# Create dictionaries like {'finished' : 1, 'running' : 3}
+			states = {}
+			statesPJ = {}
+			statesTJ = {}
+			failedProcessing = 0
+			for jobid, statusDict in statusCacheInfo.iteritems():
+				jobStatus = statusDict['State'] if statusDict['State'] != 'cooloff' else 'toRetry'
+				if jobid.startswith('0-'):
+					statesPJ[jobStatus] = statesPJ.setdefault(jobStatus, 0) + 1
+				elif '-' in jobid:
+					statesTJ[jobStatus] = statesTJ.setdefault(jobStatus, 0) + 1
+				else:
+					states[jobStatus] = states.setdefault(jobStatus, 0) + 1
+					if jobStatus == 'failed':
+						failedProcessing += 1
+			result['numProbes'] = sum(statesPJ.values())
+			result['numUnpublishable'] = 0
+			if result['numProbes'] > 0:
+				result['numUnpublishable'] = failedProcessing
+
+			def terminate(states, jobStatus, target='no output'):
+				if jobStatus in states:
+					states[target] = states.setdefault(target, 0) + states.pop(jobStatus)
+
+			if sum(statesPJ.values()) > 0:
+				if statesTJ:
+					states.pop('failed', None) # remove failed from main jobs as they have been rescheduled as tail jobs
+					for jobStatus in statesTJ:
+						states[jobStatus] = states.setdefault(jobStatus, 0) + statesTJ[jobStatus]
+				else:
+					terminate(states, 'failed', target='rescheduled as tail jobs')
+
+			self.skimdataset[akt_nick]['n_jobs'] = sum(states[st] for st in states)
+			all_jobs = self.skimdataset[akt_nick]['n_jobs']
+			self.skimdataset[akt_nick]['crab_done'] = 0.0 if ((all_jobs == 0) or not states.get('finished', False))  else round(float(100.0*states['finished'])/float(all_jobs), 2)
+			self.skimdataset[akt_nick]['crab_failed'] = 0.0 if ((all_jobs == 0) or not states.get('failed', False))  else round(float(100.0*states['failed'])/float(all_jobs), 2)
+			self.skimdataset[akt_nick]['crab_running'] = 0.0 if ((all_jobs == 0) or not states.get('running', False))  else round(float(100.0*states['running'])/float(all_jobs), 2)
+			self.skimdataset[akt_nick]['crab_other'] = round(100.0 - self.skimdataset[akt_nick]['crab_done'] - self.skimdataset[akt_nick]['crab_failed'] - self.skimdataset[akt_nick]['crab_running'], 2)
 
 #### Functions to allow resubmission and restart of crab tasks
 
@@ -561,9 +601,11 @@ class SkimManagerBase:
 		status_json.close()
 
 	def print_statistics(self, nick):
-		done_string = '\033[92m'+'\t Done: '+str(self.skimdataset[nick].get('crab_done', 0.0))+'% '+'\033[0m'
-		failed_string = '\033[91m'+'\t Failed: '+str(self.skimdataset[nick].get('crab_failed', 0.0))+'% '+'\033[0m'
-		print nick, done_string, failed_string
+		done_string = '\033[92m'+'Done: '+str(self.skimdataset[nick].get('crab_done', 0.0))+'%'+'\033[0m'
+		failed_string = '\033[91m'+'Failed: '+str(self.skimdataset[nick].get('crab_failed', 0.0))+'%'+'\033[0m'
+		running_string = '\033[93m'+'Running: '+str(self.skimdataset[nick].get('crab_running', 0.0))+'%'+'\033[0m'
+		other_string = '\033[94m'+'Other: '+str(self.skimdataset[nick].get('crab_other', 0.0))+'%'+'\033[0m'
+		print nick + "\t" + (4*" ").join([done_string, failed_string, running_string, other_string])
 
 ########## Functions to create or reset file lists for COMPLETED grid-control or crab tasks
 
