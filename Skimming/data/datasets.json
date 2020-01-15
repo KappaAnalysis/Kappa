@@ -1595,7 +1595,7 @@
     "n_files": "553",
     "process": "DYJetsToLL_M50",
     "scenario": "PU2017RECOSIMstep",
-    "xsec": 6225.42
+    "xsec": 6077.22
   },
   "DYJetsToLLM50_RunIIFall17MiniAODv2_PU2017RECOSIMstep_13TeV_MINIAOD_madgraph-pythia8_ext1": {
     "analysis_2017": [
@@ -1616,7 +1616,7 @@
     "n_files": "591",
     "process": "DYJetsToLL_M50",
     "scenario": "PU2017RECOSIMstep",
-    "xsec": 6225.42
+    "xsec": 6077.22
   },
   "DYJetsToLLM50_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_amcatnlo-pythia8": {
     "analysis_2017": [
