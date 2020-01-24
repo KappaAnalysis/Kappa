@@ -96,8 +96,10 @@ struct KJet : public KBasicJet
 	{
 		for (unsigned int i = 0; i < jetmetadata->tagNames.size(); ++i)
 		{
-			if (jetmetadata->ReplaceAll(jetmetadata->tagNames[i], ":", "") == name)
+			if ((jetmetadata->ReplaceAll(jetmetadata->tagNames[i], ":", "") == name) or (jetmetadata->tagNames[i] == name))
+			{
 				return tags[i];
+			}
 		}
 		if (!check)
 			return -999.;
