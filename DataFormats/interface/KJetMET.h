@@ -35,6 +35,7 @@ struct KBasicJet : public KLV
 
 	float area;
 	std::vector<float> corrections;
+	float jecFactor;
 
 	float neutralHadronFraction, chargedHadronFraction;
 	float muonFraction, photonFraction, electronFraction;
@@ -42,10 +43,7 @@ struct KBasicJet : public KLV
 
 	int nConstituents, nCharged;
 
-	RMFLV uncorrectedP4( size_t level)
-	{
-		return p4 * corrections[level];
-	}
+	RMFLV uncorrectedP4;
 };
 typedef std::vector<KBasicJet> KBasicJets;
 

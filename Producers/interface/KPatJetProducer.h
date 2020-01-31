@@ -88,6 +88,8 @@ public:
 		copyP4(in, out.p4);
 
 		out.area = in.jetArea();
+		out.jecFactor = in.jecFactor("Uncorrected");
+		out.uncorrectedP4 = RMFLV(in.correctedJet("Uncorrected").pt(), in.correctedJet("Uncorrected").eta(), in.correctedJet("Uncorrected").phi(), in.correctedJet("Uncorrected").mass());
 		out.nConstituents = in.nConstituents();
 		out.nCharged = in.chargedMultiplicity();
 		out.neutralHadronFraction = in.neutralHadronEnergyFraction();
