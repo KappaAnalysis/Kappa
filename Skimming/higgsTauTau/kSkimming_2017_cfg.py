@@ -268,6 +268,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#process.kappaTuple.active += cms.vstring('packedPFCandidates')
 	#process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
+	jetCollection = "slimmedJets"
 	jetCollectionPuppi = "slimmedJetsPuppi"
 	if tools.is_above_cmssw_version([9]):
 		from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
