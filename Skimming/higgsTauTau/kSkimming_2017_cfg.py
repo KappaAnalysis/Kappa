@@ -270,6 +270,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	jetCollection = "slimmedJets"
 	jetCollectionPuppi = "slimmedJetsPuppi"
+	newPatJetIds = []
 	if tools.is_above_cmssw_version([9]):
 		from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 		updateJetCollection(
@@ -284,6 +285,13 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			],
 		)
 		jetCollection = "selectedUpdatedPatJetsUpdatedJEC"
+		newPatJetIds = [
+			'pfDeepCSVJetTags:probb',
+			'pfDeepCSVJetTags:probbb',
+			'pfDeepFlavourJetTags:probb',
+			'pfDeepFlavourJetTags:probbb',
+			'pfDeepFlavourJetTags:problep'
+		]
 	elif tools.is_above_cmssw_version([8]):
 		from RecoMET.METPUSubtraction.jet_recorrections import recorrectJets
 		#from RecoMET.METPUSubtraction.jet_recorrections import loadLocalSqlite
@@ -663,6 +671,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('PatJets')
 	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
+		process.kappaTuple.PatJets.ids.extend(newPatJetIds)
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
 
 	## Adds the possibility to add the SV refitting
