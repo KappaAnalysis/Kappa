@@ -268,7 +268,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#process.kappaTuple.active += cms.vstring('packedPFCandidates')
 	#process.kappaTuple.packedPFCandidates.packedPFCandidates = cms.PSet(src = cms.InputTag("packedPFCandidates"))
 
+	jetCollection = "slimmedJets"
 	jetCollectionPuppi = "slimmedJetsPuppi"
+	newPatJetIds = []
 	if tools.is_above_cmssw_version([9]):
 		from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 		updateJetCollection(
@@ -282,7 +284,14 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 				"pfDeepFlavourJetTags:problepb",
 			],
 		)
-		jetCollection = "updatedPatJetsUpdatedJEC"
+		jetCollection = "selectedUpdatedPatJetsUpdatedJEC"
+		newPatJetIds = [
+			'pfDeepCSVJetTags:probb',
+			'pfDeepCSVJetTags:probbb',
+			'pfDeepFlavourJetTags:probb',
+			'pfDeepFlavourJetTags:probbb',
+			'pfDeepFlavourJetTags:problep'
+		]
 	elif tools.is_above_cmssw_version([8]):
 		from RecoMET.METPUSubtraction.jet_recorrections import recorrectJets
 		#from RecoMET.METPUSubtraction.jet_recorrections import loadLocalSqlite
@@ -662,10 +671,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.kappaTuple.active += cms.vstring('PatJets')
 	if tools.is_above_cmssw_version([7,6]):
 		process.kappaTuple.PatJets.ak4PF = cms.PSet(src=cms.InputTag(jetCollection))
+		process.kappaTuple.PatJets.ids.extend(newPatJetIds)
 		process.kappaTuple.PatJets.puppiJets = cms.PSet(src=cms.InputTag(jetCollectionPuppi))
-	if tools.is_above_cmssw_version([9]):
-		process.jecSequence = cms.Sequence(process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC)
-		process.p *= process.jecSequence
 
 	## Adds the possibility to add the SV refitting
 	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
@@ -754,6 +761,21 @@ def getBaseConfig( globaltag= 'START70_V7::All',
                 process.p *= process.kMetSequence
                 process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETsModifiedMET"))
                 process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppiModifiedMET"))
+
+	# jet sequence has to be after puppiMEt which reruns puppi
+	if tools.is_above_cmssw_version([9]):
+		process.jecSequence = cms.Sequence(
+			process.patJetCorrFactorsUpdatedJEC
+			* process.updatedPatJetsUpdatedJEC
+			* process.pfImpactParameterTagInfosUpdatedJEC
+			* process.pfInclusiveSecondaryVertexFinderTagInfosUpdatedJEC
+			* process.pfDeepCSVTagInfosUpdatedJEC
+			* process.pfDeepFlavourTagInfosUpdatedJEC
+			* process.pfDeepFlavourJetTagsUpdatedJEC
+			* process.patJetCorrFactorsTransientCorrectedUpdatedJEC
+			* process.updatedPatJetsTransientCorrectedUpdatedJEC
+			* process.selectedUpdatedPatJetsUpdatedJEC)
+		process.p *= process.jecSequence
 
 	elif tools.is_above_cmssw_version([8,0,14]):
 		from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
