@@ -7182,7 +7182,7 @@
     "process": "GluGluHToTauTauUncorrelatedDecay_Filtered_M125",
     "scenario": "PU2017",
     "status": "PRODUCTION",
-    "xsec": 3.045966
+    "xsec": 0.7450433
   },
   "GluGluHToWWTo2L2NuM1000_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-JHUgenv698-pythia8": {
     "campaign": "RunIISummer16MiniAODv2",
@@ -18280,7 +18280,7 @@
     "n_files": "522",
     "process": "VBFHToTauTauUncorrelatedDecay_Filtered_M125",
     "scenario": "PU2017",
-    "xsec": 0.2370687
+    "xsec": 0.06389
   },
   "VBFHToWWTo2L2NuM1000_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-JHUgenv698-pythia8": {
     "campaign": "RunIISummer16MiniAODv2",
@@ -21909,7 +21909,7 @@
     "n_files": "153",
     "process": "WminusHToTauTauUncorrelatedDecay_Filtered_M125",
     "scenario": "PU2017",
-    "xsec": 0.533
+    "xsec": 0.1368211
   },
   "WplusHToTauTauM110_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -22237,7 +22237,7 @@
     "n_files": "198",
     "process": "WplusHToTauTauUncorrelatedDecay_Filtered_M125",
     "scenario": "PU2017",
-    "xsec": 0.84
+    "xsec": 0.201096
   },
   "ZHToTauTauM110_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_powheg-pythia8": {
     "Moriond17": [
@@ -22563,7 +22563,7 @@
     "process": "ZHToTauTauUncorrelatedDecay_Filtered_M125",
     "scenario": "PU2017",
     "status": "PRODUCTION",
-    "xsec": 0.8839
+    "xsec": 0.22221246
   },
   "ZHiggs0L1UndecayedM125_RunIISummer16MiniAODv2_PUMoriond17_13TeV_MINIAOD_JHUgen": {
     "Moriond17": [
