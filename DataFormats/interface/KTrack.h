@@ -160,6 +160,14 @@ struct KTrack : public KLV
 		) / sqrtf(p4.Perp2());
 	}
 
+	float getDxy(const RMPoint pv) const
+	{
+		return (
+			- (ref.x() - pv.x()) * p4.y()
+			+ (ref.y() - pv.y()) * p4.x()
+		) / sqrtf(p4.Perp2());
+	}
+
 	template<class T>
 	float getDz(const T* pv) const
 	{
@@ -171,11 +179,24 @@ struct KTrack : public KLV
 			) * p4.z() / p4.Perp2();
 	}
 
+	float getDz(const RMPoint pv) const
+	{
+		return ref.z() - pv.z() - (
+				(ref.x() - pv.x()) * p4.x() +
+				(ref.y() - pv.y()) * p4.y()
+			) * p4.z() / p4.Perp2();
+	}
+
 	template<class T>
 	float getDsz(const T* pv) const
 	{
 		if (!pv)
 			return -1.;
+		return getDz(pv) * std::cos(lambda());
+	}
+
+	float getDsz(const RMPoint pv) const
+	{
 		return getDz(pv) * std::cos(lambda());
 	}
 

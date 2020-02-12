@@ -42,6 +42,11 @@ struct KBeamSpot
 
 	ROOT::Math::SMatrix<double, 7, 7, ROOT::Math::MatRepSym<double, 7> > covariance;
 	SMatrixSym3D covariance3D;
+
+	// https://github.com/cms-sw/cmssw/blob/CMSSW_10_2_X/DataFormats/BeamSpot/interface/BeamSpot.h#L70-L76
+	RMPoint Position(const double z) const { return RMPoint(x(z),y(z),z); }
+	double x(const double z) const { return position.X() + dxdz * (z - position.Z()); }
+	double y(const double z) const { return position.Y() + dydz * (z - position.Z()); }
 };
 typedef std::vector<KBeamSpot> KBeamSpots;
 
