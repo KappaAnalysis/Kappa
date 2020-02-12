@@ -34,9 +34,9 @@ datasetsHelper = datasetsHelperTwopz(os.path.join(os.environ.get("CMSSW_BASE"),"
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('python')
-options.register('globalTag', '76X_mcRun2_asymptotic_RunIIFall15DR76_v1', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'GlobalTag')
+options.register('globalTag', '102X_mc2017_realistic_v7', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'GlobalTag')
 options.register('kappaTag', 'KAPPA_2_0_0', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'KappaTag')
-options.register('nickname', 'SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Dataset Nickname')
+options.register('nickname', 'VBFHToTauTauM125_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_powheg-pythia8', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Dataset Nickname')
 options.register('testfile', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Path for a testfile')
 options.register('maxevents', -1, VarParsing.multiplicity.singleton, VarParsing.varType.int, 'maxevents. -1 for all events. Default: -1')
 options.register('outputfilename', '', VarParsing.multiplicity.singleton, VarParsing.varType.string, 'Filename for the Outputfile')
@@ -48,7 +48,7 @@ options.parseArguments()
 def getBaseConfig( globaltag= 'START70_V7::All',
 	testfile=cms.untracked.vstring(""),
 	maxevents=50,
-	nickname = 'SUSYGluGluToHToTauTauM160_RunIIFall15MiniAODv2_PU25nsData2015v1_13TeV_MINIAOD_pythia8',
+	nickname = 'VBFHToTauTauM125_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_powheg-pythia8',
 	kappaTag = 'Kappa_2_0_0',
 	outputfilename = ''):
 
@@ -477,7 +477,6 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.load("TrackingTools.TransientTrack.TransientTrackBuilder_cfi")
 
 	## Refitted Vertices collection
-	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
 	process.kappaTuple.active += cms.vstring('RefitVertex')
 	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
 
@@ -650,11 +649,11 @@ if __name__ == "__main__" or __name__ == "kSkimming_2017_cfg":
 
 	# Kappa test suite (cmsRun with NO extra options)
 	else:
-		testPaths = ['/storage/b/fs6-mirror/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input', '/home/short']
-		testPath = [p for p in testPaths if os.path.exists(p)][0]
+		# testPaths = ['/storage/b/fs6-mirror/fcolombo/kappatest/input', '/nfs/dust/cms/user/fcolombo/kappatest/input', '/home/short']
+		# testPath = [p for p in testPaths if os.path.exists(p)][0]
 		process = getBaseConfig(
-			globaltag="80X_mcRun2_asymptotic_2016_v3",
-			testfile=cms.untracked.vstring("file:%s/"%testPath + (testPath == '/home/short')*"short_" + "SUSYGluGluToHToTauTau_M-160_spring16_miniAOD.root"),
-			nickname='SUSYGluGluToHToTauTauM160_RunIISpring16MiniAODv1_PUSpring16_13TeV_MINIAOD_pythia8',
+			globaltag="102X_mc2017_realistic_v7",
+			testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/RunIIFall17MiniAODv2/VBFHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/280000/FE202169-8B1C-E911-8DF5-0CC47A13CB02.root"),
+			nickname='VBFHToTauTauM125_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_powheg-pythia8',
 			outputfilename="kappaTuple.root"
 			)
