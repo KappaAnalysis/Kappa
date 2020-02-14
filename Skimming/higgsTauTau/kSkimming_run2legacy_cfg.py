@@ -102,7 +102,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	else:
 		process.source 			  = cms.Source('PoolSource', fileNames=cms.untracked.vstring())
 	process.maxEvents.input	      = maxevents
-	process.kappaTuple.verbose    = cms.int32(1)
+	process.kappaTuple.verbose    = cms.int32(0)
 
 	process.kappaTuple.profile    = cms.bool(True)
 	if not globaltag.lower() == 'auto' :
