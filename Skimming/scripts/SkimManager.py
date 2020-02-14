@@ -34,7 +34,9 @@ class SkimManagerBase:
 		backup_dataset = self.skimdataset.json_file_name.replace(".json", "_backup.json")
 		self.skimdataset.keep_input_json = False ## will be updated very often
 		self.skimdataset.write_to_jsonfile(backup_dataset)
-		if tools.is_above_cmssw_version([9]):
+		if tools.is_above_cmssw_version([10]):
+			self.configfile = 'kSkimming_run2legacy_cfg.py'
+		elif tools.is_above_cmssw_version([9]):
 			self.configfile = 'kSkimming_2017_cfg.py'
 		else:
 			self.configfile = 'kSkimming_run2_cfg.py'
