@@ -615,7 +615,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	print "process.p:", process.p
 	return process
 
-if __name__ == "__main__" or __name__ == "kSkimming_2017_cfg":
+if __name__ == "__main__" or __name__ == "kSkimming_run2legacy_cfg":
 
 	# test with user-defined input file
 	if options.testfile:
