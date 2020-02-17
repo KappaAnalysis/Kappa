@@ -277,6 +277,7 @@ class SkimManagerBase:
 				else:
 					terminate(states, 'failed', target='rescheduled as tail jobs')
 
+			self.skimdataset[akt_nick]["SKIM_STATUS"] = self.skimdataset[akt_nick]['last_status']['status']
 			self.skimdataset[akt_nick]['n_jobs'] = sum(states[st] for st in states)
 			all_jobs = self.skimdataset[akt_nick]['n_jobs']
 			self.skimdataset[akt_nick]['crab_done'] = 0.0 if ((all_jobs == 0) or not states.get('finished', False))  else round(float(100.0*states['finished'])/float(all_jobs), 2)
