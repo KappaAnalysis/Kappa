@@ -61,12 +61,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	muons = "slimmedMuons"
 	electrons = "slimmedElectrons"
+	taus = "NewTauIDsEmbedded"
 
-	# new tau id only available for 8_0_20 (I believe) and above
-	# if tools.is_above_cmssw_version([8,0,20]):
-	# 	taus = "NewTauIDsEmbedded"
-	# else:
-	taus = "slimmedTaus"
 	isSignal = datasetsHelper.isSignal(nickname)
 
 	# produce selected collections and filter events with not even one Lepton
@@ -354,17 +350,35 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#Configure Tau Leptons
 	#https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_M_AN1
 	toKeep = []
-	era=""
-	if tools.is_above_cmssw_version([10,2,15]):
-		if (nickname.find('Run2016')>-1 and nickname.find('17Jul2018')>-1) or nickname.find('RunIISummer16MiniAODv3')>-1 or nickname.find('Embedding2016')>-1: #2016 94X-legacy (MiniAODv3)
-			toKeep.extend(("MVADM_2016_v1","deepTau2016v2p1"))
-			era="2016"
-		elif (nickname.find('Run2017')>-1 and nickname.find('17Nov2017')>-1) or (nickname.find('RunIIFall17MiniAOD')>-1 and nickname.find('MiniAODv2')<0): #2017 MiniAODv1
-			toKeep.extend(("MVADM_2017_v1","deepTau2017v2p1"))
-			era="2017"
-		elif nickname.find('Run2018')>-1 or nickname.find('RunIIAutumn18MiniAOD')>-1 or nickname.find('Embedding2018')>-1: #2018
-			toKeep.extend(("MVADM_2018_v1","deepTau2018v2p1"))
-			era="2018"
+	year=""
+	if (nickname.find('Run2016')>-1 and nickname.find('17Jul2018')>-1) or (nickname.find('RunIISummer16MiniAOD')>-1) or (nickname.find('Embedding2016')>-1): #2016
+		toKeep.extend(("MVADM_2016_v1","deepTau2016v2p1"))
+		year="2016"
+	elif (nickname.find('Run2017')>-1) or (nickname.find('RunIIFall17MiniAOD')>-1) or (nickname.find('Embedding2017')>-1): #2017
+		toKeep.extend(("MVADM_2017_v1","deepTau2017v2p1"))
+		year="2017"
+	elif (nickname.find('Run2018')>-1) or (nickname.find('RunIIAutumn18MiniAOD')>-1) or (nickname.find('Embedding2018')>-1): #2018
+		toKeep.extend(("MVADM_2018_v1","deepTau2018v2p1"))
+		year="2018"
+
+	if os.path.isfile(os.path.join(os.environ.get("CMSSW_RELEASE_BASE"),"src/RecoTauTag/RecoTau/python/tools/runTauIdMVA.py")) or os.path.isfile(os.path.join(os.environ.get("CMSSW_BASE"),"src/RecoTauTag/RecoTau/python/tools/runTauIdMVA.py")):
+		from RecoTauTag.RecoTau.tools.runTauIdMVA import TauIDEmbedder
+		na = TauIDEmbedder(process, cms,
+				   updatedTauName = taus,
+				   debug=True,
+				   toKeep = toKeep
+				   )
+		na.runTauID()
+	elif os.path.isfile(os.path.join(os.environ.get("CMSSW_RELEASE_BASE"),"src/RecoTauTag/RecoTau/python/runTauIdMVA.py")) or os.path.isfile(os.path.join(os.environ.get("CMSSW_BASE"),"src/RecoTauTag/RecoTau/python/runTauIdMVA.py")):
+		from RecoTauTag.RecoTau.runTauIdMVA import TauIDEmbedder
+		na = TauIDEmbedder(process, cms,
+				   debug=True,
+				   toKeep = toKeep
+				   )
+		na.runTauID(taus)
+
+	process.p *= process.rerunMvaIsolationSequence
+	process.p *= getattr(process, taus)
 
 	tauCollection = cms.InputTag(taus) # to be used as input
 
@@ -392,58 +406,59 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		"puCorrPtSum",
 		#"footprintCorrection",
 		"photonPtSumOutsideSignalCone",
-		"againstMuonLoose3",
-		"againstMuonTight3",
-		"againstElectronMVA6category",
-		"againstElectronMVA6raw",
-		"againstElectronVLooseMVA6",
-		"againstElectronLooseMVA6",
-		"againstElectronMediumMVA6",
-		"againstElectronTightMVA6",
-		"againstElectronVTightMVA6"
+		# "againstMuonLoose3",
+		# "againstMuonTight3",
+		# "againstElectronMVA6category",
+		# "againstElectronMVA6raw",
+		# "againstElectronVLooseMVA6",
+		# "againstElectronLooseMVA6",
+		# "againstElectronMediumMVA6",
+		# "againstElectronTightMVA6",
+		# "againstElectronVTightMVA6"
 		)
 
 	process.kappaTuple.active += cms.vstring('L1Taus')
 	if isEmbedded:
 		process.kappaTuple.L1Taus.l1taus.src = cms.InputTag("caloStage2Digis","Tau","SIMembedding")
 
-	if "MVADM_" + era + "_v1" in toKeep:
+	if ("MVADM_" + year + "_v1") in toKeep:
 		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
-			"MVADM" + era + "v1", #MVADM=0,1,... and -1 for unknown
-			# "MVADM" + era + "v1DM0raw", #MVA score for DM=0
-			# "MVADM" + era + "v1DM1raw", #MVA score for DM=1
-			# "MVADM" + era + "v1DM2raw", #MVA score for DM=2
-			# "MVADM" + era + "v1DM10raw", #MVA score for DM=10
-			# "MVADM" + era + "v1DM11raw", #MVA score for DM=11
-			# "MVADM" + era + "v1DMotherraw" #MVA score for other DM (=-1)
+			"MVADM" + year + "v1", #MVADM=0,1,... and -1 for unknown
+			# "MVADM" + year + "v1DM0raw", #MVA score for DM=0
+			# "MVADM" + year + "v1DM1raw", #MVA score for DM=1
+			# "MVADM" + year + "v1DM2raw", #MVA score for DM=2
+			# "MVADM" + year + "v1DM10raw", #MVA score for DM=10
+			# "MVADM" + year + "v1DM11raw", #MVA score for DM=11
+			# "MVADM" + year + "v1DMotherraw" #MVA score for other DM (=-1)
 		)
-	if "deepTau" + era + "v2p1" in toKeep:
-		# deepTauID 2017v2p1
-		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(#comment out WP as defined by a simple cut at raw value
-			"bydeepTau" + era + "v2p1VSjetraw",
-			"byVVVLoosedeepTau" + era + "v2p1VSjet",
-			"byVVLoosedeepTau" + era + "v2p1VSjet",
-			"byVLoosedeepTau" + era + "v2p1VSjet",
-			"byLoosedeepTau" + era + "v2p1VSjet",
-			"byMediumdeepTau" + era + "v2p1VSjet",
-			"byTightdeepTau" + era + "v2p1VSjet",
-			"byVTightdeepTau" + era + "v2p1VSjet",
-			"byVVTightdeepTau" + era + "v2p1VSjet",
-			"bydeepTau" + era + "v2p1VSeraw",
-			"byVVVLoosedeepTau" + era + "v2p1VSe",
-			"byVVLoosedeepTau" + era + "v2p1VSe",
-			"byVLoosedeepTau" + era + "v2p1VSe",
-			"byLoosedeepTau" + era + "v2p1VSe",
-			"byMediumdeepTau" + era + "v2p1VSe",
-			"byTightdeepTau" + era + "v2p1VSe",
-			"byVTightdeepTau" + era + "v2p1VSe",
-			"byVVTightdeepTau" + era + "v2p1VSe",
-			"bydeepTau" + era + "v2p1VSmuraw",
-			"byVLoosedeepTau" + era + "v2p1VSmu",
-			"byLoosedeepTau" + era + "v2p1VSmu",
-			"byMediumdeepTau" + era + "v2p1VSmu",
-			"byTightdeepTau" + era + "v2p1VSmu"
+	if ("deepTau" + year + "v2p1") in toKeep:
+		process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist += cms.vstring(
+			"byDeepTau" + year + "v2p1VSjetraw",
+			"byVVVLooseDeepTau" + year + "v2p1VSjet",
+			"byVVLooseDeepTau" + year + "v2p1VSjet",
+			"byVLooseDeepTau" + year + "v2p1VSjet",
+			"byLooseDeepTau" + year + "v2p1VSjet",
+			"byMediumDeepTau" + year + "v2p1VSjet",
+			"byTightDeepTau" + year + "v2p1VSjet",
+			"byVTightDeepTau" + year + "v2p1VSjet",
+			"byVVTightDeepTau" + year + "v2p1VSjet",
+			"byDeepTau" + year + "v2p1VSeraw",
+			"byVVVLooseDeepTau" + year + "v2p1VSe",
+			"byVVLooseDeepTau" + year + "v2p1VSe",
+			"byVLooseDeepTau" + year + "v2p1VSe",
+			"byLooseDeepTau" + year + "v2p1VSe",
+			"byMediumDeepTau" + year + "v2p1VSe",
+			"byTightDeepTau" + year + "v2p1VSe",
+			"byVTightDeepTau" + year + "v2p1VSe",
+			"byVVTightDeepTau" + year + "v2p1VSe",
+			"byDeepTau" + year + "v2p1VSmuraw",
+			"byVLooseDeepTau" + year + "v2p1VSmu",
+			"byLooseDeepTau" + year + "v2p1VSmu",
+			"byMediumDeepTau" + year + "v2p1VSmu",
+			"byTightDeepTau" + year + "v2p1VSmu"
 			)
+
+	print process.kappaTuple.PatTaus.taus.binaryDiscrWhitelist
 
 	process.kappaTuple.PatTaus.taus.extrafloatDiscrlist = cms.untracked.vstring(
 		"decayDistX",
@@ -655,5 +670,5 @@ if __name__ == "__main__" or __name__ == "kSkimming_run2legacy_cfg":
 			globaltag="102X_mc2017_realistic_v7",
 			testfile=cms.untracked.vstring("root://cms-xrd-global.cern.ch//store/mc/RunIIFall17MiniAODv2/VBFHToTauTau_M125_13TeV_powheg_pythia8/MINIAODSIM/PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/280000/FE202169-8B1C-E911-8DF5-0CC47A13CB02.root"),
 			nickname='VBFHToTauTauM125_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_powheg-pythia8',
-			outputfilename="kappaTuple.root"
+			outputfilename="kappa_VBFHToTauTauM125_RunIIFall17MiniAODv2_PU2017newpmx_13TeV_MINIAOD_powheg-pythia8_1.root"
 			)
