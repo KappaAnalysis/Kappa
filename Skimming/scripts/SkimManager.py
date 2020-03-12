@@ -12,6 +12,7 @@ import gzip
 import shutil
 import re
 import hashlib
+import sys
 from multiprocessing import Process, Queue
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -745,7 +746,7 @@ class SkimManagerBase:
 			elif 'aachen' in os.environ["HOSTNAME"]:
 				return("/net/scratch_cms3b/%s/kappa_skim_workdir/" % os.environ["USER"])
 			else:
-				log.critical("Default workbase could not be found. Please specify working dir as absolute path.")
+				print "Default workbase could not be found. Please specify working dir as absolute path."
 				sys.exit()
 
 	@classmethod
