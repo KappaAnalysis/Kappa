@@ -8548,6 +8548,25 @@
     "scenario": "PU2017",
     "xsec": 0.3987
   },
+  "LFVZ4JetsToLLM50_whajahma_RunIIFall17_13TeV_MINIAOD_madgraph-pythia8": {
+    "analysis_2017": [
+      "skim_mc_LFV"
+    ],
+    "campaign": "whajahma",
+    "data": false,
+    "dbs": "/LFV_Z4JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/whajahma-RunIIFall17_step4_MINIAODSIM_V2-5f646ecd4e1c7a39ab0ed099ff55ceb9/USER",
+    "energy": "13",
+    "extension": "",
+    "format": "MINIAOD",
+    "generator": "madgraph-pythia8",
+    "globalTag": "94X_mc2017_realistic_v14",
+    "inputDBS": "phys03",
+    "n_events_generated": "5395663",
+    "n_files": "2417",
+    "process": "LFV_Z4JetsToLL_M50",
+    "scenario": "RunIIFall17",
+    "xsec": 24310.0
+  },
   "LFV_croote_RunIISummer16MiniAODv2_13TeV_USER_madgraph-pythia8_set1": {
     "campaign": "croote",
     "data": false,
