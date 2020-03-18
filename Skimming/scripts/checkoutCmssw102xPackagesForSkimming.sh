@@ -48,6 +48,8 @@ git cms-merge-topic cms-egamma:EgammaPostRecoTools
 # Get recipes to re-correct MET (also for ECAL noise)
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETUncertaintyPrescription#Instructions_for_2017_data_with
 #git cms-merge-topic cms-met:METFixEE2017_949_v2_backport_to_102X #MB: It got merged with 10_2_7
+# Temporary fix for MET covariance matrix in embedded samples
+git cms-merge-topic KIT-CMS:embedded_metcov_fix
 
 # Get deepTau 2017v2p1 Tau ID (and Tau ID Embedder)
 #git cms-merge-topic 27879 #MB: It got merged with 10_2_17

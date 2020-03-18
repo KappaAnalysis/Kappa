@@ -731,6 +731,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			isData = (data or isEmbedded), # false for MC
 			fixEE2017 = fixEE2017,
 			fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139},
+			isEmbeddedSample = isEmbedded,
 			postfix = "ModifiedMET"
 		)
 		# prepare Puppi
@@ -749,6 +750,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 			jetFlavor = "AK4PFPuppi",
                         fixEE2017 = fixEE2017,
                         fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139},
+			isEmbeddedSample = isEmbedded,
 			postfix = "PuppiModifiedMET"
 		)
 		#process.puppiNoLep.useExistingWeights = False #Not necessary with MiniAODv2
