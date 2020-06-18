@@ -496,7 +496,9 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## Refitted Vertices collection
 	process.kappaTuple.active += cms.vstring('RefitVertex')
+	process.kappaTuple.active += cms.vstring('Vertex')
 	process.load("VertexRefit.TauRefit.AdvancedRefitVertexProducer_cfi")
+	process.load("VertexRefit.TauRefit.MiniAODRefitVertexProducer_cfi")
 
 	process.AdvancedRefitVertexBSProducer.srcElectrons = cms.InputTag(electrons)
 	process.AdvancedRefitVertexBSProducer.srcMuons = cms.InputTag(muons)
@@ -510,10 +512,18 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.AdvancedRefitVertexNoBSProducer.srcLeptons = cms.VInputTag(electrons, muons, taus)
 	process.p *= (process.AdvancedRefitVertexNoBS)
 
+	process.p *= (process.MiniAODRefitVertexBS)
+	process.p *= (process.MiniAODRefitVertexNoBS)
+
+	# process.kappaTuple.RefitVertex.whitelist = cms.vstring('AdvancedRefitVertexBS', 'AdvancedRefitVertexNoBS', 'MiniAODRefitVertexBS', 'MiniAODRefitVertexNoBS')
 	process.kappaTuple.RefitVertex.whitelist = cms.vstring('AdvancedRefitVertexBS', 'AdvancedRefitVertexNoBS')
+	process.kappaTuple.Vertex.whitelist = cms.vstring('MiniAODRefitVertexBS', 'MiniAODRefitVertexNoBS')
 
 	process.kappaTuple.RefitVertex.AdvancedRefittedVerticesBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexBSProducer"))
 	process.kappaTuple.RefitVertex.AdvancedRefittedVerticesNoBS = cms.PSet(src=cms.InputTag("AdvancedRefitVertexNoBSProducer"))
+
+	process.kappaTuple.Vertex.MiniAODRefittedVerticesBS = cms.PSet(src=cms.InputTag("MiniAODRefitVertexBSProducer"))
+	process.kappaTuple.Vertex.MiniAODRefittedVerticesNoBS = cms.PSet(src=cms.InputTag("MiniAODRefitVertexNoBSProducer"))
 
 	## calculate IP info wrt refitted PV
 	process.kappaTuple.Electrons.refitvertexcollection = cms.InputTag("AdvancedRefitVertexNoBSProducer")
