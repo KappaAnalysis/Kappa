@@ -264,7 +264,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 		runVID=True
 		runEnergyCorrections=True
 		era='2018-Prompt'
-	from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
+	from EgammaUser.EgammaPostRecoTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 	setupEgammaPostRecoSeq(
 	process,
 	runVID=True,

@@ -43,7 +43,13 @@ git cms-init
 
 # Get code for electron scale & smear corrections
 # see: https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2
-git cms-merge-topic cms-egamma:EgammaPostRecoTools
+cd $CMSSW_BASE/src
+git clone git@github.com:cms-egamma/EgammaPostRecoTools.git  EgammaUser/EgammaPostRecoTools
+cd  EgammaUser/EgammaPostRecoTools
+git checkout master
+cd $CMSSW_BASE/src
+git cms-merge-topic cms-egamma:PhotonIDValueMapSpeedup1029
+# git cms-merge-topic cms-egamma:EgammaPostRecoTools
 
 # Get recipes to re-correct MET (also for ECAL noise)
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETUncertaintyPrescription#Instructions_for_2017_data_with
