@@ -111,8 +111,8 @@ class SkimManagerBase:
 		if self.UsernameFromSiteDB:
 			return self.UsernameFromSiteDB
 		else:
-			from CRABClient.UserUtilities import getUsernameFromSiteDB
-			self.UsernameFromSiteDB = getUsernameFromSiteDB()
+			from CRABClient.UserUtilities import getUsernameFromCRIC
+			self.UsernameFromSiteDB = getUsernameFromSiteCRIC()
 			return self.UsernameFromSiteDB
 
 	def get_global_tag(self, akt_nick):
