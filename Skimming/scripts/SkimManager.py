@@ -168,7 +168,12 @@ class SkimManagerBase:
 			self.skimdataset[akt_nick]["crab_name"] = "crab_"+config.General.requestName
 
 			submit_dict = {"config" : config, "proxy" : self.voms_proxy}
-			submit_command_output = self.crab_cmd({"cmd" : "submit", "args" : submit_dict})
+			q = Queue()
+			p = Process(target=self.crab_cmd, args=({"cmd" : "submit", "args" : submit_dict}, q))
+			p.start()
+			submit_command_output = q.get()
+			p.join()
+			# submit_command_output = self.crab_cmd({"cmd" : "submit", "args" : submit_dict})
 			if submit_command_output:
 				self.skimdataset[akt_nick]["SKIM_STATUS"] = "SUBMITTED"
 				self.skimdataset[akt_nick]["crab_task"] = submit_command_output["uniquerequestname"]
