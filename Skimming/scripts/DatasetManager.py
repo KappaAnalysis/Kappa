@@ -182,6 +182,7 @@ class DataSetManagerBase:
 		if pos != -1:
 			process += "_" + pd_name[pos:]
 		process = process.replace("EmbeddingRun", "Embedding") ## Since Run201 is Reserved for Data
+		process = process.replace("LFV_Z4JetsToLL_M50","LFV") ## to run Artus easily ...wael
 		return process
 
 	def get_format(self,filetype):
