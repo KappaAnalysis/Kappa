@@ -1196,7 +1196,7 @@
     "extension": "ext1",
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
-    "globalTag": "102X_mc2017_realistic_v7",
+    "globalTag": "102X_mc2017_realistic_v6",
     "inputDBS": "global",
     "n_events_generated": "39536839",
     "n_files": "480",
@@ -3994,7 +3994,7 @@
     "format": "MINIAOD",
     "generator": "madgraph-pythia8",
     "generatorWeight": 0.9976706666666667,
-    "globalTag": "102X_mc2017_realistic_v7",
+    "globalTag": "102X_mc2017_realistic_v6",
     "inputDBS": "global",
     "n_events_generated": "3000000",
     "n_files": "41",
@@ -6789,7 +6789,7 @@
   },
   "GluGluHToPseudoscalarTauTauM125_adow_RunIIFall17MiniAODv2_StoreResults_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
-      "skim_legacy_signal"
+      "skim_legacy_signal_old"
     ],
     "campaign": "adow",
     "data": false,
@@ -7092,7 +7092,7 @@
   },
   "GluGluHToTauTauM125_dwinterb_RunIIFall17MiniAODv2_StoreResults_13TeV_MINIAOD_powheg-pythia8": {
     "analysis_2017": [
-      "skim_legacy_signal"
+      "skim_legacy_signal_old"
     ],
     "campaign": "dwinterb",
     "data": false,
