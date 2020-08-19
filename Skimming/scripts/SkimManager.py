@@ -26,9 +26,10 @@ import Kappa.Skimming.tools as tools
 class SkimManagerBase:
 
 
-	def __init__(self, storage_for_output, workbase=".", workdir="TEST_SKIM", use_proxy_variable=False):
+	def __init__(self, storage_for_output, workbase=".", workdir="TEST_SKIM", job_splitting="Automatic", use_proxy_variable=False):
 		self.storage_for_output = storage_for_output
 		self.workdir = os.path.join(workbase, os.path.abspath(workdir))
+		self.job_splitting = job_splitting
 		if not os.path.exists(self.workdir+"/gc_cfg"):
 			os.makedirs(self.workdir+"/gc_cfg")
 		self.skimdataset = datasetsHelperTwopz(os.path.join(self.workdir, "skim_dataset.json"))
@@ -103,8 +104,8 @@ class SkimManagerBase:
 					self.skimdataset[new_nick]["SKIM_STATUS"] = "INIT"
 					self.skimdataset[new_nick]["GCSKIM_STATUS"] = "INIT"
 				else:
-					print new_nick, "already in this skimming campain"
-		
+					print new_nick, "is already in this skimming campaign."
+
 		self.save_dataset()
 
 	def getUsernameFromSiteDB_cache(self):
@@ -195,7 +196,8 @@ class SkimManagerBase:
 		config.JobType.maxMemoryMB = 2500
 		config.JobType.allowUndistributedCMSSW = True
 		config.Site.blacklist = ["T3_FR_IPNL", "T3_US_UCR", "T2_BR_SPRACE", "T1_RU_*", "T2_RU_*", "T3_US_UMiss", "T2_US_Vanderbilt", "T2_EE_Estonia", "T2_TW_*"]
-		config.Data.splitting = 'Automatic'# 'FileBased'
+		# config.Data.splitting = 'Automatic'# 'FileBased'
+		config.Data.splitting = self.job_splitting # 'FileBased'
 
 		# unitsPerJob
 		config.Data.outLFNDirBase = '/store/user/%s/higgs-kit/skimming/%s'%(self.getUsernameFromSiteDB_cache(), os.path.basename(self.workdir.rstrip("/")))
@@ -289,7 +291,7 @@ class SkimManagerBase:
 			self.skimdataset[akt_nick]['crab_done'] = 0.0 if ((all_jobs == 0) or not states.get('finished', False))  else round(float(100.0*states['finished'])/float(all_jobs), 2)
 			self.skimdataset[akt_nick]['crab_failed'] = 0.0 if ((all_jobs == 0) or not states.get('failed', False))  else round(float(100.0*states['failed'])/float(all_jobs), 2)
 			self.skimdataset[akt_nick]['crab_running'] = 0.0 if ((all_jobs == 0) or not states.get('running', False))  else round(float(100.0*states['running'])/float(all_jobs), 2)
-			self.skimdataset[akt_nick]['crab_other'] = round(100.0 - self.skimdataset[akt_nick]['crab_done'] - self.skimdataset[akt_nick]['crab_failed'] - self.skimdataset[akt_nick]['crab_running'], 2)
+			self.skimdataset[akt_nick]['crab_other'] = round(max(100.0 - self.skimdataset[akt_nick]['crab_done'] - self.skimdataset[akt_nick]['crab_failed'] - self.skimdataset[akt_nick]['crab_running'], 0.0), 2)
 
 #### Functions to allow resubmission and restart of crab tasks
 
@@ -798,6 +800,8 @@ if __name__ == "__main__":
 
 	parser.add_argument("--init", dest="init", help="Init or Update the dataset", action='store_true')
 
+	parser.add_argument("--job-splitting", dest="job_splitting", default="Automatic", help="Specifies the job splitting algorithm. Possible supported options: Automatic, FileBased. Default: %(default)s")
+
 	parser.add_argument("--status-gc", action='store_true', default=False, dest="statusgc", help="")
 	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
 
@@ -833,8 +837,8 @@ if __name__ == "__main__":
 	
 	if args.date and args.init:
 		args.workdir+="_"+args.date
-	
-	SKM = SkimManagerBase(storage_for_output=args.storage_for_output, workbase=work_base, workdir=args.workdir)
+
+	SKM = SkimManagerBase(storage_for_output=args.storage_for_output, workbase=work_base, workdir=args.workdir, job_splitting=args.job_splitting)
 	nicks = SKM.nick_list(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
 
 	if args.init:
