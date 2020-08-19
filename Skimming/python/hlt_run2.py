@@ -5,7 +5,7 @@ hltWhitelist = cms.vstring( ## HLT selection
 	
 	"^HLT_.*Mu[0-9]+.*_v[0-9]+$",
 	"^HLT_.*Ele[0-9]+.*_v[0-9]+$",
-	"^HLT_.*Tau[0-9]+.*_v[0-9]+$",
+	"^HLT_.*Tau(HPS)?[0-9]+.*_v[0-9]+$",
 )
 
 hltBlacklist = cms.vstring(
