@@ -152,7 +152,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	else:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "PAT") # take last process used in production for mc
 
-	process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("slimmedPatTrigger"))
+	if (nickname.find('MiniAODv2')>-1) or (nickname.find('Embedding2016')>-1 and not nickname.find('94XLegacyminiAODv5')>-1): # MiniAODv2 doesn't have 'slimmedPatTrigger' -> use 'selectedPatTrigger' instead
+		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("selectedPatTrigger"))
+	else:
+		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("slimmedPatTrigger"))
 
 	if not isEmbedded:
 		process.kappaTuple.TriggerObjectStandalone.bits = cms.InputTag("TriggerResults", "", "HLT")
@@ -256,7 +259,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	era='2017-Nov17ReReco'
 	if (nickname.find('Run2017')>-1 and nickname.find('17Nov2017')>-1) or (nickname.find('RunIIFall17MiniAOD')>-1 and nickname.find('MiniAODv2')<0): #2017 MiniAODv1
 		runVID=True
-	elif (nickname.find('Run2016')>-1 and nickname.find('17Jul2018')>-1) or nickname.find('RunIISummer16MiniAODv3')>-1 or nickname.find('Embedding2016')>-1: #2016 94X-legacy (MiniAODv3)
+	elif (nickname.find('Run2016')>-1 and nickname.find('17Jul2018')>-1) or nickname.find('RunIISummer16MiniAODv3')>-1 or (nickname.find('Embedding2016')>-1 and nickname.find('94XLegacyminiAODv5')>-1): #2016 94X-legacy (MiniAODv3)
 		runVID=True
 		runEnergyCorrections=False
 		era='2016-Legacy'
@@ -351,10 +354,10 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	#https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuidePFTauID#Rerunning_of_the_tau_ID_on_M_AN1
 	toKeep = []
 	MVADM_training_year=""
-	if (nickname.find('RunIISummer16MiniAODv2')>-1) or (nickname.find('Embedding2016')>-1): #2016
+	if (nickname.find('RunIISummer16MiniAODv2')>-1) or (nickname.find('Embedding2016')>-1 and not nickname.find('94XLegacyminiAODv5')>-1): #2016
 		toKeep.extend(("MVADM_2016_v1","deepTau2017v2p1"))
 		MVADM_training_year="2016"
-	elif (nickname.find('Run2016')>-1 and nickname.find('17Jul2018')>-1) or (nickname.find('RunIISummer16MiniAODv3')>-1) : #2016 94X-legacy (MiniAODv3)
+	elif (nickname.find('Run2016')>-1 and nickname.find('17Jul2018')>-1) or (nickname.find('RunIISummer16MiniAODv3')>-1) or (nickname.find('94XLegacyminiAODv5')>-1) : #2016 94X-legacy (MiniAODv3)
 		toKeep.extend(("MVADM_2017_v1","deepTau2017v2p1"))
 		MVADM_training_year="2017"
 	elif (nickname.find('Run2017')>-1) or (nickname.find('RunIIFall17MiniAOD')>-1) or (nickname.find('Embedding2017')>-1): #2017
