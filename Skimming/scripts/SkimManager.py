@@ -229,9 +229,12 @@ class SkimManagerBase:
 			if self.skimdataset[akt_nick]["SKIM_STATUS"] not in ["LISTED", "COMPLETED", "INIT"] and self.skimdataset[akt_nick]["GCSKIM_STATUS"] not in ["LISTED", "COMPLETED"]:
 				crab_job_dir = os.path.join(self.workdir, self.skimdataset[akt_nick].get("crab_name", "crab_"+akt_nick[:100]))
 				status_dict = {"proxy" : self.voms_proxy, "dir" : crab_job_dir}
+				print "\nNickname:\t\t\t" + akt_nick
 				self.skimdataset[akt_nick]['last_status'] = self.crab_cmd({"cmd" : "status", "args" : status_dict})
 				if not self.skimdataset[akt_nick]['last_status']:
 					self.skimdataset[akt_nick]["SKIM_STATUS"] = "EXCEPTION"
+				elif self.skimdataset[akt_nick]['last_status']['dbStatus'] in ["KILLED"]:
+					self.skimdataset[akt_nick]["SKIM_STATUS"] = "KILLED"
 
 	def update_status_crab(self):
 		# mostly copy paste from here: https://github.com/dmwm/CRABClient/blob/d41695646c20936a4d5671f2abd566ea91a7ac13/src/python/CRABClient/Commands/status.py#L513
@@ -285,7 +288,12 @@ class SkimManagerBase:
 				else:
 					terminate(states, 'failed', target='rescheduled as tail jobs')
 
-			self.skimdataset[akt_nick]["SKIM_STATUS"] = self.skimdataset[akt_nick]['last_status']['status']
+			if not self.skimdataset[akt_nick]['last_status']:
+				self.skimdataset[akt_nick]["SKIM_STATUS"] = "EXCEPTION"
+			elif self.skimdataset[akt_nick]['last_status']['dbStatus'] in ["KILLED"]:
+				self.skimdataset[akt_nick]["SKIM_STATUS"] = "KILLED"
+			else:
+				self.skimdataset[akt_nick]["SKIM_STATUS"] = self.skimdataset[akt_nick]['last_status']['status']
 			self.skimdataset[akt_nick]['n_jobs'] = sum(states[st] for st in states)
 			all_jobs = self.skimdataset[akt_nick]['n_jobs']
 			self.skimdataset[akt_nick]['crab_done'] = 0.0 if ((all_jobs == 0) or not states.get('finished', False))  else round(float(100.0*states['finished'])/float(all_jobs), 2)
@@ -302,27 +310,46 @@ class SkimManagerBase:
 					crab_dir = os.path.join(dirpath, dirname)
 					os.system('crab kill -d '+crab_dir)
 
-	def purge(self, status_groups_to_perge):
-		status_groups_to_perge = set(status_groups_to_perge.split(", "))
-		tasks_to_perge = []
-		if "ALL" in status_groups_to_perge:
+	def purge(self, status_groups_to_purge):
+		status_groups_to_purge = set(status_groups_to_purge.split(", "))
+		tasks_to_purge = []
+		if "ALL" in status_groups_to_purge:
 			for dirpath, dirnames, fielnames in os.walk(self.workdir):
 				for dirname in dirnames:
 					if "crab" in dirname:
 						crab_dir = os.path.join(dirpath, dirname)
-						tasks_to_perge.append(crab_dir)
-		elif status_groups_to_perge <= set(["COMPLETED", "LISTED", "KILLED", "FAILED"]):
-			for status in status_groups_to_perge:
+						tasks_to_purge.append(crab_dir)
+		elif status_groups_to_purge <= set(["COMPLETED", "LISTED", "KILLED", "FAILED"]):
+			for status in status_groups_to_purge:
 				for dataset_nick in self.skimdataset.nicks():
 					if self.skimdataset[dataset_nick]["SKIM_STATUS"] == status or self.skimdataset[dataset_nick]["GCSKIM_STATUS"] == status:
-						tasks_to_perge.append(self.skimdataset[dataset_nick].get("crab_name", "crab_"+dataset_nick[:100]))
+						tasks_to_purge.append(self.skimdataset[dataset_nick].get("crab_name", "crab_"+dataset_nick[:100]))
 		else:
 			print "You specified an unsuitable status for purging. Please specify from this list: ALL, COMPLETED, LISTED, KILLED, FAILED."
-		print len(tasks_to_perge), "crab task(s) to purge."
-		for task in tasks_to_perge:
+		print len(tasks_to_purge), "crab task(s) to purge."
+		for task in tasks_to_purge:
 			print "Attempt to purge", task
 			self.crab_cmd({"cmd" : "purge", "args" : {"dir":os.path.join(self.workdir, task), "cache":True}})
 			print "--------------------------------------------"
+
+	def remove_task(self, status_groups_to_remove):
+		status_groups_to_remove = set(status_groups_to_remove.split(", "))
+		if status_groups_to_remove <= set(["KILLED", "FAILED"]):
+			for status in status_groups_to_remove:
+				for dataset_nick in self.skimdataset.nicks():
+					if self.skimdataset[dataset_nick]["SKIM_STATUS"] == status or self.skimdataset[dataset_nick]["GCSKIM_STATUS"] == status:
+						task = self.skimdataset[dataset_nick].get("crab_name", "crab_"+dataset_nick[:100])
+						task_dir = os.path.join(self.workdir, task)
+						print "Removing task " + dataset_nick + " and deleting directory " + task_dir
+						try:
+							shutil.rmtree(task_dir)
+						except OSError as e:
+							print ("Error: %s - %s." % (e.filename, e.strerror))
+						try:
+							self.skimdataset.base_dict.pop(dataset_nick)
+						except KeyError:
+							print ("Error: %s was not found in the skim summary dictionary." % dataset_nick)
+		print "--------------------------------------------"
 
 	def remake_task(self):
 		nicks_to_remake = [nick for nick in self.skimdataset.nicks() if self.skimdataset[nick]["SKIM_STATUS"] in ["SUBMITFAILED", "EXCEPTION"]]
@@ -576,6 +603,7 @@ class SkimManagerBase:
 		status_dict.setdefault('COMPLETED', [])
 		status_dict.setdefault('EXCEPTION', [])
 		status_dict.setdefault('FAILED', [])
+		status_dict.setdefault('KILLED', [])
 		status_dict.setdefault('SUBMITTED', [])
 
 		for akt_nick in self.skimdataset.nicks():
@@ -586,8 +614,10 @@ class SkimManagerBase:
 				status_dict['SUBMITTED'].append(akt_nick)
 			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["FAILED", "RESUBMITFAILED"]:
 				status_dict['FAILED'].append(akt_nick)
-			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION", "SUBMITFAILED", "KILLED"]:
+			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["EXCEPTION", "SUBMITFAILED"]:
 				status_dict['EXCEPTION'].append(akt_nick)
+			elif self.skimdataset[akt_nick]["SKIM_STATUS"] in ["KILLED", "FAILED (KILLED)"]:
+				status_dict['KILLED'].append(akt_nick)
 
 		if summary:
 			print "-----------------------------------------------"
@@ -598,6 +628,9 @@ class SkimManagerBase:
 				print nick
 			print '\n'+'\033[91m'+'FAILED: '+str(len(status_dict['FAILED']))+' tasks'+'\033[0m'
 			for nick in status_dict['FAILED']:
+				self.print_statistics(nick)
+			print '\n'+'\033[91m'+'KILLED: '+str(len(status_dict['KILLED']))+' tasks'+'\033[0m'
+			for nick in status_dict['KILLED']:
 				self.print_statistics(nick)
 			print '\n'+'\033[93m'+'EXCEPTION: '+str(len(status_dict['EXCEPTION']))+' tasks'+'\033[0m'
 			for nick in status_dict['EXCEPTION']:
@@ -810,11 +843,12 @@ if __name__ == "__main__":
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks for which an exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--kill-all", action='store_true', default=False, dest="kill_all", help="kills all tasks. Default: %(default)s")
 	parser.add_argument("--purge", default=None, dest="purge", help="Purges tasks specified groups of tasks defined by their status. Possible groups: ALL, COMPLETED, LISTED, FAILED, KILLED. You may specify multiple groups separated by a comma. Default: %(default)s")
-	
+	parser.add_argument("--remove", default=None, dest="remove", help="Removes tasks specified groups of tasks defined by their status. Always kill and purge before using this option. Possible groups: FAILED, KILLED. You may specify multiple groups separated by a comma. Default: %(default)s")
+
 	parser.add_argument("--create-filelist", action='store_true', default=False, dest = "create_filelist", help="")
 	parser.add_argument("--reset-filelist", action='store_true', default=False, dest = "reset_filelist", help="")
 	parser.add_argument("-r", "--create-recent-symlinks", default=False, action="store_true", help="Create symlinks to filelists as recent ones. [Default: %(default)s]")
-	
+
 	parser.add_argument("-f", "--force", action='store_true', default=False, dest="force", help="Force current action (e.g. creation of filelists).")
 
 	parser.add_argument("-b", "--backend", default='freiburg', dest="backend", help="Changes backend for the creation of Grid Control configs. Supported: freiburg, naf. Default: %(default)s")
@@ -851,6 +885,11 @@ if __name__ == "__main__":
 
 	if args.purge:
 		SKM.purge(args.purge)
+		exit()
+
+	if args.remove:
+		SKM.remove_task(args.remove)
+		SKM.save_dataset()
 		exit()
 
 	if args.remake:
