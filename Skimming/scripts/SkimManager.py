@@ -383,10 +383,11 @@ class SkimManagerBase:
 			self.add_new(nicks_to_remake)
 			self.submit_crab()
 
-	def resubmit_failed(self, argument_dict):
+	def resubmit_failed(self, argument_dict, ignore_killed):
 		datasets_to_resubmit = []
+		status_groups_to_ignore = ["COMPLETED", "LISTED"] + (["KILLED"] if ignore_killed else [])
 		for dataset in self.skimdataset.nicks():
-			if self.skimdataset[dataset]["SKIM_STATUS"] not in ["COMPLETED", "LISTED"] and self.skimdataset[dataset]["GCSKIM_STATUS"] not in ["COMPLETED", "LISTED"]:
+			if self.skimdataset[dataset]["SKIM_STATUS"] not in status_groups_to_ignore and self.skimdataset[dataset]["GCSKIM_STATUS"] not in status_groups_to_ignore:
 				try:
 					if "failed" in self.skimdataset[dataset]["last_status"]["jobsPerStatus"]:
 						datasets_to_resubmit.append(self.skimdataset[dataset]["crab_name"])
@@ -839,6 +840,7 @@ if __name__ == "__main__":
 	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
 
 	parser.add_argument("--resubmit-with-options", default=None, dest="resubmit", help="Resubmit failed tasks. Options for crab resubmit can be specified via a python dict, e.g: --resubmit '{\"maxmemory\" : \"3000\", \"maxruntime\" : \"1440\"}'. To avoid options use '{}' Default: %(default)s")
+	parser.add_argument("--ignore-killed", action='store_true', default=False, help="Ignore 'KILLED' tasks when resubmiting tasks. Default: %(default)s")
 	parser.add_argument("--resubmit-with-gc", action='store_true', default=False, dest="resubmit_with_gc", help="Resubmits non-completed tasks with Grid Control.")
 	parser.add_argument("--remake", action='store_true', default=False, dest="remake", help="Remakes tasks for which an exception occured. (Run after --crab-status). Default: %(default)s")
 	parser.add_argument("--kill-all", action='store_true', default=False, dest="kill_all", help="kills all tasks. Default: %(default)s")
@@ -897,7 +899,7 @@ if __name__ == "__main__":
 		exit()
 
 	if args.resubmit:
-		SKM.resubmit_failed(argument_dict=ast.literal_eval(args.resubmit))
+		SKM.resubmit_failed(argument_dict=ast.literal_eval(args.resubmit), ignore_killed=args.ignore_killed)
 		exit()
 
 	if args.create_filelist:
