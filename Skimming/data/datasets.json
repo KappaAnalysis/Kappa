@@ -10060,7 +10060,7 @@
     "dbs": "/LFV_Z4JetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/whajahma-RunIIFall17_step4_MINIAODSIM_V2-5f646ecd4e1c7a39ab0ed099ff55ceb9/USER",
     "energy": "13",
     "extension": "",
-    "format": "MINIAOD",
+    "format": "USER",
     "generator": "madgraph-pythia8",
     "globalTag": "94X_mc2017_realistic_v14",
     "inputDBS": "phys03",
@@ -10070,6 +10070,7 @@
     "scenario": "RunIIFall17",
     "xsec": 24310.0
   },
+
   "MuonEG_Run2015B_16Dec2015v1_13TeV_MINIAOD": {
     "campaign": "Run2015B",
     "data": true,
