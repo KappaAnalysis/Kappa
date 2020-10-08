@@ -152,7 +152,7 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	else:
 		process.kappaTuple.TriggerObjectStandalone.metfilterbits = cms.InputTag("TriggerResults", "", "PAT") # take last process used in production for mc
 
-	if (nickname.find('MiniAODv2')>-1) or (nickname.find('Embedding2016')>-1 and not nickname.find('94XLegacyminiAODv5')>-1): # MiniAODv2 doesn't have 'slimmedPatTrigger' -> use 'selectedPatTrigger' instead
+	if (nickname.find('RunIISummer16MiniAODv2')>-1) or (nickname.find('Embedding2016')>-1 and not nickname.find('94XLegacyminiAODv5')>-1): # MiniAODv2 doesn't have 'slimmedPatTrigger' -> use 'selectedPatTrigger' instead
 		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("selectedPatTrigger"))
 	else:
 		process.kappaTuple.TriggerObjectStandalone.triggerObjects = cms.PSet( src = cms.InputTag("slimmedPatTrigger"))
