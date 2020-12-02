@@ -164,19 +164,25 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 						chargedHadronTransientTracks.push_back(trackBuilder->build(track)); // runtime error
 					}
 				}
-				
+
 				if (chargedHadronTransientTracks.size() > 2)
 				{
-					if (this->verbosity >= 3) std::cout << "\tKPatTauProducer fillSecondaryVertex - setting adaptiveVertexFitter\n";
-					AdaptiveVertexFitter adaptiveVertexFitter;
-					adaptiveVertexFitter.setWeightThreshold(0.001);
+					if (this->verbosity >= 3) std::cout << "\tKPatTauProducer fillSecondaryVertex - setting KalmanVertexFitter\n";
 
+					KalmanVertexFitter kvf(true);
+					TransientVertex sv = kvf.vertex(chargedHadronTransientTracks);
+
+					// if (this->verbosity >= 3) std::cout << "\tKPatTauProducer fillSecondaryVertex - setting adaptiveVertexFitter\n";
+					// AdaptiveVertexFitter adaptiveVertexFitter;
+					// adaptiveVertexFitter.setWeightThreshold(0.001);
 					// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/RecoVertex/VertexPrimitives/interface/TransientVertex.h
-					TransientVertex sv = adaptiveVertexFitter.vertex(chargedHadronTransientTracks, *BeamSpot); // TODO: add beam spot
+					// TransientVertex sv = adaptiveVertexFitter.vertex(chargedHadronTransientTracks);
+					// TransientVertex sv = adaptiveVertexFitter.vertex(chargedHadronTransientTracks, *BeamSpot);
+
 					if (sv.isValid())
 					{
 						KVertexProducer::fillVertex(sv, out.sv);
-						
+
 						// refit charged hadron candidate tracks
 						if (in.signalChargedHadrCands().size() == chargedHadronTransientTracks.size())
 						{
@@ -339,7 +345,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				KTauProducer::fillPFCandidates(in, out);
 			else
 				KPatTauProducer::fillPFCandidates(in, out);
-			// fillSecondaryVertex(in, out);
+			fillSecondaryVertex(in, out);
 			if (this->verbosity >= 3) std::cout << "KPatTauProducer fillSingle end\n";
 		}
 
