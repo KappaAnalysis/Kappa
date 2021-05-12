@@ -48,7 +48,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			if (packedLeadTauCand->bestTrack() != nullptr)
 			{
 				KTrackProducer::fillTrack(*packedLeadTauCand->bestTrack(), out.track, std::vector<reco::Vertex>(), this->trackBuilder.product());
-				// KTrackProducer::fillIPInfo(*packedLeadTauCand->bestTrack(), out.track, *RefitVertices, trackBuilder.product());
+				KTrackProducer::fillIPInfo(*packedLeadTauCand->bestTrack(), out.track, *RefitVertices, trackBuilder.product());
 			}
 			else // at least fill reference point
 			{
@@ -307,8 +307,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		{
 			if (this->verbosity >= 3) std::cout << "KPatTauProducer fillProduct\n";
 			cEvent->getByToken(tokenBeamSpot, BeamSpot);
+			cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 
-			// cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 			// Continue normally
 			KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>::fillProduct(in, out, name, tag, pset);
 			if (this->verbosity >= 3) std::cout << "KPatTauProducer fillProduct end\n";

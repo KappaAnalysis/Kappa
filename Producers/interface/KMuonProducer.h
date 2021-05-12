@@ -140,7 +140,7 @@ public:
 
 		if (this->verbosity >= 3) std::cout << "KMuonProducer fillProduct cEvent access\n";
 		cEvent->getByToken(VertexCollectionToken, VertexHandle);
-		// cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
+		cEvent->getByToken(this->tokenRefitVertices, this->RefitVertices);
 		if (this->verbosity >= 3) std::cout << "KMuonProducer fillProduct cEvent access end\n";
 
 
@@ -176,11 +176,11 @@ public:
 		/// Tracks and track extracted information
 		if (in.track().isNonnull()){
 			KTrackProducer::fillTrack(*in.track(), out.track, std::vector<reco::Vertex>(), trackBuilder.product());
-			// KTrackProducer::fillIPInfo(*in.track(), out.track, *RefitVertices, trackBuilder.product());
+			KTrackProducer::fillIPInfo(*in.track(), out.track, *RefitVertices, trackBuilder.product());
 		}
 		if (in.globalTrack().isNonnull()){
 			KTrackProducer::fillTrack(*in.globalTrack(), out.globalTrack, std::vector<reco::Vertex>(), trackBuilder.product());
-			// KTrackProducer::fillIPInfo(*in.globalTrack(), out.globalTrack, *RefitVertices, trackBuilder.product());
+			KTrackProducer::fillIPInfo(*in.globalTrack(), out.globalTrack, *RefitVertices, trackBuilder.product());
 		}
 
 		if (VertexHandle->size() == 0) throw cms::Exception("VertexHandle in KMuonProducer is empty");
