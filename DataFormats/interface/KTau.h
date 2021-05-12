@@ -103,6 +103,7 @@ struct KTau : public KBasicTau
 	KPFCandidates gammaCandidates;
 
 	KVertex sv;
+	KVertex svOriginal;
 	ROOT::Math::SVector<double, 7> refittedThreeProngParameters;
 	ROOT::Math::SMatrix<float, 7, 7, ROOT::Math::MatRepSym<float, 7> > refittedThreeProngCovariance;
 	KTracks refittedChargedHadronTracks;

@@ -142,6 +142,11 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 		virtual void fillSecondaryVertex(const SingleInputType &in, SingleOutputType &out)
 		{
 			if (this->verbosity >= 3) std::cout << "KPatTauProducer fillSecondaryVertex\n";
+			out.svOriginal = KVertex();
+			if (in.hasSecondaryVertex() && in.secondaryVertex().isNonnull())
+			{
+				KVertexProducer::fillVertex(*(in.secondaryVertex()), out.svOriginal);
+			}
 			out.sv = KVertex();
 			out.refittedThreeProngParameters = ROOT::Math::SVector<double, 7>();
 			out.refittedThreeProngCovariance = ROOT::Math::SMatrix<float, 7, 7, ROOT::Math::MatRepSym<float, 7> >();
