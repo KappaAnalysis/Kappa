@@ -93,11 +93,11 @@ public:
 			std::cout << "Tried to read " << nMetFilters_ << " but only able to store " << (sizeof(int)*8) << " bits." << std::endl;
 			assert(false);
 		}
-		for(auto i : selectedMetFilters_)
+		for(const auto& i : selectedMetFilters_)
 		{
 			toMetadata->metFilterNames.push_back(metFilterNames_.triggerName(i));
 		}
-		for(auto i : metFilterBitsList_)
+		for(const auto& i : metFilterBitsList_)
 		{
 			toMetadata->metFilterNames.push_back("Flag_"+i);
 		}
@@ -140,9 +140,9 @@ public:
 
 	bool commonTriggerBits(std::vector<size_t> triggerBitsFired, std::vector<size_t> triggerBitsSelected)
 	{
-		for(auto triggerBitSelected: triggerBitsSelected)
+		for(const auto& triggerBitSelected: triggerBitsSelected)
 		{
-			for(auto triggerBitFired: triggerBitsFired)
+			for(const auto& triggerBitFired: triggerBitsFired)
 			{
 				if(triggerBitSelected == triggerBitFired)
 					{
@@ -160,9 +160,9 @@ public:
 		std::vector<int> hltIndices;
 
 		HLTConfigProvider &hltConfig(KInfoProducerBase::hltConfig);
-		for(auto pathNameTriggerObject : pathNamesTriggerObject)
+		for(const auto& pathNameTriggerObject : pathNamesTriggerObject)
 		{
-			for(auto hltIdx: selectedPathNameIndices)
+			for(const auto& hltIdx: selectedPathNameIndices)
 			{
 				if (hltConfig.triggerName(hltIdx) == pathNameTriggerObject)
 				{
@@ -182,10 +182,10 @@ public:
 		std::vector<int> filterIndices;
 		for(unsigned int i = 0; i < toMetadata->toFilter.size(); ++i)
 		{
-			if(toMetadata->toFilter[i] == "")
+			if(toMetadata->toFilter[i].empty())
 				continue;
 
-			for(auto filterLabel: filterLabels)
+			for(const auto& filterLabel : filterLabels)
 			{
 				if(filterLabel==toMetadata->toFilter[i])
 					filterIndices.push_back(i);
@@ -278,7 +278,7 @@ protected:
 		toFWK2Kappa.clear();
 		out.trgObjects.clear();
 		out.toIdxFilter.clear();
-		out.toIdxFilter.resize(toMetadata->toFilter.size()); // the idx of this vector corresponds to one common trigger filter ojbect 
+		if (out.toIdxFilter.size() != toMetadata->toFilter.size()) out.toIdxFilter.resize(toMetadata->toFilter.size()); // the idx of this vector corresponds to one common trigger filter ojbect
 		for(auto obj : in)
 		{
 #if (CMSSW_MAJOR_VERSION >= 9)
@@ -343,9 +343,9 @@ private:
 	std::vector<size_t> selectedMetFilters_;
 	void save_triggerObject_for_indices(KTriggerObjects &out, KLV &triggerObject, std::vector<int> &indices)
 	{
-		int objectindex = out.trgObjects.size(); // the new object will be stored 
+		int objectindex = out.trgObjects.size(); // the new object will be stored
 		out.trgObjects.push_back(triggerObject);
-		for (auto currentIndex : indices)
+		for (const auto& currentIndex : indices)
 		{
 			if (toFWK2Kappa.count(currentIndex) == 0)
 			{
