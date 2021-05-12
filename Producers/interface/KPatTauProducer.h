@@ -151,7 +151,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			out.refittedThreeProngParameters = ROOT::Math::SVector<double, 7>();
 			out.refittedThreeProngCovariance = ROOT::Math::SMatrix<float, 7, 7, ROOT::Math::MatRepSym<float, 7> >();
 			out.refittedChargedHadronTracks.clear();
-			
+
 			// https://github.com/cherepan/LLRHiggsTauTau/blob/VladimirDev/NtupleProducer/plugins/TauFiller.cc#L537-L590
 			// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/TauReco/interface/PFTau.h#L34-L54
 			if ((in.decayMode() >= reco::PFTau::hadronicDecayMode::kThreeProng0PiZero) &&
@@ -210,7 +210,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 										pionMassSigma
 								));
 							}
-							
+
 							KinematicParticleVertexFitter kinematicParticleVertexFitter;
 							RefCountedKinematicTree kinematicTree = kinematicParticleVertexFitter.fit(chargedHadronParticles);
 							if (kinematicTree->isValid())
@@ -227,7 +227,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 									}
 								}
 							}
-							
+
 							for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
 							{
 								KTrack refittedChargedHadronTracks;
@@ -458,7 +458,7 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 
 		std::map<std::string, std::map< EXTRATAUFLOATS, int > > extraTaufloatmap;
 		#endif
-		
+
 		std::map<std::string, std::vector<std::string> > preselectionDiscr;
 		std::map<std::string, std::vector<std::string> > binaryDiscrWhitelist, binaryDiscrBlacklist, floatDiscrWhitelist, floatDiscrBlacklist, extrafloatDiscrlist;
 		std::map<std::string, std::map< std::string, int > > realTauIdfloatmap;

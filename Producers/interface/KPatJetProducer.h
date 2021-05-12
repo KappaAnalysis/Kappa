@@ -137,7 +137,7 @@ public:
 		//write out generator information
 		//todo: catch if some daughters of genJets are not in genParticles collection
 		//in this case, the determination of the decay mode fails and the cmsRun exits with "product not found"
-		
+
 
 		//write out JEC factors to re-correct jets on analysis level if wanted
 		std::vector<float> levels;
@@ -156,7 +156,7 @@ public:
 
 		const reco::GenJet* recoGenJet = in.genJet();
 		if (recoGenJet != NULL) // catch if null pointer is delivered from pat::Jet::genJet() and use an empty GenJet instead
-			KGenJetProducer::fillGenJet(*recoGenJet, *genJet); 
+			KGenJetProducer::fillGenJet(*recoGenJet, *genJet);
 	}
 private:
 	KGenJet* genJet;

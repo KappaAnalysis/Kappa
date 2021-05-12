@@ -90,7 +90,7 @@ public:
 		}
 		return KBaseMultiLVProducer<edm::View<pat::Electron>, KElectrons>::onLumi(lumiBlock, setup);
 	}
-	
+
 
 	virtual void fillProduct(const InputType &in, OutputType &out,
 		const std::string &name, const edm::InputTag *tag, const edm::ParameterSet &pset)
@@ -121,7 +121,7 @@ public:
 			iEvent.getByLabel(l1GTReadoutRecTag_,L1GTRR);
 		} catch (...) {;}
 		if ( L1GTRR.isValid() ) { // exists
-		
+
 		edm::Handle<edm::TriggerResults> trh;
 		try {iEvent.getByLabel(triggerInputTag_,trh);}
 			catch( cms::Exception& ex ) { LogWarning("HWWTreeDumper") << "Trigger results: " << triggerInputTag_ << " not found"; }
@@ -212,7 +212,7 @@ public:
 		// https://github.com/cms-sw/cmssw/blob/69cd7ee90ab313f3736eea98316545635c8ca44c/PhysicsTools/PatAlgos/plugins/PATElectronProducer.cc#L453-L462
 		// TODO: check if change from hasConversionMatch to passConversionVeto works
 		out.electronType |= !(in.passConversionVeto())   << KElectronType::hasConversionMatch;
-		
+
 
 		// isolation
 		out.trackIso = in.dr03TkSumPt();
@@ -293,7 +293,7 @@ protected:
 	{
 		// we need the Ref, cf. example EgammaAnalysis/ElectronTools/src/EGammaCutBasedEleIdAnalyzer.cc
 		edm::Ref<edm::View<pat::Electron>> pe(this->handle, this->nCursor);
-		
+
 		// isolation values (PF is used for IDs later)
 		out.sumChargedHadronPt = (*(this->isoVals)[0])[pe];
 		out.sumPhotonEt        = (*(this->isoVals)[1])[pe];
@@ -321,11 +321,11 @@ private:
 	std::vector<edm::InputTag>  isoValInputTags;
 	std::vector<edm::InputTag> tagOfIds;
 	std::vector<edm::InputTag> tagOfUserFloats;
-	
+
 	edm::EDGetTokenT<reco::ConversionCollection> tokenConversionSource;
 	edm::EDGetTokenT<reco::BeamSpot> tokenBeamSpot;
 	edm::EDGetTokenT<reco::VertexCollection> tokenVertexCollection;
-	edm::EDGetTokenT<double> tokenRhoIso; 
+	edm::EDGetTokenT<double> tokenRhoIso;
 	std::vector<edm::EDGetTokenT<edm::ValueMap<double>>> tokenIsoValInputTags ;
 	std::vector<edm::EDGetTokenT<edm::ValueMap<float>>> tokenOfIds;
 

@@ -1,6 +1,5 @@
 //- Copyright (c) 2011 - All Rights Reserved
 //-  * Raphael Friese <Raphael.Friese@cern.ch>
-
 #ifndef KAPPA_TRIGGEROBJECTSTANDALONEPRODUCER_H
 #define KAPPA_TRIGGEROBJECTSTANDALONEPRODUCER_H
 
@@ -50,7 +49,7 @@ public:
 		  save_l1extratau_=true;
 		  l1tauJetSource_ = consumescollector.consumes<l1extra::L1JetParticleCollection>(l1tauJetSource_test);
 		}
-		
+
 		toMetadata = new KTriggerObjectMetadata;
 		_lumi_tree->Bronch("triggerObjectMetadata", "KTriggerObjectMetadata", &toMetadata);
 
@@ -59,8 +58,8 @@ public:
 		this->triggerPrescalesToken_ = consumescollector.consumes<pat::PackedTriggerPrescales>(triggerPrescales_);
 		for(size_t j = 0; j < metFilterBitsList_.size(); j++)
 			this->metFilterBitsListTokens_.push_back(consumescollector.consumes<bool>(edm::InputTag(metFilterBitsList_[j])));
-	
-		
+
+
 	}
 
 	static const std::string getLabel() { return "TriggerObjectStandalone"; }
@@ -107,7 +106,7 @@ public:
 
 	virtual bool onEvent(const edm::Event &event, const edm::EventSetup &setup) override
 	{
-		
+
 		event.getByToken(this->triggerBitsToken_, triggerBitsHandle_);
 		event.getByToken(this->metFilterBitsToken_, metFilterBitsHandle_);
 		event.getByToken(this->triggerPrescalesToken_, triggerPrescalesHandle_);
@@ -124,7 +123,7 @@ public:
 
 		std::vector<size_t> triggerBitsFired;
 
-		for (unsigned int i = 0, n = triggerBitsHandle_->size(); i < n; ++i) 
+		for (unsigned int i = 0, n = triggerBitsHandle_->size(); i < n; ++i)
 		{
 			if(verbosity>0)
 				std::cout<< i << " Trigger " << names_.triggerName(i) << ", prescale " << triggerPrescalesHandle_->getPrescaleForIndex(i) << ": " << (triggerBitsHandle_->accept(i) ? "PASS" : "fail (or not run)") << std::endl;
@@ -168,7 +167,7 @@ public:
 				{
 					hltIndices.push_back(hltIdx);
 					const std::vector<std::string>& saveTagsModules = KInfoProducerBase::hltConfig.saveTagsModules(hltIdx);
-					
+
 					toMetadata->nFiltersPerHLT.push_back(saveTagsModules.size());
 
 				}
@@ -194,65 +193,72 @@ public:
 		return filterIndices;
 	}
 
-	void fillMetadata(){ // this function is ueed to fill the metadata, which should be done only once per lumi (and not every event)
+	void fillMetadata()
+	{ // this function is ueed to fill the metadata, which should be done only once per lumi (and not every event)
 
-	  /* The Metadata will be saved once per run. It saves the mapping between the filter names and the Index. The index and the corresponding four vectors will be saved on event basis.
-	  The toMetadata->toFilter saves all needed filters (as strings) and is organized blockwise, means are range of indices are reserved for a one trigger:
-	  e.g. HLT_1:filter_1 , HLT_1:filter_2 ... HLT_2:filter_1 .... HLT_N:filter_N
-	  
-	  Here all filters will be saved togheter with the Trigger => the individual filters can occur multiple times, but this should fine since for our use cases this overhead is not to large
-	  and also only stored per lumi section 
+		/* The Metadata will be saved once per run. It saves the mapping between the filter names and the Index. The index and the corresponding four vectors will be saved on event basis.
+		The toMetadata->toFilter saves all needed filters (as strings) and is organized blockwise, means are range of indices are reserved for a one trigger:
+		e.g. HLT_1:filter_1 , HLT_1:filter_2 ... HLT_2:filter_1 .... HLT_N:filter_N
 
-	  */
-	  toMetadata->nFiltersPerHLT.clear();
-	  toMetadata->toFilter.clear();
-	  l1extratau_idxs_.clear();
-	  
-	   // allocate memory instead of pushing it in the loop
-	  toMetadata->nFiltersPerHLT.resize(KInfoProducerBase::hltKappa2FWK.size());  // stores for each trigger the number of filters
-	  // Loop over all triggers 
-	  for (size_t i = 0; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
-	  {
-	      if (i == 0) // First Trigger is just  digitisation_step with no filters
+		Here all filters will be saved togheter with the Trigger => the individual filters can occur multiple times, but this should fine since for our use cases this overhead is not to large
+		and also only stored per lumi section
+
+		*/
+
+		toMetadata->nFiltersPerHLT.clear();
+		toMetadata->toFilter.clear();
+		l1extratau_idxs_.clear();
+
+		// allocate memory instead of pushing it in the loop
+		toMetadata->nFiltersPerHLT.resize(KInfoProducerBase::hltKappa2FWK.size());  // stores for each trigger the number of filters
+		// Loop over all triggers
+		for (size_t i = 0; i < KInfoProducerBase::hltKappa2FWK.size(); ++i)
 		{
-		  toMetadata->nFiltersPerHLT[i]=0; // no fillters for the First trigger
-		  continue;
+			if (i == 0) // First Trigger is just  digitisation_step with no filters
+			{
+				toMetadata->nFiltersPerHLT[i]=0; // no fillters for the First trigger
+				continue;
+			}
+			// get HLT index
+			size_t hltIdx = KInfoProducerBase::hltKappa2FWK[i];
+			const std::vector<std::string>& saveTagsModules = KInfoProducerBase::hltConfig.saveTagsModules(hltIdx);
+			toMetadata->nFiltersPerHLT[i] = saveTagsModules.size();  // How much filter indicies does this trigger need
+			// get the trigger name
+
+			// allocate memory
+			toMetadata->toFilter.resize(toMetadata->getMaxFilterIndex(i));  // increase the vector of filternames for each trigger
+			for (size_t m = 0; m < saveTagsModules.size(); ++m)
+			{
+				toMetadata->toFilter[toMetadata->getMinFilterIndex(i)+m] = saveTagsModules[m]; // save the filter name toMetadata->getMinFilterIndex(i)+m = is the actual index
+			}
+
+			// Add l1 extra collections here by hand.
+			if (save_l1extratau_)
+			{
+				std::string triggername = KInfoProducerBase::hltConfig.triggerName(hltIdx);
+				if (boost::algorithm::contains(triggername, "tau") || boost::algorithm::contains(triggername, "Tau"))
+				{
+					l1extratau_idxs_.push_back(toMetadata->getMaxFilterIndex(i)); // This object will be added as addtional filter at the end of the HLT filter colleciton
+					toMetadata->nFiltersPerHLT[i] +=1; // runs from 0 to N theerefore this comes after the push_back( akt_max_filter_idx )
+					toMetadata->toFilter.push_back(std::string("l1extratauccolltection")); // This object will be added as addtional filter at the end of the HLT filter colleciton
+				}
+			}
+
+			if (verbosity > 0)
+			{
+				std::cout << "KTriggerObjectStandaloneProducer::fillMetadata  Trigger: " <<  KInfoProducerBase::hltConfig.triggerName(hltIdx)
+				<< ": N Filters: "<<(toMetadata->getMaxFilterIndex(i)-toMetadata->getMinFilterIndex(i))<<std::endl;
+				if (verbosity > 1)
+				{
+					for (size_t m = toMetadata->getMinFilterIndex(i); m < toMetadata->getMaxFilterIndex(i); ++m)
+					{
+						std::cout <<"  idx: "<<m<<"\tfilter_name:"<<toMetadata->toFilter[m]<<std::endl;
+					}
+				}
+			}
 		}
-	      // get HLT index
-	      size_t hltIdx = KInfoProducerBase::hltKappa2FWK[i];
-	      const std::vector<std::string>& saveTagsModules = KInfoProducerBase::hltConfig.saveTagsModules(hltIdx);
-	      toMetadata->nFiltersPerHLT[i] = saveTagsModules.size();  // How much filter indicies does this trigger need
-	      // get the trigger name
-	      
-	      // allocate memory 
-	      toMetadata->toFilter.resize(toMetadata->getMaxFilterIndex(i));  // increase the vector of filternames for each trigger
-	      for (size_t m = 0; m < saveTagsModules.size(); ++m){
-		toMetadata->toFilter[toMetadata->getMinFilterIndex(i)+m] = saveTagsModules[m]; // save the filter name toMetadata->getMinFilterIndex(i)+m = is the actual index
-	       }
-	      
-           // Add l1 extra collections here by hand. 
-	     if (save_l1extratau_){
-	        std::string triggername = KInfoProducerBase::hltConfig.triggerName(hltIdx);
-		if (boost::algorithm::contains(triggername, "tau") || boost::algorithm::contains(triggername, "Tau")){
-		  l1extratau_idxs_.push_back(toMetadata->getMaxFilterIndex(i)); // This object will be added as addtional filter at the end of the HLT filter colleciton
-		  toMetadata->nFiltersPerHLT[i] +=1; // runs from 0 to N theerefore this comes after the push_back( akt_max_filter_idx )
-		  toMetadata->toFilter.push_back(std::string("l1extratauccolltection")); // This object will be added as addtional filter at the end of the HLT filter colleciton 
-		}
-	      }
-	      
-	      if (verbosity > 0){
-		std::cout << "KTriggerObjectStandaloneProducer::fillMetadata  Trigger: " <<  KInfoProducerBase::hltConfig.triggerName(hltIdx)
-			  << ": N Filters: "<<(toMetadata->getMaxFilterIndex(i)-toMetadata->getMinFilterIndex(i))<<std::endl;
-		if (verbosity > 1){
-		    for (size_t m = toMetadata->getMinFilterIndex(i); m < toMetadata->getMaxFilterIndex(i); ++m){
-		      std::cout <<"  idx: "<<m<<"\tfilter_name:"<<toMetadata->toFilter[m]<<std::endl;
-		    }
-		}
-	      
-	      }
-	   }
 	}
-	  
+
 protected:
 	KTriggerObjectMetadata *toMetadata;
 	std::map<size_t, std::vector<int>> toFWK2Kappa;
@@ -287,13 +293,13 @@ protected:
 			std::vector<int>  akt_filter_indices = getFilterIndices(obj.filterLabels());
 			if (akt_filter_indices.empty())
 			  continue;
-			
-			
+
+
 			KLV triggerObject;
 			copyP4(obj.p4(), triggerObject.p4);
 			save_triggerObject_for_indices(out,triggerObject, akt_filter_indices);
 		}
-		
+
 		if (save_l1extratau_)
 		{
 			  for( l1extra::L1JetParticleCollection::const_iterator tauItr = l1tauColl_->begin() ; tauItr != l1tauColl_->end() ;++tauItr )
@@ -324,7 +330,7 @@ private:
 	edm::EDGetTokenT<pat::PackedTriggerPrescales> triggerPrescalesToken_;
 	edm::EDGetTokenT<edm::TriggerResults> metFilterBitsToken_;
 	const edm::Event *event_;
-	
+
 	bool save_l1extratau_;
 	edm::Handle< l1extra::L1JetParticleCollection > l1tauColl_ ;
 	edm::EDGetTokenT< l1extra::L1JetParticleCollection > l1tauJetSource_;
@@ -332,9 +338,9 @@ private:
 	std::vector<std::string> metFilterBitsList_;
 	std::vector<edm::Handle<bool>> metFilterBitsListHandle_;
 	std::vector<edm::EDGetTokenT<bool>> metFilterBitsListTokens_;
-	
-	
-	
+
+
+
 	edm::InputTag triggerPrescales_;
 	bool signifTriggerBitFired_;
 	edm::TriggerNames names_;
@@ -357,10 +363,10 @@ private:
 			{
 				toFWK2Kappa[currentIndex].push_back(objectindex);
 			}
-			out.toIdxFilter[currentIndex] = toFWK2Kappa[currentIndex]; 
+			out.toIdxFilter[currentIndex] = toFWK2Kappa[currentIndex];
 		}
 	}
-	
+
 	void print_saved_objects(KTriggerObjects &out){
 	  std::cout<<"-----------------------------------------------"<<std::endl;
 	  for (std::map<size_t, std::vector<int>>::iterator it=toFWK2Kappa.begin(); it!=toFWK2Kappa.end(); ++it){
@@ -371,17 +377,17 @@ private:
 		if (!erster) std::cout<<",";
 		else erster=false;
 		std::cout<<" "<<*subit;
-	      }	  
+	      }
 	      std::cout<<")";
 	      for (std::vector<int>::iterator subit =(it->second).begin(); subit!= (it->second).end(); ++subit){
 		std::cout<<" | "<<out.trgObjects[*subit].p4;
-	      }	  
-	      std::cout<<std::endl;  
+	      }
+	      std::cout<<std::endl;
 	   }
 	  std::cout<<"_______________________________________________"<<std::endl;
 	}
-		
-	
+
+
 };
 
 #endif

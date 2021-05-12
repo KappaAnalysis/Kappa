@@ -33,7 +33,7 @@ struct KBasicTau : public KLepton
 
 	int decayMode;     ///< hadronic decay mode as identified by HPS algorithm
 	float emFraction;  ///< electromagnetic energy fraction
-	
+
 	// (signed) PDG ID of the hadronic resonance
 	int resonancePdgId() const
 	{
@@ -114,7 +114,7 @@ struct KTau : public KBasicTau
 	{
 		return chargedHadronCandidates.size() + gammaCandidates.size();
 	}
-	
+
 	RMFLV sumPiZeroCandidates()
 	{
 		RMFLV sumP4;
@@ -125,7 +125,7 @@ struct KTau : public KBasicTau
 		}
 		return sumP4;
 	}
-	
+
 	RMFLV sumChargedHadronCandidates()
 	{
 		RMFLV sumP4;
@@ -136,7 +136,7 @@ struct KTau : public KBasicTau
 		}
 		return sumP4;
 	}
-	
+
 	RMFLV sumGammasCandidates()
 	{
 		RMFLV sumP4;
@@ -147,7 +147,7 @@ struct KTau : public KBasicTau
 		}
 		return sumP4;
 	}
-	
+
 	RMFLV piZeroMomentum()
 	{
 		if (piZeroCandidates.size() > 0)
@@ -165,7 +165,7 @@ typedef std::vector<KTau> KTaus;
 
 /// Kappa extended Tau data format
 /** This contains additional tau quantities which are usually not needed in a
-    simple analysis skim, but are required for more detailed studies (e.g., TauPOG) 
+    simple analysis skim, but are required for more detailed studies (e.g., TauPOG)
  */
 struct KExtendedTau : public KTau
 {

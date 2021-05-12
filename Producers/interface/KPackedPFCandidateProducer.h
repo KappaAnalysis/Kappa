@@ -30,7 +30,7 @@ public:
 	template<class Tin, class Tout>
 	static void fillPackedPFCandidate(const Tin &in, Tout &out)
 	{
-		
+
 		copyP4(in, out.p4);
 		out.pdgId = in.pdgId();
 		// Cast is needed to access the quantities of pat::PackedCandidate. The edm::View only delivers reco::Candidate,
