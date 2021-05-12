@@ -36,11 +36,11 @@ public:
 		// Cast is needed to access the quantities of pat::PackedCandidate. The edm::View only delivers reco::Candidate,
 		// because not defined for pat::PackedCandidate.
 		// See e.g. in https://github.com/cms-sw/cmssw/blob/a6eafda7f604bdff36459e9c4ae158c387b77f4f/CommonTools/PileupAlgos/plugins/PuppiProducer.cc
-		pat::PackedCandidate casted_in = *(dynamic_cast<const pat::PackedCandidate*>(&in));
+		const pat::PackedCandidate* casted_in = dynamic_cast<const pat::PackedCandidate*>(&in);
 		// Definition of the function fromPV():
 		// https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookMiniAOD2016
 		// Have to use fromPV() > 1 for isolation studies and calculation.
-		out.fromFirstPVFlag = casted_in.fromPV();
+		out.fromFirstPVFlag = casted_in->fromPV();
 	}
 };
 
