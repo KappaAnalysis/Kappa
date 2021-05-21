@@ -688,7 +688,7 @@ class SkimManagerBase:
 					print "List creation successfull!"
 					print "---------------------------------------------------------"
 			# If GC task not completed, create a crab filelist
-			elif force or (self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED" and self.skimdataset[dataset]["GCSKIM_STATUS"] != "LISTED"):
+			elif (force and (self.skimdataset[dataset]["SKIM_STATUS"] != "KILLED" if args.ignore_killed else true)) or (self.skimdataset[dataset]["SKIM_STATUS"] == "COMPLETED" and self.skimdataset[dataset]["GCSKIM_STATUS"] != "LISTED"):
 				print "Getting CRAB file list for", dataset
 				filelist_path = os.path.join(filelist_folder_name, "XROOTD_sample_"+dataset+"_"+date+".txt")
 				filelist = open(filelist_path, 'w')
