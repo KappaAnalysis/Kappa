@@ -146,6 +146,8 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 			if (in.hasSecondaryVertex() && in.secondaryVertex().isNonnull())
 			{
 				KVertexProducer::fillVertex(*(in.secondaryVertex()), out.svOriginal);
+				out.flightLength = sqrt(in.flightLength().mag2());
+				out.flightLengthSig = in.flightLengthSig();
 			}
 			out.sv = KVertex();
 			out.refittedThreeProngParameters = ROOT::Math::SVector<double, 7>();
