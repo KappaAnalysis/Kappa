@@ -163,13 +163,23 @@ class KPatTauProducer : public KBaseMultiLVProducer<edm::View<pat::Tau>, KTaus>
 				// https://github.com/cms-sw/cmssw/blob/09c3fce6626f70fd04223e7dacebf0b485f73f54/DataFormats/PatCandidates/interface/Tau.h#L325
 				std::vector<reco::TransientTrack> chargedHadronTransientTracks;
 				if (this->verbosity >= 3) std::cout << "\tKPatTauProducer fillSecondaryVertex - size: " << in.signalChargedHadrCands().size() << "\n";
-				for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
+
+				// for(size_t chargedPFCandidateIndex = 0; chargedPFCandidateIndex < in.signalChargedHadrCands().size(); ++chargedPFCandidateIndex)
+				// {
+					// const reco::Track* track = in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
+					// if (track)
+					// {
+						// chargedHadronTransientTracks.push_back(trackBuilder->build(track)); // runtime error
+					// }
+				// }
+
+				for(const auto& cand : in.signalChargedHadrCands())
 				{
-					const reco::Track* track = in.signalChargedHadrCands()[chargedPFCandidateIndex]->bestTrack();
-					if (track)
-					{
-						chargedHadronTransientTracks.push_back(trackBuilder->build(track)); // runtime error
-					}
+					if(cand.isNull())
+						continue;
+					const pat::PackedCandidate* pCand = dynamic_cast<const pat::PackedCandidate*>(cand.get());
+					if(pCand != nullptr && pCand->hasTrackDetails())
+						chargedHadronTransientTracks.push_back(trackBuilder->build(&pCand->pseudoTrack()));
 				}
 
 				if (chargedHadronTransientTracks.size() > 2)
