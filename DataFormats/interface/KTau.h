@@ -104,6 +104,8 @@ struct KTau : public KBasicTau
 
 	KVertex sv;
 	KVertex svOriginal;
+	float flightLength;
+	float flightLengthSig;
 	ROOT::Math::SVector<double, 7> refittedThreeProngParameters;
 	ROOT::Math::SMatrix<float, 7, 7, ROOT::Math::MatRepSym<float, 7> > refittedThreeProngCovariance;
 	KTracks refittedChargedHadronTracks;
