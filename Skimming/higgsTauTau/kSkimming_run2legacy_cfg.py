@@ -536,8 +536,8 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 
 	## Standard MET and GenMet from pat::MET
 	process.kappaTuple.active += cms.vstring('PatMET')
-	process.kappaTuple.PatMET.met = cms.PSet(src=cms.InputTag("slimmedMETs"))
-	process.kappaTuple.PatMET.metPuppi = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
+	process.kappaTuple.PatMET.metDefault = cms.PSet(src=cms.InputTag("slimmedMETs"))
+	process.kappaTuple.PatMET.metPuppiDefault = cms.PSet(src=cms.InputTag("slimmedMETsPuppi"))
 
 	fixEE2017=False
 	if nickname.find('Run2017')>-1 or nickname.find('RunIIFall17')>-1 or nickname.find('Embedding2017')>-1:
