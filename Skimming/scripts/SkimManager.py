@@ -26,10 +26,11 @@ import Kappa.Skimming.tools as tools
 class SkimManagerBase:
 
 
-	def __init__(self, storage_for_output, workbase=".", workdir="TEST_SKIM", job_splitting="Automatic", use_proxy_variable=False):
+	def __init__(self, storage_for_output, workbase=".", workdir="TEST_SKIM", job_splitting="Automatic", units_per_job="", use_proxy_variable=False):
 		self.storage_for_output = storage_for_output
 		self.workdir = os.path.join(workbase, os.path.abspath(workdir))
 		self.job_splitting = job_splitting
+		self.units_per_job = int(units_per_job) if units_per_job else 1
 		if not os.path.exists(self.workdir+"/gc_cfg"):
 			os.makedirs(self.workdir+"/gc_cfg")
 		self.skimdataset = datasetsHelperTwopz(os.path.join(self.workdir, "skim_dataset.json"))
@@ -92,13 +93,13 @@ class SkimManagerBase:
 		else:
 			for new_nick in nicks:
 				add_current_nick = False
-				
+
 				if (not new_nick in self.skimdataset.base_dict.keys()):
 					add_current_nick = True
 				elif (force and (self.skimdataset.base_dict[new_nick].get("SKIM_STATUS", "EXCEPTION") == "EXCEPTION")):
 					add_current_nick = True
 					self.skimdataset.base_dict.pop(new_nick)
-				
+
 				if add_current_nick:
 					self.skimdataset[new_nick] = self.inputdataset[new_nick]
 					self.skimdataset[new_nick]["SKIM_STATUS"] = "INIT"
@@ -119,18 +120,62 @@ class SkimManagerBase:
 	def get_global_tag(self, akt_nick):
 		return self.skimdataset[akt_nick].get("globalTag", '80X_dataRun2_2016SeptRepro_v7' if self.skimdataset.isData(akt_nick) else '80X_mcRun2_asymptotic_2016_TrancheIV_v8')
 
+	def limit_n_jobs(self, n_units, n_units_per_job, job_submission_limit=10000):
+		if n_units/n_units_per_job > self.max_crab_jobs_per_nick:
+			from math import ceil
+			return int(ceil(float(n_units)/float(job_submission_limit)))
+		else:
+			return int(n_units_per_job)
+
 	def files_per_job(self, akt_nick):
-		job_submission_limit=10000
-		if self.skimdataset[akt_nick].get("files_per_job", None):
+		files_per_job_default = 1
+		if self.units_per_job and self.skimdataset[akt_nick].get("n_files", None):
+			nfiles = int(self.skimdataset[akt_nick]["n_files"])
+			return self.limit_n_jobs(nfiles, self.units_per_job)
+		elif self.skimdataset[akt_nick].get("files_per_job", None):
 			return int(self.skimdataset[akt_nick]["files_per_job"])
 		elif self.skimdataset[akt_nick].get("n_files", None):
 			nfiles = int(self.skimdataset[akt_nick]["n_files"])
-			if nfiles > self.max_crab_jobs_per_nick:
-				from math import ceil
-				return int(ceil(float(nfiles)/float(job_submission_limit)))
+			return self.limit_n_jobs(nfiles, files_per_job_default)
+		return files_per_job_default
+
+	def events_per_job(self, akt_nick):
+		events_per_jobs_default = 30000
+		if self.units_per_job and self.skimdataset[akt_nick].get("n_events_generated", None):
+			nevents = int(self.skimdataset[akt_nick]["n_events_generated"])
+			return self.limit_n_jobs(nevents, self.units_per_job)
+		elif self.skimdataset[akt_nick].get("events_per_job", None):
+			return int(self.skimdataset[akt_nick]["events_per_job"])
+		elif self.skimdataset[akt_nick].get("n_events_generated", None):
+			nevents = int(self.skimdataset[akt_nick]["n_events_generated"])
+			return self.limit_n_jobs(nevents, events_per_jobs_default)
+		return events_per_jobs_default
+
+	def lumis_per_job(self, akt_nick):
+		lumis_per_jobs_default = 100
+		if self.units_per_job:
+			nlumis = lumis_per_jobs_default
+			if self.skimdataset[akt_nick].get("n_lumis", None):
+				nlumis = int(self.skimdataset[akt_nick]["n_lumis"])
 			else:
-				return 1
-		return 1
+				url = 'https://cmsweb.cern.ch/dbs/prod/'+inputDBS+'/DBSReader'
+				from Kappa.Skimming.getNumberGeneratedEventsFromDB import RestClient
+				cert = os.environ['X509_USER_PROXY']
+				if not cert.strip():
+					print "X509_USER_PROXY not properly set. Get a voms proxy and set this environment variable to get N lumis from siteDB"
+					return lumis_per_jobs_default
+				rest_client = RestClient(cert=cert)
+				import ast
+				answer = ast.literal_eval(rest_client.get(url, api='filesummaries', params={'dataset': self.skimdataset[akt_nick]["dbs"]}))
+				nlumis = answer[0]['num_lumi']
+			return self.limit_n_jobs(nlumis, self.units_per_job)
+		elif self.skimdataset[akt_nick].get("lumis_per_job", None):
+			return int(self.skimdataset[akt_nick]["lumis_per_job"])
+		elif self.skimdataset[akt_nick].get("n_lumis", None):
+			nlumis = int(self.skimdataset[akt_nick]["n_lumis"])
+			return self.limit_n_jobs(nlumis, lumis_per_jobs_default)
+		return lumis_per_jobs_default
+
 
 	def nick_list(self, in_dataset_file, tag_key = None, tag_values_str = None, query = None, nick_regex = None):
 		self.inputdataset = datasetsHelperTwopz(in_dataset_file)
@@ -139,7 +184,7 @@ class SkimManagerBase:
 			return None
 		if tag_values_str:
 			tag_values = tag_values_str.strip('][').replace(' ', '').split(',')
-		
+
 		return(self.inputdataset.get_nick_list(tag_key=tag_key, tag_values=tag_values, query=query, nick_regex=nick_regex))
 
 
@@ -158,7 +203,7 @@ class SkimManagerBase:
 		for akt_nick in self.skimdataset.get_nicks_with_query(query={"SKIM_STATUS" : "INIT"}):
 			if force and os.path.exists(os.path.join(self.workdir, "crab_"+akt_nick)):
 				os.system("rm -rv "+os.path.join(self.workdir, "crab_"+akt_nick))
-			
+
 			config = self.crab_default_cfg() ## if there are parameters which should only be set for one dataset then its better to start from default again
 			self.individualized_crab_cfg(akt_nick, config)
 			if config.Data.inputDBS in ['list']:
@@ -211,8 +256,12 @@ class SkimManagerBase:
 		config.Data.inputDBS = self.skimdataset[akt_nick].get("inputDBS", 'global')
 		globalTag = self.get_global_tag(akt_nick)
 		config.JobType.pyCfgParams = [str('globalTag=%s'%globalTag), 'kappaTag=KAPPA_2_1_0', str('nickname=%s'%(akt_nick)), str('outputfilename=kappa_%s.root'%(akt_nick)), 'testsuite=False']
-		if config.Data.splitting != 'Automatic':
+		if config.Data.splitting == 'FileBased':
 			config.Data.unitsPerJob = self.files_per_job(akt_nick)
+		elif config.Data.splitting == 'EventAwareLumiBased':
+			config.Data.unitsPerJob = self.events_per_job(akt_nick)
+		elif config.Data.splitting == 'LumiBased':
+			config.Data.unitsPerJob = self.lumis_per_job(akt_nick)
 		config.Data.inputDataset = self.skimdataset[akt_nick]['dbs']
 		config.Data.ignoreLocality = self.skimdataset[akt_nick].get("ignoreLocality", False) # Set to False to make it submit also if no whitelist is defined. Set to True if you how to configure it properly. ## i have very good experince with this option, but feel free to change it (maybe also add larger default black list for this, or start with a whitlist
 		config.Site.blacklist.extend(self.skimdataset[akt_nick].get("blacklist", []))
@@ -334,7 +383,7 @@ class SkimManagerBase:
 
 	def remove_task(self, status_groups_to_remove):
 		status_groups_to_remove = set(status_groups_to_remove.split(", "))
-		if status_groups_to_remove <= set(["KILLED", "FAILED"]):
+		if status_groups_to_remove <= set(["KILLED", "FAILED", "SUBMITFAILED"]):
 			for status in status_groups_to_remove:
 				for dataset_nick in self.skimdataset.nicks():
 					if self.skimdataset[dataset_nick]["SKIM_STATUS"] == status or self.skimdataset[dataset_nick]["GCSKIM_STATUS"] == status:
@@ -818,7 +867,7 @@ if __name__ == "__main__":
 	work_base = SkimManagerBase.get_workbase()
 	if not os.path.exists(work_base):
 		os.makedirs(work_base)
-	
+
 	def_input = os.path.join(os.environ.get("CMSSW_BASE"), "src/Kappa/Skimming/data/datasets.json")
 
 	parser = argparse.ArgumentParser(description="Tools for modify the dataset data base (aka datasets.json)")
@@ -834,7 +883,8 @@ if __name__ == "__main__":
 
 	parser.add_argument("--init", dest="init", help="Init or Update the dataset", action='store_true')
 
-	parser.add_argument("--job-splitting", dest="job_splitting", default="Automatic", help="Specifies the job splitting algorithm. Possible supported options: Automatic, FileBased. Default: %(default)s")
+	parser.add_argument("--job-splitting", dest="job_splitting", default="Automatic", choices=["Automatic", "FileBased", "EventAwareLumiBased", "LumiBased"], help="Specifies the job splitting algorithm. Possible supported options: Automatic, FileBased, EventAwareLumiBased, LumiBased. Default: %(default)s")
+	parser.add_argument("--units-per-job", dest="units_per_job", default="", help="Specifies the number of units per job. Default: not used for Automatic, 1 file for FileBased, 30k events for EventAwareLumiBased, 100 lumi sections for LumiBased. If total amount of jobs exceeds 10k, numbers are scaled accordingly.")
 
 	parser.add_argument("--status-gc", action='store_true', default=False, dest="statusgc", help="")
 	parser.add_argument("--summary", action='store_true', default=False, dest="summary", help="Prints summary and writes skim_summary.json in workdir with quick status overview of crab tasks.")
@@ -866,15 +916,15 @@ if __name__ == "__main__":
 			args.workdir=latest_subdir
 		else:
 			print 'New workdir will be created: '+args.workdir
-		
+
 	if not os.path.exists(args.inputfile):
 		print 'No input file found'
 		exit()
-	
+
 	if args.date and args.init:
 		args.workdir+="_"+args.date
 
-	SKM = SkimManagerBase(storage_for_output=args.storage_for_output, workbase=work_base, workdir=args.workdir, job_splitting=args.job_splitting)
+	SKM = SkimManagerBase(storage_for_output=args.storage_for_output, workbase=work_base, workdir=args.workdir, job_splitting=args.job_splitting, units_per_job=args.units_per_job)
 	nicks = SKM.nick_list(args.inputfile, tag_key=args.tag, tag_values_str=args.tagvalues, query=args.query, nick_regex=args.nicks)
 
 	if args.init:
