@@ -596,6 +596,25 @@ def getBaseConfig( globaltag= 'START70_V7::All',
 	process.p *= process.jecSequence
 	## ------------------------------------------------------------------------
 
+	## Prefiring weights for 2016 and 2017
+	prefiring_era = "2017BtoF"
+	if (nickname.find('RunIISummer16MiniAODv2')>-1) or (nickname.find('Embedding2016')>-1 and not nickname.find('94XLegacyminiAODv5')>-1): #2016
+		prefiring_era = "2016BtoH"
+	elif (nickname.find('Run2016')>-1 and nickname.find('17Jul2018')>-1) or (nickname.find('RunIISummer16MiniAODv3')>-1) or (nickname.find('94XLegacyminiAODv5')>-1) : #2016 94X-legacy (MiniAODv3)
+		prefiring_era = "2016BtoH"
+	# elif (nickname.find('Run2017')>-1) or (nickname.find('RunIIFall17MiniAOD')>-1) or (nickname.find('Embedding2017')>-1): #2017
+	# 	prefiring_era = "2017BtoF"
+
+	print "Prefiring era: ", prefiring_era
+	process.prefiringweight = cms.EDProducer(
+		"L1ECALPrefiringWeightProducer",
+		DataEra=cms.string(prefiring_era),
+		UseJetEMPt=cms.bool(False),  # can be set to true to use jet prefiring maps parametrized vs pt(em) instead of pt
+		PrefiringRateSystematicUncty=cms.double(0.2)  # Minimum relative prefiring uncty per object
+	)
+	process.p *= process.prefiringweight
+	## ------------------------------------------------------------------------
+
 	## GenJets
 	if not data:
 		process.load('PhysicsTools/JetMCAlgos/TauGenJets_cfi')

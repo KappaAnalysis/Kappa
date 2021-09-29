@@ -187,6 +187,12 @@ struct KGenEventInfo : public KEventInfo
 	double x1;            ///< x of the first parton (used for PDF reweighting)
 	double x2;            ///< x of the second parton (used for PDF reweighting)
 	double qScale;        ///< q scale of the process (used for PDF reweighting)
+
+	// prefiring weights
+	double prefiringWeight;
+	double prefiringWeightUp;
+	double prefiringWeightDown;
+
 	std::vector<float> lheWeights;
 
 	inline float getLheWeight(unsigned int index) const

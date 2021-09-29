@@ -59,7 +59,9 @@ public:
 		this->tokenLhe = consumescollector.consumes<LHEEventProduct>(lheSource);
 		this->tokenPuInfo = consumescollector.consumes<std::vector<PileupSummaryInfo>>(puInfoSource);
 		this->tokenRunInfo = consumescollector.consumes<LHERunInfoProduct, edm::InRun>(runInfo);
-
+		this->tokenPrefiringWeight = consumescollector.consumes<double>(edm::InputTag("prefiringweight:nonPrefiringProb"));
+		this->tokenPrefiringWeightUp = consumescollector.consumes<double>(edm::InputTag("prefiringweight:nonPrefiringProbUp"));
+		this->tokenPrefiringWeightDown = consumescollector.consumes<double>(edm::InputTag("prefiringweight:nonPrefiringProbDown"));
 		genEventInfoMetadata = new KGenEventInfoMetadata();
 		_lumi_tree->Bronch("genEventInfoMetadata", "KGenEventInfoMetadata", &genEventInfoMetadata);
 	}
@@ -223,6 +225,19 @@ public:
 					this->metaEvent->nPU = (unsigned char)std::min(255, puHandle->getPU_NumInteractions());
 			}
 
+			// Get prefiring weights
+			edm::Handle<double> thePrefiringWeight;
+			event.getByToken(tokenPrefiringWeight, thePrefiringWeight);
+			this->metaEvent->prefiringWeight = (*thePrefiringWeight);
+
+			edm::Handle<double> thePrefiringWeightUp;
+			event.getByToken(tokenPrefiringWeightUp, thePrefiringWeightUp);
+			this->metaEvent->prefiringWeightUp = (*thePrefiringWeightUp);
+
+			edm::Handle<double> thePrefiringWeightDown;
+			event.getByToken(tokenPrefiringWeightDown, thePrefiringWeightDown);
+			this->metaEvent->prefiringWeightDown = (*thePrefiringWeightDown);
+
 			if (this->verbosity >= 3) std::cout << "KGenInfoProducer onEvent() end\n";
 		}
 		return true;
@@ -329,6 +344,11 @@ protected:
 	edm::EDGetTokenT<LHEEventProduct> tokenLhe;
 	edm::EDGetTokenT<std::vector<PileupSummaryInfo>> tokenPuInfo;
 	edm::EDGetTokenT<LHERunInfoProduct> tokenRunInfo;
+
+	// prefiring weights
+	edm::EDGetTokenT<double> tokenPrefiringWeight;
+	edm::EDGetTokenT<double> tokenPrefiringWeightUp;
+	edm::EDGetTokenT<double> tokenPrefiringWeightDown;
 };
 
 template<typename Tmeta>
