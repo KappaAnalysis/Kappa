@@ -12,14 +12,16 @@ read sl_version
 if [[ $sl_version = "SL6" ]] || [[ $sl_version = "6" ]] || [[ $sl_version = "SLC6" ]]; then
     scramv1 project -n CMSSW_10_2_20_kappa CMSSW CMSSW_10_2_20
 elif [[ $sl_version = "SL7" ]] || [[ $sl_version = "7" ]] || [[ $sl_version = "SLC7" ]]; then
+    export SCRAM_ARCH=slc7_amd64_gcc700
     scramv1 project -n CMSSW_10_2_20_kappa CMSSW CMSSW_10_2_20_UL
 else
+    export SCRAM_ARCH=slc7_amd64_gcc700
     scramv1 project -n CMSSW_10_2_20_kappa CMSSW CMSSW_10_2_20_UL
 fi
 cd CMSSW_10_2_20_kappa/src/
 eval `scramv1 runtime -sh`
 
-export KAPPA_BRANCH="dictchanges_CMSSW102X"
+export KAPPA_BRANCH="dictchanges_CMSSW102X_DEV"
 while getopts :b:g:e:n: option
 do
 	case "${option}"
@@ -64,7 +66,7 @@ git cms-merge-topic KIT-CMS:embedded_metcov_fix
 git cms-merge-topic -u danielwinterbottom:from-CMSSW_10_2_16-mvaDM
 
 # CP: Refitting package
-git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit
+git clone git@github.com:artus-analysis/TauRefit.git VertexRefit/TauRefit -b prunedTauIDs
 
 #Check out Kappa
 git clone git@github.com:KappaAnalysis/Kappa.git -b ${KAPPA_BRANCH}
